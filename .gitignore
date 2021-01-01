@@ -1,0 +1,19 @@
+/.bundle/
+/.yardoc
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+/tmp/
+
+/.vscode
+/Gemfile.lock
+/vendor/bundle
+
+# rspec failure tracking
+.rspec_status
+
+# RubyMine
+/.idea/
+/.rakeTasks
