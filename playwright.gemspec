@@ -22,6 +22,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
+  spec.add_dependency 'concurrent-ruby'
   spec.add_development_dependency 'bundler', '~> 2.2.3'
   spec.add_development_dependency 'pry-byebug'
   spec.add_development_dependency 'rake', '~> 13.0.3'

@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
-require 'playwright/version'
+# namespace declaration
+module Playwright; end
 
-module Playwright
-  class Error < StandardError; end
-  # Your code goes here...
-end
+require 'playwright/transport'
+require 'playwright/version'
