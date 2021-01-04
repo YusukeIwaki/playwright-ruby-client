@@ -7,6 +7,9 @@
 /spec/reports/
 /tmp/
 
+# rbenv
+.ruby-version
+
 /.vscode
 /Gemfile.lock
 /vendor/bundle
