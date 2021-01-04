@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'concurrent-ruby'
   spec.add_development_dependency 'bundler', '~> 2.2.3'
+  spec.add_development_dependency 'dry-inflector'
   spec.add_development_dependency 'pry-byebug'
   spec.add_development_dependency 'rake', '~> 13.0.3'
   spec.add_development_dependency 'rspec', '~> 3.10.0 '
