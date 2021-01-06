@@ -11,6 +11,8 @@ class ImplementedMethodWithDoc
     Enumerator.new do |data|
       method_comment_lines.each(&data)
       data << "    def #{method_name_and_args}"
+      # FIXME: args and method call shoud be different implementation
+      data << "      wrap_channel_owner(@channel_owner.#{method_name_and_args})"
       data << '    end'
     end
   end

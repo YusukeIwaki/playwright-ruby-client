@@ -7,18 +7,47 @@ module Playwright
     # @param channel_owner [ChannelOwner]
     # @note Intended for internal use only.
     def self.from_channel_owner(channel_owner)
-      channel_owner_class_name = channel_owner.class.name
-      raise "#{channel_owner_class_name} is not a channel owner" unless channel_owner_class_name.include?('::ChannelOwners::')
-      class_name = channel_owner_class_name.split('::ChannelOwners::').last
-      klass = ::Playwright.const_get(class_name)
-      if klass
-        klass.new(channel_owner)
-      else
-        raise NotImplementedError.new("Playwright::#{class_name} is not implemented")
-      end
+      Factory.new(channel_owner).create
     end
 
     private
+
+    class Factory
+      def initialize(channel_owner)
+        channel_owner_class_name = channel_owner.class.name
+        raise "#{channel_owner_class_name} is not a channel owner" unless channel_owner_class_name.include?('::ChannelOwners::')
+
+        @channel_owner = channel_owner
+      end
+
+      def create
+        api_class = detect_class_for(@channel_owner.class)
+        if api_class
+          api_class.new(@channel_owner)
+        else
+          raise NotImplementedError.new("Playwright::#{expected_class_name_for(@channel_owner.class)} is not implemented")
+        end
+      end
+
+      private
+
+      def expected_class_name_for(klass)
+        klass.name.split('::ChannelOwners::').last
+      end
+
+      def detect_class_for(klass)
+        class_name = expected_class_name_for(klass)
+        if ::Playwright.const_defined?(class_name)
+          ::Playwright.const_get(class_name)
+        else
+          if [::Playwright::ChannelOwner, Object].include?(klass.superclass)
+            nil
+          else
+            detect_class_for(klass.superclass)
+          end
+        end
+      end
+    end
 
     # @param channel_owner [Playwright::ChannelOwner]
     def initialize(channel_owner)

@@ -12,5 +12,17 @@ module Playwright
     end
 
     attr_reader :guid, :object
+
+    # @param method [String]
+    # @param params [Hash]
+    def send_message_to_server(method, params)
+      result = @connection.send_message_to_server(@guid, method, params)
+      if result.is_a?(Hash)
+        _type, channel_owner = result.first
+        channel_owner.object
+      else
+        nil
+      end
+    end
   end
 end
