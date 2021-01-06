@@ -16,16 +16,23 @@ require 'playwright/connection'
 require 'playwright/transport'
 require 'playwright/version'
 
+require 'playwright/playwright_api'
 # load generated files
 Dir[File.join(__dir__, 'playwright_api', '*.rb')].each { |f| require f }
 
 module Playwright
-  module_function def method_missing(method, *args, **kwargs, &block)
-    @playwright ||= ::Playwright::Playwright.new
-    if kwargs.empty? # for Ruby < 2.7
-      @playwright.public_send(method, *args, &block)
-    else
-      @playwright.public_send(method, *args, **kwargs, &block)
+  module_function def create(playwright_cli_executable_path:, &block)
+    raise ArgumentError.new("block must be provided") unless block
+
+    connection = Connection.new(playwright_cli_executable_path: playwright_cli_executable_path)
+
+    playwright_promise = connection.async_wait_for_object_with_known_name('Playwright')
+    Thread.new { connection.run }
+    playwright = PlaywrightApi.from_channel_owner(playwright_promise.value!)
+    begin
+      block.call(playwright)
+    ensure
+      connection.stop
     end
   end
 end

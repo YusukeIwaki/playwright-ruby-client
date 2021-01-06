@@ -12,7 +12,7 @@ class ImplementedClassWithoutDoc
       require_lines.each(&data)
       data << 'module Playwright'
       data << '  # @nodoc'
-      data << "  class #{class_name_with_extension}"
+      data << "  class #{class_name} < #{super_class_name || 'PlaywrightApi'}"
       method_lines.each(&data)
       data << '  end'
       data << 'end'
@@ -20,6 +20,11 @@ class ImplementedClassWithoutDoc
   end
 
   private
+
+  # @returns [String]
+  def class_name
+    @inflector.demodulize(@klass)
+  end
 
   # @returns [String|nil]
   def super_class_name
@@ -38,11 +43,6 @@ class ImplementedClassWithoutDoc
         data << ''
       end
     end
-  end
-
-  # @returns [String]
-  def class_name_with_extension
-    [@inflector.demodulize(@klass), super_class_name].compact.join(' < ')
   end
 
   def method_lines

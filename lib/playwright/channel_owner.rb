@@ -20,19 +20,19 @@ module Playwright
     def initialize(parent, type, guid, initializer)
       @objects = {}
 
-      if parent.is_a?(Playwright::ChannelOwner)
+      if parent.is_a?(ChannelOwner)
         @connection = parent.instance_variable_get(:@connection)
         @connection.send(:update_object_from_channel_owner, guid, self)
         @parent = parent
         @parent.send(:update_object_from_child, guid, self)
-      elsif parent.is_a?(Playwright::Connection)
+      elsif parent.is_a?(Connection)
         @connection = parent
         @connection.send(:update_object_from_channel_owner, guid, self)
       else
         raise ArgumentError.new('parent must be an instance of Playwright::ChannelOwner or Playwright::Connection')
       end
 
-      @channel = Playwright::Channel.new(@connection, guid, object: self)
+      @channel = Channel.new(@connection, guid, object: self)
       @type = type
       @guid = guid
       @initializer = initializer

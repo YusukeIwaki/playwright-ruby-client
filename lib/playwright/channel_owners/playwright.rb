@@ -1,23 +1,23 @@
 module Playwright
   define_channel_owner :Playwright do
     def chromium
-      @chromium ||= Playwright::ChannelOwners::BrowserType.from(@initializer['chromium'])
+      @chromium ||= ::Playwright::ChannelOwners::BrowserType.from(@initializer['chromium'])
     end
 
     def firefox
-      @firefox ||= Playwright::ChannelOwners::BrowserType.from(@initializer['firefox'])
+      @firefox ||= ::Playwright::ChannelOwners::BrowserType.from(@initializer['firefox'])
     end
 
     def webkit
-      @webkit ||= Playwright::ChannelOwners::BrowserType.from(@initializer['webkit'])
+      @webkit ||= ::Playwright::ChannelOwners::BrowserType.from(@initializer['webkit'])
     end
 
     def android
-      @android ||= Playwright::ChannelOwners::Android.from(@initializer['android'])
+      @android ||= ::Playwright::ChannelOwners::Android.from(@initializer['android'])
     end
 
     def electron
-      @electron ||= Playwright::ChannelOwners::Electron.from(@initializer['electron'])
+      @electron ||= ::Playwright::ChannelOwners::Electron.from(@initializer['electron'])
     end
 
     class DeviceDescriptor

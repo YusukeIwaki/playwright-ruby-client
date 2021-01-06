@@ -13,7 +13,7 @@ class UnimplementedClassWithDoc
       require_lines.each(&data)
       data << 'module Playwright'
       class_comment_lines.each(&data)
-      data << "  class #{class_name_with_extension}"
+      data << "  class #{class_name} < #{super_class_name || 'PlaywrightApi'}"
       property_lines.each(&data)
       method_lines.each(&data)
       data << '  end'
@@ -23,14 +23,9 @@ class UnimplementedClassWithDoc
 
   private
 
-  # @returns [Enumerable<String>]
-  def class_comment_lines
-    Enumerator.new do |data|
-      @doc.comment&.split("\n")&.each do |line|
-        data << '  #' if line.start_with?("```js")
-        data << "  # #{line}"
-      end
-    end
+  # @returns [String]
+  def class_name
+    @doc.name
   end
 
   # @returns [String|nil]
@@ -48,9 +43,14 @@ class UnimplementedClassWithDoc
     end
   end
 
-  # @returns [String]
-  def class_name_with_extension
-    [@doc.name ,super_class_name].compact.join(" < ")
+  # @returns [Enumerable<String>]
+  def class_comment_lines
+    Enumerator.new do |data|
+      @doc.comment&.split("\n")&.each do |line|
+        data << '  #' if line.start_with?("```js")
+        data << "  # #{line}"
+      end
+    end
   end
 
   def property_lines

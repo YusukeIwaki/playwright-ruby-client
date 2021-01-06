@@ -6,7 +6,7 @@ module Playwright
   # https://github.com/microsoft/playwright-java/blob/master/playwright/src/main/java/com/microsoft/playwright/impl/Connection.java
   class Connection
     def initialize(playwright_cli_executable_path:)
-      @transport = Playwright::Transport.new(
+      @transport = Transport.new(
         playwright_cli_executable_path: playwright_cli_executable_path
       )
       @transport.on_message_received do |message|
@@ -16,7 +16,7 @@ module Playwright
       @objects = {} # Hash[ guid => ChannelOwner ]
       @waiting_for_object = {} # Hash[ guid => Promise<ChannelOwner> ]
       @callbacks = {} # Hash [ guid => Promise<ChannelOwner> ]
-      @root_object = Playwright::RootChannelOwner.new(self)
+      @root_object = RootChannelOwner.new(self)
     end
 
     def run
@@ -27,14 +27,18 @@ module Playwright
       @transport.stop
     end
 
-    def wait_for_object_with_known_name(guid)
+    def async_wait_for_object_with_known_name(guid)
       if @objects[guid]
         return @objects[guid]
       end
 
       callback = Concurrent::Promises.resolvable_future
       @waiting_for_object[guid] = callback
-      callback.value!
+      callback
+    end
+
+    def wait_for_object_with_known_name(guid)
+      async_wait_for_object_with_known_name.value!
     end
 
     def async_send_message_to_server(guid, method, params)
@@ -97,7 +101,7 @@ module Playwright
 
         error = msg['error']
         if error
-          callback.reject(Playwright::Error.parse(error['error']))
+          callback.reject(::Playwright::Error.parse(error['error']))
         else
           result = replace_guids_with_channels(msg['result'])
           callback.fulfill(result)
@@ -217,7 +221,7 @@ module Playwright
 
       result =
         begin
-          Playwright::ChannelOwners.const_get(class_name).new(*params)
+          ChannelOwners.const_get(class_name).new(*params)
         rescue NameError
           raise "Missing type #{type}"
         end

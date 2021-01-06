@@ -14,7 +14,7 @@ class ImplementedClassWithDoc
       require_lines.each(&data)
       data << 'module Playwright'
       class_comment_lines.each(&data)
-      data << "  class #{class_name_with_extension}"
+      data << "  class #{class_name} < #{super_class_name || 'PlaywrightApi'}"
       property_lines.each(&data)
       method_lines.each(&data)
       data << '  end'
@@ -23,6 +23,11 @@ class ImplementedClassWithDoc
   end
 
   private
+
+  # @returns [String]
+  def class_name
+    @doc.name
+  end
 
   # @returns [String|nil]
   def super_class_name
@@ -47,11 +52,6 @@ class ImplementedClassWithDoc
         data << "  # #{line}"
       end
     end
-  end
-
-  # @returns [String]
-  def class_name_with_extension
-    [@doc.name , super_class_name].compact.join(" < ")
   end
 
   def property_lines

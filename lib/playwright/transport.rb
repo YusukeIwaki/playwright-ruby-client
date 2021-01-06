@@ -11,7 +11,7 @@ module Playwright
     # @param debug [Boolean]
     def initialize(playwright_cli_executable_path:)
       @driver_executable_path = playwright_cli_executable_path
-      @debug = true
+      @debug = ENV['DEBUG'].to_s == 'true' || ENV['DEBUG'].to_s == '1'
     end
 
     def on_message_received(&block)

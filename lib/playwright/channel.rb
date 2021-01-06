@@ -1,6 +1,6 @@
 module Playwright
   class Channel
-    include Playwright::EventEmitter
+    include EventEmitter
 
     # @param connection [Playwright::Connection]
     # @param guid [String]
