@@ -1,8 +1,10 @@
 class ImplementedMethodWithDoc
   # @param doc [Doc]
+  # @param method [Method]
   # @param inflector [Dry::Inflector]
-  def initialize(doc, inflector)
+  def initialize(doc, method, inflector)
     @doc = doc
+    @method = method
     @inflector = inflector
   end
 
@@ -11,8 +13,7 @@ class ImplementedMethodWithDoc
     Enumerator.new do |data|
       method_comment_lines.each(&data)
       data << "    def #{method_name_and_args}"
-      # FIXME: args and method call shoud be different implementation
-      data << "      wrap_channel_owner(@channel_owner.#{method_name_and_args})"
+      data << "      wrap_channel_owner(@channel_owner.#{method_call_with_args})"
       data << '    end'
     end
   end
@@ -29,16 +30,26 @@ class ImplementedMethodWithDoc
   end
 
   def method_name_and_args
-    method_name = MethodName.new(@inflector, @doc.name)
-
     if @doc.arg_docs.empty?
       method_name.rubyish_name
     else
-      "#{method_name.rubyish_name}(#{args.join(", ")})"
+      "#{method_name.rubyish_name}(#{method_args.for_method_definition.join(", ")})"
     end
   end
 
-  def args
-    @doc.arg_docs.map(&:name)
+  def method_call_with_args
+    if @doc.arg_docs.empty?
+      method_name.rubyish_name
+    else
+      "#{method_name.rubyish_name}(#{method_args.for_method_call.join(", ")})"
+    end
+  end
+
+  def method_name
+    @method_name ||= MethodName.new(@inflector, @doc.name)
+  end
+
+  def method_args
+    @method_args ||= MethodArgs.new(@inflector, @doc.arg_docs)
   end
 end

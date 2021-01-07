@@ -11,7 +11,7 @@ class UnmplementedMethodWithDoc
     Enumerator.new do |data|
       method_comment_lines.each(&data)
       data << "    def #{method_name_and_args}"
-      data << "      raise NotImplementedError.new('#{method_name} is not implemented yet.')"
+      data << "      raise NotImplementedError.new('#{method_name.rubyish_name} is not implemented yet.')"
       data << '    end'
     end
   end
@@ -29,17 +29,17 @@ class UnmplementedMethodWithDoc
 
   def method_name_and_args
     if @doc.arg_docs.empty?
-      method_name
+      method_name.rubyish_name
     else
-      "#{method_name}(#{args.join(", ")})"
+      "#{method_name.rubyish_name}(#{method_args.for_method_definition.join(", ")})"
     end
   end
 
   def method_name
-    @method_name ||= MethodName.new(@inflector, @doc.name).rubyish_name
+    @method_name ||= MethodName.new(@inflector, @doc.name)
   end
 
-  def args
-    @doc.arg_docs.map(&:name)
+  def method_args
+    @method_args ||= MethodArgs.new(@inflector, @doc.arg_docs)
   end
 end

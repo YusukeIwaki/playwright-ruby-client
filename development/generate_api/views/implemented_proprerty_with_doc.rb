@@ -1,8 +1,10 @@
 class ImplementedPropertyWithDoc
   # @param doc [Doc]
+  # @param method [Method]
   # @param inflector [Dry::Inflector]
-  def initialize(doc, inflector)
+  def initialize(doc, method, inflector)
     @doc = doc
+    @method = method
     @inflector = inflector
   end
 

@@ -8,4 +8,8 @@ class ArgDoc < Doc
   def required?
     @json['required']
   end
+
+  def properties
+    @json['type']['properties']&.map { |prop_name, json| ArgDoc.new(json) }
+  end
 end

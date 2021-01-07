@@ -61,7 +61,8 @@ class ImplementedClassWithDoc
 
         data << '' # insert blank line before definition.
         if @klass.public_instance_methods.include?(method_name.rubyish_name.to_sym)
-          ImplementedPropertyWithDoc.new(property_doc, @inflector).lines.each(&data)
+          method = @klass.public_instance_method(method_name.rubyish_name.to_sym)
+          ImplementedPropertyWithDoc.new(property_doc, method, @inflector).lines.each(&data)
         else
           UnmplementedPropertyWithDoc.new(property_doc, @inflector).lines.each(&data)
         end
@@ -76,7 +77,8 @@ class ImplementedClassWithDoc
 
         data << '' # insert blank line before definition.
         if @klass.public_instance_methods.include?(method_name.rubyish_name.to_sym)
-          ImplementedMethodWithDoc.new(method_doc, @inflector).lines.each(&data)
+          method = @klass.public_instance_method(method_name.rubyish_name.to_sym)
+          ImplementedMethodWithDoc.new(method_doc, method, @inflector).lines.each(&data)
         else
           UnmplementedMethodWithDoc.new(method_doc, @inflector).lines.each(&data)
         end
@@ -86,8 +88,9 @@ class ImplementedClassWithDoc
         next if @doc.property_docs.find { |doc| doc.name == method_sym.to_s }
         next if @doc.method_docs.find { |doc| doc.name == method_sym.to_s }
 
+        method = @klass.public_instance_method(method_sym)
         data << '' # insert blank line before definition.
-        ImplementedMethodWithoutDoc.new(method_sym, @inflector).lines.each(&data)
+        ImplementedMethodWithoutDoc.new(method, @inflector).lines.each(&data)
       end
     end
   end

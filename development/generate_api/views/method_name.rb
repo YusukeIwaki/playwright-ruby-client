@@ -1,4 +1,6 @@
 class MethodName
+  # @param inflector [Dry::Inflector]
+  # @param js_method_name [String]
   def initialize(inflector, js_method_name)
     @inflector = inflector
     @js_method_name = js_method_name

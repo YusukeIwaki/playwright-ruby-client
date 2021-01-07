@@ -5,7 +5,7 @@ module Playwright
       executable_path: 'executablePath'
 
     def launch(options)
-      @channel.send_message_to_server('launch', options)
+      @channel.send_message_to_server('launch', options.compact)
     end
   end
 end

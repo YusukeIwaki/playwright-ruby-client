@@ -48,8 +48,10 @@ class ImplementedClassWithoutDoc
   def method_lines
     Enumerator.new do |data|
       (@klass.public_instance_methods - @klass.superclass.public_instance_methods).each do |method_sym|
+        method = @klass.public_instance_method(method_sym)
+
         data << '' # insert blank line before definition.
-        ImplementedMethodWithoutDoc.new(method_sym, @inflector).lines.each(&data)
+        ImplementedMethodWithoutDoc.new(method, @inflector).lines.each(&data)
       end
     end
   end
