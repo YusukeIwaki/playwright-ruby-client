@@ -30,7 +30,7 @@ class ImplementedMethodWithDoc
   end
 
   def method_name_and_args
-    if @doc.arg_docs.empty?
+    if method_args.empty?
       method_name.rubyish_name
     else
       "#{method_name.rubyish_name}(#{method_args.for_method_definition.join(", ")})"
@@ -38,7 +38,7 @@ class ImplementedMethodWithDoc
   end
 
   def method_call_with_args
-    if @doc.arg_docs.empty?
+    if method_args.empty?
       method_name.rubyish_name
     else
       "#{method_name.rubyish_name}(#{method_args.for_method_call.join(", ")})"
@@ -50,6 +50,10 @@ class ImplementedMethodWithDoc
   end
 
   def method_args
-    @method_args ||= MethodArgs.new(@inflector, @doc.arg_docs)
+    @method_args ||= DocumentedMethodArgs.new(@inflector, @doc.arg_docs, with_block: method_has_block?)
+  end
+
+  def method_has_block?
+    @method.parameters.last&.first == :block
   end
 end

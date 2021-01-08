@@ -40,6 +40,6 @@ class UnmplementedMethodWithDoc
   end
 
   def method_args
-    @method_args ||= MethodArgs.new(@inflector, @doc.arg_docs)
+    @method_args ||= DocumentedMethodArgs.new(@inflector, @doc.arg_docs)
   end
 end

@@ -19,10 +19,22 @@ class ImplementedMethodWithoutDoc
   private
 
   def method_name_and_args
-    @method.name
+    if method_args.empty?
+      @method.name
+    else
+      "#{@method.name}(#{method_args.for_method_definition.join(", ")})"
+    end
   end
 
   def method_call_with_args
-    @method.name
+    if method_args.empty?
+      @method.name
+    else
+      "#{@method.name}(#{method_args.for_method_call.join(", ")})"
+    end
+  end
+
+  def method_args
+    @method_args ||= UndocumentedMethodArgs.new(@inflector, @method.name, @method.parameters)
   end
 end

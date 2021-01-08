@@ -1,6 +1,6 @@
 require 'concurrent'
 
-class MethodArgs
+class DocumentedMethodArgs
   class RequiredArg
     def initialize(doc)
       @doc = doc
@@ -57,9 +57,20 @@ class MethodArgs
     end
   end
 
+  class BlockArg
+    def as_method_definition
+      "&block"
+    end
+
+    def as_method_call
+      "&block"
+    end
+  end
+
   # @param inflector [Dry::Inflector]
   # @param arg_docs [Array<ArgDoc>]
-  def initialize(inflector, arg_docs)
+  # @param with_block [Boolean]
+  def initialize(inflector, arg_docs, with_block: false)
     @inflector = inflector
     @args = arg_docs.map do |arg_doc|
       if arg_doc.required?
@@ -69,6 +80,13 @@ class MethodArgs
       end
     end
     extract_options
+    if with_block
+      @args << BlockArg.new
+    end
+  end
+
+  def empty?
+    @args.empty? && !@with_block
   end
 
   # ['var1', 'var2', 'var3: nil', 'var4: nil']
