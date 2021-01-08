@@ -1,0 +1,29 @@
+name: RSpec
+
+on: [pull_request]
+
+jobs:
+  unit_test:
+    name: Unit test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.0
+        bundler-cache: true
+    - run: |
+        rm -rf spec/development
+        bundle exec rspec
+
+  unit_test_development:
+    name: Unit test for generate_api
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.0
+        bundler-cache: true
+    - run: bundle exec rspec spec/development
+    - run: bundle exec ruby development/generate_api.rb
