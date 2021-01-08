@@ -1,0 +1,35 @@
+name: Deploy
+
+on:
+  pull_request:
+    brances:
+      - '*'
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  push_to_rubygems:
+    name: Push to RubyGems
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set RELEASE_TAG
+      run: echo "RELEASE_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.0
+        bundler-cache: true
+    - name: Check Puppeteer::version
+      run: bundle exec ruby -e 'raise "invalid Playwright::VERSION" unless Playwright::VERSION == ENV["RELEASE_TAG"]'
+    - name: Generate API codes and build
+      run: |
+        bundle exec ruby development/generate_api.rb
+        rake build
+    - name: setup API key
+      run: |
+        mkdir -p ~/.gem/
+        echo "---" > ~/.gem/credentials
+        echo ":rubygems_api_key: $RUBYGEMS_API_KEY" >> ~/.gem/credentials
+        chmod 600 ~/.gem/credentials
+    - run: gem push pkg/playwright-ruby-client-$RELEASE_TAG.gem
