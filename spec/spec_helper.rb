@@ -13,4 +13,12 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  config.define_derived_metadata(file_path: %r(/spec/development/generate_api/)) do |metadata|
+    metadata[:type] = :generate_api
+  end
+
+  config.before(:context, type: :generate_api) do
+    require './development/generate_api'
+  end
 end
