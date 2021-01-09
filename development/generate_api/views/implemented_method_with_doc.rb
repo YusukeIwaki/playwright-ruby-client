@@ -33,7 +33,7 @@ class ImplementedMethodWithDoc
     if method_args.empty?
       method_name.rubyish_name
     else
-      "#{method_name.rubyish_name}(#{method_args.for_method_definition.join(", ")})"
+      "#{method_name.rubyish_name}(#{join_with_indent_or_spaces(method_args.for_method_definition)})"
     end
   end
 
@@ -55,5 +55,25 @@ class ImplementedMethodWithDoc
 
   def method_has_block?
     @method.parameters.last&.first == :block
+  end
+
+  # indent with 10 spaces, if arg_definitions.size >= 4
+  #
+  # [indent]a,
+  # [      ]b,
+  # [      ]c,
+  # [      ]d
+  #
+  # otherwise, just join with ", "
+  #
+  # @param args [Array<String>]
+  # @returns [String]
+  def join_with_indent_or_spaces(args)
+    if args.count >= 5
+      joined = args.join(",\n          ")
+      "\n          #{joined}"
+    else
+      args.join(', ')
+    end
   end
 end

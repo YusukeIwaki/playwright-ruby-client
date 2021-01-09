@@ -1,8 +1,12 @@
 module Playwright
   define_channel_owner :BrowserType do
-    define_initializer_reader \
-      name: 'name',
-      executable_path: 'executablePath'
+    def name
+      @initializer['name']
+    end
+
+    def executable_path
+      @initializer['executablePath']
+    end
 
     def launch(options, &block)
       browser = @channel.send_message_to_server('launch', options.compact)

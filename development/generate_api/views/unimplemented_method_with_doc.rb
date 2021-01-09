@@ -31,7 +31,7 @@ class UnmplementedMethodWithDoc
     if @doc.arg_docs.empty?
       method_name.rubyish_name
     else
-      "#{method_name.rubyish_name}(#{method_args.for_method_definition.join(", ")})"
+      "#{method_name.rubyish_name}(#{join_with_indent_or_spaces(method_args.for_method_definition)})"
     end
   end
 
@@ -41,5 +41,25 @@ class UnmplementedMethodWithDoc
 
   def method_args
     @method_args ||= DocumentedMethodArgs.new(@inflector, @doc.arg_docs)
+  end
+
+  # indent with 10 spaces, if arg_definitions.size >= 5
+  #
+  # [indent]a,
+  # [      ]b,
+  # [      ]c,
+  # [      ]d
+  #
+  # otherwise, just join with ", "
+  #
+  # @param args [Array<String>]
+  # @returns [String]
+  def join_with_indent_or_spaces(args)
+    if args.count >= 5
+      joined = args.join(",\n          ")
+      "\n          #{joined}"
+    else
+      args.join(', ')
+    end
   end
 end

@@ -84,9 +84,11 @@ class ImplementedClassWithDoc
         end
       end
 
+      skip_list = (@doc.property_docs + @doc.method_docs).map do |doc|
+        MethodName.new(@inflector, doc.name).rubyish_name
+      end
       (@klass.public_instance_methods - @klass.superclass.public_instance_methods - Playwright::EventEmitter.public_instance_methods).each do |method_sym|
-        next if @doc.property_docs.find { |doc| doc.name == method_sym.to_s }
-        next if @doc.method_docs.find { |doc| doc.name == method_sym.to_s }
+        next if skip_list.include?(method_sym.to_s)
 
         method = @klass.public_instance_method(method_sym)
         data << '' # insert blank line before definition.
