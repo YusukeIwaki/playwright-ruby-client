@@ -8,6 +8,7 @@ require 'concurrent'
 
 # modules & constants
 require 'playwright/errors'
+require 'playwright/events'
 require 'playwright/event_emitter'
 
 require 'playwright/channel'

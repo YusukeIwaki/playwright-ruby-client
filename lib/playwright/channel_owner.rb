@@ -2,13 +2,6 @@ module Playwright
   class ChannelOwner
     include Playwright::EventEmitter
 
-    # define accessor for @initializer
-    def self.define_initializer_reader(**name_map)
-      name_map.each do |method_name, key_name|
-        define_method(method_name) { @initializer[key_name] }
-      end
-    end
-
     def self.from(channel)
       channel.object
     end

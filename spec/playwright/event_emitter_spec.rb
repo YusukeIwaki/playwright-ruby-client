@@ -18,6 +18,20 @@ RSpec.describe Playwright::EventEmitter do
     instance.emit(:hoge)
   end
 
+  it 'callback event with no args' do
+    callback = double(:callback)
+    instance.on(:hoge, callback)
+    expect(callback).to receive(:call).with(no_args)
+    instance.emit(:hoge)
+  end
+
+  it 'callback event with args' do
+    callback = double(:callback)
+    instance.on(:hoge, callback)
+    expect(callback).to receive(:call).with(1, 2, 3)
+    instance.emit(:hoge, 1, 2, 3)
+  end
+
   it 'can register only 1 listener for each callback' do
     dbl = double(:hoge)
     callback = -> { dbl.hoge }

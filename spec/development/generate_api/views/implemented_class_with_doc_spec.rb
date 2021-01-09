@@ -151,6 +151,65 @@ RSpec.describe 'ImplementedClassWithDoc' do
       end
     end
 
+    context 'with arguments size >= 4' do
+      before {
+        api_json[class_name]['methods'] = {
+          'awesomeCalc' => {
+            'name' => 'awesomeCalc',
+            'type' => { 'name' => 'number' },
+            'required' => true,
+            'args' => {
+              'a' => {
+                'name' => 'a',
+                'type' => { 'name' => 'number' },
+                'required' => true,
+              },
+              'options' => {
+                'name' => 'options',
+                'type' => {
+                  'name' => 'Object',
+                  'properties' => {
+                    'b' => {
+                      'name' => 'b',
+                      'type' => { 'name' => 'number' },
+                      'required' => false,
+                    },
+                    'c' => {
+                      'name' => 'c',
+                      'type' => { 'name' => 'number' },
+                      'required' => false,
+                    },
+                    'd' => {
+                      'name' => 'd',
+                      'type' => { 'name' => 'number' },
+                      'required' => false,
+                    },
+                    'e' => {
+                      'name' => 'e',
+                      'type' => { 'name' => 'number' },
+                      'required' => false,
+                    },
+                  }
+                },
+                'required' => false,
+              },
+            },
+          },
+        }
+      }
+      let(:klass) do
+        Class.new do
+          def awesome_calc(a, b: 0, c: 0, d: 0, e: 0)
+            a + b + c + d + e
+          end
+        end
+      end
+
+      it 'should generate a method with argument with line breaks' do
+        is_expected.to include("def awesome_calc(\n").and include("c: nil,\n").and include("e: nil)\n")
+      end
+    end
+
     context 'without arguments, with explicit block parameter' do
       before {
         api_json[class_name]['methods'] = {
