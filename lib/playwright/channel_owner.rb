@@ -29,6 +29,8 @@ module Playwright
       @type = type
       @guid = guid
       @initializer = initializer
+
+      after_initialize
     end
 
     attr_reader :channel
@@ -44,6 +46,9 @@ module Playwright
     end
 
     private
+
+    def after_initialize
+    end
 
     def update_object_from_child(guid, child)
       @objects[guid] = child

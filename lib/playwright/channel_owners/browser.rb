@@ -1,19 +1,14 @@
 module Playwright
   # @ref https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_browser.py
   define_channel_owner :Browser do
-    # @param parent [Playwright::ChannelOwner|Playwright::Connection]
-    # @param type [String]
-    # @param guid [String]
-    # @param initializer [Hash]
-    def initialize(parent, type, guid, initializer)
-      super
+    def after_initialize
       @contexts = Set.new
       @channel.on('close', method(:handle_close))
     end
 
     def contexts
       @contexts.map do |context|
-        ::Playwright::PlaywrightApi.from_channel_owner(context)
+        PlaywrightApi.from_channel_owner(context)
       end
     end
 

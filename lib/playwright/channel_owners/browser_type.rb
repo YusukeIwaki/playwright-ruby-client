@@ -12,7 +12,7 @@ module Playwright
       browser = @channel.send_message_to_server('launch', options.compact)
 
       if block
-        browser_api = ::Playwright::PlaywrightApi.from_channel_owner(browser)
+        browser_api = PlaywrightApi.from_channel_owner(browser)
         begin
           block.call(browser_api)
         ensure
