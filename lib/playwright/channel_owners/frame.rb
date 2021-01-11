@@ -4,7 +4,7 @@ module Playwright
     def after_initialize
       @event_emitter = Object.new.extend(EventEmitter)
       if @initializer['parentFrame']
-        @parent_frame = @initializer['parentFrame'].object
+        @parent_frame = self.from(@initializer['parentFrame'])
         @parent_frame.send(:append_child_frame_from_child, self)
       end
       @name = @initializer['name']
@@ -23,8 +23,8 @@ module Playwright
         waitUntil: waitUntil,
         referer: referer
       }.compact
-      response = @channel.send_message_to_server('goto', params)
-      PlaywrightApi.from_channel_owner(response)
+      resp = @channel.send_message_to_server('goto', params)
+      ChannelOwners::Response.from(resp)
     end
 
     private

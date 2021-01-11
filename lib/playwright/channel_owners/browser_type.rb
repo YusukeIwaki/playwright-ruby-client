@@ -9,12 +9,12 @@ module Playwright
     end
 
     def launch(options, &block)
-      browser = @channel.send_message_to_server('launch', options.compact)
+      resp = @channel.send_message_to_server('launch', options.compact)
+      browser = ChannelOwners::Browser.from(resp)
 
       if block
-        browser_api = PlaywrightApi.from_channel_owner(browser)
         begin
-          block.call(browser_api)
+          block.call(browser)
         ensure
           browser.close
         end

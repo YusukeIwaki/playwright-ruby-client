@@ -9,7 +9,7 @@ module Playwright
       @mouse = Mouse.new(@channel)
       @touchscreen = Touchscreen.new(@channel)
 
-      @main_frame = @initializer['mainFrame'].object
+      @main_frame = ChannelOwners::Frame.from(@initializer['mainFrame'])
       @main_frame.send(:update_page_from_page, self)
       @frames = Set.new
       @frames << @main_frame

@@ -2,14 +2,13 @@ module Playwright
   # @ref https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_browser.py
   define_channel_owner :Browser do
     def after_initialize
+
       @contexts = Set.new
       @channel.on('close', method(:handle_close))
     end
 
     def contexts
-      @contexts.map do |context|
-        PlaywrightApi.from_channel_owner(context)
-      end
+      @contexts.to_a
     end
 
     def connected?
@@ -30,7 +29,8 @@ module Playwright
         params[:storageState] = JSON.parse(File.read(params[:storageState]))
       end
 
-      context = @channel.send_message_to_server('newContext', params.compact)
+      resp = @channel.send_message_to_server('newContext', params.compact)
+      context = ChannelOwners::BrowserContext.from(resp)
       @contexts << context
       context.browser = self
       context.options = params
@@ -49,6 +49,7 @@ module Playwright
       return if @closed_or_closing
       @closed_or_closing = true
       @channel.send_message_to_server('close')
+      nil
     rescue => err
       raise unless safe_close_error?(err)
     end

@@ -6,8 +6,8 @@ module Playwright
     # @returns [Playwright::Page]
     def new_page
       raise 'Please use browser.new_context' if @owner_page
-      page = @channel.send_message_to_server('newPage')
-      PlaywrightApi.from_channel_owner(page)
+      resp = @channel.send_message_to_server('newPage')
+      ChannelOwners::Page.from(resp)
     end
   end
 end

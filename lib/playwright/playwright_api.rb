@@ -54,9 +54,19 @@ module Playwright
       @channel_owner = channel_owner
     end
 
+    # @param block [Proc]
+    def wrap_block_call(block)
+      -> (*args) {
+        wrapped_args = args.map { |arg| wrap_channel_owner(arg) }
+        block.call(*wrapped_args)
+      }
+    end
+
     def wrap_channel_owner(object)
       if object.is_a?(ChannelOwner)
         PlaywrightApi.from_channel_owner(object)
+      elsif object.is_a?(Array)
+        object.map { |obj| wrap_channel_owner(obj) }
       else
         object
       end
