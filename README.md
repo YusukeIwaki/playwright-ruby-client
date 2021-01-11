@@ -2,29 +2,33 @@
 
 # playwright-ruby-client
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/playwright`. To experiment with that code, run `bin/console` for an interactive prompt.
+A Ruby client for Playwright driver.
 
-TODO: Delete this and the text above, and describe your gem
+## Getting Started
 
-## Installation
+At this point, playwright-ruby-client doesn't include the downloader of playwright-cli, so **we have to install [playwright-cli](https://github.com/microsoft/playwright-cli) in advance**.
 
-Add this line to your application's Gemfile:
+via npm: `npm install -g playwright-cli`
+
+or
+
+direct download: `wget https://playwright.azureedge.net/builds/cli/next/playwright-cli-0.180.0-next.1608746109749-cbc13bd-mac.zip`
+
+(`-mac.zip` should be replaced for another OS)
+
+### Capture a site
 
 ```ruby
-gem 'playwright-ruby-client'
+require 'playwright-ruby-client'
+
+Playwright.create(playwright_cli_executable_path: '/path/to/playwright-cli') do |playwright|
+  playwright.chromium.launch(headless: false) do |browser|
+    page = browser.new_page
+    page.goto('https://github.com/YusukeIwaki')
+    page.screenshot(path: './YusukeIwaki.png')
+  end
+end
 ```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install playwright-ruby-client
-
-## Usage
-
-TODO: Write usage instructions here
 
 ## Development
 
