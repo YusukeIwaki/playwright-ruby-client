@@ -8,7 +8,7 @@ A Ruby client for Playwright driver.
 
 At this point, playwright-ruby-client doesn't include the downloader of playwright-cli, so **we have to install [playwright-cli](https://github.com/microsoft/playwright-cli) in advance**.
 
-via npm: `npm install -g playwright-cli`
+via npm: `npm install playwright-cli` (then, specify `./node_modules/.bin/playwright-cli` for playwright_cli_executable_path)
 
 or
 
