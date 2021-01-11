@@ -2,7 +2,6 @@ module Playwright
   # @ref https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_browser.py
   define_channel_owner :Browser do
     def after_initialize
-
       @contexts = Set.new
       @channel.on('close', method(:handle_close))
     end

@@ -1,3 +1,5 @@
+require 'base64'
+
 module Playwright
   # @ref https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_page.py
   define_channel_owner :Page do
@@ -19,6 +21,33 @@ module Playwright
 
     def goto(url, timeout: nil, waitUntil: nil, referer: nil)
       @main_frame.goto(url, timeout: timeout,  waitUntil: waitUntil, referer: referer)
+    end
+
+    def screenshot(
+      path: nil,
+      type: nil,
+      quality: nil,
+      fullPage: nil,
+      clip: nil,
+      omitBackground: nil,
+      timeout: nil)
+
+      params = {
+        type: type,
+        quality: quality,
+        fullPage: fullPage,
+        clip: clip,
+        omitBackground: omitBackground,
+        timeout: timeout,
+      }.compact
+      encoded_binary = @channel.send_message_to_server('screenshot', params)
+      decoded_binary = Base64.decode64(encoded_binary)
+      if path
+        File.open(path, 'wb') do |f|
+          f.write(decoded_binary)
+        end
+      end
+      decoded_binary
     end
   end
 end
