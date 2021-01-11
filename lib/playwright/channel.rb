@@ -19,7 +19,7 @@ module Playwright
       result = @connection.send_message_to_server(@guid, method, params)
       if result.is_a?(Hash)
         _type, channel_owner = result.first
-        channel_owner.object
+        channel_owner
       else
         nil
       end

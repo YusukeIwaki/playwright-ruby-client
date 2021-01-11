@@ -13,6 +13,7 @@ class ImplementedPropertyWithDoc
     Enumerator.new do |data|
       method_comment_lines.each(&data)
       data << "    def #{property_name} # property"
+      data << "      wrap_channel_owner(@channel_owner.#{property_name})"
       data << '    end'
     end
   end

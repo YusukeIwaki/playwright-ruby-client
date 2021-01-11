@@ -35,7 +35,7 @@ class UndocumentedMethodArgs
     end
 
     def as_method_call
-      "&block"
+      "&wrap_block_call(block)"
     end
   end
 
