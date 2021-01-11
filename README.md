@@ -19,7 +19,7 @@ direct download: `wget https://playwright.azureedge.net/builds/cli/next/playwrig
 ### Capture a site
 
 ```ruby
-require 'playwright-ruby-client'
+require 'playwright'
 
 Playwright.create(playwright_cli_executable_path: '/path/to/playwright-cli') do |playwright|
   playwright.chromium.launch(headless: false) do |browser|
