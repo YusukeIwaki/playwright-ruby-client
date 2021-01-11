@@ -36,8 +36,8 @@ module Playwright
       context
     end
 
-    def new_page(*args)
-      context = new_context(*args)
+    def new_page(**options)
+      context = new_context(**options)
       page = context.new_page
       page.owned_context = context
       context.owner_page = page
