@@ -17,7 +17,7 @@ module Playwright
       @frames << @main_frame
     end
 
-    attr_reader :main_frame
+    attr_reader :accessibility, :keyboard, :mouse, :touchscreen, :main_frame
 
     def goto(url, timeout: nil, waitUntil: nil, referer: nil)
       @main_frame.goto(url, timeout: timeout,  waitUntil: waitUntil, referer: referer)
