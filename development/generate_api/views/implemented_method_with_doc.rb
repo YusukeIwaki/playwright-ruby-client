@@ -15,6 +15,7 @@ class ImplementedMethodWithDoc
       data << "    def #{method_name_and_args}"
       data << "      wrap_channel_owner(@channel_owner.#{method_call_with_args})"
       data << '    end'
+      method_alias_lines.each(&data)
     end
   end
 
@@ -42,6 +43,16 @@ class ImplementedMethodWithDoc
       method_name.rubyish_name
     else
       "#{method_name.rubyish_name}(#{method_args.for_method_call.join(", ")})"
+    end
+  end
+
+  def method_alias_lines
+    Enumerator.new do |data|
+      if method_name.rubyish_name.start_with?('set_')
+        if !method_has_block? && method_args.for_method_definition.size == 1
+          data << "    alias_method :#{method_name.rubyish_name[4..-1]}=, :#{method_name.rubyish_name}"
+        end
+      end
     end
   end
 

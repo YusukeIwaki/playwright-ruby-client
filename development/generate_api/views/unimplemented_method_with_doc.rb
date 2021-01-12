@@ -13,6 +13,7 @@ class UnmplementedMethodWithDoc
       data << "    def #{method_name_and_args}"
       data << "      raise NotImplementedError.new('#{method_name.rubyish_name} is not implemented yet.')"
       data << '    end'
+      method_alias_lines.each(&data)
     end
   end
 
@@ -32,6 +33,16 @@ class UnmplementedMethodWithDoc
       method_name.rubyish_name
     else
       "#{method_name.rubyish_name}(#{join_with_indent_or_spaces(method_args.for_method_definition)})"
+    end
+  end
+
+  def method_alias_lines
+    Enumerator.new do |data|
+      if method_name.rubyish_name.start_with?('set_')
+        if method_args.for_method_definition.size == 1
+          data << "    alias_method :#{method_name.rubyish_name[4..-1]}=, :#{method_name.rubyish_name}"
+        end
+      end
     end
   end
 
