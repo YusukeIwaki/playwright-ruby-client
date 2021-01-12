@@ -33,6 +33,8 @@ Playwright.create(playwright_cli_executable_path: '/path/to/playwright-cli') do 
 end
 ```
 
+![image](https://user-images.githubusercontent.com/11763113/104339718-412f9180-553b-11eb-9116-908e1e4b5186.gif)
+
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
