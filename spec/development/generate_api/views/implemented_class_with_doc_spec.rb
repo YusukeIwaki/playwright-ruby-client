@@ -3,24 +3,22 @@ require 'spec_helper'
 RSpec.describe 'ImplementedClassWithDoc' do
   let(:instance) do
     ImplementedClassWithDoc.new(
-      ClassDoc.new(api_json[class_name], root: api_json),
+      ClassDoc.new(api_json_hogehoge, root: api_json),
       klass,
       Dry::Inflector.new,
     )
   end
   subject { instance.lines.to_a.join("\n") }
 
-  let(:api_json) do
+  let(:api_json_hogehoge) do
     {
-      'HogeHoge' => {
-        'name' => 'HogeHoge',
-        'extends' => 'EventEmitter',
-        'methods' => {},
-        'events' => {},
-        'properties' => {},
-      }
+      'langs' => {},
+      'name' => 'HogeHoge',
+      'extends' => 'EventEmitter',
+      'members' => [],
     }
   end
+  let(:api_json) { [api_json_hogehoge] }
   let(:class_name) { 'HogeHoge' }
   around do |example|
     if ::Playwright::ChannelOwners.const_defined?(class_name)
@@ -38,7 +36,7 @@ RSpec.describe 'ImplementedClassWithDoc' do
   describe 'superclass' do
     context 'class extending Object' do
       before {
-        api_json[class_name].delete('extends')
+        api_json_hogehoge.delete('extends')
       }
       let(:klass) { Class.new(Array) }
 
@@ -49,7 +47,7 @@ RSpec.describe 'ImplementedClassWithDoc' do
 
     context 'class extending EventEmitter' do
       before {
-        api_json[class_name]['extends'] = 'EventEmitter'
+        api_json_hogehoge['extends'] = 'EventEmitter'
       }
       let(:klass) { Class.new { include Playwright::EventEmitter } }
 
@@ -60,13 +58,13 @@ RSpec.describe 'ImplementedClassWithDoc' do
 
     context 'class extending another playwright class' do
       before {
-        api_json[class_name]['extends'] = 'HogeHogeBase'
-        api_json['HogeHogeBase'] = {
+        api_json_hogehoge['extends'] = 'HogeHogeBase'
+        api_json << {
+          'kind' => 'method',
+          'langs' => {},
           'name' => 'HogeHogeBase',
           'extends' => 'EventEmitter',
-          'methods' => {},
-          'events' => {},
-          'properties' => {},
+          'members' => [],
         }
       }
       let(:klass) { Class.new { include Playwright::EventEmitter } }
@@ -80,13 +78,13 @@ RSpec.describe 'ImplementedClassWithDoc' do
   describe 'implemented and documented method' do
     context 'without arguments' do
       before {
-        api_json[class_name]['methods'] = {
-          'awesomeCalc' => {
-            'name' => 'awesomeCalc',
-            'type' => { 'name' => 'number' },
-            'required' => true,
-            'args' => {},
-          },
+        api_json_hogehoge['members'] << {
+          'king' => 'method',
+          'langs' => {},
+          'name' => 'awesomeCalc',
+          'type' => { 'name' => 'number' },
+          'required' => true,
+          'args' => [],
         }
       }
       let(:klass) do
@@ -104,38 +102,57 @@ RSpec.describe 'ImplementedClassWithDoc' do
 
     context 'with arguments' do
       before {
-        api_json[class_name]['methods'] = {
-          'awesomeCalc' => {
-            'name' => 'awesomeCalc',
-            'type' => { 'name' => 'number' },
-            'required' => true,
-            'args' => {
-              'a' => {
-                'name' => 'a',
-                'type' => { 'name' => 'number' },
-                'required' => true,
-              },
-              'options' => {
-                'name' => 'options',
-                'type' => {
-                  'name' => 'Object',
-                  'properties' => {
-                    'b' => {
-                      'name' => 'b',
-                      'type' => { 'name' => 'number' },
-                      'required' => false,
-                    },
-                    'c' => {
-                      'name' => 'c',
-                      'type' => { 'name' => 'number' },
-                      'required' => false,
-                    },
-                  }
-                },
-                'required' => false,
-              },
+        api_json_hogehoge['members'] << {
+          'kind' => 'method',
+          'langs' => {},
+          'name' => 'awesomeCalc',
+          'type' => { 'name' => 'number' },
+          'required' => true,
+          'args' => [
+            {
+              'kind' => 'property',
+              'langs' => {},
+              'name' => 'a',
+              'type' => { 'name' => 'number' },
+              'required' => true,
             },
-          },
+            {
+              'kind' => 'property',
+              'langs' => {},
+              'name' => 'options',
+              'type' => {
+                'name' => 'Object',
+                'properties' => [
+                  {
+                    'kind' => 'property',
+                    'langs' => {
+                      'only' => ['js'],
+                    },
+                    'name' => 'b',
+                    'type' => { 'name' => 'number' },
+                    'required' => false,
+                  },
+                  {
+                    'kind' => 'property',
+                    'langs' => {
+                      'only' => ['python'],
+                    },
+                    'name' => 'bOnlyForPython',
+                    'type' => { 'name' => 'number' },
+                    'required' => true,
+                  },
+                  {
+                    'kind' => 'property',
+                    'langs' => {},
+                    'name' => 'c',
+                    'type' => { 'name' => 'number' },
+                    'required' => false,
+                  },
+                ],
+              },
+              'required' => false,
+            },
+          ],
         }
       }
       let(:klass) do
@@ -153,48 +170,71 @@ RSpec.describe 'ImplementedClassWithDoc' do
 
     context 'with arguments size >= 4' do
       before {
-        api_json[class_name]['methods'] = {
-          'awesomeCalc' => {
-            'name' => 'awesomeCalc',
-            'type' => { 'name' => 'number' },
-            'required' => true,
-            'args' => {
-              'a' => {
-                'name' => 'a',
-                'type' => { 'name' => 'number' },
-                'required' => true,
-              },
-              'options' => {
-                'name' => 'options',
-                'type' => {
-                  'name' => 'Object',
-                  'properties' => {
-                    'b' => {
-                      'name' => 'b',
-                      'type' => { 'name' => 'number' },
-                      'required' => false,
-                    },
-                    'c' => {
-                      'name' => 'c',
-                      'type' => { 'name' => 'number' },
-                      'required' => false,
-                    },
-                    'd' => {
-                      'name' => 'd',
-                      'type' => { 'name' => 'number' },
-                      'required' => false,
-                    },
-                    'e' => {
-                      'name' => 'e',
-                      'type' => { 'name' => 'number' },
-                      'required' => false,
-                    },
-                  }
-                },
-                'required' => false,
-              },
+        api_json_hogehoge['members'] << {
+          'kind' => 'method',
+          'langs' => {},
+          'name' => 'awesomeCalc',
+          'type' => { 'name' => 'number' },
+          'required' => true,
+          'args' => [
+            {
+              'kind' => 'property',
+              'langs' => {},
+              'name' => 'a',
+              'type' => { 'name' => 'number' },
+              'required' => true,
             },
-          },
+            {
+              'kind' => 'property',
+              'langs' => {},
+              'name' => 'options',
+              'type' => {
+                'name' => 'Object',
+                'properties' => [
+                  {
+                    'kind' => 'property',
+                    'langs' => {
+                      'only' => ['js'],
+                    },
+                    'name' => 'b',
+                    'type' => { 'name' => 'number' },
+                    'required' => false,
+                  },
+                  {
+                    'kind' => 'property',
+                    'langs' => {
+                      'only' => ['python'],
+                    },
+                    'name' => 'bOnlyForPython',
+                    'type' => { 'name' => 'number' },
+                    'required' => true,
+                  },
+                  {
+                    'kind' => 'property',
+                    'langs' => {},
+                    'name' => 'c',
+                    'type' => { 'name' => 'number' },
+                    'required' => false,
+                  },
+                  {
+                    'kind' => 'property',
+                    'langs' => {},
+                    'name' => 'd',
+                    'type' => { 'name' => 'number' },
+                    'required' => false,
+                  },
+                  {
+                    'kind' => 'property',
+                    'langs' => {},
+                    'name' => 'e',
+                    'type' => { 'name' => 'number' },
+                    'required' => false,
+                  },
+                ],
+              },
+              'required' => false,
+            },
+          ],
         }
       }
       let(:klass) do
@@ -212,13 +252,13 @@ RSpec.describe 'ImplementedClassWithDoc' do
 
     context 'without arguments, with explicit block parameter' do
       before {
-        api_json[class_name]['methods'] = {
-          'awesomeCalc' => {
-            'name' => 'awesomeCalc',
-            'type' => { 'name' => 'Promise' },
-            'required' => true,
-            'args' => {},
-          },
+        api_json_hogehoge['members'] << {
+          'king' => 'method',
+          'langs' => {},
+          'name' => 'awesomeCalc',
+          'type' => { 'name' => 'number' },
+          'required' => true,
+          'args' => [],
         }
       }
       let(:klass) do
@@ -236,38 +276,57 @@ RSpec.describe 'ImplementedClassWithDoc' do
 
     context 'with arguments, with explicit block parameter' do
       before {
-        api_json[class_name]['methods'] = {
-          'awesomeCalc' => {
-            'name' => 'awesomeCalc',
-            'type' => { 'name' => 'number' },
-            'required' => true,
-            'args' => {
-              'a' => {
-                'name' => 'a',
-                'type' => { 'name' => 'number' },
-                'required' => true,
-              },
-              'options' => {
-                'name' => 'options',
-                'type' => {
-                  'name' => 'Object',
-                  'properties' => {
-                    'b' => {
-                      'name' => 'b',
-                      'type' => { 'name' => 'number' },
-                      'required' => false,
-                    },
-                    'c' => {
-                      'name' => 'c',
-                      'type' => { 'name' => 'number' },
-                      'required' => false,
-                    },
-                  }
-                },
-                'required' => false,
-              },
+        api_json_hogehoge['members'] << {
+          'kind' => 'method',
+          'langs' => {},
+          'name' => 'awesomeCalc',
+          'type' => { 'name' => 'number' },
+          'required' => true,
+          'args' => [
+            {
+              'kind' => 'property',
+              'langs' => {},
+              'name' => 'a',
+              'type' => { 'name' => 'number' },
+              'required' => true,
             },
-          },
+            {
+              'kind' => 'property',
+              'langs' => {},
+              'name' => 'options',
+              'type' => {
+                'name' => 'Object',
+                'properties' => [
+                  {
+                    'kind' => 'property',
+                    'langs' => {
+                      'only' => ['js'],
+                    },
+                    'name' => 'b',
+                    'type' => { 'name' => 'number' },
+                    'required' => false,
+                  },
+                  {
+                    'kind' => 'property',
+                    'langs' => {
+                      'only' => ['python'],
+                    },
+                    'name' => 'bOnlyForPython',
+                    'type' => { 'name' => 'number' },
+                    'required' => true,
+                  },
+                  {
+                    'kind' => 'property',
+                    'langs' => {},
+                    'name' => 'c',
+                    'type' => { 'name' => 'number' },
+                    'required' => false,
+                  },
+                ],
+              },
+              'required' => false,
+            },
+          ],
         }
       }
       let(:klass) do

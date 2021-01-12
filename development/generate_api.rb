@@ -43,7 +43,7 @@ if $0 == __FILE__
   inflector = Dry::Inflector.new
 
   ALL_TYPES.each do |class_name|
-    doc_json = api_json[class_name]
+    doc_json = api_json.find { |json| json['name'] == class_name }
     doc = doc_json ? ClassDoc.new(doc_json, root: api_json) : nil
     klass = Playwright::ChannelOwners.const_get(class_name) rescue nil
 

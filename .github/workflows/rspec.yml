@@ -13,7 +13,7 @@ jobs:
         ruby-version: 3.0
         bundler-cache: true
     - run: |
-        rm -rf spec/development
+        rm -rf spec/development spec/integration
         bundle exec rspec
 
   unit_test_development:
@@ -27,3 +27,28 @@ jobs:
         bundler-cache: true
     - run: bundle exec rspec spec/development
     - run: bundle exec ruby development/generate_api.rb
+
+  integration_test:
+    name: Integration test
+    runs-on: ubuntu-latest
+    container: circleci/ruby:2.7.2-node-browsers
+    steps:
+    # This Docker file changes sets USER to circleci instead of using the default user, so we need to update file permissions for this image to work on GH Actions.
+    # https://docs.github.com/actions/reference/virtual-environments-for-github-hosted-runners#docker-container-filesystem 参照
+    - name: Setup file system permissions
+      run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/_temp
+    - uses: actions/checkout@v2
+    # - name: setup playwright-cli via npm install
+    #   run: |
+    #     npm install playwright-cli
+    #     ./node_modules/.bin/playwright-cli install
+    - name: Setup playwright driver
+      run: |
+        wget -O driver.zip https://playwright.azureedge.net/builds/driver/next/playwright-$(cat development/CLI_VERSION)-linux.zip
+        unzip driver.zip && rm driver.zip
+        ./playwright.sh install
+    - run: gem install bundler:2.2.3 && bundle install
+    - run: bundle exec ruby development/generate_api.rb
+    - run: bundle exec rspec spec/integration --profile 10
+      env:
+        PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./playwright.sh
