@@ -11,16 +11,29 @@ module Playwright
       @mouse = Mouse.new(@channel)
       @touchscreen = Touchscreen.new(@channel)
 
+      @viewport_size = @initializer['viewportSize']
       @main_frame = ChannelOwners::Frame.from(@initializer['mainFrame'])
       @main_frame.send(:update_page_from_page, self)
       @frames = Set.new
       @frames << @main_frame
     end
 
-    attr_reader :accessibility, :keyboard, :mouse, :touchscreen, :main_frame
+    attr_reader \
+      :accessibility,
+      :keyboard,
+      :mouse,
+      :touchscreen,
+      :viewport_size,
+      :main_frame
 
     def goto(url, timeout: nil, waitUntil: nil, referer: nil)
       @main_frame.goto(url, timeout: timeout,  waitUntil: waitUntil, referer: referer)
+    end
+
+    def set_viewport_size(viewportSize)
+      @viewport_size = viewportSize
+      @channel.send_message_to_server('setViewportSize', { viewportSize: viewportSize })
+      nil
     end
 
     def screenshot(
