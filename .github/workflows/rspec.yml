@@ -46,5 +46,4 @@ jobs:
     - run: bundle exec ruby development/generate_api.rb
     - run: bundle exec rspec spec/integration --profile 10
       env:
-        DEBUG: 1
         PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./node_modules/.bin/playwright-cli
