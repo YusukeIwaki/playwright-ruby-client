@@ -21,4 +21,29 @@ RSpec.configure do |config|
   config.before(:context, type: :generate_api) do
     require './development/generate_api'
   end
+
+  config.define_derived_metadata(file_path: %r(/spec/integration/)) do |metadata|
+    metadata[:type] = :integration
+  end
+
+  config.around(:each, type: :integration) do |example|
+    Playwright.create(playwright_cli_executable_path: ENV['PLAYWRIGHT_CLI_EXECUTABLE_PATH']) do |playwright|
+      playwright.chromium.launch do |browser|
+        @playwright_browser = browser
+        example.run
+      end
+    end
+  end
+
+  # Every integration test case should spend less than 15sec.
+  config.around(:each, type: :integration) do |example|
+    Timeout.timeout(15) { example.run }
+  end
+
+  module IntegrationTestCaseMethods
+    def browser
+      @playwright_browser or raise NoMethodError.new('undefined method "browser"')
+    end
+  end
+  config.include IntegrationTestCaseMethods, type: :integration
 end
