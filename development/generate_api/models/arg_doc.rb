@@ -10,6 +10,8 @@ class ArgDoc < Doc
   end
 
   def properties
-    @json['type']['properties']&.map { |prop_name, json| ArgDoc.new(json) }
+    @json['type']['properties']&.
+      map { |json| ArgDoc.new(json) }.
+      reject { |doc| doc.langs.only_python? }
   end
 end

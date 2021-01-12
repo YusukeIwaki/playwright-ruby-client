@@ -7,6 +7,8 @@ class MethodDoc < Doc
   end
 
   def arg_docs
-    @json['args'].map { |name, json| ArgDoc.new(json) }
+    @json['args'].
+      map { |json| ArgDoc.new(json) }.
+      reject { |doc| doc.langs.only_python? }
   end
 end

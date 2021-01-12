@@ -8,13 +8,14 @@ A Ruby client for Playwright driver.
 
 At this point, playwright-ruby-client doesn't include the downloader of playwright-cli, so **we have to install [playwright-cli](https://github.com/microsoft/playwright-cli) in advance**.
 
-via npm: `npm install playwright-cli` (then, specify `./node_modules/.bin/playwright-cli` for playwright_cli_executable_path)
+```sh
+npm install playwright-cli
+./node_modules/.bin/playwright-cli install
+```
 
-or
+and then, set `playwright_cli_executable_path: ./node_modules/.bin/playwright-cli` at `Playwright.create`.
 
-direct download: `wget https://playwright.azureedge.net/builds/cli/next/playwright-cli-0.180.0-next.1608746109749-cbc13bd-mac.zip`
-
-(`-mac.zip` should be replaced for another OS)
+Instead of npm install, you can also directly download playwright-cli from playwright.azureedge.net/builds/. The URL can be detected from [here](https://github.com/microsoft/playwright-python/blob/79f6ce0a6a69c480573372706df84af5ef99c4a4/setup.py#L56-L61)
 
 ### Capture a site
 

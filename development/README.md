@@ -4,7 +4,7 @@
 
 ```
 playwright-cli print-api-json | jq > development/api.json
-playwright-cli --version > development/CLI_VERSION
+playwright-cli --version | cut -d' ' -f2 > development/CLI_VERSION
 ```
 
 ## Generate API codes

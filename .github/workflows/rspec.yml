@@ -38,12 +38,17 @@ jobs:
     - name: Setup file system permissions
       run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/_temp
     - uses: actions/checkout@v2
-    - name: setup playwright-cli
+    # - name: setup playwright-cli via npm install
+    #   run: |
+    #     npm install playwright-cli
+    #     ./node_modules/.bin/playwright-cli install
+    - name: Setup playwright driver
       run: |
-        npm install playwright-cli
-        ./node_modules/.bin/playwright-cli install
+        wget -O driver.zip https://playwright.azureedge.net/builds/driver/next/playwright-$(cat development/CLI_VERSION)-linux.zip
+        unzip driver.zip && rm driver.zip
+        ./playwright.sh install
     - run: gem install bundler:2.2.3 && bundle install
     - run: bundle exec ruby development/generate_api.rb
     - run: bundle exec rspec spec/integration --profile 10
       env:
-        PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./node_modules/.bin/playwright-cli
+        PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./playwright.sh
