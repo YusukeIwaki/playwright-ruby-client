@@ -35,15 +35,59 @@ RSpec.configure do |config|
     end
   end
 
-  # Every integration test case should spend less than 15sec.
-  config.around(:each, type: :integration) do |example|
-    Timeout.timeout(15) { example.run }
-  end
-
   module IntegrationTestCaseMethods
     def browser
       @playwright_browser or raise NoMethodError.new('undefined method "browser"')
     end
   end
   config.include IntegrationTestCaseMethods, type: :integration
+
+  module SinatraRouting
+    #
+    # describe 'something awesome' do
+    #   sinatra do
+    #     get('/awesome') { 'Awesome!' }
+    #   end
+    #
+    #   it 'can connect to /awesome' do
+    #     url = "#{server_prefix}/awesome" # => http://localhost:4567/awesome
+    #
+    def sinatra(port: 4567, &block)
+      require 'net/http'
+      require 'sinatra/base'
+      require 'timeout'
+
+      sinatra_app = Sinatra.new(&block)
+      sinatra_app.set(:public_folder, File.join(__dir__, 'assets'))
+
+      let(:sinatra) { sinatra_app }
+      let(:server_prefix) { "http://localhost:#{port}" }
+      around do |example|
+        sinatra_app.get('/_ping') { '_pong' }
+
+        # Start server and wait for server ready.
+        Thread.new { sinatra_app.run!(port: port) }
+        Timeout.timeout(3) do
+          loop do
+            Net::HTTP.get(URI("#{server_prefix}/_ping"))
+            break
+          rescue Errno::ECONNREFUSED
+            sleep 0.1
+          end
+        end
+
+        begin
+          example.run
+        ensure
+          sinatra.quit!
+        end
+      end
+    end
+  end
+  RSpec::Core::ExampleGroup.extend(SinatraRouting)
+
+  # Every integration test case should spend less than 15sec.
+  config.around(:each, type: :integration) do |example|
+    Timeout.timeout(15) { example.run }
+  end
 end
