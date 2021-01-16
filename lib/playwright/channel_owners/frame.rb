@@ -27,7 +27,21 @@ module Playwright
       ChannelOwners::Response.from(resp)
     end
 
-    private
+    def evaluate(pageFunction, arg: nil)
+      if JavaScript.function?(pageFunction)
+        JavaScript::Function.new(pageFunction, arg).evaluate(@channel)
+      else
+        JavaScript::Expression.new(pageFunction).evaluate(@channel)
+      end
+    end
+
+    def evaluate_handle(pageFunction, arg: nil)
+      if JavaScript.function?(pageFunction)
+        JavaScript::Function.new(pageFunction, arg).evaluate_handle(@channel)
+      else
+        JavaScript::Expression.new(pageFunction).evaluate_handle(@channel)
+      end
+    end
 
     # @param page [Page]
     # @note This method should be used internally. Accessed via .send method, so keep private!

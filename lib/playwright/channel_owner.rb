@@ -45,6 +45,15 @@ module Playwright
       @objects.clear
     end
 
+    # Suppress long long inspect log and avoid RSpec from hanging up...
+    def inspect
+      to_s
+    end
+
+    def to_s
+      "#<#{@guid}>"
+    end
+
     private
 
     def after_initialize

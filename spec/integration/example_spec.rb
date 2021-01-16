@@ -32,4 +32,9 @@ RSpec.describe 'example' do
     #   puts("==> #{title}")
     # end
   end
+
+  it 'should evaluate expression' do
+    page = browser.new_page
+    expect(page.evaluate('2 + 3')).to eq(5)
+  end
 end

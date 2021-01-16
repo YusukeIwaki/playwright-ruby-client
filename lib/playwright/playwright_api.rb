@@ -54,6 +54,10 @@ module Playwright
       @channel_owner = channel_owner
     end
 
+    def ==(other)
+      @channel_owner.to_s == other.instance_variable_get(:'@channel_owner').to_s
+    end
+
     # @param block [Proc]
     def wrap_block_call(block)
       -> (*args) {

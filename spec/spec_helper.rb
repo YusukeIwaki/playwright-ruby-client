@@ -87,7 +87,7 @@ RSpec.configure do |config|
   RSpec::Core::ExampleGroup.extend(SinatraRouting)
 
   # Every integration test case should spend less than 15sec.
-  config.around(:each, type: :integration) do |example|
-    Timeout.timeout(15) { example.run }
-  end
+  # config.around(:each, type: :integration) do |example|
+  #   Timeout.timeout(15) { example.run }
+  # end
 end

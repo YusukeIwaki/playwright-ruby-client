@@ -1,9 +1,11 @@
 module Playwright
   # @ref https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_browser.py
   define_channel_owner :Browser do
+    include Utils::Errors::SafeCloseError
+
     def after_initialize
       @contexts = Set.new
-      @channel.on('close', method(:handle_close))
+      @channel.on('close', method(:on_close))
     end
 
     def contexts
@@ -57,24 +59,15 @@ module Playwright
       @initializer['version']
     end
 
-    private
-
-    def handle_close(_ = {})
+    private def on_close(_ = {})
       @connected = false
       emit(Events::Browser::Disconnected)
       @closed_or_closing = false
     end
 
-    # @param err [Exception]
-    def safe_close_error?(err)
-      return true if err.is_a?(Transport::AlreadyDisconnectedError)
-
-      [
-        'Browser has been closed',
-        'Target page, context or browser has been closed',
-      ].any? do |closed_message|
-        err.message.end_with?(closed_message)
-      end
+    # called from BrowserContext#on_close with send(:remove_context), so keep private.
+    private def remove_context(context)
+      @contexts.delete(context)
     end
   end
 end

@@ -33,6 +33,7 @@ require 'dry/inflector'
 require 'erb'
 require 'json'
 require 'playwright/event_emitter'
+require 'playwright/utils'
 require 'playwright/channel_owner'
 
 Dir[File.join(__dir__, 'generate_api', 'models', '*.rb')].each { |f| require f }
