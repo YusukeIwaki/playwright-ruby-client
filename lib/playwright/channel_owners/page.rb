@@ -8,7 +8,7 @@ module Playwright
 
     def after_initialize
       @browser_context = @parent
-      # @timeout_settings = ...
+      @timeout_settings = TimeoutSettings.new(@browser_context.send(:_timeout_settings))
       @accessibility = Accessibility.new(@channel)
       @keyboard = Keyboard.new(@channel)
       @mouse = Mouse.new(@channel)
@@ -104,10 +104,81 @@ module Playwright
       @closed
     end
 
+    class CrashedError < StandardError
+      def initialize
+        super('Page crashed')
+      end
+    end
+
+    class AlreadyClosedError < StandardError
+      def initialize
+        super('Page closed')
+      end
+    end
+
+    def wait_for_event(event, optionsOrPredicate: nil, &block)
+      predicate, timeout =
+        if optionsOrPredicate.is_a?(Proc)
+          [optionsOrPredicate, nil]
+        else
+          [optionsOrPredicate[:predicate], optionsOrPredicate[:timeout]]
+        end
+      timeout ||= @timeout_settings.timeout
+
+      wait_helper = WaitHelper.new
+      wait_helper.reject_on_timeout(timeout, "Timeout while waiting for event \"#{event}\"")
+
+      unless event == Events::Page::Crash
+        wait_helper.reject_on_event(self, Events::Page::Crash, CrashedError.new)
+      end
+
+      unless event == Events::Page::Close
+        wait_helper.reject_on_event(self, Events::Page::Close, AlreadyClosedError.new)
+      end
+
+      wait_helper.wait_for_event(self, event, predicate: predicate)
+
+      block&.call
+
+      wait_helper.promise.value!
+    end
+
+    def wait_for_request(urlOrPredicate, timeout: nil)
+      predicate =
+        case urlOrPredicate
+        when String
+          -> (req){ req.url == urlOrPredicate }
+        when Regexp
+          -> (req){ urlOrPredicate.match?(req.url) }
+        when Proc
+          urlOrPredicate
+        else
+          -> (_) { true }
+        end
+
+      wait_for_event(Events::Page::Request, optionsOrPredicate: { predicate: predicate, timeout: timeout})
+    end
+
+    def wait_for_response(urlOrPredicate, timeout: nil)
+      predicate =
+        case urlOrPredicate
+        when String
+          -> (res){ res.url == urlOrPredicate }
+        when Regexp
+          -> (res){ urlOrPredicate.match?(res.url) }
+        when Proc
+          urlOrPredicate
+        else
+          -> (_) { true }
+        end
+
+      wait_for_event(Events::Page::Response, optionsOrPredicate: { predicate: predicate, timeout: timeout})
+    end
+
     # called from BrowserContext#on_page with send(:update_browser_context, page), so keep private.
     private def update_browser_context(context)
       @browser_context = context
-      # @timeout_settings = ...
+      @timeout_settings = TimeoutSettings.new(context.send(:_timeout_settings))
     end
   end
 end

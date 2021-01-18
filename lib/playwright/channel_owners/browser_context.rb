@@ -47,5 +47,10 @@ module Playwright
     private def remove_page(page)
       @pages.delete(page)
     end
+
+    # called from Page with send(:_timeout_settings), so keep private.
+    private def _timeout_settings
+      @timeout_settings
+    end
   end
 end

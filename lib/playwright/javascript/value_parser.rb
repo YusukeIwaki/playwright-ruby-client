@@ -16,11 +16,9 @@ module Playwright
         end
       end
 
-      private
-
       # ref: https://github.com/microsoft/playwright/blob/b45905ae3f1a066a8ecb358035ce745ddd21cf3a/src/protocol/serializers.ts#L42
       # ref: https://github.com/microsoft/playwright-python/blob/25a99d53e00e35365cf5113b9525272628c0e65f/playwright/_impl/_js_handle.py#L140
-      def parse_hash(hash)
+      private def parse_hash(hash)
         %w(n s b).each do |key|
           return hash[key] if hash.key?(key)
         end

@@ -11,11 +11,9 @@ module Playwright
         { value: serialize_value(@value), handles: @handles }
       end
 
-      private
-
       # ref: https://github.com/microsoft/playwright/blob/b45905ae3f1a066a8ecb358035ce745ddd21cf3a/src/protocol/serializers.ts#L84
       # ref: https://github.com/microsoft/playwright-python/blob/25a99d53e00e35365cf5113b9525272628c0e65f/playwright/_impl/_js_handle.py#L99
-      def serialize_value(value)
+      private def serialize_value(value)
         case value
         when JSHandle
           index = @handles.count

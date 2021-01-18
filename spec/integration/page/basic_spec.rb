@@ -21,28 +21,23 @@ RSpec.describe Playwright::Page do
     expect { page.close }.to change { page.closed? }.from(false).to(true)
   end
 
-#   it('should terminate network waiters', async ({context, server}) => {
-#     const newPage = await context.newPage();
-#     const results = await Promise.all([
-#       newPage.waitForRequest(server.EMPTY_PAGE).catch(e => e),
-#       newPage.waitForResponse(server.EMPTY_PAGE).catch(e => e),
-#       newPage.close()
-#     ]);
-#     for (let i = 0; i < 2; i++) {
-#       const message = results[i].message;
-#       expect(message).toContain('Page closed');
-#       expect(message).not.toContain('Timeout');
-#     }
-#   });
+  it 'should terminate network waiters' do
+    page = browser.new_page
+    request_promise = Concurrent::Promises.future { page.wait_for_request('http://example.com/') }
+    response_promise = Concurrent::Promises.future { page.wait_for_response('http://example.com/') }
+    page.close
+    expect { request_promise.value! }.to raise_error(/Page closed/)
+    expect { response_promise.value! }.to raise_error(/Page closed/)
+  end
 
-#   it('should be callable twice', async ({context}) => {
-#     const newPage = await context.newPage();
-#     await Promise.all([
-#       newPage.close(),
-#       newPage.close(),
-#     ]);
-#     await newPage.close();
-#   });
+  it 'should be callable twice' do
+    page = browser.new_page
+    expect {
+      page.close
+      page.close
+      page.close
+    }.not_to raise_error
+  end
 
 #   it('should fire load when expected', async ({page, server}) => {
 #     await Promise.all([
