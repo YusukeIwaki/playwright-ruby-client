@@ -59,7 +59,7 @@ module Playwright
     private def fulfill(*args)
       cleanup
       unless @promise.resolved?
-        @promise.fulfill(*args)
+        @promise.fulfill(args.first)
       end
     end
 

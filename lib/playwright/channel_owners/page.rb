@@ -21,6 +21,7 @@ module Playwright
       @frames = Set.new
       @frames << @main_frame
 
+      @channel.on('load', ->(_) { emit(Events::Page::Load) })
       @channel.once('close', method(:on_close))
     end
 
@@ -118,10 +119,13 @@ module Playwright
 
     def wait_for_event(event, optionsOrPredicate: nil, &block)
       predicate, timeout =
-        if optionsOrPredicate.is_a?(Proc)
+        case optionsOrPredicate
+        when Proc
           [optionsOrPredicate, nil]
-        else
+        when Hash
           [optionsOrPredicate[:predicate], optionsOrPredicate[:timeout]]
+        else
+          [nil, nil]
         end
       timeout ||= @timeout_settings.timeout
 

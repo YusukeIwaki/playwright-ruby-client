@@ -6,6 +6,10 @@ module Playwright
       channel.object
     end
 
+    def self.from_nullable(channel)
+      channel&.object
+    end
+
     # @param parent [Playwright::ChannelOwner|Playwright::Connection]
     # @param type [String]
     # @param guid [String]

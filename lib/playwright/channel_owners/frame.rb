@@ -24,7 +24,7 @@ module Playwright
         referer: referer
       }.compact
       resp = @channel.send_message_to_server('goto', params)
-      ChannelOwners::Response.from(resp)
+      ChannelOwners::Response.from_nullable(resp)
     end
 
     def evaluate(pageFunction, arg: nil)

@@ -39,12 +39,12 @@ RSpec.describe Playwright::Page do
     }.not_to raise_error
   end
 
-#   it('should fire load when expected', async ({page, server}) => {
-#     await Promise.all([
-#       page.goto('about:blank'),
-#       page.waitForEvent('load'),
-#     ]);
-#   });
+  it 'should fire load when expected' do
+    page = browser.new_page
+    promise = Concurrent::Promises.future { page.wait_for_event('load') }
+    page.goto('about:blank')
+    expect(promise).to be_fulfilled
+  end
 
 #   it('async stacks should work', async ({page, server}) => {
 #     server.setRoute('/empty.html', (req, res) => {

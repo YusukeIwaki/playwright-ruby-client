@@ -60,6 +60,8 @@ module Playwright
 
     # @param block [Proc]
     def wrap_block_call(block)
+      return nil unless block.is_a?(Proc)
+
       -> (*args) {
         wrapped_args = args.map { |arg| wrap_channel_owner(arg) }
         block.call(*wrapped_args)
