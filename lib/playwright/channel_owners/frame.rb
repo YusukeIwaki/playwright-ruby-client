@@ -43,15 +43,55 @@ module Playwright
       end
     end
 
+    def type_text(
+      selector,
+      text,
+      delay: nil,
+      noWaitAfter: nil,
+      timeout: nil)
+
+      params = {
+        selector: selector,
+        text: text,
+        delay: delay,
+        noWaitAfter: noWaitAfter,
+        timeout: timeout,
+      }.compact
+
+      @channel.send_message_to_server('type', params)
+    end
+
+    def press(
+      selector,
+      key,
+      delay: nil,
+      noWaitAfter: nil,
+      timeout: nil)
+
+      params = {
+        selector: selector,
+        key: key,
+        delay: delay,
+        noWaitAfter: noWaitAfter,
+        timeout: timeout,
+      }.compact
+
+      @channel.send_message_to_server('press', params)
+    end
+
+    def title
+      @channel.send_message_to_server('title')
+    end
+
     # @param page [Page]
     # @note This method should be used internally. Accessed via .send method, so keep private!
-    def update_page_from_page(page)
+    private def update_page_from_page(page)
       @page = page
     end
 
     # @param child [Frame]
     # @note This method should be used internally. Accessed via .send method, so keep private!
-    def append_child_frame_from_child(frame)
+    private def append_child_frame_from_child(frame)
       @child_frames << frame
     end
   end

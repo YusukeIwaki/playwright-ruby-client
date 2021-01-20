@@ -92,6 +92,26 @@ module Playwright
       @main_frame.title
     end
 
+    def type_text(
+      selector,
+      text,
+      delay: nil,
+      noWaitAfter: nil,
+      timeout: nil)
+
+      @main_frame.type_text(selector, text, delay: delay, noWaitAfter: noWaitAfter, timeout: timeout)
+    end
+
+    def press(
+      selector,
+      key,
+      delay: nil,
+      noWaitAfter: nil,
+      timeout: nil)
+
+      @main_frame.press(selector, key, delay: delay, noWaitAfter: noWaitAfter, timeout: timeout)
+    end
+
     def close(runBeforeUnload: nil)
       options = { runBeforeUnload: runBeforeUnload }.compact
       @channel.send_message_to_server('close', options)
