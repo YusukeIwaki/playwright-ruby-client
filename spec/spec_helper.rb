@@ -86,6 +86,38 @@ RSpec.configure do |config|
   end
   RSpec::Core::ExampleGroup.extend(SinatraRouting)
 
+  #   it 'can connect to /awesome', sinatra: true do
+  #     url = "#{server_prefix}/awesome" # => http://localhost:4567/awesome
+  #
+  config.include(Module.new { attr_reader :server_prefix }, sinatra: true)
+  config.around(sinatra: true) do |example|
+    require 'net/http'
+    require 'sinatra/base'
+    require 'timeout'
+
+    sinatra_app = Sinatra.new
+    sinatra_app.set(:public_folder, File.join(__dir__, 'assets'))
+    @server_prefix = "http://localhost:4567"
+    sinatra_app.get('/_ping') { '_pong' }
+
+    # Start server and wait for server ready.
+    Thread.new { sinatra_app.run!(port: 4567) }
+    Timeout.timeout(3) do
+      loop do
+        Net::HTTP.get(URI("#{server_prefix}/_ping"))
+        break
+      rescue Errno::ECONNREFUSED
+        sleep 0.1
+      end
+    end
+
+    begin
+      example.run
+    ensure
+      sinatra_app.quit!
+    end
+  end
+
   # Every integration test case should spend less than 15sec.
   # config.around(:each, type: :integration) do |example|
   #   Timeout.timeout(15) { example.run }

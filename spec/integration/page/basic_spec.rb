@@ -177,11 +177,12 @@ RSpec.describe Playwright::Page do
 #       expect(engine.startsWith('Version/')).toBe(true);
 #   });
 
-#   it('page.press should work', async ({page, server}) => {
-#     await page.goto(server.PREFIX + '/input/textarea.html');
-#     await page.press('textarea', 'a');
-#     expect(await page.evaluate(() => document.querySelector('textarea').value)).toBe('a');
-#   });
+  it 'page.press should work', sinatra: true do
+    page = browser.new_page
+    page.goto("#{server_prefix}/input/textarea.html")
+    page.press('textarea', 'a')
+    expect(page.evaluate("() => document.querySelector('textarea').value")).to eq('a')
+  end
 
 #   it('page.press should work for Enter', async ({page, server}) => {
 #     await page.setContent(`<input onkeypress="console.log('press')"></input>`);
