@@ -87,11 +87,14 @@ class ImplementedClassWithDoc
       skip_list = (@doc.property_docs + @doc.method_docs).map do |doc|
         MethodName.new(@inflector, doc.name).rubyish_name
       end
-      (@klass.public_instance_methods - @klass.superclass.public_instance_methods - Playwright::EventEmitter.public_instance_methods).each do |method_sym|
+      (@klass.public_instance_methods - (@klass.superclass.public_instance_methods - Playwright::EventListenerInterface.public_instance_methods)).each do |method_sym|
         next if skip_list.include?(method_sym.to_s)
 
         method = @klass.public_instance_method(method_sym)
         data << '' # insert blank line before definition.
+        if Playwright::EventListenerInterface.public_instance_methods.include?(method_sym)
+          data << '    # -- inherited from EventEmitter --'
+        end
         ImplementedMethodWithoutDoc.new(method, @inflector).lines.each(&data)
       end
     end

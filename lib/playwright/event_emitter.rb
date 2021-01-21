@@ -17,6 +17,19 @@ module Playwright
     end
   end
 
+  module EventListenerInterface
+    def on(event, callback)
+      raise NotImplementedError.new('NOT IMPLEMENTED')
+    end
+
+    def off(event, callback)
+      raise NotImplementedError.new('NOT IMPLEMENTED')
+    end
+
+    def once(event, callback)
+      raise NotImplementedError.new('NOT IMPLEMENTED')
+    end
+  end
 
   # A subset of Events/EventEmitter in Node.js
   module EventEmitter

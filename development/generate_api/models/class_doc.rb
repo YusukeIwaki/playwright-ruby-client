@@ -6,11 +6,6 @@ class ClassDoc < Doc
     @root = root
   end
 
-  # @returns [true|false]
-  def include_event_emitter?
-    @json['extends'] == 'EventEmitter'
-  end
-
   # @returns [ClassDoc|nil]
   def super_class_doc
     json = @root.find { |json| json['name'] == @json['extends'] }

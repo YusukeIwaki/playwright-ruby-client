@@ -39,7 +39,7 @@ class UnmplementedMethodWithDoc
   def method_alias_lines
     Enumerator.new do |data|
       if method_name.rubyish_name.start_with?('set_')
-        if method_args.for_method_definition.size == 1
+        if method_args.setter_parameter?
           data << "    alias_method :#{method_name.rubyish_name[4..-1]}=, :#{method_name.rubyish_name}"
         end
       end

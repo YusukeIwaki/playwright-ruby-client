@@ -43,6 +43,22 @@ module Playwright
       end
     end
 
+    def content
+      @channel.send_message_to_server('content')
+    end
+
+    def set_content(html, timeout: nil, waitUntil: nil)
+      params = {
+        html: html,
+        timeout: timeout,
+        waitUntil: waitUntil,
+      }.compact
+
+      @channel.send_message_to_server('setContent', params)
+
+      nil
+    end
+
     def type_text(
       selector,
       text,

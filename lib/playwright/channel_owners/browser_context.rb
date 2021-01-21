@@ -7,7 +7,7 @@ module Playwright
     def after_initialize
       @pages = Set.new
 
-      @channel.once('close', method(:on_close))
+      @channel.once('close', ->(_) { on_close })
       @channel.on('page', ->(hash) { on_page(ChannelOwners::Page.from(hash['page']) )})
     end
 
@@ -28,7 +28,7 @@ module Playwright
       ChannelOwners::Page.from(resp)
     end
 
-    private def on_close(_ = {})
+    private def on_close
       @closed_or_closing = true
       @browser&.send(:remove_context, self)
       emit(Events::BrowserContext::Close)

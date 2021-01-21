@@ -89,6 +89,10 @@ class DocumentedMethodArgs
     @args.empty? && !@with_block
   end
 
+  def setter_parameter?
+    @args.count { |arg| arg.is_a?(RequiredArg) } == 1
+  end
+
   # ['var1', 'var2', 'var3: nil', 'var4: nil']
   #
   # @returns [Arrau<String>]

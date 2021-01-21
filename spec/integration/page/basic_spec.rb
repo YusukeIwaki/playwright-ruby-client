@@ -2,10 +2,11 @@ require 'spec_helper'
 
 RSpec.describe Playwright::Page do
   it 'should reject all promises when page is closed' do
-    page = browser.new_page
-    never_resolved_promise = Concurrent::Promises.future { page.evaluate('() => new Promise(r => {})') }
-    page.close
-    expect { never_resolved_promise.value! }.to raise_error(/Protocol error/)
+    with_page do |page|
+      never_resolved_promise = Concurrent::Promises.future { page.evaluate('() => new Promise(r => {})') }
+      page.close
+      expect { never_resolved_promise.value! }.to raise_error(/Protocol error/)
+    end
   end
 
   it 'should not be visible in context.pages' do
@@ -17,33 +18,37 @@ RSpec.describe Playwright::Page do
   end
 
   it 'should set the page close state' do
-    page = browser.new_page
-    expect { page.close }.to change { page.closed? }.from(false).to(true)
+    with_page do |page|
+      expect { page.close }.to change { page.closed? }.from(false).to(true)
+    end
   end
 
   it 'should terminate network waiters' do
-    page = browser.new_page
-    request_promise = Concurrent::Promises.future { page.wait_for_request('http://example.com/') }
-    response_promise = Concurrent::Promises.future { page.wait_for_response('http://example.com/') }
-    page.close
-    expect { request_promise.value! }.to raise_error(/Page closed/)
-    expect { response_promise.value! }.to raise_error(/Page closed/)
+    with_page do |page|
+      request_promise = Concurrent::Promises.future { page.wait_for_request('http://example.com/') }
+      response_promise = Concurrent::Promises.future { page.wait_for_response('http://example.com/') }
+      page.close
+      expect { request_promise.value! }.to raise_error(/Page closed/)
+      expect { response_promise.value! }.to raise_error(/Page closed/)
+    end
   end
 
   it 'should be callable twice' do
-    page = browser.new_page
-    expect {
-      page.close
-      page.close
-      page.close
-    }.not_to raise_error
+    with_page do |page|
+      expect {
+        page.close
+        page.close
+        page.close
+      }.not_to raise_error
+    end
   end
 
   it 'should fire load when expected' do
-    page = browser.new_page
-    promise = Concurrent::Promises.future { page.wait_for_event('load') }
-    page.goto('about:blank')
-    expect(promise).to be_fulfilled
+    with_page do |page|
+      promise = Concurrent::Promises.future { page.wait_for_event('load') }
+      page.goto('about:blank')
+      expect(promise).to be_fulfilled
+    end
   end
 
 #   it('async stacks should work', async ({page, server}) => {
@@ -178,19 +183,24 @@ RSpec.describe Playwright::Page do
 #   });
 
   it 'page.press should work', sinatra: true do
-    page = browser.new_page
-    page.goto("#{server_prefix}/input/textarea.html")
-    page.press('textarea', 'a')
-    expect(page.evaluate("() => document.querySelector('textarea').value")).to eq('a')
+    with_page do |page|
+      page.goto("#{server_prefix}/input/textarea.html")
+      page.press('textarea', 'a')
+      expect(page.evaluate("() => document.querySelector('textarea').value")).to eq('a')
+    end
   end
 
-#   it('page.press should work for Enter', async ({page, server}) => {
-#     await page.setContent(`<input onkeypress="console.log('press')"></input>`);
-#     const messages = [];
-#     page.on('console', message => messages.push(message));
-#     await page.press('input', 'Enter');
-#     expect(messages[0].text()).toBe('press');
-#   });
+  it 'page.press should work for Enter' do
+    page = browser.new_page
+    page.content = <<~HTML
+    <input onkeypress="console.log('press')"></input>
+    HTML
+    messages = []
+    page.on('console', ->(message) { messages << message })
+    page.press('input', 'Enter')
+    expect(messages.count).to eq(1)
+    expect(messages.first.text).to eq('press')
+  end
 
 #   it('frame.press should work', async ({page, server}) => {
 #     await page.setContent(`<iframe name=inner src="${server.PREFIX}/input/textarea.html"></iframe>`);

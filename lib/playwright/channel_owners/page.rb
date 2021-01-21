@@ -21,8 +21,12 @@ module Playwright
       @frames = Set.new
       @frames << @main_frame
 
+      @channel.once('close', ->(_) { on_close })
+      @channel.on('console', ->(params) {
+        console_message = ChannelOwners::ConsoleMessage.from(params['message'])
+        emit(Events::Page::Console, console_message)
+      })
       @channel.on('load', ->(_) { emit(Events::Page::Load) })
-      @channel.once('close', method(:on_close))
     end
 
     attr_reader \
@@ -33,7 +37,7 @@ module Playwright
       :viewport_size,
       :main_frame
 
-    private def on_close(_ = {})
+    private def on_close
       @closed = true
       @browser_context.send(:remove_page, self)
       emit(Events::Page::Close)
@@ -49,6 +53,14 @@ module Playwright
 
     def evaluate_handle(pageFunction, arg: nil)
       @main_frame.evaluate_handle(pageFunction, arg: arg)
+    end
+
+    def content
+      @main_frame.content
+    end
+
+    def set_content(html, timeout: nil, waitUntil: nil)
+      @main_frame.set_content(html, timeout: timeout, waitUntil: waitUntil)
     end
 
     def goto(url, timeout: nil, waitUntil: nil, referer: nil)
