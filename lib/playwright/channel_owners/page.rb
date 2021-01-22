@@ -26,6 +26,12 @@ module Playwright
         console_message = ChannelOwners::ConsoleMessage.from(params['message'])
         emit(Events::Page::Console, console_message)
       })
+      @channel.on('frameAttached', ->(params) {
+        on_frame_attached(ChannelOwners::Frame.from(params['frame']))
+      })
+      @channel.on('frameDetached', ->(params) {
+        on_frame_detached(ChannelOwners::Frame.from(params['frame']))
+      })
       @channel.on('load', ->(_) { emit(Events::Page::Load) })
     end
 
@@ -37,6 +43,18 @@ module Playwright
       :viewport_size,
       :main_frame
 
+    private def on_frame_attached(frame)
+      frame.send(:update_page_from_page, self)
+      @frames << frame
+      emit(Events::Page::FrameAttached, frame)
+    end
+
+    private def on_frame_detached(frame)
+      @frames.delete(frame)
+      frame.detached = true
+      emit(Events::Page::FrameDetached, frame)
+    end
+
     private def on_close
       @closed = true
       @browser_context.send(:remove_page, self)
@@ -45,6 +63,27 @@ module Playwright
 
     def context
       @browser_context
+    end
+
+    def frame(frameSelector)
+      name, url =
+        if frameSelector.is_a?(Hash)
+          [frameSelector[:name], frameSelector[:url]]
+        else
+          [frameSelector, nil]
+        end
+
+      if name
+        @frames.find { |f| f.name == name }
+      elsif url
+        raise NotImplementedError.new('Page#frame with url is not implemented yet')
+      else
+        raise ArgumentError.new('Either name or url matcher should be specified')
+      end
+    end
+
+    def frames
+      @frames.to_a
     end
 
     def evaluate(pageFunction, arg: nil)

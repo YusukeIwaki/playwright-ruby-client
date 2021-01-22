@@ -2,9 +2,8 @@ module Playwright
   # @ref https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_frame.py
   define_channel_owner :Frame do
     def after_initialize
-      @event_emitter = Object.new.extend(EventEmitter)
       if @initializer['parentFrame']
-        @parent_frame = self.from(@initializer['parentFrame'])
+        @parent_frame = ChannelOwners::Frame.from(@initializer['parentFrame'])
         @parent_frame.send(:append_child_frame_from_child, self)
       end
       @name = @initializer['name']
@@ -12,9 +11,36 @@ module Playwright
       @detached = false
       @child_frames = Set.new
       @load_states = Set.new(@initializer['loadStates'])
+      @event_emitter = Object.new.extend(EventEmitter)
+
+      @channel.on('loadstate', ->(params) {
+        on_load_state(add: params['add'], remove: params['remove'])
+      })
+      @channel.on('navigated', method(:on_frame_navigated))
     end
 
     attr_reader :page
+    attr_writer :detached
+
+    private def on_load_state(add:, remove:)
+      if add
+        @load_states << add
+        @event_emitter.emit('loadstate', add)
+      end
+      if remove
+        @load_states.delete(remove)
+      end
+    end
+
+    private def on_frame_navigated(event)
+      @url = event['url']
+      @name = event['name']
+      @event_emitter.emit('navigated', event)
+
+      unless event['error']
+        @page&.emit('framenavigated', self)
+      end
+    end
 
     def goto(url, timeout: nil, waitUntil: nil, referer: nil)
       params = {
@@ -93,6 +119,10 @@ module Playwright
       }.compact
 
       @channel.send_message_to_server('press', params)
+    end
+
+    def name
+      @name || ''
     end
 
     def title

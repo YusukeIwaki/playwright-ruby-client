@@ -191,23 +191,28 @@ RSpec.describe Playwright::Page do
   end
 
   it 'page.press should work for Enter' do
-    page = browser.new_page
-    page.content = <<~HTML
-    <input onkeypress="console.log('press')"></input>
-    HTML
-    messages = []
-    page.on('console', ->(message) { messages << message })
-    page.press('input', 'Enter')
-    expect(messages.count).to eq(1)
-    expect(messages.first.text).to eq('press')
+    with_page do |page|
+      page.content = <<~HTML
+      <input onkeypress="console.log('press')"></input>
+      HTML
+      messages = []
+      page.on('console', ->(message) { messages << message })
+      page.press('input', 'Enter')
+      expect(messages.count).to eq(1)
+      expect(messages.first.text).to eq('press')
+    end
   end
 
-#   it('frame.press should work', async ({page, server}) => {
-#     await page.setContent(`<iframe name=inner src="${server.PREFIX}/input/textarea.html"></iframe>`);
-#     const frame = page.frame('inner');
-#     await frame.press('textarea', 'a');
-#     expect(await frame.evaluate(() => document.querySelector('textarea').value)).toBe('a');
-#   });
+  it 'frame.press should work', sinatra: true do
+    with_page do |page|
+      page.content = <<~HTML
+      <iframe name=inner src="#{server_prefix}/input/textarea.html"></iframe>
+      HTML
+      frame = page.frame('inner')
+      frame.press('textarea', 'a')
+      expect(frame.evaluate("() => document.querySelector('textarea').value")).to eq('a')
+    end
+  end
 
 #   it('frame.focus should work multiple times', async ({ context, server }) => {
 #     const page1 = await context.newPage();

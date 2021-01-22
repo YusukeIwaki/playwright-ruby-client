@@ -70,6 +70,7 @@ RSpec.configure do |config|
       require 'timeout'
 
       sinatra_app = Sinatra.new(&block)
+      sinatra_app.disable(:protection)
       sinatra_app.set(:public_folder, File.join(__dir__, 'assets'))
 
       let(:sinatra) { sinatra_app }
@@ -108,6 +109,7 @@ RSpec.configure do |config|
     require 'timeout'
 
     sinatra_app = Sinatra.new
+    sinatra_app.disable(:protection)
     sinatra_app.set(:public_folder, File.join(__dir__, 'assets'))
     @server_prefix = "http://localhost:4567"
     sinatra_app.get('/_ping') { '_pong' }
