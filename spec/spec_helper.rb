@@ -40,6 +40,18 @@ RSpec.configure do |config|
       @playwright_browser or raise NoMethodError.new('undefined method "browser"')
     end
 
+    def with_context(&block)
+      unless @playwright_browser
+        raise '@playwright_browser must not be null.'
+      end
+      context = @playwright_browser.new_context
+      begin
+        block.call(context)
+      ensure
+        context.close
+      end
+    end
+
     def with_page(&block)
       unless @playwright_browser
         raise '@playwright_browser must not be null.'

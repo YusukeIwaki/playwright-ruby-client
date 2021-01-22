@@ -85,6 +85,12 @@ module Playwright
       nil
     end
 
+    def focus(selector, timeout: nil)
+      params = { selector: selector, timeout: timeout }.compact
+      @channel.send_message_to_server('focus', params)
+      nil
+    end
+
     def type_text(
       selector,
       text,

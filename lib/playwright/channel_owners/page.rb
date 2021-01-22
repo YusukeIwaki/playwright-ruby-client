@@ -143,6 +143,23 @@ module Playwright
       @main_frame.title
     end
 
+    def close(runBeforeUnload: nil)
+      options = { runBeforeUnload: runBeforeUnload }.compact
+      @channel.send_message_to_server('close', options)
+      @owned_context&.close
+      nil
+    rescue => err
+      raise unless safe_close_error?(err)
+    end
+
+    def closed?
+      @closed
+    end
+
+    def focus(selector, timeout: nil)
+      @main_frame.focus(selector, timeout: timeout)
+    end
+
     def type_text(
       selector,
       text,
@@ -161,19 +178,6 @@ module Playwright
       timeout: nil)
 
       @main_frame.press(selector, key, delay: delay, noWaitAfter: noWaitAfter, timeout: timeout)
-    end
-
-    def close(runBeforeUnload: nil)
-      options = { runBeforeUnload: runBeforeUnload }.compact
-      @channel.send_message_to_server('close', options)
-      @owned_context&.close
-      nil
-    rescue => err
-      raise unless safe_close_error?(err)
-    end
-
-    def closed?
-      @closed
     end
 
     class CrashedError < StandardError

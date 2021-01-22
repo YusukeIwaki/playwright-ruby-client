@@ -10,11 +10,12 @@ RSpec.describe Playwright::Page do
   end
 
   it 'should not be visible in context.pages' do
-    context = browser.new_context
-    page = context.new_page
-    expect(context.pages).to include(page)
-    expect { page.close }.to change { context.pages.count }.by(-1)
-    expect(context.pages).not_to include(page)
+    with_context do |context|
+      page = context.new_page
+      expect(context.pages).to include(page)
+      expect { page.close }.to change { context.pages.count }.by(-1)
+      expect(context.pages).not_to include(page)
+    end
   end
 
   it 'should set the page close state' do
@@ -214,13 +215,14 @@ RSpec.describe Playwright::Page do
     end
   end
 
-#   it('frame.focus should work multiple times', async ({ context, server }) => {
-#     const page1 = await context.newPage();
-#     const page2 = await context.newPage();
-#     for (const page of [page1, page2]) {
-#       await page.setContent(`<button id="foo" onfocus="window.gotFocus=true"></button>`);
-#       await page.focus('#foo');
-#       expect(await page.evaluate(() => !!window['gotFocus'])).toBe(true);
-#     }
-#   });
+  it 'frame.focus should work multiple times' do
+    with_context do |context|
+      pages = [context.new_page, context.new_page]
+      pages.each do |page|
+        page.content = '<button id="foo" onfocus="window.gotFocus=true"></button>'
+        page.focus('#foo')
+        expect(page.evaluate("() => !!window['gotFocus']")).to eq(true)
+      end
+    end
+  end
 end
