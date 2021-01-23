@@ -49,7 +49,7 @@ RSpec.describe 'ImplementedClassWithDoc' do
       before {
         api_json_hogehoge['extends'] = 'EventEmitter'
       }
-      let(:klass) { Class.new { include Playwright::EventEmitter } }
+      let(:klass) { Class.new { include Playwright::EventListenerInterface } }
 
       it 'should generate a class extending PlaywrightApi' do
         is_expected.to include('class HogeHoge < PlaywrightApi')
@@ -67,7 +67,7 @@ RSpec.describe 'ImplementedClassWithDoc' do
           'members' => [],
         }
       }
-      let(:klass) { Class.new { include Playwright::EventEmitter } }
+      let(:klass) { Class.new { include Playwright::EventListenerInterface } }
 
       it 'should generate a class extending base class' do
         is_expected.to include('class HogeHoge < HogeHogeBase')
