@@ -102,8 +102,10 @@ RSpec.configure do |config|
     end
   end
 
-  # Every integration test case should spend less than 15sec.
-  # config.around(:each, type: :integration) do |example|
-  #   Timeout.timeout(15) { example.run }
-  # end
+  # Every integration test case should spend less than 15sec, in CI.
+  if ENV['CI']
+    config.around(:each, type: :integration) do |example|
+      Timeout.timeout(15) { example.run }
+    end
+  end
 end
