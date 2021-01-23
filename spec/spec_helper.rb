@@ -89,6 +89,8 @@ RSpec.configure do |config|
       loop do
         Net::HTTP.get(URI("#{server_prefix}/_ping"))
         break
+      rescue Errno::EADDRNOTAVAIL
+        sleep 1
       rescue Errno::ECONNREFUSED
         sleep 0.1
       end
