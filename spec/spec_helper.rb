@@ -84,6 +84,7 @@ RSpec.configure do |config|
     sinatra_app.get('/_ping') { '_pong' }
 
     # Start server and wait for server ready.
+    # FIXME should change port when Errno::EADDRINUSE
     Thread.new { sinatra_app.run!(port: 4567) }
     Timeout.timeout(3) do
       loop do
