@@ -19,7 +19,7 @@ module Playwright
       @channel.on('navigated', method(:on_frame_navigated))
     end
 
-    attr_reader :page
+    attr_reader :page, :parent_frame
     attr_writer :detached
 
     private def on_load_state(add:, remove:)
@@ -129,6 +129,14 @@ module Playwright
 
     def name
       @name || ''
+    end
+
+    def url
+      @url || ''
+    end
+
+    def child_frames
+      @child_frames.to_a
     end
 
     def title

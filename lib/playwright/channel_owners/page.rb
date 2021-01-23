@@ -26,6 +26,7 @@ module Playwright
         console_message = ChannelOwners::ConsoleMessage.from(params['message'])
         emit(Events::Page::Console, console_message)
       })
+      @channel.on('domcontentloaded', ->(_) { emit(Events::Page::DOMContentLoaded) })
       @channel.on('frameAttached', ->(params) {
         on_frame_attached(ChannelOwners::Frame.from(params['frame']))
       })
@@ -33,6 +34,9 @@ module Playwright
         on_frame_detached(ChannelOwners::Frame.from(params['frame']))
       })
       @channel.on('load', ->(_) { emit(Events::Page::Load) })
+      @channel.on('popup', ->(params) {
+        emit(Events::Page::Popup, ChannelOwners::Page.from(params['page']))
+      })
     end
 
     attr_reader \
@@ -65,6 +69,11 @@ module Playwright
       @browser_context
     end
 
+    def opener
+      resp = @channel.send_message_to_server('opener')
+      ChannelOwners::Page.from(resp)
+    end
+
     def frame(frameSelector)
       name, url =
         if frameSelector.is_a?(Hash)
@@ -76,7 +85,15 @@ module Playwright
       if name
         @frames.find { |f| f.name == name }
       elsif url
-        raise NotImplementedError.new('Page#frame with url is not implemented yet')
+        # ref: https://github.com/microsoft/playwright-python/blob/c4320c27cb080b385a5e45be46baa3cb7a9409ff/playwright/_impl/_helper.py#L104
+        case url
+        when String
+          @frames.find { |f| f.url == url }
+        when Regexp
+          @frames.find { |f| url.match?(f.url) }
+        else
+          raise NotImplementedError.new('Page#frame with url is not completely implemented yet')
+        end
       else
         raise ArgumentError.new('Either name or url matcher should be specified')
       end
@@ -92,6 +109,10 @@ module Playwright
 
     def evaluate_handle(pageFunction, arg: nil)
       @main_frame.evaluate_handle(pageFunction, arg: arg)
+    end
+
+    def url
+      @main_frame.url
     end
 
     def content

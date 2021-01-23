@@ -10,8 +10,6 @@ module Playwright
       Factory.new(channel_owner).create
     end
 
-    private
-
     class Factory
       def initialize(channel_owner)
         channel_owner_class_name = channel_owner.class.name
@@ -59,7 +57,7 @@ module Playwright
     end
 
     # @param block [Proc]
-    def wrap_block_call(block)
+    private def wrap_block_call(block)
       return nil unless block.is_a?(Proc)
 
       -> (*args) {
@@ -68,7 +66,7 @@ module Playwright
       }
     end
 
-    def wrap_channel_owner(object)
+    private def wrap_channel_owner(object)
       if object.is_a?(ChannelOwner)
         PlaywrightApi.from_channel_owner(object)
       elsif object.is_a?(Array)

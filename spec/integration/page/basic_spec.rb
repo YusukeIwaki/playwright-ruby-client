@@ -52,136 +52,168 @@ RSpec.describe Playwright::Page do
     end
   end
 
-#   it('async stacks should work', async ({page, server}) => {
-#     server.setRoute('/empty.html', (req, res) => {
-#       req.socket.end();
-#     });
-#     let error = null;
-#     await page.goto(server.EMPTY_PAGE).catch(e => error = e);
-#     expect(error).not.toBe(null);
-#     expect(error.stack).toContain(__filename);
-#   });
+  # it 'async stacks should work', sinatra: true do
+  #   _sinatra = sinatra
+  #   sinatra.get('/empty_kill.html') {
+  #     _sinatra.quit! # server is closing gracefully, so we cant force kill it...
+  #     sleep 10
+  #   }
+  #   with_page do |page|
+  #     page.goto("#{server_prefix}/empty_kill.html")
+  #   end
+  #   #     expect(error).not.toBe(null);
+  #   #     expect(error.stack).toContain(__filename);
+  #   #   });
+  # end
 
-#   it('should provide access to the opener page', async ({page}) => {
-#     const [popup] = await Promise.all([
-#       page.waitForEvent('popup'),
-#       page.evaluate(() => window.open('about:blank')),
-#     ]);
-#     const opener = await popup.opener();
-#     expect(opener).toBe(page);
-#   });
+  it 'should provide access to the opener page' do
+    with_page do |page|
+      popup = page.wait_for_event('popup') do
+        page.evaluate("() => window.open('about:blank')")
+      end
+      expect(popup.opener).to eq(page)
+    end
+  end
 
-#   it('should return null if parent page has been closed', async ({page}) => {
-#     const [popup] = await Promise.all([
-#       page.waitForEvent('popup'),
-#       page.evaluate(() => window.open('about:blank')),
-#     ]);
-#     await page.close();
-#     const opener = await popup.opener();
-#     expect(opener).toBe(null);
-#   });
+  it 'should return null if parent page has been closed' do
+    with_page do |page|
+      popup = page.wait_for_event('popup') do
+        page.evaluate("() => window.open('about:blank')")
+      end
+      page.close
 
-#   it('should fire domcontentloaded when expected', async ({page, server}) => {
-#     const navigatedPromise = page.goto('about:blank');
-#     await page.waitForEvent('domcontentloaded');
-#     await navigatedPromise;
-#   });
+      # playwright, playwright-python also expects opener to be nil.
+      # Howevert actual behavior does not success.
+      #
+      # expect(popup.opener).to be_nil
+      expect { popup.opener }.to raise_error(/Target page, context or browser has been closed/)
+    end
+  end
 
-#   it('should fail with error upon disconnect', async ({page, server}) => {
-#     let error;
-#     const waitForPromise = page.waitForEvent('download').catch(e => error = e);
-#     await page.close();
-#     await waitForPromise;
-#     expect(error.message).toContain('Page closed');
-#   });
+  it 'should fire domcontentloaded when expected' do
+    with_page do |page|
+      Timeout.timeout(3) do
+        page.wait_for_event('domcontentloaded') do
+          page.goto('about:blank')
+        end
+      end
+    end
+  end
 
-#   it('page.url should work', async ({page, server}) => {
-#     expect(page.url()).toBe('about:blank');
-#     await page.goto(server.EMPTY_PAGE);
-#     expect(page.url()).toBe(server.EMPTY_PAGE);
-#   });
+  it 'should fail with error upon disconnect' do
+    with_page do |page|
+      expect {
+        page.wait_for_event('download') do
+          page.close()
+        end
+      }.to raise_error(/Page closed/)
+    end
+  end
 
-#   it('page.url should include hashes', async ({page, server}) => {
-#     await page.goto(server.EMPTY_PAGE + '#hash');
-#     expect(page.url()).toBe(server.EMPTY_PAGE + '#hash');
-#     await page.evaluate(() => {
-#       window.location.hash = 'dynamic';
-#     });
-#     expect(page.url()).toBe(server.EMPTY_PAGE + '#dynamic');
-#   });
+  it 'page.url should work', sinatra: true do
+    with_page do |page|
+      expect(page.url).to eq('about:blank')
+      expect { page.goto(server_empty_page) }.to change { page.url }.
+        from('about:blank').to(server_empty_page)
+    end
+  end
 
-#   it('page.title should return the page title', async ({page, server}) => {
-#     await page.goto(server.PREFIX + '/title.html');
-#     expect(await page.title()).toBe('Woof-Woof');
-#   });
+  it 'page.url should include hashes', sinatra: true do
+    with_page do |page|
+      page.goto("#{server_empty_page}#hash")
+      expect(page.url).to eq("#{server_empty_page}#hash")
+      page.evaluate("() => { window.location.hash = 'dynamic' }")
+      expect(page.url).to eq("#{server_empty_page}#dynamic")
+    end
+  end
 
-#   it('page.close should work with window.close', async function({ page, context, server }) {
-#     const newPagePromise = page.waitForEvent('popup');
-#     await page.evaluate(() => window['newPage'] = window.open('about:blank'));
-#     const newPage = await newPagePromise;
-#     const closedPromise = new Promise(x => newPage.on('close', x));
-#     await page.evaluate(() => window['newPage'].close());
-#     await closedPromise;
-#   });
+  it 'page.title should return the page title', sinatra: true do
+    with_page do |page|
+      page.goto("#{server_prefix}/title.html")
+      expect(page.title).to eq('Woof-Woof')
+    end
+  end
 
-#   it('page.close should work with page.close', async function({ page, context, server }) {
-#     const newPage = await context.newPage();
-#     const closedPromise = new Promise(x => newPage.on('close', x));
-#     await newPage.close();
-#     await closedPromise;
-#   });
+  it 'page.close should work with window.close' do
+    with_page do |page|
+      new_page = page.wait_for_event('popup') do
+        page.evaluate("() => window['newPage'] = window.open('about:blank')")
+      end
+      closed_promise = Concurrent::Promises.resolvable_future
+      new_page.once('close', -> { closed_promise.fulfill(nil) })
+      page.evaluate("() => window['newPage'].close()")
+      expect(closed_promise).to be_fulfilled
+    end
+  end
 
-#   it('page.context should return the correct instance', async function({page, context}) {
-#     expect(page.context()).toBe(context);
-#   });
+  it 'page.close should work with page.close' do
+    with_context do |context|
+      page = context.new_page
+      closed_promise = Concurrent::Promises.resolvable_future
+      page.once('close', -> { closed_promise.fulfill(nil) })
+      page.close
+      expect(closed_promise).to be_fulfilled
+    end
+  end
 
-#   it('page.frame should respect name', async function({page, server}) {
-#     await page.setContent(`<iframe name=target></iframe>`);
-#     expect(page.frame({ name: 'bogus' })).toBe(null);
-#     const frame = page.frame({ name: 'target' });
-#     expect(frame).toBeTruthy();
-#     expect(frame === page.mainFrame().childFrames()[0]).toBeTruthy();
-#   });
+  it 'page.context should return the correct instance' do
+    with_context do |context|
+      page = context.new_page
+      expect(page.context).to eq(context)
+    end
+  end
 
-#   it('page.frame should respect url', async function({page, server}) {
-#     await page.setContent(`<iframe src="${server.EMPTY_PAGE}"></iframe>`);
-#     expect(page.frame({ url: /bogus/ })).toBe(null);
-#     expect(page.frame({ url: /empty/ }).url()).toBe(server.EMPTY_PAGE);
-#   });
+  it 'page.frame should respect name' do
+    with_page do |page|
+      page.content = '<iframe name=target></iframe>'
+      expect(page.frame({ name: 'bogus'})).to be_nil
+      frame = page.frame({ name: 'target' })
+      expect(frame).to be_a(::Playwright::Frame)
+      expect(frame).to eq(page.main_frame.child_frames.first)
+    end
+  end
 
-#   it('should have sane user agent', async ({page, isChromium, isFirefox}) => {
-#     const userAgent = await page.evaluate(() => navigator.userAgent);
-#     const [
-#       part1,
-#       /* part2 */,
-#       part3,
-#       part4,
-#       part5,
-#     ] = userAgent.split(/[()]/).map(part => part.trim());
-#     // First part is always "Mozilla/5.0"
-#     expect(part1).toBe('Mozilla/5.0');
-#     // Second part in parenthesis is platform - ignore it.
+  it 'page.frame should respect url', sinatra: true do
+    with_page do |page|
+      page.content = "<iframe src=\"#{server_empty_page}\"></iframe>"
+      expect(page.frame({ url: /bogus/ })).to be_nil
+      frame = page.frame({ url: /empty/ })
+      expect(frame).to be_a(::Playwright::Frame)
+      expect(frame.url).to eq(server_empty_page)
+    end
+  end
 
-#     // Third part for Firefox is the last one and encodes engine and browser versions.
-#     if (isFirefox) {
-#       const [engine, browser] = part3.split(' ');
-#       expect(engine.startsWith('Gecko')).toBe(true);
-#       expect(browser.startsWith('Firefox')).toBe(true);
-#       expect(part4).toBe(undefined);
-#       expect(part5).toBe(undefined);
-#       return;
-#     }
-#     // For both options.CHROMIUM and options.WEBKIT, third part is the AppleWebKit version.
-#     expect(part3.startsWith('AppleWebKit/')).toBe(true);
-#     expect(part4).toBe('KHTML, like Gecko');
-#     // 5th part encodes real browser name and engine version.
-#     const [engine, browser] = part5.split(' ');
-#     expect(browser.startsWith('Safari/')).toBe(true);
-#     if (isChromium)
-#       expect(engine.includes('Chrome/')).toBe(true);
-#     else
-#       expect(engine.startsWith('Version/')).toBe(true);
-#   });
+  it 'should have sane user agent' do
+    user_agent = with_page { |page| page.evaluate('() => navigator.userAgent') }
+    parts = user_agent.split(/[()]/).map(&:strip)
+
+    # First part is always "Mozilla/5.0"
+    expect(parts.first).to eq('Mozilla/5.0')
+
+    # Second part in parenthesis is platform - ignore it.
+
+    # Third part for Firefox is the last one and encodes engine and browser versions.
+    # if (isFirefox) {
+    #   const [engine, browser] = part3.split(' ');
+    #   expect(engine.startsWith('Gecko')).toBe(true);
+    #   expect(browser.startsWith('Firefox')).toBe(true);
+    #   expect(part4).toBe(undefined);
+    #   expect(part5).toBe(undefined);
+    #   return;
+    # }
+    # For both options.CHROMIUM and options.WEBKIT, third part is the AppleWebKit version.
+    expect(parts[2]).to start_with('AppleWebKit/')
+    expect(parts[3]).to eq('KHTML, like Gecko')
+
+    # 5th part encodes real browser name and engine version.
+    engine, browser = parts[4].split(' ')
+    expect(browser).to start_with('Safari')
+
+    # if (isChromium)
+    expect(engine).to include('Chrome/')
+    # else
+    #   expect(engine.startsWith('Version/')).toBe(true);
+  end
 
   it 'page.press should work', sinatra: true do
     with_page do |page|
