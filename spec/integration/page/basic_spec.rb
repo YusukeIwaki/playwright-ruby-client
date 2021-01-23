@@ -104,7 +104,7 @@ RSpec.describe Playwright::Page do
     with_page do |page|
       expect {
         page.wait_for_event('download') do
-          page.close()
+          page.close
         end
       }.to raise_error(/Page closed/)
     end
@@ -166,7 +166,7 @@ RSpec.describe Playwright::Page do
   it 'page.frame should respect name' do
     with_page do |page|
       page.content = '<iframe name=target></iframe>'
-      expect(page.frame({ name: 'bogus'})).to be_nil
+      expect(page.frame({ name: 'bogus' })).to be_nil
       frame = page.frame({ name: 'target' })
       expect(frame).to be_a(::Playwright::Frame)
       expect(frame).to eq(page.main_frame.child_frames.first)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'tmpdir'
 
@@ -17,7 +19,7 @@ RSpec.describe 'example' do
     with_page do |page|
       page = browser.new_page
       page.viewport_size = { width: 1280, height: 800 }
-      page.goto("https://github.com/")
+      page.goto('https://github.com/')
 
       # form = page.query_selector("form.js-site-search-form")
       # search_input = form.query_selector("input.header-search-input")
