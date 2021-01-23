@@ -192,12 +192,6 @@ module Playwright
       end
       initializer = replace_guids_with_channels(initializer)
 
-      params = [
-        parent,
-        type,
-        guid,
-        initializer,
-      ]
       class_name = case type
       when 'Browser'
         case initializer['name']
@@ -215,7 +209,6 @@ module Playwright
         if browser_name == 'chromium'
           'ChromiumBrowserContext'
         else
-          params << browser_name
           'BrowserContext'
         end
       else
@@ -224,7 +217,12 @@ module Playwright
 
       result =
         begin
-          ChannelOwners.const_get(class_name).new(*params)
+          ChannelOwners.const_get(class_name).new(
+            parent,
+            type,
+            guid,
+            initializer,
+          )
         rescue NameError
           raise "Missing type #{type}"
         end

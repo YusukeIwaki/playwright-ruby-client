@@ -6,6 +6,10 @@ module Playwright
       channel.object
     end
 
+    def self.from_nullable(channel)
+      channel&.object
+    end
+
     # @param parent [Playwright::ChannelOwner|Playwright::Connection]
     # @param type [String]
     # @param guid [String]
@@ -43,6 +47,15 @@ module Playwright
       # Dispose all children.
       @objects.each_value(&:dispose)
       @objects.clear
+    end
+
+    # Suppress long long inspect log and avoid RSpec from hanging up...
+    def inspect
+      to_s
+    end
+
+    def to_s
+      "#<#{@guid}>"
     end
 
     private

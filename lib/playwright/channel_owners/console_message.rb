@@ -1,9 +1,5 @@
 module Playwright
   define_channel_owner :ConsoleMessage do
-    def to_s
-      @initializer['text']
-    end
-
     def type
       @initializer['type']
     end

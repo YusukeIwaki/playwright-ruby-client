@@ -49,7 +49,7 @@ RSpec.describe 'ImplementedClassWithDoc' do
       before {
         api_json_hogehoge['extends'] = 'EventEmitter'
       }
-      let(:klass) { Class.new { include Playwright::EventEmitter } }
+      let(:klass) { Class.new { include Playwright::EventListenerInterface } }
 
       it 'should generate a class extending PlaywrightApi' do
         is_expected.to include('class HogeHoge < PlaywrightApi')
@@ -67,7 +67,7 @@ RSpec.describe 'ImplementedClassWithDoc' do
           'members' => [],
         }
       }
-      let(:klass) { Class.new { include Playwright::EventEmitter } }
+      let(:klass) { Class.new { include Playwright::EventListenerInterface } }
 
       it 'should generate a class extending base class' do
         is_expected.to include('class HogeHoge < HogeHogeBase')
@@ -79,7 +79,7 @@ RSpec.describe 'ImplementedClassWithDoc' do
     context 'without arguments' do
       before {
         api_json_hogehoge['members'] << {
-          'king' => 'method',
+          'kind' => 'method',
           'langs' => {},
           'name' => 'awesomeCalc',
           'type' => { 'name' => 'number' },
@@ -253,7 +253,7 @@ RSpec.describe 'ImplementedClassWithDoc' do
     context 'without arguments, with explicit block parameter' do
       before {
         api_json_hogehoge['members'] << {
-          'king' => 'method',
+          'kind' => 'method',
           'langs' => {},
           'name' => 'awesomeCalc',
           'type' => { 'name' => 'number' },
@@ -403,6 +403,122 @@ RSpec.describe 'ImplementedClassWithDoc' do
       it 'should generate a method with argument and block' do
         is_expected.to include("def awesome_calc(a, b: nil, c: nil, &block)\n")
       end
+    end
+  end
+
+  describe 'alias for setter' do
+    def result_arg(name)
+      {
+        "kind" => "property",
+        "langs" => {},
+        "name" => name,
+        "type" => {
+          "name" => "Object",
+          "properties" => [
+            {
+              "kind" => "property",
+              "langs" => {},
+              "name" => "x",
+              "type" => {
+                "name" => "int",
+                "expression" => "[int]"
+              },
+              "required" => true,
+            },
+            {
+              "kind" => "property",
+              "langs" => {},
+              "name" => "y",
+              "type" => {
+                "name" => "int",
+                "expression" => "[int]"
+              },
+              "required" => true,
+            }
+          ],
+          "expression" => "[Object]"
+        },
+        "required" => true,
+        "comment" => "",
+      }
+    end
+
+    def optional_arg(arg_name, *properties)
+      {
+        'kind' => 'property',
+        'langs' => {},
+        'name' => arg_name.to_s,
+        'type' => {
+          'name' => 'Object',
+          'properties' => properties.map do |name|
+            {
+              'kind' => 'property',
+              'langs' => {},
+              'name' => name.to_s,
+              'type' => { 'name' => 'number' },
+              'required' => false,
+            }
+          end
+        },
+        'required' => false,
+      }
+    end
+
+    before {
+      api_json_hogehoge['members'] << {
+        'kind' => 'method',
+        "langs" => {},
+        "name" => "setResult",
+        "type" => { "name" => "void" },
+        "required" => true,
+        "args" => [ result_arg('result') ],
+      }
+      api_json_hogehoge['members'] << {
+        'kind' => 'method',
+        "langs" => {},
+        "name" => "setResults",
+        "type" => { "name" => "void" },
+        "required" => true,
+        "args" => [ result_arg('result1'), result_arg('result2') ],
+      }
+      api_json_hogehoge['members'] << {
+        'kind' => 'method',
+        "langs" => {},
+        "name" => "setResultWithOpt",
+        "type" => { "name" => "void" },
+        "required" => true,
+        "args" => [ result_arg('result'), optional_arg('options', :timeout, :threshold) ],
+      }
+    }
+    let(:klass) do
+      Class.new do
+        def set_result(some_result)
+          @result = some_result
+        end
+
+        def set_results(res1, res2)
+          @result1 = res1
+          @result2 = res2
+        end
+
+        def set_result_with_opt(result, timeout: nil, threshold: nil)
+          @result = result
+          @timeout = timeout
+          @threshold = threshold
+        end
+      end
+    end
+
+    it 'should generate a setter method' do
+      is_expected.to include("def set_result(result)\n")
+      is_expected.to include("alias_method :result=, :set_result\n")
+      is_expected.to include("def set_result_with_opt(result, timeout: nil, threshold: nil)\n")
+      is_expected.to include("alias_method :result_with_opt=, :set_result_with_opt\n")
+    end
+
+    it 'should not generate a setter method for the methods with multiple parameters' do
+      is_expected.to include("def set_results(result1, result2)\n")
+      is_expected.not_to include("alias_method :results=")
     end
   end
 end

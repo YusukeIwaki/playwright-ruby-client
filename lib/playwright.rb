@@ -10,12 +10,16 @@ require 'concurrent'
 require 'playwright/errors'
 require 'playwright/events'
 require 'playwright/event_emitter'
+require 'playwright/javascript'
+require 'playwright/utils'
 
 require 'playwright/channel'
 require 'playwright/channel_owner'
 require 'playwright/connection'
+require 'playwright/timeout_settings'
 require 'playwright/transport'
 require 'playwright/version'
+require 'playwright/wait_helper'
 
 require 'playwright/playwright_api'
 # load generated files

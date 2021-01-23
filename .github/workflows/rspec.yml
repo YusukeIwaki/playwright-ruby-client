@@ -47,20 +47,20 @@ jobs:
       env:
         PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./playwright.sh
 
-  integration_test_with_latest_playwright_cli:
-    name: Integration test (with latest playwright-cli)
+  integration_test_with_latest_playwright:
+    name: Integration test (with latest playwright)
     runs-on: ubuntu-latest
     container: circleci/ruby:2.7.2-node-browsers
     steps:
     - name: Setup file system permissions
       run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/_temp
     - uses: actions/checkout@v2
-    - name: setup playwright-cli via npm install
+    - name: setup playwright via npm install
       run: |
-        npm install playwright-cli
-        ./node_modules/.bin/playwright-cli install
+        npm install playwright
+        ./node_modules/.bin/playwright install
     - run: gem install bundler:2.2.3 && bundle install
     - run: bundle exec ruby development/generate_api.rb
     - run: bundle exec rspec spec/integration --profile 10
       env:
-        PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./node_modules/.bin/playwright-cli
+        PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./node_modules/.bin/playwright

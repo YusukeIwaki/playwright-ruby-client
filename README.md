@@ -8,14 +8,14 @@ Note: Currently, this Gem is just a PoC (Proof of Concept). If you want to devel
 
 ## Getting Started
 
-At this point, playwright-ruby-client doesn't include the downloader of playwright-cli, so **we have to install [playwright-cli](https://github.com/microsoft/playwright-cli) in advance**.
+At this point, playwright-ruby-client doesn't include the downloader of playwright driver, so **we have to install [playwright CLI](https://github.com/microsoft/playwright-cli) in advance**.
 
 ```sh
-npm install playwright-cli
-./node_modules/.bin/playwright-cli install
+npm install playwright
+./node_modules/.bin/playwright install
 ```
 
-and then, set `playwright_cli_executable_path: ./node_modules/.bin/playwright-cli` at `Playwright.create`.
+and then, set `playwright_cli_executable_path: ./node_modules/.bin/playwright` at `Playwright.create`.
 
 Instead of npm install, you can also directly download playwright driver from playwright.azureedge.net/builds/. The URL can be easily detected from [here](https://github.com/microsoft/playwright-python/blob/79f6ce0a6a69c480573372706df84af5ef99c4a4/setup.py#L56-L61)
 
@@ -24,7 +24,7 @@ Instead of npm install, you can also directly download playwright driver from pl
 ```ruby
 require 'playwright'
 
-Playwright.create(playwright_cli_executable_path: '/path/to/playwright-cli') do |playwright|
+Playwright.create(playwright_cli_executable_path: '/path/to/playwright') do |playwright|
   playwright.chromium.launch(headless: false) do |browser|
     page = browser.new_page
     page.goto('https://github.com/YusukeIwaki')
