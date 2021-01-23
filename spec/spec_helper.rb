@@ -66,55 +66,10 @@ RSpec.configure do |config|
   end
   config.include IntegrationTestCaseMethods, type: :integration
 
-  module SinatraRouting
-    #
-    # describe 'something awesome' do
-    #   sinatra do
-    #     get('/awesome') { 'Awesome!' }
-    #   end
-    #
-    #   it 'can connect to /awesome' do
-    #     url = "#{server_prefix}/awesome" # => http://localhost:4567/awesome
-    #
-    def sinatra(port: 4567, &block)
-      require 'net/http'
-      require 'sinatra/base'
-      require 'timeout'
-
-      sinatra_app = Sinatra.new(&block)
-      sinatra_app.disable(:protection)
-      sinatra_app.set(:public_folder, File.join(__dir__, 'assets'))
-
-      let(:sinatra) { sinatra_app }
-      let(:server_prefix) { "http://localhost:#{port}" }
-      around do |example|
-        sinatra_app.get('/_ping') { '_pong' }
-
-        # Start server and wait for server ready.
-        Thread.new { sinatra_app.run!(port: port) }
-        Timeout.timeout(3) do
-          loop do
-            Net::HTTP.get(URI("#{server_prefix}/_ping"))
-            break
-          rescue Errno::ECONNREFUSED
-            sleep 0.1
-          end
-        end
-
-        begin
-          example.run
-        ensure
-          sinatra.quit!
-        end
-      end
-    end
-  end
-  RSpec::Core::ExampleGroup.extend(SinatraRouting)
-
   #   it 'can connect to /awesome', sinatra: true do
   #     url = "#{server_prefix}/awesome" # => http://localhost:4567/awesome
   #
-  config.include(Module.new { attr_reader :server_prefix }, sinatra: true)
+  config.include(Module.new { attr_reader :server_prefix, :server_empty_page, :sinatra }, sinatra: true)
   config.around(sinatra: true) do |example|
     require 'net/http'
     require 'sinatra/base'
@@ -124,6 +79,8 @@ RSpec.configure do |config|
     sinatra_app.disable(:protection)
     sinatra_app.set(:public_folder, File.join(__dir__, 'assets'))
     @server_prefix = "http://localhost:4567"
+    @server_empty_page = "#{@server_prefix}/empty.html"
+
     sinatra_app.get('/_ping') { '_pong' }
 
     # Start server and wait for server ready.
@@ -138,6 +95,7 @@ RSpec.configure do |config|
     end
 
     begin
+      @sinatra = sinatra_app
       example.run
     ensure
       sinatra_app.quit!
