@@ -48,7 +48,9 @@ RSpec.describe Playwright::Page do
     with_page do |page|
       promise = Concurrent::Promises.future { page.wait_for_event('load') }
       page.goto('about:blank')
-      expect(promise).to be_fulfilled
+      Timeout.timeout(1) do
+        promise.value!
+      end
     end
   end
 
@@ -142,7 +144,9 @@ RSpec.describe Playwright::Page do
       closed_promise = Concurrent::Promises.resolvable_future
       new_page.once('close', -> { closed_promise.fulfill(nil) })
       page.evaluate("() => window['newPage'].close()")
-      expect(closed_promise).to be_fulfilled
+      Timeout.timeout(1) do
+        closed_promise.value!
+      end
     end
   end
 
@@ -152,7 +156,9 @@ RSpec.describe Playwright::Page do
       closed_promise = Concurrent::Promises.resolvable_future
       page.once('close', -> { closed_promise.fulfill(nil) })
       page.close
-      expect(closed_promise).to be_fulfilled
+      Timeout.timeout(1) do
+        closed_promise.value!
+      end
     end
   end
 
