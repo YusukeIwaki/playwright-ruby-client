@@ -53,6 +53,69 @@ module Playwright
       ChannelOwners::Response.from_nullable(resp)
     end
 
+    private def setup_navigation_wait_helper(timeout:)
+      WaitHelper.new.tap do |helper|
+        helper.reject_on_event(@page, Events::Page::Close, AlreadyClosedError.new)
+        helper.reject_on_event(@page, Events::Page::Crash, CrashedError.new)
+        helper.reject_on_event(@page, Events::Page::FrameDetached, FrameAlreadyDetachedError.new)
+        helper.reject_on_timeout(timeout, "Timeout #{timeout}ms exceeded.")
+      end
+    end
+
+    def wait_for_navigation(timeout: nil, url: nil, waitUntil: nil, &block)
+      option_wait_until = waitUntil || 'load'
+      option_timeout = timeout || @page.send(:timeout_settings).navigation_timeout
+      time_start = Time.now
+
+      wait_helper = setup_navigation_wait_helper(timeout: option_timeout)
+
+      predicate =
+        if url
+          matcher = UrlMatcher.new(url)
+          ->(event) { event['error'] || matcher.match?(event['url']) }
+        else
+          ->(_) { true }
+        end
+
+      wait_helper.wait_for_event(@event_emitter, 'navigated', predicate: predicate)
+
+      block&.call
+
+      event = wait_helper.promise.value!
+      if event['error']
+        raise event['error']
+      end
+
+      unless @load_states.include?(option_wait_until)
+        elapsed_time = Time.now - time_start
+        if elapsed_time < option_timeout
+          wait_for_load_state(state: option_wait_until, timeout: option_timeout - elapsed_time)
+        end
+      end
+
+      request_json = event.dig('newDocument', 'request')
+      request = ChannelOwners::Request.from_nullable(request_json)
+      request&.response
+    end
+
+    def wait_for_load_state(state: nil, timeout: nil)
+      option_state = state || 'load'
+      unless %w(load domcontentloaded networkidle).include?(option_state)
+        raise ArgumentError.new('state: expected one of (load|domcontentloaded|networkidle)')
+      end
+      if @load_states.include?(option_state)
+        return
+      end
+
+      wait_helper = setup_navigation_wait_helper(timeout: timeout)
+
+      predicate = ->(state) { state == option_state }
+      wait_helper.wait_for_event(@event_emitter, 'loadstate', predicate: predicate)
+      wait_helper.promise.value!
+
+      nil
+    end
+
     def evaluate(pageFunction, arg: nil)
       if JavaScript.function?(pageFunction)
         JavaScript::Function.new(pageFunction, arg).evaluate(@channel)
@@ -66,6 +129,33 @@ module Playwright
         JavaScript::Function.new(pageFunction, arg).evaluate_handle(@channel)
       else
         JavaScript::Expression.new(pageFunction).evaluate_handle(@channel)
+      end
+    end
+
+    def query_selector(selector)
+      resp = @channel.send_message_to_server('querySelector', selector: selector)
+      ChannelOwners::ElementHandle.from_nullable(resp)
+    end
+
+    def query_selector_all(selector)
+      @channel.send_message_to_server('querySelectorAll', selector: selector).map do |el|
+        ChannelOwners::ElementHandle.from(el)
+      end
+    end
+
+    def eval_on_selector(selector, pageFunction, arg: nil)
+      if JavaScript.function?(pageFunction)
+        JavaScript::Function.new(pageFunction, arg).eval_on_selector(@channel, selector)
+      else
+        JavaScript::Expression.new(pageFunction).eval_on_selector(@channel, selector)
+      end
+    end
+
+    def eval_on_selector_all(selector, pageFunction, arg: nil)
+      if JavaScript.function?(pageFunction)
+        JavaScript::Function.new(pageFunction, arg).eval_on_selector_all(@channel, selector)
+      else
+        JavaScript::Expression.new(pageFunction).eval_on_selector_all(@channel, selector)
       end
     end
 
