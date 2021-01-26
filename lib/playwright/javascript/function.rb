@@ -25,6 +25,28 @@ module Playwright
         )
         ::Playwright::ChannelOwner.from(resp)
       end
+
+      def eval_on_selector(channel, selector)
+        value = channel.send_message_to_server(
+          'evalOnSelector',
+          selector: selector,
+          expression: @definition,
+          isFunction: true,
+          arg: @serialized_arg,
+        )
+        ValueParser.new(value).parse
+      end
+
+      def eval_on_selector_all(channel, selector)
+        value = channel.send_message_to_server(
+          'evalOnSelectorAll',
+          selector: selector,
+          expression: @definition,
+          isFunction: true,
+          arg: @serialized_arg,
+        )
+        ValueParser.new(value).parse
+      end
     end
   end
 end

@@ -10,9 +10,9 @@ module Playwright
       @browser_context = @parent
       @timeout_settings = TimeoutSettings.new(@browser_context.send(:_timeout_settings))
       @accessibility = Accessibility.new(@channel)
-      @keyboard = Keyboard.new(@channel)
-      @mouse = Mouse.new(@channel)
-      @touchscreen = Touchscreen.new(@channel)
+      @keyboard = InputTypes::Keyboard.new(@channel)
+      @mouse = InputTypes::Mouse.new(@channel)
+      @touchscreen = InputTypes::Touchscreen.new(@channel)
 
       @viewport_size = @initializer['viewportSize']
       @closed = false
@@ -103,12 +103,28 @@ module Playwright
       @frames.to_a
     end
 
+    def query_selector(selector)
+      @main_frame.query_selector(selector)
+    end
+
+    def query_selector_all(selector)
+      @main_frame.query_selector_all(selector)
+    end
+
     def evaluate(pageFunction, arg: nil)
       @main_frame.evaluate(pageFunction, arg: arg)
     end
 
     def evaluate_handle(pageFunction, arg: nil)
       @main_frame.evaluate_handle(pageFunction, arg: arg)
+    end
+
+    def eval_on_selector(selector, pageFunction, arg: nil)
+      @main_frame.eval_on_selector(selector, pageFunction, arg: arg)
+    end
+
+    def eval_on_selector_all(selector, pageFunction, arg: nil)
+      @main_frame.eval_on_selector_all(selector, pageFunction, arg: arg)
     end
 
     def url
@@ -177,6 +193,30 @@ module Playwright
       @closed
     end
 
+    def click(
+          selector,
+          button: nil,
+          clickCount: nil,
+          delay: nil,
+          force: nil,
+          modifiers: nil,
+          noWaitAfter: nil,
+          position: nil,
+          timeout: nil)
+
+      @main_frame.click(
+        selector,
+        button: button,
+        clickCount: clickCount,
+        delay: delay,
+        force: force,
+        modifiers: modifiers,
+        noWaitAfter: noWaitAfter,
+        position: position,
+        timeout: timeout,
+      )
+    end
+
     def focus(selector, timeout: nil)
       @main_frame.focus(selector, timeout: timeout)
     end
@@ -213,6 +253,12 @@ module Playwright
       end
     end
 
+    class FrameAlreadyDetachedError < StandardError
+      def initialize
+        super('Navigating frame was detached!')
+      end
+    end
+
     def wait_for_event(event, optionsOrPredicate: nil, &block)
       predicate, timeout =
         case optionsOrPredicate
@@ -243,13 +289,20 @@ module Playwright
       wait_helper.promise.value!
     end
 
+    def wait_for_navigation(timeout: nil, url: nil, waitUntil: nil, &block)
+      @main_frame.wait_for_navigation(
+        timeout: timeout,
+        url: url,
+        waitUntil: waitUntil,
+        &block)
+    end
+
     def wait_for_request(urlOrPredicate, timeout: nil)
       predicate =
         case urlOrPredicate
-        when String
-          -> (req){ req.url == urlOrPredicate }
-        when Regexp
-          -> (req){ urlOrPredicate.match?(req.url) }
+        when String, Regexp
+          url_matcher = UrlMatcher.new(urlOrPredicate)
+          -> (req){ url_matcher.match?(req.url) }
         when Proc
           urlOrPredicate
         else
@@ -262,10 +315,9 @@ module Playwright
     def wait_for_response(urlOrPredicate, timeout: nil)
       predicate =
         case urlOrPredicate
-        when String
-          -> (res){ res.url == urlOrPredicate }
-        when Regexp
-          -> (res){ urlOrPredicate.match?(res.url) }
+        when String, Regexp
+          url_matcher = UrlMatcher.new(urlOrPredicate)
+          -> (req){ url_matcher.match?(req.url) }
         when Proc
           urlOrPredicate
         else
@@ -279,6 +331,11 @@ module Playwright
     private def update_browser_context(context)
       @browser_context = context
       @timeout_settings = TimeoutSettings.new(context.send(:_timeout_settings))
+    end
+
+    # called from Frame with send(:timeout_settings)
+    private def timeout_settings
+      @timeout_settings
     end
   end
 end

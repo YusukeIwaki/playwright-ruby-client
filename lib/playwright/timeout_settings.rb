@@ -9,7 +9,7 @@ module Playwright
     attr_writer :default_timeout, :default_navigation_timeout
 
     def navigation_timeout
-      @default_navigation_timeout || @default_timeout || @parent&.navigation_timeout || EFAULT_TIMEOUT
+      @default_navigation_timeout || @default_timeout || @parent&.navigation_timeout || DEFAULT_TIMEOUT
     end
 
     def timeout

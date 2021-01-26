@@ -1,4 +1,4 @@
-class ImplementedMethodWithDoc
+class ImplementedInputTypeMethod
   # @param doc [Doc]
   # @param method [Method]
   # @param inflector [Dry::Inflector]
@@ -13,7 +13,7 @@ class ImplementedMethodWithDoc
     Enumerator.new do |data|
       method_comment_lines.each(&data)
       data << "    def #{method_name_and_args}"
-      data << "      wrap_impl(@impl.#{method_call_with_args})"
+      data << "      @impl.#{method_call_with_args}"
       data << '    end'
       method_alias_lines.each(&data)
     end

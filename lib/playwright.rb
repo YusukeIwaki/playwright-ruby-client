@@ -15,9 +15,11 @@ require 'playwright/utils'
 
 require 'playwright/channel'
 require 'playwright/channel_owner'
+require 'playwright/input_type'
 require 'playwright/connection'
 require 'playwright/timeout_settings'
 require 'playwright/transport'
+require 'playwright/url_matcher'
 require 'playwright/version'
 require 'playwright/wait_helper'
 
