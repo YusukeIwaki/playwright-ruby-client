@@ -23,9 +23,13 @@ RSpec.describe 'example' do
 
       form = page.query_selector("form.js-site-search-form")
       search_input = form.query_selector("input.header-search-input")
-      search_input.type_text("playwright")
+      search_input.click
+
+      expect(page.keyboard).to be_a(::Playwright::Keyboard)
+
+      page.keyboard.type_text("playwright")
       page.wait_for_navigation {
-        search_input.press("Enter")
+        page.keyboard.press("Enter")
       }
 
       list = page.query_selector("ul.repo-list")

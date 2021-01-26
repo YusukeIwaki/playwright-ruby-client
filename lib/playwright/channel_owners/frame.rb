@@ -175,6 +175,33 @@ module Playwright
       nil
     end
 
+    def click(
+          selector,
+          button: nil,
+          clickCount: nil,
+          delay: nil,
+          force: nil,
+          modifiers: nil,
+          noWaitAfter: nil,
+          position: nil,
+          timeout: nil)
+
+      params = {
+        selector: selector,
+        button: button,
+        clickCount: clickCount,
+        delay: delay,
+        force: force,
+        modifiers: modifiers,
+        noWaitAfter: noWaitAfter,
+        position: position,
+        timeout: timeout,
+      }.compact
+      @channel.send_message_to_server('click', params)
+
+      nil
+    end
+
     def focus(selector, timeout: nil)
       params = { selector: selector, timeout: timeout }.compact
       @channel.send_message_to_server('focus', params)

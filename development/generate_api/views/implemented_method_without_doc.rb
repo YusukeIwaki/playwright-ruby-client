@@ -11,7 +11,7 @@ class ImplementedMethodWithoutDoc
     Enumerator.new do |data|
       data << '    # @nodoc'
       data << "    def #{method_name_and_args}"
-      data << "      wrap_channel_owner(@channel_owner.#{method_call_with_args})"
+      data << "      wrap_impl(@impl.#{method_call_with_args})"
       data << '    end'
     end
   end

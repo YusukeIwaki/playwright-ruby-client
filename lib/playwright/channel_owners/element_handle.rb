@@ -3,6 +3,31 @@ require_relative './js_handle'
 module Playwright
   module ChannelOwners
     class ElementHandle < JSHandle
+      def click(
+            button: nil,
+            clickCount: nil,
+            delay: nil,
+            force: nil,
+            modifiers: nil,
+            noWaitAfter: nil,
+            position: nil,
+            timeout: nil)
+
+        params = {
+          button: button,
+          clickCount: clickCount,
+          delay: delay,
+          force: force,
+          modifiers: modifiers,
+          noWaitAfter: noWaitAfter,
+          position: position,
+          timeout: timeout,
+        }.compact
+        @channel.send_message_to_server('click', params)
+
+        nil
+      end
+
       def type_text(text, delay: nil, noWaitAfter: nil, timeout: nil)
         params = {
           text: text,

@@ -10,9 +10,9 @@ module Playwright
       @browser_context = @parent
       @timeout_settings = TimeoutSettings.new(@browser_context.send(:_timeout_settings))
       @accessibility = Accessibility.new(@channel)
-      @keyboard = Keyboard.new(@channel)
-      @mouse = Mouse.new(@channel)
-      @touchscreen = Touchscreen.new(@channel)
+      @keyboard = InputTypes::Keyboard.new(@channel)
+      @mouse = InputTypes::Mouse.new(@channel)
+      @touchscreen = InputTypes::Touchscreen.new(@channel)
 
       @viewport_size = @initializer['viewportSize']
       @closed = false
@@ -191,6 +191,30 @@ module Playwright
 
     def closed?
       @closed
+    end
+
+    def click(
+          selector,
+          button: nil,
+          clickCount: nil,
+          delay: nil,
+          force: nil,
+          modifiers: nil,
+          noWaitAfter: nil,
+          position: nil,
+          timeout: nil)
+
+      @main_frame.click(
+        selector,
+        button: button,
+        clickCount: clickCount,
+        delay: delay,
+        force: force,
+        modifiers: modifiers,
+        noWaitAfter: noWaitAfter,
+        position: position,
+        timeout: timeout,
+      )
     end
 
     def focus(selector, timeout: nil)

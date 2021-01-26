@@ -15,6 +15,7 @@ require 'playwright/utils'
 
 require 'playwright/channel'
 require 'playwright/channel_owner'
+require 'playwright/input_type'
 require 'playwright/connection'
 require 'playwright/timeout_settings'
 require 'playwright/transport'

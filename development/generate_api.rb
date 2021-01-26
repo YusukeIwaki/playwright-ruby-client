@@ -27,6 +27,11 @@ ALL_TYPES = %w[
     BrowserType
     Playwright
 ]
+INPUT_TYPES = %w[
+  Keyboard
+  Mouse
+  Touchscreen
+]
 
 require 'bundler/setup'
 require 'dry/inflector'
@@ -35,6 +40,7 @@ require 'json'
 require 'playwright/event_emitter'
 require 'playwright/utils'
 require 'playwright/channel_owner'
+require 'playwright/input_type'
 
 Dir[File.join(__dir__, 'generate_api', 'models', '*.rb')].each { |f| require f }
 Dir[File.join(__dir__, 'generate_api', 'views', '*.rb')].each { |f| require f }
@@ -46,20 +52,32 @@ if $0 == __FILE__
   ALL_TYPES.each do |class_name|
     doc_json = api_json.find { |json| json['name'] == class_name }
     doc = doc_json ? ClassDoc.new(doc_json, root: api_json) : nil
-    klass = Playwright::ChannelOwners.const_get(class_name) rescue nil
 
     view =
-      if klass
-        if doc
-          ImplementedClassWithDoc.new(doc, klass, inflector)
+      if INPUT_TYPES.include?(class_name)
+        klass = Playwright::InputTypes.const_get(class_name) rescue nil
+
+        if klass
+          ImplementedInputTypeClass.new(doc, klass, inflector)
         else
-          ImplementedClassWithoutDoc.new(klass, inflector)
+          # UnimplementedClassWithDoc.new(doc, inflector)
+          raise "#{class_name} Not Implemented!!"
         end
       else
-        if doc
-          UnimplementedClassWithDoc.new(doc, inflector)
+        klass = Playwright::ChannelOwners.const_get(class_name) rescue nil
+
+        if klass
+          if doc
+            ImplementedClassWithDoc.new(doc, klass, inflector)
+          else
+            ImplementedClassWithoutDoc.new(klass, inflector)
+          end
         else
-          raise "#{class_name} is not implemented nor not in api-docs. Something is wrong."
+          if doc
+            UnimplementedClassWithDoc.new(doc, inflector)
+          else
+            raise "#{class_name} is not implemented nor not in api-docs. Something is wrong."
+          end
         end
       end
 
