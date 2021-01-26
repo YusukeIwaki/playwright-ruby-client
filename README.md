@@ -8,7 +8,7 @@ Note: Currently, this Gem is just a PoC (Proof of Concept). If you want to devel
 
 ## Getting Started
 
-At this point, playwright-ruby-client doesn't include the downloader of playwright driver, so **we have to install [playwright CLI](https://github.com/microsoft/playwright-cli) in advance**.
+At this point, playwright-ruby-client doesn't include the downloader of playwright driver, so **we have to install [playwright](https://github.com/microsoft/playwright) in advance**.
 
 ```sh
 npm install playwright
@@ -34,6 +34,48 @@ end
 ```
 
 ![image](https://user-images.githubusercontent.com/11763113/104339718-412f9180-553b-11eb-9116-908e1e4b5186.gif)
+
+### Simple scraping
+
+```ruby
+require 'playwright'
+
+Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright') do |playwright|
+  playwright.chromium.launch(headless: false) do |browser|
+    page = browser.new_page
+    page.goto('https://github.com/')
+
+    form = page.query_selector("form.js-site-search-form")
+    search_input = form.query_selector("input.header-search-input")
+    search_input.click
+    page.keyboard.type_text("playwright")
+    page.wait_for_navigation {
+      page.keyboard.press("Enter")
+    }
+
+    list = page.query_selector("ul.repo-list")
+    items = list.query_selector_all("div.f4")
+    items.each do |item|
+      title = item.eval_on_selector("a", "a => a.innerText")
+      puts("==> #{title}")
+    end
+  end
+end
+```
+
+```sh
+$ bundle exec ruby main.rb 
+==> microsoft/playwright
+==> microsoft/playwright-python
+==> microsoft/playwright-cli
+==> checkly/headless-recorder
+==> microsoft/playwright-sharp
+==> playwright-community/jest-playwright
+==> microsoft/playwright-test
+==> mxschmitt/playwright-go
+==> microsoft/playwright-java
+==> MarketSquare/robotframework-browser
+```
 
 ## License
 
