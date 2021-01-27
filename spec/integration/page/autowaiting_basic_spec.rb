@@ -1,17 +1,17 @@
 require 'spec_helper'
 
 RSpec.describe 'autowaiting basic' do
+  let(:endpoint) { "/empty_#{SecureRandom.hex(24)}" }
   it 'should await navigation when clicking anchor', sinatra: true do
     messages = []
 
-    with_page do |page|
-      endpoint = "/empty_#{SecureRandom.hex(24)}"
+    sinatra.get(endpoint) do
+      messages << 'route'
+      headers('Content-Type' => 'text/html')
+      body("<link rel='stylesheet' href='./one-style.css'>")
+    end
 
-      sinatra.get(endpoint) do
-        messages << 'route'
-        headers('Content-Type' => 'text/html')
-        body("<link rel='stylesheet' href='./one-style.css'>")
-      end
+    with_page do |page|
       page.content = "<a href=\"#{server_prefix}#{endpoint}\" >empty.html</a>"
 
       promises = [
@@ -33,14 +33,13 @@ RSpec.describe 'autowaiting basic' do
   it 'should await cross-process navigation when clicking anchor', sinatra: true do
     messages = []
 
-    with_page do |page|
-      endpoint = "/empty_#{SecureRandom.hex(24)}"
+    sinatra.get(endpoint) do
+      messages << 'route'
+      headers('Content-Type' => 'text/html')
+      body("<link rel='stylesheet' href='./one-style.css'>")
+    end
 
-      sinatra.get(endpoint) do
-        messages << 'route'
-        headers('Content-Type' => 'text/html')
-        body("<link rel='stylesheet' href='./one-style.css'>")
-      end
+    with_page do |page|
       page.content = "<a href=\"#{server_cross_process_prefix}#{endpoint}\" >empty.html</a>"
 
       promises = [
@@ -62,15 +61,13 @@ RSpec.describe 'autowaiting basic' do
   it 'should await form-get on click', sinatra: true do
     messages = []
 
+    sinatra.get(endpoint) do
+      messages << 'route'
+      headers('Content-Type' => 'text/html')
+      body("<link rel='stylesheet' href='./one-style.css'>")
+    end
+
     with_page do |page|
-      endpoint = "/empty_#{SecureRandom.hex(24)}"
-
-      sinatra.get(endpoint) do
-        messages << 'route'
-        headers('Content-Type' => 'text/html')
-        body("<link rel='stylesheet' href='./one-style.css'>")
-      end
-
       html = <<~HTML
       <form action="#{server_cross_process_prefix}#{endpoint}" method="get">
         <input name="foo" value="bar">
@@ -98,15 +95,13 @@ RSpec.describe 'autowaiting basic' do
   it 'should await form-post on click', sinatra: true do
     messages = []
 
+    sinatra.post(endpoint) do
+      messages << 'route'
+      headers('Content-Type' => 'text/html')
+      body("<link rel='stylesheet' href='./one-style.css'>")
+    end
+
     with_page do |page|
-      endpoint = "/empty_#{SecureRandom.hex(24)}"
-
-      sinatra.post(endpoint) do
-        messages << 'route'
-        headers('Content-Type' => 'text/html')
-        body("<link rel='stylesheet' href='./one-style.css'>")
-      end
-
       html = <<~HTML
       <form action="#{server_cross_process_prefix}#{endpoint}" method="post">
         <input name="foo" value="bar">
@@ -134,15 +129,13 @@ RSpec.describe 'autowaiting basic' do
   it 'should await navigation when assigning location', sinatra: true do
     messages = []
 
+    sinatra.get(endpoint) do
+      messages << 'route'
+      headers('Content-Type' => 'text/html')
+      body("<link rel='stylesheet' href='./one-style.css'>")
+    end
+
     with_page do |page|
-      endpoint = "/empty_#{SecureRandom.hex(24)}"
-
-      sinatra.get(endpoint) do
-        messages << 'route'
-        headers('Content-Type' => 'text/html')
-        body("<link rel='stylesheet' href='./one-style.css'>")
-      end
-
       promises = [
         Concurrent::Promises.future {
           page.evaluate("window.location.href = \"#{server_cross_process_prefix}#{endpoint}\"")
@@ -162,12 +155,10 @@ RSpec.describe 'autowaiting basic' do
   it 'should await navigation when assigning location twice', sinatra: true do
     messages = []
 
+    sinatra.get("#{endpoint}/cancel") { 'done' }
+    sinatra.get("#{endpoint}/override") { messages << 'routeoverride' ; 'done' }
+
     with_page do |page|
-      endpoint = "/empty_#{SecureRandom.hex(24)}"
-
-      sinatra.get("#{endpoint}/cancel") { 'done' }
-      sinatra.get("#{endpoint}/override") { messages << 'routeoverride' ; 'done' }
-
       js = <<~JAVASCRIPT
       window.location.href = "#{server_cross_process_prefix}#{endpoint}/cancel";
       window.location.href = "#{server_cross_process_prefix}#{endpoint}/override";
@@ -183,14 +174,13 @@ RSpec.describe 'autowaiting basic' do
   it 'should await navigation when evaluating reload', sinatra: true do
     messages = []
 
-    with_page do |page|
-      endpoint = "/empty_#{SecureRandom.hex(24)}"
+    sinatra.get(endpoint) do
+      messages << 'route'
+      headers('Content-Type' => 'text/html')
+      body("<link rel='stylesheet' href='./one-style.css'>")
+    end
 
-      sinatra.get(endpoint) do
-        messages << 'route'
-        headers('Content-Type' => 'text/html')
-        body("<link rel='stylesheet' href='./one-style.css'>")
-      end
+    with_page do |page|
       page.goto("#{server_prefix}#{endpoint}")
       messages.clear
 
@@ -213,14 +203,13 @@ RSpec.describe 'autowaiting basic' do
   it 'should await navigating specified target', sinatra: true do
     messages = []
 
-    with_page do |page|
-      endpoint = "/empty_#{SecureRandom.hex(24)}"
+    sinatra.get(endpoint) do
+      messages << 'route'
+      headers('Content-Type' => 'text/html')
+      body("<link rel='stylesheet' href='./one-style.css'>")
+    end
 
-      sinatra.get(endpoint) do
-        messages << 'route'
-        headers('Content-Type' => 'text/html')
-        body("<link rel='stylesheet' href='./one-style.css'>")
-      end
+    with_page do |page|
       html = <<~HTML
       <a href="#{server_prefix}#{endpoint}" target=target>empty.html</a>
       <iframe name=target></iframe>
@@ -246,10 +235,9 @@ RSpec.describe 'autowaiting basic' do
   end
 
   it 'should work with noWaitAfter: true', sinatra: true do
-    with_page do |page|
-      endpoint = "/empty_#{SecureRandom.hex(24)}"
+    sinatra.get(endpoint) { sleep 30 }
 
-      sinatra.get(endpoint) { sleep 30 }
+    with_page do |page|
       page.content = "<a href=\"#{server_prefix}#{endpoint}\" >empty.html</a>"
 
       Timeout.timeout(3) do
@@ -259,10 +247,9 @@ RSpec.describe 'autowaiting basic' do
   end
 
   it 'should work with dblclick noWaitAfter: true', sinatra: true do
-    with_page do |page|
-      endpoint = "/empty_#{SecureRandom.hex(24)}"
+    sinatra.get(endpoint) { sleep 30 }
 
-      sinatra.get(endpoint) { sleep 30 }
+    with_page do |page|
       page.content = "<a href=\"#{server_prefix}#{endpoint}\" >empty.html</a>"
 
       Timeout.timeout(3) do
@@ -273,14 +260,14 @@ RSpec.describe 'autowaiting basic' do
 
   it 'should work with waitForLoadState(load)', sinatra: true do
     messages = []
-    with_page do |page|
-      endpoint = "/empty_#{SecureRandom.hex(24)}"
 
-      sinatra.get(endpoint) do
-        messages << 'route'
-        headers('Content-Type' => 'text/html')
-        body("<link rel='stylesheet' href='./one-style.css'>")
-      end
+    sinatra.get(endpoint) do
+      messages << 'route'
+      headers('Content-Type' => 'text/html')
+      body("<link rel='stylesheet' href='./one-style.css'>")
+    end
+
+    with_page do |page|
       page.content = "<a href=\"#{server_prefix}#{endpoint}\" >empty.html</a>"
 
       promises = [
@@ -317,7 +304,7 @@ RSpec.describe 'autowaiting basic' do
 
       page.fill('input[type="text"]', 'admin')
       page.click('input[type="submit"]')
-      page.goto("#{server_prefix}/empty.html")
+      page.goto(server_empty_page)
     end
   end
 
