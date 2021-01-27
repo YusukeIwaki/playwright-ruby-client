@@ -143,6 +143,19 @@ module Playwright
       @main_frame.goto(url, timeout: timeout,  waitUntil: waitUntil, referer: referer)
     end
 
+    def reload(timeout: nil, waitUntil: nil)
+      params = {
+        timeout: timeout,
+        waitUntil: waitUntil,
+      }.compact
+      resp = @channel.send_message_to_server('reoad', params)
+      ChannelOwners::Response.from_nullable(resp)
+    end
+
+    def wait_for_load_state(state: nil, timeout: nil)
+      @main_frame.wait_for_load_state(state: state, timeout: timeout)
+    end
+
     def set_viewport_size(viewportSize)
       @viewport_size = viewportSize
       @channel.send_message_to_server('setViewportSize', { viewportSize: viewportSize })
@@ -215,6 +228,31 @@ module Playwright
         position: position,
         timeout: timeout,
       )
+    end
+
+    def dblclick(
+          selector,
+          button: nil,
+          delay: nil,
+          force: nil,
+          modifiers: nil,
+          noWaitAfter: nil,
+          position: nil,
+          timeout: nil)
+      @main_frame.dblclick(
+        selector,
+        button: button,
+        delay: delay,
+        force: force,
+        modifiers: modifiers,
+        noWaitAfter: noWaitAfter,
+        position: position,
+        timeout: timeout,
+      )
+    end
+
+    def fill(selector, value, noWaitAfter: nil, timeout: nil)
+      @main_frame.fill(selector, value, noWaitAfter: noWaitAfter, timeout: timeout)
     end
 
     def focus(selector, timeout: nil)
