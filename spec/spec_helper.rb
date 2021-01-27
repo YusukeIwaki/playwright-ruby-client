@@ -69,7 +69,10 @@ RSpec.configure do |config|
   #   it 'can connect to /awesome', sinatra: true do
   #     url = "#{server_prefix}/awesome" # => http://localhost:4567/awesome
   #
-  config.include(Module.new { attr_reader :server_prefix, :server_empty_page, :sinatra }, sinatra: true)
+  test_with_sinatra = Module.new do
+    attr_reader :server_prefix, :server_cross_process_prefix, :server_empty_page, :sinatra
+  end
+  config.include(test_with_sinatra, sinatra: true)
   config.around(sinatra: true) do |example|
     require 'net/http'
     require 'sinatra/base'
@@ -79,6 +82,7 @@ RSpec.configure do |config|
     sinatra_app.disable(:protection)
     sinatra_app.set(:public_folder, File.join(__dir__, 'assets'))
     @server_prefix = "http://localhost:4567"
+    @server_cross_process_prefix = "http://127.0.0.1:4567"
     @server_empty_page = "#{@server_prefix}/empty.html"
 
     sinatra_app.get('/_ping') { '_pong' }

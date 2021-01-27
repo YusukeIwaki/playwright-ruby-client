@@ -100,6 +100,7 @@ module Playwright
 
     def wait_for_load_state(state: nil, timeout: nil)
       option_state = state || 'load'
+      option_timeout = timeout || @page.send(:timeout_settings).navigation_timeout
       unless %w(load domcontentloaded networkidle).include?(option_state)
         raise ArgumentError.new('state: expected one of (load|domcontentloaded|networkidle)')
       end
@@ -107,7 +108,7 @@ module Playwright
         return
       end
 
-      wait_helper = setup_navigation_wait_helper(timeout: timeout)
+      wait_helper = setup_navigation_wait_helper(timeout: option_timeout)
 
       predicate = ->(state) { state == option_state }
       wait_helper.wait_for_event(@event_emitter, 'loadstate', predicate: predicate)
@@ -198,6 +199,43 @@ module Playwright
         timeout: timeout,
       }.compact
       @channel.send_message_to_server('click', params)
+
+      nil
+    end
+
+    def dblclick(
+          selector,
+          button: nil,
+          delay: nil,
+          force: nil,
+          modifiers: nil,
+          noWaitAfter: nil,
+          position: nil,
+          timeout: nil)
+
+      params = {
+        selector: selector,
+        button: button,
+        delay: delay,
+        force: force,
+        modifiers: modifiers,
+        noWaitAfter: noWaitAfter,
+        position: position,
+        timeout: timeout,
+      }.compact
+      @channel.send_message_to_server('dblclick', params)
+
+      nil
+    end
+
+    def fill(selector, value, noWaitAfter: nil, timeout: nil)
+      params = {
+        selector: selector,
+        value: value,
+        noWaitAfter: noWaitAfter,
+        timeout: timeout,
+      }.compact
+      @channel.send_message_to_server('fill', params)
 
       nil
     end
