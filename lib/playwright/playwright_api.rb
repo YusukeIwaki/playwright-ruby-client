@@ -83,5 +83,13 @@ module Playwright
         object
       end
     end
+
+    private def unwrap_impl(object)
+      if object.is_a?(PlaywrightApi)
+        object.instance_variable_get(:@impl)
+      else
+        object
+      end
+    end
   end
 end

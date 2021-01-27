@@ -15,7 +15,7 @@ class DocumentedMethodArgs
     end
 
     def as_method_call
-      @doc.name
+      "unwrap_impl(#{@doc.name})"
     end
   end
 
@@ -39,7 +39,7 @@ class DocumentedMethodArgs
     end
 
     def as_method_call
-      "#{@doc.name}: #{@doc.name}"
+      "#{@doc.name}: unwrap_impl(#{@doc.name})"
     end
   end
 
@@ -53,7 +53,7 @@ class DocumentedMethodArgs
     end
 
     def as_method_call
-      "#{@doc.name}: #{@doc.name}"
+      "#{@doc.name}: unwrap_impl(#{@doc.name})"
     end
   end
 

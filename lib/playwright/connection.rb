@@ -132,7 +132,7 @@ module Playwright
         unless object
           raise "Cannot find object to dispose: #{guid}"
         end
-        object.dispose
+        object.send(:dispose!)
         return
       end
 
@@ -153,7 +153,7 @@ module Playwright
       end
 
       if payload.is_a?(Channel)
-        { guid: payload.guid }
+        return { guid: payload.guid }
       end
 
       if payload.is_a?(Hash)

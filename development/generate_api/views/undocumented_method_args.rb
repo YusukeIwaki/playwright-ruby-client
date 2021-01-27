@@ -11,7 +11,7 @@ class UndocumentedMethodArgs
     end
 
     def as_method_call
-      @name
+      "unwrap_impl(#{@name})"
     end
   end
 
@@ -25,7 +25,7 @@ class UndocumentedMethodArgs
     end
 
     def as_method_call
-      "#{@name}: #{@name}"
+      "#{@name}: unwrap_impl(#{@name})"
     end
   end
 
