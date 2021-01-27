@@ -216,9 +216,9 @@ RSpec.describe Playwright::Page do
     expect(browser).to start_with('Safari')
 
     # if (isChromium)
-    expect(engine).to include('Chrome/')
+    #   expect(engine).to include('Chrome/')
     # else
-    #   expect(engine.startsWith('Version/')).toBe(true);
+    expect(engine).to start_with('Version/')
   end
 
   it 'page.press should work', sinatra: true do

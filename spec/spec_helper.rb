@@ -28,7 +28,7 @@ RSpec.configure do |config|
 
   config.around(:each, type: :integration) do |example|
     Playwright.create(playwright_cli_executable_path: ENV['PLAYWRIGHT_CLI_EXECUTABLE_PATH']) do |playwright|
-      playwright.chromium.launch do |browser|
+      playwright.webkit.launch do |browser|
         @playwright_browser = browser
         example.run
       end
