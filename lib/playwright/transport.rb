@@ -18,16 +18,12 @@ module Playwright
       @on_message = block
     end
 
-    class AlreadyDisconnectedError < StandardError ; end
-
     # @param message [Hash]
     def send_message(message)
       debug_send_message(message) if @debug
       msg = JSON.dump(message)
       @stdin.write([msg.size].pack('V')) # unsigned 32bit, little endian
       @stdin.write(msg)
-    rescue Errno::EPIPE
-      raise AlreadyDisconnectedError.new('send_message failed')
     end
 
     # Terminate playwright-cli driver.
