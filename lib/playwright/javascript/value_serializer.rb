@@ -15,9 +15,9 @@ module Playwright
       # ref: https://github.com/microsoft/playwright-python/blob/25a99d53e00e35365cf5113b9525272628c0e65f/playwright/_impl/_js_handle.py#L99
       private def serialize_value(value)
         case value
-        when JSHandle
+        when ChannelOwners::JSHandle
           index = @handles.count
-          @handles << v
+          @handles << value.channel
           { h: index }
         when nil
           { v: 'undefined' }
@@ -28,23 +28,23 @@ module Playwright
         when -Float::INFINITY
           { v: '-Infinity' }
         when true, false
-          { b: v }
+          { b: value }
         when Numeric
-          { n: v }
+          { n: value }
         when String
-          { s: v }
+          { s: value }
         when Time
           require 'time'
-          { d: v.utc.iso8601 }
+          { d: value.utc.iso8601 }
         when Regexp
           flags = []
-          flags << 'ms' if (v.options & Regexp::MULTILINE) != 0
-          flags << 'i' if (v.options & Regexp::IGNORECASE) != 0
-          { r: { p: v.source, f: flags.join('') } }
+          flags << 'ms' if (value.options & Regexp::MULTILINE) != 0
+          flags << 'i' if (value.options & Regexp::IGNORECASE) != 0
+          { r: { p: value.source, f: flags.join('') } }
         when Array
-          { a: v.map { |value| serialize_value(value) } }
+          { a: value.map { |v| serialize_value(v) } }
         when Hash
-          { o: v.map { |key, value| [key, serialize_value(value)] }.to_h }
+          { o: value.map { |key, v| [key, serialize_value(v)] }.to_h }
         else
           raise ArgumentError.new("Unexpected value: #{value}")
         end

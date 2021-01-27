@@ -39,13 +39,14 @@ module Playwright
 
     attr_reader :channel
 
-    def dispose
+    # used only from Connection. Not intended for public use. So keep private.
+    private def dispose!
       # Clean up from parent and connection.
       @parent&.send(:delete_object_from_child, @guid)
       @connection.send(:delete_object_from_channel_owner, @guid)
 
       # Dispose all children.
-      @objects.each_value(&:dispose)
+      @objects.each_value { |object| object.send(:dispose!) }
       @objects.clear
     end
 
