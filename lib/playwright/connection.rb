@@ -55,13 +55,10 @@ module Playwright
           method: method,
           params: replace_channels_with_guids(params),
         }
-        begin
-          @transport.send_message(message)
-        rescue => err
-          @callbacks.delete(id)
-          callback.reject(err)
-          raise
-        end
+        @transport.send_message(message)
+      rescue Transport::AlreadyDisconnectedError => err
+        @callbacks.delete(id)
+        callback.reject(err)
       end
 
       callback
