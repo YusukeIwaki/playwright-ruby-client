@@ -60,7 +60,7 @@ module Playwright
         rescue => err
           @callbacks.delete(id)
           callback.reject(err)
-          raise
+          raise unless err.is_a?(Transport::AlreadyDisconnectedError)
         end
       end
 
