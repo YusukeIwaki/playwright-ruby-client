@@ -19,6 +19,12 @@ class ImplementedClassWithoutDoc
     end
   end
 
+  def api_coverages
+    Enumerator.new do |data|
+      # nothing
+    end
+  end
+
   private
 
   # @returns [String]

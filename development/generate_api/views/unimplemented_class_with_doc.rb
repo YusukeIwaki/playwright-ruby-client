@@ -21,6 +21,16 @@ class UnimplementedClassWithDoc
     end
   end
 
+  def api_coverages
+    Enumerator.new do |data|
+      data << ''
+      data << "## ~~#{class_name}~~"
+      data << ''
+      method_coverages.each(&data)
+      property_coverages.each(&data)
+    end
+  end
+
   private
 
   # @returns [String]
@@ -64,6 +74,15 @@ class UnimplementedClassWithDoc
     end
   end
 
+  def property_coverages
+    Enumerator.new do |data|
+      @doc.property_docs.map do |property_doc|
+        method_name = MethodName.new(@inflector, property_doc.name)
+        UnmplementedPropertyWithDoc.new(property_doc, @inflector).api_coverages.each(&data)
+      end
+    end
+  end
+
   def method_lines
     Enumerator.new do |data|
       @doc.method_docs.map do |method_doc|
@@ -71,6 +90,15 @@ class UnimplementedClassWithDoc
 
         data << '' # insert blank line before definition.
         UnmplementedMethodWithDoc.new(method_doc, @inflector).lines.each(&data)
+      end
+    end
+  end
+
+  def method_coverages
+    Enumerator.new do |data|
+      @doc.method_docs.each do |method_doc|
+        method_name = MethodName.new(@inflector, method_doc.name)
+        UnmplementedMethodWithDoc.new(method_doc, @inflector).api_coverages.each(&data)
       end
     end
   end

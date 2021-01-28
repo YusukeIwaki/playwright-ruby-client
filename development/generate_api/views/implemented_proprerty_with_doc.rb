@@ -18,6 +18,12 @@ class ImplementedPropertyWithDoc
     end
   end
 
+  def api_coverages
+    Enumerator.new do |data|
+      data << "* #{property_name}"
+    end
+  end
+
   private
 
   def method_comment_lines

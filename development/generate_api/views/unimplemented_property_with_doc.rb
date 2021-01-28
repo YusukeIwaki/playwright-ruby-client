@@ -16,6 +16,12 @@ class UnmplementedPropertyWithDoc
     end
   end
 
+  def api_coverages
+    Enumerator.new do |data|
+      data << "* ~~#{property_name}~~"
+    end
+  end
+
   private
 
   def property_comment_lines
