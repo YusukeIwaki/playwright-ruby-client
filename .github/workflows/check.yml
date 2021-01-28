@@ -12,6 +12,14 @@ jobs:
       with:
         ruby-version: 3.0
         bundler-cache: true
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 14
+    - name: Download playwright driver
+      run: |
+        wget -O driver.zip https://playwright.azureedge.net/builds/driver/next/playwright-$(cat development/CLI_VERSION)-linux.zip
+        unzip driver.zip && rm driver.zip
     - run: |
+        ./playwright.sh print-api-json | jq . > development/api.json
         bundle exec ruby development/generate_api.rb
         git diff --exit-code

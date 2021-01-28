@@ -28,7 +28,7 @@ RSpec.describe 'example' do
       expect(page.keyboard).to be_a(::Playwright::Keyboard)
 
       page.keyboard.type_text("playwright")
-      page.wait_for_navigation {
+      page.expect_navigation {
         page.keyboard.press("Enter")
       }
 

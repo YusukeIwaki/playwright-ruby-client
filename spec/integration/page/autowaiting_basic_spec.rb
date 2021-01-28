@@ -21,7 +21,7 @@ RSpec.describe 'autowaiting basic' do
           messages << 'click'
         },
         Concurrent::Promises.future {
-          page.wait_for_event('framenavigated')
+          page.expect_event('framenavigated')
           messages << 'navigated'
         }
       ]
@@ -50,7 +50,7 @@ RSpec.describe 'autowaiting basic' do
           messages << 'click'
         },
         Concurrent::Promises.future {
-          page.wait_for_event('framenavigated')
+          page.expect_event('framenavigated')
           messages << 'navigated'
         }
       ]
@@ -85,7 +85,7 @@ RSpec.describe 'autowaiting basic' do
           messages << 'click'
         },
         Concurrent::Promises.future {
-          page.wait_for_event('framenavigated')
+          page.expect_event('framenavigated')
           messages << 'navigated'
         }
       ]
@@ -120,7 +120,7 @@ RSpec.describe 'autowaiting basic' do
           messages << 'click'
         },
         Concurrent::Promises.future {
-          page.wait_for_event('framenavigated')
+          page.expect_event('framenavigated')
           messages << 'navigated'
         }
       ]
@@ -147,7 +147,7 @@ RSpec.describe 'autowaiting basic' do
           messages << 'evaluate'
         },
         Concurrent::Promises.future {
-          page.wait_for_event('framenavigated')
+          page.expect_event('framenavigated')
           messages << 'navigated'
         }
       ]
@@ -196,7 +196,7 @@ RSpec.describe 'autowaiting basic' do
           messages << 'evaluate'
         },
         Concurrent::Promises.future {
-          page.wait_for_event('framenavigated')
+          page.expect_event('framenavigated')
           messages << 'navigated'
         }
       ]
@@ -230,7 +230,7 @@ RSpec.describe 'autowaiting basic' do
           messages << 'click'
         },
         Concurrent::Promises.future {
-          page.wait_for_event('framenavigated')
+          page.expect_event('framenavigated')
           messages << 'navigated'
         }
       ]
@@ -285,7 +285,7 @@ RSpec.describe 'autowaiting basic' do
           messages << 'clickload'
         },
         Concurrent::Promises.future {
-          page.wait_for_event('framenavigated')
+          page.expect_event('framenavigated')
           page.wait_for_load_state(state: 'domcontentloaded')
           messages << 'domcontentloaded'
         }

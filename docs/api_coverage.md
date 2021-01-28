@@ -169,7 +169,7 @@
 * url
 * ~~wait_for_function~~
 * wait_for_load_state
-* ~~expect_navigation~~
+* expect_navigation
 * ~~wait_for_selector~~
 * ~~wait_for_timeout~~
 
@@ -275,12 +275,12 @@
 * url
 * ~~video~~
 * viewport_size
-* ~~expect_event~~
+* expect_event
 * ~~wait_for_function~~
 * wait_for_load_state
-* ~~expect_navigation~~
-* ~~expect_request~~
-* ~~expect_response~~
+* expect_navigation
+* expect_request
+* expect_response
 * ~~wait_for_selector~~
 * ~~wait_for_timeout~~
 * ~~workers~~

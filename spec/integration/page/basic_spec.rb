@@ -26,8 +26,8 @@ RSpec.describe Playwright::Page do
 
   it 'should terminate network waiters' do
     with_page do |page|
-      request_promise = Concurrent::Promises.future { page.wait_for_request('http://example.com/') }
-      response_promise = Concurrent::Promises.future { page.wait_for_response('http://example.com/') }
+      request_promise = Concurrent::Promises.future { page.expect_request('http://example.com/') }
+      response_promise = Concurrent::Promises.future { page.expect_response('http://example.com/') }
       page.close
       expect { request_promise.value! }.to raise_error(/Page closed/)
       expect { response_promise.value! }.to raise_error(/Page closed/)
@@ -46,7 +46,7 @@ RSpec.describe Playwright::Page do
 
   it 'should fire load when expected' do
     with_page do |page|
-      promise = Concurrent::Promises.future { page.wait_for_event('load') }
+      promise = Concurrent::Promises.future { page.expect_event('load') }
       page.goto('about:blank')
       Timeout.timeout(1) do
         promise.value!
@@ -70,7 +70,7 @@ RSpec.describe Playwright::Page do
 
   it 'should provide access to the opener page' do
     with_page do |page|
-      popup = page.wait_for_event('popup') do
+      popup = page.expect_event('popup') do
         page.evaluate("() => window.open('about:blank')")
       end
       expect(popup.opener).to eq(page)
@@ -79,7 +79,7 @@ RSpec.describe Playwright::Page do
 
   it 'should return null if parent page has been closed' do
     with_page do |page|
-      popup = page.wait_for_event('popup') do
+      popup = page.expect_event('popup') do
         page.evaluate("() => window.open('about:blank')")
       end
       page.close
@@ -95,7 +95,7 @@ RSpec.describe Playwright::Page do
   it 'should fire domcontentloaded when expected' do
     with_page do |page|
       Timeout.timeout(3) do
-        page.wait_for_event('domcontentloaded') do
+        page.expect_event('domcontentloaded') do
           page.goto('about:blank')
         end
       end
@@ -105,7 +105,7 @@ RSpec.describe Playwright::Page do
   it 'should fail with error upon disconnect' do
     with_page do |page|
       expect {
-        page.wait_for_event('download') do
+        page.expect_event('download') do
           page.close
         end
       }.to raise_error(/Page closed/)
@@ -138,7 +138,7 @@ RSpec.describe Playwright::Page do
 
   it 'page.close should work with window.close' do
     with_page do |page|
-      new_page = page.wait_for_event('popup') do
+      new_page = page.expect_event('popup') do
         page.evaluate("() => window['newPage'] = window.open('about:blank')")
       end
       closed_promise = Concurrent::Promises.resolvable_future
