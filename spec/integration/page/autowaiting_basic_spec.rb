@@ -268,10 +268,15 @@ RSpec.describe 'autowaiting basic' do
   it 'should work with waitForLoadState(load)', sinatra: true do
     messages = []
 
+    css_path = "/one-style-#{SecureRandom.hex(12)}.css"
     sinatra.get(endpoint) do
       messages << 'route'
       headers('Content-Type' => 'text/html')
-      body("<link rel='stylesheet' href='./one-style.css'>")
+      body("<link rel='stylesheet' href='.#{css_path}'>")
+    end
+    sinatra.get(css_path) do
+      sleep 0.5
+      'a { font-size: 12pt }'
     end
 
     with_page do |page|
