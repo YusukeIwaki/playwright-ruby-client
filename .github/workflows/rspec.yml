@@ -52,7 +52,12 @@ jobs:
         PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./playwright.sh
 
   integration_test_with_latest_playwright:
-    name: Integration test (with latest playwright)
+    name: Integration test [${{ matrix.browser_type }}] (with latest playwright)
+    strategy:
+      matrix:
+        browser_type:
+          - chromium
+          - webkit
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -71,4 +76,5 @@ jobs:
     - run: bundle exec ruby development/generate_api.rb
     - run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- bundle exec rspec spec/integration --profile 10
       env:
+        BROWSER: ${{ matrix.browser_type }}
         PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./node_modules/.bin/playwright
