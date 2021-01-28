@@ -31,36 +31,44 @@ jobs:
   integration_test_with_downloaded_playwright_driver:
     name: Integration test (with downloaded playwright driver)
     runs-on: ubuntu-latest
-    container: circleci/ruby:2.7.2-node-browsers
     steps:
-    - name: Setup file system permissions
-      run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/_temp
     - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7.2
+        bundler-cache: true
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 14
+    - uses: microsoft/playwright-github-action@v1
     - name: Setup playwright driver
       run: |
         wget -O driver.zip https://playwright.azureedge.net/builds/driver/next/playwright-$(cat development/CLI_VERSION)-linux.zip
         unzip driver.zip && rm driver.zip
         ./playwright.sh install
-    - run: gem install bundler:2.2.3 && bundle install
     - run: bundle exec ruby development/generate_api.rb
-    - run: bundle exec rspec spec/integration --profile 10
+    - run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- bundle exec rspec spec/integration --profile 10
       env:
         PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./playwright.sh
 
   integration_test_with_latest_playwright:
     name: Integration test (with latest playwright)
     runs-on: ubuntu-latest
-    container: circleci/ruby:2.7.2-node-browsers
     steps:
-    - name: Setup file system permissions
-      run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/_temp
     - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7.2
+        bundler-cache: true
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 14
+    - uses: microsoft/playwright-github-action@v1
     - name: setup playwright via npm install
       run: |
         npm install playwright
         ./node_modules/.bin/playwright install
-    - run: gem install bundler:2.2.3 && bundle install
     - run: bundle exec ruby development/generate_api.rb
-    - run: bundle exec rspec spec/integration --profile 10
+    - run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- bundle exec rspec spec/integration --profile 10
       env:
         PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./node_modules/.bin/playwright
