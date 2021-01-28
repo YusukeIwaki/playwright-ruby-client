@@ -16,6 +16,7 @@ RSpec.describe 'autowaiting basic' do
 
       promises = [
         Concurrent::Promises.future {
+          sleep 0.5
           page.click('a')
           messages << 'click'
         },
@@ -44,6 +45,7 @@ RSpec.describe 'autowaiting basic' do
 
       promises = [
         Concurrent::Promises.future {
+          sleep 0.5
           page.click('a')
           messages << 'click'
         },
@@ -78,6 +80,7 @@ RSpec.describe 'autowaiting basic' do
 
       promises = [
         Concurrent::Promises.future {
+          sleep 0.5
           page.click('input[type=submit]')
           messages << 'click'
         },
@@ -112,6 +115,7 @@ RSpec.describe 'autowaiting basic' do
 
       promises = [
         Concurrent::Promises.future {
+          sleep 0.5
           page.click('input[type=submit]')
           messages << 'click'
         },
@@ -138,6 +142,7 @@ RSpec.describe 'autowaiting basic' do
     with_page do |page|
       promises = [
         Concurrent::Promises.future {
+          sleep 0.5
           page.evaluate("window.location.href = \"#{server_cross_process_prefix}#{endpoint}\"")
           messages << 'evaluate'
         },
@@ -186,6 +191,7 @@ RSpec.describe 'autowaiting basic' do
 
       promises = [
         Concurrent::Promises.future {
+          sleep 0.5
           page.evaluate('window.location.reload()')
           messages << 'evaluate'
         },
@@ -219,6 +225,7 @@ RSpec.describe 'autowaiting basic' do
       frame = page.frame({name: 'target'})
       promises = [
         Concurrent::Promises.future {
+          sleep 0.5
           page.click('a')
           messages << 'click'
         },
@@ -272,6 +279,7 @@ RSpec.describe 'autowaiting basic' do
 
       promises = [
         Concurrent::Promises.future {
+          sleep 0.5
           page.click('a')
           page.wait_for_load_state(state: 'load')
           messages << 'clickload'
