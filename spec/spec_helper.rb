@@ -26,9 +26,16 @@ RSpec.configure do |config|
     metadata[:type] = :integration
   end
 
+  browser_type = :chromium
+  BROWSER_TYPES = %i(chromium webkit firefox)
+  if BROWSER_TYPES.include?(ENV['BROWSER']&.to_sym)
+    browser_type = ENV['BROWSER'].to_sym
+  end
+
   config.around(:each, type: :integration) do |example|
+    @playwright_browser_type = browser_type
     Playwright.create(playwright_cli_executable_path: ENV['PLAYWRIGHT_CLI_EXECUTABLE_PATH']) do |playwright|
-      playwright.chromium.launch do |browser|
+      playwright.send(@playwright_browser_type).launch do |browser|
         @playwright_browser = browser
         example.run
       end
@@ -63,6 +70,9 @@ RSpec.configure do |config|
         page.close
       end
     end
+  end
+  BROWSER_TYPES.each do |type|
+    IntegrationTestCaseMethods.define_method("#{type}?") { @playwright_browser_type == type }
   end
   config.include IntegrationTestCaseMethods, type: :integration
 

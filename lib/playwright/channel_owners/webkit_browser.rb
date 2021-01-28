@@ -2,7 +2,7 @@ require_relative './browser'
 
 module Playwright
   module ChannelOwners
-    class WebkitBrowser < Browser
+    class WebKitBrowser < Browser
     end
   end
 end
