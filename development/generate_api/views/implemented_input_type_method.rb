@@ -19,6 +19,12 @@ class ImplementedInputTypeMethod
     end
   end
 
+  def api_coverages
+    Enumerator.new do |data|
+      data << "* #{method_name.rubyish_name}"
+    end
+  end
+
   private
 
   def method_comment_lines

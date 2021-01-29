@@ -297,7 +297,7 @@ module Playwright
       end
     end
 
-    def wait_for_event(event, optionsOrPredicate: nil, &block)
+    def expect_event(event, optionsOrPredicate: nil, &block)
       predicate, timeout =
         case optionsOrPredicate
         when Proc
@@ -327,15 +327,15 @@ module Playwright
       wait_helper.promise.value!
     end
 
-    def wait_for_navigation(timeout: nil, url: nil, waitUntil: nil, &block)
-      @main_frame.wait_for_navigation(
+    def expect_navigation(timeout: nil, url: nil, waitUntil: nil, &block)
+      @main_frame.expect_navigation(
         timeout: timeout,
         url: url,
         waitUntil: waitUntil,
         &block)
     end
 
-    def wait_for_request(urlOrPredicate, timeout: nil)
+    def expect_request(urlOrPredicate, timeout: nil)
       predicate =
         case urlOrPredicate
         when String, Regexp
@@ -347,10 +347,10 @@ module Playwright
           -> (_) { true }
         end
 
-      wait_for_event(Events::Page::Request, optionsOrPredicate: { predicate: predicate, timeout: timeout})
+      expect_event(Events::Page::Request, optionsOrPredicate: { predicate: predicate, timeout: timeout})
     end
 
-    def wait_for_response(urlOrPredicate, timeout: nil)
+    def expect_response(urlOrPredicate, timeout: nil)
       predicate =
         case urlOrPredicate
         when String, Regexp
@@ -362,7 +362,7 @@ module Playwright
           -> (_) { true }
         end
 
-      wait_for_event(Events::Page::Response, optionsOrPredicate: { predicate: predicate, timeout: timeout})
+      expect_event(Events::Page::Response, optionsOrPredicate: { predicate: predicate, timeout: timeout})
     end
 
     # called from BrowserContext#on_page with send(:update_browser_context, page), so keep private.

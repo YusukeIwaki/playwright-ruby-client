@@ -62,7 +62,7 @@ module Playwright
       end
     end
 
-    def wait_for_navigation(timeout: nil, url: nil, waitUntil: nil, &block)
+    def expect_navigation(timeout: nil, url: nil, waitUntil: nil, &block)
       option_wait_until = waitUntil || 'load'
       option_timeout = timeout || @page.send(:timeout_settings).navigation_timeout
       time_start = Time.now

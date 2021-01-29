@@ -49,7 +49,7 @@ Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwrigh
     search_input = form.query_selector("input.header-search-input")
     search_input.click
     page.keyboard.type_text("playwright")
-    page.wait_for_navigation {
+    page.expect_navigation {
       page.keyboard.press("Enter")
     }
 

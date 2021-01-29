@@ -22,6 +22,16 @@ class ImplementedClassWithDoc
     end
   end
 
+  def api_coverages
+    Enumerator.new do |data|
+      data << ''
+      data << "## #{class_name}"
+      data << ''
+      method_coverages.each(&data)
+      property_coverages.each(&data)
+    end
+  end
+
   private
 
   # @returns [String]
@@ -70,9 +80,24 @@ class ImplementedClassWithDoc
     end
   end
 
+  def property_coverages
+    Enumerator.new do |data|
+      @doc.property_docs.map do |property_doc|
+        method_name = MethodName.new(@inflector, property_doc.name)
+
+        if @klass.public_instance_methods.include?(method_name.rubyish_name.to_sym)
+          method = @klass.public_instance_method(method_name.rubyish_name.to_sym)
+          ImplementedPropertyWithDoc.new(property_doc, method, @inflector).api_coverages.each(&data)
+        else
+          UnmplementedPropertyWithDoc.new(property_doc, @inflector).api_coverages.each(&data)
+        end
+      end
+    end
+  end
+
   def method_lines
     Enumerator.new do |data|
-      @doc.method_docs.map do |method_doc|
+      @doc.method_docs.each do |method_doc|
         method_name = MethodName.new(@inflector, method_doc.name)
 
         data << '' # insert blank line before definition.
@@ -96,6 +121,21 @@ class ImplementedClassWithDoc
           data << '    # -- inherited from EventEmitter --'
         end
         ImplementedMethodWithoutDoc.new(method, @inflector).lines.each(&data)
+      end
+    end
+  end
+
+  def method_coverages
+    Enumerator.new do |data|
+      @doc.method_docs.each do |method_doc|
+        method_name = MethodName.new(@inflector, method_doc.name)
+
+        if @klass.public_instance_methods.include?(method_name.rubyish_name.to_sym)
+          method = @klass.public_instance_method(method_name.rubyish_name.to_sym)
+          ImplementedMethodWithDoc.new(method_doc, method, @inflector).api_coverages.each(&data)
+        else
+          UnmplementedMethodWithDoc.new(method_doc, @inflector).api_coverages.each(&data)
+        end
       end
     end
   end

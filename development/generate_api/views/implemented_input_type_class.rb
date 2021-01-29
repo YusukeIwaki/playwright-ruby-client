@@ -20,6 +20,15 @@ class ImplementedInputTypeClass
     end
   end
 
+  def api_coverages
+    Enumerator.new do |data|
+      data << ''
+      data << "## #{class_name}"
+      data << ''
+      method_coverages.each(&data)
+    end
+  end
+
   private
 
   # @returns [String]
@@ -48,6 +57,21 @@ class ImplementedInputTypeClass
           ImplementedInputTypeMethod.new(method_doc, method, @inflector).lines.each(&data)
         else
           UnmplementedMethodWithDoc.new(method_doc, @inflector).lines.each(&data)
+        end
+      end
+    end
+  end
+
+  def method_coverages
+    Enumerator.new do |data|
+      @doc.method_docs.map do |method_doc|
+        method_name = MethodName.new(@inflector, method_doc.name)
+
+        if @klass.public_instance_methods.include?(method_name.rubyish_name.to_sym)
+          method = @klass.public_instance_method(method_name.rubyish_name.to_sym)
+          ImplementedInputTypeMethod.new(method_doc, method, @inflector).api_coverages.each(&data)
+        else
+          UnmplementedMethodWithDoc.new(method_doc, @inflector).api_coverages.each(&data)
         end
       end
     end

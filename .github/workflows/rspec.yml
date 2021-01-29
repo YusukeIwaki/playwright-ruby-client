@@ -13,20 +13,8 @@ jobs:
         ruby-version: 3.0
         bundler-cache: true
     - run: |
-        rm -rf spec/development spec/integration
+        rm -rf spec/integration
         bundle exec rspec
-
-  unit_test_development:
-    name: Unit test for generate_api
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 3.0
-        bundler-cache: true
-    - run: bundle exec rspec spec/development
-    - run: bundle exec ruby development/generate_api.rb
 
   integration_test_with_downloaded_playwright_driver:
     name: Integration test (with downloaded playwright driver)
@@ -49,6 +37,7 @@ jobs:
     - run: bundle exec ruby development/generate_api.rb
     - run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- bundle exec rspec spec/integration --profile 10
       env:
+        DEBUG: 1
         PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./playwright.sh
 
   integration_test_with_latest_playwright:
@@ -77,4 +66,5 @@ jobs:
     - run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- bundle exec rspec spec/integration --profile 10
       env:
         BROWSER: ${{ matrix.browser_type }}
+        DEBUG: 1
         PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./node_modules/.bin/playwright
