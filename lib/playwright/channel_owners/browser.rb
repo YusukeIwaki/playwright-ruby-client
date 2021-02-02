@@ -2,6 +2,7 @@ module Playwright
   # @ref https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_browser.py
   define_channel_owner :Browser do
     include Utils::Errors::SafeCloseError
+    include Utils::PrepareBrowserContextOptions
 
     def after_initialize
       @contexts = Set.new
@@ -16,26 +17,25 @@ module Playwright
       @connected
     end
 
-    def new_context(**options)
+    def new_context(**options, &block)
       params = options.dup
-      # @see https://github.com/microsoft/playwright/blob/5a2cfdbd47ed3c3deff77bb73e5fac34241f649d/src/client/browserContext.ts#L265
-      if params[:viewport] == 0
-        params.delete(:viewport)
-        params[:noDefaultViewport] = true
-      end
-      if params[:extraHTTPHeaders]
-        # TODO
-      end
-      if params[:storageState].is_a?(String)
-        params[:storageState] = JSON.parse(File.read(params[:storageState]))
-      end
+      prepare_browser_context_options(params)
 
       resp = @channel.send_message_to_server('newContext', params.compact)
       context = ChannelOwners::BrowserContext.from(resp)
       @contexts << context
       context.browser = self
       context.options = params
-      context
+
+      if block
+        begin
+          block.call(context)
+        ensure
+          context.close
+        end
+      else
+        context
+      end
     end
 
     def new_page(**options)

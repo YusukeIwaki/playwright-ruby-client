@@ -27,6 +27,10 @@ ALL_TYPES = %w[
     BrowserType
     Playwright
 ]
+EXPERIMENTAL = %w[
+  Android
+  AndroidDevice
+]
 INPUT_TYPES = %w[
   Keyboard
   Mouse
@@ -53,7 +57,7 @@ if $0 == __FILE__
     f.write("# API coverages\n")
   end
 
-  ALL_TYPES.each do |class_name|
+  (ALL_TYPES + EXPERIMENTAL).each do |class_name|
     doc_json = api_json.find { |json| json['name'] == class_name }
     doc = doc_json ? ClassDoc.new(doc_json, root: api_json) : nil
 
