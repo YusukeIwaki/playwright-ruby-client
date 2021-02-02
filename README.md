@@ -64,7 +64,7 @@ end
 ```
 
 ```sh
-$ bundle exec ruby main.rb 
+$ bundle exec ruby main.rb
 ==> microsoft/playwright
 ==> microsoft/playwright-python
 ==> microsoft/playwright-cli
@@ -76,6 +76,41 @@ $ bundle exec ruby main.rb
 ==> microsoft/playwright-java
 ==> MarketSquare/robotframework-browser
 ```
+
+### Android browser automation
+
+```ruby
+require 'playwright'
+
+Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright') do |playwright|
+  devices = playwright.android.devices
+  unless devices.empty?
+    device = devices.last
+    begin
+      puts "Model: #{device.model}"
+      puts "Serial: #{device.serial}"
+      puts device.shell('ls /system')
+
+      device.launch_browser do |context|
+        page = context.pages.first
+        page.goto('https://github.com/YusukeIwaki')
+        page.click('header button')
+        page.click('input[name="q"]')
+        page.keyboard.type_text('puppeteer')
+        page.expect_navigation {
+          page.keyboard.press('Enter')
+        }
+        page.screenshot(path: 'YusukeIwaki.android.png')
+      end
+    ensure
+      device.close
+    end
+  end
+end
+```
+
+![android-browser](https://user-images.githubusercontent.com/11763113/106615177-8467a800-65af-11eb-94d9-c56e71487e78.gif)
+
 
 ## License
 
