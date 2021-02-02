@@ -180,7 +180,7 @@ module Playwright
         timeout: timeout,
       }.compact
       encoded_binary = @channel.send_message_to_server('screenshot', params)
-      decoded_binary = Base64.decode64(encoded_binary)
+      decoded_binary = Base64.strict_decode64(encoded_binary)
       if path
         File.open(path, 'wb') do |f|
           f.write(decoded_binary)
