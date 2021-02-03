@@ -246,7 +246,7 @@ module Playwright
       nil
     end
 
-    def type_text(
+    def type(
       selector,
       text,
       delay: nil,

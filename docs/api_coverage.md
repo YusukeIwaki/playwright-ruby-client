@@ -49,7 +49,7 @@
 * down
 * insert_text
 * press
-* type_text
+* type
 * up
 
 ## Mouse
@@ -107,7 +107,7 @@
 * ~~set_input_files~~
 * ~~tap_point~~
 * ~~text_content~~
-* type_text
+* type
 * ~~uncheck~~
 * ~~wait_for_element_state~~
 * ~~wait_for_selector~~
@@ -164,7 +164,7 @@
 * ~~tap_point~~
 * ~~text_content~~
 * title
-* type_text
+* type
 * ~~uncheck~~
 * url
 * ~~wait_for_function~~
@@ -188,7 +188,7 @@
 * args
 * location
 * text
-* ~~type_text~~
+* type
 
 ## ~~Dialog~~
 
@@ -196,7 +196,7 @@
 * ~~default_value~~
 * ~~dismiss~~
 * ~~message~~
-* ~~type_text~~
+* ~~type~~
 
 ## ~~Download~~
 
@@ -269,7 +269,7 @@
 * ~~tap_point~~
 * ~~text_content~~
 * title
-* type_text
+* type
 * ~~uncheck~~
 * ~~unroute~~
 * url

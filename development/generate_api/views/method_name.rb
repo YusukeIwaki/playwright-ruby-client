@@ -11,7 +11,6 @@ class MethodName
   # Some method names are already reserved in Ruby,
   # so replace them.
   DANGEROUS_NAME_MAP = {
-    "type" => 'type_text',
     "send" => 'send_message',
     "tap" => 'tap_point',
   }.freeze

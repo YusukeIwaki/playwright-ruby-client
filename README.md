@@ -48,7 +48,7 @@ Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwrigh
     form = page.query_selector("form.js-site-search-form")
     search_input = form.query_selector("input.header-search-input")
     search_input.click
-    page.keyboard.type_text("playwright")
+    page.keyboard.type("playwright")
     page.expect_navigation {
       page.keyboard.press("Enter")
     }
@@ -96,7 +96,7 @@ Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwrigh
         page.goto('https://github.com/YusukeIwaki')
         page.click('header button')
         page.click('input[name="q"]')
-        page.keyboard.type_text('puppeteer')
+        page.keyboard.type('puppeteer')
         page.expect_navigation {
           page.keyboard.press('Enter')
         }

@@ -28,7 +28,7 @@ module Playwright
         nil
       end
 
-      def type_text(text, delay: nil, noWaitAfter: nil, timeout: nil)
+      def type(text, delay: nil, noWaitAfter: nil, timeout: nil)
         params = {
           text: text,
           delay: delay,

@@ -13,7 +13,7 @@ module Playwright
       @channel.send_message_to_server('keyboardInsertText', text: text)
     end
 
-    def type_text(text, delay: nil)
+    def type(text, delay: nil)
       params = {
         text: text,
         delay: delay,

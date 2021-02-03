@@ -259,14 +259,14 @@ module Playwright
       @main_frame.focus(selector, timeout: timeout)
     end
 
-    def type_text(
+    def type(
       selector,
       text,
       delay: nil,
       noWaitAfter: nil,
       timeout: nil)
 
-      @main_frame.type_text(selector, text, delay: delay, noWaitAfter: noWaitAfter, timeout: timeout)
+      @main_frame.type(selector, text, delay: delay, noWaitAfter: noWaitAfter, timeout: timeout)
     end
 
     def press(
