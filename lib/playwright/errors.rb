@@ -3,7 +3,7 @@ module Playwright
     # ref: https://github.com/microsoft/playwright-python/blob/0b4a980fed366c4c1dee9bfcdd72662d629fdc8d/playwright/_impl/_helper.py#L155
     def self.parse(error_payload)
       if error_payload['name'] == 'TimeoutError'
-        Playwright::TimeoutError.new(
+        TimeoutError.new(
           message: error_payload['message'],
           stack: error_payload['stack'].split("\n"),
         )
