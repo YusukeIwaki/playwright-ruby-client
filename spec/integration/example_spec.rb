@@ -3,7 +3,7 @@
 require 'spec_helper'
 require 'tmpdir'
 
-RSpec.describe 'example' do
+RSpec.describe 'example', skip: ENV['CI'] do
   it 'should take a screenshot' do
     with_page do |page|
       page.goto('https://github.com/YusukeIwaki')
