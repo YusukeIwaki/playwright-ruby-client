@@ -60,8 +60,8 @@ class ImplementedMethodWithDoc
         end
       end
 
-      if method_name.rubyish_name == 'get_property'
-        data << "    alias_method :[], :get_property"
+      if method_name.rubyish_name == 'get_attribute'
+        data << "    alias_method :[], :get_attribute"
       elsif method_name.rubyish_name.start_with?('get_')
         if !method_has_block? && method_args.empty?
           data << "    alias_method :#{method_name.rubyish_name[4..-1]}, :#{method_name.rubyish_name}"
