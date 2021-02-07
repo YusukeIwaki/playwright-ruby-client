@@ -44,7 +44,7 @@ module Playwright
         when Array
           { a: value.map { |v| serialize_value(v) } }
         when Hash
-          { o: value.map { |key, v| [key, serialize_value(v)] }.to_h }
+          { o: value.map { |key, v| { k: key, v: serialize_value(v) } } }
         else
           raise ArgumentError.new("Unexpected value: #{value}")
         end

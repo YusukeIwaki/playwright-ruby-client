@@ -61,7 +61,7 @@ module Playwright
         end
 
         if hash.key?('o')
-          return hash['o'].map { |key, value| [key, parse_hash(value)].to_h }
+          return hash['o'].map { |obj| [obj['k'], parse_hash(obj['v'])] }.to_h
         end
 
         if hash.key?('h')

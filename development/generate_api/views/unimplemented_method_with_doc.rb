@@ -50,7 +50,7 @@ class UnmplementedMethodWithDoc
         end
       end
 
-      if method_name.rubyish_name == 'get_attribute'
+      if method_name.rubyish_name == 'get_attribute' && method_args.single?
         data << "    alias_method :[], :get_attribute"
       elsif method_name.rubyish_name.start_with?('get_')
         if method_args.empty?

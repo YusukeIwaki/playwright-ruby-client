@@ -47,6 +47,21 @@ module Playwright
         )
         ValueParser.new(value).parse
       end
+
+      def wait_for_function(channel, polling:, timeout:)
+        params = {
+          expression: @definition,
+          isFunction: true,
+          arg: @serialized_arg,
+          polling: polling,
+          timeout: timeout,
+        }.compact
+        if polling.is_a?(Numeric)
+          params[:pollingInterval] = polling
+        end
+        resp = channel.send_message_to_server('waitForFunction', params)
+        ChannelOwners::JSHandle.from(resp)
+      end
     end
   end
 end
