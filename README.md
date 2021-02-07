@@ -4,7 +4,7 @@
 
 A Ruby client for Playwright driver.
 
-Note: Currently, this Gem is just a PoC (Proof of Concept). If you want to develop browser-automation for Chrome with Ruby, consider using [puppeteer-ruby](https://github.com/YusukeIwaki/puppeteer-ruby)
+Note: Currently, this Gem is just a PoC (Proof of Concept). If you want to develop browser-automation for Chrome with Ruby, consider using [puppeteer-ruby](https://github.com/YusukeIwaki/puppeteer-ruby). The list of the available APIs of playwright-ruby-client is [here](./docs/api_coverage.md)
 
 ## Getting Started
 
