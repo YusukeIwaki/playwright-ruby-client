@@ -1,4 +1,4 @@
-class ImplementedInputTypeClass
+class ImplementedInputTypeClassWithDoc
   # @param doc [Doc]
   # @param klass [Class]
   # @param inflector [Dry::Inflector]

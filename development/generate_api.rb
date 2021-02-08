@@ -30,8 +30,10 @@ ALL_TYPES = %w[
 EXPERIMENTAL = %w[
   Android
   AndroidDevice
+  AndroidInput
 ]
 INPUT_TYPES = %w[
+  AndroidInput
   Keyboard
   Mouse
   Touchscreen
@@ -66,7 +68,11 @@ if $0 == __FILE__
         klass = Playwright::InputTypes.const_get(class_name) rescue nil
 
         if klass
-          ImplementedInputTypeClass.new(doc, klass, inflector)
+          if doc
+            ImplementedInputTypeClassWithDoc.new(doc, klass, inflector)
+          else
+            ImplementedInputTypeClassWithoutDoc.new(klass, inflector)
+          end
         else
           # UnimplementedClassWithDoc.new(doc, inflector)
           raise "#{class_name} Not Implemented!!"

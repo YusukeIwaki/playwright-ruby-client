@@ -111,6 +111,41 @@ end
 
 ![android-browser](https://user-images.githubusercontent.com/11763113/106615177-8467a800-65af-11eb-94d9-c56e71487e78.gif)
 
+### Android native automation
+
+We have to download android-driver for Playwright in advance.
+
+```
+wget https://github.com/microsoft/playwright/raw/master/bin/android-driver-target.apk -O /path/to/playwright-driver/package/bin/android-driver-target.apk
+wget https://github.com/microsoft/playwright/raw/master/bin/android-driver.apk -O /path/to/playwright-driver/package/bin/android-driver.apk
+```
+
+(If you downloaded Playwright via npm, replace `/path/to/playwright-driver/package/` with `./node_modules/playwright/` above.)
+
+```ruby
+require 'playwright'
+
+Playwright.create(playwright_cli_executable_path: ENV['PLAYWRIGHT_CLI_EXECUTABLE_PATH']) do |playwright|
+  devices = playwright.android.devices
+  unless devices.empty?
+    device = devices.last
+    begin
+      device.shell('input keyevent POWER')
+      device.shell('input keyevent POWER')
+      device.shell('input keyevent 82')
+      sleep 1
+      device.shell('cmd statusbar expand-notifications')
+
+      # pp device.tree
+      # pp device.info(res: 'com.android.systemui:id/clock')
+      device.tap_on(res: 'com.android.systemui:id/clock')
+    ensure
+      device.close
+    end
+  end
+end
+
+```
 
 ## License
 
