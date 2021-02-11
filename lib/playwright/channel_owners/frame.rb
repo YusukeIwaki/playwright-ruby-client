@@ -144,6 +144,48 @@ module Playwright
       end
     end
 
+    def checked?(selector, timeout: nil)
+      params = { selector: selector, timeout: timeout }.compact
+      @channel.send_message_to_server('isChecked', params)
+    end
+
+    def disabled?(selector, timeout: nil)
+      params = { selector: selector, timeout: timeout }.compact
+      @channel.send_message_to_server('isDisabled', params)
+    end
+
+    def editable?(selector, timeout: nil)
+      params = { selector: selector, timeout: timeout }.compact
+      @channel.send_message_to_server('isEditable', params)
+    end
+
+    def enabled?(selector, timeout: nil)
+      params = { selector: selector, timeout: timeout }.compact
+      @channel.send_message_to_server('isEnabled', params)
+    end
+
+    def hidden?(selector, timeout: nil)
+      params = { selector: selector, timeout: timeout }.compact
+      @channel.send_message_to_server('isHidden', params)
+    end
+
+    def visible?(selector, timeout: nil)
+      params = { selector: selector, timeout: timeout }.compact
+      @channel.send_message_to_server('isVisible', params)
+    end
+
+    def dispatch_event(selector, type, eventInit: nil, timeout: nil)
+      params = {
+        selector: selector,
+        type: type,
+        eventInit: JavaScript::ValueSerializer.new(eventInit).serialize,
+        timeout: timeout,
+      }.compact
+      @channel.send_message_to_server('dispatchEvent', params)
+
+      nil
+    end
+
     def eval_on_selector(selector, pageFunction, arg: nil)
       if JavaScript.function?(pageFunction)
         JavaScript::Function.new(pageFunction, arg).eval_on_selector(@channel, selector)
@@ -174,6 +216,47 @@ module Playwright
       @channel.send_message_to_server('setContent', params)
 
       nil
+    end
+
+    def name
+      @name || ''
+    end
+
+    def url
+      @url || ''
+    end
+
+    def child_frames
+      @child_frames.to_a
+    end
+
+    def detached?
+      @detached
+    end
+
+    def add_script_tag(content: nil, path: nil, type: nil, url: nil)
+      params = {
+        content: content,
+        type: type,
+        url: url,
+      }.compact
+      if path
+        params[:content] = "#{File.read(path)}\n//# sourceURL=#{path}"
+      end
+      resp = @channel.send_message_to_server('addScriptTag', params)
+      ChannelOwners::ElementHandle.from(resp)
+    end
+
+    def add_style_tag(content: nil, path: nil, url: nil)
+      params = {
+        content: content,
+        url: url,
+      }.compact
+      if path
+        params[:content] = "#{File.read(path)}\n/*# sourceURL=#{path}*/"
+      end
+      resp = @channel.send_message_to_server('addStyleTag', params)
+      ChannelOwners::ElementHandle.from(resp)
     end
 
     def click(
@@ -228,6 +311,26 @@ module Playwright
       nil
     end
 
+    def tap_point(
+          selector,
+          force: nil,
+          modifiers: nil,
+          noWaitAfter: nil,
+          position: nil,
+          timeout: nil)
+      params = {
+        selector: selector,
+        force: force,
+        modifiers: modifiers,
+        noWaitAfter: noWaitAfter,
+        position: position,
+        timeout: timeout,
+      }.compact
+      @channel.send_message_to_server('tap', params)
+
+      nil
+    end
+
     def fill(selector, value, noWaitAfter: nil, timeout: nil)
       params = {
         selector: selector,
@@ -246,12 +349,70 @@ module Playwright
       nil
     end
 
+    def text_content(selector, timeout: nil)
+      params = { selector: selector, timeout: timeout }.compact
+      @channel.send_message_to_server('textContent', params)
+    end
+
+    def inner_text(selector, timeout: nil)
+      params = { selector: selector, timeout: timeout }.compact
+      @channel.send_message_to_server('innerText', params)
+    end
+
+    def inner_html(selector, timeout: nil)
+      params = { selector: selector, timeout: timeout }.compact
+      @channel.send_message_to_server('innerHTML', params)
+    end
+
+    def get_attribute(selector, name, timeout: nil)
+      params = {
+        selector: selector,
+        name: name,
+        timeout: timeout,
+      }.compact
+      @channel.send_message_to_server('getAttribute', params)
+    end
+
+    def hover(
+          selector,
+          force: nil,
+          modifiers: nil,
+          position: nil,
+          timeout: nil)
+      params = {
+        selector: selector,
+        force: force,
+        modifiers: modifiers,
+        position: position,
+        timeout: timeout,
+      }.compact
+      @channel.send_message_to_server('hover', params)
+
+      nil
+    end
+
+    def select_option(selector, values, noWaitAfter: nil, timeout: nil)
+      base_params = SelectOptionValues.new(values).as_params
+      params = base_params + { selector: selector, noWaitAfter: noWaitAfter, timeout: timeout }.compact
+      @channel.send_message_to_server('selectOption', params)
+
+      nil
+    end
+
+    def set_input_files(selector, files, noWaitAfter: nil, timeout: nil)
+      base_params = InputFiles.new(values).as_params
+      params = base_params + { selector: selector, noWaitAfter: noWaitAfter, timeout: timeout }.compact
+      @channel.send_message_to_server('setInputFiles', params)
+
+      nil
+    end
+
     def type(
-      selector,
-      text,
-      delay: nil,
-      noWaitAfter: nil,
-      timeout: nil)
+          selector,
+          text,
+          delay: nil,
+          noWaitAfter: nil,
+          timeout: nil)
 
       params = {
         selector: selector,
@@ -260,16 +421,17 @@ module Playwright
         noWaitAfter: noWaitAfter,
         timeout: timeout,
       }.compact
-
       @channel.send_message_to_server('type', params)
+
+      nil
     end
 
     def press(
-      selector,
-      key,
-      delay: nil,
-      noWaitAfter: nil,
-      timeout: nil)
+          selector,
+          key,
+          delay: nil,
+          noWaitAfter: nil,
+          timeout: nil)
 
       params = {
         selector: selector,
@@ -278,20 +440,48 @@ module Playwright
         noWaitAfter: noWaitAfter,
         timeout: timeout,
       }.compact
-
       @channel.send_message_to_server('press', params)
+
+      nil
     end
 
-    def name
-      @name || ''
+    def check(selector, force: nil, noWaitAfter: nil, timeout: nil)
+      params = {
+        selector: selector,
+        force: force,
+        noWaitAfter:  noWaitAfter,
+        timeout: timeout,
+      }.compact
+      @channel.send_message_to_server('check', params)
+
+      nil
     end
 
-    def url
-      @url || ''
+    def uncheck(selector, force: nil, noWaitAfter: nil, timeout: nil)
+      params = {
+        selector: selector,
+        force: force,
+        noWaitAfter:  noWaitAfter,
+        timeout: timeout,
+      }.compact
+      @channel.send_message_to_server('uncheck', params)
+
+      nil
     end
 
-    def child_frames
-      @child_frames.to_a
+    def wait_for_function(pageFunction, arg: nil, polling: nil, timeout: nil)
+      if polling.is_a?(String) && polling != 'raf'
+        raise ArgumentError.new("Unknown polling option: #{polling}")
+      end
+
+      function_or_expression =
+        if JavaScript.function?(pageFunction)
+          JavaScript::Function.new(pageFunction, arg)
+        else
+          JavaScript::Expression.new(pageFunction)
+        end
+
+      function_or_expression.wait_for_function(@channel, polling: polling, timeout: timeout)
     end
 
     def title

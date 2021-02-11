@@ -13,7 +13,7 @@ module Playwright
     end
 
     def timeout
-      @default_timeout || @parent&.navigation_timeout || DEFAULT_TIMEOUT
+      @default_timeout || @parent&.timeout || DEFAULT_TIMEOUT
     end
   end
 end

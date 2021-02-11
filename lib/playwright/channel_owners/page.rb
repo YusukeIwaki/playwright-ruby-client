@@ -103,6 +103,16 @@ module Playwright
       @frames.to_a
     end
 
+    def set_default_navigation_timeout(timeout)
+      @timeout_settings.default_navigation_timeout = timeout
+      @channel.send_message_to_server('setDefaultNavigationTimeoutNoReply', timeout: timeout)
+    end
+
+    def set_default_timeout(timeout)
+      @timeout_settings.default_timeout = timeout
+      @channel.send_message_to_server('setDefaultTimeoutNoReply', timeout: timeout)
+    end
+
     def query_selector(selector)
       @main_frame.query_selector(selector)
     end
@@ -125,6 +135,14 @@ module Playwright
 
     def eval_on_selector_all(selector, pageFunction, arg: nil)
       @main_frame.eval_on_selector_all(selector, pageFunction, arg: arg)
+    end
+
+    def add_script_tag(content: nil, path: nil, type: nil, url: nil)
+      @main_frame.add_script_tag(content: content, path: path, type: type, url: url)
+    end
+
+    def add_style_tag(content: nil, path: nil, url: nil)
+      @main_frame.add_style_tag(content: content, path: path, url: url)
     end
 
     def url
@@ -277,6 +295,10 @@ module Playwright
       timeout: nil)
 
       @main_frame.press(selector, key, delay: delay, noWaitAfter: noWaitAfter, timeout: timeout)
+    end
+
+    def wait_for_function(pageFunction, arg: nil, polling: nil, timeout: nil)
+      @main_frame.wait_for_function(pageFunction, arg: arg, polling: polling, timeout: timeout)
     end
 
     class CrashedError < StandardError

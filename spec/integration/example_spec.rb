@@ -46,4 +46,10 @@ RSpec.describe 'example', skip: ENV['CI'] do
       expect(page.evaluate('2 + 3')).to eq(5)
     end
   end
+
+  it 'should evaluate function returning object' do
+    with_page do |page|
+      expect(page.evaluate('() => { return { a: 3, b: 4 } }')).to eq({'a' => 3, 'b' => 4})
+    end
+  end
 end
