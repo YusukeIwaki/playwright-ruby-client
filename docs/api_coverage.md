@@ -9,7 +9,6 @@
 * method
 * post_data
 * post_data_buffer
-* post_data_json
 * redirected_from
 * redirected_to
 * resource_type
@@ -23,7 +22,6 @@
 * ~~finished~~
 * ~~frame~~
 * ~~headers~~
-* ~~json~~
 * ~~ok~~
 * ~~request~~
 * ~~status~~
@@ -42,7 +40,6 @@
 
 * ~~closed?~~
 * ~~url~~
-* ~~expect_event~~
 
 ## Keyboard
 
@@ -76,16 +73,14 @@
 
 ## ElementHandle
 
-* query_selector
-* query_selector_all
-* eval_on_selector
-* eval_on_selector_all
 * bounding_box
 * check
 * click
 * content_frame
 * dblclick
 * dispatch_event
+* eval_on_selector
+* eval_on_selector_all
 * fill
 * focus
 * get_attribute
@@ -100,6 +95,8 @@
 * visible?
 * owner_frame
 * press
+* query_selector
+* query_selector_all
 * screenshot
 * scroll_into_view_if_needed
 * select_option
@@ -125,10 +122,6 @@
 
 ## Frame
 
-* query_selector
-* query_selector_all
-* eval_on_selector
-* eval_on_selector_all
 * add_script_tag
 * add_style_tag
 * check
@@ -137,6 +130,8 @@
 * content
 * dblclick
 * dispatch_event
+* eval_on_selector
+* eval_on_selector_all
 * evaluate
 * evaluate_handle
 * fill
@@ -158,6 +153,8 @@
 * page
 * parent_frame
 * press
+* query_selector
+* query_selector_all
 * select_option
 * set_content
 * set_input_files
@@ -214,10 +211,6 @@
 
 ## Page
 
-* query_selector
-* query_selector_all
-* eval_on_selector
-* eval_on_selector_all
 * ~~add_init_script~~
 * add_script_tag
 * add_style_tag
@@ -230,6 +223,8 @@
 * dblclick
 * ~~dispatch_event~~
 * ~~emulate_media~~
+* eval_on_selector
+* eval_on_selector_all
 * evaluate
 * evaluate_handle
 * ~~expose_binding~~
@@ -254,8 +249,11 @@
 * ~~visible?~~
 * main_frame
 * opener
+* ~~pause~~
 * ~~pdf~~
 * press
+* query_selector
+* query_selector_all
 * reload
 * ~~route~~
 * screenshot
@@ -275,7 +273,6 @@
 * url
 * ~~video~~
 * viewport_size
-* expect_event
 * wait_for_function
 * wait_for_load_state
 * expect_navigation
@@ -313,7 +310,6 @@
 * ~~set_offline~~
 * ~~storage_state~~
 * ~~unroute~~
-* ~~expect_event~~
 
 ## ~~CDPSession~~
 
@@ -346,6 +342,7 @@
 
 ## Playwright
 
+* ~~close~~
 * chromium
 * devices
 * ~~errors~~
