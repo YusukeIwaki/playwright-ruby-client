@@ -86,6 +86,14 @@ module Playwright
       @redirected_to = request
     end
 
+    private def update_failure_text(failure_text)
+      @failure_text = failure_text
+    end
+
+    private def update_response_end_timing(response_end_timing)
+      @timing[:responseEnd] = response_end_timing
+    end
+
     private def parse_headers(headers)
       headers.map do |header|
         [header['name'].downcase, header['value']]

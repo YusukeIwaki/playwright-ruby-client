@@ -8,7 +8,7 @@ module Playwright
           params[:noDefaultViewport] = true
         end
         if params[:extraHTTPHeaders]
-          # TODO
+          params[:extraHTTPHeaders] = ::Playwright::HttpHeaders.new(params[:extraHTTPHeaders]).as_serialized
         end
         if params[:storageState].is_a?(String)
           params[:storageState] = JSON.parse(File.read(params[:storageState]))
