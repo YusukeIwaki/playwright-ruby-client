@@ -34,11 +34,14 @@ module Playwright
   # A subset of Events/EventEmitter in Node.js
   module EventEmitter
     # @param event [String]
+    # @returns [Boolean]
     def emit(event, *args)
+      handled = false
       (@__event_emitter ||= {})[event.to_s]&.each do |callback|
         callback.call(*args)
+        handled = true
       end
-      self
+      handled
     end
 
     # @param event [String]

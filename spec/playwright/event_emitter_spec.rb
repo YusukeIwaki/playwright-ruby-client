@@ -18,6 +18,16 @@ RSpec.describe Playwright::EventEmitter do
     instance.emit(:hoge)
   end
 
+  it 'emit returns true if listeners exist' do
+    instance.on :hoge, -> { 1 }
+    expect(instance.emit(:hoge)).to eq(true)
+  end
+
+  it 'emit returns false if no listeners exist' do
+    dbl = double(:hoge)
+    expect(instance.emit(:hoge)).to eq(false)
+  end
+
   it 'callback event with no args' do
     callback = double(:callback)
     instance.on(:hoge, callback)

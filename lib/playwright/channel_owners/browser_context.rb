@@ -8,13 +8,21 @@ module Playwright
       @pages = Set.new
 
       @channel.once('close', ->(_) { on_close })
-      @channel.on('page', ->(hash) { on_page(ChannelOwners::Page.from(hash['page']) )})
+      @channel.on('page', ->(params) { on_page(ChannelOwners::Page.from(params['page']) )})
+      @channel.on('route', ->(params) {
+        on_route(ChannelOwners::Route.from(params['route']), ChannelOwners::Request.from(params['request']))
+      })
     end
 
     private def on_page(page)
       page.send(:update_browser_context, self)
       @pages << page
       emit(Events::BrowserContext::Page, page)
+    end
+
+    private def on_route(route, request)
+      # @routes.each ...
+      route.continue_
     end
 
     def pages

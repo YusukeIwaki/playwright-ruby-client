@@ -26,7 +26,12 @@ module Playwright
         console_message = ChannelOwners::ConsoleMessage.from(params['message'])
         emit(Events::Page::Console, console_message)
       })
+      @channel.on('crash', ->(_) { emit(Events::Page::Crash) })
+      @channel.on('dialog', method(:on_dialog))
       @channel.on('domcontentloaded', ->(_) { emit(Events::Page::DOMContentLoaded) })
+      @channel.on('download', ->(params) {
+        emit(Events::Page::Download, ChannelOwners::Download.from(params['download']))
+      })
       @channel.on('frameAttached', ->(params) {
         on_frame_attached(ChannelOwners::Frame.from(params['frame']))
       })
@@ -34,8 +39,42 @@ module Playwright
         on_frame_detached(ChannelOwners::Frame.from(params['frame']))
       })
       @channel.on('load', ->(_) { emit(Events::Page::Load) })
+      @channel.on('pageError', ->(params) {
+        emit(Events::Page::PageError, Error.parse(params['error']['error']))
+      })
       @channel.on('popup', ->(params) {
         emit(Events::Page::Popup, ChannelOwners::Page.from(params['page']))
+      })
+      @channel.on('request', ->(params) {
+        emit(Events::Page::Request, ChannelOwners::Request.from(params['request']))
+      })
+      @channel.on('requestFailed', ->(params) {
+        on_request_failed(
+          ChannelOwners::Request.from(params['request']),
+          params['responseEndTiming'],
+          params['failureText'],
+        )
+      })
+      @channel.on('requestFinished', ->(params) {
+        on_request_finished(
+          ChannelOwners::Request.from(params['request']),
+          params['responseEndTiming'],
+        )
+      })
+      @channel.on('response', ->(params) {
+        emit(Events::Page::Response, ChannelOwners::Response.from(params['response']))
+      })
+      @channel.on('route', ->(params) {
+        on_route(ChannelOwners::Route.from(params['route']), ChannelOwners::Request.from(params['request']))
+      })
+      @channel.on('video', ->(params) {
+        video.send(:update_relative_path, params['relativePath'])
+      })
+      @channel.on('webSocket', ->(params) {
+        emit(Events::Page::WebSocket, ChannelOwners::WebSocket.from(params['webSocket']))
+      })
+      @channel.on('worker', ->(params) {
+        on_worker(ChannelOwners::Worker.from(params['worker']))
       })
     end
 
@@ -46,6 +85,17 @@ module Playwright
       :touchscreen,
       :viewport_size,
       :main_frame
+
+    private def on_request_failed(request, response_end_timing, failure_text)
+      request.send(:update_failure_text, failure_text)
+      request.send(:update_response_end_timing, response_end_timing)
+      emit(Events::Page::RequestFailed)
+    end
+
+    private def on_request_finished(request, response_end_timing)
+      request.send(:update_response_end_timing, response_end_timing)
+      emit(Events::Page::RequestFinished)
+    end
 
     private def on_frame_attached(frame)
       frame.send(:update_page_from_page, self)
@@ -59,11 +109,24 @@ module Playwright
       emit(Events::Page::FrameDetached, frame)
     end
 
+    private def on_route(route, request)
+      # @routes.each ...
+      @browser_context.send(:on_route, route, request)
+    end
+
     private def on_close
       @closed = true
       @browser_context.send(:remove_page, self)
       emit(Events::Page::Close)
     end
+
+    private def on_dialog(params)
+      dialog = ChannelOwners::Dialog.from(params['dialog'])
+      unless emit(Events::Page::Dialog, dialog)
+        dialog.dismiss # FIXME: this should be asynchronous
+      end
+    end
+
 
     def context
       @browser_context
@@ -121,6 +184,38 @@ module Playwright
       @main_frame.query_selector_all(selector)
     end
 
+    def wait_for_selector(selector, state: nil, timeout: nil)
+      @main_frame.wait_for_selector(selector, state: state, timeout: timeout)
+    end
+
+    def checked?(selector, timeout: nil)
+      @main_frame.checked?(selector, timeout: timeout)
+    end
+
+    def disabled?(selector, timeout: nil)
+      @main_frame.disabled?(selector, timeout: timeout)
+    end
+
+    def editable?(selector, timeout: nil)
+      @main_frame.editable?(selector, timeout: timeout)
+    end
+
+    def enabled?(selector, timeout: nil)
+      @main_frame.enabled?(selector, timeout: timeout)
+    end
+
+    def hidden?(selector, timeout: nil)
+      @main_frame.hidden?(selector, timeout: timeout)
+    end
+
+    def visible?(selector, timeout: nil)
+      @main_frame.visible?(selector, timeout: timeout)
+    end
+
+    def dispatch_event(selector, type, eventInit: nil, timeout: nil)
+      @main_frame.dispatch_event(selector, type, eventInit: eventInit, timeout: timeout)
+    end
+
     def evaluate(pageFunction, arg: nil)
       @main_frame.evaluate(pageFunction, arg: arg)
     end
@@ -143,6 +238,25 @@ module Playwright
 
     def add_style_tag(content: nil, path: nil, url: nil)
       @main_frame.add_style_tag(content: content, path: path, url: url)
+    end
+
+    def expose_function(name, callback)
+      @channel.send_message_to_server('exposeBinding', name: name)
+      @bindings[name] = ->(_source, *args) { callback.call(*args) }
+    end
+
+    def expose_binding(name, callback, handle: nil)
+      params = {
+        name: name,
+        needsHandle: handle,
+      }.compact
+      @channel.send_message_to_server('exposeBinding', params)
+      @bindings[name] = callback
+    end
+
+    def set_extra_http_headers(headers)
+      serialized_headers = HttpHeaders.new(headers).as_serialized
+      @channel.send_message_to_server('setExtraHTTPHeaders', headers: serialized_headers)
     end
 
     def url
@@ -174,9 +288,42 @@ module Playwright
       @main_frame.wait_for_load_state(state: state, timeout: timeout)
     end
 
+    def go_back(timeout: nil, waitUntil: nil)
+      params = { timeout: timeout, waitUntil: waitUntil }.compact
+      resp = @channel.send_message_to_server('goBack', params)
+      ChannelOwners::Response.from_nullable(resp)
+    end
+
+    def go_forward(timeout: nil, waitUntil: nil)
+      params = { timeout: timeout, waitUntil: waitUntil }.compact
+      resp = @channel.send_message_to_server('goForward', params)
+      ChannelOwners::Response.from_nullable(resp)
+    end
+
+    def emulate_media(colorScheme: nil, media: nil)
+      params = {
+        colorScheme: colorScheme,
+        media: media,
+      }.compact
+      @channel.send_message_to_server('emulateMedia', params)
+
+      nil
+    end
+
     def set_viewport_size(viewportSize)
       @viewport_size = viewportSize
       @channel.send_message_to_server('setViewportSize', { viewportSize: viewportSize })
+      nil
+    end
+
+    def bring_to_front
+      @channel.send_message_to_server('bringToFront')
+      nil
+    end
+
+    def add_init_script(script, arg: nil)
+      @channel.send_message_to_server('addInitScript', source: script)
+      # FIXME: handling `arg` for function `script`
       nil
     end
 
@@ -269,12 +416,68 @@ module Playwright
       )
     end
 
+    def tap_point(
+          selector,
+          force: nil,
+          modifiers: nil,
+          noWaitAfter: nil,
+          position: nil,
+          timeout: nil)
+      @main_frame.tap_point(
+        selector,
+        force: force,
+        modifiers: modifiers,
+        noWaitAfter: noWaitAfter,
+        position: position,
+        timeout: timeout,
+      )
+    end
+
     def fill(selector, value, noWaitAfter: nil, timeout: nil)
       @main_frame.fill(selector, value, noWaitAfter: noWaitAfter, timeout: timeout)
     end
 
     def focus(selector, timeout: nil)
       @main_frame.focus(selector, timeout: timeout)
+    end
+
+    def text_content(selector, timeout: nil)
+      @main_frame.text_content(selector, timeout: timeout)
+    end
+
+    def inner_text(selector, timeout: nil)
+      @main_frame.inner_text(selector, timeout: timeout)
+    end
+
+    def inner_html(selector, timeout: nil)
+      @main_frame.inner_html(selector, timeout: timeout)
+    end
+
+    def get_attribute(selector, name, timeout: nil)
+      @main_frame.get_attribute(selector, name, timeout: timeout)
+    end
+
+    def hover(
+          selector,
+          force: nil,
+          modifiers: nil,
+          position: nil,
+          timeout: nil)
+      @main_frame.hover(
+        selector,
+        force: force,
+        modifiers: modifiers,
+        position: position,
+        timeout: timeout,
+      )
+    end
+
+    def select_option(selector, values, noWaitAfter: nil, timeout: nil)
+      @main_frame.select_option(selector, values, noWaitAfter: noWaitAfter, timeout: timeout)
+    end
+
+    def set_input_files(selector, files, noWaitAfter: nil, timeout: nil)
+      @main_frame.set_input_files(selector, files, noWaitAfter: noWaitAfter, timeout: timeout)
     end
 
     def type(
@@ -297,8 +500,55 @@ module Playwright
       @main_frame.press(selector, key, delay: delay, noWaitAfter: noWaitAfter, timeout: timeout)
     end
 
+    def check(selector, force: nil, noWaitAfter: nil, timeout: nil)
+      @main_frame.check(selector, force: force, noWaitAfter: noWaitAfter, timeout: timeout)
+    end
+
+    def uncheck(selector, force: nil, noWaitAfter: nil, timeout: nil)
+      @main_frame.uncheck(selector, force: force, noWaitAfter: noWaitAfter, timeout: timeout)
+    end
+
     def wait_for_function(pageFunction, arg: nil, polling: nil, timeout: nil)
       @main_frame.wait_for_function(pageFunction, arg: arg, polling: polling, timeout: timeout)
+    end
+
+    def pdf(
+          displayHeaderFooter: nil,
+          footerTemplate: nil,
+          format: nil,
+          headerTemplate: nil,
+          height: nil,
+          landscape: nil,
+          margin: nil,
+          pageRanges: nil,
+          path: nil,
+          preferCSSPageSize: nil,
+          printBackground: nil,
+          scale: nil,
+          width: nil)
+
+      params = {
+        displayHeaderFooter: displayHeaderFooter,
+        footerTemplate: footerTemplate,
+        format: format,
+        headerTemplate: headerTemplate,
+        height: height,
+        landscape: landscape,
+        margin: margin,
+        pageRanges: pageRanges,
+        preferCSSPageSize: preferCSSPageSize,
+        printBackground: printBackground,
+        scale: scale,
+        width: width,
+      }.compact
+      encoded_binary = @channel.send_message_to_server('pdf', params)
+      decoded_binary = Base64.strict_decode64(encoded_binary)
+      if path
+        File.open(path, 'wb') do |f|
+          f.write(decoded_binary)
+        end
+      end
+      decoded_binary
     end
 
     class CrashedError < StandardError
