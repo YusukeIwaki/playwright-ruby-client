@@ -1,0 +1,15 @@
+---
+name: Bug report
+about: Create a report to help us improve
+title: ''
+labels: ''
+assignees: ''
+
+---
+
+### Simple description about the feature
+
+
+### Usecase / Motivation
+
+<!-- Describe why the feature helps. -->
