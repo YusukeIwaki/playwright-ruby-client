@@ -41,14 +41,17 @@ RSpec.describe 'Page#set_input_files' do
   #   expect(await page.$eval('input', input => input.files[0].name)).toBe('test.txt');
   # });
 
-  # it('should emit event once', async ({page, server}) => {
-  #   await page.setContent(`<input type=file>`);
-  #   const [chooser] = await Promise.all([
-  #     new Promise(f => page.once('filechooser', f)),
-  #     page.click('input'),
-  #   ]);
-  #   expect(chooser).toBeTruthy();
-  # });
+  it 'should emit event once' do
+    with_page do |page|
+      page.content = '<input type=file>'
+      promise = Concurrent::Promises.resolvable_future { |f|
+        page.once('filechooser', -> (chooser) { f.fulfill(chooser) })
+      }
+      sleep 0.5
+      page.click('input')
+      expect(promise.value!).to be_a(Playwright::FileChooser)
+    end
+  end
 
   # it('should emit event on/off', async ({page, server}) => {
   #   await page.setContent(`<input type=file>`);

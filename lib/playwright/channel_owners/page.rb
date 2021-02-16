@@ -32,6 +32,13 @@ module Playwright
       @channel.on('download', ->(params) {
         emit(Events::Page::Download, ChannelOwners::Download.from(params['download']))
       })
+      @channel.on('filechooser', ->(params) {
+        chooser = FileChooser.new(
+                    page: self,
+                    element_handle: ChannelOwners::ElementHandle.from(params['element']),
+                    is_multiple: params['isMultiple'])
+        emit(Events::Page::FileChooser, chooser, )
+      })
       @channel.on('frameAttached', ->(params) {
         on_frame_attached(ChannelOwners::Frame.from(params['frame']))
       })
