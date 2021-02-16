@@ -44,65 +44,56 @@ RSpec.describe 'Page#set_input_files' do
   it 'should emit event once' do
     with_page do |page|
       page.content = '<input type=file>'
-      promise = Concurrent::Promises.resolvable_future { |f|
-        page.once('filechooser', -> (chooser) { f.fulfill(chooser) })
-      }
+      promise = Concurrent::Promises.resolvable_future
+      page.once('filechooser', -> (chooser) { promise.fulfill(chooser) })
       sleep 0.5
+      page.click('input')
+      Timeout.timeout(2) do
+        expect(promise.value!).to be_a(Playwright::FileChooser)
+      end
+    end
+  end
+
+  it 'should emit event on/off' do
+    with_page do |page|
+      page.content = '<input type=file>'
+      promise = Concurrent::Promises.resolvable_future
+      listener = ->(chooser) {
+        page.off(Playwright::Events::Page::FileChooser, listener)
+        promise.fulfill(chooser)
+      }
+      page.on(Playwright::Events::Page::FileChooser, listener)
       page.click('input')
       expect(promise.value!).to be_a(Playwright::FileChooser)
     end
   end
 
-  # it('should emit event on/off', async ({page, server}) => {
-  #   await page.setContent(`<input type=file>`);
-  #   const [chooser] = await Promise.all([
-  #     new Promise(f => {
-  #       const listener = chooser => {
-  #         page.off('filechooser', listener);
-  #         f(chooser);
-  #       };
-  #       page.on('filechooser', listener);
-  #     }),
-  #     page.click('input'),
-  #   ]);
-  #   expect(chooser).toBeTruthy();
-  # });
+  it 'should work when file input is attached to DOM' do
+    with_page do |page|
+      page.content = '<input type=file>'
+      chooser = page.expect_event(Playwright::Events::Page::FileChooser) do
+        page.click('input')
+      end
+      expect(chooser).to be_a(Playwright::FileChooser)
+    end
+  end
 
-  # it('should emit event addListener/removeListener', async ({page, server}) => {
-  #   await page.setContent(`<input type=file>`);
-  #   const [chooser] = await Promise.all([
-  #     new Promise(f => {
-  #       const listener = chooser => {
-  #         page.removeListener('filechooser', listener);
-  #         f(chooser);
-  #       };
-  #       page.addListener('filechooser', listener);
-  #     }),
-  #     page.click('input'),
-  #   ]);
-  #   expect(chooser).toBeTruthy();
-  # });
+  it 'should work when file input is not attached to DOM' do
+    js = <<~JAVASCRIPT
+    () => {
+      const el = document.createElement('input');
+      el.type = 'file';
+      el.click();
+    }
+    JAVASCRIPT
 
-  # it('should work when file input is attached to DOM', async ({page, server}) => {
-  #   await page.setContent(`<input type=file>`);
-  #   const [chooser] = await Promise.all([
-  #     page.waitForEvent('filechooser'),
-  #     page.click('input'),
-  #   ]);
-  #   expect(chooser).toBeTruthy();
-  # });
-
-  # it('should work when file input is not attached to DOM', async ({page, server}) => {
-  #   const [chooser] = await Promise.all([
-  #     page.waitForEvent('filechooser'),
-  #     page.evaluate(() => {
-  #       const el = document.createElement('input');
-  #       el.type = 'file';
-  #       el.click();
-  #     }),
-  #   ]);
-  #   expect(chooser).toBeTruthy();
-  # });
+    with_page do |page|
+      chooser = page.expect_event(Playwright::Events::Page::FileChooser) do
+        page.evaluate(js)
+      end
+      expect(chooser).to be_a(Playwright::FileChooser)
+    end
+  end
 
   # it('should not throw when filechooser belongs to iframe', (test, { browserName }) => {
   #   test.skip(browserName === 'firefox', 'Firefox ignores filechooser from child frame');
@@ -312,23 +303,25 @@ RSpec.describe 'Page#set_input_files' do
   #   expect(events[1].type).toBe('change');
   # });
 
-  # it('should work for single file pick', async ({page, server}) => {
-  #   await page.setContent(`<input type=file>`);
-  #   const [fileChooser] = await Promise.all([
-  #     page.waitForEvent('filechooser'),
-  #     page.click('input'),
-  #   ]);
-  #   expect(fileChooser.isMultiple()).toBe(false);
-  # });
+  it 'should work for single file pick' do
+    with_page do |page|
+      page.content = '<input type=file>'
+      chooser = page.expect_event(Playwright::Events::Page::FileChooser) do
+        page.click('input')
+      end
+      expect(chooser).not_to be_multiple
+    end
+  end
 
-  # it('should work for "multiple"', async ({page, server}) => {
-  #   await page.setContent(`<input multiple type=file>`);
-  #   const [fileChooser] = await Promise.all([
-  #     page.waitForEvent('filechooser'),
-  #     page.click('input'),
-  #   ]);
-  #   expect(fileChooser.isMultiple()).toBe(true);
-  # });
+  it 'should work for "multiple"' do
+    with_page do |page|
+      page.content = '<input multiple type=file>'
+      chooser = page.expect_event(Playwright::Events::Page::FileChooser) do
+        page.click('input')
+      end
+      expect(chooser).to be_multiple
+    end
+  end
 
   # it('should work for "webkitdirectory"', async ({page, server}) => {
   #   await page.setContent(`<input multiple webkitdirectory type=file>`);
