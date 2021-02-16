@@ -32,8 +32,9 @@ EXPERIMENTAL = %w[
   AndroidDevice
   AndroidInput
 ]
-INPUT_TYPES = %w[
+API_IMPLEMENTATIONS = %w[
   AndroidInput
+  FileChooser
   Keyboard
   Mouse
   Touchscreen
@@ -46,7 +47,7 @@ require 'json'
 require 'playwright/event_emitter'
 require 'playwright/utils'
 require 'playwright/channel_owner'
-require 'playwright/input_type'
+require 'playwright/api_implementation'
 
 Dir[File.join(__dir__, 'generate_api', 'models', '*.rb')].each { |f| require f }
 Dir[File.join(__dir__, 'generate_api', 'views', '*.rb')].each { |f| require f }
@@ -64,14 +65,14 @@ if $0 == __FILE__
     doc = doc_json ? ClassDoc.new(doc_json, root: api_json) : nil
 
     view =
-      if INPUT_TYPES.include?(class_name)
-        klass = Playwright::InputTypes.const_get(class_name) rescue nil
+      if API_IMPLEMENTATIONS.include?(class_name)
+        klass = Playwright.const_get("#{class_name}Impl") rescue nil
 
         if klass
           if doc
-            ImplementedInputTypeClassWithDoc.new(doc, klass, inflector)
+            ImplementedApiClassWithDoc.new(doc, klass, inflector)
           else
-            ImplementedInputTypeClassWithoutDoc.new(klass, inflector)
+            ImplementedApiClassWithoutDoc.new(class_name, klass, inflector)
           end
         else
           # UnimplementedClassWithDoc.new(doc, inflector)

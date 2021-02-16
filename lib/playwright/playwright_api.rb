@@ -7,21 +7,20 @@ module Playwright
     # @param channel_owner [ChannelOwner]
     # @note Intended for internal use only.
     def self.from_channel_owner(channel_owner)
-      Factory.new(channel_owner, 'ChannelOwners').create
+      ChannelOwnerWrapper.new(channel_owner).wrap
     end
 
-    class Factory
-      def initialize(impl, module_name)
+    class ChannelOwnerWrapper
+      def initialize(impl)
         impl_class_name = impl.class.name
-        unless impl_class_name.include?("::#{module_name}::")
-          raise "#{impl_class_name} is not #{module_name}"
+        unless impl_class_name.include?("::ChannelOwners::")
+          raise "#{impl_class_name} is not ChannelOwners"
         end
 
         @impl = impl
-        @module_name = module_name
       end
 
-      def create
+      def wrap
         api_class = detect_class_for(@impl.class)
         if api_class
           api_class.new(@impl)
@@ -33,11 +32,11 @@ module Playwright
       private
 
       def expected_class_name_for(klass)
-        klass.name.split("::#{@module_name}::").last
+        klass.name.split("::ChannelOwners::").last
       end
 
       def superclass_exist?(klass)
-        ![::Playwright::ChannelOwner, ::Playwright::InputType, Object].include?(klass.superclass)
+        ![::Playwright::ChannelOwner, Object].include?(klass.superclass)
       end
 
       def detect_class_for(klass)
@@ -52,7 +51,44 @@ module Playwright
       end
     end
 
-    # @param impl [Playwright::ChannelOwner|Playwright::InputType]
+    class ApiImplementationWrapper
+      def initialize(impl)
+        impl_class_name = impl.class.name
+        unless impl_class_name.end_with?("Impl")
+          raise "#{impl_class_name} is not Impl"
+        end
+
+        @impl = impl
+      end
+
+      def wrap
+        api_class = detect_class_for(@impl.class)
+        if api_class
+          api_class.new(@impl)
+        else
+          raise NotImplementedError.new("Playwright::#{expected_class_name_for(@impl.class)} is not implemented")
+        end
+      end
+
+      private
+
+      def expected_class_name_for(klass)
+        # KeyboardImpl -> Keyboard
+        # MouseImpl -> Mouse
+        klass.name[0...-4].split("::").last
+      end
+
+      def detect_class_for(klass)
+        class_name = expected_class_name_for(klass)
+        if ::Playwright.const_defined?(class_name)
+          ::Playwright.const_get(class_name)
+        else
+          nil
+        end
+      end
+    end
+
+    # @param impl [Playwright::ChannelOwner|Playwright::ApiImplementation]
     def initialize(impl)
       @impl = impl
     end
@@ -74,9 +110,9 @@ module Playwright
     private def wrap_impl(object)
       case object
       when ChannelOwner
-        PlaywrightApi.from_channel_owner(object)
-      when InputType
-        Factory.new(object, 'InputTypes').create
+        ChannelOwnerWrapper.new(object).wrap
+      when ApiImplementation
+        ApiImplementationWrapper.new(object).wrap
       when Array
         object.map { |obj| wrap_impl(obj) }
       else

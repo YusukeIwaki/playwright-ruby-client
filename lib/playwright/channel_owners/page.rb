@@ -10,9 +10,9 @@ module Playwright
       @browser_context = @parent
       @timeout_settings = TimeoutSettings.new(@browser_context.send(:_timeout_settings))
       @accessibility = Accessibility.new(@channel)
-      @keyboard = InputTypes::Keyboard.new(@channel)
-      @mouse = InputTypes::Mouse.new(@channel)
-      @touchscreen = InputTypes::Touchscreen.new(@channel)
+      @keyboard = KeyboardImpl.new(@channel)
+      @mouse = MouseImpl.new(@channel)
+      @touchscreen = TouchscreenImpl.new(@channel)
 
       @viewport_size = @initializer['viewportSize']
       @closed = false

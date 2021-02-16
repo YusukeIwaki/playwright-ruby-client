@@ -1,4 +1,4 @@
-class ImplementedInputTypeClassWithDoc
+class ImplementedApiClassWithDoc
   # @param doc [Doc]
   # @param klass [Class]
   # @param inflector [Dry::Inflector]
@@ -54,7 +54,7 @@ class ImplementedInputTypeClassWithDoc
         data << '' # insert blank line before definition.
         if @klass.public_instance_methods.include?(method_name.rubyish_name.to_sym)
           method = @klass.public_instance_method(method_name.rubyish_name.to_sym)
-          ImplementedInputTypeMethod.new(method_doc, method, @inflector).lines.each(&data)
+          ImplementedApiMethod.new(method_doc, method, @inflector).lines.each(&data)
         else
           UnmplementedMethodWithDoc.new(method_doc, @inflector).lines.each(&data)
         end
@@ -69,7 +69,7 @@ class ImplementedInputTypeClassWithDoc
 
         if @klass.public_instance_methods.include?(method_name.rubyish_name.to_sym)
           method = @klass.public_instance_method(method_name.rubyish_name.to_sym)
-          ImplementedInputTypeMethod.new(method_doc, method, @inflector).api_coverages.each(&data)
+          ImplementedApiMethod.new(method_doc, method, @inflector).api_coverages.each(&data)
         else
           UnmplementedMethodWithDoc.new(method_doc, @inflector).api_coverages.each(&data)
         end

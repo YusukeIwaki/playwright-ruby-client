@@ -1,5 +1,9 @@
 module Playwright
-  define_input_type :Keyboard do
+  define_api_implementation :KeyboardImpl do
+    def initialize(channel)
+      @channel = channel
+    end
+
     def down(key)
       @channel.send_message_to_server('keyboardDown', key: key)
       nil

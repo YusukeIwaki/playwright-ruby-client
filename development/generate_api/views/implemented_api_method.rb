@@ -1,4 +1,4 @@
-class ImplementedInputTypeMethod
+class ImplementedApiMethod
   # @param doc [Doc]
   # @param method [Method]
   # @param inflector [Dry::Inflector]
