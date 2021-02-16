@@ -1,7 +1,9 @@
 class ImplementedClassWithoutDoc
+  # @param class_name [String]
   # @param klass [Class]
   # @param inflector [Dry::Inflector]
-  def initialize(klass, inflector)
+  def initialize(class_name, klass, inflector)
+    @class_name = class_name
     @klass = klass
     @inflector = inflector
   end
@@ -12,7 +14,7 @@ class ImplementedClassWithoutDoc
       require_lines.each(&data)
       data << 'module Playwright'
       data << '  # @nodoc'
-      data << "  class #{class_name} < #{super_class_name || 'PlaywrightApi'}"
+      data << "  class #{@class_name} < #{super_class_name || 'PlaywrightApi'}"
       method_lines.each(&data)
       data << '  end'
       data << 'end'
@@ -26,11 +28,6 @@ class ImplementedClassWithoutDoc
   end
 
   private
-
-  # @returns [String]
-  def class_name
-    @inflector.demodulize(@klass)
-  end
 
   # @returns [String|nil]
   def super_class_name

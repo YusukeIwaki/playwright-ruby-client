@@ -64,35 +64,25 @@ if $0 == __FILE__
     doc_json = api_json.find { |json| json['name'] == class_name }
     doc = doc_json ? ClassDoc.new(doc_json, root: api_json) : nil
 
-    view =
+    klass =
       if API_IMPLEMENTATIONS.include?(class_name)
-        klass = Playwright.const_get("#{class_name}Impl") rescue nil
+        Playwright.const_get("#{class_name}Impl") rescue nil
+      else
+        Playwright::ChannelOwners.const_get(class_name) rescue nil
+      end
 
-        if klass
-          if doc
-            ImplementedApiClassWithDoc.new(doc, klass, inflector)
-          else
-            ImplementedApiClassWithoutDoc.new(class_name, klass, inflector)
-          end
+    view =
+      if klass
+        if doc
+          ImplementedClassWithDoc.new(doc, klass, inflector)
         else
-          # UnimplementedClassWithDoc.new(doc, inflector)
-          raise "#{class_name} Not Implemented!!"
+          ImplementedClassWithoutDoc.new(class_name, klass, inflector)
         end
       else
-        klass = Playwright::ChannelOwners.const_get(class_name) rescue nil
-
-        if klass
-          if doc
-            ImplementedClassWithDoc.new(doc, klass, inflector)
-          else
-            ImplementedClassWithoutDoc.new(klass, inflector)
-          end
+        if doc
+          UnimplementedClassWithDoc.new(doc, inflector)
         else
-          if doc
-            UnimplementedClassWithDoc.new(doc, inflector)
-          else
-            raise "#{class_name} is not implemented nor not in api-docs. Something is wrong."
-          end
+          raise "#{class_name} is not implemented nor not in api-docs. Something is wrong."
         end
       end
 

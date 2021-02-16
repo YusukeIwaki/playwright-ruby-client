@@ -15,5 +15,9 @@ module Playwright
     def multiple?
       @is_multiple
     end
+
+    def set_files(files, noWaitAfter: nil, timeout: nil)
+      @element_handle.set_input_files(files, noWaitAfter: noWaitAfter, timeout: timeout)
+    end
   end
 end
