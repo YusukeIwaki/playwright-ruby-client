@@ -148,37 +148,56 @@ RSpec.describe 'Page#set_input_files' do
   #   expect(await page.$eval('input', input => input.files[0].name)).toBe('file-to-upload.txt');
   # });
 
-  # it('should respect timeout', async ({page, playwright}) => {
-  #   let error = null;
-  #   await page.waitForEvent('filechooser', {timeout: 1}).catch(e => error = e);
-  #   expect(error).toBeInstanceOf(playwright.errors.TimeoutError);
-  # });
+  it 'should respect timeout' do
+    with_page do |page|
+      expect {
+        Timeout.timeout(2) do
+          page.expect_event(Playwright::Events::Page::FileChooser, optionsOrPredicate: { timeout: 10 })
+        end
+      }.to raise_error(Playwright::TimeoutError)
+    end
+  end
 
-  # it('should respect default timeout when there is no custom timeout', async ({page, playwright}) => {
-  #   page.setDefaultTimeout(1);
-  #   let error = null;
-  #   await page.waitForEvent('filechooser').catch(e => error = e);
-  #   expect(error).toBeInstanceOf(playwright.errors.TimeoutError);
-  # });
+  it 'should respect default timeout when there is no custom timeout' do
+    with_page do |page|
+      page.default_timeout = 10
+      expect {
+        Timeout.timeout(2) do
+          page.expect_event(Playwright::Events::Page::FileChooser)
+        end
+      }.to raise_error(Playwright::TimeoutError)
+    end
+  end
 
-  # it('should prioritize exact timeout over default timeout', async ({page, playwright}) => {
-  #   page.setDefaultTimeout(0);
-  #   let error = null;
-  #   await page.waitForEvent('filechooser', {timeout: 1}).catch(e => error = e);
-  #   expect(error).toBeInstanceOf(playwright.errors.TimeoutError);
-  # });
+  it 'should prioritize exact timeout over default timeout' do
+    with_page do |page|
+      page.default_timeout = 0
+      expect {
+        Timeout.timeout(2) do
+          page.expect_event(Playwright::Events::Page::FileChooser, optionsOrPredicate: { timeout: 10 })
+        end
+      }.to raise_error(Playwright::TimeoutError)
+    end
+  end
 
-  # it('should work with no timeout', async ({page, server}) => {
-  #   const [chooser] = await Promise.all([
-  #     page.waitForEvent('filechooser', {timeout: 0}),
-  #     page.evaluate(() => setTimeout(() => {
-  #       const el = document.createElement('input');
-  #       el.type = 'file';
-  #       el.click();
-  #     }, 50))
-  #   ]);
-  #   expect(chooser).toBeTruthy();
-  # });
+  it 'should work with no timeout' do
+    js = <<~JAVASCRIPT
+    () => setTimeout(() => {
+      const el = document.createElement('input');
+      el.type = 'file';
+      el.click();
+    }, 50)
+    JAVASCRIPT
+
+    with_page do |page|
+      chooser = Timeout.timeout(2) do
+        page.expect_event(Playwright::Events::Page::FileChooser, optionsOrPredicate: { timeout: 0 }) do
+          page.evaluate(js)
+        end
+      end
+      expect(chooser).to be_a(Playwright::FileChooser)
+    end
+  end
 
   # it('should return the same file chooser when there are many watchdogs simultaneously', async ({page, server}) => {
   #   await page.setContent(`<input type=file>`);

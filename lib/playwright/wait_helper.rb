@@ -23,7 +23,7 @@ module Playwright
       return if timeout_ms <= 0
 
       Concurrent::Promises.schedule(timeout_ms / 1000.0) {
-        reject(TimeoutError.new(message))
+        reject(TimeoutError.new(message: message))
       }
 
       self
