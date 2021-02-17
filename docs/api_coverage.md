@@ -195,15 +195,15 @@
 * ~~message~~
 * ~~type~~
 
-## ~~Download~~
+## Download
 
 * ~~create_read_stream~~
-* ~~delete~~
-* ~~failure~~
-* ~~path~~
-* ~~save_as~~
-* ~~suggested_filename~~
-* ~~url~~
+* delete
+* failure
+* path
+* save_as
+* suggested_filename
+* url
 
 ## ~~Video~~
 

@@ -47,11 +47,11 @@ RSpec.configure do |config|
       @playwright_browser or raise NoMethodError.new('undefined method "browser"')
     end
 
-    def with_context(&block)
+    def with_context(**kwargs, &block)
       unless @playwright_browser
         raise '@playwright_browser must not be null.'
       end
-      context = @playwright_browser.new_context
+      context = @playwright_browser.new_context(**kwargs)
       begin
         block.call(context)
       ensure
@@ -59,11 +59,11 @@ RSpec.configure do |config|
       end
     end
 
-    def with_page(&block)
+    def with_page(**kwargs, &block)
       unless @playwright_browser
         raise '@playwright_browser must not be null.'
       end
-      page = @playwright_browser.new_page
+      page = @playwright_browser.new_page(**kwargs)
       begin
         block.call(page)
       ensure
