@@ -10,14 +10,15 @@ require 'concurrent'
 require 'playwright/errors'
 require 'playwright/events'
 require 'playwright/event_emitter'
+require 'playwright/event_emitter_proxy'
 require 'playwright/javascript'
 require 'playwright/utils'
 
+require 'playwright/api_implementation'
 require 'playwright/channel'
 require 'playwright/channel_owner'
 require 'playwright/http_headers'
 require 'playwright/input_files'
-require 'playwright/input_type'
 require 'playwright/connection'
 require 'playwright/select_option_values'
 require 'playwright/timeout_settings'
@@ -38,7 +39,7 @@ module Playwright
 
     playwright_promise = connection.async_wait_for_object_with_known_name('Playwright')
     Thread.new { connection.run }
-    playwright = PlaywrightApi.from_channel_owner(playwright_promise.value!)
+    playwright = PlaywrightApi.wrap(playwright_promise.value!)
     begin
       block.call(playwright)
     ensure

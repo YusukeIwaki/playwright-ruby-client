@@ -32,8 +32,9 @@ EXPERIMENTAL = %w[
   AndroidDevice
   AndroidInput
 ]
-INPUT_TYPES = %w[
+API_IMPLEMENTATIONS = %w[
   AndroidInput
+  FileChooser
   Keyboard
   Mouse
   Touchscreen
@@ -46,7 +47,7 @@ require 'json'
 require 'playwright/event_emitter'
 require 'playwright/utils'
 require 'playwright/channel_owner'
-require 'playwright/input_type'
+require 'playwright/api_implementation'
 
 Dir[File.join(__dir__, 'generate_api', 'models', '*.rb')].each { |f| require f }
 Dir[File.join(__dir__, 'generate_api', 'views', '*.rb')].each { |f| require f }
@@ -63,35 +64,25 @@ if $0 == __FILE__
     doc_json = api_json.find { |json| json['name'] == class_name }
     doc = doc_json ? ClassDoc.new(doc_json, root: api_json) : nil
 
-    view =
-      if INPUT_TYPES.include?(class_name)
-        klass = Playwright::InputTypes.const_get(class_name) rescue nil
+    klass =
+      if API_IMPLEMENTATIONS.include?(class_name)
+        Playwright.const_get("#{class_name}Impl") rescue nil
+      else
+        Playwright::ChannelOwners.const_get(class_name) rescue nil
+      end
 
-        if klass
-          if doc
-            ImplementedInputTypeClassWithDoc.new(doc, klass, inflector)
-          else
-            ImplementedInputTypeClassWithoutDoc.new(klass, inflector)
-          end
+    view =
+      if klass
+        if doc
+          ImplementedClassWithDoc.new(doc, klass, inflector)
         else
-          # UnimplementedClassWithDoc.new(doc, inflector)
-          raise "#{class_name} Not Implemented!!"
+          ImplementedClassWithoutDoc.new(class_name, klass, inflector)
         end
       else
-        klass = Playwright::ChannelOwners.const_get(class_name) rescue nil
-
-        if klass
-          if doc
-            ImplementedClassWithDoc.new(doc, klass, inflector)
-          else
-            ImplementedClassWithoutDoc.new(klass, inflector)
-          end
+        if doc
+          UnimplementedClassWithDoc.new(doc, inflector)
         else
-          if doc
-            UnimplementedClassWithDoc.new(doc, inflector)
-          else
-            raise "#{class_name} is not implemented nor not in api-docs. Something is wrong."
-          end
+          raise "#{class_name} is not implemented nor not in api-docs. Something is wrong."
         end
       end
 

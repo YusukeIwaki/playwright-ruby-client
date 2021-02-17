@@ -113,12 +113,12 @@
 
 * ~~snapshot~~
 
-## ~~FileChooser~~
+## FileChooser
 
-* ~~element~~
-* ~~multiple?~~
-* ~~page~~
-* ~~set_files~~
+* element
+* multiple?
+* page
+* set_files
 
 ## Frame
 

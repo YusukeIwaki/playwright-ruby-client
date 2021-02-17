@@ -44,6 +44,10 @@ module Playwright
       handled
     end
 
+    private def listener_count(event)
+      ((@__event_emitter ||= {})[event.to_s] ||= Set.new).count
+    end
+
     # @param event [String]
     # @param callback [Proc]
     def on(event, callback)

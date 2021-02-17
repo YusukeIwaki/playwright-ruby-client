@@ -1,7 +1,9 @@
 class ImplementedClassWithoutDoc
+  # @param class_name [String]
   # @param klass [Class]
   # @param inflector [Dry::Inflector]
-  def initialize(klass, inflector)
+  def initialize(class_name, klass, inflector)
+    @class_name = class_name
     @klass = klass
     @inflector = inflector
   end
@@ -12,7 +14,7 @@ class ImplementedClassWithoutDoc
       require_lines.each(&data)
       data << 'module Playwright'
       data << '  # @nodoc'
-      data << "  class #{class_name} < #{super_class_name || 'PlaywrightApi'}"
+      data << "  class #{@class_name} < #{super_class_name || 'PlaywrightApi'}"
       method_lines.each(&data)
       data << '  end'
       data << 'end'
@@ -26,11 +28,6 @@ class ImplementedClassWithoutDoc
   end
 
   private
-
-  # @returns [String]
-  def class_name
-    @inflector.demodulize(@klass)
-  end
 
   # @returns [String|nil]
   def super_class_name
@@ -53,14 +50,14 @@ class ImplementedClassWithoutDoc
 
   def method_lines
     Enumerator.new do |data|
-      (@klass.public_instance_methods - (@klass.superclass.public_instance_methods - Playwright::EventListenerInterface.public_instance_methods)).each do |method_sym|
+      (@klass.public_instance_methods - @klass.superclass.public_instance_methods).each do |method_sym|
         method = @klass.public_instance_method(method_sym)
-
         data << '' # insert blank line before definition.
-        if Playwright::EventListenerInterface.public_instance_methods.include?(method_sym)
-          data << '    # -- inherited from EventEmitter --'
-        end
         ImplementedMethodWithoutDoc.new(method, @inflector).lines.each(&data)
+      end
+
+      unless (@klass.public_instance_methods & Playwright::EventListenerInterface.public_instance_methods).empty?
+        EventEmitterMethods.new(@inflector).lines.each(&data)
       end
     end
   end

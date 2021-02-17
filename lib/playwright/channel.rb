@@ -24,5 +24,12 @@ module Playwright
         nil
       end
     end
+
+    # @param method [String]
+    # @param params [Hash]
+    def send_no_reply(method, params)
+      @connection.async_send_message_to_server(@guid, method, params)
+      nil
+    end
   end
 end

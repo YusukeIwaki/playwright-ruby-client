@@ -407,8 +407,8 @@ module Playwright
     end
 
     def set_input_files(selector, files, noWaitAfter: nil, timeout: nil)
-      base_params = InputFiles.new(values).as_params
-      params = base_params + { selector: selector, noWaitAfter: noWaitAfter, timeout: timeout }.compact
+      file_payloads = InputFiles.new(files).as_params
+      params = { files: file_payloads, selector: selector, noWaitAfter: noWaitAfter, timeout: timeout }.compact
       @channel.send_message_to_server('setInputFiles', params)
 
       nil

@@ -10,9 +10,9 @@ module Playwright
       @browser_context = @parent
       @timeout_settings = TimeoutSettings.new(@browser_context.send(:_timeout_settings))
       @accessibility = Accessibility.new(@channel)
-      @keyboard = InputTypes::Keyboard.new(@channel)
-      @mouse = InputTypes::Mouse.new(@channel)
-      @touchscreen = InputTypes::Touchscreen.new(@channel)
+      @keyboard = KeyboardImpl.new(@channel)
+      @mouse = MouseImpl.new(@channel)
+      @touchscreen = TouchscreenImpl.new(@channel)
 
       @viewport_size = @initializer['viewportSize']
       @closed = false
@@ -31,6 +31,13 @@ module Playwright
       @channel.on('domcontentloaded', ->(_) { emit(Events::Page::DOMContentLoaded) })
       @channel.on('download', ->(params) {
         emit(Events::Page::Download, ChannelOwners::Download.from(params['download']))
+      })
+      @channel.on('fileChooser', ->(params) {
+        chooser = FileChooserImpl.new(
+                    page: self,
+                    element_handle: ChannelOwners::ElementHandle.from(params['element']),
+                    is_multiple: params['isMultiple'])
+        emit(Events::Page::FileChooser, chooser)
       })
       @channel.on('frameAttached', ->(params) {
         on_frame_attached(ChannelOwners::Frame.from(params['frame']))
@@ -127,6 +134,29 @@ module Playwright
       end
     end
 
+    # @override
+    def on(event, callback)
+      if event == Events::Page::FileChooser && listener_count(event) == 0
+        @channel.send_no_reply('setFileChooserInterceptedNoReply', intercepted: true)
+      end
+      super
+    end
+
+    # @override
+    def once(event, callback)
+      if event == Events::Page::FileChooser && listener_count(event) == 0
+        @channel.send_no_reply('setFileChooserInterceptedNoReply', intercepted: true)
+      end
+      super
+    end
+
+    # @override
+    def off(event, callback)
+      super
+      if event == Events::Page::FileChooser && listener_count(event) == 0
+        @channel.send_no_reply('setFileChooserInterceptedNoReply', intercepted: false)
+      end
+    end
 
     def context
       @browser_context

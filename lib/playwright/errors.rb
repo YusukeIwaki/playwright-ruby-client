@@ -28,7 +28,7 @@ module Playwright
   end
 
   class TimeoutError < Error
-    def initialize(message:, stack:)
+    def initialize(message:, stack: [])
       super(name: 'TimeoutError', message: message, stack: stack)
     end
   end

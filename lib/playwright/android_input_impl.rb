@@ -1,5 +1,9 @@
 module Playwright
-  define_input_type :AndroidInput do
+  define_api_implementation :AndroidInputImpl do
+    def initialize(channel)
+      @channel = channel
+    end
+
     def type(text)
       @channel.send_message_to_server('inputType', text: text)
     end

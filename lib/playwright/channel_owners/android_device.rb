@@ -3,7 +3,7 @@ module Playwright
     include Utils::PrepareBrowserContextOptions
 
     def after_initialize
-      @input = InputTypes::AndroidInput.new(@channel)
+      @input = AndroidInputImpl.new(@channel)
     end
 
     attr_reader :input

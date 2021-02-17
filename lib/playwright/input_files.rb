@@ -36,7 +36,7 @@ module Playwright
 
     private def mime_type_for(filepath)
       mime_types = MIME::Types.type_for(filepath)
-      mime_types.first || 'application/octet-stream'
+      mime_types.first.to_s || 'application/octet-stream'
     end
   end
 end
