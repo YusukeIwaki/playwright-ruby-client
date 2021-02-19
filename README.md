@@ -1,8 +1,6 @@
 [![Gem Version](https://badge.fury.io/rb/playwright-ruby-client.svg)](https://badge.fury.io/rb/playwright-ruby-client)
 
-# playwright-ruby-client
-
-A Ruby client for Playwright driver.
+# 🎭 Playwright client for Ruby
 
 Note: Currently, this Gem is just a PoC (Proof of Concept). If you want to develop browser-automation for Chrome with Ruby, consider using [puppeteer-ruby](https://github.com/YusukeIwaki/puppeteer-ruby). The list of the available APIs of playwright-ruby-client is [here](./docs/api_coverage.md)
 
@@ -16,6 +14,8 @@ npm install playwright
 ```
 
 and then, set `playwright_cli_executable_path: ./node_modules/.bin/playwright` at `Playwright.create`.
+
+**Prefer playwrighting without Node.js?**
 
 Instead of npm install, you can also directly download playwright driver from playwright.azureedge.net/builds/. The URL can be easily detected from [here](https://github.com/microsoft/playwright-python/blob/79f6ce0a6a69c480573372706df84af5ef99c4a4/setup.py#L56-L61)
 
