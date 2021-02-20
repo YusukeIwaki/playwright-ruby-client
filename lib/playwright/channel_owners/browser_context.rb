@@ -4,7 +4,7 @@ module Playwright
     include Utils::Errors::SafeCloseError
     attr_writer :browser, :owner_page, :options
 
-    def after_initialize
+    private def after_initialize
       @pages = Set.new
 
       @channel.once('close', ->(_) { on_close })

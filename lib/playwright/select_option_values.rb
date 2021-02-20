@@ -1,7 +1,18 @@
 module Playwright
   class SelectOptionValues
-    def initialize(values)
-      @params = convert(values)
+    def initialize(element: nil, index: nil, value: nil, label: nil)
+      @params =
+        if element
+          convert(elmeent)
+        elsif index
+          convert(index)
+        elsif value
+          convert(value)
+        elsif label
+          convert(label)
+        else
+          {}
+        end
     end
 
     # @return [Hash]
@@ -10,8 +21,7 @@ module Playwright
     end
 
     private def convert(values)
-      return {} unless values
-      return convert([values]) unless values.is_a?('Array')
+      return convert([values]) unless values.is_a?(Enumerable)
       return {} if values.empty?
       values.each_with_index do |value, index|
         unless values

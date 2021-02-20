@@ -59,16 +59,14 @@ module Playwright
       "#<#{@guid}>"
     end
 
-    private
-
-    def after_initialize
+    private def after_initialize
     end
 
-    def update_object_from_child(guid, child)
+    private def update_object_from_child(guid, child)
       @objects[guid] = child
     end
 
-    def delete_object_from_child(guid)
+    private def delete_object_from_child(guid)
       @objects.delete(guid)
     end
   end

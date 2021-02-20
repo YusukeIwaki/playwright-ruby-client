@@ -1,6 +1,6 @@
 module Playwright
   define_channel_owner :Android do
-    def after_initialize
+    private def after_initialize
       @timeout_settings = TimeoutSettings.new
     end
 

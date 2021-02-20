@@ -9,6 +9,7 @@
 * method
 * post_data
 * post_data_buffer
+* post_data_json
 * redirected_from
 * redirected_to
 * resource_type
@@ -22,6 +23,7 @@
 * ~~finished~~
 * ~~frame~~
 * ~~headers~~
+* ~~json~~
 * ~~ok~~
 * ~~request~~
 * ~~status~~
@@ -40,6 +42,8 @@
 
 * ~~closed?~~
 * ~~url~~
+* ~~expect_event~~
+* ~~wait_for_event~~
 
 ## Keyboard
 
@@ -197,7 +201,6 @@
 
 ## Download
 
-* ~~create_read_stream~~
 * delete
 * failure
 * path
@@ -273,6 +276,7 @@
 * url
 * ~~video~~
 * viewport_size
+* expect_event
 * wait_for_function
 * wait_for_load_state
 * expect_navigation
@@ -281,8 +285,13 @@
 * wait_for_selector
 * ~~wait_for_timeout~~
 * ~~workers~~
+* ~~expect_download~~
+* ~~expect_popup~~
+* ~~expect_worker~~
+* ~~expect_console_message~~
+* ~~expect_file_chooser~~
+* ~~wait_for_event~~
 * accessibility
-* ~~coverage~~
 * keyboard
 * mouse
 * touchscreen
@@ -306,10 +315,12 @@
 * ~~set_default_timeout~~
 * ~~set_extra_http_headers~~
 * ~~set_geolocation~~
-* ~~set_http_credentials~~
 * ~~set_offline~~
 * ~~storage_state~~
 * ~~unroute~~
+* ~~expect_event~~
+* ~~expect_page~~
+* ~~wait_for_event~~
 
 ## ~~CDPSession~~
 
@@ -333,19 +344,16 @@
 
 ## BrowserType
 
-* ~~connect~~
 * executable_path
 * launch
 * ~~launch_persistent_context~~
-* ~~launch_server~~
 * name
 
 ## Playwright
 
-* ~~close~~
+* ~~stop~~
 * chromium
 * devices
-* ~~errors~~
 * firefox
 * ~~selectors~~
 * webkit

@@ -6,7 +6,7 @@ module Playwright
     include Utils::Errors::SafeCloseError
     attr_writer :owned_context
 
-    def after_initialize
+    private def after_initialize
       @browser_context = @parent
       @timeout_settings = TimeoutSettings.new(@browser_context.send(:_timeout_settings))
       @accessibility = Accessibility.new(@channel)
@@ -167,14 +167,7 @@ module Playwright
       ChannelOwners::Page.from(resp)
     end
 
-    def frame(frameSelector)
-      name, url =
-        if frameSelector.is_a?(Hash)
-          [frameSelector[:name], frameSelector[:url]]
-        else
-          [frameSelector, nil]
-        end
-
+    def frame(name: nil, url: nil)
       if name
         @frames.find { |f| f.name == name }
       elsif url
@@ -351,9 +344,17 @@ module Playwright
       nil
     end
 
-    def add_init_script(script, arg: nil)
+    def add_init_script(path: nil, script: nil)
+      source =
+        if path
+          File.read(path, 'r')
+        elsif script
+          script
+        else
+          raise ArgumentError.new('Either path or script parameter must be specified')
+        end
+
       @channel.send_message_to_server('addInitScript', source: script)
-      # FIXME: handling `arg` for function `script`
       nil
     end
 
@@ -502,8 +503,23 @@ module Playwright
       )
     end
 
-    def select_option(selector, values, noWaitAfter: nil, timeout: nil)
-      @main_frame.select_option(selector, values, noWaitAfter: noWaitAfter, timeout: timeout)
+    def select_option(
+          selector,
+          element: nil,
+          index: nil,
+          value: nil,
+          label: nil,
+          noWaitAfter: nil,
+          timeout: nil)
+      @main_frame.select_option(
+        selector,
+        element: element,
+        index: index,
+        value: value,
+        label: label,
+        noWaitAfter: noWaitAfter,
+        timeout: timeout,
+      )
     end
 
     def set_input_files(selector, files, noWaitAfter: nil, timeout: nil)
@@ -599,20 +615,9 @@ module Playwright
       end
     end
 
-    def expect_event(event, optionsOrPredicate: nil, &block)
-      predicate, timeout =
-        case optionsOrPredicate
-        when Proc
-          [optionsOrPredicate, nil]
-        when Hash
-          [optionsOrPredicate[:predicate], optionsOrPredicate[:timeout]]
-        else
-          [nil, nil]
-        end
-      timeout ||= @timeout_settings.timeout
-
+    def expect_event(event, predicate: nil, timeout: nil, &block)
       wait_helper = WaitHelper.new
-      wait_helper.reject_on_timeout(timeout, "Timeout while waiting for event \"#{event}\"")
+      wait_helper.reject_on_timeout(timeout || @timeout_settings.timeout, "Timeout while waiting for event \"#{event}\"")
 
       unless event == Events::Page::Crash
         wait_helper.reject_on_event(self, Events::Page::Crash, CrashedError.new)
@@ -649,7 +654,7 @@ module Playwright
           -> (_) { true }
         end
 
-      expect_event(Events::Page::Request, optionsOrPredicate: { predicate: predicate, timeout: timeout})
+      expect_event(Events::Page::Request, predicate: predicate, timeout: timeout)
     end
 
     def expect_response(urlOrPredicate, timeout: nil)
@@ -664,7 +669,7 @@ module Playwright
           -> (_) { true }
         end
 
-      expect_event(Events::Page::Response, optionsOrPredicate: { predicate: predicate, timeout: timeout})
+      expect_event(Events::Page::Response, predicate: predicate, timeout: timeout)
     end
 
     # called from BrowserContext#on_page with send(:update_browser_context, page), so keep private.

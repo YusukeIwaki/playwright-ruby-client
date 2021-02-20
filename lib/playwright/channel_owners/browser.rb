@@ -4,7 +4,7 @@ module Playwright
     include Utils::Errors::SafeCloseError
     include Utils::PrepareBrowserContextOptions
 
-    def after_initialize
+    private def after_initialize
       @contexts = Set.new
       @channel.on('close', method(:on_close))
     end

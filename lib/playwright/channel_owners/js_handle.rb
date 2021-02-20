@@ -1,6 +1,6 @@
 module Playwright
   define_channel_owner :JSHandle do
-    def after_initialize
+    private def after_initialize
       @preview = @initializer['preview']
       @channel.on('previewUpdated', method(:on_preview_updated))
     end

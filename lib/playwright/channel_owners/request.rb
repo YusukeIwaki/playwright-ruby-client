@@ -3,7 +3,7 @@ require 'base64'
 module Playwright
   # @ref https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_network.py
   define_channel_owner :Request do
-    def after_initialize
+    private def after_initialize
       @redirected_from = ChannelOwners::Request.from_nullable(@initializer['redirectedFrom'])
       @redirected_from&.send(:update_redirected_to, self)
       @timing = {
