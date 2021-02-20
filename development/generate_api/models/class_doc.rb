@@ -17,23 +17,23 @@ class ClassDoc < Doc
   end
 
   def method_docs
-    @json['members'].
+    json_with_python_override['members'].
       select { |json| json['kind'] == 'method' }.
       map{ |json| MethodDoc.new(json) }.
-      reject { |doc| doc.langs.only_python? }
+      reject { |doc| doc.langs.not_for_python? }
   end
 
   def event_docs
-    @json['members'].
+    json_with_python_override['members'].
       select { |json| json['kind'] == 'event' }.
       map{ |json| MethodDoc.new(json) }.
-      reject { |doc| doc.langs.only_python? }
+      reject { |doc| doc.langs.not_for_python? }
   end
 
   def property_docs
-    @json['members'].
+    json_with_python_override['members'].
       select { |json| json['kind'] == 'property' }.
       map{ |json| MethodDoc.new(json) }.
-      reject { |doc| doc.langs.only_python? }
+      reject { |doc| doc.langs.not_for_python? }
   end
 end

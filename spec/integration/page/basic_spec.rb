@@ -173,8 +173,8 @@ RSpec.describe Playwright::Page do
   it 'page.frame should respect name' do
     with_page do |page|
       page.content = '<iframe name=target></iframe>'
-      expect(page.frame({ name: 'bogus' })).to be_nil
-      frame = page.frame({ name: 'target' })
+      expect(page.frame(name: 'bogus')).to be_nil
+      frame = page.frame(name: 'target')
       expect(frame).to be_a(::Playwright::Frame)
       expect(frame).to eq(page.main_frame.child_frames.first)
     end
@@ -183,8 +183,8 @@ RSpec.describe Playwright::Page do
   it 'page.frame should respect url', sinatra: true do
     with_page do |page|
       page.content = "<iframe src=\"#{server_empty_page}\"></iframe>"
-      expect(page.frame({ url: /bogus/ })).to be_nil
-      frame = page.frame({ url: /empty/ })
+      expect(page.frame(url: /bogus/)).to be_nil
+      frame = page.frame(url: /empty/)
       expect(frame).to be_a(::Playwright::Frame)
       expect(frame.url).to eq(server_empty_page)
     end
@@ -249,7 +249,7 @@ RSpec.describe Playwright::Page do
       page.content = <<~HTML
       <iframe name=inner src="#{server_prefix}/input/textarea.html"></iframe>
       HTML
-      frame = page.frame('inner')
+      frame = page.frame(name: 'inner')
       frame.press('textarea', 'a')
       expect(frame.evaluate("() => document.querySelector('textarea').value")).to eq('a')
     end

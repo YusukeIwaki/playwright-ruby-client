@@ -3,8 +3,8 @@ module Playwright
     module PrepareBrowserContextOptions
       # @see https://github.com/microsoft/playwright/blob/5a2cfdbd47ed3c3deff77bb73e5fac34241f649d/src/client/browserContext.ts#L265
       private def prepare_browser_context_options(params)
-        if params[:viewport] == 0
-          params.delete(:viewport)
+        if params[:noViewport] == 0
+          params.delete(:noViewport)
           params[:noDefaultViewport] = true
         end
         if params[:extraHTTPHeaders]

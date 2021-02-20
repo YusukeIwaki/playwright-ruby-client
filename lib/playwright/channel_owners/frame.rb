@@ -1,7 +1,7 @@
 module Playwright
   # @ref https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_frame.py
   define_channel_owner :Frame do
-    def after_initialize
+    private def after_initialize
       if @initializer['parentFrame']
         @parent_frame = ChannelOwners::Frame.from(@initializer['parentFrame'])
         @parent_frame.send(:append_child_frame_from_child, self)
@@ -398,8 +398,20 @@ module Playwright
       nil
     end
 
-    def select_option(selector, values, noWaitAfter: nil, timeout: nil)
-      base_params = SelectOptionValues.new(values).as_params
+    def select_option(
+          selector,
+          element: nil,
+          index: nil,
+          value: nil,
+          label: nil,
+          noWaitAfter: nil,
+          timeout: nil)
+      base_params = SelectOptionValues.new(
+        element: element,
+        index: index,
+        value: value,
+        label: label,
+      ).as_params
       params = base_params + { selector: selector, noWaitAfter: noWaitAfter, timeout: timeout }.compact
       @channel.send_message_to_server('selectOption', params)
 

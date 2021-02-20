@@ -2,7 +2,7 @@ module Playwright
   define_channel_owner :AndroidDevice do
     include Utils::PrepareBrowserContextOptions
 
-    def after_initialize
+    private def after_initialize
       @input = AndroidInputImpl.new(@channel)
     end
 
@@ -104,17 +104,17 @@ module Playwright
           isMobile: nil,
           javaScriptEnabled: nil,
           locale: nil,
-          logger: nil,
+          noViewport: nil,
           offline: nil,
           permissions: nil,
           proxy: nil,
-          recordHar: nil,
-          recordVideo: nil,
+          record_har_omit_content: nil,
+          record_har_path: nil,
+          record_video_dir: nil,
+          record_video_size: nil,
           storageState: nil,
           timezoneId: nil,
           userAgent: nil,
-          videoSize: nil,
-          videosPath: nil,
           viewport: nil,
           &block)
       params = {
@@ -131,17 +131,17 @@ module Playwright
         isMobile: isMobile,
         javaScriptEnabled: javaScriptEnabled,
         locale: locale,
-        logger: logger,
+        noViewport: noViewport,
         offline: offline,
         permissions: permissions,
         proxy: proxy,
-        recordHar: recordHar,
-        recordVideo: recordVideo,
+        record_har_omit_content: record_har_omit_content,
+        record_har_path: record_har_path,
+        record_video_dir: record_video_dir,
+        record_video_size: record_video_size,
         storageState: storageState,
         timezoneId: timezoneId,
         userAgent: userAgent,
-        videoSize: videoSize,
-        videosPath: videosPath,
         viewport: viewport,
       }.compact
       prepare_browser_context_options(params)

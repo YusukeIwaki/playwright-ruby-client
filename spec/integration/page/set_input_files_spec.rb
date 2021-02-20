@@ -152,7 +152,7 @@ RSpec.describe 'Page#set_input_files' do
     with_page do |page|
       expect {
         Timeout.timeout(2) do
-          page.expect_event(Playwright::Events::Page::FileChooser, optionsOrPredicate: { timeout: 10 })
+          page.expect_event(Playwright::Events::Page::FileChooser, timeout: 10)
         end
       }.to raise_error(Playwright::TimeoutError)
     end
@@ -174,7 +174,7 @@ RSpec.describe 'Page#set_input_files' do
       page.default_timeout = 0
       expect {
         Timeout.timeout(2) do
-          page.expect_event(Playwright::Events::Page::FileChooser, optionsOrPredicate: { timeout: 10 })
+          page.expect_event(Playwright::Events::Page::FileChooser, timeout: 10)
         end
       }.to raise_error(Playwright::TimeoutError)
     end
@@ -191,7 +191,7 @@ RSpec.describe 'Page#set_input_files' do
 
     with_page do |page|
       chooser = Timeout.timeout(2) do
-        page.expect_event(Playwright::Events::Page::FileChooser, optionsOrPredicate: { timeout: 0 }) do
+        page.expect_event(Playwright::Events::Page::FileChooser, timeout: 0) do
           page.evaluate(js)
         end
       end

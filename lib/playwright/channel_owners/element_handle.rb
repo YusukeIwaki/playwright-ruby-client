@@ -136,8 +136,19 @@ module Playwright
         nil
       end
 
-      def select_option(values, noWaitAfter: nil, timeout: nil)
-        base_params = SelectOptionValues.new(values).as_params
+      def select_option(
+            element: nil,
+            index: nil,
+            value: nil,
+            label: nil,
+            noWaitAfter: nil,
+            timeout: nil)
+        base_params = SelectOptionValues.new(
+          element: element,
+          index: index,
+          value: value,
+          label: label,
+        ).as_params
         params = base_params + { noWaitAfter: noWaitAfter, timeout: timeout }.compact
         @channel.send_message_to_server('selectOption', params)
 

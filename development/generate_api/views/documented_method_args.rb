@@ -72,13 +72,19 @@ class DocumentedMethodArgs
   # @param with_block [Boolean]
   def initialize(inflector, arg_docs, with_block: false)
     @inflector = inflector
-    @args = arg_docs.map do |arg_doc|
+
+    # Some API definitions have preceding "options = {}" before python's optional parameters (ex: ElementHandle#select_option)
+    # However Ruby assumes optional hash parameters put the last. So move it to the last.
+    ruby_optional_args = []
+    @args = arg_docs.each_with_object([]) do |arg_doc, args|
       if arg_doc.required?
-        RequiredArg.new(arg_doc)
+        args << RequiredArg.new(arg_doc)
+      elsif !arg_doc.langs.only_python?
+        ruby_optional_args << OptionalArg.new(arg_doc)
       else
-        OptionalArg.new(arg_doc)
+        args << OptionalArg.new(arg_doc)
       end
-    end
+    end + ruby_optional_args
     extract_options
     if with_block
       @args << BlockArg.new
