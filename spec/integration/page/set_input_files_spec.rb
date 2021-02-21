@@ -71,7 +71,7 @@ RSpec.describe 'Page#set_input_files' do
   it 'should work when file input is attached to DOM' do
     with_page do |page|
       page.content = '<input type=file>'
-      chooser = page.expect_event(Playwright::Events::Page::FileChooser) do
+      chooser = page.expect_file_chooser do
         page.click('input')
       end
       expect(chooser).to be_a(Playwright::FileChooser)
@@ -88,7 +88,7 @@ RSpec.describe 'Page#set_input_files' do
     JAVASCRIPT
 
     with_page do |page|
-      chooser = page.expect_event(Playwright::Events::Page::FileChooser) do
+      chooser = page.expect_file_chooser do
         page.evaluate(js)
       end
       expect(chooser).to be_a(Playwright::FileChooser)
@@ -152,7 +152,7 @@ RSpec.describe 'Page#set_input_files' do
     with_page do |page|
       expect {
         Timeout.timeout(2) do
-          page.expect_event(Playwright::Events::Page::FileChooser, timeout: 10)
+          page.expect_file_chooser(timeout: 10)
         end
       }.to raise_error(Playwright::TimeoutError)
     end
@@ -163,7 +163,7 @@ RSpec.describe 'Page#set_input_files' do
       page.default_timeout = 10
       expect {
         Timeout.timeout(2) do
-          page.expect_event(Playwright::Events::Page::FileChooser)
+          page.expect_file_chooser
         end
       }.to raise_error(Playwright::TimeoutError)
     end
@@ -174,7 +174,7 @@ RSpec.describe 'Page#set_input_files' do
       page.default_timeout = 0
       expect {
         Timeout.timeout(2) do
-          page.expect_event(Playwright::Events::Page::FileChooser, timeout: 10)
+          page.expect_file_chooser(timeout: 10)
         end
       }.to raise_error(Playwright::TimeoutError)
     end
@@ -191,7 +191,7 @@ RSpec.describe 'Page#set_input_files' do
 
     with_page do |page|
       chooser = Timeout.timeout(2) do
-        page.expect_event(Playwright::Events::Page::FileChooser, timeout: 0) do
+        page.expect_file_chooser(timeout: 0) do
           page.evaluate(js)
         end
       end
@@ -325,7 +325,7 @@ RSpec.describe 'Page#set_input_files' do
   it 'should work for single file pick' do
     with_page do |page|
       page.content = '<input type=file>'
-      chooser = page.expect_event(Playwright::Events::Page::FileChooser) do
+      chooser = page.expect_file_chooser do
         page.click('input')
       end
       expect(chooser).not_to be_multiple
@@ -335,7 +335,7 @@ RSpec.describe 'Page#set_input_files' do
   it 'should work for "multiple"' do
     with_page do |page|
       page.content = '<input multiple type=file>'
-      chooser = page.expect_event(Playwright::Events::Page::FileChooser) do
+      chooser = page.expect_file_chooser do
         page.click('input')
       end
       expect(chooser).to be_multiple

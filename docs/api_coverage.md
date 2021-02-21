@@ -285,11 +285,11 @@
 * wait_for_selector
 * ~~wait_for_timeout~~
 * ~~workers~~
-* ~~expect_download~~
-* ~~expect_popup~~
+* expect_download
+* expect_popup
 * ~~expect_worker~~
-* ~~expect_console_message~~
-* ~~expect_file_chooser~~
+* expect_console_message
+* expect_file_chooser
 * ~~wait_for_event~~
 * accessibility
 * keyboard

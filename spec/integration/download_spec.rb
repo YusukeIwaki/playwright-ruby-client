@@ -25,7 +25,7 @@ RSpec.describe 'download', sinatra: true do
   it 'should report downloads with acceptDownloads: false' do
     with_page do |page|
       page.content = "<a href=\"#{server_prefix}#{download_with_filename_endpoint}\">download</a>"
-      download = page.expect_event('download') do
+      download = page.expect_download do
         page.click('a')
       end
 
@@ -39,7 +39,7 @@ RSpec.describe 'download', sinatra: true do
   it 'should report downloads with acceptDownloads: true' do
     with_page(acceptDownloads: true) do |page|
       page.content = "<a href=\"#{server_prefix}#{download_endpoint}\">download</a>"
-      download = page.expect_event('download') do
+      download = page.expect_download do
         page.click('a')
       end
 
@@ -50,7 +50,7 @@ RSpec.describe 'download', sinatra: true do
   it 'should save to user-specified path' do
     with_page(acceptDownloads: true) do |page|
       page.content = "<a href=\"#{server_prefix}#{download_endpoint}\">download</a>"
-      download = page.expect_event('download') do
+      download = page.expect_download do
         page.click('a')
       end
       Dir.mktmpdir do |dir|
@@ -64,7 +64,7 @@ RSpec.describe 'download', sinatra: true do
   it 'should save to user-specified path without updating original path' do
     with_page(acceptDownloads: true) do |page|
       page.content = "<a href=\"#{server_prefix}#{download_endpoint}\">download</a>"
-      download = page.expect_event('download') do
+      download = page.expect_download do
         page.click('a')
       end
       Dir.mktmpdir do |dir|
@@ -281,7 +281,7 @@ RSpec.describe 'download', sinatra: true do
   it 'should delete file' do
     with_page(acceptDownloads: true) do |page|
       page.content = "<a href=\"#{server_prefix}#{download_endpoint}\">download</a>"
-      download = page.expect_event('download') do
+      download = page.expect_download do
         page.click('a')
       end
       path = download.path
