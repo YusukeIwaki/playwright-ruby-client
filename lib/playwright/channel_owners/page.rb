@@ -634,12 +634,28 @@ module Playwright
       wait_helper.promise.value!
     end
 
+    def expect_console_message(predicate: nil, timeout: nil, &block)
+      expect_event(Events::Page::Console, predicate: predicate, timeout: timeout, &block)
+    end
+
+    def expect_download(predicate: nil, timeout: nil, &block)
+      expect_event(Events::Page::Download, predicate: predicate, timeout: timeout, &block)
+    end
+
+    def expect_file_chooser(predicate: nil, timeout: nil, &block)
+      expect_event(Events::Page::FileChooser, predicate: predicate, timeout: timeout, &block)
+    end
+
     def expect_navigation(timeout: nil, url: nil, waitUntil: nil, &block)
       @main_frame.expect_navigation(
         timeout: timeout,
         url: url,
         waitUntil: waitUntil,
         &block)
+    end
+
+    def expect_popup(predicate: nil, timeout: nil, &block)
+      expect_event(Events::Page::Popup, predicate: predicate, timeout: timeout, &block)
     end
 
     def expect_request(urlOrPredicate, timeout: nil)
