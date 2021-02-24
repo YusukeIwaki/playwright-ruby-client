@@ -2,7 +2,8 @@ module Playwright
   # @ref https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_browser_context.py
   define_channel_owner :BrowserContext do
     include Utils::Errors::SafeCloseError
-    attr_writer :browser, :owner_page, :options
+    attr_accessor :browser
+    attr_writer :owner_page, :options
 
     private def after_initialize
       @pages = Set.new

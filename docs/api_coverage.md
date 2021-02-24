@@ -300,7 +300,7 @@
 
 * ~~add_cookies~~
 * ~~add_init_script~~
-* ~~browser~~
+* browser
 * ~~clear_cookies~~
 * ~~clear_permissions~~
 * close
