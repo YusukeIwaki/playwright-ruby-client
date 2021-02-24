@@ -16,20 +16,20 @@ module Playwright
     # @param method [String]
     # @param params [Hash]
     def send_message_to_server(method, params = {})
-      result = @connection.send_message_to_server(@guid, method, params)
-      if result.is_a?(Hash)
-        _type, channel_owner = result.first
-        channel_owner
-      else
-        nil
-      end
+      async_send_message_to_server(method, params).value!
     end
 
     # @param method [String]
     # @param params [Hash]
-    def send_no_reply(method, params)
-      @connection.async_send_message_to_server(@guid, method, params)
-      nil
+    def async_send_message_to_server(method, params = {})
+      @connection.async_send_message_to_server(@guid, method, params).then do |result|
+        if result.is_a?(Hash)
+          _type, channel_owner = result.first
+          channel_owner
+        else
+          nil
+        end
+      end
     end
   end
 end

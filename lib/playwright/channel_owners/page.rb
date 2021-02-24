@@ -130,14 +130,14 @@ module Playwright
     private def on_dialog(params)
       dialog = ChannelOwners::Dialog.from(params['dialog'])
       unless emit(Events::Page::Dialog, dialog)
-        dialog.dismiss # FIXME: this should be asynchronous
+        dialog.dismiss
       end
     end
 
     # @override
     def on(event, callback)
       if event == Events::Page::FileChooser && listener_count(event) == 0
-        @channel.send_no_reply('setFileChooserInterceptedNoReply', intercepted: true)
+        @channel.async_send_message_to_server('setFileChooserInterceptedNoReply', intercepted: true)
       end
       super
     end
@@ -145,7 +145,7 @@ module Playwright
     # @override
     def once(event, callback)
       if event == Events::Page::FileChooser && listener_count(event) == 0
-        @channel.send_no_reply('setFileChooserInterceptedNoReply', intercepted: true)
+        @channel.async_send_message_to_server('setFileChooserInterceptedNoReply', intercepted: true)
       end
       super
     end
@@ -154,7 +154,7 @@ module Playwright
     def off(event, callback)
       super
       if event == Events::Page::FileChooser && listener_count(event) == 0
-        @channel.send_no_reply('setFileChooserInterceptedNoReply', intercepted: false)
+        @channel.async_send_message_to_server('setFileChooserInterceptedNoReply', intercepted: false)
       end
     end
 

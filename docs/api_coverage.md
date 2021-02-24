@@ -191,13 +191,13 @@
 * text
 * type
 
-## ~~Dialog~~
+## Dialog
 
-* ~~accept~~
-* ~~default_value~~
-* ~~dismiss~~
-* ~~message~~
-* ~~type~~
+* accept
+* default_value
+* dismiss
+* message
+* type
 
 ## Download
 
