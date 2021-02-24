@@ -399,3 +399,14 @@
 * ~~swipe~~
 * tap_point
 * type
+
+## ~~AndroidSocket~~
+
+* ~~close~~
+* ~~write~~
+
+## ~~AndroidWebView~~
+
+* ~~page~~
+* ~~pid~~
+* ~~pkg~~

@@ -31,6 +31,8 @@ EXPERIMENTAL = %w[
   Android
   AndroidDevice
   AndroidInput
+  AndroidSocket
+  AndroidWebView
 ]
 API_IMPLEMENTATIONS = %w[
   AndroidInput
