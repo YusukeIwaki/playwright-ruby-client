@@ -298,28 +298,28 @@
 
 ## BrowserContext
 
-* ~~add_cookies~~
-* ~~add_init_script~~
-* ~~browser~~
-* ~~clear_cookies~~
-* ~~clear_permissions~~
+* add_cookies
+* add_init_script
+* browser
+* clear_cookies
+* clear_permissions
 * close
-* ~~cookies~~
-* ~~expose_binding~~
-* ~~expose_function~~
-* ~~grant_permissions~~
+* cookies
+* expose_binding
+* expose_function
+* grant_permissions
 * new_page
 * pages
 * ~~route~~
-* ~~set_default_navigation_timeout~~
-* ~~set_default_timeout~~
-* ~~set_extra_http_headers~~
-* ~~set_geolocation~~
-* ~~set_offline~~
+* set_default_navigation_timeout
+* set_default_timeout
+* set_extra_http_headers
+* set_geolocation
+* set_offline
 * ~~storage_state~~
 * ~~unroute~~
-* ~~expect_event~~
-* ~~expect_page~~
+* expect_event
+* expect_page
 * ~~wait_for_event~~
 
 ## ~~CDPSession~~

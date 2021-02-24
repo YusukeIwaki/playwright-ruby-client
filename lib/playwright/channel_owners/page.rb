@@ -14,7 +14,12 @@ module Playwright
       @mouse = MouseImpl.new(@channel)
       @touchscreen = TouchscreenImpl.new(@channel)
 
-      @viewport_size = @initializer['viewportSize']
+      if @initializer['viewportSize']
+        @viewport_size = {
+          width: @initializer['viewportSize']['width'],
+          height: @initializer['viewportSize']['height'],
+        }
+      end
       @closed = false
       @main_frame = ChannelOwners::Frame.from(@initializer['mainFrame'])
       @main_frame.send(:update_page_from_page, self)
@@ -697,6 +702,11 @@ module Playwright
     # called from Frame with send(:timeout_settings)
     private def timeout_settings
       @timeout_settings
+    end
+
+    # called from BrowserContext#expose_binding
+    private def has_bindings?(name)
+      @bindings.key?(name)
     end
   end
 end
