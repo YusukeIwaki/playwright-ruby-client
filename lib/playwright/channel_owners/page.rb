@@ -698,5 +698,10 @@ module Playwright
     private def timeout_settings
       @timeout_settings
     end
+
+    # called from BrowserContext#expose_binding
+    private def has_bindings?(name)
+      @bindings.key?(name)
+    end
   end
 end
