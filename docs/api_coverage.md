@@ -191,13 +191,13 @@
 * text
 * type
 
-## ~~Dialog~~
+## Dialog
 
-* ~~accept~~
-* ~~default_value~~
-* ~~dismiss~~
-* ~~message~~
-* ~~type~~
+* accept
+* default_value
+* dismiss
+* message
+* type
 
 ## Download
 
@@ -276,20 +276,20 @@
 * url
 * ~~video~~
 * viewport_size
+* expect_console_message
+* expect_download
 * expect_event
+* expect_file_chooser
 * wait_for_function
 * wait_for_load_state
 * expect_navigation
+* expect_popup
 * expect_request
 * expect_response
 * wait_for_selector
 * ~~wait_for_timeout~~
-* ~~workers~~
-* expect_download
-* expect_popup
 * ~~expect_worker~~
-* expect_console_message
-* expect_file_chooser
+* ~~workers~~
 * ~~wait_for_event~~
 * accessibility
 * keyboard
@@ -357,3 +357,45 @@
 * firefox
 * ~~selectors~~
 * webkit
+
+## Android
+
+* devices
+* ~~set_default_timeout~~
+
+## AndroidDevice
+
+* close
+* ~~drag~~
+* ~~fill~~
+* ~~fling~~
+* info
+* ~~install_apk~~
+* launch_browser
+* ~~long_tap~~
+* model
+* ~~open~~
+* ~~pinch_close~~
+* ~~pinch_open~~
+* ~~press~~
+* ~~push~~
+* screenshot
+* ~~scroll~~
+* serial
+* ~~set_default_timeout~~
+* shell
+* ~~swipe~~
+* ~~tap_point~~
+* ~~wait~~
+* ~~wait_for_event~~
+* ~~web_view~~
+* ~~web_views~~
+* input
+
+## AndroidInput
+
+* drag
+* press
+* ~~swipe~~
+* tap_point
+* type
