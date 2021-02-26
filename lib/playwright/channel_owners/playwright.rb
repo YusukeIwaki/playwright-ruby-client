@@ -20,6 +20,10 @@ module Playwright
       @electron ||= ::Playwright::ChannelOwners::Electron.from(@initializer['electron'])
     end
 
+    def selectors
+      @selectors ||= ::Playwright::ChannelOwners::Selectors.from(@initializer['selectors'])
+    end
+
     class DeviceDescriptor
       class Viewport
         def initialize(hash)

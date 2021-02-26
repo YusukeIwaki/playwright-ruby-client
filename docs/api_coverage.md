@@ -182,7 +182,7 @@
 
 ## Selectors
 
-* ~~register~~
+* register
 
 ## ConsoleMessage
 
@@ -355,7 +355,7 @@
 * chromium
 * devices
 * firefox
-* ~~selectors~~
+* selectors
 * webkit
 
 ## Android
