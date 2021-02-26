@@ -35,6 +35,8 @@ RSpec.configure do |config|
   config.around(:each, type: :integration) do |example|
     @playwright_browser_type = browser_type
     Playwright.create(playwright_cli_executable_path: ENV['PLAYWRIGHT_CLI_EXECUTABLE_PATH']) do |playwright|
+      @playwright_playwright = playwright
+
       playwright.send(@playwright_browser_type).launch do |browser|
         @playwright_browser = browser
         example.run
@@ -43,6 +45,10 @@ RSpec.configure do |config|
   end
 
   module IntegrationTestCaseMethods
+    def playwright
+      @playwright_playwright or raise NoMethodError.new('undefined method "playwright"')
+    end
+
     def browser
       @playwright_browser or raise NoMethodError.new('undefined method "browser"')
     end

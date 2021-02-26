@@ -352,7 +352,7 @@ module Playwright
     def add_init_script(path: nil, script: nil)
       source =
         if path
-          File.read(path, 'r')
+          File.read(path)
         elsif script
           script
         else
