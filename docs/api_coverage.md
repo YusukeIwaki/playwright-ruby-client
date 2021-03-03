@@ -24,19 +24,19 @@
 * ~~frame~~
 * ~~headers~~
 * ~~json~~
-* ~~ok~~
+* ok
 * ~~request~~
-* ~~status~~
-* ~~status_text~~
+* status
+* status_text
 * ~~text~~
-* ~~url~~
+* url
 
-## ~~Route~~
+## Route
 
-* ~~abort~~
-* ~~continue_~~
+* abort
+* continue
 * ~~fulfill~~
-* ~~request~~
+* request
 
 ## ~~WebSocket~~
 
@@ -310,14 +310,14 @@
 * grant_permissions
 * new_page
 * pages
-* ~~route~~
+* route
 * set_default_navigation_timeout
 * set_default_timeout
 * set_extra_http_headers
 * set_geolocation
 * set_offline
 * ~~storage_state~~
-* ~~unroute~~
+* unroute
 * expect_event
 * expect_page
 * ~~wait_for_event~~

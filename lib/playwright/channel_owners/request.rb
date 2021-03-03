@@ -29,7 +29,7 @@ module Playwright
     end
 
     def method
-      @initialize['method']
+      @initializer['method']
     end
 
     def post_data
@@ -69,7 +69,7 @@ module Playwright
     end
 
     def frame
-      @initializer['frame']
+      ChannelOwners::Frame.from(@initializer['frame'])
     end
 
     def navigation_request?

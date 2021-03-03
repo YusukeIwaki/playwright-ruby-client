@@ -19,6 +19,8 @@ class MethodName
     name = @inflector.underscore(@js_method_name)
     if name.start_with?("is_")
       "#{name[3..-1]}?"
+    elsif name.end_with?('_')
+      name[0...-1]
     else
       DANGEROUS_NAME_MAP[name] || name.gsub('$', 'S')
     end
