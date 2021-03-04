@@ -20,12 +20,12 @@
 ## Response
 
 * body
-* ~~finished~~
-* ~~frame~~
-* ~~headers~~
-* ~~json~~
+* finished
+* frame
+* headers
+* json
 * ok
-* ~~request~~
+* request
 * status
 * status_text
 * text
