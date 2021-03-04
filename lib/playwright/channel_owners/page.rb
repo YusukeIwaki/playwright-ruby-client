@@ -104,12 +104,12 @@ module Playwright
     private def on_request_failed(request, response_end_timing, failure_text)
       request.send(:update_failure_text, failure_text)
       request.send(:update_response_end_timing, response_end_timing)
-      emit(Events::Page::RequestFailed)
+      emit(Events::Page::RequestFailed, request)
     end
 
     private def on_request_finished(request, response_end_timing)
       request.send(:update_response_end_timing, response_end_timing)
-      emit(Events::Page::RequestFinished)
+      emit(Events::Page::RequestFinished, request)
     end
 
     private def on_frame_attached(frame)
