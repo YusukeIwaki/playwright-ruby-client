@@ -21,6 +21,9 @@ module Playwright
         }
       end
       @closed = false
+      @bindings = {}
+      @routes = Set.new
+
       @main_frame = ChannelOwners::Frame.from(@initializer['mainFrame'])
       @main_frame.send(:update_page_from_page, self)
       @frames = Set.new
@@ -122,8 +125,15 @@ module Playwright
     end
 
     private def on_route(route, request)
-      # @routes.each ...
-      @browser_context.send(:on_route, route, request)
+      # It is not desired to use PlaywrightApi.wrap directly.
+      # However it is a little difficult to define wrapper for `handler` parameter in generate_api.
+      # Just a workaround...
+      wrapped_route = PlaywrightApi.wrap(route)
+      wrapped_request = PlaywrightApi.wrap(request)
+
+      if @routes.none? { |handler_entry| handler_entry.handle(wrapped_route, wrapped_request) }
+        @browser_context.send(:on_route, route, request)
+      end
     end
 
     private def on_close
@@ -361,6 +371,23 @@ module Playwright
 
       @channel.send_message_to_server('addInitScript', source: script)
       nil
+    end
+
+    def route(url, handler)
+      entry = RouteHandlerEntry.new(url, handler)
+      @routes << entry
+      if @routes.count >= 1
+        @channel.send_message_to_server('setNetworkInterceptionEnabled', enabled: true)
+      end
+    end
+
+    def unroute(url, handler: nil)
+      @routes.reject! do |handler_entry|
+        handler_entry.same_value?(url: url, handler: handler)
+      end
+      if @routes.count == 0
+        @channel.send_message_to_server('setNetworkInterceptionEnabled', enabled: false)
+      end
     end
 
     def screenshot(

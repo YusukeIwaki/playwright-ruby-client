@@ -1,3 +1,5 @@
+require 'base64'
+
 module Playwright
   # @ref https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_network.py
   define_channel_owner :Response do
@@ -17,5 +19,12 @@ module Playwright
     def status_text
       @initializer['statusText']
     end
+
+    def body
+      binary = @channel.send_message_to_server("body")
+      Base64.strict_decode64(binary)
+    end
+
+    alias_method :text, :body
   end
 end

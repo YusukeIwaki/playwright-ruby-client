@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-RSpec.describe 'BrowserContext#route' do
-  it 'should intercept', sinatra: true do
+RSpec.describe 'BrowserContext#route', sinatra: true do
+  it 'should intercept' do
     with_context do |context|
       intercepted = false
       promise = Concurrent::Promises.resolvable_future
@@ -29,7 +29,7 @@ RSpec.describe 'BrowserContext#route' do
     end
   end
 
-  it 'should unroute', sinatra: true do
+  it 'should unroute' do
     with_context do |context|
       intercepted = Set.new
       handler1 = -> (route, _) {
@@ -63,6 +63,36 @@ RSpec.describe 'BrowserContext#route' do
       context.unroute('**/empty.html')
       page.goto(server_empty_page)
       expect(intercepted).to contain_exactly(4)
+    end
+  end
+
+  it 'should yield to page.route' do
+    with_context do |context|
+      context.route('**/empty.html', ->(route, _) {
+        route.fulfill(status: 200, body: 'context')
+      })
+      page = context.new_page
+      page.route('**/empty.html', ->(route, _) {
+        route.fulfill(status: 200, body: 'page')
+      })
+      response = page.goto(server_empty_page)
+      expect(response).to be_ok
+      expect(response.text).to eq('page')
+    end
+  end
+
+  it 'should fall back to context.route' do
+    with_context do |context|
+      context.route('**/empty.html', ->(route, _) {
+        route.fulfill(status: 200, body: 'context')
+      })
+      page = context.new_page
+      page.route('**/non-empty.html', ->(route, _) {
+        route.fulfill(status: 200, body: 'page')
+      })
+      response = page.goto(server_empty_page)
+      expect(response).to be_ok
+      expect(response.text).to eq('context')
     end
   end
 end

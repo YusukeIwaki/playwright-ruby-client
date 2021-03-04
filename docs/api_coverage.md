@@ -19,7 +19,7 @@
 
 ## Response
 
-* ~~body~~
+* body
 * ~~finished~~
 * ~~frame~~
 * ~~headers~~
@@ -28,14 +28,14 @@
 * ~~request~~
 * status
 * status_text
-* ~~text~~
+* text
 * url
 
 ## Route
 
 * abort
 * continue
-* ~~fulfill~~
+* fulfill
 * request
 
 ## ~~WebSocket~~
@@ -258,7 +258,7 @@
 * query_selector
 * query_selector_all
 * reload
-* ~~route~~
+* route
 * screenshot
 * select_option
 * set_content
@@ -272,7 +272,7 @@
 * title
 * type
 * uncheck
-* ~~unroute~~
+* unroute
 * url
 * ~~video~~
 * viewport_size
