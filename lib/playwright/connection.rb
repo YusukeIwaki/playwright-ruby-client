@@ -12,6 +12,12 @@ module Playwright
       @transport.on_message_received do |message|
         dispatch(message)
       end
+      @transport.on_driver_crashed do
+        @callbacks.each_value do |callback|
+          callback.reject(::Playwright::DriverCrashedError.new)
+        end
+        raise ::Playwright::DriverCrashedError.new
+      end
 
       @objects = {} # Hash[ guid => ChannelOwner ]
       @waiting_for_object = {} # Hash[ guid => Promise<ChannelOwner> ]

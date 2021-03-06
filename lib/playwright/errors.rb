@@ -27,6 +27,12 @@ module Playwright
     end
   end
 
+  class DriverCrashedError < StandardError
+    def initialize
+      super("[BUG] Playwright driver is crashed!")
+    end
+  end
+
   class TimeoutError < Error
     def initialize(message:, stack: [])
       super(name: 'TimeoutError', message: message, stack: stack)

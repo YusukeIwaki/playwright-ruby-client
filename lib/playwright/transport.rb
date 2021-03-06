@@ -18,6 +18,10 @@ module Playwright
       @on_message = block
     end
 
+    def on_driver_crashed(&block)
+      @on_driver_crashed = block
+    end
+
     class AlreadyDisconnectedError < StandardError ; end
 
     # @param message [Hash]
@@ -69,6 +73,21 @@ module Playwright
 
     def handle_stderr
       while err = @stderr.read
+        # sometimed driver crashes with the error below.
+        # --------
+        # undefined:1
+        # �
+        # ^
+
+        # SyntaxError: Unexpected token � in JSON at position 0
+        #     at JSON.parse (<anonymous>)
+        #     at Transport.transport.onmessage (/home/runner/work/playwright-ruby-client/playwright-ruby-client/node_modules/playwright/lib/cli/driver.js:42:73)
+        #     at Immediate.<anonymous> (/home/runner/work/playwright-ruby-client/playwright-ruby-client/node_modules/playwright/lib/protocol/transport.js:74:26)
+        #     at processImmediate (internal/timers.js:461:21)
+        if err.include?('undefined:1')
+          @on_driver_crashed&.call
+          break
+        end
         $stderr.write(err)
       end
     rescue IOError
