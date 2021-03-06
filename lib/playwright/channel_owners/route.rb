@@ -41,8 +41,13 @@ module Playwright
       end
 
       if content
-        params[:body] = Base64.strict_encode64(content)
-        params[:isBase64] = true
+        if content.is_a?(String)
+          params[:body] = content
+          params[:isBase64] = false
+        else
+          params[:body] = Base64.strict_encode64(content)
+          params[:isBase64] = true
+        end
         param_headers['content-length'] ||= content.length.to_s
       end
 
