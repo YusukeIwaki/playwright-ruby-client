@@ -19,24 +19,24 @@
 
 ## Response
 
-* ~~body~~
-* ~~finished~~
-* ~~frame~~
-* ~~headers~~
-* ~~json~~
-* ~~ok~~
-* ~~request~~
-* ~~status~~
-* ~~status_text~~
-* ~~text~~
-* ~~url~~
+* body
+* finished
+* frame
+* headers
+* json
+* ok
+* request
+* status
+* status_text
+* text
+* url
 
-## ~~Route~~
+## Route
 
-* ~~abort~~
-* ~~continue_~~
-* ~~fulfill~~
-* ~~request~~
+* abort
+* continue
+* fulfill
+* request
 
 ## ~~WebSocket~~
 
@@ -258,7 +258,7 @@
 * query_selector
 * query_selector_all
 * reload
-* ~~route~~
+* route
 * screenshot
 * select_option
 * set_content
@@ -272,7 +272,7 @@
 * title
 * type
 * uncheck
-* ~~unroute~~
+* unroute
 * url
 * ~~video~~
 * viewport_size
@@ -310,14 +310,14 @@
 * grant_permissions
 * new_page
 * pages
-* ~~route~~
+* route
 * set_default_navigation_timeout
 * set_default_timeout
 * set_extra_http_headers
 * set_geolocation
 * set_offline
 * ~~storage_state~~
-* ~~unroute~~
+* unroute
 * expect_event
 * expect_page
 * ~~wait_for_event~~

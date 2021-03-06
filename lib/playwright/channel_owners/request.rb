@@ -29,7 +29,7 @@ module Playwright
     end
 
     def method
-      @initialize['method']
+      @initializer['method']
     end
 
     def post_data
@@ -69,7 +69,7 @@ module Playwright
     end
 
     def frame
-      @initializer['frame']
+      ChannelOwners::Frame.from(@initializer['frame'])
     end
 
     def navigation_request?
@@ -88,6 +88,30 @@ module Playwright
 
     private def update_failure_text(failure_text)
       @failure_text = failure_text
+    end
+
+    private def update_timings(
+                  start_time:,
+                  domain_lookup_start:,
+                  domain_lookup_end:,
+                  connect_start:,
+                  secure_connection_start:,
+                  connect_end:,
+                  request_start:,
+                  response_start:)
+
+      @timing["startTime"] = start_time
+      @timing["domainLookupStart"] = domain_lookup_start
+      @timing["domainLookupEnd"] = domain_lookup_end
+      @timing["connectStart"] = connect_start
+      @timing["secureConnectionStart"] = secure_connection_start
+      @timing["connectEnd"] = connect_end
+      @timing["requestStart"] = request_start
+      @timing["responseStart"] = response_start
+    end
+
+    private def update_headers(headers)
+      @headers = parse_headers(headers)
     end
 
     private def update_response_end_timing(response_end_timing)

@@ -7,6 +7,7 @@ module Playwright
 
     private def after_initialize
       @pages = Set.new
+      @routes = Set.new
       @bindings = {}
       @timeout_settings = TimeoutSettings.new
 
@@ -25,8 +26,15 @@ module Playwright
     end
 
     private def on_route(route, request)
-      # @routes.each ...
-      route.continue_
+      # It is not desired to use PlaywrightApi.wrap directly.
+      # However it is a little difficult to define wrapper for `handler` parameter in generate_api.
+      # Just a workaround...
+      wrapped_route = PlaywrightApi.wrap(route)
+      wrapped_request = PlaywrightApi.wrap(request)
+
+      if @routes.none? { |handler_entry| handler_entry.handle(wrapped_route, wrapped_request) }
+        route.continue
+      end
     end
 
     private def on_binding(binding_call)
@@ -133,6 +141,23 @@ module Playwright
 
     def expose_function(name, callback)
       expose_binding(name, ->(_source, *args) { callback.call(*args) }, )
+    end
+
+    def route(url, handler)
+      entry = RouteHandlerEntry.new(url, handler)
+      @routes << entry
+      if @routes.count >= 1
+        @channel.send_message_to_server('setNetworkInterceptionEnabled', enabled: true)
+      end
+    end
+
+    def unroute(url, handler: nil)
+      @routes.reject! do |handler_entry|
+        handler_entry.same_value?(url: url, handler: handler)
+      end
+      if @routes.count == 0
+        @channel.send_message_to_server('setNetworkInterceptionEnabled', enabled: false)
+      end
     end
 
     def expect_event(event, predicate: nil, timeout: nil, &block)
