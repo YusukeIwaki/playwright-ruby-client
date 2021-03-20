@@ -55,11 +55,11 @@
 
 ## Mouse
 
-* ~~click~~
-* ~~dblclick~~
-* ~~down~~
-* ~~move~~
-* ~~up~~
+* click
+* dblclick
+* down
+* move
+* up
 
 ## Touchscreen
 
