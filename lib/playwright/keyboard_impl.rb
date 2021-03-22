@@ -10,7 +10,7 @@ module Playwright
     end
 
     def up(key)
-      @channel.send_message_to_server('keyboardDown', key: key)
+      @channel.send_message_to_server('keyboardUp', key: key)
     end
 
     def insert_text(text)
