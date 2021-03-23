@@ -44,7 +44,6 @@ API_IMPLEMENTATIONS = %w[
 
 require 'bundler/setup'
 require 'dry/inflector'
-require 'erb'
 require 'json'
 require 'playwright/event_emitter'
 require 'playwright/utils'
