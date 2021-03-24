@@ -7,10 +7,13 @@ RSpec.describe 'example', skip: ENV['CI'] do
   it 'should take a screenshot' do
     with_page do |page|
       page.goto('https://github.com/YusukeIwaki')
-      Dir.mktmpdir do |tmp|
-        path = File.join(tmp, 'YusukeIwaki.png')
+      tmpdir = Dir.mktmpdir
+      begin
+        path = File.join(tmpdir, 'YusukeIwaki.png')
         page.screenshot(path: path)
-        expect(File.open(path).read.size).to be > 1000
+        expect(File.open(path, 'rb').read.size).to be > 1000
+      ensure
+        FileUtils.remove_entry(tmpdir, true)
       end
     end
   end
