@@ -1,0 +1,26 @@
+name: Windows check
+on: [pull_request]
+jobs:
+  windows_chrome_rspec:
+    name: RSpec on Windows / Chrome
+    runs-on: windows-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0
+          bundler-cache: true
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Download and Install playwright driver
+        run: |
+          wget -O driver.zip https://playwright.azureedge.net/builds/driver/next/playwright-$(cat development/CLI_VERSION)-win32.zip
+          unzip driver.zip && rm driver.zip
+          .\playwright.cmd install
+      - run: bundle exec ruby development/generate_api.rb
+      - name: Check example
+        run: bundle exec rspec spec/integration/example_spec.rb
+        env:
+          PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./playwright.cmd
