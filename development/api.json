@@ -836,7 +836,7 @@
       {
         "type": "code",
         "lines": [
-          "const { _android } = require('playwright');"
+          "const { _android: android } = require('playwright');"
         ],
         "codeLang": "js"
       },
@@ -847,11 +847,11 @@
       {
         "type": "code",
         "lines": [
-          "const { _android } = require('playwright');",
+          "const { _android: android } = require('playwright');",
           "",
           "(async () => {",
           "  // Connect to the device.",
-          "  const [device] = await playwright._android.devices();",
+          "  const [device] = await android.devices();",
           "  console.log(`Model: ${device.model()}`);",
           "  console.log(`Serial: ${device.serial()}`);",
           "  // Take screenshot of the whole device.",
@@ -872,7 +872,7 @@
           "",
           "    // Work with WebView's page as usual.",
           "    const page = await webview.page();",
-          "    await page.page.waitForNavigation({ url: /.*microsoft\\/playwright.*/ });",
+          "    await page.waitForNavigation({ url: /.*microsoft\\/playwright.*/ });",
           "    console.log(await page.title());",
           "  }",
           "",
@@ -918,7 +918,7 @@
       "types": {},
       "overrides": {}
     },
-    "comment": "Playwright has **experimental** support for Android automation. You can access android namespace via:\n\n```js\nconst { _android } = require('playwright');\n```\n\nAn example of the Android automation script would be:\n\n```js\nconst { _android } = require('playwright');\n\n(async () => {\n  // Connect to the device.\n  const [device] = await playwright._android.devices();\n  console.log(`Model: ${device.model()}`);\n  console.log(`Serial: ${device.serial()}`);\n  // Take screenshot of the whole device.\n  await device.screenshot({ path: 'device.png' });\n\n  {\n    // --------------------- WebView -----------------------\n\n    // Launch an application with WebView.\n    await device.shell('am force-stop org.chromium.webview_shell');\n    await device.shell('am start org.chromium.webview_shell/.WebViewBrowserActivity');\n    // Get the WebView.\n    const webview = await device.webView({ pkg: 'org.chromium.webview_shell' });\n\n    // Fill the input box.\n    await device.fill({ res: 'org.chromium.webview_shell:id/url_field' }, 'github.com/microsoft/playwright');\n    await device.press({ res: 'org.chromium.webview_shell:id/url_field' }, 'Enter');\n\n    // Work with WebView's page as usual.\n    const page = await webview.page();\n    await page.page.waitForNavigation({ url: /.*microsoft\\/playwright.*/ });\n    console.log(await page.title());\n  }\n\n  {\n    // --------------------- Browser -----------------------\n\n    // Launch Chrome browser.\n    await device.shell('am force-stop com.android.chrome');\n    const context = await device.launchBrowser();\n\n    // Use BrowserContext as usual.\n    const page = await context.newPage();\n    await page.goto('https://webkit.org/');\n    console.log(await page.evaluate(() => window.location.href));\n    await page.screenshot({ path: 'page.png' });\n\n    await context.close();\n  }\n\n  // Close the device.\n  await device.close();\n})();\n```\n\nNote that since you don't need Playwright to install web browsers when testing Android, you can omit browser download\nvia setting the following environment variable when installing Playwright:\n\n```sh js\n$ PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm i -D playwright\n```\n",
+    "comment": "Playwright has **experimental** support for Android automation. You can access android namespace via:\n\n```js\nconst { _android: android } = require('playwright');\n```\n\nAn example of the Android automation script would be:\n\n```js\nconst { _android: android } = require('playwright');\n\n(async () => {\n  // Connect to the device.\n  const [device] = await android.devices();\n  console.log(`Model: ${device.model()}`);\n  console.log(`Serial: ${device.serial()}`);\n  // Take screenshot of the whole device.\n  await device.screenshot({ path: 'device.png' });\n\n  {\n    // --------------------- WebView -----------------------\n\n    // Launch an application with WebView.\n    await device.shell('am force-stop org.chromium.webview_shell');\n    await device.shell('am start org.chromium.webview_shell/.WebViewBrowserActivity');\n    // Get the WebView.\n    const webview = await device.webView({ pkg: 'org.chromium.webview_shell' });\n\n    // Fill the input box.\n    await device.fill({ res: 'org.chromium.webview_shell:id/url_field' }, 'github.com/microsoft/playwright');\n    await device.press({ res: 'org.chromium.webview_shell:id/url_field' }, 'Enter');\n\n    // Work with WebView's page as usual.\n    const page = await webview.page();\n    await page.waitForNavigation({ url: /.*microsoft\\/playwright.*/ });\n    console.log(await page.title());\n  }\n\n  {\n    // --------------------- Browser -----------------------\n\n    // Launch Chrome browser.\n    await device.shell('am force-stop com.android.chrome');\n    const context = await device.launchBrowser();\n\n    // Use BrowserContext as usual.\n    const page = await context.newPage();\n    await page.goto('https://webkit.org/');\n    console.log(await page.evaluate(() => window.location.href));\n    await page.screenshot({ path: 'page.png' });\n\n    await context.close();\n  }\n\n  // Close the device.\n  await device.close();\n})();\n```\n\nNote that since you don't need Playwright to install web browsers when testing Android, you can omit browser download\nvia setting the following environment variable when installing Playwright:\n\n```sh js\n$ PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm i -D playwright\n```\n",
     "members": [
       {
         "kind": "method",
@@ -2226,11 +2226,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Path on the filesystem to write the HAR file to."
+                      "text": "Enables [HAR](http://www.softwareishard.com/blog/har-12-spec) recording for all pages into the specified HAR file on the filesystem. If not specified, the HAR is not recorded. Make sure to call [`method: BrowserContext.close`] for the HAR to be saved."
                     }
                   ],
                   "required": false,
-                  "comment": "Path on the filesystem to write the HAR file to.",
+                  "comment": "Enables [HAR](http://www.softwareishard.com/blog/har-12-spec) recording for all pages into the specified HAR file on the\nfilesystem. If not specified, the HAR is not recorded. Make sure to call [`method: BrowserContext.close`] for the HAR to\nbe saved.",
                   "deprecated": false,
                   "async": false,
                   "alias": "recordHarPath"
@@ -2368,11 +2368,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Path to the directory to put videos into."
+                      "text": "Enables video recording for all pages into the specified directory. If not specified videos are not recorded. Make sure to call [`method: BrowserContext.close`] for videos to be saved."
                     }
                   ],
                   "required": false,
-                  "comment": "Path to the directory to put videos into.",
+                  "comment": "Enables video recording for all pages into the specified directory. If not specified videos are not recorded. Make sure\nto call [`method: BrowserContext.close`] for videos to be saved.",
                   "deprecated": false,
                   "async": false,
                   "alias": "recordVideoDir"
@@ -6011,11 +6011,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Path on the filesystem to write the HAR file to."
+                      "text": "Enables [HAR](http://www.softwareishard.com/blog/har-12-spec) recording for all pages into the specified HAR file on the filesystem. If not specified, the HAR is not recorded. Make sure to call [`method: BrowserContext.close`] for the HAR to be saved."
                     }
                   ],
                   "required": false,
-                  "comment": "Path on the filesystem to write the HAR file to.",
+                  "comment": "Enables [HAR](http://www.softwareishard.com/blog/har-12-spec) recording for all pages into the specified HAR file on the\nfilesystem. If not specified, the HAR is not recorded. Make sure to call [`method: BrowserContext.close`] for the HAR to\nbe saved.",
                   "deprecated": false,
                   "async": false,
                   "alias": "recordHarPath"
@@ -6153,11 +6153,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Path to the directory to put videos into."
+                      "text": "Enables video recording for all pages into the specified directory. If not specified videos are not recorded. Make sure to call [`method: BrowserContext.close`] for videos to be saved."
                     }
                   ],
                   "required": false,
-                  "comment": "Path to the directory to put videos into.",
+                  "comment": "Enables video recording for all pages into the specified directory. If not specified videos are not recorded. Make sure\nto call [`method: BrowserContext.close`] for videos to be saved.",
                   "deprecated": false,
                   "async": false,
                   "alias": "recordVideoDir"
@@ -6431,7 +6431,7 @@
                                       "langs": {},
                                       "name": "sameSite",
                                       "type": {
-                                        "name": "\"SameSiteAttribute\"",
+                                        "name": "SameSiteAttribute",
                                         "union": [
                                           {
                                             "name": "\"Strict\""
@@ -6443,7 +6443,7 @@
                                             "name": "\"None\""
                                           }
                                         ],
-                                        "expression": "[\"SameSiteAttribute\"]<\"Strict\"|\"Lax\"|\"None\">"
+                                        "expression": "[SameSiteAttribute]<\"Strict\"|\"Lax\"|\"None\">"
                                       },
                                       "spec": [
                                         {
@@ -7677,11 +7677,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Path on the filesystem to write the HAR file to."
+                      "text": "Enables [HAR](http://www.softwareishard.com/blog/har-12-spec) recording for all pages into the specified HAR file on the filesystem. If not specified, the HAR is not recorded. Make sure to call [`method: BrowserContext.close`] for the HAR to be saved."
                     }
                   ],
                   "required": false,
-                  "comment": "Path on the filesystem to write the HAR file to.",
+                  "comment": "Enables [HAR](http://www.softwareishard.com/blog/har-12-spec) recording for all pages into the specified HAR file on the\nfilesystem. If not specified, the HAR is not recorded. Make sure to call [`method: BrowserContext.close`] for the HAR to\nbe saved.",
                   "deprecated": false,
                   "async": false,
                   "alias": "recordHarPath"
@@ -7819,11 +7819,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Path to the directory to put videos into."
+                      "text": "Enables video recording for all pages into the specified directory. If not specified videos are not recorded. Make sure to call [`method: BrowserContext.close`] for videos to be saved."
                     }
                   ],
                   "required": false,
-                  "comment": "Path to the directory to put videos into.",
+                  "comment": "Enables video recording for all pages into the specified directory. If not specified videos are not recorded. Make sure\nto call [`method: BrowserContext.close`] for videos to be saved.",
                   "deprecated": false,
                   "async": false,
                   "alias": "recordVideoDir"
@@ -8097,7 +8097,7 @@
                                       "langs": {},
                                       "name": "sameSite",
                                       "type": {
-                                        "name": "\"SameSiteAttribute\"",
+                                        "name": "SameSiteAttribute",
                                         "union": [
                                           {
                                             "name": "\"Strict\""
@@ -8109,7 +8109,7 @@
                                             "name": "\"None\""
                                           }
                                         ],
-                                        "expression": "[\"SameSiteAttribute\"]<\"Strict\"|\"Lax\"|\"None\">"
+                                        "expression": "[SameSiteAttribute]<\"Strict\"|\"Lax\"|\"None\">"
                                       },
                                       "spec": [
                                         {
@@ -12885,6 +12885,52 @@
                 {
                   "kind": "property",
                   "langs": {},
+                  "name": "channel",
+                  "type": {
+                    "name": "BrowserChannel",
+                    "union": [
+                      {
+                        "name": "\"chrome\""
+                      },
+                      {
+                        "name": "\"chrome-beta\""
+                      },
+                      {
+                        "name": "\"chrome-dev\""
+                      },
+                      {
+                        "name": "\"chrome-canary\""
+                      },
+                      {
+                        "name": "\"msedge\""
+                      },
+                      {
+                        "name": "\"msedge-beta\""
+                      },
+                      {
+                        "name": "\"msedge-dev\""
+                      },
+                      {
+                        "name": "\"msedge-canary\""
+                      }
+                    ],
+                    "expression": "[BrowserChannel]<\"chrome\"|\"chrome-beta\"|\"chrome-dev\"|\"chrome-canary\"|\"msedge\"|\"msedge-beta\"|\"msedge-dev\"|\"msedge-canary\">"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Browser distribution channel."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Browser distribution channel.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "channel"
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
                   "name": "chromiumSandbox",
                   "type": {
                     "name": "boolean",
@@ -13604,6 +13650,52 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "bypassCSP"
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "channel",
+                  "type": {
+                    "name": "BrowserChannel",
+                    "union": [
+                      {
+                        "name": "\"chrome\""
+                      },
+                      {
+                        "name": "\"chrome-beta\""
+                      },
+                      {
+                        "name": "\"chrome-dev\""
+                      },
+                      {
+                        "name": "\"chrome-canary\""
+                      },
+                      {
+                        "name": "\"msedge\""
+                      },
+                      {
+                        "name": "\"msedge-beta\""
+                      },
+                      {
+                        "name": "\"msedge-dev\""
+                      },
+                      {
+                        "name": "\"msedge-canary\""
+                      }
+                    ],
+                    "expression": "[BrowserChannel]<\"chrome\"|\"chrome-beta\"|\"chrome-dev\"|\"chrome-canary\"|\"msedge\"|\"msedge-beta\"|\"msedge-dev\"|\"msedge-canary\">"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Browser distribution channel."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Browser distribution channel.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "channel"
                 },
                 {
                   "kind": "property",
@@ -14591,11 +14683,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Path on the filesystem to write the HAR file to."
+                      "text": "Enables [HAR](http://www.softwareishard.com/blog/har-12-spec) recording for all pages into the specified HAR file on the filesystem. If not specified, the HAR is not recorded. Make sure to call [`method: BrowserContext.close`] for the HAR to be saved."
                     }
                   ],
                   "required": false,
-                  "comment": "Path on the filesystem to write the HAR file to.",
+                  "comment": "Enables [HAR](http://www.softwareishard.com/blog/har-12-spec) recording for all pages into the specified HAR file on the\nfilesystem. If not specified, the HAR is not recorded. Make sure to call [`method: BrowserContext.close`] for the HAR to\nbe saved.",
                   "deprecated": false,
                   "async": false,
                   "alias": "recordHarPath"
@@ -14733,11 +14825,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Path to the directory to put videos into."
+                      "text": "Enables video recording for all pages into the specified directory. If not specified videos are not recorded. Make sure to call [`method: BrowserContext.close`] for videos to be saved."
                     }
                   ],
                   "required": false,
-                  "comment": "Path to the directory to put videos into.",
+                  "comment": "Enables video recording for all pages into the specified directory. If not specified videos are not recorded. Make sure\nto call [`method: BrowserContext.close`] for videos to be saved.",
                   "deprecated": false,
                   "async": false,
                   "alias": "recordVideoDir"
@@ -17437,11 +17529,11 @@
         "spec": [
           {
             "type": "text",
-            "text": "Deletes the downloaded file."
+            "text": "Deletes the downloaded file. Will wait for the download to finish if necessary."
           }
         ],
         "required": true,
-        "comment": "Deletes the downloaded file.",
+        "comment": "Deletes the downloaded file. Will wait for the download to finish if necessary.",
         "deprecated": false,
         "async": true,
         "alias": "delete",
@@ -17466,11 +17558,11 @@
         "spec": [
           {
             "type": "text",
-            "text": "Returns download error if any."
+            "text": "Returns download error if any. Will wait for the download to finish if necessary."
           }
         ],
         "required": true,
-        "comment": "Returns download error if any.",
+        "comment": "Returns download error if any. Will wait for the download to finish if necessary.",
         "deprecated": false,
         "async": true,
         "alias": "failure",
@@ -17495,11 +17587,11 @@
         "spec": [
           {
             "type": "text",
-            "text": "Returns path to the downloaded file in case of successful download."
+            "text": "Returns path to the downloaded file in case of successful download. The method will wait for the download to finish if necessary."
           }
         ],
         "required": true,
-        "comment": "Returns path to the downloaded file in case of successful download.",
+        "comment": "Returns path to the downloaded file in case of successful download. The method will wait for the download to finish if\nnecessary.",
         "deprecated": false,
         "async": true,
         "alias": "path",
@@ -17515,11 +17607,11 @@
         "spec": [
           {
             "type": "text",
-            "text": "Saves the download to a user-specified path."
+            "text": "Saves the download to a user-specified path. It is safe to call this method while the download is still in progress."
           }
         ],
         "required": true,
-        "comment": "Saves the download to a user-specified path.",
+        "comment": "Saves the download to a user-specified path. It is safe to call this method while the download is still in progress.",
         "deprecated": false,
         "async": true,
         "alias": "saveAs",
@@ -21239,6 +21331,100 @@
             "kind": "property",
             "langs": {
               "only": [
+                "csharp"
+              ],
+              "aliases": {},
+              "types": {},
+              "overrides": {}
+            },
+            "name": "values",
+            "type": {
+              "name": "Array",
+              "templates": [
+                {
+                  "name": "Object",
+                  "properties": [
+                    {
+                      "kind": "property",
+                      "langs": {},
+                      "name": "value",
+                      "type": {
+                        "name": "string",
+                        "expression": "[string]"
+                      },
+                      "spec": [
+                        {
+                          "type": "text",
+                          "text": "Matches by `option.value`. Optional."
+                        }
+                      ],
+                      "required": false,
+                      "comment": "Matches by `option.value`. Optional.",
+                      "deprecated": false,
+                      "async": false,
+                      "alias": "value"
+                    },
+                    {
+                      "kind": "property",
+                      "langs": {},
+                      "name": "label",
+                      "type": {
+                        "name": "string",
+                        "expression": "[string]"
+                      },
+                      "spec": [
+                        {
+                          "type": "text",
+                          "text": "Matches by `option.label`. Optional."
+                        }
+                      ],
+                      "required": false,
+                      "comment": "Matches by `option.label`. Optional.",
+                      "deprecated": false,
+                      "async": false,
+                      "alias": "label"
+                    },
+                    {
+                      "kind": "property",
+                      "langs": {},
+                      "name": "index",
+                      "type": {
+                        "name": "int",
+                        "expression": "[int]"
+                      },
+                      "spec": [
+                        {
+                          "type": "text",
+                          "text": "Matches by the index. Optional."
+                        }
+                      ],
+                      "required": false,
+                      "comment": "Matches by the index. Optional.",
+                      "deprecated": false,
+                      "async": false,
+                      "alias": "index"
+                    }
+                  ]
+                }
+              ],
+              "expression": "[Array]<[Object]>"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Options to select. If the `<select>` has the `multiple` attribute, all matching options are selected, otherwise only the first option matching one of the passed options is selected. String values are equivalent to `{value:'string'}`. Option is considered matching if all specified properties match."
+              }
+            ],
+            "required": true,
+            "comment": "Options to select. If the `<select>` has the `multiple` attribute, all matching options are selected, otherwise only the\nfirst option matching one of the passed options is selected. String values are equivalent to `{value:'string'}`. Option\nis considered matching if all specified properties match.",
+            "deprecated": false,
+            "async": false,
+            "alias": "values"
+          },
+          {
+            "kind": "property",
+            "langs": {
+              "only": [
                 "python"
               ],
               "aliases": {},
@@ -21478,7 +21664,111 @@
         "args": [
           {
             "kind": "property",
-            "langs": {},
+            "langs": {
+              "overrides": {
+                "csharp": {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "csharp"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "files",
+                  "type": {
+                    "name": "Array",
+                    "templates": [
+                      {
+                        "name": "Object",
+                        "properties": [
+                          {
+                            "kind": "property",
+                            "langs": {},
+                            "name": "name",
+                            "type": {
+                              "name": "string",
+                              "expression": "[string]"
+                            },
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": "File name"
+                              }
+                            ],
+                            "argsArray": [],
+                            "required": true,
+                            "comment": "",
+                            "args": {},
+                            "clazz": null,
+                            "deprecated": false,
+                            "async": false,
+                            "alias": "name"
+                          },
+                          {
+                            "kind": "property",
+                            "langs": {},
+                            "name": "mimeType",
+                            "type": {
+                              "name": "string",
+                              "expression": "[string]"
+                            },
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": "File type"
+                              }
+                            ],
+                            "argsArray": [],
+                            "required": true,
+                            "comment": "",
+                            "args": {},
+                            "clazz": null,
+                            "deprecated": false,
+                            "async": false,
+                            "alias": "mimeType"
+                          },
+                          {
+                            "kind": "property",
+                            "langs": {},
+                            "name": "buffer",
+                            "type": {
+                              "name": "Buffer",
+                              "expression": "[Buffer]"
+                            },
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": "File content"
+                              }
+                            ],
+                            "argsArray": [],
+                            "required": true,
+                            "comment": "",
+                            "args": {},
+                            "clazz": null,
+                            "deprecated": false,
+                            "async": false,
+                            "alias": "buffer"
+                          }
+                        ]
+                      }
+                    ],
+                    "expression": "[Array]<[Object]>"
+                  },
+                  "spec": [],
+                  "argsArray": [],
+                  "required": true,
+                  "comment": "",
+                  "args": {},
+                  "clazz": null,
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "files"
+                }
+              }
+            },
             "name": "files",
             "type": {
               "name": "",
@@ -45822,6 +46112,78 @@
         "async": false,
         "alias": "url",
         "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {
+          "only": [
+            "csharp"
+          ],
+          "aliases": {},
+          "types": {},
+          "overrides": {}
+        },
+        "name": "getPayloadAsJson",
+        "type": {
+          "name": "JsonDocument",
+          "expression": "[JsonDocument]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Returns a [JsonDocument] representation of [`method: Request.postDataBuffer`]."
+          }
+        ],
+        "required": true,
+        "comment": "Returns a [JsonDocument] representation of [`method: Request.postDataBuffer`].",
+        "deprecated": false,
+        "async": false,
+        "alias": "getPayloadAsJson",
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "documentOptions",
+                  "type": {
+                    "name": "",
+                    "union": [
+                      {
+                        "name": "null"
+                      },
+                      {
+                        "name": "JsonDocumentOptions"
+                      }
+                    ],
+                    "expression": "[null]|[JsonDocumentOptions]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "The options that control custom behaviour when parsing the JSON."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "The options that control custom behaviour when parsing the JSON.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "documentOptions"
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "options"
+          }
+        ]
       }
     ]
   },
@@ -46109,6 +46471,34 @@
         "deprecated": false,
         "async": false,
         "alias": "url",
+        "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {
+          "only": [
+            "csharp"
+          ],
+          "aliases": {},
+          "types": {},
+          "overrides": {}
+        },
+        "name": "statusCode",
+        "type": {
+          "name": "System.Net.HttpStatusCode",
+          "expression": "[System.Net.HttpStatusCode]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Gets the [System.Net.HttpStatusCode] code of the response."
+          }
+        ],
+        "required": true,
+        "comment": "Gets the [System.Net.HttpStatusCode] code of the response.",
+        "deprecated": false,
+        "async": false,
+        "alias": "statusCode",
         "args": []
       }
     ]
