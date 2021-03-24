@@ -3,7 +3,7 @@
 require 'spec_helper'
 require 'tmpdir'
 
-RSpec.describe 'example', skip: ENV['CI'] do
+RSpec.describe 'example' do
   it 'should take a screenshot' do
     with_page do |page|
       page.goto('https://github.com/YusukeIwaki')
@@ -18,7 +18,7 @@ RSpec.describe 'example', skip: ENV['CI'] do
     end
   end
 
-  it 'should input text and grab DOM elements' do
+  it 'should input text and grab DOM elements', skip: ENV['CI'] do
     with_page do |page|
       page = browser.new_page
       page.viewport_size = { width: 1280, height: 800 }
