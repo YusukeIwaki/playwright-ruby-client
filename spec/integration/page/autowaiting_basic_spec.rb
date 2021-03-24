@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe 'autowaiting basic' do
   let(:endpoint) { "/empty_#{SecureRandom.hex(24)}" }
-  it 'should await navigation when clicking anchor', sinatra: true do
+  def init_server
     messages = []
 
     sinatra.get(endpoint) do
@@ -10,9 +10,20 @@ RSpec.describe 'autowaiting basic' do
       headers('Content-Type' => 'text/html')
       body("<link rel='stylesheet' href='./one-style.css'>")
     end
+    sinatra.post(endpoint) do
+      messages << 'route'
+      headers('Content-Type' => 'text/html')
+      body("<link rel='stylesheet' href='./one-style.css'>")
+    end
+
+    messages
+  end
+
+  it 'should await navigation when clicking anchor', sinatra: true do
+    messages = init_server
 
     with_page do |page|
-      page.content = "<a href=\"#{server_prefix}#{endpoint}\" >empty.html</a>"
+      page.content = "<a id=\"anchor\" href=\"#{server_prefix}#{endpoint}\" >empty.html</a>"
 
       promises = [
         Concurrent::Promises.future {
@@ -31,14 +42,102 @@ RSpec.describe 'autowaiting basic' do
     expect(messages).to eq(%w(route navigated click))
   end
 
-  it 'should await cross-process navigation when clicking anchor', sinatra: true do
-    messages = []
+  it 'should await navigation when clicking anchor programmatically', sinatra: true do
+    messages = init_server
 
-    sinatra.get(endpoint) do
-      messages << 'route'
-      headers('Content-Type' => 'text/html')
-      body("<link rel='stylesheet' href='./one-style.css'>")
+    with_page do |page|
+      page.content = "<a id=\"anchor\" href=\"#{server_prefix}#{endpoint}\" >empty.html</a>"
+
+      promises = [
+        Concurrent::Promises.future {
+          sleep 0.5
+          page.evaluate("() => window.anchor.click()")
+          messages << 'click'
+        },
+        Concurrent::Promises.future {
+          page.expect_event('framenavigated')
+          messages << 'navigated'
+        }
+      ]
+      Concurrent::Promises.zip(*promises).value!
     end
+
+    expect(messages).to eq(%w(route navigated click))
+  end
+
+  it 'should await navigation when clicking anchor via $eval', sinatra: true do
+    messages = init_server
+
+    with_page do |page|
+      page.content = "<a id=\"anchor\" href=\"#{server_prefix}#{endpoint}\" >empty.html</a>"
+
+      promises = [
+        Concurrent::Promises.future {
+          sleep 0.5
+          page.eval_on_selector('#anchor', "(anchor) => anchor.click()")
+          messages << 'click'
+        },
+        Concurrent::Promises.future {
+          page.expect_event('framenavigated')
+          messages << 'navigated'
+        }
+      ]
+      Concurrent::Promises.zip(*promises).value!
+    end
+
+    expect(messages).to eq(%w(route navigated click))
+  end
+
+  it 'should await navigation when clicking anchor via handle.eval', sinatra: true do
+    messages = init_server
+
+    with_page do |page|
+      page.content = "<a id=\"anchor\" href=\"#{server_prefix}#{endpoint}\" >empty.html</a>"
+      handle = page.evaluate_handle('document')
+
+      promises = [
+        Concurrent::Promises.future {
+          sleep 0.5
+          handle.evaluate("(doc) => doc.getElementById('anchor').click()")
+          messages << 'click'
+        },
+        Concurrent::Promises.future {
+          page.expect_event('framenavigated')
+          messages << 'navigated'
+        }
+      ]
+      Concurrent::Promises.zip(*promises).value!
+    end
+
+    expect(messages).to eq(%w(route navigated click))
+  end
+
+  it 'should await navigation when clicking anchor via handle.$eval', sinatra: true do
+    messages = init_server
+
+    with_page do |page|
+      page.content = "<a id=\"anchor\" href=\"#{server_prefix}#{endpoint}\" >empty.html</a>"
+      handle = page.query_selector('body')
+
+      promises = [
+        Concurrent::Promises.future {
+          sleep 0.5
+          handle.eval_on_selector('#anchor', "(anchor) => anchor.click()")
+          messages << 'click'
+        },
+        Concurrent::Promises.future {
+          page.expect_event('framenavigated')
+          messages << 'navigated'
+        }
+      ]
+      Concurrent::Promises.zip(*promises).value!
+    end
+
+    expect(messages).to eq(%w(route navigated click))
+  end
+
+  it 'should await cross-process navigation when clicking anchor', sinatra: true do
+    messages = init_server
 
     with_page do |page|
       page.content = "<a href=\"#{server_cross_process_prefix}#{endpoint}\" >empty.html</a>"
@@ -60,14 +159,31 @@ RSpec.describe 'autowaiting basic' do
     expect(messages).to eq(%w(route navigated click))
   end
 
-  it 'should await form-get on click', sinatra: true do
-    messages = []
+  it 'should await cross-process navigation when clicking anchor programatically', sinatra: true do
+    messages = init_server
 
-    sinatra.get(endpoint) do
-      messages << 'route'
-      headers('Content-Type' => 'text/html')
-      body("<link rel='stylesheet' href='./one-style.css'>")
+    with_page do |page|
+      page.content = "<a id=\"anchor\" href=\"#{server_cross_process_prefix}#{endpoint}\" >empty.html</a>"
+
+      promises = [
+        Concurrent::Promises.future {
+          sleep 0.5
+          page.evaluate('window.anchor.click()')
+          messages << 'click'
+        },
+        Concurrent::Promises.future {
+          page.expect_event('framenavigated')
+          messages << 'navigated'
+        }
+      ]
+      Concurrent::Promises.zip(*promises).value!
     end
+
+    expect(messages).to eq(%w(route navigated click))
+  end
+
+  it 'should await form-get on click', sinatra: true do
+    messages = init_server
 
     with_page do |page|
       html = <<~HTML
@@ -96,13 +212,7 @@ RSpec.describe 'autowaiting basic' do
   end
 
   it 'should await form-post on click', sinatra: true do
-    messages = []
-
-    sinatra.post(endpoint) do
-      messages << 'route'
-      headers('Content-Type' => 'text/html')
-      body("<link rel='stylesheet' href='./one-style.css'>")
-    end
+    messages = init_server
 
     with_page do |page|
       html = <<~HTML
@@ -131,13 +241,7 @@ RSpec.describe 'autowaiting basic' do
   end
 
   it 'should await navigation when assigning location', sinatra: true do
-    messages = []
-
-    sinatra.get(endpoint) do
-      messages << 'route'
-      headers('Content-Type' => 'text/html')
-      body("<link rel='stylesheet' href='./one-style.css'>")
-    end
+    messages = init_server
 
     with_page do |page|
       promises = [
@@ -177,13 +281,7 @@ RSpec.describe 'autowaiting basic' do
   end
 
   it 'should await navigation when evaluating reload', sinatra: true do
-    messages = []
-
-    sinatra.get(endpoint) do
-      messages << 'route'
-      headers('Content-Type' => 'text/html')
-      body("<link rel='stylesheet' href='./one-style.css'>")
-    end
+    messages = init_server
 
     with_page do |page|
       page.goto("#{server_prefix}#{endpoint}")
@@ -207,13 +305,9 @@ RSpec.describe 'autowaiting basic' do
   end
 
   it 'should await navigating specified target', sinatra: true do
-    messages = []
+    skip '@see https://github.com/microsoft/playwright/pull/5847/files#r596302374'
 
-    sinatra.get(endpoint) do
-      messages << 'route'
-      headers('Content-Type' => 'text/html')
-      body("<link rel='stylesheet' href='./one-style.css'>")
-    end
+    messages = init_server
 
     with_page do |page|
       html = <<~HTML
