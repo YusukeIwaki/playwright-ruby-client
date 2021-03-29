@@ -43,7 +43,7 @@ module Playwright
     #
     # @note This method blocks until playwright-cli exited. Consider using Thread or Future.
     def run
-      @stdin, @stdout, @stderr, @thread = Open3.popen3(@driver_executable_path, 'run-driver')
+      @stdin, @stdout, @stderr, @thread = Open3.popen3("#{@driver_executable_path} run-driver")
 
       Thread.new { handle_stdout }
       Thread.new { handle_stderr }
