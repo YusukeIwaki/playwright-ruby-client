@@ -9,22 +9,34 @@ Note: Currently, this Gem is just a PoC (Proof of Concept). If you want to devel
 At this point, playwright-ruby-client doesn't include the downloader of playwright driver, so **we have to install [playwright](https://github.com/microsoft/playwright) in advance**.
 
 ```sh
+npx playwright install
+```
+
+and then, set `playwright_cli_executable_path: "npx playwright"` at `Playwright.create`.
+
+**Prefer npm install instead of npx?**
+
+Actually `npx playwright` is a bit slow. We can also use `npm install` to setup.
+
+Instead of `npx playwright install`:
+
+```
 npm install playwright
 ./node_modules/.bin/playwright install
 ```
 
-and then, set `playwright_cli_executable_path: ./node_modules/.bin/playwright` at `Playwright.create`.
+And set `playwright_cli_executable_path: './node_modules/.bin/playwright'`
 
 **Prefer playwrighting without Node.js?**
 
-Instead of npm install, you can also directly download playwright driver from playwright.azureedge.net/builds/. The URL can be easily detected from [here](https://github.com/microsoft/playwright-python/blob/79f6ce0a6a69c480573372706df84af5ef99c4a4/setup.py#L56-L61)
+Instead of npm, you can also directly download playwright driver from playwright.azureedge.net/builds/. The URL can be easily detected from [here](https://github.com/microsoft/playwright-python/blob/79f6ce0a6a69c480573372706df84af5ef99c4a4/setup.py#L56-L61)
 
 ### Capture a site
 
 ```ruby
 require 'playwright'
 
-Playwright.create(playwright_cli_executable_path: '/path/to/playwright') do |playwright|
+Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwright|
   playwright.chromium.launch(headless: false) do |browser|
     page = browser.new_page
     page.goto('https://github.com/YusukeIwaki')
@@ -40,7 +52,7 @@ end
 ```ruby
 require 'playwright'
 
-Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright') do |playwright|
+Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwright|
   playwright.chromium.launch(headless: false) do |browser|
     page = browser.new_page
     page.goto('https://github.com/')
@@ -82,7 +94,7 @@ $ bundle exec ruby main.rb
 ```ruby
 require 'playwright'
 
-Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright') do |playwright|
+Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwright|
   devices = playwright.android.devices
   unless devices.empty?
     device = devices.last
