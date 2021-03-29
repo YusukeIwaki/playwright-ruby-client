@@ -24,38 +24,31 @@ module Playwright
       @selectors ||= ::Playwright::ChannelOwners::Selectors.from(@initializer['selectors'])
     end
 
-    class DeviceDescriptor
-      class Viewport
-        def initialize(hash)
-          @width = hash['width']
-          @heirhgt = hash['height']
-        end
-        attr_reader :width, :height
-      end
-
-      def initialize(hash)
-        @user_agent = hash["userAgent"]
-        @viewport = Viewport.new(hash["viewport"])
-        @device_scale_factor = hash["deviceScaleFactor"]
-        @is_mobile = hash["isMobile"]
-        @has_touch = hash["hasTouch"]
-      end
-
-      attr_reader :user_agent, :viewport, :device_scale_factor
-
-      def mobile?
-        @is_mobile
-      end
-
-      def has_touch?
-        @has_touch
-      end
-    end
-
     def devices
       @devices ||= @initializer['deviceDescriptors'].map do |item|
-        [item['name'], DeviceDescriptor.new(item['descriptor'])]
+        [item['name'], parse_device_descriptor(item['descriptor'])]
       end.to_h
+    end
+
+    private def parse_device_descriptor(descriptor)
+      # This return value can be passed into Browser#new_context as it is.
+      # ex:
+      # ```
+      #   iPhone = playwright.devices['iPhone 6']
+      #   context = browser.new_context(**iPhone)
+      #   page = context.new_page
+      #
+      # ```
+      {
+        userAgent: descriptor['userAgent'],
+        viewport: {
+          width: descriptor['viewport']['width'],
+          height: descriptor['viewport']['height'],
+        },
+        deviceScaleFactor: descriptor['deviceScaleFactor'],
+        isMobile: descriptor['isMobile'],
+        hasTouch: descriptor['hasTouch'],
+      }
     end
   end
 end
