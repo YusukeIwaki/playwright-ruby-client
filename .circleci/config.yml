@@ -71,15 +71,16 @@ jobs:
             echo . $(rvm 2.7.2 do rvm env --path) >> $BASH_ENV
             gem install bundler:2.2.3 && bundle install
       - run:
-          name: setup playwright via npx
+          name: setup playwright via npm install
           command: |
-            npm_config_unsafe_perm=true npx playwright install
+            npm install playwright
+            ./node_modules/.bin/playwright install
       - run:
           command: bundle exec ruby development/generate_api.rb
       - run:
           name: RSpec
           command: |
-            DEBUG=1 npm_config_unsafe_perm=true PLAYWRIGHT_CLI_EXECUTABLE_PATH="npx playwright" \
+            DEBUG=1 PLAYWRIGHT_CLI_EXECUTABLE_PATH=./node_modules/.bin/playwright \
             xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- bundle exec rspec spec/integration \
             --format RspecJunitFormatter \
             --out test_results/rspec.xml \
@@ -113,15 +114,16 @@ jobs:
             echo . $(rvm 2.7.2 do rvm env --path) >> $BASH_ENV
             gem install bundler:2.2.3 && bundle install
       - run:
-          name: setup playwright via npx
+          name: setup playwright via npm install
           command: |
-            npm_config_unsafe_perm=true npx playwright install
+            npm install playwright
+            ./node_modules/.bin/playwright install
       - run:
           command: bundle exec ruby development/generate_api.rb
       - run:
           name: RSpec
           command: |
-            BROWSER=webkit DEBUG=1 npm_config_unsafe_perm=true PLAYWRIGHT_CLI_EXECUTABLE_PATH="npx playwright" \
+            BROWSER=webkit DEBUG=1 PLAYWRIGHT_CLI_EXECUTABLE_PATH=./node_modules/.bin/playwright \
             xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- bundle exec rspec spec/integration \
             --format RspecJunitFormatter \
             --out test_results/rspec.xml \

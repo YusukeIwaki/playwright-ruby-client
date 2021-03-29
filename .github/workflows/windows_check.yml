@@ -14,13 +14,11 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 14
-      - name: Download and Install playwright driver
+      - name: Install playwright driver via npx
         run: |
-          wget -O driver.zip https://playwright.azureedge.net/builds/driver/next/playwright-$(cat development/CLI_VERSION)-win32.zip
-          unzip driver.zip && rm driver.zip
-          .\playwright.cmd install
+          npx playwright install
       - run: bundle exec ruby development/generate_api.rb
       - name: Check example
         run: bundle exec rspec spec/integration/example_spec.rb
         env:
-          PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./playwright.cmd
+          PLAYWRIGHT_CLI_EXECUTABLE_PATH: npx playwright
