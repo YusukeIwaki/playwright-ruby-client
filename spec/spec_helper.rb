@@ -2,6 +2,7 @@
 
 require 'bundler/setup'
 require 'playwright'
+require 'timeout'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -92,7 +93,6 @@ RSpec.configure do |config|
   config.around(sinatra: true) do |example|
     require 'net/http'
     require 'sinatra/base'
-    require 'timeout'
 
     sinatra_app = Sinatra.new
     sinatra_app.disable(:protection)

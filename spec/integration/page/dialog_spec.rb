@@ -3,7 +3,7 @@ require 'spec_helper'
 RSpec.describe 'dialog' do
   it 'should fire' do
     with_page do |page|
-      dialog_promise = Concurrent::Promises.resolvable_future
+      dialog_promise = Playwright::AsyncValue.new
       page.once('dialog', ->(dialog) {
         dialog_promise.fulfill({
           type: dialog.type,
@@ -24,7 +24,7 @@ RSpec.describe 'dialog' do
 
   it 'should allow accepting prompts' do
     with_page do |page|
-      dialog_promise = Concurrent::Promises.resolvable_future
+      dialog_promise = Playwright::AsyncValue.new
       page.once('dialog', ->(dialog) {
         dialog_promise.fulfill({
           type: dialog.type,

@@ -44,9 +44,8 @@ RSpec.describe 'Page#set_input_files' do
   it 'should emit event once' do
     with_page do |page|
       page.content = '<input type=file>'
-      promise = Concurrent::Promises.resolvable_future
+      promise = Playwright::AsyncValue.new
       page.once('filechooser', -> (chooser) { promise.fulfill(chooser) })
-      sleep 0.5
       page.click('input')
       Timeout.timeout(2) do
         expect(promise.value!).to be_a(Playwright::FileChooser)
@@ -57,7 +56,7 @@ RSpec.describe 'Page#set_input_files' do
   it 'should emit event on/off' do
     with_page do |page|
       page.content = '<input type=file>'
-      promise = Concurrent::Promises.resolvable_future
+      promise = Playwright::AsyncValue.new
       listener = ->(chooser) {
         page.off(Playwright::Events::Page::FileChooser, listener)
         promise.fulfill(chooser)

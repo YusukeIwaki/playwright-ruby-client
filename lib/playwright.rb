@@ -3,8 +3,10 @@
 # namespace declaration
 module Playwright; end
 
-# concurrent-ruby
-require 'concurrent'
+# socketry/async and wrappers.
+require 'async'
+require 'playwright/async_evaluation'
+require 'playwright/async_value'
 
 # modules & constants
 require 'playwright/errors'
@@ -37,14 +39,18 @@ module Playwright
     raise ArgumentError.new("block must be provided") unless block
 
     connection = Connection.new(playwright_cli_executable_path: playwright_cli_executable_path)
-
-    playwright_promise = connection.async_wait_for_object_with_known_name('Playwright')
-    Thread.new { connection.run }
-    playwright = PlaywrightApi.wrap(playwright_promise.value!)
     begin
-      block.call(playwright)
-    ensure
-      connection.stop
+      Async do
+        connection.async_run
+
+        Async do
+          playwright = connection.wait_for_object_with_known_name('Playwright')
+          playwright_api = PlaywrightApi.wrap(playwright)
+          block.call(playwright_api)
+        ensure
+          connection.stop
+        end
+      end
     end
   end
 end

@@ -19,6 +19,10 @@ RSpec.describe 'autowaiting basic' do
     messages
   end
 
+  def await_all(futures)
+    futures.map(&:value!)
+  end
+
   it 'should await navigation when clicking anchor', sinatra: true do
     messages = init_server
 
@@ -26,17 +30,16 @@ RSpec.describe 'autowaiting basic' do
       page.content = "<a id=\"anchor\" href=\"#{server_prefix}#{endpoint}\" >empty.html</a>"
 
       promises = [
-        Concurrent::Promises.future {
-          sleep 0.5
+        Playwright::AsyncEvaluation.new {
           page.click('a')
           messages << 'click'
         },
-        Concurrent::Promises.future {
+        Playwright::AsyncEvaluation.new {
           page.expect_event('framenavigated')
           messages << 'navigated'
         }
       ]
-      Concurrent::Promises.zip(*promises).value!
+      await_all(promises)
     end
 
     expect(messages).to eq(%w(route navigated click))
@@ -49,17 +52,16 @@ RSpec.describe 'autowaiting basic' do
       page.content = "<a id=\"anchor\" href=\"#{server_prefix}#{endpoint}\" >empty.html</a>"
 
       promises = [
-        Concurrent::Promises.future {
-          sleep 0.5
+        Playwright::AsyncEvaluation.new {
           page.evaluate("() => window.anchor.click()")
           messages << 'click'
         },
-        Concurrent::Promises.future {
+        Playwright::AsyncEvaluation.new {
           page.expect_event('framenavigated')
           messages << 'navigated'
         }
       ]
-      Concurrent::Promises.zip(*promises).value!
+      await_all(promises)
     end
 
     expect(messages).to eq(%w(route navigated click))
@@ -72,17 +74,16 @@ RSpec.describe 'autowaiting basic' do
       page.content = "<a id=\"anchor\" href=\"#{server_prefix}#{endpoint}\" >empty.html</a>"
 
       promises = [
-        Concurrent::Promises.future {
-          sleep 0.5
+        Playwright::AsyncEvaluation.new {
           page.eval_on_selector('#anchor', "(anchor) => anchor.click()")
           messages << 'click'
         },
-        Concurrent::Promises.future {
+        Playwright::AsyncEvaluation.new {
           page.expect_event('framenavigated')
           messages << 'navigated'
         }
       ]
-      Concurrent::Promises.zip(*promises).value!
+      await_all(promises)
     end
 
     expect(messages).to eq(%w(route navigated click))
@@ -96,17 +97,16 @@ RSpec.describe 'autowaiting basic' do
       handle = page.evaluate_handle('document')
 
       promises = [
-        Concurrent::Promises.future {
-          sleep 0.5
+        Playwright::AsyncEvaluation.new {
           handle.evaluate("(doc) => doc.getElementById('anchor').click()")
           messages << 'click'
         },
-        Concurrent::Promises.future {
+        Playwright::AsyncEvaluation.new {
           page.expect_event('framenavigated')
           messages << 'navigated'
         }
       ]
-      Concurrent::Promises.zip(*promises).value!
+      await_all(promises)
     end
 
     expect(messages).to eq(%w(route navigated click))
@@ -120,17 +120,16 @@ RSpec.describe 'autowaiting basic' do
       handle = page.query_selector('body')
 
       promises = [
-        Concurrent::Promises.future {
-          sleep 0.5
+        Playwright::AsyncEvaluation.new {
           handle.eval_on_selector('#anchor', "(anchor) => anchor.click()")
           messages << 'click'
         },
-        Concurrent::Promises.future {
+        Playwright::AsyncEvaluation.new {
           page.expect_event('framenavigated')
           messages << 'navigated'
         }
       ]
-      Concurrent::Promises.zip(*promises).value!
+      await_all(promises)
     end
 
     expect(messages).to eq(%w(route navigated click))
@@ -143,17 +142,16 @@ RSpec.describe 'autowaiting basic' do
       page.content = "<a href=\"#{server_cross_process_prefix}#{endpoint}\" >empty.html</a>"
 
       promises = [
-        Concurrent::Promises.future {
-          sleep 0.5
+        Playwright::AsyncEvaluation.new {
           page.click('a')
           messages << 'click'
         },
-        Concurrent::Promises.future {
+        Playwright::AsyncEvaluation.new {
           page.expect_event('framenavigated')
           messages << 'navigated'
         }
       ]
-      Concurrent::Promises.zip(*promises).value!
+      await_all(promises)
     end
 
     expect(messages).to eq(%w(route navigated click))
@@ -166,17 +164,16 @@ RSpec.describe 'autowaiting basic' do
       page.content = "<a id=\"anchor\" href=\"#{server_cross_process_prefix}#{endpoint}\" >empty.html</a>"
 
       promises = [
-        Concurrent::Promises.future {
-          sleep 0.5
+        Playwright::AsyncEvaluation.new {
           page.evaluate('window.anchor.click()')
           messages << 'click'
         },
-        Concurrent::Promises.future {
+        Playwright::AsyncEvaluation.new {
           page.expect_event('framenavigated')
           messages << 'navigated'
         }
       ]
-      Concurrent::Promises.zip(*promises).value!
+      await_all(promises)
     end
 
     expect(messages).to eq(%w(route navigated click))
@@ -195,17 +192,16 @@ RSpec.describe 'autowaiting basic' do
       page.content = html
 
       promises = [
-        Concurrent::Promises.future {
-          sleep 0.5
+        Playwright::AsyncEvaluation.new {
           page.click('input[type=submit]')
           messages << 'click'
         },
-        Concurrent::Promises.future {
+        Playwright::AsyncEvaluation.new {
           page.expect_event('framenavigated')
           messages << 'navigated'
         }
       ]
-      Concurrent::Promises.zip(*promises).value!
+      await_all(promises)
     end
 
     expect(messages).to eq(%w(route navigated click))
@@ -224,17 +220,16 @@ RSpec.describe 'autowaiting basic' do
       page.content = html
 
       promises = [
-        Concurrent::Promises.future {
-          sleep 0.5
+        Playwright::AsyncEvaluation.new {
           page.click('input[type=submit]')
           messages << 'click'
         },
-        Concurrent::Promises.future {
+        Playwright::AsyncEvaluation.new {
           page.expect_event('framenavigated')
           messages << 'navigated'
         }
       ]
-      Concurrent::Promises.zip(*promises).value!
+      await_all(promises)
     end
 
     expect(messages).to eq(%w(route navigated click))
@@ -245,17 +240,16 @@ RSpec.describe 'autowaiting basic' do
 
     with_page do |page|
       promises = [
-        Concurrent::Promises.future {
-          sleep 0.5
+        Playwright::AsyncEvaluation.new {
           page.evaluate("window.location.href = \"#{server_cross_process_prefix}#{endpoint}\"")
           messages << 'evaluate'
         },
-        Concurrent::Promises.future {
+        Playwright::AsyncEvaluation.new {
           page.expect_event('framenavigated')
           messages << 'navigated'
         }
       ]
-      Concurrent::Promises.zip(*promises).value!
+      await_all(promises)
     end
 
     expect(messages).to eq(%w(route navigated evaluate))
@@ -288,17 +282,16 @@ RSpec.describe 'autowaiting basic' do
       messages.clear
 
       promises = [
-        Concurrent::Promises.future {
-          sleep 0.5
+        Playwright::AsyncEvaluation.new {
           page.evaluate('window.location.reload()')
           messages << 'evaluate'
         },
-        Concurrent::Promises.future {
+        Playwright::AsyncEvaluation.new {
           page.expect_event('framenavigated')
           messages << 'navigated'
         }
       ]
-      Concurrent::Promises.zip(*promises).value!
+      await_all(promises)
     end
 
     expect(messages).to eq(%w(route navigated evaluate))
@@ -318,17 +311,16 @@ RSpec.describe 'autowaiting basic' do
 
       frame = page.frame({name: 'target'})
       promises = [
-        Concurrent::Promises.future {
-          sleep 0.5
+        Playwright::AsyncEvaluation.new {
           page.click('a')
           messages << 'click'
         },
-        Concurrent::Promises.future {
+        Playwright::AsyncEvaluation.new {
           page.expect_event('framenavigated')
           messages << 'navigated'
         }
       ]
-      Concurrent::Promises.zip(*promises).value!
+      await_all(promises)
       expect(frame.url).to eq("#{server_prefix}#{endpoint}")
     end
 
@@ -369,7 +361,6 @@ RSpec.describe 'autowaiting basic' do
       body("<link rel='stylesheet' href='.#{css_path}'>")
     end
     sinatra.get(css_path) do
-      sleep 0.5
       'a { font-size: 12pt }'
     end
 
@@ -377,19 +368,18 @@ RSpec.describe 'autowaiting basic' do
       page.content = "<a href=\"#{server_prefix}#{endpoint}\" >empty.html</a>"
 
       promises = [
-        Concurrent::Promises.future {
-          sleep 0.5
+        Playwright::AsyncEvaluation.new {
           page.click('a')
           page.wait_for_load_state(state: 'load')
           messages << 'clickload'
         },
-        Concurrent::Promises.future {
+        Playwright::AsyncEvaluation.new {
           page.expect_event('framenavigated')
           page.wait_for_load_state(state: 'domcontentloaded')
           messages << 'domcontentloaded'
         }
       ]
-      Concurrent::Promises.zip(*promises).value!
+      await_all(promises)
     end
     expect(messages).to eq(%w(route domcontentloaded clickload))
   end
