@@ -56,7 +56,7 @@ module Playwright
         emitter.off(event, listener)
       end
       @registered_listeners.clear
-      @timeout_task&.stop
+      Async { @timeout_task&.stop }
     end
 
     private def fulfill(*args)
