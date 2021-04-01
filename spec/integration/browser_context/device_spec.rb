@@ -64,7 +64,7 @@ RSpec.describe 'device' do
   end
 
   it 'should scroll to a precise position with mobile scale', sinatra: true do
-    pending if webkit?
+    skip if webkit?
 
     iPhone = playwright.devices['iPhone 6']
     with_context(**iPhone) do |context|
