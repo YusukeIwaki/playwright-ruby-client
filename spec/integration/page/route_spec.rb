@@ -4,7 +4,7 @@ RSpec.describe 'Page#route', sinatra: true do
   it 'should intercept' do
     with_page do |page|
       intercepted = false
-      promise = Concurrent::Promises.resolvable_future
+      promise = Playwright::AsyncValue.new
       request_frame_url = nil
       page.route('**/empty.html', ->(route, request) {
         promise.fulfill(request)

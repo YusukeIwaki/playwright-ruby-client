@@ -1,5 +1,3 @@
-require 'concurrent'
-
 class UndocumentedMethodArgs
   class RequiredArg
     def initialize(name)

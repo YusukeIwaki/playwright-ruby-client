@@ -25,30 +25,26 @@ module Playwright
       @root_object = RootChannelOwner.new(self)
     end
 
-    def run
-      @transport.run
+    def async_run
+      @transport.async_run
     end
 
     def stop
       @transport.stop
     end
 
-    def async_wait_for_object_with_known_name(guid)
+    def wait_for_object_with_known_name(guid)
       if @objects[guid]
         return @objects[guid]
       end
 
-      callback = Concurrent::Promises.resolvable_future
+      callback = AsyncValue.new
       @waiting_for_object[guid] = callback
-      callback
-    end
-
-    def wait_for_object_with_known_name(guid)
-      async_wait_for_object_with_known_name.value!
+      callback.value!
     end
 
     def async_send_message_to_server(guid, method, params)
-      callback = Concurrent::Promises.resolvable_future
+      callback = AsyncValue.new
 
       with_generated_id do |id|
         # register callback promise object first.

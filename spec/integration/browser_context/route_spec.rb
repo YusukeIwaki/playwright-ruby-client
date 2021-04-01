@@ -4,7 +4,7 @@ RSpec.describe 'BrowserContext#route', sinatra: true do
   it 'should intercept' do
     with_context do |context|
       intercepted = false
-      promise = Concurrent::Promises.resolvable_future
+      promise = Playwright::AsyncValue.new
       request_frame_url = nil
       context.route('**/empty.html', ->(route, request) {
         promise.fulfill(request)

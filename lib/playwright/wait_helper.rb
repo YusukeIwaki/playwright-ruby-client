@@ -3,7 +3,7 @@ module Playwright
   # ref: https://github.com/microsoft/playwright/blob/01fb3a6045cbdb4b5bcba0809faed85bd917ab87/src/client/waiter.ts#L21
   class WaitHelper
     def initialize
-      @promise = Concurrent::Promises.resolvable_future
+      @promise = AsyncValue.new
       @registered_listeners = Set.new
     end
 
@@ -22,9 +22,11 @@ module Playwright
     def reject_on_timeout(timeout_ms, message)
       return if timeout_ms <= 0
 
-      Concurrent::Promises.schedule(timeout_ms / 1000.0) {
+      @timeout_task&.stop
+      @timeout_task = Async do |task|
+        task.sleep(timeout_ms / 1000.0)
         reject(TimeoutError.new(message: message))
-      }
+      end
 
       self
     end
@@ -54,6 +56,7 @@ module Playwright
         emitter.off(event, listener)
       end
       @registered_listeners.clear
+      Async { @timeout_task&.stop }
     end
 
     private def fulfill(*args)

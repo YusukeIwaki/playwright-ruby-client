@@ -1,5 +1,3 @@
-require 'concurrent'
-
 class DocumentedMethodArgs
   class RequiredArg
     def initialize(doc)
