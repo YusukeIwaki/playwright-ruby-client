@@ -18,11 +18,9 @@ ALL_TYPES = %w[
     Dialog
     Download
     Video
-    BindingCall
     Page
     BrowserContext
     CDPSession
-    ChromiumBrowserContext
     Browser
     BrowserType
     Playwright

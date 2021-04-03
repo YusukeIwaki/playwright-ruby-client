@@ -173,6 +173,7 @@
 * expect_navigation
 * wait_for_selector
 * ~~wait_for_timeout~~
+* ~~wait_for_url~~
 
 ## ~~Worker~~
 
@@ -210,7 +211,9 @@
 
 ## ~~Video~~
 
+* ~~delete~~
 * ~~path~~
+* ~~save_as~~
 
 ## Page
 
@@ -288,6 +291,7 @@
 * expect_response
 * wait_for_selector
 * ~~wait_for_timeout~~
+* ~~wait_for_url~~
 * ~~expect_worker~~
 * ~~workers~~
 * ~~wait_for_event~~
@@ -300,6 +304,7 @@
 
 * add_cookies
 * add_init_script
+* ~~background_pages~~
 * browser
 * clear_cookies
 * clear_permissions
@@ -308,9 +313,11 @@
 * expose_binding
 * expose_function
 * grant_permissions
+* ~~new_cdp_session~~
 * new_page
 * pages
 * route
+* ~~service_workers~~
 * set_default_navigation_timeout
 * set_default_timeout
 * set_extra_http_headers
@@ -327,19 +334,16 @@
 * ~~detach~~
 * ~~send_message~~
 
-## ChromiumBrowserContext
-
-* ~~background_pages~~
-* ~~new_cdp_session~~
-* ~~service_workers~~
-
 ## Browser
 
 * close
 * contexts
 * connected?
+* ~~new_browser_cdp_session~~
 * new_context
 * new_page
+* ~~start_tracing~~
+* ~~stop_tracing~~
 * version
 
 ## BrowserType
