@@ -5,7 +5,7 @@
 Edit `development/CLI_VERSION` and then download the specific version of driver.
 
 ```
-wget https://playwright.azureedge.net/builds/driver/next/playwright-$(cat development/CLI_VERSION)-mac.zip -O downloads/
+wget https://playwright.azureedge.net/builds/driver/next/playwright-$(cat development/CLI_VERSION)-mac.zip
 ```
 
 Then, extract the driver zip file, and set `PLAYWRIGHT_CLI_EXECUTABLE_PATH`.

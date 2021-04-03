@@ -12,7 +12,7 @@
       },
       {
         "type": "text",
-        "text": "Rendering engines of Chromium, Firefox and Webkit have a concept of \"accessibility tree\", which is then translated into different platform-specific APIs. Accessibility namespace gives access to this Accessibility Tree."
+        "text": "Rendering engines of Chromium, Firefox and WebKit have a concept of \"accessibility tree\", which is then translated into different platform-specific APIs. Accessibility namespace gives access to this Accessibility Tree."
       },
       {
         "type": "text",
@@ -29,7 +29,7 @@
       "types": {},
       "overrides": {}
     },
-    "comment": "The Accessibility class provides methods for inspecting Chromium's accessibility tree. The accessibility tree is used by\nassistive technology such as [screen readers](https://en.wikipedia.org/wiki/Screen_reader) or\n[switches](https://en.wikipedia.org/wiki/Switch_access).\n\nAccessibility is a very platform-specific thing. On different platforms, there are different screen readers that might\nhave wildly different output.\n\nRendering engines of Chromium, Firefox and Webkit have a concept of \"accessibility tree\", which is then translated into\ndifferent platform-specific APIs. Accessibility namespace gives access to this Accessibility Tree.\n\nMost of the accessibility tree gets filtered out when converting from internal browser AX Tree to Platform-specific\nAX-Tree or by assistive technologies themselves. By default, Playwright tries to approximate this filtering, exposing\nonly the \"interesting\" nodes of the tree.",
+    "comment": "The Accessibility class provides methods for inspecting Chromium's accessibility tree. The accessibility tree is used by\nassistive technology such as [screen readers](https://en.wikipedia.org/wiki/Screen_reader) or\n[switches](https://en.wikipedia.org/wiki/Switch_access).\n\nAccessibility is a very platform-specific thing. On different platforms, there are different screen readers that might\nhave wildly different output.\n\nRendering engines of Chromium, Firefox and WebKit have a concept of \"accessibility tree\", which is then translated into\ndifferent platform-specific APIs. Accessibility namespace gives access to this Accessibility Tree.\n\nMost of the accessibility tree gets filtered out when converting from internal browser AX Tree to Platform-specific\nAX-Tree or by assistive technologies themselves. By default, Playwright tries to approximate this filtering, exposing\nonly the \"interesting\" nodes of the tree.",
     "members": [
       {
         "kind": "method",
@@ -2452,6 +2452,75 @@
                 },
                 {
                   "kind": "property",
+                  "langs": {
+                    "aliases": {
+                      "java": "screenSize",
+                      "csharp": "screenSize"
+                    },
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "screen",
+                  "type": {
+                    "name": "Object",
+                    "properties": [
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "width",
+                        "type": {
+                          "name": "int",
+                          "expression": "[int]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": "page width in pixels."
+                          }
+                        ],
+                        "required": true,
+                        "comment": "page width in pixels.",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "width"
+                      },
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "height",
+                        "type": {
+                          "name": "int",
+                          "expression": "[int]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": "page height in pixels."
+                          }
+                        ],
+                        "required": true,
+                        "comment": "page height in pixels.",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "height"
+                      }
+                    ],
+                    "expression": "[Object]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Emulates consistent window screen size available inside web page via `window.screen`. Is only used when the `viewport` is set."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Emulates consistent window screen size available inside web page via `window.screen`. Is only used when the `viewport`\nis set.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "screen"
+                },
+                {
+                  "kind": "property",
                   "langs": {},
                   "name": "timezoneId",
                   "type": {
@@ -2658,11 +2727,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Sets a consistent viewport for each page. Defaults to an 1280x720 viewport. `null` disables the default viewport."
+                      "text": "Emulates consistent viewport for each page. Defaults to an 1280x720 viewport. `null` disables the default viewport."
                     }
                   ],
                   "required": false,
-                  "comment": "Sets a consistent viewport for each page. Defaults to an 1280x720 viewport. `null` disables the default viewport.",
+                  "comment": "Emulates consistent viewport for each page. Defaults to an 1280x720 viewport. `null` disables the default viewport.",
                   "deprecated": false,
                   "async": false,
                   "alias": "viewport"
@@ -6238,6 +6307,75 @@
                 {
                   "kind": "property",
                   "langs": {
+                    "aliases": {
+                      "java": "screenSize",
+                      "csharp": "screenSize"
+                    },
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "screen",
+                  "type": {
+                    "name": "Object",
+                    "properties": [
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "width",
+                        "type": {
+                          "name": "int",
+                          "expression": "[int]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": "page width in pixels."
+                          }
+                        ],
+                        "required": true,
+                        "comment": "page width in pixels.",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "width"
+                      },
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "height",
+                        "type": {
+                          "name": "int",
+                          "expression": "[int]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": "page height in pixels."
+                          }
+                        ],
+                        "required": true,
+                        "comment": "page height in pixels.",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "height"
+                      }
+                    ],
+                    "expression": "[Object]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Emulates consistent window screen size available inside web page via `window.screen`. Is only used when the `viewport` is set."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Emulates consistent window screen size available inside web page via `window.screen`. Is only used when the `viewport`\nis set.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "screen"
+                },
+                {
+                  "kind": "property",
+                  "langs": {
                     "only": [
                       "js",
                       "python"
@@ -6869,11 +7007,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Sets a consistent viewport for each page. Defaults to an 1280x720 viewport. `null` disables the default viewport."
+                      "text": "Emulates consistent viewport for each page. Defaults to an 1280x720 viewport. `null` disables the default viewport."
                     }
                   ],
                   "required": false,
-                  "comment": "Sets a consistent viewport for each page. Defaults to an 1280x720 viewport. `null` disables the default viewport.",
+                  "comment": "Emulates consistent viewport for each page. Defaults to an 1280x720 viewport. `null` disables the default viewport.",
                   "deprecated": false,
                   "async": false,
                   "alias": "viewport"
@@ -7904,6 +8042,75 @@
                 {
                   "kind": "property",
                   "langs": {
+                    "aliases": {
+                      "java": "screenSize",
+                      "csharp": "screenSize"
+                    },
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "screen",
+                  "type": {
+                    "name": "Object",
+                    "properties": [
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "width",
+                        "type": {
+                          "name": "int",
+                          "expression": "[int]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": "page width in pixels."
+                          }
+                        ],
+                        "required": true,
+                        "comment": "page width in pixels.",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "width"
+                      },
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "height",
+                        "type": {
+                          "name": "int",
+                          "expression": "[int]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": "page height in pixels."
+                          }
+                        ],
+                        "required": true,
+                        "comment": "page height in pixels.",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "height"
+                      }
+                    ],
+                    "expression": "[Object]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Emulates consistent window screen size available inside web page via `window.screen`. Is only used when the `viewport` is set."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Emulates consistent window screen size available inside web page via `window.screen`. Is only used when the `viewport`\nis set.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "screen"
+                },
+                {
+                  "kind": "property",
+                  "langs": {
                     "only": [
                       "js",
                       "python"
@@ -8535,11 +8742,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Sets a consistent viewport for each page. Defaults to an 1280x720 viewport. `null` disables the default viewport."
+                      "text": "Emulates consistent viewport for each page. Defaults to an 1280x720 viewport. `null` disables the default viewport."
                     }
                   ],
                   "required": false,
-                  "comment": "Sets a consistent viewport for each page. Defaults to an 1280x720 viewport. `null` disables the default viewport.",
+                  "comment": "Emulates consistent viewport for each page. Defaults to an 1280x720 viewport. `null` disables the default viewport.",
                   "deprecated": false,
                   "async": false,
                   "alias": "viewport"
@@ -10476,7 +10683,7 @@
           },
           {
             "type": "text",
-            "text": "An example of a naïve handler that aborts all image requests:"
+            "text": "An example of a naive handler that aborts all image requests:"
           },
           {
             "type": "code",
@@ -10578,13 +10785,17 @@
             "text": "Page routes (set up with [`method: Page.route`]) take precedence over browser context routes when request matches both handlers."
           },
           {
+            "type": "text",
+            "text": "To remove a route with its handler you can use [`method: BrowserContext.unroute`]."
+          },
+          {
             "type": "note",
             "noteType": "note",
             "text": "Enabling routing disables http cache."
           }
         ],
         "required": true,
-        "comment": "Routing provides the capability to modify network requests that are made by any page in the browser context. Once route\nis enabled, every request matching the url pattern will stall unless it's continued, fulfilled or aborted.\n\nAn example of a naïve handler that aborts all image requests:\n\n```js\nconst context = await browser.newContext();\nawait context.route('**/*.{png,jpg,jpeg}', route => route.abort());\nconst page = await context.newPage();\nawait page.goto('https://example.com');\nawait browser.close();\n```\n\n```java\nBrowserContext context = browser.newContext();\ncontext.route(\"**/*.{png,jpg,jpeg}\", route -> route.abort());\nPage page = context.newPage();\npage.navigate(\"https://example.com\");\nbrowser.close();\n```\n\n```python async\ncontext = await browser.new_context()\npage = await context.new_page()\nawait context.route(\"**/*.{png,jpg,jpeg}\", lambda route: route.abort())\nawait page.goto(\"https://example.com\")\nawait browser.close()\n```\n\n```python sync\ncontext = browser.new_context()\npage = context.new_page()\ncontext.route(\"**/*.{png,jpg,jpeg}\", lambda route: route.abort())\npage.goto(\"https://example.com\")\nbrowser.close()\n```\n\nor the same snippet using a regex pattern instead:\n\n```js\nconst context = await browser.newContext();\nawait context.route(/(\\.png$)|(\\.jpg$)/, route => route.abort());\nconst page = await context.newPage();\nawait page.goto('https://example.com');\nawait browser.close();\n```\n\n```java\nBrowserContext context = browser.newContext();\ncontext.route(Pattern.compile(\"(\\\\.png$)|(\\\\.jpg$)\"), route -> route.abort());\nPage page = context.newPage();\npage.navigate(\"https://example.com\");\nbrowser.close();\n```\n\n```python async\ncontext = await browser.new_context()\npage = await context.new_page()\nawait context.route(re.compile(r\"(\\.png$)|(\\.jpg$)\"), lambda route: route.abort())\npage = await context.new_page()\nawait page.goto(\"https://example.com\")\nawait browser.close()\n```\n\n```python sync\ncontext = browser.new_context()\npage = context.new_page()\ncontext.route(re.compile(r\"(\\.png$)|(\\.jpg$)\"), lambda route: route.abort())\npage = await context.new_page()\npage = context.new_page()\npage.goto(\"https://example.com\")\nbrowser.close()\n```\n\nPage routes (set up with [`method: Page.route`]) take precedence over browser context routes when request matches both\nhandlers.\n\n> NOTE: Enabling routing disables http cache.",
+        "comment": "Routing provides the capability to modify network requests that are made by any page in the browser context. Once route\nis enabled, every request matching the url pattern will stall unless it's continued, fulfilled or aborted.\n\nAn example of a naive handler that aborts all image requests:\n\n```js\nconst context = await browser.newContext();\nawait context.route('**/*.{png,jpg,jpeg}', route => route.abort());\nconst page = await context.newPage();\nawait page.goto('https://example.com');\nawait browser.close();\n```\n\n```java\nBrowserContext context = browser.newContext();\ncontext.route(\"**/*.{png,jpg,jpeg}\", route -> route.abort());\nPage page = context.newPage();\npage.navigate(\"https://example.com\");\nbrowser.close();\n```\n\n```python async\ncontext = await browser.new_context()\npage = await context.new_page()\nawait context.route(\"**/*.{png,jpg,jpeg}\", lambda route: route.abort())\nawait page.goto(\"https://example.com\")\nawait browser.close()\n```\n\n```python sync\ncontext = browser.new_context()\npage = context.new_page()\ncontext.route(\"**/*.{png,jpg,jpeg}\", lambda route: route.abort())\npage.goto(\"https://example.com\")\nbrowser.close()\n```\n\nor the same snippet using a regex pattern instead:\n\n```js\nconst context = await browser.newContext();\nawait context.route(/(\\.png$)|(\\.jpg$)/, route => route.abort());\nconst page = await context.newPage();\nawait page.goto('https://example.com');\nawait browser.close();\n```\n\n```java\nBrowserContext context = browser.newContext();\ncontext.route(Pattern.compile(\"(\\\\.png$)|(\\\\.jpg$)\"), route -> route.abort());\nPage page = context.newPage();\npage.navigate(\"https://example.com\");\nbrowser.close();\n```\n\n```python async\ncontext = await browser.new_context()\npage = await context.new_page()\nawait context.route(re.compile(r\"(\\.png$)|(\\.jpg$)\"), lambda route: route.abort())\npage = await context.new_page()\nawait page.goto(\"https://example.com\")\nawait browser.close()\n```\n\n```python sync\ncontext = browser.new_context()\npage = context.new_page()\ncontext.route(re.compile(r\"(\\.png$)|(\\.jpg$)\"), lambda route: route.abort())\npage = await context.new_page()\npage = context.new_page()\npage.goto(\"https://example.com\")\nbrowser.close()\n```\n\nPage routes (set up with [`method: Page.route`]) take precedence over browser context routes when request matches both\nhandlers.\n\nTo remove a route with its handler you can use [`method: BrowserContext.unroute`].\n\n> NOTE: Enabling routing disables http cache.",
         "deprecated": false,
         "async": true,
         "alias": "route",
@@ -12919,11 +13130,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Browser distribution channel."
+                      "text": "Browser distribution channel. Read more about using [Google Chrome and Microsoft Edge](./browsers#google-chrome--microsoft-edge)."
                     }
                   ],
                   "required": false,
-                  "comment": "Browser distribution channel.",
+                  "comment": "Browser distribution channel. Read more about using\n[Google Chrome and Microsoft Edge](./browsers#google-chrome--microsoft-edge).",
                   "deprecated": false,
                   "async": false,
                   "alias": "channel"
@@ -14909,6 +15120,75 @@
                 },
                 {
                   "kind": "property",
+                  "langs": {
+                    "aliases": {
+                      "java": "screenSize",
+                      "csharp": "screenSize"
+                    },
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "screen",
+                  "type": {
+                    "name": "Object",
+                    "properties": [
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "width",
+                        "type": {
+                          "name": "int",
+                          "expression": "[int]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": "page width in pixels."
+                          }
+                        ],
+                        "required": true,
+                        "comment": "page width in pixels.",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "width"
+                      },
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "height",
+                        "type": {
+                          "name": "int",
+                          "expression": "[int]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": "page height in pixels."
+                          }
+                        ],
+                        "required": true,
+                        "comment": "page height in pixels.",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "height"
+                      }
+                    ],
+                    "expression": "[Object]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Emulates consistent window screen size available inside web page via `window.screen`. Is only used when the `viewport` is set."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Emulates consistent window screen size available inside web page via `window.screen`. Is only used when the `viewport`\nis set.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "screen"
+                },
+                {
+                  "kind": "property",
                   "langs": {},
                   "name": "slowMo",
                   "type": {
@@ -15155,11 +15435,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Sets a consistent viewport for each page. Defaults to an 1280x720 viewport. `null` disables the default viewport."
+                      "text": "Emulates consistent viewport for each page. Defaults to an 1280x720 viewport. `null` disables the default viewport."
                     }
                   ],
                   "required": false,
-                  "comment": "Sets a consistent viewport for each page. Defaults to an 1280x720 viewport. `null` disables the default viewport.",
+                  "comment": "Emulates consistent viewport for each page. Defaults to an 1280x720 viewport. `null` disables the default viewport.",
                   "deprecated": false,
                   "async": false,
                   "alias": "viewport"
@@ -16420,7 +16700,7 @@
       },
       {
         "type": "text",
-        "text": "An example of using JavaScript coverage to produce Istambul report for page load:"
+        "text": "An example of using JavaScript coverage to produce Istanbul report for page load:"
       },
       {
         "type": "code",
@@ -16454,7 +16734,7 @@
       "types": {},
       "overrides": {}
     },
-    "comment": "Coverage gathers information about parts of JavaScript and CSS that were used by the page.\n\nAn example of using JavaScript coverage to produce Istambul report for page load:\n\n```js\nconst { chromium } = require('playwright');\nconst v8toIstanbul = require('v8-to-istanbul');\n\n(async() => {\n  const browser = await chromium.launch();\n  const page = await browser.newPage();\n  await page.coverage.startJSCoverage();\n  await page.goto('https://chromium.org');\n  const coverage = await page.coverage.stopJSCoverage();\n  for (const entry of coverage) {\n    const converter = new v8toIstanbul('', 0, { source: entry.source });\n    await converter.load();\n    converter.applyCoverage(entry.functions);\n    console.log(JSON.stringify(converter.toIstanbul()));\n  }\n  await browser.close();\n})();\n```\n",
+    "comment": "Coverage gathers information about parts of JavaScript and CSS that were used by the page.\n\nAn example of using JavaScript coverage to produce Istanbul report for page load:\n\n```js\nconst { chromium } = require('playwright');\nconst v8toIstanbul = require('v8-to-istanbul');\n\n(async() => {\n  const browser = await chromium.launch();\n  const page = await browser.newPage();\n  await page.coverage.startJSCoverage();\n  await page.goto('https://chromium.org');\n  const coverage = await page.coverage.stopJSCoverage();\n  for (const entry of coverage) {\n    const converter = new v8toIstanbul('', 0, { source: entry.source });\n    await converter.load();\n    converter.applyCoverage(entry.functions);\n    console.log(JSON.stringify(converter.toIstanbul()));\n  }\n  await browser.close();\n})();\n```\n",
     "members": [
       {
         "kind": "method",
@@ -19430,7 +19710,7 @@
         "spec": [
           {
             "type": "text",
-            "text": "The snippet below dispatches the `click` event on the element. Regardless of the visibility state of the elment, `click` is dispatched. This is equivalend to calling [element.click()](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click)."
+            "text": "The snippet below dispatches the `click` event on the element. Regardless of the visibility state of the element, `click` is dispatched. This is equivalent to calling [element.click()](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click)."
           },
           {
             "type": "code",
@@ -19547,7 +19827,7 @@
           }
         ],
         "required": true,
-        "comment": "The snippet below dispatches the `click` event on the element. Regardless of the visibility state of the elment, `click`\nis dispatched. This is equivalend to calling\n[element.click()](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click).\n\n```js\nawait elementHandle.dispatchEvent('click');\n```\n\n```java\nelementHandle.dispatchEvent(\"click\");\n```\n\n```python async\nawait element_handle.dispatch_event(\"click\")\n```\n\n```python sync\nelement_handle.dispatch_event(\"click\")\n```\n\nUnder the hood, it creates an instance of an event based on the given `type`, initializes it with `eventInit` properties\nand dispatches it on the element. Events are `composed`, `cancelable` and bubble by default.\n\nSince `eventInit` is event-specific, please refer to the events documentation for the lists of initial properties:\n- [DragEvent](https://developer.mozilla.org/en-US/docs/Web/API/DragEvent/DragEvent)\n- [FocusEvent](https://developer.mozilla.org/en-US/docs/Web/API/FocusEvent/FocusEvent)\n- [KeyboardEvent](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/KeyboardEvent)\n- [MouseEvent](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/MouseEvent)\n- [PointerEvent](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/PointerEvent)\n- [TouchEvent](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent/TouchEvent)\n- [Event](https://developer.mozilla.org/en-US/docs/Web/API/Event/Event)\n\nYou can also specify `JSHandle` as the property value if you want live objects to be passed into the event:\n\n```js\n// Note you can only create DataTransfer in Chromium and Firefox\nconst dataTransfer = await page.evaluateHandle(() => new DataTransfer());\nawait elementHandle.dispatchEvent('dragstart', { dataTransfer });\n```\n\n```java\n// Note you can only create DataTransfer in Chromium and Firefox\nJSHandle dataTransfer = page.evaluateHandle(\"() => new DataTransfer()\");\nMap<String, Object> arg = new HashMap<>();\narg.put(\"dataTransfer\", dataTransfer);\nelementHandle.dispatchEvent(\"dragstart\", arg);\n```\n\n```python async\n# note you can only create data_transfer in chromium and firefox\ndata_transfer = await page.evaluate_handle(\"new DataTransfer()\")\nawait element_handle.dispatch_event(\"#source\", \"dragstart\", {\"dataTransfer\": data_transfer})\n```\n\n```python sync\n# note you can only create data_transfer in chromium and firefox\ndata_transfer = page.evaluate_handle(\"new DataTransfer()\")\nelement_handle.dispatch_event(\"#source\", \"dragstart\", {\"dataTransfer\": data_transfer})\n```\n",
+        "comment": "The snippet below dispatches the `click` event on the element. Regardless of the visibility state of the element,\n`click` is dispatched. This is equivalent to calling\n[element.click()](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click).\n\n```js\nawait elementHandle.dispatchEvent('click');\n```\n\n```java\nelementHandle.dispatchEvent(\"click\");\n```\n\n```python async\nawait element_handle.dispatch_event(\"click\")\n```\n\n```python sync\nelement_handle.dispatch_event(\"click\")\n```\n\nUnder the hood, it creates an instance of an event based on the given `type`, initializes it with `eventInit` properties\nand dispatches it on the element. Events are `composed`, `cancelable` and bubble by default.\n\nSince `eventInit` is event-specific, please refer to the events documentation for the lists of initial properties:\n- [DragEvent](https://developer.mozilla.org/en-US/docs/Web/API/DragEvent/DragEvent)\n- [FocusEvent](https://developer.mozilla.org/en-US/docs/Web/API/FocusEvent/FocusEvent)\n- [KeyboardEvent](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/KeyboardEvent)\n- [MouseEvent](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/MouseEvent)\n- [PointerEvent](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/PointerEvent)\n- [TouchEvent](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent/TouchEvent)\n- [Event](https://developer.mozilla.org/en-US/docs/Web/API/Event/Event)\n\nYou can also specify `JSHandle` as the property value if you want live objects to be passed into the event:\n\n```js\n// Note you can only create DataTransfer in Chromium and Firefox\nconst dataTransfer = await page.evaluateHandle(() => new DataTransfer());\nawait elementHandle.dispatchEvent('dragstart', { dataTransfer });\n```\n\n```java\n// Note you can only create DataTransfer in Chromium and Firefox\nJSHandle dataTransfer = page.evaluateHandle(\"() => new DataTransfer()\");\nMap<String, Object> arg = new HashMap<>();\narg.put(\"dataTransfer\", dataTransfer);\nelementHandle.dispatchEvent(\"dragstart\", arg);\n```\n\n```python async\n# note you can only create data_transfer in chromium and firefox\ndata_transfer = await page.evaluate_handle(\"new DataTransfer()\")\nawait element_handle.dispatch_event(\"#source\", \"dragstart\", {\"dataTransfer\": data_transfer})\n```\n\n```python sync\n# note you can only create data_transfer in chromium and firefox\ndata_transfer = page.evaluate_handle(\"new DataTransfer()\")\nelement_handle.dispatch_event(\"#source\", \"dragstart\", {\"dataTransfer\": data_transfer})\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "dispatchEvent",
@@ -20559,11 +20839,11 @@
           },
           {
             "type": "text",
-            "text": "Shortcuts such as `key: \"Control+o\"` or `key: \"Control+Shift+T\"` are supported as well. When speficied with the modifier, modifier is pressed and being held while the subsequent key is being pressed."
+            "text": "Shortcuts such as `key: \"Control+o\"` or `key: \"Control+Shift+T\"` are supported as well. When specified with the modifier, modifier is pressed and being held while the subsequent key is being pressed."
           }
         ],
         "required": true,
-        "comment": "Focuses the element, and then uses [`method: Keyboard.down`] and [`method: Keyboard.up`].\n\n`key` can specify the intended [keyboardEvent.key](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key)\nvalue or a single character to generate the text for. A superset of the `key` values can be found\n[here](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values). Examples of the keys are:\n\n`F1` - `F12`, `Digit0`- `Digit9`, `KeyA`- `KeyZ`, `Backquote`, `Minus`, `Equal`, `Backslash`, `Backspace`, `Tab`,\n`Delete`, `Escape`, `ArrowDown`, `End`, `Enter`, `Home`, `Insert`, `PageDown`, `PageUp`, `ArrowRight`, `ArrowUp`, etc.\n\nFollowing modification shortcuts are also supported: `Shift`, `Control`, `Alt`, `Meta`, `ShiftLeft`.\n\nHolding down `Shift` will type the text that corresponds to the `key` in the upper case.\n\nIf `key` is a single character, it is case-sensitive, so the values `a` and `A` will generate different respective\ntexts.\n\nShortcuts such as `key: \"Control+o\"` or `key: \"Control+Shift+T\"` are supported as well. When speficied with the\nmodifier, modifier is pressed and being held while the subsequent key is being pressed.",
+        "comment": "Focuses the element, and then uses [`method: Keyboard.down`] and [`method: Keyboard.up`].\n\n`key` can specify the intended [keyboardEvent.key](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key)\nvalue or a single character to generate the text for. A superset of the `key` values can be found\n[here](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values). Examples of the keys are:\n\n`F1` - `F12`, `Digit0`- `Digit9`, `KeyA`- `KeyZ`, `Backquote`, `Minus`, `Equal`, `Backslash`, `Backspace`, `Tab`,\n`Delete`, `Escape`, `ArrowDown`, `End`, `Enter`, `Home`, `Insert`, `PageDown`, `PageUp`, `ArrowRight`, `ArrowUp`, etc.\n\nFollowing modification shortcuts are also supported: `Shift`, `Control`, `Alt`, `Meta`, `ShiftLeft`.\n\nHolding down `Shift` will type the text that corresponds to the `key` in the upper case.\n\nIf `key` is a single character, it is case-sensitive, so the values `a` and `A` will generate different respective\ntexts.\n\nShortcuts such as `key: \"Control+o\"` or `key: \"Control+Shift+T\"` are supported as well. When specified with the\nmodifier, modifier is pressed and being held while the subsequent key is being pressed.",
         "deprecated": false,
         "async": true,
         "alias": "press",
@@ -24454,7 +24734,7 @@
         "spec": [
           {
             "type": "text",
-            "text": "The snippet below dispatches the `click` event on the element. Regardless of the visibility state of the elment, `click` is dispatched. This is equivalend to calling [element.click()](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click)."
+            "text": "The snippet below dispatches the `click` event on the element. Regardless of the visibility state of the element, `click` is dispatched. This is equivalent to calling [element.click()](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click)."
           },
           {
             "type": "code",
@@ -24571,7 +24851,7 @@
           }
         ],
         "required": true,
-        "comment": "The snippet below dispatches the `click` event on the element. Regardless of the visibility state of the elment, `click`\nis dispatched. This is equivalend to calling\n[element.click()](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click).\n\n```js\nawait frame.dispatchEvent('button#submit', 'click');\n```\n\n```java\nframe.dispatchEvent(\"button#submit\", \"click\");\n```\n\n```python async\nawait frame.dispatch_event(\"button#submit\", \"click\")\n```\n\n```python sync\nframe.dispatch_event(\"button#submit\", \"click\")\n```\n\nUnder the hood, it creates an instance of an event based on the given `type`, initializes it with `eventInit` properties\nand dispatches it on the element. Events are `composed`, `cancelable` and bubble by default.\n\nSince `eventInit` is event-specific, please refer to the events documentation for the lists of initial properties:\n- [DragEvent](https://developer.mozilla.org/en-US/docs/Web/API/DragEvent/DragEvent)\n- [FocusEvent](https://developer.mozilla.org/en-US/docs/Web/API/FocusEvent/FocusEvent)\n- [KeyboardEvent](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/KeyboardEvent)\n- [MouseEvent](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/MouseEvent)\n- [PointerEvent](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/PointerEvent)\n- [TouchEvent](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent/TouchEvent)\n- [Event](https://developer.mozilla.org/en-US/docs/Web/API/Event/Event)\n\nYou can also specify `JSHandle` as the property value if you want live objects to be passed into the event:\n\n```js\n// Note you can only create DataTransfer in Chromium and Firefox\nconst dataTransfer = await frame.evaluateHandle(() => new DataTransfer());\nawait frame.dispatchEvent('#source', 'dragstart', { dataTransfer });\n```\n\n```java\n// Note you can only create DataTransfer in Chromium and Firefox\nJSHandle dataTransfer = frame.evaluateHandle(\"() => new DataTransfer()\");\nMap<String, Object> arg = new HashMap<>();\narg.put(\"dataTransfer\", dataTransfer);\nframe.dispatchEvent(\"#source\", \"dragstart\", arg);\n```\n\n```python async\n# note you can only create data_transfer in chromium and firefox\ndata_transfer = await frame.evaluate_handle(\"new DataTransfer()\")\nawait frame.dispatch_event(\"#source\", \"dragstart\", { \"dataTransfer\": data_transfer })\n```\n\n```python sync\n# note you can only create data_transfer in chromium and firefox\ndata_transfer = frame.evaluate_handle(\"new DataTransfer()\")\nframe.dispatch_event(\"#source\", \"dragstart\", { \"dataTransfer\": data_transfer })\n```\n",
+        "comment": "The snippet below dispatches the `click` event on the element. Regardless of the visibility state of the element,\n`click` is dispatched. This is equivalent to calling\n[element.click()](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click).\n\n```js\nawait frame.dispatchEvent('button#submit', 'click');\n```\n\n```java\nframe.dispatchEvent(\"button#submit\", \"click\");\n```\n\n```python async\nawait frame.dispatch_event(\"button#submit\", \"click\")\n```\n\n```python sync\nframe.dispatch_event(\"button#submit\", \"click\")\n```\n\nUnder the hood, it creates an instance of an event based on the given `type`, initializes it with `eventInit` properties\nand dispatches it on the element. Events are `composed`, `cancelable` and bubble by default.\n\nSince `eventInit` is event-specific, please refer to the events documentation for the lists of initial properties:\n- [DragEvent](https://developer.mozilla.org/en-US/docs/Web/API/DragEvent/DragEvent)\n- [FocusEvent](https://developer.mozilla.org/en-US/docs/Web/API/FocusEvent/FocusEvent)\n- [KeyboardEvent](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/KeyboardEvent)\n- [MouseEvent](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/MouseEvent)\n- [PointerEvent](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/PointerEvent)\n- [TouchEvent](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent/TouchEvent)\n- [Event](https://developer.mozilla.org/en-US/docs/Web/API/Event/Event)\n\nYou can also specify `JSHandle` as the property value if you want live objects to be passed into the event:\n\n```js\n// Note you can only create DataTransfer in Chromium and Firefox\nconst dataTransfer = await frame.evaluateHandle(() => new DataTransfer());\nawait frame.dispatchEvent('#source', 'dragstart', { dataTransfer });\n```\n\n```java\n// Note you can only create DataTransfer in Chromium and Firefox\nJSHandle dataTransfer = frame.evaluateHandle(\"() => new DataTransfer()\");\nMap<String, Object> arg = new HashMap<>();\narg.put(\"dataTransfer\", dataTransfer);\nframe.dispatchEvent(\"#source\", \"dragstart\", arg);\n```\n\n```python async\n# note you can only create data_transfer in chromium and firefox\ndata_transfer = await frame.evaluate_handle(\"new DataTransfer()\")\nawait frame.dispatch_event(\"#source\", \"dragstart\", { \"dataTransfer\": data_transfer })\n```\n\n```python sync\n# note you can only create data_transfer in chromium and firefox\ndata_transfer = frame.evaluate_handle(\"new DataTransfer()\")\nframe.dispatch_event(\"#source\", \"dragstart\", { \"dataTransfer\": data_transfer })\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "dispatchEvent",
@@ -25834,7 +26114,8 @@
         "kind": "method",
         "langs": {
           "aliases": {
-            "java": "navigate"
+            "java": "navigate",
+            "csharp": "GoToAsync"
           },
           "types": {},
           "overrides": {}
@@ -27003,11 +27284,11 @@
           },
           {
             "type": "text",
-            "text": "Shortcuts such as `key: \"Control+o\"` or `key: \"Control+Shift+T\"` are supported as well. When speficied with the modifier, modifier is pressed and being held while the subsequent key is being pressed."
+            "text": "Shortcuts such as `key: \"Control+o\"` or `key: \"Control+Shift+T\"` are supported as well. When specified with the modifier, modifier is pressed and being held while the subsequent key is being pressed."
           }
         ],
         "required": true,
-        "comment": "`key` can specify the intended [keyboardEvent.key](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key)\nvalue or a single character to generate the text for. A superset of the `key` values can be found\n[here](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values). Examples of the keys are:\n\n`F1` - `F12`, `Digit0`- `Digit9`, `KeyA`- `KeyZ`, `Backquote`, `Minus`, `Equal`, `Backslash`, `Backspace`, `Tab`,\n`Delete`, `Escape`, `ArrowDown`, `End`, `Enter`, `Home`, `Insert`, `PageDown`, `PageUp`, `ArrowRight`, `ArrowUp`, etc.\n\nFollowing modification shortcuts are also supported: `Shift`, `Control`, `Alt`, `Meta`, `ShiftLeft`.\n\nHolding down `Shift` will type the text that corresponds to the `key` in the upper case.\n\nIf `key` is a single character, it is case-sensitive, so the values `a` and `A` will generate different respective\ntexts.\n\nShortcuts such as `key: \"Control+o\"` or `key: \"Control+Shift+T\"` are supported as well. When speficied with the\nmodifier, modifier is pressed and being held while the subsequent key is being pressed.",
+        "comment": "`key` can specify the intended [keyboardEvent.key](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key)\nvalue or a single character to generate the text for. A superset of the `key` values can be found\n[here](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values). Examples of the keys are:\n\n`F1` - `F12`, `Digit0`- `Digit9`, `KeyA`- `KeyZ`, `Backquote`, `Minus`, `Equal`, `Backslash`, `Backspace`, `Tab`,\n`Delete`, `Escape`, `ArrowDown`, `End`, `Enter`, `Home`, `Insert`, `PageDown`, `PageUp`, `ArrowRight`, `ArrowUp`, etc.\n\nFollowing modification shortcuts are also supported: `Shift`, `Control`, `Alt`, `Meta`, `ShiftLeft`.\n\nHolding down `Shift` will type the text that corresponds to the `key` in the upper case.\n\nIf `key` is a single character, it is case-sensitive, so the values `a` and `A` will generate different respective\ntexts.\n\nShortcuts such as `key: \"Control+o\"` or `key: \"Control+Shift+T\"` are supported as well. When specified with the\nmodifier, modifier is pressed and being held while the subsequent key is being pressed.",
         "deprecated": false,
         "async": true,
         "alias": "press",
@@ -27600,6 +27881,100 @@
             "kind": "property",
             "langs": {
               "only": [
+                "csharp"
+              ],
+              "aliases": {},
+              "types": {},
+              "overrides": {}
+            },
+            "name": "values",
+            "type": {
+              "name": "Array",
+              "templates": [
+                {
+                  "name": "Object",
+                  "properties": [
+                    {
+                      "kind": "property",
+                      "langs": {},
+                      "name": "value",
+                      "type": {
+                        "name": "string",
+                        "expression": "[string]"
+                      },
+                      "spec": [
+                        {
+                          "type": "text",
+                          "text": "Matches by `option.value`. Optional."
+                        }
+                      ],
+                      "required": false,
+                      "comment": "Matches by `option.value`. Optional.",
+                      "deprecated": false,
+                      "async": false,
+                      "alias": "value"
+                    },
+                    {
+                      "kind": "property",
+                      "langs": {},
+                      "name": "label",
+                      "type": {
+                        "name": "string",
+                        "expression": "[string]"
+                      },
+                      "spec": [
+                        {
+                          "type": "text",
+                          "text": "Matches by `option.label`. Optional."
+                        }
+                      ],
+                      "required": false,
+                      "comment": "Matches by `option.label`. Optional.",
+                      "deprecated": false,
+                      "async": false,
+                      "alias": "label"
+                    },
+                    {
+                      "kind": "property",
+                      "langs": {},
+                      "name": "index",
+                      "type": {
+                        "name": "int",
+                        "expression": "[int]"
+                      },
+                      "spec": [
+                        {
+                          "type": "text",
+                          "text": "Matches by the index. Optional."
+                        }
+                      ],
+                      "required": false,
+                      "comment": "Matches by the index. Optional.",
+                      "deprecated": false,
+                      "async": false,
+                      "alias": "index"
+                    }
+                  ]
+                }
+              ],
+              "expression": "[Array]<[Object]>"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Options to select. If the `<select>` has the `multiple` attribute, all matching options are selected, otherwise only the first option matching one of the passed options is selected. String values are equivalent to `{value:'string'}`. Option is considered matching if all specified properties match."
+              }
+            ],
+            "required": true,
+            "comment": "Options to select. If the `<select>` has the `multiple` attribute, all matching options are selected, otherwise only the\nfirst option matching one of the passed options is selected. String values are equivalent to `{value:'string'}`. Option\nis considered matching if all specified properties match.",
+            "deprecated": false,
+            "async": false,
+            "alias": "values"
+          },
+          {
+            "kind": "property",
+            "langs": {
+              "only": [
                 "python"
               ],
               "aliases": {},
@@ -27920,7 +28295,111 @@
           },
           {
             "kind": "property",
-            "langs": {},
+            "langs": {
+              "overrides": {
+                "csharp": {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "csharp"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "files",
+                  "type": {
+                    "name": "Array",
+                    "templates": [
+                      {
+                        "name": "Object",
+                        "properties": [
+                          {
+                            "kind": "property",
+                            "langs": {},
+                            "name": "name",
+                            "type": {
+                              "name": "string",
+                              "expression": "[string]"
+                            },
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": "File name"
+                              }
+                            ],
+                            "argsArray": [],
+                            "required": true,
+                            "comment": "",
+                            "args": {},
+                            "clazz": null,
+                            "deprecated": false,
+                            "async": false,
+                            "alias": "name"
+                          },
+                          {
+                            "kind": "property",
+                            "langs": {},
+                            "name": "mimeType",
+                            "type": {
+                              "name": "string",
+                              "expression": "[string]"
+                            },
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": "File type"
+                              }
+                            ],
+                            "argsArray": [],
+                            "required": true,
+                            "comment": "",
+                            "args": {},
+                            "clazz": null,
+                            "deprecated": false,
+                            "async": false,
+                            "alias": "mimeType"
+                          },
+                          {
+                            "kind": "property",
+                            "langs": {},
+                            "name": "buffer",
+                            "type": {
+                              "name": "Buffer",
+                              "expression": "[Buffer]"
+                            },
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": "File content"
+                              }
+                            ],
+                            "argsArray": [],
+                            "required": true,
+                            "comment": "",
+                            "args": {},
+                            "clazz": null,
+                            "deprecated": false,
+                            "async": false,
+                            "alias": "buffer"
+                          }
+                        ]
+                      }
+                    ],
+                    "expression": "[Array]<[Object]>"
+                  },
+                  "spec": [],
+                  "argsArray": [],
+                  "required": true,
+                  "comment": "",
+                  "args": {},
+                  "clazz": null,
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "files"
+                }
+              }
+            },
             "name": "files",
             "type": {
               "name": "",
@@ -28525,7 +29004,7 @@
               "// Types instantly",
               "frame.type(\"#mytextarea\", \"Hello\");",
               "// Types slower, like a user",
-              "frame.type(\"#mytextarea\", \"World\", new Frame.TypeOptions().setDelay(100)); "
+              "frame.type(\"#mytextarea\", \"World\", new Frame.TypeOptions().setDelay(100));"
             ],
             "codeLang": "java"
           },
@@ -28547,7 +29026,7 @@
           }
         ],
         "required": true,
-        "comment": "Sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text. `frame.type` can be used to\nsend fine-grained keyboard events. To fill values in form fields, use [`method: Frame.fill`].\n\nTo press a special key, like `Control` or `ArrowDown`, use [`method: Keyboard.press`].\n\n```js\nawait frame.type('#mytextarea', 'Hello'); // Types instantly\nawait frame.type('#mytextarea', 'World', {delay: 100}); // Types slower, like a user\n```\n\n```java\n// Types instantly\nframe.type(\"#mytextarea\", \"Hello\");\n// Types slower, like a user\nframe.type(\"#mytextarea\", \"World\", new Frame.TypeOptions().setDelay(100)); \n```\n\n```python async\nawait frame.type(\"#mytextarea\", \"hello\") # types instantly\nawait frame.type(\"#mytextarea\", \"world\", delay=100) # types slower, like a user\n```\n\n```python sync\nframe.type(\"#mytextarea\", \"hello\") # types instantly\nframe.type(\"#mytextarea\", \"world\", delay=100) # types slower, like a user\n```\n",
+        "comment": "Sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text. `frame.type` can be used to\nsend fine-grained keyboard events. To fill values in form fields, use [`method: Frame.fill`].\n\nTo press a special key, like `Control` or `ArrowDown`, use [`method: Keyboard.press`].\n\n```js\nawait frame.type('#mytextarea', 'Hello'); // Types instantly\nawait frame.type('#mytextarea', 'World', {delay: 100}); // Types slower, like a user\n```\n\n```java\n// Types instantly\nframe.type(\"#mytextarea\", \"Hello\");\n// Types slower, like a user\nframe.type(\"#mytextarea\", \"World\", new Frame.TypeOptions().setDelay(100));\n```\n\n```python async\nawait frame.type(\"#mytextarea\", \"hello\") # types instantly\nawait frame.type(\"#mytextarea\", \"world\", delay=100) # types slower, like a user\n```\n\n```python sync\nframe.type(\"#mytextarea\", \"hello\") # types instantly\nframe.type(\"#mytextarea\", \"world\", delay=100) # types slower, like a user\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "type",
@@ -29816,6 +30295,179 @@
             "alias": "timeout"
           }
         ]
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "waitForURL",
+        "type": {
+          "name": "void"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Waits for the frame to navigate to the given URL."
+          },
+          {
+            "type": "code",
+            "lines": [
+              "await frame.click('a.delayed-navigation'); // Clicking the link will indirectly cause a navigation",
+              "await frame.waitForURL('**/target.html');"
+            ],
+            "codeLang": "js"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "frame.click(\"a.delayed-navigation\"); // Clicking the link will indirectly cause a navigation",
+              "frame.waitForURL(\"**/target.html\");"
+            ],
+            "codeLang": "java"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "await frame.click(\"a.delayed-navigation\") # clicking the link will indirectly cause a navigation",
+              "await frame.wait_for_url(\"**/target.html\")"
+            ],
+            "codeLang": "python async"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "frame.click(\"a.delayed-navigation\") # clicking the link will indirectly cause a navigation",
+              "frame.wait_for_url(\"**/target.html\")"
+            ],
+            "codeLang": "python sync"
+          }
+        ],
+        "required": true,
+        "comment": "Waits for the frame to navigate to the given URL.\n\n```js\nawait frame.click('a.delayed-navigation'); // Clicking the link will indirectly cause a navigation\nawait frame.waitForURL('**/target.html');\n```\n\n```java\nframe.click(\"a.delayed-navigation\"); // Clicking the link will indirectly cause a navigation\nframe.waitForURL(\"**/target.html\");\n```\n\n```python async\nawait frame.click(\"a.delayed-navigation\") # clicking the link will indirectly cause a navigation\nawait frame.wait_for_url(\"**/target.html\")\n```\n\n```python sync\nframe.click(\"a.delayed-navigation\") # clicking the link will indirectly cause a navigation\nframe.wait_for_url(\"**/target.html\")\n```\n",
+        "deprecated": false,
+        "async": true,
+        "alias": "waitForURL",
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "url",
+            "type": {
+              "name": "",
+              "union": [
+                {
+                  "name": "string"
+                },
+                {
+                  "name": "RegExp"
+                },
+                {
+                  "name": "function",
+                  "args": [
+                    {
+                      "name": "URL"
+                    }
+                  ],
+                  "returnType": {
+                    "name": "boolean"
+                  }
+                }
+              ],
+              "expression": "[string]|[RegExp]|[function]([URL]):[boolean]"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation."
+              }
+            ],
+            "required": true,
+            "comment": "A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation.",
+            "deprecated": false,
+            "async": false,
+            "alias": "url"
+          },
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Maximum operation time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by using the [`method: BrowserContext.setDefaultNavigationTimeout`], [`method: BrowserContext.setDefaultTimeout`], [`method: Page.setDefaultNavigationTimeout`] or [`method: Page.setDefaultTimeout`] methods."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Maximum operation time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be\nchanged by using the [`method: BrowserContext.setDefaultNavigationTimeout`],\n[`method: BrowserContext.setDefaultTimeout`], [`method: Page.setDefaultNavigationTimeout`] or\n[`method: Page.setDefaultTimeout`] methods.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout"
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "waitUntil",
+                  "type": {
+                    "name": "WaitUntilState",
+                    "union": [
+                      {
+                        "name": "\"load\""
+                      },
+                      {
+                        "name": "\"domcontentloaded\""
+                      },
+                      {
+                        "name": "\"networkidle\""
+                      }
+                    ],
+                    "expression": "[WaitUntilState]<\"load\"|\"domcontentloaded\"|\"networkidle\">"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "When to consider operation succeeded, defaults to `load`. Events can be either:"
+                    },
+                    {
+                      "type": "li",
+                      "text": "`'domcontentloaded'` - consider operation to be finished when the `DOMContentLoaded` event is fired.",
+                      "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "`'load'` - consider operation to be finished when the `load` event is fired.",
+                      "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "`'networkidle'` - consider operation to be finished when there are no network connections for at least `500` ms.",
+                      "liType": "bullet"
+                    }
+                  ],
+                  "required": false,
+                  "comment": "When to consider operation succeeded, defaults to `load`. Events can be either:\n- `'domcontentloaded'` - consider operation to be finished when the `DOMContentLoaded` event is fired.\n- `'load'` - consider operation to be finished when the `load` event is fired.\n- `'networkidle'` - consider operation to be finished when there are no network connections for at least `500` ms.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "waitUntil"
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "options"
+          }
+        ]
       }
     ]
   },
@@ -30667,7 +31319,7 @@
           },
           {
             "type": "text",
-            "text": "Shortcuts such as `key: \"Control+o\"` or `key: \"Control+Shift+T\"` are supported as well. When speficied with the modifier, modifier is pressed and being held while the subsequent key is being pressed."
+            "text": "Shortcuts such as `key: \"Control+o\"` or `key: \"Control+Shift+T\"` are supported as well. When specified with the modifier, modifier is pressed and being held while the subsequent key is being pressed."
           },
           {
             "type": "code",
@@ -30735,7 +31387,7 @@
           }
         ],
         "required": true,
-        "comment": "`key` can specify the intended [keyboardEvent.key](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key)\nvalue or a single character to generate the text for. A superset of the `key` values can be found\n[here](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values). Examples of the keys are:\n\n`F1` - `F12`, `Digit0`- `Digit9`, `KeyA`- `KeyZ`, `Backquote`, `Minus`, `Equal`, `Backslash`, `Backspace`, `Tab`,\n`Delete`, `Escape`, `ArrowDown`, `End`, `Enter`, `Home`, `Insert`, `PageDown`, `PageUp`, `ArrowRight`, `ArrowUp`, etc.\n\nFollowing modification shortcuts are also supported: `Shift`, `Control`, `Alt`, `Meta`, `ShiftLeft`.\n\nHolding down `Shift` will type the text that corresponds to the `key` in the upper case.\n\nIf `key` is a single character, it is case-sensitive, so the values `a` and `A` will generate different respective\ntexts.\n\nShortcuts such as `key: \"Control+o\"` or `key: \"Control+Shift+T\"` are supported as well. When speficied with the\nmodifier, modifier is pressed and being held while the subsequent key is being pressed.\n\n```js\nconst page = await browser.newPage();\nawait page.goto('https://keycode.info');\nawait page.keyboard.press('A');\nawait page.screenshot({ path: 'A.png' });\nawait page.keyboard.press('ArrowLeft');\nawait page.screenshot({ path: 'ArrowLeft.png' });\nawait page.keyboard.press('Shift+O');\nawait page.screenshot({ path: 'O.png' });\nawait browser.close();\n```\n\n```java\nPage page = browser.newPage();\npage.navigate(\"https://keycode.info\");\npage.keyboard().press(\"A\");\npage.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(\"A.png\"));\npage.keyboard().press(\"ArrowLeft\");\npage.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(\"ArrowLeft.png\")));\npage.keyboard().press(\"Shift+O\");\npage.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(\"O.png\")));\nbrowser.close();\n```\n\n```python async\npage = await browser.new_page()\nawait page.goto(\"https://keycode.info\")\nawait page.keyboard.press(\"a\")\nawait page.screenshot(path=\"a.png\")\nawait page.keyboard.press(\"ArrowLeft\")\nawait page.screenshot(path=\"arrow_left.png\")\nawait page.keyboard.press(\"Shift+O\")\nawait page.screenshot(path=\"o.png\")\nawait browser.close()\n```\n\n```python sync\npage = browser.new_page()\npage.goto(\"https://keycode.info\")\npage.keyboard.press(\"a\")\npage.screenshot(path=\"a.png\")\npage.keyboard.press(\"ArrowLeft\")\npage.screenshot(path=\"arrow_left.png\")\npage.keyboard.press(\"Shift+O\")\npage.screenshot(path=\"o.png\")\nbrowser.close()\n```\n\nShortcut for [`method: Keyboard.down`] and [`method: Keyboard.up`].",
+        "comment": "`key` can specify the intended [keyboardEvent.key](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key)\nvalue or a single character to generate the text for. A superset of the `key` values can be found\n[here](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values). Examples of the keys are:\n\n`F1` - `F12`, `Digit0`- `Digit9`, `KeyA`- `KeyZ`, `Backquote`, `Minus`, `Equal`, `Backslash`, `Backspace`, `Tab`,\n`Delete`, `Escape`, `ArrowDown`, `End`, `Enter`, `Home`, `Insert`, `PageDown`, `PageUp`, `ArrowRight`, `ArrowUp`, etc.\n\nFollowing modification shortcuts are also supported: `Shift`, `Control`, `Alt`, `Meta`, `ShiftLeft`.\n\nHolding down `Shift` will type the text that corresponds to the `key` in the upper case.\n\nIf `key` is a single character, it is case-sensitive, so the values `a` and `A` will generate different respective\ntexts.\n\nShortcuts such as `key: \"Control+o\"` or `key: \"Control+Shift+T\"` are supported as well. When specified with the\nmodifier, modifier is pressed and being held while the subsequent key is being pressed.\n\n```js\nconst page = await browser.newPage();\nawait page.goto('https://keycode.info');\nawait page.keyboard.press('A');\nawait page.screenshot({ path: 'A.png' });\nawait page.keyboard.press('ArrowLeft');\nawait page.screenshot({ path: 'ArrowLeft.png' });\nawait page.keyboard.press('Shift+O');\nawait page.screenshot({ path: 'O.png' });\nawait browser.close();\n```\n\n```java\nPage page = browser.newPage();\npage.navigate(\"https://keycode.info\");\npage.keyboard().press(\"A\");\npage.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(\"A.png\"));\npage.keyboard().press(\"ArrowLeft\");\npage.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(\"ArrowLeft.png\")));\npage.keyboard().press(\"Shift+O\");\npage.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(\"O.png\")));\nbrowser.close();\n```\n\n```python async\npage = await browser.new_page()\nawait page.goto(\"https://keycode.info\")\nawait page.keyboard.press(\"a\")\nawait page.screenshot(path=\"a.png\")\nawait page.keyboard.press(\"ArrowLeft\")\nawait page.screenshot(path=\"arrow_left.png\")\nawait page.keyboard.press(\"Shift+O\")\nawait page.screenshot(path=\"o.png\")\nawait browser.close()\n```\n\n```python sync\npage = browser.new_page()\npage.goto(\"https://keycode.info\")\npage.keyboard.press(\"a\")\npage.screenshot(path=\"a.png\")\npage.keyboard.press(\"ArrowLeft\")\npage.screenshot(path=\"arrow_left.png\")\npage.keyboard.press(\"Shift+O\")\npage.screenshot(path=\"o.png\")\nbrowser.close()\n```\n\nShortcut for [`method: Keyboard.down`] and [`method: Keyboard.up`].",
         "deprecated": false,
         "async": true,
         "alias": "press",
@@ -34099,7 +34751,7 @@
         "spec": [
           {
             "type": "text",
-            "text": "The snippet below dispatches the `click` event on the element. Regardless of the visibility state of the elment, `click` is dispatched. This is equivalend to calling [element.click()](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click)."
+            "text": "The snippet below dispatches the `click` event on the element. Regardless of the visibility state of the element, `click` is dispatched. This is equivalent to calling [element.click()](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click)."
           },
           {
             "type": "code",
@@ -34216,7 +34868,7 @@
           }
         ],
         "required": true,
-        "comment": "The snippet below dispatches the `click` event on the element. Regardless of the visibility state of the elment, `click`\nis dispatched. This is equivalend to calling\n[element.click()](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click).\n\n```js\nawait page.dispatchEvent('button#submit', 'click');\n```\n\n```java\npage.dispatchEvent(\"button#submit\", \"click\");\n```\n\n```python async\nawait page.dispatch_event(\"button#submit\", \"click\")\n```\n\n```python sync\npage.dispatch_event(\"button#submit\", \"click\")\n```\n\nUnder the hood, it creates an instance of an event based on the given `type`, initializes it with `eventInit` properties\nand dispatches it on the element. Events are `composed`, `cancelable` and bubble by default.\n\nSince `eventInit` is event-specific, please refer to the events documentation for the lists of initial properties:\n- [DragEvent](https://developer.mozilla.org/en-US/docs/Web/API/DragEvent/DragEvent)\n- [FocusEvent](https://developer.mozilla.org/en-US/docs/Web/API/FocusEvent/FocusEvent)\n- [KeyboardEvent](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/KeyboardEvent)\n- [MouseEvent](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/MouseEvent)\n- [PointerEvent](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/PointerEvent)\n- [TouchEvent](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent/TouchEvent)\n- [Event](https://developer.mozilla.org/en-US/docs/Web/API/Event/Event)\n\nYou can also specify `JSHandle` as the property value if you want live objects to be passed into the event:\n\n```js\n// Note you can only create DataTransfer in Chromium and Firefox\nconst dataTransfer = await page.evaluateHandle(() => new DataTransfer());\nawait page.dispatchEvent('#source', 'dragstart', { dataTransfer });\n```\n\n```java\n// Note you can only create DataTransfer in Chromium and Firefox\nJSHandle dataTransfer = page.evaluateHandle(\"() => new DataTransfer()\");\nMap<String, Object> arg = new HashMap<>();\narg.put(\"dataTransfer\", dataTransfer);\npage.dispatchEvent(\"#source\", \"dragstart\", arg);\n```\n\n```python async\n# note you can only create data_transfer in chromium and firefox\ndata_transfer = await page.evaluate_handle(\"new DataTransfer()\")\nawait page.dispatch_event(\"#source\", \"dragstart\", { \"dataTransfer\": data_transfer })\n```\n\n```python sync\n# note you can only create data_transfer in chromium and firefox\ndata_transfer = page.evaluate_handle(\"new DataTransfer()\")\npage.dispatch_event(\"#source\", \"dragstart\", { \"dataTransfer\": data_transfer })\n```\n",
+        "comment": "The snippet below dispatches the `click` event on the element. Regardless of the visibility state of the element,\n`click` is dispatched. This is equivalent to calling\n[element.click()](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click).\n\n```js\nawait page.dispatchEvent('button#submit', 'click');\n```\n\n```java\npage.dispatchEvent(\"button#submit\", \"click\");\n```\n\n```python async\nawait page.dispatch_event(\"button#submit\", \"click\")\n```\n\n```python sync\npage.dispatch_event(\"button#submit\", \"click\")\n```\n\nUnder the hood, it creates an instance of an event based on the given `type`, initializes it with `eventInit` properties\nand dispatches it on the element. Events are `composed`, `cancelable` and bubble by default.\n\nSince `eventInit` is event-specific, please refer to the events documentation for the lists of initial properties:\n- [DragEvent](https://developer.mozilla.org/en-US/docs/Web/API/DragEvent/DragEvent)\n- [FocusEvent](https://developer.mozilla.org/en-US/docs/Web/API/FocusEvent/FocusEvent)\n- [KeyboardEvent](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/KeyboardEvent)\n- [MouseEvent](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/MouseEvent)\n- [PointerEvent](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/PointerEvent)\n- [TouchEvent](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent/TouchEvent)\n- [Event](https://developer.mozilla.org/en-US/docs/Web/API/Event/Event)\n\nYou can also specify `JSHandle` as the property value if you want live objects to be passed into the event:\n\n```js\n// Note you can only create DataTransfer in Chromium and Firefox\nconst dataTransfer = await page.evaluateHandle(() => new DataTransfer());\nawait page.dispatchEvent('#source', 'dragstart', { dataTransfer });\n```\n\n```java\n// Note you can only create DataTransfer in Chromium and Firefox\nJSHandle dataTransfer = page.evaluateHandle(\"() => new DataTransfer()\");\nMap<String, Object> arg = new HashMap<>();\narg.put(\"dataTransfer\", dataTransfer);\npage.dispatchEvent(\"#source\", \"dragstart\", arg);\n```\n\n```python async\n# note you can only create data_transfer in chromium and firefox\ndata_transfer = await page.evaluate_handle(\"new DataTransfer()\")\nawait page.dispatch_event(\"#source\", \"dragstart\", { \"dataTransfer\": data_transfer })\n```\n\n```python sync\n# note you can only create data_transfer in chromium and firefox\ndata_transfer = page.evaluate_handle(\"new DataTransfer()\")\npage.dispatch_event(\"#source\", \"dragstart\", { \"dataTransfer\": data_transfer })\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "dispatchEvent",
@@ -36803,7 +37455,8 @@
         "kind": "method",
         "langs": {
           "aliases": {
-            "java": "navigate"
+            "java": "navigate",
+            "csharp": "GoToAsync"
           },
           "types": {},
           "overrides": {}
@@ -38818,7 +39471,7 @@
           },
           {
             "type": "text",
-            "text": "Shortcuts such as `key: \"Control+o\"` or `key: \"Control+Shift+T\"` are supported as well. When speficied with the modifier, modifier is pressed and being held while the subsequent key is being pressed."
+            "text": "Shortcuts such as `key: \"Control+o\"` or `key: \"Control+Shift+T\"` are supported as well. When specified with the modifier, modifier is pressed and being held while the subsequent key is being pressed."
           },
           {
             "type": "code",
@@ -38881,7 +39534,7 @@
           }
         ],
         "required": true,
-        "comment": "Focuses the element, and then uses [`method: Keyboard.down`] and [`method: Keyboard.up`].\n\n`key` can specify the intended [keyboardEvent.key](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key)\nvalue or a single character to generate the text for. A superset of the `key` values can be found\n[here](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values). Examples of the keys are:\n\n`F1` - `F12`, `Digit0`- `Digit9`, `KeyA`- `KeyZ`, `Backquote`, `Minus`, `Equal`, `Backslash`, `Backspace`, `Tab`,\n`Delete`, `Escape`, `ArrowDown`, `End`, `Enter`, `Home`, `Insert`, `PageDown`, `PageUp`, `ArrowRight`, `ArrowUp`, etc.\n\nFollowing modification shortcuts are also supported: `Shift`, `Control`, `Alt`, `Meta`, `ShiftLeft`.\n\nHolding down `Shift` will type the text that corresponds to the `key` in the upper case.\n\nIf `key` is a single character, it is case-sensitive, so the values `a` and `A` will generate different respective\ntexts.\n\nShortcuts such as `key: \"Control+o\"` or `key: \"Control+Shift+T\"` are supported as well. When speficied with the\nmodifier, modifier is pressed and being held while the subsequent key is being pressed.\n\n```js\nconst page = await browser.newPage();\nawait page.goto('https://keycode.info');\nawait page.press('body', 'A');\nawait page.screenshot({ path: 'A.png' });\nawait page.press('body', 'ArrowLeft');\nawait page.screenshot({ path: 'ArrowLeft.png' });\nawait page.press('body', 'Shift+O');\nawait page.screenshot({ path: 'O.png' });\nawait browser.close();\n```\n\n```java\nPage page = browser.newPage();\npage.navigate(\"https://keycode.info\");\npage.press(\"body\", \"A\");\npage.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(\"A.png\")));\npage.press(\"body\", \"ArrowLeft\");\npage.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(\"ArrowLeft.png\" )));\npage.press(\"body\", \"Shift+O\");\npage.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(\"O.png\" )));\n```\n\n```python async\npage = await browser.new_page()\nawait page.goto(\"https://keycode.info\")\nawait page.press(\"body\", \"A\")\nawait page.screenshot(path=\"a.png\")\nawait page.press(\"body\", \"ArrowLeft\")\nawait page.screenshot(path=\"arrow_left.png\")\nawait page.press(\"body\", \"Shift+O\")\nawait page.screenshot(path=\"o.png\")\nawait browser.close()\n```\n\n```python sync\npage = browser.new_page()\npage.goto(\"https://keycode.info\")\npage.press(\"body\", \"A\")\npage.screenshot(path=\"a.png\")\npage.press(\"body\", \"ArrowLeft\")\npage.screenshot(path=\"arrow_left.png\")\npage.press(\"body\", \"Shift+O\")\npage.screenshot(path=\"o.png\")\nbrowser.close()\n```\n",
+        "comment": "Focuses the element, and then uses [`method: Keyboard.down`] and [`method: Keyboard.up`].\n\n`key` can specify the intended [keyboardEvent.key](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key)\nvalue or a single character to generate the text for. A superset of the `key` values can be found\n[here](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values). Examples of the keys are:\n\n`F1` - `F12`, `Digit0`- `Digit9`, `KeyA`- `KeyZ`, `Backquote`, `Minus`, `Equal`, `Backslash`, `Backspace`, `Tab`,\n`Delete`, `Escape`, `ArrowDown`, `End`, `Enter`, `Home`, `Insert`, `PageDown`, `PageUp`, `ArrowRight`, `ArrowUp`, etc.\n\nFollowing modification shortcuts are also supported: `Shift`, `Control`, `Alt`, `Meta`, `ShiftLeft`.\n\nHolding down `Shift` will type the text that corresponds to the `key` in the upper case.\n\nIf `key` is a single character, it is case-sensitive, so the values `a` and `A` will generate different respective\ntexts.\n\nShortcuts such as `key: \"Control+o\"` or `key: \"Control+Shift+T\"` are supported as well. When specified with the\nmodifier, modifier is pressed and being held while the subsequent key is being pressed.\n\n```js\nconst page = await browser.newPage();\nawait page.goto('https://keycode.info');\nawait page.press('body', 'A');\nawait page.screenshot({ path: 'A.png' });\nawait page.press('body', 'ArrowLeft');\nawait page.screenshot({ path: 'ArrowLeft.png' });\nawait page.press('body', 'Shift+O');\nawait page.screenshot({ path: 'O.png' });\nawait browser.close();\n```\n\n```java\nPage page = browser.newPage();\npage.navigate(\"https://keycode.info\");\npage.press(\"body\", \"A\");\npage.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(\"A.png\")));\npage.press(\"body\", \"ArrowLeft\");\npage.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(\"ArrowLeft.png\" )));\npage.press(\"body\", \"Shift+O\");\npage.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(\"O.png\" )));\n```\n\n```python async\npage = await browser.new_page()\nawait page.goto(\"https://keycode.info\")\nawait page.press(\"body\", \"A\")\nawait page.screenshot(path=\"a.png\")\nawait page.press(\"body\", \"ArrowLeft\")\nawait page.screenshot(path=\"arrow_left.png\")\nawait page.press(\"body\", \"Shift+O\")\nawait page.screenshot(path=\"o.png\")\nawait browser.close()\n```\n\n```python sync\npage = browser.new_page()\npage.goto(\"https://keycode.info\")\npage.press(\"body\", \"A\")\npage.screenshot(path=\"a.png\")\npage.press(\"body\", \"ArrowLeft\")\npage.screenshot(path=\"arrow_left.png\")\npage.press(\"body\", \"Shift+O\")\npage.screenshot(path=\"o.png\")\nbrowser.close()\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "press",
@@ -39256,7 +39909,7 @@
           },
           {
             "type": "text",
-            "text": "An example of a naïve handler that aborts all image requests:"
+            "text": "An example of a naive handler that aborts all image requests:"
           },
           {
             "type": "code",
@@ -39347,13 +40000,17 @@
             "text": "Page routes take precedence over browser context routes (set up with [`method: BrowserContext.route`]) when request matches both handlers."
           },
           {
+            "type": "text",
+            "text": "To remove a route with its handler you can use [`method: Page.unroute`]."
+          },
+          {
             "type": "note",
             "noteType": "note",
             "text": "Enabling routing disables http cache."
           }
         ],
         "required": true,
-        "comment": "Routing provides the capability to modify network requests that are made by a page.\n\nOnce routing is enabled, every request matching the url pattern will stall unless it's continued, fulfilled or aborted.\n\n> NOTE: The handler will only be called for the first url if the response is a redirect.\n\nAn example of a naïve handler that aborts all image requests:\n\n```js\nconst page = await browser.newPage();\nawait page.route('**/*.{png,jpg,jpeg}', route => route.abort());\nawait page.goto('https://example.com');\nawait browser.close();\n```\n\n```java\nPage page = browser.newPage();\npage.route(\"**/*.{png,jpg,jpeg}\", route -> route.abort());\npage.navigate(\"https://example.com\");\nbrowser.close();\n```\n\n```python async\npage = await browser.new_page()\nawait page.route(\"**/*.{png,jpg,jpeg}\", lambda route: route.abort())\nawait page.goto(\"https://example.com\")\nawait browser.close()\n```\n\n```python sync\npage = browser.new_page()\npage.route(\"**/*.{png,jpg,jpeg}\", lambda route: route.abort())\npage.goto(\"https://example.com\")\nbrowser.close()\n```\n\nor the same snippet using a regex pattern instead:\n\n```js\nconst page = await browser.newPage();\nawait page.route(/(\\.png$)|(\\.jpg$)/, route => route.abort());\nawait page.goto('https://example.com');\nawait browser.close();\n```\n\n```java\nPage page = browser.newPage();\npage.route(Pattern.compile(\"(\\\\.png$)|(\\\\.jpg$)\"),route -> route.abort());\npage.navigate(\"https://example.com\");\nbrowser.close();\n```\n\n```python async\npage = await browser.new_page()\nawait page.route(re.compile(r\"(\\.png$)|(\\.jpg$)\"), lambda route: route.abort())\nawait page.goto(\"https://example.com\")\nawait browser.close()\n```\n\n```python sync\npage = browser.new_page()\npage.route(re.compile(r\"(\\.png$)|(\\.jpg$)\"), lambda route: route.abort())\npage.goto(\"https://example.com\")\nbrowser.close()\n```\n\nPage routes take precedence over browser context routes (set up with [`method: BrowserContext.route`]) when request\nmatches both handlers.\n\n> NOTE: Enabling routing disables http cache.",
+        "comment": "Routing provides the capability to modify network requests that are made by a page.\n\nOnce routing is enabled, every request matching the url pattern will stall unless it's continued, fulfilled or aborted.\n\n> NOTE: The handler will only be called for the first url if the response is a redirect.\n\nAn example of a naive handler that aborts all image requests:\n\n```js\nconst page = await browser.newPage();\nawait page.route('**/*.{png,jpg,jpeg}', route => route.abort());\nawait page.goto('https://example.com');\nawait browser.close();\n```\n\n```java\nPage page = browser.newPage();\npage.route(\"**/*.{png,jpg,jpeg}\", route -> route.abort());\npage.navigate(\"https://example.com\");\nbrowser.close();\n```\n\n```python async\npage = await browser.new_page()\nawait page.route(\"**/*.{png,jpg,jpeg}\", lambda route: route.abort())\nawait page.goto(\"https://example.com\")\nawait browser.close()\n```\n\n```python sync\npage = browser.new_page()\npage.route(\"**/*.{png,jpg,jpeg}\", lambda route: route.abort())\npage.goto(\"https://example.com\")\nbrowser.close()\n```\n\nor the same snippet using a regex pattern instead:\n\n```js\nconst page = await browser.newPage();\nawait page.route(/(\\.png$)|(\\.jpg$)/, route => route.abort());\nawait page.goto('https://example.com');\nawait browser.close();\n```\n\n```java\nPage page = browser.newPage();\npage.route(Pattern.compile(\"(\\\\.png$)|(\\\\.jpg$)\"),route -> route.abort());\npage.navigate(\"https://example.com\");\nbrowser.close();\n```\n\n```python async\npage = await browser.new_page()\nawait page.route(re.compile(r\"(\\.png$)|(\\.jpg$)\"), lambda route: route.abort())\nawait page.goto(\"https://example.com\")\nawait browser.close()\n```\n\n```python sync\npage = browser.new_page()\npage.route(re.compile(r\"(\\.png$)|(\\.jpg$)\"), lambda route: route.abort())\npage.goto(\"https://example.com\")\nbrowser.close()\n```\n\nPage routes take precedence over browser context routes (set up with [`method: BrowserContext.route`]) when request\nmatches both handlers.\n\nTo remove a route with its handler you can use [`method: Page.unroute`].\n\n> NOTE: Enabling routing disables http cache.",
         "deprecated": false,
         "async": true,
         "alias": "route",
@@ -39482,15 +40139,10 @@
           {
             "type": "text",
             "text": "Returns the buffer with the captured screenshot."
-          },
-          {
-            "type": "note",
-            "noteType": "note",
-            "text": "Screenshots take at least 1/6 second on Chromium OS X and Chromium Windows. See https://crbug.com/741689 for discussion."
           }
         ],
         "required": true,
-        "comment": "Returns the buffer with the captured screenshot.\n\n> NOTE: Screenshots take at least 1/6 second on Chromium OS X and Chromium Windows. See https://crbug.com/741689 for\ndiscussion.",
+        "comment": "Returns the buffer with the captured screenshot.",
         "deprecated": false,
         "async": true,
         "alias": "screenshot",
@@ -40099,6 +40751,100 @@
             "kind": "property",
             "langs": {
               "only": [
+                "csharp"
+              ],
+              "aliases": {},
+              "types": {},
+              "overrides": {}
+            },
+            "name": "values",
+            "type": {
+              "name": "Array",
+              "templates": [
+                {
+                  "name": "Object",
+                  "properties": [
+                    {
+                      "kind": "property",
+                      "langs": {},
+                      "name": "value",
+                      "type": {
+                        "name": "string",
+                        "expression": "[string]"
+                      },
+                      "spec": [
+                        {
+                          "type": "text",
+                          "text": "Matches by `option.value`. Optional."
+                        }
+                      ],
+                      "required": false,
+                      "comment": "Matches by `option.value`. Optional.",
+                      "deprecated": false,
+                      "async": false,
+                      "alias": "value"
+                    },
+                    {
+                      "kind": "property",
+                      "langs": {},
+                      "name": "label",
+                      "type": {
+                        "name": "string",
+                        "expression": "[string]"
+                      },
+                      "spec": [
+                        {
+                          "type": "text",
+                          "text": "Matches by `option.label`. Optional."
+                        }
+                      ],
+                      "required": false,
+                      "comment": "Matches by `option.label`. Optional.",
+                      "deprecated": false,
+                      "async": false,
+                      "alias": "label"
+                    },
+                    {
+                      "kind": "property",
+                      "langs": {},
+                      "name": "index",
+                      "type": {
+                        "name": "int",
+                        "expression": "[int]"
+                      },
+                      "spec": [
+                        {
+                          "type": "text",
+                          "text": "Matches by the index. Optional."
+                        }
+                      ],
+                      "required": false,
+                      "comment": "Matches by the index. Optional.",
+                      "deprecated": false,
+                      "async": false,
+                      "alias": "index"
+                    }
+                  ]
+                }
+              ],
+              "expression": "[Array]<[Object]>"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Options to select. If the `<select>` has the `multiple` attribute, all matching options are selected, otherwise only the first option matching one of the passed options is selected. String values are equivalent to `{value:'string'}`. Option is considered matching if all specified properties match."
+              }
+            ],
+            "required": true,
+            "comment": "Options to select. If the `<select>` has the `multiple` attribute, all matching options are selected, otherwise only the\nfirst option matching one of the passed options is selected. String values are equivalent to `{value:'string'}`. Option\nis considered matching if all specified properties match.",
+            "deprecated": false,
+            "async": false,
+            "alias": "values"
+          },
+          {
+            "kind": "property",
+            "langs": {
+              "only": [
                 "python"
               ],
               "aliases": {},
@@ -40417,13 +41163,18 @@
             "liType": "bullet"
           },
           {
+            "type": "li",
+            "text": "[`method: Page.waitForURL`]",
+            "liType": "bullet"
+          },
+          {
             "type": "note",
             "noteType": "note",
             "text": "[`method: Page.setDefaultNavigationTimeout`] takes priority over [`method: Page.setDefaultTimeout`], [`method: BrowserContext.setDefaultTimeout`] and [`method: BrowserContext.setDefaultNavigationTimeout`]."
           }
         ],
         "required": true,
-        "comment": "This setting will change the default maximum navigation time for the following methods and related shortcuts:\n- [`method: Page.goBack`]\n- [`method: Page.goForward`]\n- [`method: Page.goto`]\n- [`method: Page.reload`]\n- [`method: Page.setContent`]\n- [`method: Page.waitForNavigation`]\n\n> NOTE: [`method: Page.setDefaultNavigationTimeout`] takes priority over [`method: Page.setDefaultTimeout`],\n[`method: BrowserContext.setDefaultTimeout`] and [`method: BrowserContext.setDefaultNavigationTimeout`].",
+        "comment": "This setting will change the default maximum navigation time for the following methods and related shortcuts:\n- [`method: Page.goBack`]\n- [`method: Page.goForward`]\n- [`method: Page.goto`]\n- [`method: Page.reload`]\n- [`method: Page.setContent`]\n- [`method: Page.waitForNavigation`]\n- [`method: Page.waitForURL`]\n\n> NOTE: [`method: Page.setDefaultNavigationTimeout`] takes priority over [`method: Page.setDefaultTimeout`],\n[`method: BrowserContext.setDefaultTimeout`] and [`method: BrowserContext.setDefaultNavigationTimeout`].",
         "deprecated": false,
         "async": false,
         "alias": "setDefaultNavigationTimeout",
@@ -40595,7 +41346,111 @@
           },
           {
             "kind": "property",
-            "langs": {},
+            "langs": {
+              "overrides": {
+                "csharp": {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "csharp"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "files",
+                  "type": {
+                    "name": "Array",
+                    "templates": [
+                      {
+                        "name": "Object",
+                        "properties": [
+                          {
+                            "kind": "property",
+                            "langs": {},
+                            "name": "name",
+                            "type": {
+                              "name": "string",
+                              "expression": "[string]"
+                            },
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": "File name"
+                              }
+                            ],
+                            "argsArray": [],
+                            "required": true,
+                            "comment": "",
+                            "args": {},
+                            "clazz": null,
+                            "deprecated": false,
+                            "async": false,
+                            "alias": "name"
+                          },
+                          {
+                            "kind": "property",
+                            "langs": {},
+                            "name": "mimeType",
+                            "type": {
+                              "name": "string",
+                              "expression": "[string]"
+                            },
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": "File type"
+                              }
+                            ],
+                            "argsArray": [],
+                            "required": true,
+                            "comment": "",
+                            "args": {},
+                            "clazz": null,
+                            "deprecated": false,
+                            "async": false,
+                            "alias": "mimeType"
+                          },
+                          {
+                            "kind": "property",
+                            "langs": {},
+                            "name": "buffer",
+                            "type": {
+                              "name": "Buffer",
+                              "expression": "[Buffer]"
+                            },
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": "File content"
+                              }
+                            ],
+                            "argsArray": [],
+                            "required": true,
+                            "comment": "",
+                            "args": {},
+                            "clazz": null,
+                            "deprecated": false,
+                            "async": false,
+                            "alias": "buffer"
+                          }
+                        ]
+                      }
+                    ],
+                    "expression": "[Array]<[Object]>"
+                  },
+                  "spec": [],
+                  "argsArray": [],
+                  "required": true,
+                  "comment": "",
+                  "args": {},
+                  "clazz": null,
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "files"
+                }
+              }
+            },
             "name": "files",
             "type": {
               "name": "",
@@ -44300,6 +45155,183 @@
       },
       {
         "kind": "method",
+        "langs": {},
+        "name": "waitForURL",
+        "type": {
+          "name": "void"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Waits for the main frame to navigate to the given URL."
+          },
+          {
+            "type": "code",
+            "lines": [
+              "await page.click('a.delayed-navigation'); // Clicking the link will indirectly cause a navigation",
+              "await page.waitForURL('**/target.html');"
+            ],
+            "codeLang": "js"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "page.click(\"a.delayed-navigation\"); // Clicking the link will indirectly cause a navigation",
+              "page.waitForURL(\"**/target.html\");"
+            ],
+            "codeLang": "java"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "await page.click(\"a.delayed-navigation\") # clicking the link will indirectly cause a navigation",
+              "await page.wait_for_url(\"**/target.html\")"
+            ],
+            "codeLang": "python async"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "page.click(\"a.delayed-navigation\") # clicking the link will indirectly cause a navigation",
+              "page.wait_for_url(\"**/target.html\")"
+            ],
+            "codeLang": "python sync"
+          },
+          {
+            "type": "text",
+            "text": "Shortcut for main frame's [`method: Frame.waitForURL`]."
+          }
+        ],
+        "required": true,
+        "comment": "Waits for the main frame to navigate to the given URL.\n\n```js\nawait page.click('a.delayed-navigation'); // Clicking the link will indirectly cause a navigation\nawait page.waitForURL('**/target.html');\n```\n\n```java\npage.click(\"a.delayed-navigation\"); // Clicking the link will indirectly cause a navigation\npage.waitForURL(\"**/target.html\");\n```\n\n```python async\nawait page.click(\"a.delayed-navigation\") # clicking the link will indirectly cause a navigation\nawait page.wait_for_url(\"**/target.html\")\n```\n\n```python sync\npage.click(\"a.delayed-navigation\") # clicking the link will indirectly cause a navigation\npage.wait_for_url(\"**/target.html\")\n```\n\nShortcut for main frame's [`method: Frame.waitForURL`].",
+        "deprecated": false,
+        "async": true,
+        "alias": "waitForURL",
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "url",
+            "type": {
+              "name": "",
+              "union": [
+                {
+                  "name": "string"
+                },
+                {
+                  "name": "RegExp"
+                },
+                {
+                  "name": "function",
+                  "args": [
+                    {
+                      "name": "URL"
+                    }
+                  ],
+                  "returnType": {
+                    "name": "boolean"
+                  }
+                }
+              ],
+              "expression": "[string]|[RegExp]|[function]([URL]):[boolean]"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation."
+              }
+            ],
+            "required": true,
+            "comment": "A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation.",
+            "deprecated": false,
+            "async": false,
+            "alias": "url"
+          },
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Maximum operation time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by using the [`method: BrowserContext.setDefaultNavigationTimeout`], [`method: BrowserContext.setDefaultTimeout`], [`method: Page.setDefaultNavigationTimeout`] or [`method: Page.setDefaultTimeout`] methods."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Maximum operation time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be\nchanged by using the [`method: BrowserContext.setDefaultNavigationTimeout`],\n[`method: BrowserContext.setDefaultTimeout`], [`method: Page.setDefaultNavigationTimeout`] or\n[`method: Page.setDefaultTimeout`] methods.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout"
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "waitUntil",
+                  "type": {
+                    "name": "WaitUntilState",
+                    "union": [
+                      {
+                        "name": "\"load\""
+                      },
+                      {
+                        "name": "\"domcontentloaded\""
+                      },
+                      {
+                        "name": "\"networkidle\""
+                      }
+                    ],
+                    "expression": "[WaitUntilState]<\"load\"|\"domcontentloaded\"|\"networkidle\">"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "When to consider operation succeeded, defaults to `load`. Events can be either:"
+                    },
+                    {
+                      "type": "li",
+                      "text": "`'domcontentloaded'` - consider operation to be finished when the `DOMContentLoaded` event is fired.",
+                      "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "`'load'` - consider operation to be finished when the `load` event is fired.",
+                      "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "`'networkidle'` - consider operation to be finished when there are no network connections for at least `500` ms.",
+                      "liType": "bullet"
+                    }
+                  ],
+                  "required": false,
+                  "comment": "When to consider operation succeeded, defaults to `load`. Events can be either:\n- `'domcontentloaded'` - consider operation to be finished when the `DOMContentLoaded` event is fired.\n- `'load'` - consider operation to be finished when the `load` event is fired.\n- `'networkidle'` - consider operation to be finished when there are no network connections for at least `500` ms.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "waitUntil"
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "options"
+          }
+        ]
+      },
+      {
+        "kind": "method",
         "langs": {
           "only": [
             "csharp",
@@ -47509,11 +48541,11 @@
     "spec": [
       {
         "type": "text",
-        "text": "The Touchscreen class operates in main-frame CSS pixels relative to the top-left corner of the viewport. Methods on the touchscreen can only be used in browser contexts that have been intialized with `hasTouch` set to true."
+        "text": "The Touchscreen class operates in main-frame CSS pixels relative to the top-left corner of the viewport. Methods on the touchscreen can only be used in browser contexts that have been initialized with `hasTouch` set to true."
       }
     ],
     "langs": {},
-    "comment": "The Touchscreen class operates in main-frame CSS pixels relative to the top-left corner of the viewport. Methods on the\ntouchscreen can only be used in browser contexts that have been intialized with `hasTouch` set to true.",
+    "comment": "The Touchscreen class operates in main-frame CSS pixels relative to the top-left corner of the viewport. Methods on the\ntouchscreen can only be used in browser contexts that have been initialized with `hasTouch` set to true.",
     "members": [
       {
         "kind": "method",
@@ -47739,11 +48771,11 @@
         "spec": [
           {
             "type": "text",
-            "text": "Fired when the websocket recieves a frame."
+            "text": "Fired when the websocket receives a frame."
           }
         ],
         "required": true,
-        "comment": "Fired when the websocket recieves a frame.",
+        "comment": "Fired when the websocket receives a frame.",
         "deprecated": false,
         "async": false,
         "alias": "frameReceived",
