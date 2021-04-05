@@ -38,9 +38,7 @@ module Playwright
       @channel.on('crash', ->(_) { emit(Events::Page::Crash) })
       @channel.on('dialog', method(:on_dialog))
       @channel.on('domcontentloaded', ->(_) { emit(Events::Page::DOMContentLoaded) })
-      @channel.on('download', ->(params) {
-        emit(Events::Page::Download, ChannelOwners::Download.from(params['download']))
-      })
+      @channel.on('download', method(:on_download))
       @channel.on('fileChooser', ->(params) {
         chooser = FileChooserImpl.new(
                     page: self,
@@ -145,6 +143,15 @@ module Playwright
       unless emit(Events::Page::Dialog, dialog)
         dialog.dismiss
       end
+    end
+
+    private def on_download(params)
+      download = Download.new(
+        url: params['url'],
+        suggested_filename: params['suggestedFilename'],
+        artifact: ChannelOwners::Artifact.from(params['artifact']),
+      )
+      emit(Events::Page::Download, download)
     end
 
     # @override

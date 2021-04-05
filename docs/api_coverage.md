@@ -200,15 +200,6 @@
 * message
 * type
 
-## Download
-
-* delete
-* failure
-* path
-* save_as
-* suggested_filename
-* url
-
 ## ~~Video~~
 
 * ~~delete~~
