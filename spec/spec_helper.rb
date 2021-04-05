@@ -35,7 +35,13 @@ RSpec.configure do |config|
 
   config.around(:each, type: :integration) do |example|
     @playwright_browser_type = browser_type
-    Playwright.create(playwright_cli_executable_path: ENV['PLAYWRIGHT_CLI_EXECUTABLE_PATH']) do |playwright|
+
+    # Every integration test case should spend less than 15sec, in CI.
+    params = {
+      playwright_cli_executable_path: ENV['PLAYWRIGHT_CLI_EXECUTABLE_PATH'],
+      timeout: ENV['CI'] ? 15 : nil,
+    }
+    Playwright.create(**params) do |playwright|
       @playwright_playwright = playwright
 
       playwright.send(@playwright_browser_type).launch do |browser|
@@ -161,13 +167,6 @@ RSpec.configure do |config|
       example.run
     ensure
       sinatra_app.quit!
-    end
-  end
-
-  # Every integration test case should spend less than 15sec, in CI.
-  if ENV['CI']
-    config.around(:each, type: :integration) do |example|
-      Timeout.timeout(15) { example.run }
     end
   end
 end

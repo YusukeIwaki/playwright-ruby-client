@@ -98,6 +98,15 @@ module Playwright
       request&.response
     end
 
+    def wait_for_url(url, timeout: nil, waitUntil: nil)
+      matcher = UrlMatcher.new(url)
+      if matcher.match?(@url)
+        wait_for_load_state(state: waitUntil, timeout: timeout)
+      else
+        expect_navigation(timeout: timeout, url: url, waitUntil: waitUntil)
+      end
+    end
+
     def wait_for_load_state(state: nil, timeout: nil)
       option_state = state || 'load'
       option_timeout = timeout || @page.send(:timeout_settings).navigation_timeout

@@ -8,7 +8,7 @@ module Playwright
     def match?(target_url)
       case @url
       when String
-        @url == target_url
+        @url == target_url || File.fnmatch?(@url, target_url)
       when Regexp
         @url.match?(target_url)
       else

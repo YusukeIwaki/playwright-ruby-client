@@ -173,6 +173,7 @@
 * expect_navigation
 * wait_for_selector
 * ~~wait_for_timeout~~
+* wait_for_url
 
 ## ~~Worker~~
 
@@ -288,6 +289,7 @@
 * expect_response
 * wait_for_selector
 * ~~wait_for_timeout~~
+* wait_for_url
 * ~~expect_worker~~
 * ~~workers~~
 * ~~wait_for_event~~
@@ -326,12 +328,6 @@
 
 * ~~detach~~
 * ~~send_message~~
-
-## ChromiumBrowserContext
-
-* ~~background_pages~~
-* ~~new_cdp_session~~
-* ~~service_workers~~
 
 ## Browser
 

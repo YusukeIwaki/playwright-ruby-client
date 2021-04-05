@@ -35,7 +35,7 @@ require 'playwright/playwright_api'
 Dir[File.join(__dir__, 'playwright_api', '*.rb')].each { |f| require f }
 
 module Playwright
-  module_function def create(playwright_cli_executable_path:, &block)
+  module_function def create(playwright_cli_executable_path:, timeout: nil, &block)
     raise ArgumentError.new("block must be provided") unless block
 
     connection = Connection.new(playwright_cli_executable_path: playwright_cli_executable_path)
@@ -43,10 +43,16 @@ module Playwright
       Async do
         connection.async_run
 
-        Async do
+        Async do |task|
           playwright = connection.wait_for_object_with_known_name('Playwright')
           playwright_api = PlaywrightApi.wrap(playwright)
-          block.call(playwright_api)
+          if timeout
+            task.with_timeout(timeout) do
+              block.call(playwright_api)
+            end
+          else
+            block.call(playwright_api)
+          end
         ensure
           connection.stop
         end

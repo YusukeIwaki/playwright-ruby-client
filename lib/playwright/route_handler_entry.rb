@@ -9,7 +9,7 @@ module Playwright
     end
 
     def handle(route, request)
-      if url_match?(request.url)
+      if @url_matcher.match?(request.url)
         @handler.call(route, request)
         true
       else
@@ -22,14 +22,6 @@ module Playwright
         @url_value == url && @handler == handler
       else
         @url_value == url
-      end
-    end
-
-    private def url_match?(request_url)
-      if @url_value.is_a?(Regexp)
-        @url_matcher.match?(request_url)
-      else
-        @url_matcher.match?(request_url) || File.fnmatch?(@url_value, request_url)
       end
     end
   end

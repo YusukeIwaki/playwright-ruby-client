@@ -326,6 +326,10 @@ module Playwright
       @main_frame.wait_for_load_state(state: state, timeout: timeout)
     end
 
+    def wait_for_url(url, timeout: nil, waitUntil: nil)
+      @main_frame.wait_for_url(url, timeout: timeout,  waitUntil: waitUntil)
+    end
+
     def go_back(timeout: nil, waitUntil: nil)
       params = { timeout: timeout, waitUntil: waitUntil }.compact
       resp = @channel.send_message_to_server('goBack', params)
