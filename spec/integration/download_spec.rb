@@ -2,10 +2,8 @@ require 'spec_helper'
 require 'tmpdir'
 
 RSpec.describe 'download', sinatra: true do
-  let(:download_endpoint) { "/download-#{SecureRandom.hex(8)}"}
-  let(:download_with_filename_endpoint) { "/downloadWithFilename-#{SecureRandom.hex(8)}"}
   before {
-    sinatra.get(download_endpoint) do
+    sinatra.get('/download') do
       headers(
         'Content-Type' => 'application/octet-stream',
         'Content-Disposition' => 'attachment',
@@ -13,7 +11,7 @@ RSpec.describe 'download', sinatra: true do
       body('Hello world!')
     end
 
-    sinatra.get(download_with_filename_endpoint) do
+    sinatra.get('/downloadWithFilename') do
       headers(
         'Content-Type' => 'application/octet-stream',
         'Content-Disposition' => 'attachment; filename=file.txt',
@@ -24,12 +22,12 @@ RSpec.describe 'download', sinatra: true do
 
   it 'should report downloads with acceptDownloads: false' do
     with_page do |page|
-      page.content = "<a href=\"#{server_prefix}#{download_with_filename_endpoint}\">download</a>"
+      page.content = "<a href=\"#{server_prefix}/downloadWithFilename\">download</a>"
       download = page.expect_download do
         page.click('a')
       end
 
-      expect(download.url).to eq("#{server_prefix}#{download_with_filename_endpoint}")
+      expect(download.url).to eq("#{server_prefix}/downloadWithFilename")
       expect(download.suggested_filename).to eq('file.txt')
       expect { download.path }.to raise_error(/acceptDownloads: true/)
       expect(download.failure).to include('acceptDownloads')
@@ -38,7 +36,7 @@ RSpec.describe 'download', sinatra: true do
 
   it 'should report downloads with acceptDownloads: true' do
     with_page(acceptDownloads: true) do |page|
-      page.content = "<a href=\"#{server_prefix}#{download_endpoint}\">download</a>"
+      page.content = "<a href=\"#{server_prefix}/download\">download</a>"
       download = page.expect_download do
         page.click('a')
       end
@@ -49,7 +47,7 @@ RSpec.describe 'download', sinatra: true do
 
   it 'should save to user-specified path' do
     with_page(acceptDownloads: true) do |page|
-      page.content = "<a href=\"#{server_prefix}#{download_endpoint}\">download</a>"
+      page.content = "<a href=\"#{server_prefix}/download\">download</a>"
       download = page.expect_download do
         page.click('a')
       end
@@ -63,7 +61,7 @@ RSpec.describe 'download', sinatra: true do
 
   it 'should save to user-specified path without updating original path' do
     with_page(acceptDownloads: true) do |page|
-      page.content = "<a href=\"#{server_prefix}#{download_endpoint}\">download</a>"
+      page.content = "<a href=\"#{server_prefix}/download\">download</a>"
       download = page.expect_download do
         page.click('a')
       end
@@ -280,7 +278,7 @@ RSpec.describe 'download', sinatra: true do
 
   it 'should delete file' do
     with_page(acceptDownloads: true) do |page|
-      page.content = "<a href=\"#{server_prefix}#{download_endpoint}\">download</a>"
+      page.content = "<a href=\"#{server_prefix}/download\">download</a>"
       download = page.expect_download do
         page.click('a')
       end
