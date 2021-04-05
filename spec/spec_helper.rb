@@ -94,7 +94,7 @@ RSpec.configure do |config|
     require 'net/http'
     require 'sinatra/base'
 
-    class SinatraApp < Sinatra::Base
+    sinatra_app = Class.new(Sinatra::Base) do
       # Change the priority of static file routing.
       # Original impl is here:
       # https://github.com/sinatra/sinatra/blob/v2.1.0/lib/sinatra/base.rb
@@ -134,7 +134,6 @@ RSpec.configure do |config|
       end
     end
 
-    sinatra_app = SinatraApp
     sinatra_app.disable(:protection)
     sinatra_app.set(:public_folder, File.join(__dir__, 'assets'))
     @server_prefix = "http://localhost:4567"
