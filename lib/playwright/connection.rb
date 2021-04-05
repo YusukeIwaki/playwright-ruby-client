@@ -197,32 +197,9 @@ module Playwright
       end
       initializer = replace_guids_with_channels(initializer)
 
-      class_name = case type
-      when 'Browser'
-        case initializer['name']
-        when 'chromium'
-          'ChromiumBrowser'
-        when 'webkit'
-          'WebKitBrowser'
-        when 'firefox'
-          'FirefoxBrowser'
-        else
-          'Browser'
-        end
-      when 'BrowserContext'
-        browser_name = initializer['browserName']
-        if browser_name == 'chromium'
-          'ChromiumBrowserContext'
-        else
-          'BrowserContext'
-        end
-      else
-        type
-      end
-
       result =
         begin
-          ChannelOwners.const_get(class_name).new(
+          ChannelOwners.const_get(type).new(
             parent,
             type,
             guid,
