@@ -23,6 +23,7 @@ module Playwright
       page.send(:update_browser_context, self)
       @pages << page
       emit(Events::BrowserContext::Page, page)
+      page.send(:emit_popup_event_from_browser_context)
     end
 
     private def on_route(route, request)

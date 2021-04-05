@@ -28,6 +28,7 @@ module Playwright
       @main_frame.send(:update_page_from_page, self)
       @frames = Set.new
       @frames << @main_frame
+      @opener = ChannelOwners::Page.from_nullable(@initializer['opener'])
 
       @channel.once('close', ->(_) { on_close })
       @channel.on('console', ->(params) {
@@ -56,9 +57,6 @@ module Playwright
       @channel.on('load', ->(_) { emit(Events::Page::Load) })
       @channel.on('pageError', ->(params) {
         emit(Events::Page::PageError, Error.parse(params['error']['error']))
-      })
-      @channel.on('popup', ->(params) {
-        emit(Events::Page::Popup, ChannelOwners::Page.from(params['page']))
       })
       @channel.on('request', ->(params) {
         emit(Events::Page::Request, ChannelOwners::Request.from(params['request']))
@@ -178,8 +176,17 @@ module Playwright
     end
 
     def opener
-      resp = @channel.send_message_to_server('opener')
-      ChannelOwners::Page.from(resp)
+      if @opener&.closed?
+        nil
+      else
+        @opener
+      end
+    end
+
+    private def emit_popup_event_from_browser_context
+      if @opener && !@opener.closed?
+        @opener.emit(Events::Page::Popup, self)
+      end
     end
 
     def frame(name: nil, url: nil)
