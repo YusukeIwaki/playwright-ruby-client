@@ -1,16 +1,15 @@
 require 'spec_helper'
 
 RSpec.describe 'autowaiting basic' do
-  let(:endpoint) { "/empty_#{SecureRandom.hex(24)}" }
   def init_server
     messages = []
 
-    sinatra.get(endpoint) do
+    sinatra.get('/empty.html') do
       messages << 'route'
       headers('Content-Type' => 'text/html')
       body("<link rel='stylesheet' href='./one-style.css'>")
     end
-    sinatra.post(endpoint) do
+    sinatra.post('/empty.html') do
       messages << 'route'
       headers('Content-Type' => 'text/html')
       body("<link rel='stylesheet' href='./one-style.css'>")
@@ -27,7 +26,7 @@ RSpec.describe 'autowaiting basic' do
     messages = init_server
 
     with_page do |page|
-      page.content = "<a id=\"anchor\" href=\"#{server_prefix}#{endpoint}\" >empty.html</a>"
+      page.content = "<a id=\"anchor\" href=\"#{server_empty_page}\" >empty.html</a>"
 
       promises = [
         Playwright::AsyncEvaluation.new {
@@ -49,7 +48,7 @@ RSpec.describe 'autowaiting basic' do
     messages = init_server
 
     with_page do |page|
-      page.content = "<a id=\"anchor\" href=\"#{server_prefix}#{endpoint}\" >empty.html</a>"
+      page.content = "<a id=\"anchor\" href=\"#{server_empty_page}\" >empty.html</a>"
 
       promises = [
         Playwright::AsyncEvaluation.new {
@@ -71,7 +70,7 @@ RSpec.describe 'autowaiting basic' do
     messages = init_server
 
     with_page do |page|
-      page.content = "<a id=\"anchor\" href=\"#{server_prefix}#{endpoint}\" >empty.html</a>"
+      page.content = "<a id=\"anchor\" href=\"#{server_empty_page}\" >empty.html</a>"
 
       promises = [
         Playwright::AsyncEvaluation.new {
@@ -93,7 +92,7 @@ RSpec.describe 'autowaiting basic' do
     messages = init_server
 
     with_page do |page|
-      page.content = "<a id=\"anchor\" href=\"#{server_prefix}#{endpoint}\" >empty.html</a>"
+      page.content = "<a id=\"anchor\" href=\"#{server_empty_page}\" >empty.html</a>"
       handle = page.evaluate_handle('document')
 
       promises = [
@@ -116,7 +115,7 @@ RSpec.describe 'autowaiting basic' do
     messages = init_server
 
     with_page do |page|
-      page.content = "<a id=\"anchor\" href=\"#{server_prefix}#{endpoint}\" >empty.html</a>"
+      page.content = "<a id=\"anchor\" href=\"#{server_empty_page}\" >empty.html</a>"
       handle = page.query_selector('body')
 
       promises = [
@@ -139,7 +138,7 @@ RSpec.describe 'autowaiting basic' do
     messages = init_server
 
     with_page do |page|
-      page.content = "<a href=\"#{server_cross_process_prefix}#{endpoint}\" >empty.html</a>"
+      page.content = "<a href=\"#{server_cross_process_prefix}/empty.html\" >empty.html</a>"
 
       promises = [
         Playwright::AsyncEvaluation.new {
@@ -161,7 +160,7 @@ RSpec.describe 'autowaiting basic' do
     messages = init_server
 
     with_page do |page|
-      page.content = "<a id=\"anchor\" href=\"#{server_cross_process_prefix}#{endpoint}\" >empty.html</a>"
+      page.content = "<a id=\"anchor\" href=\"#{server_cross_process_prefix}/empty.html\" >empty.html</a>"
 
       promises = [
         Playwright::AsyncEvaluation.new {
@@ -184,7 +183,7 @@ RSpec.describe 'autowaiting basic' do
 
     with_page do |page|
       html = <<~HTML
-      <form action="#{server_cross_process_prefix}#{endpoint}" method="get">
+      <form action="#{server_cross_process_prefix}/empty.html" method="get">
         <input name="foo" value="bar">
         <input type="submit" value="Submit">
       </form>
@@ -212,7 +211,7 @@ RSpec.describe 'autowaiting basic' do
 
     with_page do |page|
       html = <<~HTML
-      <form action="#{server_cross_process_prefix}#{endpoint}" method="post">
+      <form action="#{server_cross_process_prefix}/empty.html" method="post">
         <input name="foo" value="bar">
         <input type="submit" value="Submit">
       </form>
@@ -241,7 +240,7 @@ RSpec.describe 'autowaiting basic' do
     with_page do |page|
       promises = [
         Playwright::AsyncEvaluation.new {
-          page.evaluate("window.location.href = \"#{server_cross_process_prefix}#{endpoint}\"")
+          page.evaluate("window.location.href = \"#{server_cross_process_prefix}/empty.html\"")
           messages << 'evaluate'
         },
         Playwright::AsyncEvaluation.new {
@@ -258,13 +257,13 @@ RSpec.describe 'autowaiting basic' do
   it 'should await navigation when assigning location twice', sinatra: true do
     messages = []
 
-    sinatra.get("#{endpoint}/cancel") { 'done' }
-    sinatra.get("#{endpoint}/override") { messages << 'routeoverride' ; 'done' }
+    sinatra.get("/empty.html/cancel") { 'done' }
+    sinatra.get("/empty.html/override") { messages << 'routeoverride' ; 'done' }
 
     with_page do |page|
       js = <<~JAVASCRIPT
-      window.location.href = "#{server_cross_process_prefix}#{endpoint}/cancel";
-      window.location.href = "#{server_cross_process_prefix}#{endpoint}/override";
+      window.location.href = "#{server_cross_process_prefix}/empty.html/cancel";
+      window.location.href = "#{server_cross_process_prefix}/empty.html/override";
       JAVASCRIPT
 
       page.evaluate(js)
@@ -278,7 +277,7 @@ RSpec.describe 'autowaiting basic' do
     messages = init_server
 
     with_page do |page|
-      page.goto("#{server_prefix}#{endpoint}")
+      page.goto(server_empty_page)
       messages.clear
 
       promises = [
@@ -304,7 +303,7 @@ RSpec.describe 'autowaiting basic' do
 
     with_page do |page|
       html = <<~HTML
-      <a href="#{server_prefix}#{endpoint}" target=target>empty.html</a>
+      <a href="#{server_empty_page}" target=target>empty.html</a>
       <iframe name=target></iframe>
       HTML
       page.content = html
@@ -321,17 +320,17 @@ RSpec.describe 'autowaiting basic' do
         }
       ]
       await_all(promises)
-      expect(frame.url).to eq("#{server_prefix}#{endpoint}")
+      expect(frame.url).to eq(server_empty_page)
     end
 
     expect(messages).to eq(%w(route navigated click))
   end
 
   it 'should work with noWaitAfter: true', sinatra: true do
-    sinatra.get(endpoint) { sleep 30 }
+    sinatra.get('/empty.html') { sleep 30 }
 
     with_page do |page|
-      page.content = "<a href=\"#{server_prefix}#{endpoint}\" >empty.html</a>"
+      page.content = "<a href=\"#{server_empty_page}\" >empty.html</a>"
 
       Timeout.timeout(3) do
         page.click('a', noWaitAfter: true)
@@ -340,10 +339,10 @@ RSpec.describe 'autowaiting basic' do
   end
 
   it 'should work with dblclick noWaitAfter: true', sinatra: true do
-    sinatra.get(endpoint) { sleep 30 }
+    sinatra.get('/empty.html') { sleep 30 }
 
     with_page do |page|
-      page.content = "<a href=\"#{server_prefix}#{endpoint}\" >empty.html</a>"
+      page.content = "<a href=\"#{server_empty_page}\" >empty.html</a>"
 
       Timeout.timeout(3) do
         page.dblclick('a', noWaitAfter: true)
@@ -352,20 +351,10 @@ RSpec.describe 'autowaiting basic' do
   end
 
   it 'should work with waitForLoadState(load)', sinatra: true do
-    messages = []
-
-    css_path = "/one-style-#{SecureRandom.hex(12)}.css"
-    sinatra.get(endpoint) do
-      messages << 'route'
-      headers('Content-Type' => 'text/html')
-      body("<link rel='stylesheet' href='.#{css_path}'>")
-    end
-    sinatra.get(css_path) do
-      'a { font-size: 12pt }'
-    end
+    messages = init_server
 
     with_page do |page|
-      page.content = "<a href=\"#{server_prefix}#{endpoint}\" >empty.html</a>"
+      page.content = "<a href=\"#{server_empty_page}\" >empty.html</a>"
 
       promises = [
         Playwright::AsyncEvaluation.new {

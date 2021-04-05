@@ -14,4 +14,16 @@ RSpec.describe 'sinatra: true' do
     uri = URI("#{server_prefix}/one-style.html")
     expect(Net::HTTP.get(uri)).to include('<div>hello, world!</div>')
   end
+
+  it 'can override static assets with dynamic route', sinatra: true do
+    sinatra.get('/one-style.html') { 'ONE STYLE '}
+
+    uri = URI("#{server_prefix}/one-style.html")
+    expect(Net::HTTP.get(uri)).to include('ONE STYLE')
+  end
+
+  it 'can revert routes', sinatra: true do
+    uri = URI("#{server_prefix}/one-style.html")
+    expect(Net::HTTP.get(uri)).not_to include('ONE STYLE')
+  end
 end

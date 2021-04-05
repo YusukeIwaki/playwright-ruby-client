@@ -94,7 +94,46 @@ RSpec.configure do |config|
     require 'net/http'
     require 'sinatra/base'
 
-    sinatra_app = Sinatra.new
+    sinatra_app = Class.new(Sinatra::Base) do
+      # Change the priority of static file routing.
+      # Original impl is here:
+      # https://github.com/sinatra/sinatra/blob/v2.1.0/lib/sinatra/base.rb
+      #
+      # Dispatch a request with error handling.
+      def dispatch!
+        # Avoid passing frozen string in force_encoding
+        @params.merge!(@request.params).each do |key, val|
+          next unless val.respond_to?(:force_encoding)
+          val = val.dup if val.frozen?
+          @params[key] = force_encoding(val)
+        end
+
+        invoke do
+          filter! :before do
+            @pinned_response = !@response['Content-Type'].nil?
+          end
+          route!
+          static! if settings.static? && (request.get? || request.head?)
+
+          route_missing_really!
+        end
+      rescue ::Exception => boom
+        invoke { handle_exception!(boom) }
+      ensure
+        begin
+          filter! :after unless env['sinatra.static_file']
+        rescue ::Exception => boom
+          invoke { handle_exception!(boom) } unless @env['sinatra.error']
+        end
+      end
+
+      alias_method :route_missing_really!, :route_missing
+
+      def route_missing
+        # Do nothing when called in #route!
+      end
+    end
+
     sinatra_app.disable(:protection)
     sinatra_app.set(:public_folder, File.join(__dir__, 'assets'))
     @server_prefix = "http://localhost:4567"
