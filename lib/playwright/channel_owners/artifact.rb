@@ -5,6 +5,7 @@ module Playwright
       @absolute_path = @initializer['absolutePath']
     end
 
+    attr_reader :absolute_path
 
     def path_after_finished
       if @is_remote

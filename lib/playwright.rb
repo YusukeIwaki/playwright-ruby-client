@@ -29,6 +29,7 @@ require 'playwright/timeout_settings'
 require 'playwright/transport'
 require 'playwright/url_matcher'
 require 'playwright/version'
+require 'playwright/video'
 require 'playwright/wait_helper'
 
 require 'playwright/playwright_api'

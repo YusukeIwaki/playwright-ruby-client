@@ -207,5 +207,9 @@ module Playwright
     private def _timeout_settings
       @timeout_settings
     end
+
+    private def has_record_video_option?
+      @options.key?(:recordVideo)
+    end
   end
 end

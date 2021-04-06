@@ -78,9 +78,7 @@ module Playwright
       @channel.on('route', ->(params) {
         on_route(ChannelOwners::Route.from(params['route']), ChannelOwners::Request.from(params['request']))
       })
-      @channel.on('video', ->(params) {
-        video.send(:update_relative_path, params['relativePath'])
-      })
+      @channel.on('video', method(:on_video))
       @channel.on('webSocket', ->(params) {
         emit(Events::Page::WebSocket, ChannelOwners::WebSocket.from(params['webSocket']))
       })
@@ -152,6 +150,11 @@ module Playwright
         artifact: ChannelOwners::Artifact.from(params['artifact']),
       )
       emit(Events::Page::Download, download)
+    end
+
+    private def on_video(params)
+      artifact = ChannelOwners::Artifact.from(params['artifact'])
+      video.send(:set_artifact, artifact)
     end
 
     # @override
@@ -645,6 +648,11 @@ module Playwright
         end
       end
       decoded_binary
+    end
+
+    def video
+      return nil unless @browser_context.send(:has_record_video_option?)
+      @video ||= Video.new(self)
     end
 
     class CrashedError < StandardError

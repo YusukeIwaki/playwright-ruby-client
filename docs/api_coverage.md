@@ -200,12 +200,6 @@
 * message
 * type
 
-## ~~Video~~
-
-* ~~delete~~
-* ~~path~~
-* ~~save_as~~
-
 ## Page
 
 * add_init_script
@@ -268,7 +262,7 @@
 * uncheck
 * unroute
 * url
-* ~~video~~
+* video
 * viewport_size
 * expect_console_message
 * expect_download
