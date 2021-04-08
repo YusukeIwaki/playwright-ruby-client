@@ -111,9 +111,11 @@ RSpec.describe 'screencast' do
       save_as_path = File.join(dir, 'my-video.webm')
       with_context(record_video_size: size, record_video_dir: dir, viewport: size) do |context|
         page = context.new_page
-        Playwright::AsyncEvaluation.new { page.video.delete }
-        page.evaluate("() => document.body.style.backgroundColor = 'red'")
-        sleep 1
+        Async { page.video.delete }
+        Async do |task|
+          page.evaluate("() => document.body.style.backgroundColor = 'red'")
+          task.sleep 1
+        end.wait
         video_file = page.video.path
       end
       expect(File.exist?(video_file)).to eq(false)
