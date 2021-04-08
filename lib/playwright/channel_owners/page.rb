@@ -28,6 +28,7 @@ module Playwright
       @main_frame.send(:update_page_from_page, self)
       @frames = Set.new
       @frames << @main_frame
+      @opener = ChannelOwners::Page.from_nullable(@initializer['opener'])
 
       @channel.once('close', ->(_) { on_close })
       @channel.on('console', ->(params) {
@@ -37,9 +38,7 @@ module Playwright
       @channel.on('crash', ->(_) { emit(Events::Page::Crash) })
       @channel.on('dialog', method(:on_dialog))
       @channel.on('domcontentloaded', ->(_) { emit(Events::Page::DOMContentLoaded) })
-      @channel.on('download', ->(params) {
-        emit(Events::Page::Download, ChannelOwners::Download.from(params['download']))
-      })
+      @channel.on('download', method(:on_download))
       @channel.on('fileChooser', ->(params) {
         chooser = FileChooserImpl.new(
                     page: self,
@@ -56,9 +55,6 @@ module Playwright
       @channel.on('load', ->(_) { emit(Events::Page::Load) })
       @channel.on('pageError', ->(params) {
         emit(Events::Page::PageError, Error.parse(params['error']['error']))
-      })
-      @channel.on('popup', ->(params) {
-        emit(Events::Page::Popup, ChannelOwners::Page.from(params['page']))
       })
       @channel.on('request', ->(params) {
         emit(Events::Page::Request, ChannelOwners::Request.from(params['request']))
@@ -82,9 +78,7 @@ module Playwright
       @channel.on('route', ->(params) {
         on_route(ChannelOwners::Route.from(params['route']), ChannelOwners::Request.from(params['request']))
       })
-      @channel.on('video', ->(params) {
-        video.send(:update_relative_path, params['relativePath'])
-      })
+      @channel.on('video', method(:on_video))
       @channel.on('webSocket', ->(params) {
         emit(Events::Page::WebSocket, ChannelOwners::WebSocket.from(params['webSocket']))
       })
@@ -149,6 +143,20 @@ module Playwright
       end
     end
 
+    private def on_download(params)
+      download = Download.new(
+        url: params['url'],
+        suggested_filename: params['suggestedFilename'],
+        artifact: ChannelOwners::Artifact.from(params['artifact']),
+      )
+      emit(Events::Page::Download, download)
+    end
+
+    private def on_video(params)
+      artifact = ChannelOwners::Artifact.from(params['artifact'])
+      video.send(:set_artifact, artifact)
+    end
+
     # @override
     def on(event, callback)
       if event == Events::Page::FileChooser && listener_count(event) == 0
@@ -178,8 +186,17 @@ module Playwright
     end
 
     def opener
-      resp = @channel.send_message_to_server('opener')
-      ChannelOwners::Page.from(resp)
+      if @opener&.closed?
+        nil
+      else
+        @opener
+      end
+    end
+
+    private def emit_popup_event_from_browser_context
+      if @opener && !@opener.closed?
+        @opener.emit(Events::Page::Popup, self)
+      end
     end
 
     def frame(name: nil, url: nil)
@@ -631,6 +648,11 @@ module Playwright
         end
       end
       decoded_binary
+    end
+
+    def video
+      return nil unless @browser_context.send(:has_record_video_option?)
+      @video ||= Video.new(self)
     end
 
     class CrashedError < StandardError

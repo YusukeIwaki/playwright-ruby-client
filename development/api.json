@@ -1605,8 +1605,8 @@
         "langs": {},
         "name": "launchBrowser",
         "type": {
-          "name": "ChromiumBrowserContext",
-          "expression": "[ChromiumBrowserContext]"
+          "name": "BrowserContext",
+          "expression": "[BrowserContext]"
         },
         "spec": [
           {
@@ -5324,6 +5324,40 @@
       },
       {
         "kind": "method",
+        "langs": {
+          "only": [
+            "js",
+            "python"
+          ],
+          "aliases": {},
+          "types": {},
+          "overrides": {}
+        },
+        "name": "newBrowserCDPSession",
+        "type": {
+          "name": "CDPSession",
+          "expression": "[CDPSession]"
+        },
+        "spec": [
+          {
+            "type": "note",
+            "noteType": "note",
+            "text": "CDP Sessions are only supported on Chromium-based browsers."
+          },
+          {
+            "type": "text",
+            "text": "Returns the newly created browser session."
+          }
+        ],
+        "required": true,
+        "comment": "> NOTE: CDP Sessions are only supported on Chromium-based browsers.\n\nReturns the newly created browser session.",
+        "deprecated": false,
+        "async": true,
+        "alias": "newBrowserCDPSession",
+        "args": []
+      },
+      {
+        "kind": "method",
         "langs": {},
         "name": "newContext",
         "type": {
@@ -8840,6 +8874,201 @@
       },
       {
         "kind": "method",
+        "langs": {
+          "only": [
+            "js",
+            "python"
+          ],
+          "aliases": {},
+          "types": {},
+          "overrides": {}
+        },
+        "name": "startTracing",
+        "type": {
+          "name": "void"
+        },
+        "spec": [
+          {
+            "type": "note",
+            "noteType": "note",
+            "text": "Tracing is only supported on Chromium-based browsers."
+          },
+          {
+            "type": "text",
+            "text": "You can use [`method: Browser.startTracing`] and [`method: Browser.stopTracing`] to create a trace file that can be opened in Chrome DevTools performance panel."
+          },
+          {
+            "type": "code",
+            "lines": [
+              "await browser.startTracing(page, {path: 'trace.json'});",
+              "await page.goto('https://www.google.com');",
+              "await browser.stopTracing();"
+            ],
+            "codeLang": "js"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "await browser.start_tracing(page, path=\"trace.json\")",
+              "await page.goto(\"https://www.google.com\")",
+              "await browser.stop_tracing()"
+            ],
+            "codeLang": "python async"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "browser.start_tracing(page, path=\"trace.json\")",
+              "page.goto(\"https://www.google.com\")",
+              "browser.stop_tracing()"
+            ],
+            "codeLang": "python sync"
+          }
+        ],
+        "required": true,
+        "comment": "> NOTE: Tracing is only supported on Chromium-based browsers.\n\nYou can use [`method: Browser.startTracing`] and [`method: Browser.stopTracing`] to create a trace file that can be\nopened in Chrome DevTools performance panel.\n\n```js\nawait browser.startTracing(page, {path: 'trace.json'});\nawait page.goto('https://www.google.com');\nawait browser.stopTracing();\n```\n\n```python async\nawait browser.start_tracing(page, path=\"trace.json\")\nawait page.goto(\"https://www.google.com\")\nawait browser.stop_tracing()\n```\n\n```python sync\nbrowser.start_tracing(page, path=\"trace.json\")\npage.goto(\"https://www.google.com\")\nbrowser.stop_tracing()\n```\n",
+        "deprecated": false,
+        "async": true,
+        "alias": "startTracing",
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "page",
+            "type": {
+              "name": "Page",
+              "expression": "[Page]"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Optional, if specified, tracing includes screenshots of the given page."
+              }
+            ],
+            "required": false,
+            "comment": "Optional, if specified, tracing includes screenshots of the given page.",
+            "deprecated": false,
+            "async": false,
+            "alias": "page"
+          },
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "categories",
+                  "type": {
+                    "name": "Array",
+                    "templates": [
+                      {
+                        "name": "string"
+                      }
+                    ],
+                    "expression": "[Array]<[string]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "specify custom categories to use instead of default."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "specify custom categories to use instead of default.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "categories"
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "path",
+                  "type": {
+                    "name": "path",
+                    "expression": "[path]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "A path to write the trace file to."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "A path to write the trace file to.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "path"
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "screenshots",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "captures screenshots in the trace."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "captures screenshots in the trace.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "screenshots"
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "options"
+          }
+        ]
+      },
+      {
+        "kind": "method",
+        "langs": {
+          "only": [
+            "js",
+            "python"
+          ],
+          "aliases": {},
+          "types": {},
+          "overrides": {}
+        },
+        "name": "stopTracing",
+        "type": {
+          "name": "Buffer",
+          "expression": "[Buffer]"
+        },
+        "spec": [
+          {
+            "type": "note",
+            "noteType": "note",
+            "text": "Tracing is only supported on Chromium-based browsers."
+          },
+          {
+            "type": "text",
+            "text": "Returns the buffer with trace data."
+          }
+        ],
+        "required": true,
+        "comment": "> NOTE: Tracing is only supported on Chromium-based browsers.\n\nReturns the buffer with trace data.",
+        "deprecated": false,
+        "async": true,
+        "alias": "stopTracing",
+        "args": []
+      },
+      {
+        "kind": "method",
         "langs": {},
         "name": "version",
         "type": {
@@ -8938,6 +9167,61 @@
     "langs": {},
     "comment": "- extends: [EventEmitter]\n\nBrowserContexts provide a way to operate multiple independent browser sessions.\n\nIf a page opens another page, e.g. with a `window.open` call, the popup will belong to the parent page's browser\ncontext.\n\nPlaywright allows creation of \"incognito\" browser contexts with `browser.newContext()` method. \"Incognito\" browser\ncontexts don't write any browsing data to disk.\n\n```js\n// Create a new incognito browser context\nconst context = await browser.newContext();\n// Create a new page inside context.\nconst page = await context.newPage();\nawait page.goto('https://example.com');\n// Dispose context once it's no longer needed.\nawait context.close();\n```\n\n```java\n// Create a new incognito browser context\nBrowserContext context = browser.newContext();\n// Create a new page inside context.\nPage page = context.newPage();\npage.navigate(\"https://example.com\");\n// Dispose context once it\"s no longer needed.\ncontext.close();\n```\n\n```python async\n# create a new incognito browser context\ncontext = await browser.new_context()\n# create a new page inside context.\npage = await context.new_page()\nawait page.goto(\"https://example.com\")\n# dispose context once it\"s no longer needed.\nawait context.close()\n```\n\n```python sync\n# create a new incognito browser context\ncontext = browser.new_context()\n# create a new page inside context.\npage = context.new_page()\npage.goto(\"https://example.com\")\n# dispose context once it\"s no longer needed.\ncontext.close()\n```\n",
     "members": [
+      {
+        "kind": "event",
+        "langs": {
+          "only": [
+            "js",
+            "python"
+          ],
+          "aliases": {},
+          "types": {},
+          "overrides": {}
+        },
+        "name": "backgroundPage",
+        "type": {
+          "name": "Page",
+          "expression": "[Page]"
+        },
+        "spec": [
+          {
+            "type": "note",
+            "noteType": "note",
+            "text": "Only works with Chromium browser's persistent context."
+          },
+          {
+            "type": "text",
+            "text": "Emitted when new background page is created in the context."
+          },
+          {
+            "type": "code",
+            "lines": [
+              "const backgroundPage = await context.waitForEvent('backgroundpage');"
+            ],
+            "codeLang": "js"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "background_page = await context.wait_for_event(\"backgroundpage\")"
+            ],
+            "codeLang": "python async"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "background_page = context.wait_for_event(\"backgroundpage\")"
+            ],
+            "codeLang": "python sync"
+          }
+        ],
+        "required": true,
+        "comment": "> NOTE: Only works with Chromium browser's persistent context.\n\nEmitted when new background page is created in the context.\n\n```js\nconst backgroundPage = await context.waitForEvent('backgroundpage');\n```\n\n```python async\nbackground_page = await context.wait_for_event(\"backgroundpage\")\n```\n\n```python sync\nbackground_page = context.wait_for_event(\"backgroundpage\")\n```\n",
+        "deprecated": false,
+        "async": false,
+        "alias": "backgroundPage",
+        "args": []
+      },
       {
         "kind": "event",
         "langs": {},
@@ -9043,6 +9327,40 @@
         "deprecated": false,
         "async": false,
         "alias": "page",
+        "args": []
+      },
+      {
+        "kind": "event",
+        "langs": {
+          "only": [
+            "js",
+            "python"
+          ],
+          "aliases": {},
+          "types": {},
+          "overrides": {}
+        },
+        "name": "serviceWorker",
+        "type": {
+          "name": "Worker",
+          "expression": "[Worker]"
+        },
+        "spec": [
+          {
+            "type": "note",
+            "noteType": "note",
+            "text": "Service workers are only supported on Chromium-based browsers."
+          },
+          {
+            "type": "text",
+            "text": "Emitted when new service worker is created in the context."
+          }
+        ],
+        "required": true,
+        "comment": "> NOTE: Service workers are only supported on Chromium-based browsers.\n\nEmitted when new service worker is created in the context.",
+        "deprecated": false,
+        "async": false,
+        "alias": "serviceWorker",
         "args": []
       },
       {
@@ -9589,6 +9907,45 @@
             "alias": "script"
           }
         ]
+      },
+      {
+        "kind": "method",
+        "langs": {
+          "only": [
+            "js",
+            "python"
+          ],
+          "aliases": {},
+          "types": {},
+          "overrides": {}
+        },
+        "name": "backgroundPages",
+        "type": {
+          "name": "Array",
+          "templates": [
+            {
+              "name": "Page"
+            }
+          ],
+          "expression": "[Array]<[Page]>"
+        },
+        "spec": [
+          {
+            "type": "note",
+            "noteType": "note",
+            "text": "Background pages are only supported on Chromium-based browsers."
+          },
+          {
+            "type": "text",
+            "text": "All existing background pages in the context."
+          }
+        ],
+        "required": true,
+        "comment": "> NOTE: Background pages are only supported on Chromium-based browsers.\n\nAll existing background pages in the context.",
+        "deprecated": false,
+        "async": false,
+        "alias": "backgroundPages",
+        "args": []
       },
       {
         "kind": "method",
@@ -10624,6 +10981,61 @@
       },
       {
         "kind": "method",
+        "langs": {
+          "only": [
+            "js",
+            "python"
+          ],
+          "aliases": {},
+          "types": {},
+          "overrides": {}
+        },
+        "name": "newCDPSession",
+        "type": {
+          "name": "CDPSession",
+          "expression": "[CDPSession]"
+        },
+        "spec": [
+          {
+            "type": "note",
+            "noteType": "note",
+            "text": "CDP sessions are only supported on Chromium-based browsers."
+          },
+          {
+            "type": "text",
+            "text": "Returns the newly created session."
+          }
+        ],
+        "required": true,
+        "comment": "> NOTE: CDP sessions are only supported on Chromium-based browsers.\n\nReturns the newly created session.",
+        "deprecated": false,
+        "async": true,
+        "alias": "newCDPSession",
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "page",
+            "type": {
+              "name": "Page",
+              "expression": "[Page]"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Page to create new session for."
+              }
+            ],
+            "required": true,
+            "comment": "Page to create new session for.",
+            "deprecated": false,
+            "async": false,
+            "alias": "page"
+          }
+        ]
+      },
+      {
+        "kind": "method",
         "langs": {},
         "name": "newPage",
         "type": {
@@ -10911,6 +11323,45 @@
             "alias": "handler"
           }
         ]
+      },
+      {
+        "kind": "method",
+        "langs": {
+          "only": [
+            "js",
+            "python"
+          ],
+          "aliases": {},
+          "types": {},
+          "overrides": {}
+        },
+        "name": "serviceWorkers",
+        "type": {
+          "name": "Array",
+          "templates": [
+            {
+              "name": "Worker"
+            }
+          ],
+          "expression": "[Array]<[Worker]>"
+        },
+        "spec": [
+          {
+            "type": "note",
+            "noteType": "note",
+            "text": "Service workers are only supported on Chromium-based browsers."
+          },
+          {
+            "type": "text",
+            "text": "All existing service workers in the context."
+          }
+        ],
+        "required": true,
+        "comment": "> NOTE: Service workers are only supported on Chromium-based browsers.\n\nAll existing service workers in the context.",
+        "deprecated": false,
+        "async": false,
+        "alias": "serviceWorkers",
+        "args": []
       },
       {
         "kind": "method",
@@ -13130,11 +13581,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Browser distribution channel. Read more about using [Google Chrome and Microsoft Edge](./browsers#google-chrome--microsoft-edge)."
+                      "text": "Browser distribution channel. Read more about using [Google Chrome and Microsoft Edge](./browsers.md#google-chrome--microsoft-edge)."
                     }
                   ],
                   "required": false,
-                  "comment": "Browser distribution channel. Read more about using\n[Google Chrome and Microsoft Edge](./browsers#google-chrome--microsoft-edge).",
+                  "comment": "Browser distribution channel. Read more about using\n[Google Chrome and Microsoft Edge](./browsers.md#google-chrome--microsoft-edge).",
                   "deprecated": false,
                   "async": false,
                   "alias": "channel"
@@ -16270,429 +16721,193 @@
     ]
   },
   {
-    "name": "ChromiumBrowser",
+    "name": "ConsoleMessage",
     "spec": [
       {
-        "type": "li",
-        "text": "extends: `Browser`",
-        "liType": "bullet"
-      },
-      {
         "type": "text",
-        "text": "Chromium-specific features including Tracing, service worker support, etc. You can use [`method: ChromiumBrowser.startTracing`] and [`method: ChromiumBrowser.stopTracing`] to create a trace file which can be opened in Chrome DevTools or [timeline viewer](https://chromedevtools.github.io/timeline-viewer/)."
-      },
-      {
-        "type": "code",
-        "lines": [
-          "await browser.startTracing(page, {path: 'trace.json'});",
-          "await page.goto('https://www.google.com');",
-          "await browser.stopTracing();"
-        ],
-        "codeLang": "js"
-      },
-      {
-        "type": "text",
-        "text": "`ChromiumBrowser` can also be used for testing Chrome Extensions."
-      },
-      {
-        "type": "note",
-        "noteType": "note",
-        "text": "Extensions in Chrome / Chromium currently only work in non-headless mode."
-      },
-      {
-        "type": "text",
-        "text": "The following is code for getting a handle to the [background page](https://developer.chrome.com/extensions/background_pages) of an extension whose source is located in `./my-extension`:"
-      },
-      {
-        "type": "code",
-        "lines": [
-          "const { chromium } = require('playwright');",
-          "",
-          "(async () => {",
-          "  const pathToExtension = require('path').join(__dirname, 'my-extension');",
-          "  const userDataDir = '/tmp/test-user-data-dir';",
-          "  const browserContext = await chromium.launchPersistentContext(userDataDir,{",
-          "    headless: false,",
-          "    args: [",
-          "      `--disable-extensions-except=${pathToExtension}`,",
-          "      `--load-extension=${pathToExtension}`",
-          "    ]",
-          "  });",
-          "  const backgroundPage = browserContext.backgroundPages()[0];",
-          "  // Test the background page as you would any other page.",
-          "  await browserContext.close();",
-          "})();"
-        ],
-        "codeLang": "js"
+        "text": "`ConsoleMessage` objects are dispatched by page via the [`event: Page.console`] event."
       }
     ],
-    "extends": "Browser",
-    "langs": {
-      "only": [
-        "js"
-      ],
-      "aliases": {},
-      "types": {},
-      "overrides": {}
-    },
-    "comment": "- extends: `Browser`\n\nChromium-specific features including Tracing, service worker support, etc. You can use\n[`method: ChromiumBrowser.startTracing`] and [`method: ChromiumBrowser.stopTracing`] to create a trace file which can be\nopened in Chrome DevTools or [timeline viewer](https://chromedevtools.github.io/timeline-viewer/).\n\n```js\nawait browser.startTracing(page, {path: 'trace.json'});\nawait page.goto('https://www.google.com');\nawait browser.stopTracing();\n```\n\n`ChromiumBrowser` can also be used for testing Chrome Extensions.\n\n> NOTE: Extensions in Chrome / Chromium currently only work in non-headless mode.\n\nThe following is code for getting a handle to the\n[background page](https://developer.chrome.com/extensions/background_pages) of an extension whose source is located in\n`./my-extension`:\n\n```js\nconst { chromium } = require('playwright');\n\n(async () => {\n  const pathToExtension = require('path').join(__dirname, 'my-extension');\n  const userDataDir = '/tmp/test-user-data-dir';\n  const browserContext = await chromium.launchPersistentContext(userDataDir,{\n    headless: false,\n    args: [\n      `--disable-extensions-except=${pathToExtension}`,\n      `--load-extension=${pathToExtension}`\n    ]\n  });\n  const backgroundPage = browserContext.backgroundPages()[0];\n  // Test the background page as you would any other page.\n  await browserContext.close();\n})();\n```\n",
+    "langs": {},
+    "comment": "`ConsoleMessage` objects are dispatched by page via the [`event: Page.console`] event.",
     "members": [
       {
         "kind": "method",
         "langs": {},
-        "name": "newBrowserCDPSession",
+        "name": "args",
         "type": {
-          "name": "CDPSession",
-          "expression": "[CDPSession]"
+          "name": "Array",
+          "templates": [
+            {
+              "name": "JSHandle"
+            }
+          ],
+          "expression": "[Array]<[JSHandle]>"
         },
-        "spec": [
-          {
-            "type": "text",
-            "text": "Returns the newly created browser session."
-          }
-        ],
+        "spec": [],
         "required": true,
-        "comment": "Returns the newly created browser session.",
+        "comment": "",
         "deprecated": false,
-        "async": true,
-        "alias": "newBrowserCDPSession",
+        "async": false,
+        "alias": "args",
         "args": []
       },
       {
         "kind": "method",
-        "langs": {},
-        "name": "startTracing",
-        "type": {
-          "name": "void"
+        "langs": {
+          "only": [
+            "js",
+            "python"
+          ],
+          "aliases": {},
+          "types": {},
+          "overrides": {}
         },
-        "spec": [
-          {
-            "type": "text",
-            "text": "Only one trace can be active at a time per browser."
-          }
-        ],
-        "required": true,
-        "comment": "Only one trace can be active at a time per browser.",
-        "deprecated": false,
-        "async": true,
-        "alias": "startTracing",
-        "args": [
-          {
-            "kind": "property",
-            "langs": {},
-            "name": "page",
-            "type": {
-              "name": "Page",
-              "expression": "[Page]"
-            },
-            "spec": [
-              {
-                "type": "text",
-                "text": "Optional, if specified, tracing includes screenshots of the given page."
-              }
-            ],
-            "required": false,
-            "comment": "Optional, if specified, tracing includes screenshots of the given page.",
-            "deprecated": false,
-            "async": false,
-            "alias": "page"
-          },
-          {
-            "kind": "property",
-            "langs": {},
-            "name": "options",
-            "type": {
-              "name": "Object",
-              "properties": [
+        "name": "location",
+        "type": {
+          "name": "Object",
+          "properties": [
+            {
+              "kind": "property",
+              "langs": {},
+              "name": "url",
+              "type": {
+                "name": "string",
+                "expression": "[string]"
+              },
+              "spec": [
                 {
-                  "kind": "property",
-                  "langs": {},
-                  "name": "categories",
-                  "type": {
-                    "name": "Array",
-                    "templates": [
-                      {
-                        "name": "string"
-                      }
-                    ],
-                    "expression": "[Array]<[string]>"
-                  },
-                  "spec": [
-                    {
-                      "type": "text",
-                      "text": "specify custom categories to use instead of default."
-                    }
-                  ],
-                  "required": false,
-                  "comment": "specify custom categories to use instead of default.",
-                  "deprecated": false,
-                  "async": false,
-                  "alias": "categories"
-                },
-                {
-                  "kind": "property",
-                  "langs": {},
-                  "name": "path",
-                  "type": {
-                    "name": "path",
-                    "expression": "[path]"
-                  },
-                  "spec": [
-                    {
-                      "type": "text",
-                      "text": "A path to write the trace file to."
-                    }
-                  ],
-                  "required": false,
-                  "comment": "A path to write the trace file to.",
-                  "deprecated": false,
-                  "async": false,
-                  "alias": "path"
-                },
-                {
-                  "kind": "property",
-                  "langs": {},
-                  "name": "screenshots",
-                  "type": {
-                    "name": "boolean",
-                    "expression": "[boolean]"
-                  },
-                  "spec": [
-                    {
-                      "type": "text",
-                      "text": "captures screenshots in the trace."
-                    }
-                  ],
-                  "required": false,
-                  "comment": "captures screenshots in the trace.",
-                  "deprecated": false,
-                  "async": false,
-                  "alias": "screenshots"
+                  "type": "text",
+                  "text": "URL of the resource."
                 }
-              ]
+              ],
+              "required": true,
+              "comment": "URL of the resource.",
+              "deprecated": false,
+              "async": false,
+              "alias": "url"
             },
-            "required": false,
-            "comment": "",
-            "deprecated": false,
-            "async": false,
-            "alias": "options"
-          }
-        ]
+            {
+              "kind": "property",
+              "langs": {},
+              "name": "lineNumber",
+              "type": {
+                "name": "int",
+                "expression": "[int]"
+              },
+              "spec": [
+                {
+                  "type": "text",
+                  "text": "0-based line number in the resource."
+                }
+              ],
+              "required": true,
+              "comment": "0-based line number in the resource.",
+              "deprecated": false,
+              "async": false,
+              "alias": "lineNumber"
+            },
+            {
+              "kind": "property",
+              "langs": {},
+              "name": "columnNumber",
+              "type": {
+                "name": "int",
+                "expression": "[int]"
+              },
+              "spec": [
+                {
+                  "type": "text",
+                  "text": "0-based column number in the resource."
+                }
+              ],
+              "required": true,
+              "comment": "0-based column number in the resource.",
+              "deprecated": false,
+              "async": false,
+              "alias": "columnNumber"
+            }
+          ],
+          "expression": "[Object]"
+        },
+        "spec": [],
+        "required": true,
+        "comment": "",
+        "deprecated": false,
+        "async": false,
+        "alias": "location",
+        "args": []
       },
       {
         "kind": "method",
-        "langs": {},
-        "name": "stopTracing",
+        "langs": {
+          "only": [
+            "csharp",
+            "java"
+          ],
+          "aliases": {},
+          "types": {},
+          "overrides": {}
+        },
+        "name": "location",
         "type": {
-          "name": "Buffer",
-          "expression": "[Buffer]"
+          "name": "string",
+          "expression": "[string]"
         },
         "spec": [
           {
             "type": "text",
-            "text": "Returns the buffer with trace data."
+            "text": "URL of the resource followed by 0-based line and column numbers in the resource formatted as `URL:line:column`."
           }
         ],
         "required": true,
-        "comment": "Returns the buffer with trace data.",
+        "comment": "URL of the resource followed by 0-based line and column numbers in the resource formatted as `URL:line:column`.",
         "deprecated": false,
-        "async": true,
-        "alias": "stopTracing",
+        "async": false,
+        "alias": "location",
+        "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "text",
+        "type": {
+          "name": "string",
+          "expression": "[string]"
+        },
+        "spec": [],
+        "required": true,
+        "comment": "",
+        "deprecated": false,
+        "async": false,
+        "alias": "text",
+        "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "type",
+        "type": {
+          "name": "string",
+          "expression": "[string]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "One of the following values: `'log'`, `'debug'`, `'info'`, `'error'`, `'warning'`, `'dir'`, `'dirxml'`, `'table'`, `'trace'`, `'clear'`, `'startGroup'`, `'startGroupCollapsed'`, `'endGroup'`, `'assert'`, `'profile'`, `'profileEnd'`, `'count'`, `'timeEnd'`."
+          }
+        ],
+        "required": true,
+        "comment": "One of the following values: `'log'`, `'debug'`, `'info'`, `'error'`, `'warning'`, `'dir'`, `'dirxml'`, `'table'`,\n`'trace'`, `'clear'`, `'startGroup'`, `'startGroupCollapsed'`, `'endGroup'`, `'assert'`, `'profile'`, `'profileEnd'`,\n`'count'`, `'timeEnd'`.",
+        "deprecated": false,
+        "async": false,
+        "alias": "type",
         "args": []
       }
     ]
   },
   {
-    "name": "ChromiumBrowserContext",
-    "spec": [
-      {
-        "type": "li",
-        "text": "extends: `BrowserContext`",
-        "liType": "bullet"
-      },
-      {
-        "type": "text",
-        "text": "Chromium-specific features including background pages, service worker support, etc."
-      },
-      {
-        "type": "code",
-        "lines": [
-          "const backgroundPage = await context.waitForEvent('backgroundpage');"
-        ],
-        "codeLang": "js"
-      },
-      {
-        "type": "code",
-        "lines": [
-          "background_page = await context.wait_for_event(\"backgroundpage\")"
-        ],
-        "codeLang": "python async"
-      },
-      {
-        "type": "code",
-        "lines": [
-          "background_page = context.wait_for_event(\"backgroundpage\")"
-        ],
-        "codeLang": "python sync"
-      }
-    ],
-    "extends": "BrowserContext",
-    "langs": {
-      "only": [
-        "js",
-        "python"
-      ],
-      "aliases": {},
-      "types": {},
-      "overrides": {}
-    },
-    "comment": "- extends: `BrowserContext`\n\nChromium-specific features including background pages, service worker support, etc.\n\n```js\nconst backgroundPage = await context.waitForEvent('backgroundpage');\n```\n\n```python async\nbackground_page = await context.wait_for_event(\"backgroundpage\")\n```\n\n```python sync\nbackground_page = context.wait_for_event(\"backgroundpage\")\n```\n",
-    "members": [
-      {
-        "kind": "event",
-        "langs": {},
-        "name": "backgroundPage",
-        "type": {
-          "name": "Page",
-          "expression": "[Page]"
-        },
-        "spec": [
-          {
-            "type": "text",
-            "text": "Emitted when new background page is created in the context."
-          },
-          {
-            "type": "note",
-            "noteType": "note",
-            "text": "Only works with persistent context."
-          }
-        ],
-        "required": true,
-        "comment": "Emitted when new background page is created in the context.\n\n> NOTE: Only works with persistent context.",
-        "deprecated": false,
-        "async": false,
-        "alias": "backgroundPage",
-        "args": []
-      },
-      {
-        "kind": "event",
-        "langs": {},
-        "name": "serviceWorker",
-        "type": {
-          "name": "Worker",
-          "expression": "[Worker]"
-        },
-        "spec": [
-          {
-            "type": "text",
-            "text": "Emitted when new service worker is created in the context."
-          }
-        ],
-        "required": true,
-        "comment": "Emitted when new service worker is created in the context.",
-        "deprecated": false,
-        "async": false,
-        "alias": "serviceWorker",
-        "args": []
-      },
-      {
-        "kind": "method",
-        "langs": {},
-        "name": "backgroundPages",
-        "type": {
-          "name": "Array",
-          "templates": [
-            {
-              "name": "Page"
-            }
-          ],
-          "expression": "[Array]<[Page]>"
-        },
-        "spec": [
-          {
-            "type": "text",
-            "text": "All existing background pages in the context."
-          }
-        ],
-        "required": true,
-        "comment": "All existing background pages in the context.",
-        "deprecated": false,
-        "async": false,
-        "alias": "backgroundPages",
-        "args": []
-      },
-      {
-        "kind": "method",
-        "langs": {},
-        "name": "newCDPSession",
-        "type": {
-          "name": "CDPSession",
-          "expression": "[CDPSession]"
-        },
-        "spec": [
-          {
-            "type": "text",
-            "text": "Returns the newly created session."
-          }
-        ],
-        "required": true,
-        "comment": "Returns the newly created session.",
-        "deprecated": false,
-        "async": true,
-        "alias": "newCDPSession",
-        "args": [
-          {
-            "kind": "property",
-            "langs": {},
-            "name": "page",
-            "type": {
-              "name": "Page",
-              "expression": "[Page]"
-            },
-            "spec": [
-              {
-                "type": "text",
-                "text": "Page to create new session for."
-              }
-            ],
-            "required": true,
-            "comment": "Page to create new session for.",
-            "deprecated": false,
-            "async": false,
-            "alias": "page"
-          }
-        ]
-      },
-      {
-        "kind": "method",
-        "langs": {},
-        "name": "serviceWorkers",
-        "type": {
-          "name": "Array",
-          "templates": [
-            {
-              "name": "Worker"
-            }
-          ],
-          "expression": "[Array]<[Worker]>"
-        },
-        "spec": [
-          {
-            "type": "text",
-            "text": "All existing service workers in the context."
-          }
-        ],
-        "required": true,
-        "comment": "All existing service workers in the context.",
-        "deprecated": false,
-        "async": false,
-        "alias": "serviceWorkers",
-        "args": []
-      }
-    ]
-  },
-  {
-    "name": "ChromiumCoverage",
+    "name": "Coverage",
     "spec": [
       {
         "type": "text",
@@ -16701,6 +16916,11 @@
       {
         "type": "text",
         "text": "An example of using JavaScript coverage to produce Istanbul report for page load:"
+      },
+      {
+        "type": "note",
+        "noteType": "note",
+        "text": "Coverage APIs are only supported on Chromium-based browsers."
       },
       {
         "type": "code",
@@ -16734,7 +16954,7 @@
       "types": {},
       "overrides": {}
     },
-    "comment": "Coverage gathers information about parts of JavaScript and CSS that were used by the page.\n\nAn example of using JavaScript coverage to produce Istanbul report for page load:\n\n```js\nconst { chromium } = require('playwright');\nconst v8toIstanbul = require('v8-to-istanbul');\n\n(async() => {\n  const browser = await chromium.launch();\n  const page = await browser.newPage();\n  await page.coverage.startJSCoverage();\n  await page.goto('https://chromium.org');\n  const coverage = await page.coverage.stopJSCoverage();\n  for (const entry of coverage) {\n    const converter = new v8toIstanbul('', 0, { source: entry.source });\n    await converter.load();\n    converter.applyCoverage(entry.functions);\n    console.log(JSON.stringify(converter.toIstanbul()));\n  }\n  await browser.close();\n})();\n```\n",
+    "comment": "Coverage gathers information about parts of JavaScript and CSS that were used by the page.\n\nAn example of using JavaScript coverage to produce Istanbul report for page load:\n\n> NOTE: Coverage APIs are only supported on Chromium-based browsers.\n\n```js\nconst { chromium } = require('playwright');\nconst v8toIstanbul = require('v8-to-istanbul');\n\n(async() => {\n  const browser = await chromium.launch();\n  const page = await browser.newPage();\n  await page.coverage.startJSCoverage();\n  await page.goto('https://chromium.org');\n  const coverage = await page.coverage.stopJSCoverage();\n  for (const entry of coverage) {\n    const converter = new v8toIstanbul('', 0, { source: entry.source });\n    await converter.load();\n    converter.applyCoverage(entry.functions);\n    console.log(JSON.stringify(converter.toIstanbul()));\n  }\n  await browser.close();\n})();\n```\n",
     "members": [
       {
         "kind": "method",
@@ -17263,192 +17483,6 @@
     ]
   },
   {
-    "name": "ConsoleMessage",
-    "spec": [
-      {
-        "type": "text",
-        "text": "`ConsoleMessage` objects are dispatched by page via the [`event: Page.console`] event."
-      }
-    ],
-    "langs": {},
-    "comment": "`ConsoleMessage` objects are dispatched by page via the [`event: Page.console`] event.",
-    "members": [
-      {
-        "kind": "method",
-        "langs": {},
-        "name": "args",
-        "type": {
-          "name": "Array",
-          "templates": [
-            {
-              "name": "JSHandle"
-            }
-          ],
-          "expression": "[Array]<[JSHandle]>"
-        },
-        "spec": [],
-        "required": true,
-        "comment": "",
-        "deprecated": false,
-        "async": false,
-        "alias": "args",
-        "args": []
-      },
-      {
-        "kind": "method",
-        "langs": {
-          "only": [
-            "js",
-            "python"
-          ],
-          "aliases": {},
-          "types": {},
-          "overrides": {}
-        },
-        "name": "location",
-        "type": {
-          "name": "Object",
-          "properties": [
-            {
-              "kind": "property",
-              "langs": {},
-              "name": "url",
-              "type": {
-                "name": "string",
-                "expression": "[string]"
-              },
-              "spec": [
-                {
-                  "type": "text",
-                  "text": "URL of the resource."
-                }
-              ],
-              "required": true,
-              "comment": "URL of the resource.",
-              "deprecated": false,
-              "async": false,
-              "alias": "url"
-            },
-            {
-              "kind": "property",
-              "langs": {},
-              "name": "lineNumber",
-              "type": {
-                "name": "int",
-                "expression": "[int]"
-              },
-              "spec": [
-                {
-                  "type": "text",
-                  "text": "0-based line number in the resource."
-                }
-              ],
-              "required": true,
-              "comment": "0-based line number in the resource.",
-              "deprecated": false,
-              "async": false,
-              "alias": "lineNumber"
-            },
-            {
-              "kind": "property",
-              "langs": {},
-              "name": "columnNumber",
-              "type": {
-                "name": "int",
-                "expression": "[int]"
-              },
-              "spec": [
-                {
-                  "type": "text",
-                  "text": "0-based column number in the resource."
-                }
-              ],
-              "required": true,
-              "comment": "0-based column number in the resource.",
-              "deprecated": false,
-              "async": false,
-              "alias": "columnNumber"
-            }
-          ],
-          "expression": "[Object]"
-        },
-        "spec": [],
-        "required": true,
-        "comment": "",
-        "deprecated": false,
-        "async": false,
-        "alias": "location",
-        "args": []
-      },
-      {
-        "kind": "method",
-        "langs": {
-          "only": [
-            "csharp",
-            "java"
-          ],
-          "aliases": {},
-          "types": {},
-          "overrides": {}
-        },
-        "name": "location",
-        "type": {
-          "name": "string",
-          "expression": "[string]"
-        },
-        "spec": [
-          {
-            "type": "text",
-            "text": "URL of the resource followed by 0-based line and column numbers in the resource formatted as `URL:line:column`."
-          }
-        ],
-        "required": true,
-        "comment": "URL of the resource followed by 0-based line and column numbers in the resource formatted as `URL:line:column`.",
-        "deprecated": false,
-        "async": false,
-        "alias": "location",
-        "args": []
-      },
-      {
-        "kind": "method",
-        "langs": {},
-        "name": "text",
-        "type": {
-          "name": "string",
-          "expression": "[string]"
-        },
-        "spec": [],
-        "required": true,
-        "comment": "",
-        "deprecated": false,
-        "async": false,
-        "alias": "text",
-        "args": []
-      },
-      {
-        "kind": "method",
-        "langs": {},
-        "name": "type",
-        "type": {
-          "name": "string",
-          "expression": "[string]"
-        },
-        "spec": [
-          {
-            "type": "text",
-            "text": "One of the following values: `'log'`, `'debug'`, `'info'`, `'error'`, `'warning'`, `'dir'`, `'dirxml'`, `'table'`, `'trace'`, `'clear'`, `'startGroup'`, `'startGroupCollapsed'`, `'endGroup'`, `'assert'`, `'profile'`, `'profileEnd'`, `'count'`, `'timeEnd'`."
-          }
-        ],
-        "required": true,
-        "comment": "One of the following values: `'log'`, `'debug'`, `'info'`, `'error'`, `'warning'`, `'dir'`, `'dirxml'`, `'table'`,\n`'trace'`, `'clear'`, `'startGroup'`, `'startGroupCollapsed'`, `'endGroup'`, `'assert'`, `'profile'`, `'profileEnd'`,\n`'count'`, `'timeEnd'`.",
-        "deprecated": false,
-        "async": false,
-        "alias": "type",
-        "args": []
-      }
-    ]
-  },
-  {
     "name": "Dialog",
     "spec": [
       {
@@ -17713,7 +17747,7 @@
         "type": "code",
         "lines": [
           "// wait for download to start",
-          "Download download  = page.waitForDownload(() -> page.click(\"a\")); ",
+          "Download download  = page.waitForDownload(() -> page.click(\"a\"));",
           "// wait for download to complete",
           "Path path = download.path();"
         ],
@@ -17760,7 +17794,7 @@
       }
     ],
     "langs": {},
-    "comment": "`Download` objects are dispatched by page via the [`event: Page.download`] event.\n\nAll the downloaded files belonging to the browser context are deleted when the browser context is closed. All downloaded\nfiles are deleted when the browser closes.\n\nDownload event is emitted once the download starts. Download path becomes available once download completes:\n\n```js\nconst [ download ] = await Promise.all([\n  page.waitForEvent('download'), // wait for download to start\n  page.click('a')\n]);\n// wait for download to complete\nconst path = await download.path();\n```\n\n```java\n// wait for download to start\nDownload download  = page.waitForDownload(() -> page.click(\"a\")); \n// wait for download to complete\nPath path = download.path();\n```\n\n```java\n// wait for download to start\nDownload download = page.waitForDownload(() -> {\n  page.click(\"a\");\n});\n// wait for download to complete\nPath path = download.path();\n```\n\n```python async\nasync with page.expect_download() as download_info:\n    await page.click(\"a\")\ndownload = await download_info.value\n# waits for download to complete\npath = await download.path()\n```\n\n```python sync\nwith page.expect_download() as download_info:\n    page.click(\"a\")\ndownload = download_info.value\n# wait for download to complete\npath = download.path()\n```\n\n> NOTE: Browser context **must** be created with the `acceptDownloads` set to `true` when user needs access to the\ndownloaded content. If `acceptDownloads` is not set, download events are emitted, but the actual download is not\nperformed and user has no access to the downloaded files.",
+    "comment": "`Download` objects are dispatched by page via the [`event: Page.download`] event.\n\nAll the downloaded files belonging to the browser context are deleted when the browser context is closed. All downloaded\nfiles are deleted when the browser closes.\n\nDownload event is emitted once the download starts. Download path becomes available once download completes:\n\n```js\nconst [ download ] = await Promise.all([\n  page.waitForEvent('download'), // wait for download to start\n  page.click('a')\n]);\n// wait for download to complete\nconst path = await download.path();\n```\n\n```java\n// wait for download to start\nDownload download  = page.waitForDownload(() -> page.click(\"a\"));\n// wait for download to complete\nPath path = download.path();\n```\n\n```java\n// wait for download to start\nDownload download = page.waitForDownload(() -> {\n  page.click(\"a\");\n});\n// wait for download to complete\nPath path = download.path();\n```\n\n```python async\nasync with page.expect_download() as download_info:\n    await page.click(\"a\")\ndownload = await download_info.value\n# waits for download to complete\npath = await download.path()\n```\n\n```python sync\nwith page.expect_download() as download_info:\n    page.click(\"a\")\ndownload = download_info.value\n# wait for download to complete\npath = download.path()\n```\n\n> NOTE: Browser context **must** be created with the `acceptDownloads` set to `true` when user needs access to the\ndownloaded content. If `acceptDownloads` is not set, download events are emitted, but the actual download is not\nperformed and user has no access to the downloaded files.",
     "members": [
       {
         "kind": "method",
@@ -17867,11 +17901,11 @@
         "spec": [
           {
             "type": "text",
-            "text": "Returns path to the downloaded file in case of successful download. The method will wait for the download to finish if necessary."
+            "text": "Returns path to the downloaded file in case of successful download. The method will wait for the download to finish if necessary. The method throws when connected remotely."
           }
         ],
         "required": true,
-        "comment": "Returns path to the downloaded file in case of successful download. The method will wait for the download to finish if\nnecessary.",
+        "comment": "Returns path to the downloaded file in case of successful download. The method will wait for the download to finish if\nnecessary. The method throws when connected remotely.",
         "deprecated": false,
         "async": true,
         "alias": "path",
@@ -23529,31 +23563,6 @@
         ]
       }
     ]
-  },
-  {
-    "name": "FirefoxBrowser",
-    "spec": [
-      {
-        "type": "li",
-        "text": "extends: `Browser`",
-        "liType": "bullet"
-      },
-      {
-        "type": "text",
-        "text": "Firefox browser instance does not expose Firefox-specific features."
-      }
-    ],
-    "extends": "Browser",
-    "langs": {
-      "only": [
-        "js"
-      ],
-      "aliases": {},
-      "types": {},
-      "overrides": {}
-    },
-    "comment": "- extends: `Browser`\n\nFirefox browser instance does not expose Firefox-specific features.",
-    "members": []
   },
   {
     "name": "Frame",
@@ -34411,25 +34420,22 @@
         },
         "name": "coverage",
         "type": {
-          "name": "",
-          "union": [
-            {
-              "name": "null"
-            },
-            {
-              "name": "ChromiumCoverage"
-            }
-          ],
-          "expression": "[null]|[ChromiumCoverage]"
+          "name": "Coverage",
+          "expression": "[Coverage]"
         },
         "spec": [
           {
+            "type": "note",
+            "noteType": "note",
+            "text": "Only available for Chromium atm."
+          },
+          {
             "type": "text",
-            "text": "Browser-specific Coverage implementation, only available for Chromium atm. See `ChromiumCoverage`(#class-chromiumcoverage) for more details."
+            "text": "Browser-specific Coverage implementation. See `Coverage`(#class-coverage) for more details."
           }
         ],
         "required": true,
-        "comment": "Browser-specific Coverage implementation, only available for Chromium atm. See\n`ChromiumCoverage`(#class-chromiumcoverage) for more details.",
+        "comment": "> NOTE: Only available for Chromium atm.\n\nBrowser-specific Coverage implementation. See `Coverage`(#class-coverage) for more details.",
         "deprecated": false,
         "async": false,
         "alias": "coverage",
@@ -45950,11 +45956,11 @@
         "spec": [
           {
             "type": "text",
-            "text": "This object can be used to launch or connect to Chromium, returning instances of `ChromiumBrowser`."
+            "text": "This object can be used to launch or connect to Chromium, returning instances of `Browser`."
           }
         ],
         "required": true,
-        "comment": "This object can be used to launch or connect to Chromium, returning instances of `ChromiumBrowser`.",
+        "comment": "This object can be used to launch or connect to Chromium, returning instances of `Browser`.",
         "deprecated": false,
         "async": false,
         "alias": "chromium",
@@ -46153,11 +46159,11 @@
         "spec": [
           {
             "type": "text",
-            "text": "This object can be used to launch or connect to Firefox, returning instances of `FirefoxBrowser`."
+            "text": "This object can be used to launch or connect to Firefox, returning instances of `Browser`."
           }
         ],
         "required": true,
-        "comment": "This object can be used to launch or connect to Firefox, returning instances of `FirefoxBrowser`.",
+        "comment": "This object can be used to launch or connect to Firefox, returning instances of `Browser`.",
         "deprecated": false,
         "async": false,
         "alias": "firefox",
@@ -46195,11 +46201,11 @@
         "spec": [
           {
             "type": "text",
-            "text": "This object can be used to launch or connect to WebKit, returning instances of `WebKitBrowser`."
+            "text": "This object can be used to launch or connect to WebKit, returning instances of `Browser`."
           }
         ],
         "required": true,
-        "comment": "This object can be used to launch or connect to WebKit, returning instances of `WebKitBrowser`.",
+        "comment": "This object can be used to launch or connect to WebKit, returning instances of `Browser`.",
         "deprecated": false,
         "async": false,
         "alias": "webkit",
@@ -48605,7 +48611,7 @@
     "spec": [
       {
         "type": "text",
-        "text": "When browser context is created with the `videosPath` option, each page has a video object associated with it."
+        "text": "When browser context is created with the `recordVideo` option, each page has a video object associated with it."
       },
       {
         "type": "code",
@@ -48637,8 +48643,28 @@
       }
     ],
     "langs": {},
-    "comment": "When browser context is created with the `videosPath` option, each page has a video object associated with it.\n\n```js\nconsole.log(await page.video().path());\n```\n\n```java\nSystem.out.println(page.video().path());\n```\n\n```python async\nprint(await page.video.path())\n```\n\n```python sync\nprint(page.video.path())\n```\n",
+    "comment": "When browser context is created with the `recordVideo` option, each page has a video object associated with it.\n\n```js\nconsole.log(await page.video().path());\n```\n\n```java\nSystem.out.println(page.video().path());\n```\n\n```python async\nprint(await page.video.path())\n```\n\n```python sync\nprint(page.video.path())\n```\n",
     "members": [
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "delete",
+        "type": {
+          "name": "void"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Deletes the video file. Will wait for the video to finish if necessary."
+          }
+        ],
+        "required": true,
+        "comment": "Deletes the video file. Will wait for the video to finish if necessary.",
+        "deprecated": false,
+        "async": true,
+        "alias": "delete",
+        "args": []
+      },
       {
         "kind": "method",
         "langs": {},
@@ -48650,42 +48676,58 @@
         "spec": [
           {
             "type": "text",
-            "text": "Returns the file system path this video will be recorded to. The video is guaranteed to be written to the filesystem upon closing the browser context."
+            "text": "Returns the file system path this video will be recorded to. The video is guaranteed to be written to the filesystem upon closing the browser context. This method throws when connected remotely."
           }
         ],
         "required": true,
-        "comment": "Returns the file system path this video will be recorded to. The video is guaranteed to be written to the filesystem\nupon closing the browser context.",
+        "comment": "Returns the file system path this video will be recorded to. The video is guaranteed to be written to the filesystem\nupon closing the browser context. This method throws when connected remotely.",
         "deprecated": false,
         "async": true,
         "alias": "path",
         "args": []
-      }
-    ]
-  },
-  {
-    "name": "WebKitBrowser",
-    "spec": [
-      {
-        "type": "li",
-        "text": "extends: `Browser`",
-        "liType": "bullet"
       },
       {
-        "type": "text",
-        "text": "WebKit browser instance does not expose WebKit-specific features."
+        "kind": "method",
+        "langs": {},
+        "name": "saveAs",
+        "type": {
+          "name": "void"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Saves the video to a user-specified path. It is safe to call this method while the video is still in progress, or after the page has closed. This method waits until the page is closed and the video is fully saved."
+          }
+        ],
+        "required": true,
+        "comment": "Saves the video to a user-specified path. It is safe to call this method while the video is still in progress, or after\nthe page has closed. This method waits until the page is closed and the video is fully saved.",
+        "deprecated": false,
+        "async": true,
+        "alias": "saveAs",
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "path",
+            "type": {
+              "name": "path",
+              "expression": "[path]"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Path where the video should be saved."
+              }
+            ],
+            "required": true,
+            "comment": "Path where the video should be saved.",
+            "deprecated": false,
+            "async": false,
+            "alias": "path"
+          }
+        ]
       }
-    ],
-    "extends": "Browser",
-    "langs": {
-      "only": [
-        "js"
-      ],
-      "aliases": {},
-      "types": {},
-      "overrides": {}
-    },
-    "comment": "- extends: `Browser`\n\nWebKit browser instance does not expose WebKit-specific features.",
-    "members": []
+    ]
   },
   {
     "name": "WebSocket",

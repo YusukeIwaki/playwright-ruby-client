@@ -24,8 +24,10 @@ end
   },
 
   BrowserContext: {
+    BackgroundPage: 'backgroundpage',
     Close: 'close',
     Page: 'page',
+    ServiceWorker: 'serviceworker',
   },
 
   BrowserServer: {
@@ -65,11 +67,6 @@ end
 
   Worker: {
     Close: 'close',
-  },
-
-  ChromiumBrowserContext: {
-    BackgroundPage: 'backgroundpage',
-    ServiceWorker: 'serviceworker',
   },
 
   ElectronApplication: {

@@ -11,6 +11,14 @@ module Playwright
         if params[:extraHTTPHeaders]
           params[:extraHTTPHeaders] = ::Playwright::HttpHeaders.new(params[:extraHTTPHeaders]).as_serialized
         end
+        if params[:record_video_dir]
+          params[:recordVideo] = {
+            dir: params.delete(:record_video_dir)
+          }
+          if params[:record_video_size]
+            params[:recordVideo][:size] = params.delete(:record_video_size)
+          end
+        end
         if params[:storageState].is_a?(String)
           params[:storageState] = JSON.parse(File.read(params[:storageState]))
         end

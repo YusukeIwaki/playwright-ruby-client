@@ -16,8 +16,6 @@ ALL_TYPES = %w[
     Selectors
     ConsoleMessage
     Dialog
-    Download
-    Video
     Page
     BrowserContext
     CDPSession

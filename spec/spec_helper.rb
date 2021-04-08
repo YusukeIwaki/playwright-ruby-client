@@ -169,4 +169,15 @@ RSpec.configure do |config|
       sinatra_app.quit!
     end
   end
+
+  # Every integration test case should spend less than 20sec, in CI.
+  #
+  # Essentially this timeout is not needed.
+  # However socketry/async doesn't raise StandardError, and hangs...!
+  # Workaround to do with it...
+  if ENV['CI']
+    config.around(:each, type: :integration) do |example|
+      Timeout.timeout(20) { example.run }
+    end
+  end
 end
