@@ -84,11 +84,7 @@ RSpec.describe Playwright::Page do
       end
       page.close
 
-      # playwright, playwright-python also expects opener to be nil.
-      # Howevert actual behavior does not success.
-      #
-      # expect(popup.opener).to be_nil
-      expect { popup.opener }.to raise_error(/Target page, context or browser has been closed/)
+      expect(popup.opener).to be_nil
     end
   end
 
