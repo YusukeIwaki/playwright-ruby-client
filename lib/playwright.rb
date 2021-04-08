@@ -41,23 +41,21 @@ module Playwright
     raise ArgumentError.new("block must be provided") unless block
 
     connection = Connection.new(playwright_cli_executable_path: playwright_cli_executable_path)
-    begin
-      Async do
-        connection.async_run
+    Async do
+      connection.async_run
 
-        Async do |task|
-          playwright = connection.wait_for_object_with_known_name('Playwright')
-          playwright_api = PlaywrightApi.wrap(playwright)
-          if timeout
-            task.with_timeout(timeout) do
-              block.call(playwright_api)
-            end
-          else
+      Async do |task|
+        playwright = connection.wait_for_object_with_known_name('Playwright')
+        playwright_api = PlaywrightApi.wrap(playwright)
+        if timeout
+          task.with_timeout(timeout) do
             block.call(playwright_api)
           end
-        ensure
-          connection.stop
+        else
+          block.call(playwright_api)
         end
+      ensure
+        connection.stop
       end
     end
   end
