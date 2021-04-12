@@ -59,6 +59,22 @@ module Playwright
       @initializer['version']
     end
 
+    def start_tracing(page: nil, categories: nil, path: nil, screenshots: nil)
+      params = {
+        page: page&.channel,
+        categories: categories,
+        path: path,
+        screenshots: screenshots,
+      }.compact
+
+      @channel.send_message_to_server('startTracing', params)
+    end
+
+    def stop_tracing
+      encoded_binary = @channel.send_message_to_server("stopTracing")
+      return Base64.strict_decode64(encoded_binary)
+    end
+
     private def on_close(_ = {})
       @connected = false
       emit(Events::Browser::Disconnected)

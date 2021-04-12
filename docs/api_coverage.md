@@ -327,8 +327,8 @@
 * ~~new_browser_cdp_session~~
 * new_context
 * new_page
-* ~~start_tracing~~
-* ~~stop_tracing~~
+* start_tracing
+* stop_tracing
 * version
 
 ## BrowserType
