@@ -668,6 +668,18 @@ module Playwright
       @channel.send_message_to_server('stopJSCoverage')
     end
 
+    def start_css_coverage(resetOnNavigation: nil, reportAnonymousScripts: nil)
+      params = {
+        resetOnNavigation: resetOnNavigation,
+      }.compact
+
+      @channel.send_message_to_server('startCSSCoverage', params)
+    end
+
+    def stop_css_coverage
+      @channel.send_message_to_server('stopCSSCoverage')
+    end
+
     class CrashedError < StandardError
       def initialize
         super('Page crashed')
