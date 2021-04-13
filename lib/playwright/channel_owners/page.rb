@@ -655,6 +655,19 @@ module Playwright
       @video ||= Video.new(self)
     end
 
+    def start_js_coverage(resetOnNavigation: nil, reportAnonymousScripts: nil)
+      params = {
+        resetOnNavigation: resetOnNavigation,
+        reportAnonymousScripts: reportAnonymousScripts,
+      }.compact
+
+      @channel.send_message_to_server('startJSCoverage', params)
+    end
+
+    def stop_js_coverage
+      @channel.send_message_to_server('stopJSCoverage')
+    end
+
     class CrashedError < StandardError
       def initialize
         super('Page crashed')
