@@ -2,6 +2,8 @@ require 'spec_helper'
 
 # https://github.com/microsoft/playwright/blob/master/tests/chromium/css-coverage.spec.ts
 RSpec.describe 'CSS Coverage' do
+  before { skip unless chromium? }
+
   def coverage_for(page, **kwargs, &block)
     page.start_css_coverage(**kwargs)
     block.call

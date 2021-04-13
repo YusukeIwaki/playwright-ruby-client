@@ -5,6 +5,8 @@ require 'tmpdir'
 # https://github.com/microsoft/playwright/blob/master/tests/chromium/tracing.spec.ts
 # https://github.com/microsoft/playwright-python/blob/master/tests/async/test_tracing.py
 RSpec.describe 'tracing' do
+  before { skip unless chromium? }
+
   let(:output_trace_file) { "trace-#{SecureRandom.hex(8)}.json" }
   after do
     File.delete(output_trace_file) if File.exist?(output_trace_file)
