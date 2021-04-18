@@ -473,11 +473,18 @@ module Playwright
       nil
     end
 
-    def check(selector, force: nil, noWaitAfter: nil, timeout: nil)
+    def check(
+      selector,
+      force: nil,
+      noWaitAfter: nil,
+      position: nil,
+      timeout: nil)
+
       params = {
         selector: selector,
         force: force,
         noWaitAfter:  noWaitAfter,
+        position: position,
         timeout: timeout,
       }.compact
       @channel.send_message_to_server('check', params)
@@ -485,11 +492,18 @@ module Playwright
       nil
     end
 
-    def uncheck(selector, force: nil, noWaitAfter: nil, timeout: nil)
+    def uncheck(
+      selector,
+      force: nil,
+      noWaitAfter: nil,
+      position: nil,
+      timeout: nil)
+
       params = {
         selector: selector,
         force: force,
         noWaitAfter:  noWaitAfter,
+        position: position,
         timeout: timeout,
       }.compact
       @channel.send_message_to_server('uncheck', params)
