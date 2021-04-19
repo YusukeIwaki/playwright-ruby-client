@@ -599,12 +599,24 @@ module Playwright
       @main_frame.press(selector, key, delay: delay, noWaitAfter: noWaitAfter, timeout: timeout)
     end
 
-    def check(selector, force: nil, noWaitAfter: nil, timeout: nil)
-      @main_frame.check(selector, force: force, noWaitAfter: noWaitAfter, timeout: timeout)
+    def check(
+      selector,
+      force: nil,
+      noWaitAfter: nil,
+      position: nil,
+      timeout: nil)
+
+      @main_frame.check(selector, force: force, noWaitAfter: noWaitAfter, position: position, timeout: timeout)
     end
 
-    def uncheck(selector, force: nil, noWaitAfter: nil, timeout: nil)
-      @main_frame.uncheck(selector, force: force, noWaitAfter: noWaitAfter, timeout: timeout)
+    def uncheck(
+      selector,
+      force: nil,
+      noWaitAfter: nil,
+      position: nil,
+      timeout: nil)
+
+      @main_frame.uncheck(selector, force: force, noWaitAfter: noWaitAfter, position: position, timeout: timeout)
     end
 
     def wait_for_function(pageFunction, arg: nil, polling: nil, timeout: nil)

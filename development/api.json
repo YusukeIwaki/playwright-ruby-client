@@ -2660,7 +2660,8 @@
                   "langs": {
                     "only": [
                       "js",
-                      "java"
+                      "java",
+                      "csharp"
                     ],
                     "aliases": {
                       "java": "viewportSize",
@@ -6974,7 +6975,8 @@
                   "langs": {
                     "only": [
                       "js",
-                      "java"
+                      "java",
+                      "csharp"
                     ],
                     "aliases": {
                       "java": "viewportSize",
@@ -8709,7 +8711,8 @@
                   "langs": {
                     "only": [
                       "js",
-                      "java"
+                      "java",
+                      "csharp"
                     ],
                     "aliases": {
                       "java": "viewportSize",
@@ -11811,7 +11814,7 @@
         "kind": "method",
         "langs": {
           "types": {
-            "charp": {
+            "csharp": {
               "name": "string",
               "expression": "[string]"
             },
@@ -13280,6 +13283,7 @@
         "kind": "method",
         "langs": {
           "only": [
+            "java",
             "js"
           ],
           "aliases": {},
@@ -13314,7 +13318,14 @@
         "args": [
           {
             "kind": "property",
-            "langs": {},
+            "langs": {
+              "only": [
+                "js"
+              ],
+              "aliases": {},
+              "types": {},
+              "overrides": {}
+            },
             "name": "params",
             "type": {
               "name": "Object",
@@ -13322,7 +13333,7 @@
                 {
                   "kind": "property",
                   "langs": {},
-                  "name": "wsEndpoint",
+                  "name": "endpointURL",
                   "type": {
                     "name": "string",
                     "expression": "[string]"
@@ -13330,14 +13341,14 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "A CDP websocket endpoint to connect to."
+                      "text": "A CDP websocket endpoint or http url to connect to. For example `http://localhost:9222/` or `ws://127.0.0.1:9222/devtools/browser/387adf4c-243f-4051-a181-46798f4a46f4`."
                     }
                   ],
                   "required": true,
-                  "comment": "A CDP websocket endpoint to connect to.",
+                  "comment": "A CDP websocket endpoint or http url to connect to. For example `http://localhost:9222/` or\n`ws://127.0.0.1:9222/devtools/browser/387adf4c-243f-4051-a181-46798f4a46f4`.",
                   "deprecated": false,
                   "async": false,
-                  "alias": "wsEndpoint"
+                  "alias": "endpointURL"
                 },
                 {
                   "kind": "property",
@@ -13408,6 +13419,102 @@
             "deprecated": false,
             "async": false,
             "alias": "params"
+          },
+          {
+            "kind": "property",
+            "langs": {
+              "only": [
+                "java"
+              ],
+              "aliases": {},
+              "types": {},
+              "overrides": {}
+            },
+            "name": "endpointURL",
+            "type": {
+              "name": "string",
+              "expression": "[string]"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "A CDP websocket endpoint or http url to connect to. For example `http://localhost:9222/` or `ws://127.0.0.1:9222/devtools/browser/387adf4c-243f-4051-a181-46798f4a46f4`."
+              }
+            ],
+            "required": true,
+            "comment": "A CDP websocket endpoint or http url to connect to. For example `http://localhost:9222/` or\n`ws://127.0.0.1:9222/devtools/browser/387adf4c-243f-4051-a181-46798f4a46f4`.",
+            "deprecated": false,
+            "async": false,
+            "alias": "endpointURL"
+          },
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "java"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "slowMo",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Slows down Playwright operations by the specified amount of milliseconds. Useful so that you can see what is going on. Defaults to 0."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Slows down Playwright operations by the specified amount of milliseconds. Useful so that you can see what is going on.\nDefaults to 0.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "slowMo"
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "java"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Maximum time in milliseconds to wait for the connection to be established. Defaults to `30000` (30 seconds). Pass `0` to disable timeout."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Maximum time in milliseconds to wait for the connection to be established. Defaults to `30000` (30 seconds). Pass `0` to\ndisable timeout.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout"
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "options"
           }
         ]
       },
@@ -15819,7 +15926,8 @@
                   "langs": {
                     "only": [
                       "js",
-                      "java"
+                      "java",
+                      "csharp"
                     ],
                     "aliases": {
                       "java": "viewportSize",
@@ -18024,12 +18132,12 @@
           "  const electronApp = await electron.launch({ args: ['main.js'] });",
           "",
           "  // Evaluation expression in the Electron context.",
-          "  const appPath = await electronApp.evaluate(async (electron) => {",
-          "    // This runs in the main Electron process, |electron| parameter",
-          "    // here is always the result of the require('electron') in the main",
-          "    // app script.",
-          "    return electron.getAppPath();",
+          "  const appPath = await electronApp.evaluate(async ({ app }) => {",
+          "    // This runs in the main Electron process, parameter here is always",
+          "    // the result of the require('electron') in the main app script.",
+          "    return app.getAppPath();",
           "  });",
+          "  console.log(appPath);",
           "",
           "  // Get the first window that the app opens, wait if necessary.",
           "  const window = await electronApp.firstWindow();",
@@ -18041,6 +18149,8 @@
           "  window.on('console', console.log);",
           "  // Click button.",
           "  await window.click('text=Click me');",
+          "  // Exit app.",
+          "  await electronApp.close();",
           "})();"
         ],
         "codeLang": "js"
@@ -18065,7 +18175,7 @@
       "types": {},
       "overrides": {}
     },
-    "comment": "Playwright has **experimental** support for Electron automation. You can access electron namespace via:\n\n```js\nconst { _electron } = require('playwright');\n```\n\nAn example of the Electron automation script would be:\n\n```js\nconst { _electron: electron } = require('playwright');\n\n(async () => {\n  // Launch Electron app.\n  const electronApp = await electron.launch({ args: ['main.js'] });\n\n  // Evaluation expression in the Electron context.\n  const appPath = await electronApp.evaluate(async (electron) => {\n    // This runs in the main Electron process, |electron| parameter\n    // here is always the result of the require('electron') in the main\n    // app script.\n    return electron.getAppPath();\n  });\n\n  // Get the first window that the app opens, wait if necessary.\n  const window = await electronApp.firstWindow();\n  // Print the title.\n  console.log(await window.title());\n  // Capture a screenshot.\n  await window.screenshot({ path: 'intro.png' });\n  // Direct Electron console to Node terminal.\n  window.on('console', console.log);\n  // Click button.\n  await window.click('text=Click me');\n})();\n```\n\nNote that since you don't need Playwright to install web browsers when testing Electron, you can omit browser download\nvia setting the following environment variable when installing Playwright:\n\n```sh js\n$ PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm i -D playwright\n```\n",
+    "comment": "Playwright has **experimental** support for Electron automation. You can access electron namespace via:\n\n```js\nconst { _electron } = require('playwright');\n```\n\nAn example of the Electron automation script would be:\n\n```js\nconst { _electron: electron } = require('playwright');\n\n(async () => {\n  // Launch Electron app.\n  const electronApp = await electron.launch({ args: ['main.js'] });\n\n  // Evaluation expression in the Electron context.\n  const appPath = await electronApp.evaluate(async ({ app }) => {\n    // This runs in the main Electron process, parameter here is always\n    // the result of the require('electron') in the main app script.\n    return app.getAppPath();\n  });\n  console.log(appPath);\n\n  // Get the first window that the app opens, wait if necessary.\n  const window = await electronApp.firstWindow();\n  // Print the title.\n  console.log(await window.title());\n  // Capture a screenshot.\n  await window.screenshot({ path: 'intro.png' });\n  // Direct Electron console to Node terminal.\n  window.on('console', console.log);\n  // Click button.\n  await window.click('text=Click me');\n  // Exit app.\n  await electronApp.close();\n})();\n```\n\nNote that since you don't need Playwright to install web browsers when testing Electron, you can omit browser download\nvia setting the following environment variable when installing Playwright:\n\n```sh js\n$ PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm i -D playwright\n```\n",
     "members": [
       {
         "kind": "method",
@@ -18216,12 +18326,12 @@
           "  const electronApp = await electron.launch({ args: ['main.js'] });",
           "",
           "  // Evaluation expression in the Electron context.",
-          "  const appPath = await electronApp.evaluate(async (electron) => {",
-          "    // This runs in the main Electron process, |electron| parameter",
-          "    // here is always the result of the require('electron') in the main",
-          "    // app script.",
-          "    return electron.getAppPath();",
+          "  const appPath = await electronApp.evaluate(async ({ app }) => {",
+          "    // This runs in the main Electron process, parameter here is always",
+          "    // the result of the require('electron') in the main app script.",
+          "    return app.getAppPath();",
           "  });",
+          "  console.log(appPath);",
           "",
           "  // Get the first window that the app opens, wait if necessary.",
           "  const window = await electronApp.firstWindow();",
@@ -18233,6 +18343,8 @@
           "  window.on('console', console.log);",
           "  // Click button.",
           "  await window.click('text=Click me');",
+          "  // Exit app.",
+          "  await electronApp.close();",
           "})();"
         ],
         "codeLang": "js"
@@ -18246,7 +18358,7 @@
       "types": {},
       "overrides": {}
     },
-    "comment": "Electron application representation. You can use [`method: Electron.launch`] to obtain the application instance. This\ninstance you can control main electron process as well as work with Electron windows:\n\n```js\nconst { _electron: electron } = require('playwright');\n\n(async () => {\n  // Launch Electron app.\n  const electronApp = await electron.launch({ args: ['main.js'] });\n\n  // Evaluation expression in the Electron context.\n  const appPath = await electronApp.evaluate(async (electron) => {\n    // This runs in the main Electron process, |electron| parameter\n    // here is always the result of the require('electron') in the main\n    // app script.\n    return electron.getAppPath();\n  });\n\n  // Get the first window that the app opens, wait if necessary.\n  const window = await electronApp.firstWindow();\n  // Print the title.\n  console.log(await window.title());\n  // Capture a screenshot.\n  await window.screenshot({ path: 'intro.png' });\n  // Direct Electron console to Node terminal.\n  window.on('console', console.log);\n  // Click button.\n  await window.click('text=Click me');\n})();\n```\n",
+    "comment": "Electron application representation. You can use [`method: Electron.launch`] to obtain the application instance. This\ninstance you can control main electron process as well as work with Electron windows:\n\n```js\nconst { _electron: electron } = require('playwright');\n\n(async () => {\n  // Launch Electron app.\n  const electronApp = await electron.launch({ args: ['main.js'] });\n\n  // Evaluation expression in the Electron context.\n  const appPath = await electronApp.evaluate(async ({ app }) => {\n    // This runs in the main Electron process, parameter here is always\n    // the result of the require('electron') in the main app script.\n    return app.getAppPath();\n  });\n  console.log(appPath);\n\n  // Get the first window that the app opens, wait if necessary.\n  const window = await electronApp.firstWindow();\n  // Print the title.\n  console.log(await window.title());\n  // Capture a screenshot.\n  await window.screenshot({ path: 'intro.png' });\n  // Direct Electron console to Node terminal.\n  window.on('console', console.log);\n  // Click button.\n  await window.click('text=Click me');\n  // Exit app.\n  await electronApp.close();\n})();\n```\n",
     "members": [
       {
         "kind": "event",
@@ -19008,7 +19120,7 @@
           },
           {
             "type": "li",
-            "text": "Ensure that element is a checkbox or a radio input. If not, this method rejects. If the element is already checked, this method returns immediately.",
+            "text": "Ensure that element is a checkbox or a radio input. If not, this method throws. If the element is already checked, this method returns immediately.",
             "liType": "ordinal"
           },
           {
@@ -19033,20 +19145,20 @@
           },
           {
             "type": "li",
-            "text": "Ensure that the element is now checked. If not, this method rejects.",
+            "text": "Ensure that the element is now checked. If not, this method throws.",
             "liType": "ordinal"
           },
           {
             "type": "text",
-            "text": "If the element is detached from the DOM at any moment during the action, this method rejects."
+            "text": "If the element is detached from the DOM at any moment during the action, this method throws."
           },
           {
             "type": "text",
-            "text": "When all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`. Passing zero timeout disables this."
+            "text": "When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing zero timeout disables this."
           }
         ],
         "required": true,
-        "comment": "This method checks the element by performing the following steps:\n1. Ensure that element is a checkbox or a radio input. If not, this method rejects. If the element is already\n   checked, this method returns immediately.\n1. Wait for [actionability](./actionability.md) checks on the element, unless `force` option is set.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to click in the center of the element.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n1. Ensure that the element is now checked. If not, this method rejects.\n\nIf the element is detached from the DOM at any moment during the action, this method rejects.\n\nWhen all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`.\nPassing zero timeout disables this.",
+        "comment": "This method checks the element by performing the following steps:\n1. Ensure that element is a checkbox or a radio input. If not, this method throws. If the element is already checked,\n   this method returns immediately.\n1. Wait for [actionability](./actionability.md) checks on the element, unless `force` option is set.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to click in the center of the element.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n1. Ensure that the element is now checked. If not, this method throws.\n\nIf the element is detached from the DOM at any moment during the action, this method throws.\n\nWhen all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing\nzero timeout disables this.",
         "deprecated": false,
         "async": true,
         "alias": "check",
@@ -19097,6 +19209,68 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "noWaitAfter"
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "position",
+                  "type": {
+                    "name": "Object",
+                    "properties": [
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "x",
+                        "type": {
+                          "name": "float",
+                          "expression": "[float]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": ""
+                          }
+                        ],
+                        "required": true,
+                        "comment": "",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "x"
+                      },
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "y",
+                        "type": {
+                          "name": "float",
+                          "expression": "[float]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": ""
+                          }
+                        ],
+                        "required": true,
+                        "comment": "",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "y"
+                      }
+                    ],
+                    "expression": "[Object]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "A point to use relative to the top-left corner of element padding box. If not specified, uses some visible point of the element."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "A point to use relative to the top-left corner of element padding box. If not specified, uses some visible point of the\nelement.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "position"
                 },
                 {
                   "kind": "property",
@@ -19162,15 +19336,15 @@
           },
           {
             "type": "text",
-            "text": "If the element is detached from the DOM at any moment during the action, this method rejects."
+            "text": "If the element is detached from the DOM at any moment during the action, this method throws."
           },
           {
             "type": "text",
-            "text": "When all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`. Passing zero timeout disables this."
+            "text": "When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing zero timeout disables this."
           }
         ],
         "required": true,
-        "comment": "This method clicks the element by performing the following steps:\n1. Wait for [actionability](./actionability.md) checks on the element, unless `force` option is set.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to click in the center of the element, or the specified `position`.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n\nIf the element is detached from the DOM at any moment during the action, this method rejects.\n\nWhen all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`.\nPassing zero timeout disables this.",
+        "comment": "This method clicks the element by performing the following steps:\n1. Wait for [actionability](./actionability.md) checks on the element, unless `force` option is set.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to click in the center of the element, or the specified `position`.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n\nIf the element is detached from the DOM at any moment during the action, this method throws.\n\nWhen all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing\nzero timeout disables this.",
         "deprecated": false,
         "async": true,
         "alias": "click",
@@ -19455,7 +19629,13 @@
       },
       {
         "kind": "method",
-        "langs": {},
+        "langs": {
+          "aliases": {
+            "csharp": "DblClickAsync"
+          },
+          "types": {},
+          "overrides": {}
+        },
         "name": "dblclick",
         "type": {
           "name": "void"
@@ -19482,16 +19662,16 @@
           },
           {
             "type": "li",
-            "text": "Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set. Note that if the first click of the `dblclick()` triggers a navigation event, this method will reject.",
+            "text": "Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set. Note that if the first click of the `dblclick()` triggers a navigation event, this method will throw.",
             "liType": "ordinal"
           },
           {
             "type": "text",
-            "text": "If the element is detached from the DOM at any moment during the action, this method rejects."
+            "text": "If the element is detached from the DOM at any moment during the action, this method throws."
           },
           {
             "type": "text",
-            "text": "When all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`. Passing zero timeout disables this."
+            "text": "When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing zero timeout disables this."
           },
           {
             "type": "note",
@@ -19500,7 +19680,7 @@
           }
         ],
         "required": true,
-        "comment": "This method double clicks the element by performing the following steps:\n1. Wait for [actionability](./actionability.md) checks on the element, unless `force` option is set.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to double click in the center of the element, or the specified `position`.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set. Note that if the\n   first click of the `dblclick()` triggers a navigation event, this method will reject.\n\nIf the element is detached from the DOM at any moment during the action, this method rejects.\n\nWhen all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`.\nPassing zero timeout disables this.\n\n> NOTE: `elementHandle.dblclick()` dispatches two `click` events and a single `dblclick` event.",
+        "comment": "This method double clicks the element by performing the following steps:\n1. Wait for [actionability](./actionability.md) checks on the element, unless `force` option is set.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to double click in the center of the element, or the specified `position`.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set. Note that if the\n   first click of the `dblclick()` triggers a navigation event, this method will throw.\n\nIf the element is detached from the DOM at any moment during the action, this method throws.\n\nWhen all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing\nzero timeout disables this.\n\n> NOTE: `elementHandle.dblclick()` dispatches two `click` events and a single `dblclick` event.",
         "deprecated": false,
         "async": true,
         "alias": "dblclick",
@@ -20471,15 +20651,15 @@
           },
           {
             "type": "text",
-            "text": "If the element is detached from the DOM at any moment during the action, this method rejects."
+            "text": "If the element is detached from the DOM at any moment during the action, this method throws."
           },
           {
             "type": "text",
-            "text": "When all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`. Passing zero timeout disables this."
+            "text": "When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing zero timeout disables this."
           }
         ],
         "required": true,
-        "comment": "This method hovers over the element by performing the following steps:\n1. Wait for [actionability](./actionability.md) checks on the element, unless `force` option is set.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to hover over the center of the element, or the specified `position`.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n\nIf the element is detached from the DOM at any moment during the action, this method rejects.\n\nWhen all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`.\nPassing zero timeout disables this.",
+        "comment": "This method hovers over the element by performing the following steps:\n1. Wait for [actionability](./actionability.md) checks on the element, unless `force` option is set.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to hover over the center of the element, or the specified `position`.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n\nIf the element is detached from the DOM at any moment during the action, this method throws.\n\nWhen all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing\nzero timeout disables this.",
         "deprecated": false,
         "async": true,
         "alias": "hover",
@@ -22334,11 +22514,11 @@
           },
           {
             "type": "text",
-            "text": "If the element is detached from the DOM at any moment during the action, this method rejects."
+            "text": "If the element is detached from the DOM at any moment during the action, this method throws."
           },
           {
             "type": "text",
-            "text": "When all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`. Passing zero timeout disables this."
+            "text": "When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing zero timeout disables this."
           },
           {
             "type": "note",
@@ -22347,7 +22527,7 @@
           }
         ],
         "required": true,
-        "comment": "This method taps the element by performing the following steps:\n1. Wait for [actionability](./actionability.md) checks on the element, unless `force` option is set.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.touchscreen`] to tap the center of the element, or the specified `position`.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n\nIf the element is detached from the DOM at any moment during the action, this method rejects.\n\nWhen all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`.\nPassing zero timeout disables this.\n\n> NOTE: `elementHandle.tap()` requires that the `hasTouch` option of the browser context be set to true.",
+        "comment": "This method taps the element by performing the following steps:\n1. Wait for [actionability](./actionability.md) checks on the element, unless `force` option is set.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.touchscreen`] to tap the center of the element, or the specified `position`.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n\nIf the element is detached from the DOM at any moment during the action, this method throws.\n\nWhen all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing\nzero timeout disables this.\n\n> NOTE: `elementHandle.tap()` requires that the `hasTouch` option of the browser context be set to true.",
         "deprecated": false,
         "async": true,
         "alias": "tap",
@@ -22765,7 +22945,7 @@
           },
           {
             "type": "li",
-            "text": "Ensure that element is a checkbox or a radio input. If not, this method rejects. If the element is already unchecked, this method returns immediately.",
+            "text": "Ensure that element is a checkbox or a radio input. If not, this method throws. If the element is already unchecked, this method returns immediately.",
             "liType": "ordinal"
           },
           {
@@ -22790,20 +22970,20 @@
           },
           {
             "type": "li",
-            "text": "Ensure that the element is now unchecked. If not, this method rejects.",
+            "text": "Ensure that the element is now unchecked. If not, this method throws.",
             "liType": "ordinal"
           },
           {
             "type": "text",
-            "text": "If the element is detached from the DOM at any moment during the action, this method rejects."
+            "text": "If the element is detached from the DOM at any moment during the action, this method throws."
           },
           {
             "type": "text",
-            "text": "When all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`. Passing zero timeout disables this."
+            "text": "When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing zero timeout disables this."
           }
         ],
         "required": true,
-        "comment": "This method checks the element by performing the following steps:\n1. Ensure that element is a checkbox or a radio input. If not, this method rejects. If the element is already\n   unchecked, this method returns immediately.\n1. Wait for [actionability](./actionability.md) checks on the element, unless `force` option is set.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to click in the center of the element.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n1. Ensure that the element is now unchecked. If not, this method rejects.\n\nIf the element is detached from the DOM at any moment during the action, this method rejects.\n\nWhen all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`.\nPassing zero timeout disables this.",
+        "comment": "This method checks the element by performing the following steps:\n1. Ensure that element is a checkbox or a radio input. If not, this method throws. If the element is already\n   unchecked, this method returns immediately.\n1. Wait for [actionability](./actionability.md) checks on the element, unless `force` option is set.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to click in the center of the element.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n1. Ensure that the element is now unchecked. If not, this method throws.\n\nIf the element is detached from the DOM at any moment during the action, this method throws.\n\nWhen all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing\nzero timeout disables this.",
         "deprecated": false,
         "async": true,
         "alias": "uncheck",
@@ -22854,6 +23034,68 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "noWaitAfter"
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "position",
+                  "type": {
+                    "name": "Object",
+                    "properties": [
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "x",
+                        "type": {
+                          "name": "float",
+                          "expression": "[float]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": ""
+                          }
+                        ],
+                        "required": true,
+                        "comment": "",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "x"
+                      },
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "y",
+                        "type": {
+                          "name": "float",
+                          "expression": "[float]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": ""
+                          }
+                        ],
+                        "required": true,
+                        "comment": "",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "y"
+                      }
+                    ],
+                    "expression": "[Object]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "A point to use relative to the top-left corner of element padding box. If not specified, uses some visible point of the element."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "A point to use relative to the top-left corner of element padding box. If not specified, uses some visible point of the\nelement.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "position"
                 },
                 {
                   "kind": "property",
@@ -23931,12 +24173,12 @@
           },
           {
             "type": "li",
-            "text": "Find an element match matching `selector`. If there is none, wait until a matching element is attached to the DOM.",
+            "text": "Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.",
             "liType": "ordinal"
           },
           {
             "type": "li",
-            "text": "Ensure that matched element is a checkbox or a radio input. If not, this method rejects. If the element is already checked, this method returns immediately.",
+            "text": "Ensure that matched element is a checkbox or a radio input. If not, this method throws. If the element is already checked, this method returns immediately.",
             "liType": "ordinal"
           },
           {
@@ -23961,16 +24203,16 @@
           },
           {
             "type": "li",
-            "text": "Ensure that the element is now checked. If not, this method rejects.",
+            "text": "Ensure that the element is now checked. If not, this method throws.",
             "liType": "ordinal"
           },
           {
             "type": "text",
-            "text": "When all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`. Passing zero timeout disables this."
+            "text": "When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing zero timeout disables this."
           }
         ],
         "required": true,
-        "comment": "This method checks an element matching `selector` by performing the following steps:\n1. Find an element match matching `selector`. If there is none, wait until a matching element is attached to the DOM.\n1. Ensure that matched element is a checkbox or a radio input. If not, this method rejects. If the element is already\n   checked, this method returns immediately.\n1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the\n   element is detached during the checks, the whole action is retried.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to click in the center of the element.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n1. Ensure that the element is now checked. If not, this method rejects.\n\nWhen all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`.\nPassing zero timeout disables this.",
+        "comment": "This method checks an element matching `selector` by performing the following steps:\n1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.\n1. Ensure that matched element is a checkbox or a radio input. If not, this method throws. If the element is already\n   checked, this method returns immediately.\n1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the\n   element is detached during the checks, the whole action is retried.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to click in the center of the element.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n1. Ensure that the element is now checked. If not, this method throws.\n\nWhen all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing\nzero timeout disables this.",
         "deprecated": false,
         "async": true,
         "alias": "check",
@@ -24045,6 +24287,68 @@
                 {
                   "kind": "property",
                   "langs": {},
+                  "name": "position",
+                  "type": {
+                    "name": "Object",
+                    "properties": [
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "x",
+                        "type": {
+                          "name": "float",
+                          "expression": "[float]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": ""
+                          }
+                        ],
+                        "required": true,
+                        "comment": "",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "x"
+                      },
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "y",
+                        "type": {
+                          "name": "float",
+                          "expression": "[float]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": ""
+                          }
+                        ],
+                        "required": true,
+                        "comment": "",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "y"
+                      }
+                    ],
+                    "expression": "[Object]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "A point to use relative to the top-left corner of element padding box. If not specified, uses some visible point of the element."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "A point to use relative to the top-left corner of element padding box. If not specified, uses some visible point of the\nelement.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "position"
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
                   "name": "timeout",
                   "type": {
                     "name": "float",
@@ -24107,7 +24411,7 @@
           },
           {
             "type": "li",
-            "text": "Find an element match matching `selector`. If there is none, wait until a matching element is attached to the DOM.",
+            "text": "Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.",
             "liType": "ordinal"
           },
           {
@@ -24132,11 +24436,11 @@
           },
           {
             "type": "text",
-            "text": "When all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`. Passing zero timeout disables this."
+            "text": "When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing zero timeout disables this."
           }
         ],
         "required": true,
-        "comment": "This method clicks an element matching `selector` by performing the following steps:\n1. Find an element match matching `selector`. If there is none, wait until a matching element is attached to the DOM.\n1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the\n   element is detached during the checks, the whole action is retried.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to click in the center of the element, or the specified `position`.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n\nWhen all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`.\nPassing zero timeout disables this.",
+        "comment": "This method clicks an element matching `selector` by performing the following steps:\n1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.\n1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the\n   element is detached during the checks, the whole action is retried.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to click in the center of the element, or the specified `position`.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n\nWhen all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing\nzero timeout disables this.",
         "deprecated": false,
         "async": true,
         "alias": "click",
@@ -24433,7 +24737,13 @@
       },
       {
         "kind": "method",
-        "langs": {},
+        "langs": {
+          "aliases": {
+            "csharp": "DblClickAsync"
+          },
+          "types": {},
+          "overrides": {}
+        },
         "name": "dblclick",
         "type": {
           "name": "void"
@@ -24445,7 +24755,7 @@
           },
           {
             "type": "li",
-            "text": "Find an element match matching `selector`. If there is none, wait until a matching element is attached to the DOM.",
+            "text": "Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.",
             "liType": "ordinal"
           },
           {
@@ -24465,12 +24775,12 @@
           },
           {
             "type": "li",
-            "text": "Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set. Note that if the first click of the `dblclick()` triggers a navigation event, this method will reject.",
+            "text": "Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set. Note that if the first click of the `dblclick()` triggers a navigation event, this method will throw.",
             "liType": "ordinal"
           },
           {
             "type": "text",
-            "text": "When all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`. Passing zero timeout disables this."
+            "text": "When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing zero timeout disables this."
           },
           {
             "type": "note",
@@ -24479,7 +24789,7 @@
           }
         ],
         "required": true,
-        "comment": "This method double clicks an element matching `selector` by performing the following steps:\n1. Find an element match matching `selector`. If there is none, wait until a matching element is attached to the DOM.\n1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the\n   element is detached during the checks, the whole action is retried.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to double click in the center of the element, or the specified `position`.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set. Note that if the\n   first click of the `dblclick()` triggers a navigation event, this method will reject.\n\nWhen all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`.\nPassing zero timeout disables this.\n\n> NOTE: `frame.dblclick()` dispatches two `click` events and a single `dblclick` event.",
+        "comment": "This method double clicks an element matching `selector` by performing the following steps:\n1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.\n1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the\n   element is detached during the checks, the whole action is retried.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to double click in the center of the element, or the specified `position`.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set. Note that if the\n   first click of the `dblclick()` triggers a navigation event, this method will throw.\n\nWhen all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing\nzero timeout disables this.\n\n> NOTE: `frame.dblclick()` dispatches two `click` events and a single `dblclick` event.",
         "deprecated": false,
         "async": true,
         "alias": "dblclick",
@@ -26334,7 +26644,7 @@
           },
           {
             "type": "li",
-            "text": "Find an element match matching `selector`. If there is none, wait until a matching element is attached to the DOM.",
+            "text": "Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.",
             "liType": "ordinal"
           },
           {
@@ -26359,11 +26669,11 @@
           },
           {
             "type": "text",
-            "text": "When all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`. Passing zero timeout disables this."
+            "text": "When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing zero timeout disables this."
           }
         ],
         "required": true,
-        "comment": "This method hovers over an element matching `selector` by performing the following steps:\n1. Find an element match matching `selector`. If there is none, wait until a matching element is attached to the DOM.\n1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the\n   element is detached during the checks, the whole action is retried.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to hover over the center of the element, or the specified `position`.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n\nWhen all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`.\nPassing zero timeout disables this.",
+        "comment": "This method hovers over an element matching `selector` by performing the following steps:\n1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.\n1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the\n   element is detached during the checks, the whole action is retried.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to hover over the center of the element, or the specified `position`.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n\nWhen all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing\nzero timeout disables this.",
         "deprecated": false,
         "async": true,
         "alias": "hover",
@@ -28640,7 +28950,7 @@
           },
           {
             "type": "li",
-            "text": "Find an element match matching `selector`. If there is none, wait until a matching element is attached to the DOM.",
+            "text": "Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.",
             "liType": "ordinal"
           },
           {
@@ -28665,7 +28975,7 @@
           },
           {
             "type": "text",
-            "text": "When all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`. Passing zero timeout disables this."
+            "text": "When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing zero timeout disables this."
           },
           {
             "type": "note",
@@ -28674,7 +28984,7 @@
           }
         ],
         "required": true,
-        "comment": "This method taps an element matching `selector` by performing the following steps:\n1. Find an element match matching `selector`. If there is none, wait until a matching element is attached to the DOM.\n1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the\n   element is detached during the checks, the whole action is retried.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.touchscreen`] to tap the center of the element, or the specified `position`.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n\nWhen all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`.\nPassing zero timeout disables this.\n\n> NOTE: `frame.tap()` requires that the `hasTouch` option of the browser context be set to true.",
+        "comment": "This method taps an element matching `selector` by performing the following steps:\n1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.\n1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the\n   element is detached during the checks, the whole action is retried.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.touchscreen`] to tap the center of the element, or the specified `position`.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n\nWhen all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing\nzero timeout disables this.\n\n> NOTE: `frame.tap()` requires that the `hasTouch` option of the browser context be set to true.",
         "deprecated": false,
         "async": true,
         "alias": "tap",
@@ -29171,12 +29481,12 @@
           },
           {
             "type": "li",
-            "text": "Find an element match matching `selector`. If there is none, wait until a matching element is attached to the DOM.",
+            "text": "Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.",
             "liType": "ordinal"
           },
           {
             "type": "li",
-            "text": "Ensure that matched element is a checkbox or a radio input. If not, this method rejects. If the element is already unchecked, this method returns immediately.",
+            "text": "Ensure that matched element is a checkbox or a radio input. If not, this method throws. If the element is already unchecked, this method returns immediately.",
             "liType": "ordinal"
           },
           {
@@ -29201,16 +29511,16 @@
           },
           {
             "type": "li",
-            "text": "Ensure that the element is now unchecked. If not, this method rejects.",
+            "text": "Ensure that the element is now unchecked. If not, this method throws.",
             "liType": "ordinal"
           },
           {
             "type": "text",
-            "text": "When all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`. Passing zero timeout disables this."
+            "text": "When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing zero timeout disables this."
           }
         ],
         "required": true,
-        "comment": "This method checks an element matching `selector` by performing the following steps:\n1. Find an element match matching `selector`. If there is none, wait until a matching element is attached to the DOM.\n1. Ensure that matched element is a checkbox or a radio input. If not, this method rejects. If the element is already\n   unchecked, this method returns immediately.\n1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the\n   element is detached during the checks, the whole action is retried.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to click in the center of the element.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n1. Ensure that the element is now unchecked. If not, this method rejects.\n\nWhen all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`.\nPassing zero timeout disables this.",
+        "comment": "This method checks an element matching `selector` by performing the following steps:\n1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.\n1. Ensure that matched element is a checkbox or a radio input. If not, this method throws. If the element is already\n   unchecked, this method returns immediately.\n1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the\n   element is detached during the checks, the whole action is retried.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to click in the center of the element.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n1. Ensure that the element is now unchecked. If not, this method throws.\n\nWhen all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing\nzero timeout disables this.",
         "deprecated": false,
         "async": true,
         "alias": "uncheck",
@@ -29281,6 +29591,68 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "noWaitAfter"
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "position",
+                  "type": {
+                    "name": "Object",
+                    "properties": [
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "x",
+                        "type": {
+                          "name": "float",
+                          "expression": "[float]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": ""
+                          }
+                        ],
+                        "required": true,
+                        "comment": "",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "x"
+                      },
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "y",
+                        "type": {
+                          "name": "float",
+                          "expression": "[float]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": ""
+                          }
+                        ],
+                        "required": true,
+                        "comment": "",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "y"
+                      }
+                    ],
+                    "expression": "[Object]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "A point to use relative to the top-left corner of element padding box. If not specified, uses some visible point of the element."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "A point to use relative to the top-left corner of element padding box. If not specified, uses some visible point of the\nelement.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "position"
                 },
                 {
                   "kind": "property",
@@ -32111,7 +32483,13 @@
       },
       {
         "kind": "method",
-        "langs": {},
+        "langs": {
+          "aliases": {
+            "csharp": "DblClickAsync"
+          },
+          "types": {},
+          "overrides": {}
+        },
         "name": "dblclick",
         "type": {
           "name": "void"
@@ -33835,12 +34213,12 @@
           },
           {
             "type": "li",
-            "text": "Find an element match matching `selector`. If there is none, wait until a matching element is attached to the DOM.",
+            "text": "Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.",
             "liType": "ordinal"
           },
           {
             "type": "li",
-            "text": "Ensure that matched element is a checkbox or a radio input. If not, this method rejects. If the element is already checked, this method returns immediately.",
+            "text": "Ensure that matched element is a checkbox or a radio input. If not, this method throws. If the element is already checked, this method returns immediately.",
             "liType": "ordinal"
           },
           {
@@ -33865,12 +34243,12 @@
           },
           {
             "type": "li",
-            "text": "Ensure that the element is now checked. If not, this method rejects.",
+            "text": "Ensure that the element is now checked. If not, this method throws.",
             "liType": "ordinal"
           },
           {
             "type": "text",
-            "text": "When all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`. Passing zero timeout disables this."
+            "text": "When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing zero timeout disables this."
           },
           {
             "type": "text",
@@ -33878,7 +34256,7 @@
           }
         ],
         "required": true,
-        "comment": "This method checks an element matching `selector` by performing the following steps:\n1. Find an element match matching `selector`. If there is none, wait until a matching element is attached to the DOM.\n1. Ensure that matched element is a checkbox or a radio input. If not, this method rejects. If the element is already\n   checked, this method returns immediately.\n1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the\n   element is detached during the checks, the whole action is retried.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to click in the center of the element.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n1. Ensure that the element is now checked. If not, this method rejects.\n\nWhen all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`.\nPassing zero timeout disables this.\n\nShortcut for main frame's [`method: Frame.check`].",
+        "comment": "This method checks an element matching `selector` by performing the following steps:\n1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.\n1. Ensure that matched element is a checkbox or a radio input. If not, this method throws. If the element is already\n   checked, this method returns immediately.\n1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the\n   element is detached during the checks, the whole action is retried.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to click in the center of the element.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n1. Ensure that the element is now checked. If not, this method throws.\n\nWhen all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing\nzero timeout disables this.\n\nShortcut for main frame's [`method: Frame.check`].",
         "deprecated": false,
         "async": true,
         "alias": "check",
@@ -33953,6 +34331,68 @@
                 {
                   "kind": "property",
                   "langs": {},
+                  "name": "position",
+                  "type": {
+                    "name": "Object",
+                    "properties": [
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "x",
+                        "type": {
+                          "name": "float",
+                          "expression": "[float]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": ""
+                          }
+                        ],
+                        "required": true,
+                        "comment": "",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "x"
+                      },
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "y",
+                        "type": {
+                          "name": "float",
+                          "expression": "[float]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": ""
+                          }
+                        ],
+                        "required": true,
+                        "comment": "",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "y"
+                      }
+                    ],
+                    "expression": "[Object]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "A point to use relative to the top-left corner of element padding box. If not specified, uses some visible point of the element."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "A point to use relative to the top-left corner of element padding box. If not specified, uses some visible point of the\nelement.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "position"
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
                   "name": "timeout",
                   "type": {
                     "name": "float",
@@ -33994,7 +34434,7 @@
           },
           {
             "type": "li",
-            "text": "Find an element match matching `selector`. If there is none, wait until a matching element is attached to the DOM.",
+            "text": "Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.",
             "liType": "ordinal"
           },
           {
@@ -34019,7 +34459,7 @@
           },
           {
             "type": "text",
-            "text": "When all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`. Passing zero timeout disables this."
+            "text": "When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing zero timeout disables this."
           },
           {
             "type": "text",
@@ -34027,7 +34467,7 @@
           }
         ],
         "required": true,
-        "comment": "This method clicks an element matching `selector` by performing the following steps:\n1. Find an element match matching `selector`. If there is none, wait until a matching element is attached to the DOM.\n1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the\n   element is detached during the checks, the whole action is retried.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to click in the center of the element, or the specified `position`.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n\nWhen all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`.\nPassing zero timeout disables this.\n\nShortcut for main frame's [`method: Frame.click`].",
+        "comment": "This method clicks an element matching `selector` by performing the following steps:\n1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.\n1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the\n   element is detached during the checks, the whole action is retried.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to click in the center of the element, or the specified `position`.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n\nWhen all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing\nzero timeout disables this.\n\nShortcut for main frame's [`method: Frame.click`].",
         "deprecated": false,
         "async": true,
         "alias": "click",
@@ -34443,7 +34883,13 @@
       },
       {
         "kind": "method",
-        "langs": {},
+        "langs": {
+          "aliases": {
+            "csharp": "DblClickAsync"
+          },
+          "types": {},
+          "overrides": {}
+        },
         "name": "dblclick",
         "type": {
           "name": "void"
@@ -34455,7 +34901,7 @@
           },
           {
             "type": "li",
-            "text": "Find an element match matching `selector`. If there is none, wait until a matching element is attached to the DOM.",
+            "text": "Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.",
             "liType": "ordinal"
           },
           {
@@ -34475,12 +34921,12 @@
           },
           {
             "type": "li",
-            "text": "Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set. Note that if the first click of the `dblclick()` triggers a navigation event, this method will reject.",
+            "text": "Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set. Note that if the first click of the `dblclick()` triggers a navigation event, this method will throw.",
             "liType": "ordinal"
           },
           {
             "type": "text",
-            "text": "When all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`. Passing zero timeout disables this."
+            "text": "When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing zero timeout disables this."
           },
           {
             "type": "note",
@@ -34493,7 +34939,7 @@
           }
         ],
         "required": true,
-        "comment": "This method double clicks an element matching `selector` by performing the following steps:\n1. Find an element match matching `selector`. If there is none, wait until a matching element is attached to the DOM.\n1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the\n   element is detached during the checks, the whole action is retried.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to double click in the center of the element, or the specified `position`.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set. Note that if the\n   first click of the `dblclick()` triggers a navigation event, this method will reject.\n\nWhen all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`.\nPassing zero timeout disables this.\n\n> NOTE: `page.dblclick()` dispatches two `click` events and a single `dblclick` event.\n\nShortcut for main frame's [`method: Frame.dblclick`].",
+        "comment": "This method double clicks an element matching `selector` by performing the following steps:\n1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.\n1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the\n   element is detached during the checks, the whole action is retried.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to double click in the center of the element, or the specified `position`.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set. Note that if the\n   first click of the `dblclick()` triggers a navigation event, this method will throw.\n\nWhen all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing\nzero timeout disables this.\n\n> NOTE: `page.dblclick()` dispatches two `click` events and a single `dblclick` event.\n\nShortcut for main frame's [`method: Frame.dblclick`].",
         "deprecated": false,
         "async": true,
         "alias": "dblclick",
@@ -37676,7 +38122,7 @@
           },
           {
             "type": "li",
-            "text": "Find an element match matching `selector`. If there is none, wait until a matching element is attached to the DOM.",
+            "text": "Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.",
             "liType": "ordinal"
           },
           {
@@ -37701,7 +38147,7 @@
           },
           {
             "type": "text",
-            "text": "When all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`. Passing zero timeout disables this."
+            "text": "When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing zero timeout disables this."
           },
           {
             "type": "text",
@@ -37709,7 +38155,7 @@
           }
         ],
         "required": true,
-        "comment": "This method hovers over an element matching `selector` by performing the following steps:\n1. Find an element match matching `selector`. If there is none, wait until a matching element is attached to the DOM.\n1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the\n   element is detached during the checks, the whole action is retried.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to hover over the center of the element, or the specified `position`.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n\nWhen all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`.\nPassing zero timeout disables this.\n\nShortcut for main frame's [`method: Frame.hover`].",
+        "comment": "This method hovers over an element matching `selector` by performing the following steps:\n1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.\n1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the\n   element is detached during the checks, the whole action is retried.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to hover over the center of the element, or the specified `position`.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n\nWhen all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing\nzero timeout disables this.\n\nShortcut for main frame's [`method: Frame.hover`].",
         "deprecated": false,
         "async": true,
         "alias": "hover",
@@ -41863,7 +42309,7 @@
           },
           {
             "type": "li",
-            "text": "Find an element match matching `selector`. If there is none, wait until a matching element is attached to the DOM.",
+            "text": "Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.",
             "liType": "ordinal"
           },
           {
@@ -41888,7 +42334,7 @@
           },
           {
             "type": "text",
-            "text": "When all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`. Passing zero timeout disables this."
+            "text": "When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing zero timeout disables this."
           },
           {
             "type": "note",
@@ -41901,7 +42347,7 @@
           }
         ],
         "required": true,
-        "comment": "This method taps an element matching `selector` by performing the following steps:\n1. Find an element match matching `selector`. If there is none, wait until a matching element is attached to the DOM.\n1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the\n   element is detached during the checks, the whole action is retried.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.touchscreen`] to tap the center of the element, or the specified `position`.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n\nWhen all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`.\nPassing zero timeout disables this.\n\n> NOTE: [`method: Page.tap`] requires that the `hasTouch` option of the browser context be set to true.\n\nShortcut for main frame's [`method: Frame.tap`].",
+        "comment": "This method taps an element matching `selector` by performing the following steps:\n1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.\n1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the\n   element is detached during the checks, the whole action is retried.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.touchscreen`] to tap the center of the element, or the specified `position`.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n\nWhen all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing\nzero timeout disables this.\n\n> NOTE: [`method: Page.tap`] requires that the `hasTouch` option of the browser context be set to true.\n\nShortcut for main frame's [`method: Frame.tap`].",
         "deprecated": false,
         "async": true,
         "alias": "tap",
@@ -42418,12 +42864,12 @@
           },
           {
             "type": "li",
-            "text": "Find an element match matching `selector`. If there is none, wait until a matching element is attached to the DOM.",
+            "text": "Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.",
             "liType": "ordinal"
           },
           {
             "type": "li",
-            "text": "Ensure that matched element is a checkbox or a radio input. If not, this method rejects. If the element is already unchecked, this method returns immediately.",
+            "text": "Ensure that matched element is a checkbox or a radio input. If not, this method throws. If the element is already unchecked, this method returns immediately.",
             "liType": "ordinal"
           },
           {
@@ -42448,12 +42894,12 @@
           },
           {
             "type": "li",
-            "text": "Ensure that the element is now unchecked. If not, this method rejects.",
+            "text": "Ensure that the element is now unchecked. If not, this method throws.",
             "liType": "ordinal"
           },
           {
             "type": "text",
-            "text": "When all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`. Passing zero timeout disables this."
+            "text": "When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing zero timeout disables this."
           },
           {
             "type": "text",
@@ -42461,7 +42907,7 @@
           }
         ],
         "required": true,
-        "comment": "This method unchecks an element matching `selector` by performing the following steps:\n1. Find an element match matching `selector`. If there is none, wait until a matching element is attached to the DOM.\n1. Ensure that matched element is a checkbox or a radio input. If not, this method rejects. If the element is already\n   unchecked, this method returns immediately.\n1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the\n   element is detached during the checks, the whole action is retried.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to click in the center of the element.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n1. Ensure that the element is now unchecked. If not, this method rejects.\n\nWhen all steps combined have not finished during the specified `timeout`, this method rejects with a `TimeoutError`.\nPassing zero timeout disables this.\n\nShortcut for main frame's [`method: Frame.uncheck`].",
+        "comment": "This method unchecks an element matching `selector` by performing the following steps:\n1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.\n1. Ensure that matched element is a checkbox or a radio input. If not, this method throws. If the element is already\n   unchecked, this method returns immediately.\n1. Wait for [actionability](./actionability.md) checks on the matched element, unless `force` option is set. If the\n   element is detached during the checks, the whole action is retried.\n1. Scroll the element into view if needed.\n1. Use [`property: Page.mouse`] to click in the center of the element.\n1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.\n1. Ensure that the element is now unchecked. If not, this method throws.\n\nWhen all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing\nzero timeout disables this.\n\nShortcut for main frame's [`method: Frame.uncheck`].",
         "deprecated": false,
         "async": true,
         "alias": "uncheck",
@@ -42532,6 +42978,68 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "noWaitAfter"
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "position",
+                  "type": {
+                    "name": "Object",
+                    "properties": [
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "x",
+                        "type": {
+                          "name": "float",
+                          "expression": "[float]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": ""
+                          }
+                        ],
+                        "required": true,
+                        "comment": "",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "x"
+                      },
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "y",
+                        "type": {
+                          "name": "float",
+                          "expression": "[float]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": ""
+                          }
+                        ],
+                        "required": true,
+                        "comment": "",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "y"
+                      }
+                    ],
+                    "expression": "[Object]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "A point to use relative to the top-left corner of element padding box. If not specified, uses some visible point of the element."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "A point to use relative to the top-left corner of element padding box. If not specified, uses some visible point of the\nelement.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "position"
                 },
                 {
                   "kind": "property",
@@ -42835,7 +43343,7 @@
         "required": true,
         "comment": "Performs action and waits for the Page to close.",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "waitForClose",
         "args": [
           {
@@ -42943,11 +43451,11 @@
         "spec": [
           {
             "type": "text",
-            "text": "Performs action and waits for a [ConoleMessage] to be logged by in the page. If predicate is provided, it passes `ConsoleMessage` value into the `predicate` function and waits for `predicate(message)` to return a truthy value. Will throw an error if the page is closed before the console event is fired."
+            "text": "Performs action and waits for a `ConsoleMessage` to be logged by in the page. If predicate is provided, it passes `ConsoleMessage` value into the `predicate` function and waits for `predicate(message)` to return a truthy value. Will throw an error if the page is closed before the console event is fired."
           }
         ],
         "required": true,
-        "comment": "Performs action and waits for a [ConoleMessage] to be logged by in the page. If predicate is provided, it passes\n`ConsoleMessage` value into the `predicate` function and waits for `predicate(message)` to return a truthy value. Will\nthrow an error if the page is closed before the console event is fired.",
+        "comment": "Performs action and waits for a `ConsoleMessage` to be logged by in the page. If predicate is provided, it passes\n`ConsoleMessage` value into the `predicate` function and waits for `predicate(message)` to return a truthy value. Will\nthrow an error if the page is closed before the console event is fired.",
         "deprecated": false,
         "async": true,
         "alias": "waitForConsoleMessage",
