@@ -15,14 +15,22 @@ module Playwright
 
     # @param method [String]
     # @param params [Hash]
+    # @return [Playwright::ChannelOwner|nil]
     def send_message_to_server(method, params = {})
-      result = @connection.send_message_to_server(@guid, method, params)
+      result = send_message_to_server_result(method, params)
       if result.is_a?(Hash)
         _type, channel_owner = result.first
         channel_owner
       else
         nil
       end
+    end
+
+    # @param method [String]
+    # @param params [Hash]
+    # @return [Hash]
+    def send_message_to_server_result(method, params)
+      @connection.send_message_to_server(@guid, method, params)
     end
 
     # @param method [String]
