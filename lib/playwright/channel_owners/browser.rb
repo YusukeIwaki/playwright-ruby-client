@@ -81,6 +81,11 @@ module Playwright
       @closed_or_closing = false
     end
 
+    # called from BrowserType#connectOverCDP
+    private def add_context(context)
+      @contexts << context
+    end
+
     # called from BrowserContext#on_close with send(:remove_context), so keep private.
     private def remove_context(context)
       @contexts.delete(context)
