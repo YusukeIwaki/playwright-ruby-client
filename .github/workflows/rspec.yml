@@ -15,3 +15,33 @@ jobs:
     - run: |
         rm -rf spec/integration
         bundle exec rspec
+
+  integration_test_with_npm_playwright_driver:
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, webkit]
+        version: [latest, next]
+    name: Integration test on ${{ matrix.browser }} with ${{ matrix.version }} driver
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7.2
+        bundler-cache: true
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 14
+    - uses: microsoft/playwright-github-action@v1
+    - name: setup ${{ matrix.version }} playwright via npm install
+      run: |
+        npm install playwright@${{ matrix.version }}
+        ./node_modules/.bin/playwright install
+    - run: bundle exec ruby development/generate_api.rb
+    - run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- bundle exec rspec spec/integration --profile 10
+      env:
+        BROWSER: ${{ matrix.browser }}
+        DEBUG: 1
+        PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./node_modules/.bin/playwright
+      timeout-minutes: 10
