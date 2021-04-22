@@ -31,3 +31,6 @@ bundle exec ruby development/generate_api.rb
 $PLAYWRIGHT_CLI_EXECUTABLE_PATH install
 bundle exec rspec
 ```
+
+* Testing with **latest** version of playwright driver might fail because of some breaking changes
+* Testing with **next** version of playwright **must be passed**
