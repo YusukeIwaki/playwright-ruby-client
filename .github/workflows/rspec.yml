@@ -22,7 +22,7 @@ jobs:
       matrix:
         browser: [chromium, webkit]
         version: [latest, next]
-    name: Integration test on ${{ matrix.browser }} with ${{ matrix.version }} driver
+    name: (${{ matrix.browser }} + playwright@${{ matrix.version }}) Integration test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2

@@ -2,7 +2,7 @@ name: Windows check
 on: [pull_request]
 jobs:
   windows_chrome_rspec:
-    name: RSpec on Windows / Chrome
+    name: Chrome
     runs-on: windows-latest
     steps:
       - name: Check out code
