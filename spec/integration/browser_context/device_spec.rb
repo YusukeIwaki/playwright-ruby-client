@@ -52,6 +52,8 @@ RSpec.describe 'device' do
   end
 
   it 'should reset scroll top after a navigation', sinatra: true do
+    skip if webkit? # Flaky on WebKit.
+
     iPhone = playwright.devices['iPhone 6']
     with_context(**iPhone) do |context|
       page = context.new_page

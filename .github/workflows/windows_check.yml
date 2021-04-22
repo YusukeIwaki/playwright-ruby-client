@@ -2,7 +2,7 @@ name: Windows check
 on: [pull_request]
 jobs:
   windows_chrome_rspec:
-    name: RSpec on Windows / Chrome
+    name: Chrome
     runs-on: windows-latest
     steps:
       - name: Check out code
@@ -22,3 +22,4 @@ jobs:
         run: bundle exec rspec spec/integration/example_spec.rb
         env:
           PLAYWRIGHT_CLI_EXECUTABLE_PATH: npx playwright
+        timeout-minutes: 3
