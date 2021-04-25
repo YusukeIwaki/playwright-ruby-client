@@ -47,6 +47,9 @@ module Playwright
       Async do |task|
         playwright = connection.wait_for_object_with_known_name('Playwright')
         playwright_api = PlaywrightApi.wrap(playwright)
+
+        ::Playwright.instance_variable_set(:@playwright_instance, playwright_api)
+
         if timeout
           task.with_timeout(timeout) do
             block.call(playwright_api)
@@ -56,7 +59,13 @@ module Playwright
         end
       ensure
         connection.stop
+
+        ::Playwright.instance_variable_set(:@playwright_instance, nil)
       end
     end
+  end
+
+  module_function def instance
+    @playwright_instance
   end
 end

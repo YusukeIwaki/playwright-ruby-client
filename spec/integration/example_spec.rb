@@ -4,6 +4,10 @@ require 'spec_helper'
 require 'tmpdir'
 
 RSpec.describe 'example' do
+  it 'should define Playwright.instance' do
+    expect(Playwright.instance).to respond_to(:chromium)
+  end
+
   it 'should take a screenshot' do
     with_page do |page|
       page.goto('https://github.com/YusukeIwaki')
