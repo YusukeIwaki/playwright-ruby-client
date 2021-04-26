@@ -9,8 +9,8 @@ module Playwright
       @preview
     end
 
-    private def on_preview_updated(preview)
-      @preview = preview
+    private def on_preview_updated(params)
+      @preview = params['preview']
     end
 
     def evaluate(pageFunction, arg: nil)
