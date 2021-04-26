@@ -3,16 +3,10 @@ require 'net/http'
 
 RSpec.describe 'chromium' do
   around do |example|
-    # Every integration test case should spend less than 15sec, in CI.
-    params = {
-      playwright_cli_executable_path: ENV['PLAYWRIGHT_CLI_EXECUTABLE_PATH'],
-      timeout: ENV['CI'] ? 15 : nil,
-    }
-
-    Playwright.create(**params) do |playwright|
+    Playwright.create(playwright_cli_executable_path: ENV['PLAYWRIGHT_CLI_EXECUTABLE_PATH']) do |playwright|
       @playwright_chromium = playwright.chromium
 
-      example.run
+      Timeout.timeout(5) { example.run }
     end
   end
   let(:browser_type) { @playwright_chromium }

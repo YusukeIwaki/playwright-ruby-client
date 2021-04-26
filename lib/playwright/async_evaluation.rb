@@ -1,28 +1,26 @@
-require 'async/condition'
-
 module Playwright
-  # Async { } wrapper, providing Concurrent::Promises::Future-like APIs
+  # wraps Concurrent::Promises.future
   class AsyncEvaluation
     def initialize(&block)
       raise ArgumentError.new('block must be given') unless block
 
-      @task = Async(&block)
+      @future = Concurrent::Promises.future(&block)
     end
 
     def resolved?
-      %i(complete stopped failed).include?(@task.status)
+      @future.resolved?
     end
 
     def fulfilled?
-      @task.status == :complete
+      @future.fulfilled?
     end
 
     def rejected?
-      %i(stopped failed).include?(@task.status)
+      @future.rejected?
     end
 
     def value!
-      @task.result
+      @future.value!
     end
   end
 end

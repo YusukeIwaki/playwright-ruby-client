@@ -1,11 +1,6 @@
 require 'spec_helper'
-require 'async'
 
 RSpec.describe Playwright::AsyncEvaluation do
-  around do |example|
-    Async { example.run }
-  end
-
   it 'is not resolved on initialize' do
     future = Playwright::AsyncEvaluation.new { |t| t.sleep 2 }
     expect(future).not_to be_resolved

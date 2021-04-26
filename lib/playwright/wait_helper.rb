@@ -22,9 +22,9 @@ module Playwright
     def reject_on_timeout(timeout_ms, message)
       return if timeout_ms <= 0
 
-      @timeout_task&.stop
-      @timeout_task = Async do |task|
-        task.sleep(timeout_ms / 1000.0)
+      @timeout_thread&.terminate
+      @timeout_thread = Thread.new(timeout_ms, message) do |timeout_ms, message|
+        sleep(timeout_ms / 1000.0)
         reject(TimeoutError.new(message: message))
       end
 
@@ -56,7 +56,7 @@ module Playwright
         emitter.off(event, listener)
       end
       @registered_listeners.clear
-      Async { @timeout_task&.stop }
+      @timeout_thread&.terminate
     end
 
     private def fulfill(*args)

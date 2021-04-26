@@ -1,10 +1,6 @@
 require 'spec_helper'
-require 'async'
 
 RSpec.describe Playwright::AsyncValue do
-  around do |example|
-    Async { example.run }
-  end
   let(:promise) { Playwright::AsyncValue.new }
 
   it 'is not resolved on initialize' do
@@ -16,7 +12,7 @@ RSpec.describe Playwright::AsyncValue do
   it 'blocks until fulfilled' do
     time_start = Time.now
 
-    Async { |t| t.sleep 2 ; promise.fulfill }
+    Thread.new { sleep 2 ; promise.fulfill }
     promise.value!
 
     expect(Time.now - time_start).to be > 1
@@ -25,7 +21,7 @@ RSpec.describe Playwright::AsyncValue do
   it 'blocks until rejected' do
     time_start = Time.now
 
-    Async { |t| t.sleep 2 ; promise.reject("invalid") }
+    Thread.new { sleep 2 ; promise.reject("invalid") }
     expect { promise.value! }.to raise_error(/invalid/)
 
     expect(Time.now - time_start).to be > 1
