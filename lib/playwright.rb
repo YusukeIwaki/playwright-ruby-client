@@ -3,10 +3,8 @@
 # namespace declaration
 module Playwright; end
 
-# socketry/async and wrappers.
-require 'async'
-require 'playwright/async_evaluation'
-require 'playwright/async_value'
+# concurrent-ruby
+require 'concurrent'
 
 # modules & constants
 require 'playwright/errors'
@@ -37,31 +35,40 @@ require 'playwright/playwright_api'
 Dir[File.join(__dir__, 'playwright_api', '*.rb')].each { |f| require f }
 
 module Playwright
-  module_function def create(playwright_cli_executable_path:, timeout: nil, &block)
+  # Recommended to call this method with block.
+  #
+  # Playwright.create(...) do |playwright|
+  #   browser = playwright.chromium.launch
+  #   ...
+  # end
+  #
+  # When we use this method without block, an instance of Puppeteer::Connection is returned
+  # and we *must* call connection.stop on the end.
+  # The instance of playwright is available by calling Playwright.instance
+  module_function def create(playwright_cli_executable_path:, &block)
     raise ArgumentError.new("block must be provided") unless block
 
     connection = Connection.new(playwright_cli_executable_path: playwright_cli_executable_path)
-    Async do
-      connection.async_run
+    connection.async_run
 
-      Async do |task|
-        playwright = connection.wait_for_object_with_known_name('Playwright')
-        playwright_api = PlaywrightApi.wrap(playwright)
+    begin
+      playwright = connection.wait_for_object_with_known_name('Playwright')
+      ::Playwright.instance_variable_set(:@playwright_instance, PlaywrightApi.wrap(playwright))
+    rescue
+      connection.stop
+      ::Playwright.instance_variable_set(:@playwright_instance, nil)
+      raise
+    end
 
-        ::Playwright.instance_variable_set(:@playwright_instance, playwright_api)
-
-        if timeout
-          task.with_timeout(timeout) do
-            block.call(playwright_api)
-          end
-        else
-          block.call(playwright_api)
-        end
+    if block
+      begin
+        block.call(::Playwright.instance)
       ensure
         connection.stop
-
         ::Playwright.instance_variable_set(:@playwright_instance, nil)
       end
+    else
+      connection
     end
   end
 

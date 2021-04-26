@@ -111,11 +111,8 @@ RSpec.describe 'screencast' do
       save_as_path = File.join(dir, 'my-video.webm')
       with_context(record_video_size: size, record_video_dir: dir, viewport: size) do |context|
         page = context.new_page
-        Async { page.video.delete }
-        Async do |task|
-          page.evaluate("() => document.body.style.backgroundColor = 'red'")
-          task.sleep 1
-        end.wait
+        Concurrent::Promises.future { page.video.delete }
+        page.evaluate("() => document.body.style.backgroundColor = 'red'")
         video_file = page.video.path
       end
       expect(File.exist?(video_file)).to eq(false)

@@ -3,7 +3,7 @@ require 'spec_helper'
 RSpec.describe 'Page#wait_for_function' do
   it 'should accept a string' do
     with_page do |page|
-      watchdog = Playwright::AsyncEvaluation.new { page.wait_for_function('window.__FOO === 1') }
+      watchdog = Concurrent::Promises.future { page.wait_for_function('window.__FOO === 1') }
       page.evaluate("() => window['__FOO'] = 1")
       Timeout.timeout(2) { watchdog.value! }
     end
@@ -59,7 +59,7 @@ RSpec.describe 'Page#wait_for_function' do
 
   it 'should poll on raf' do
     with_page do |page|
-      watchdog = Playwright::AsyncEvaluation.new {
+      watchdog = Concurrent::Promises.future {
         page.wait_for_function("() => window['__FOO'] === 'hit'", polling: 'raf')
       }
       page.evaluate("() => window['__FOO'] = 'hit'")
@@ -130,7 +130,7 @@ RSpec.describe 'Page#wait_for_function' do
       div = page.query_selector('div')
       resolved = false
 
-      promise = Playwright::AsyncEvaluation.new {
+      promise = Concurrent::Promises.future {
         page.wait_for_function('element => !element.parentElement', arg: div)
         resolved = true
       }
@@ -162,7 +162,7 @@ RSpec.describe 'Page#wait_for_function' do
         return window['__injected'];
       }
       JAVASCRIPT
-      watchdog = Playwright::AsyncEvaluation.new { page.wait_for_function(js, timeout: 0, polling: 10) }
+      watchdog = Concurrent::Promises.future { page.wait_for_function(js, timeout: 0, polling: 10) }
       page.wait_for_function("() => window['__counter'] > 10")
       page.evaluate("() => window['__injected'] = true")
       Timeout.timeout(2) { watchdog.value! }

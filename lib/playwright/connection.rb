@@ -38,13 +38,13 @@ module Playwright
         return @objects[guid]
       end
 
-      callback = AsyncValue.new
+      callback = Concurrent::Promises.resolvable_future
       @waiting_for_object[guid] = callback
       callback.value!
     end
 
     def async_send_message_to_server(guid, method, params)
-      callback = AsyncValue.new
+      callback = Concurrent::Promises.resolvable_future
 
       with_generated_id do |id|
         # register callback promise object first.

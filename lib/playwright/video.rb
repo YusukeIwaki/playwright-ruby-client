@@ -2,7 +2,7 @@ module Playwright
   class Video
     def initialize(page)
       @page = page
-      @artifact = AsyncValue.new
+      @artifact = Concurrent::Promises.resolvable_future
       if @page.closed?
         on_page_closed
       else

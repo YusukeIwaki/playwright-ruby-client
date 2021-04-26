@@ -13,7 +13,7 @@ RSpec.describe 'ElementHandle#wait_for_element_state' do
       page.content = "<div style='display:none'>content</div>"
       div = page.query_selector('div')
       done = false
-      promise = Playwright::AsyncEvaluation.new {
+      promise = Concurrent::Promises.future {
         div.wait_for_element_state('visible')
         done = true
       }
@@ -45,7 +45,7 @@ RSpec.describe 'ElementHandle#wait_for_element_state' do
     with_page do |page|
       page.content = "<div style='display:none'>content</div>"
       div = page.query_selector('div')
-      promise = Playwright::AsyncEvaluation.new { div.wait_for_element_state('visible') }
+      promise = Concurrent::Promises.future { div.wait_for_element_state('visible') }
       div.evaluate("div => div.remove()")
       expect { promise.value! }.to raise_error(/Element is not attached to the DOM/)
     end
@@ -56,7 +56,7 @@ RSpec.describe 'ElementHandle#wait_for_element_state' do
       page.content = '<div>content</div>'
       div = page.query_selector('div')
       done = false
-      promise = Playwright::AsyncEvaluation.new {
+      promise = Concurrent::Promises.future {
         div.wait_for_element_state('hidden')
         done = true
       }
@@ -81,7 +81,7 @@ RSpec.describe 'ElementHandle#wait_for_element_state' do
       page.content = '<div>content</div>'
       div = page.query_selector('div')
       done = false
-      promise = Playwright::AsyncEvaluation.new {
+      promise = Concurrent::Promises.future {
         div.wait_for_element_state('hidden')
         done = true
       }
@@ -98,7 +98,7 @@ RSpec.describe 'ElementHandle#wait_for_element_state' do
       page.content = '<button disabled><span>Target</span></button>'
       span = page.query_selector('text=Target')
       done = false
-      promise = Playwright::AsyncEvaluation.new {
+      promise = Concurrent::Promises.future {
         span.wait_for_element_state('enabled')
         done = true
       }
@@ -114,7 +114,7 @@ RSpec.describe 'ElementHandle#wait_for_element_state' do
     with_page do |page|
       page.content = '<button disabled>Target</button>'
       button = page.query_selector('button')
-      promise = Playwright::AsyncEvaluation.new { button.wait_for_element_state('enabled') }
+      promise = Concurrent::Promises.future { button.wait_for_element_state('enabled') }
       button.evaluate("button => button.remove()")
       expect { promise.value! }.to raise_error(/Element is not attached to the DOM/)
     end
@@ -125,7 +125,7 @@ RSpec.describe 'ElementHandle#wait_for_element_state' do
       page.content = '<button><span>Target</span></button>'
       span = page.query_selector('text=Target')
       done = false
-      promise = Playwright::AsyncEvaluation.new {
+      promise = Concurrent::Promises.future {
         span.wait_for_element_state('disabled')
         done = true
       }
@@ -144,7 +144,7 @@ RSpec.describe 'ElementHandle#wait_for_element_state' do
       button.evaluate("button => { button.style.transition = 'margin 10000ms linear 0s'; button.style.marginLeft = '20000px'; }")
 
       done = false
-      promise = Playwright::AsyncEvaluation.new {
+      promise = Concurrent::Promises.future {
         button.wait_for_element_state('stable')
         done = true
       }
@@ -161,7 +161,7 @@ RSpec.describe 'ElementHandle#wait_for_element_state' do
       page.content = '<input readonly>'
       input = page.query_selector('input')
       done = false
-      promise = Playwright::AsyncEvaluation.new {
+      promise = Concurrent::Promises.future {
         input.wait_for_element_state('editable')
         done = true
       }

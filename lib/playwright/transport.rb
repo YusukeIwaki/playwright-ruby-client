@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'async/io'
 require 'json'
 require 'open3'
 require "stringio"
@@ -38,21 +37,17 @@ module Playwright
     # Terminate playwright-cli driver.
     def stop
       [@stdin, @stdout, @stderr].each { |io| io.close unless io.closed? }
+      @thread&.terminate
     end
 
     # Start `playwright-cli run-driver`
     #
     # @note This method blocks until playwright-cli exited. Consider using Thread or Future.
     def async_run
-      stdin, stdout, stderr, _ = Open3.popen3("#{@driver_executable_path} run-driver")
+      @stdin, @stdout, @stderr, @thread = Open3.popen3("#{@driver_executable_path} run-driver")
 
-      # convert to non-blocking IO
-      @stdin = Async::IO::Generic.new(stdin)
-      @stdout = Async::IO::Generic.new(stdout)
-      @stderr = Async::IO::Generic.new(stderr)
-
-      Async { handle_stdout }
-      Async { handle_stderr }
+      Thread.new { handle_stdout }
+      Thread.new { handle_stderr }
     end
 
     private
@@ -71,7 +66,7 @@ module Playwright
         debug_recv_message(obj) if @debug
         @on_message&.call(obj)
       end
-    rescue IOError, Async::Wrapper::Cancelled
+    rescue IOError
       # disconnected by remote.
     end
 
@@ -94,7 +89,7 @@ module Playwright
         end
         $stderr.write(err)
       end
-    rescue IOError, Async::Wrapper::Cancelled
+    rescue IOError
       # disconnected by remote.
     end
 

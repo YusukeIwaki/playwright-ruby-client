@@ -3,7 +3,7 @@ require 'spec_helper'
 RSpec.describe Playwright::Page do
   it 'should reject all promises when page is closed' do
     with_page do |page|
-      never_resolved_promise = Playwright::AsyncEvaluation.new { page.evaluate('() => new Promise(r => {})') }
+      never_resolved_promise = Concurrent::Promises.future { page.evaluate('() => new Promise(r => {})') }
       page.close
       expect { never_resolved_promise.value! }.to raise_error(/Protocol error/)
     end
@@ -26,8 +26,8 @@ RSpec.describe Playwright::Page do
 
   it 'should terminate network waiters' do
     with_page do |page|
-      request_promise = Playwright::AsyncEvaluation.new { page.expect_request('http://example.com/') }
-      response_promise = Playwright::AsyncEvaluation.new { page.expect_response('http://example.com/') }
+      request_promise = Concurrent::Promises.future { page.expect_request('http://example.com/') }
+      response_promise = Concurrent::Promises.future { page.expect_response('http://example.com/') }
       page.close
       expect { request_promise.value! }.to raise_error(/Page closed/)
       expect { response_promise.value! }.to raise_error(/Page closed/)
@@ -46,7 +46,7 @@ RSpec.describe Playwright::Page do
 
   it 'should fire load when expected' do
     with_page do |page|
-      promise = Playwright::AsyncEvaluation.new { page.expect_event('load') }
+      promise = Concurrent::Promises.future { page.expect_event('load') }
       page.goto('about:blank')
       Timeout.timeout(1) do
         promise.value!
@@ -137,7 +137,7 @@ RSpec.describe Playwright::Page do
       new_page = page.expect_event('popup') do
         page.evaluate("() => window['newPage'] = window.open('about:blank')")
       end
-      closed_promise = Playwright::AsyncValue.new
+      closed_promise = Concurrent::Promises.resolvable_future
       new_page.once('close', -> { closed_promise.fulfill(nil) })
       page.evaluate("() => window['newPage'].close()")
       Timeout.timeout(1) do
@@ -149,7 +149,7 @@ RSpec.describe Playwright::Page do
   it 'page.close should work with page.close' do
     with_context do |context|
       page = context.new_page
-      closed_promise = Playwright::AsyncValue.new
+      closed_promise = Concurrent::Promises.resolvable_future
       page.once('close', -> { closed_promise.fulfill(nil) })
       page.close
       Timeout.timeout(1) do
