@@ -179,7 +179,7 @@ module Playwright
           value: value,
           noWaitAfter: noWaitAfter,
           timeout: timeout,
-        }
+        }.compact
         @channel.send_message_to_server('fill', params)
 
         nil
