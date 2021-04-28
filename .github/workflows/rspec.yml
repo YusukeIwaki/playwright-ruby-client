@@ -15,8 +15,12 @@ jobs:
     - run: |
         rm -rf spec/integration
         bundle exec rspec
+      env:
+        PLAYWRIGHT_CLI_EXECUTABLE_PATH: npx playwright
+      timeout-minutes: 3
 
   integration_test_with_npm_playwright_driver:
+    needs: unit_test
     strategy:
       fail-fast: false
       matrix:
