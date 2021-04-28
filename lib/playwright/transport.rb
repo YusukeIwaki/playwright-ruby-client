@@ -12,6 +12,7 @@ module Playwright
     def initialize(playwright_cli_executable_path:)
       @driver_executable_path = playwright_cli_executable_path
       @debug = ENV['DEBUG'].to_s == 'true' || ENV['DEBUG'].to_s == '1'
+      @mutex = Mutex.new
     end
 
     def on_message_received(&block)
@@ -28,8 +29,10 @@ module Playwright
     def send_message(message)
       debug_send_message(message) if @debug
       msg = JSON.dump(message)
-      @stdin.write([msg.size].pack('V')) # unsigned 32bit, little endian
-      @stdin.write(msg)
+      @mutex.synchronize {
+        @stdin.write([msg.size].pack('V')) # unsigned 32bit, little endian
+        @stdin.write(msg)
+      }
     rescue Errno::EPIPE
       raise AlreadyDisconnectedError.new('send_message failed')
     end
