@@ -2,12 +2,12 @@ require 'spec_helper'
 require 'net/http'
 
 RSpec.describe 'chromium' do
-  around do |example|
-    Playwright.create(playwright_cli_executable_path: ENV['PLAYWRIGHT_CLI_EXECUTABLE_PATH']) do |playwright|
-      @playwright_chromium = playwright.chromium
-
-      Timeout.timeout(5) { example.run }
-    end
+  before(:all) do
+    @execution = Playwright.create(playwright_cli_executable_path: ENV['PLAYWRIGHT_CLI_EXECUTABLE_PATH'])
+    @playwright_chromium = @execution.playwright.chromium
+  end
+  after(:all) do
+    @execution.stop
   end
   let(:browser_type) { @playwright_chromium }
 

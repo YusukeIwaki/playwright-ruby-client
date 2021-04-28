@@ -35,6 +35,19 @@ require 'playwright/playwright_api'
 Dir[File.join(__dir__, 'playwright_api', '*.rb')].each { |f| require f }
 
 module Playwright
+  class Execution
+    def initialize(connection, playwright)
+      @connection = connection
+      @playwright = playwright
+    end
+
+    def stop
+      @connection.stop
+    end
+
+    attr_reader :playwright
+  end
+
   # Recommended to call this method with block.
   #
   # Playwright.create(...) do |playwright|
@@ -42,33 +55,30 @@ module Playwright
   #   ...
   # end
   #
-  # When we use this method without block, an instance of Puppeteer::Connection is returned
-  # and we *must* call connection.stop on the end.
-  # The instance of playwright is available by calling Playwright.instance
+  # When we use this method without block, an instance of Puppeteer::Execution is returned
+  # and we *must* call execution.stop on the end.
+  # The instance of playwright is available by calling execution.playwright
   module_function def create(playwright_cli_executable_path:, &block)
-    raise ArgumentError.new("block must be provided") unless block
-
     connection = Connection.new(playwright_cli_executable_path: playwright_cli_executable_path)
     connection.async_run
 
-    begin
-      playwright = connection.wait_for_object_with_known_name('Playwright')
-      ::Playwright.instance_variable_set(:@playwright_instance, PlaywrightApi.wrap(playwright))
-    rescue
-      connection.stop
-      ::Playwright.instance_variable_set(:@playwright_instance, nil)
-      raise
-    end
+    execution =
+      begin
+        playwright = connection.wait_for_object_with_known_name('Playwright')
+        Execution.new(connection, PlaywrightApi.wrap(playwright))
+      rescue
+        connection.stop
+        raise
+      end
 
     if block
       begin
-        block.call(::Playwright.instance)
+        block.call(execution.playwright)
       ensure
-        connection.stop
-        ::Playwright.instance_variable_set(:@playwright_instance, nil)
+        execution.stop
       end
     else
-      connection
+      execution
     end
   end
 
