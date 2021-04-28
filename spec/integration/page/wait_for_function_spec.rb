@@ -4,6 +4,7 @@ RSpec.describe 'Page#wait_for_function' do
   it 'should accept a string' do
     with_page do |page|
       watchdog = Concurrent::Promises.future { page.wait_for_function('window.__FOO === 1') }
+      sleep_a_bit_for_race_condition
       page.evaluate("() => window['__FOO'] = 1")
       Timeout.timeout(2) { watchdog.value! }
     end
@@ -62,6 +63,7 @@ RSpec.describe 'Page#wait_for_function' do
       watchdog = Concurrent::Promises.future {
         page.wait_for_function("() => window['__FOO'] === 'hit'", polling: 'raf')
       }
+      sleep_a_bit_for_race_condition
       page.evaluate("() => window['__FOO'] = 'hit'")
       Timeout.timeout(2) { watchdog.value! }
     end
@@ -163,6 +165,7 @@ RSpec.describe 'Page#wait_for_function' do
       }
       JAVASCRIPT
       watchdog = Concurrent::Promises.future { page.wait_for_function(js, timeout: 0, polling: 10) }
+      sleep_a_bit_for_race_condition
       page.wait_for_function("() => window['__counter'] > 10")
       page.evaluate("() => window['__injected'] = true")
       Timeout.timeout(2) { watchdog.value! }

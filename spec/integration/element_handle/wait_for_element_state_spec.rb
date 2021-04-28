@@ -46,6 +46,7 @@ RSpec.describe 'ElementHandle#wait_for_element_state' do
       page.content = "<div style='display:none'>content</div>"
       div = page.query_selector('div')
       promise = Concurrent::Promises.future { div.wait_for_element_state('visible') }
+      sleep_a_bit_for_race_condition
       div.evaluate("div => div.remove()")
       expect { promise.value! }.to raise_error(/Element is not attached to the DOM/)
     end
@@ -115,6 +116,7 @@ RSpec.describe 'ElementHandle#wait_for_element_state' do
       page.content = '<button disabled>Target</button>'
       button = page.query_selector('button')
       promise = Concurrent::Promises.future { button.wait_for_element_state('enabled') }
+      sleep_a_bit_for_race_condition
       button.evaluate("button => button.remove()")
       expect { promise.value! }.to raise_error(/Element is not attached to the DOM/)
     end

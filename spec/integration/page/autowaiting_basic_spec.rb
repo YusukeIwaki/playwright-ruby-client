@@ -30,6 +30,7 @@ RSpec.describe 'autowaiting basic' do
 
       promises = [
         Concurrent::Promises.future {
+          sleep_a_bit_for_race_condition
           page.click('a')
           messages << 'click'
         },
@@ -52,6 +53,7 @@ RSpec.describe 'autowaiting basic' do
 
       promises = [
         Concurrent::Promises.future {
+          sleep_a_bit_for_race_condition
           page.evaluate("() => window.anchor.click()")
           messages << 'click'
         },
@@ -74,6 +76,7 @@ RSpec.describe 'autowaiting basic' do
 
       promises = [
         Concurrent::Promises.future {
+          sleep_a_bit_for_race_condition
           page.eval_on_selector('#anchor', "(anchor) => anchor.click()")
           messages << 'click'
         },
@@ -97,6 +100,7 @@ RSpec.describe 'autowaiting basic' do
 
       promises = [
         Concurrent::Promises.future {
+          sleep_a_bit_for_race_condition
           handle.evaluate("(doc) => doc.getElementById('anchor').click()")
           messages << 'click'
         },
@@ -120,6 +124,7 @@ RSpec.describe 'autowaiting basic' do
 
       promises = [
         Concurrent::Promises.future {
+          sleep_a_bit_for_race_condition
           handle.eval_on_selector('#anchor', "(anchor) => anchor.click()")
           messages << 'click'
         },
@@ -142,6 +147,7 @@ RSpec.describe 'autowaiting basic' do
 
       promises = [
         Concurrent::Promises.future {
+          sleep_a_bit_for_race_condition
           page.click('a')
           messages << 'click'
         },
@@ -164,6 +170,7 @@ RSpec.describe 'autowaiting basic' do
 
       promises = [
         Concurrent::Promises.future {
+          sleep_a_bit_for_race_condition
           page.evaluate('window.anchor.click()')
           messages << 'click'
         },
@@ -192,6 +199,7 @@ RSpec.describe 'autowaiting basic' do
 
       promises = [
         Concurrent::Promises.future {
+          sleep_a_bit_for_race_condition
           page.click('input[type=submit]')
           messages << 'click'
         },
@@ -220,6 +228,7 @@ RSpec.describe 'autowaiting basic' do
 
       promises = [
         Concurrent::Promises.future {
+          sleep_a_bit_for_race_condition
           page.click('input[type=submit]')
           messages << 'click'
         },
@@ -240,6 +249,7 @@ RSpec.describe 'autowaiting basic' do
     with_page do |page|
       promises = [
         Concurrent::Promises.future {
+          sleep_a_bit_for_race_condition
           page.evaluate("window.location.href = \"#{server_cross_process_prefix}/empty.html\"")
           messages << 'evaluate'
         },
@@ -282,6 +292,7 @@ RSpec.describe 'autowaiting basic' do
 
       promises = [
         Concurrent::Promises.future {
+          sleep_a_bit_for_race_condition
           page.evaluate('window.location.reload()')
           messages << 'evaluate'
         },
@@ -311,6 +322,7 @@ RSpec.describe 'autowaiting basic' do
       frame = page.frame({name: 'target'})
       promises = [
         Concurrent::Promises.future {
+          sleep_a_bit_for_race_condition
           page.click('a')
           messages << 'click'
         },
@@ -358,6 +370,7 @@ RSpec.describe 'autowaiting basic' do
 
       promises = [
         Concurrent::Promises.future {
+          sleep_a_bit_for_race_condition
           page.click('a')
           page.wait_for_load_state(state: 'load')
           messages << 'clickload'

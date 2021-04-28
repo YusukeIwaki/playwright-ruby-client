@@ -84,6 +84,10 @@ RSpec.configure do |config|
         page.close
       end
     end
+
+    def sleep_a_bit_for_race_condition
+      sleep 0.5
+    end
   end
   BROWSER_TYPES.each do |type|
     IntegrationTestCaseMethods.define_method("#{type}?") { @playwright_browser_type == type }

@@ -4,6 +4,7 @@ RSpec.describe Playwright::Page do
   it 'should reject all promises when page is closed' do
     with_page do |page|
       never_resolved_promise = Concurrent::Promises.future { page.evaluate('() => new Promise(r => {})') }
+      sleep_a_bit_for_race_condition
       page.close
       expect { never_resolved_promise.value! }.to raise_error(/Protocol error/)
     end

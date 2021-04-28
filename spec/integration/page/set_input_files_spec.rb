@@ -46,6 +46,7 @@ RSpec.describe 'Page#set_input_files' do
       page.content = '<input type=file>'
       promise = Concurrent::Promises.resolvable_future
       page.once('filechooser', -> (chooser) { promise.fulfill(chooser) })
+      sleep_a_bit_for_race_condition
       page.click('input')
       Timeout.timeout(2) do
         expect(promise.value!).to be_a(Playwright::FileChooser)
