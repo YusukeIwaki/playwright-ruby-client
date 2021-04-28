@@ -120,6 +120,13 @@ class ImplementedClassWithDoc
         ImplementedMethodWithoutDoc.new(method, @inflector).lines.each(&data)
       end
 
+      overridden_methods = %i(to_s inspect).freeze
+      (@klass.public_instance_methods(false) & overridden_methods).each do |method_sym|
+        method = @klass.public_instance_method(method_sym)
+        data << '' # insert blank line before definition.
+        ImplementedMethodWithoutDoc.new(method, @inflector).lines.each(&data)
+      end
+
       unless (@klass.public_instance_methods & Playwright::EventListenerInterface.public_instance_methods).empty?
         EventEmitterMethods.new(@inflector).lines.each(&data)
       end
