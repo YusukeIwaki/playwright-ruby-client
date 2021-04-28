@@ -36,17 +36,18 @@ RSpec.configure do |config|
   config.around(:each, type: :integration) do |example|
     @playwright_browser_type = browser_type
 
-    # Every integration test case should spend less than 15sec, in CI.
-    params = {
-      playwright_cli_executable_path: ENV['PLAYWRIGHT_CLI_EXECUTABLE_PATH'],
-      timeout: ENV['CI'] ? 15 : nil,
-    }
-    Playwright.create(**params) do |playwright|
+    Playwright.create(playwright_cli_executable_path: ENV['PLAYWRIGHT_CLI_EXECUTABLE_PATH']) do |playwright|
       @playwright_playwright = playwright
 
       playwright.send(@playwright_browser_type).launch do |browser|
         @playwright_browser = browser
-        example.run
+
+        if ENV['CI']
+          # Every integration test case should spend less than 15sec, in CI.
+          Timeout.timeout(15) { example.run }
+        else
+          example.run
+        end
       end
     end
   end
@@ -82,6 +83,10 @@ RSpec.configure do |config|
       ensure
         page.close
       end
+    end
+
+    def sleep_a_bit_for_race_condition
+      sleep 0.5
     end
   end
   BROWSER_TYPES.each do |type|
@@ -167,17 +172,6 @@ RSpec.configure do |config|
       example.run
     ensure
       sinatra_app.quit!
-    end
-  end
-
-  # Every integration test case should spend less than 20sec, in CI.
-  #
-  # Essentially this timeout is not needed.
-  # However socketry/async doesn't raise StandardError, and hangs...!
-  # Workaround to do with it...
-  if ENV['CI']
-    config.around(:each, type: :integration) do |example|
-      Timeout.timeout(20) { example.run }
     end
   end
 end

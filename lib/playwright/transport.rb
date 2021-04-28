@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'async/io'
 require 'json'
 require 'open3'
 require "stringio"
@@ -13,6 +12,7 @@ module Playwright
     def initialize(playwright_cli_executable_path:)
       @driver_executable_path = playwright_cli_executable_path
       @debug = ENV['DEBUG'].to_s == 'true' || ENV['DEBUG'].to_s == '1'
+      @mutex = Mutex.new
     end
 
     def on_message_received(&block)
@@ -29,8 +29,10 @@ module Playwright
     def send_message(message)
       debug_send_message(message) if @debug
       msg = JSON.dump(message)
-      @stdin.write([msg.size].pack('V')) # unsigned 32bit, little endian
-      @stdin.write(msg)
+      @mutex.synchronize {
+        @stdin.write([msg.size].pack('V')) # unsigned 32bit, little endian
+        @stdin.write(msg)
+      }
     rescue Errno::EPIPE
       raise AlreadyDisconnectedError.new('send_message failed')
     end
@@ -38,21 +40,17 @@ module Playwright
     # Terminate playwright-cli driver.
     def stop
       [@stdin, @stdout, @stderr].each { |io| io.close unless io.closed? }
+      @thread&.terminate
     end
 
     # Start `playwright-cli run-driver`
     #
     # @note This method blocks until playwright-cli exited. Consider using Thread or Future.
     def async_run
-      stdin, stdout, stderr, _ = Open3.popen3("#{@driver_executable_path} run-driver")
+      @stdin, @stdout, @stderr, @thread = Open3.popen3("#{@driver_executable_path} run-driver")
 
-      # convert to non-blocking IO
-      @stdin = Async::IO::Generic.new(stdin)
-      @stdout = Async::IO::Generic.new(stdout)
-      @stderr = Async::IO::Generic.new(stderr)
-
-      Async { handle_stdout }
-      Async { handle_stderr }
+      Thread.new { handle_stdout }
+      Thread.new { handle_stderr }
     end
 
     private
@@ -71,7 +69,7 @@ module Playwright
         debug_recv_message(obj) if @debug
         @on_message&.call(obj)
       end
-    rescue IOError, Async::Wrapper::Cancelled
+    rescue IOError
       # disconnected by remote.
     end
 
@@ -94,7 +92,7 @@ module Playwright
         end
         $stderr.write(err)
       end
-    rescue IOError, Async::Wrapper::Cancelled
+    rescue IOError
       # disconnected by remote.
     end
 

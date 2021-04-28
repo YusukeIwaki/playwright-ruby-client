@@ -3,10 +3,8 @@
 # namespace declaration
 module Playwright; end
 
-# socketry/async and wrappers.
-require 'async'
-require 'playwright/async_evaluation'
-require 'playwright/async_value'
+# concurrent-ruby
+require 'concurrent'
 
 # modules & constants
 require 'playwright/errors'
@@ -37,31 +35,50 @@ require 'playwright/playwright_api'
 Dir[File.join(__dir__, 'playwright_api', '*.rb')].each { |f| require f }
 
 module Playwright
-  module_function def create(playwright_cli_executable_path:, timeout: nil, &block)
-    raise ArgumentError.new("block must be provided") unless block
+  class Execution
+    def initialize(connection, playwright)
+      @connection = connection
+      @playwright = playwright
+    end
 
+    def stop
+      @connection.stop
+    end
+
+    attr_reader :playwright
+  end
+
+  # Recommended to call this method with block.
+  #
+  # Playwright.create(...) do |playwright|
+  #   browser = playwright.chromium.launch
+  #   ...
+  # end
+  #
+  # When we use this method without block, an instance of Puppeteer::Execution is returned
+  # and we *must* call execution.stop on the end.
+  # The instance of playwright is available by calling execution.playwright
+  module_function def create(playwright_cli_executable_path:, &block)
     connection = Connection.new(playwright_cli_executable_path: playwright_cli_executable_path)
-    Async do
-      connection.async_run
+    connection.async_run
 
-      Async do |task|
+    execution =
+      begin
         playwright = connection.wait_for_object_with_known_name('Playwright')
-        playwright_api = PlaywrightApi.wrap(playwright)
-
-        ::Playwright.instance_variable_set(:@playwright_instance, playwright_api)
-
-        if timeout
-          task.with_timeout(timeout) do
-            block.call(playwright_api)
-          end
-        else
-          block.call(playwright_api)
-        end
-      ensure
+        Execution.new(connection, PlaywrightApi.wrap(playwright))
+      rescue
         connection.stop
-
-        ::Playwright.instance_variable_set(:@playwright_instance, nil)
+        raise
       end
+
+    if block
+      begin
+        block.call(execution.playwright)
+      ensure
+        execution.stop
+      end
+    else
+      execution
     end
   end
 

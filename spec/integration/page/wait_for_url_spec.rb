@@ -12,7 +12,7 @@ RSpec.describe 'Page#wait_for_url' do
 
   it 'should respect timeout', sinatra: true do
     with_page do |page|
-      promise = Playwright::AsyncEvaluation.new {
+      promise = Concurrent::Promises.future {
         page.wait_for_url('**/frame.html',  timeout: 2500)
       }
       page.goto(server_empty_page)
@@ -29,13 +29,13 @@ RSpec.describe 'Page#wait_for_url' do
     end
 
     with_page do |page|
-      domcontentloaded_promise = Playwright::AsyncEvaluation.new do
+      domcontentloaded_promise = Concurrent::Promises.future do
         page.wait_for_url('**/one-style.html', waitUntil: 'domcontentloaded')
       end
-      navigation_promise = Playwright::AsyncEvaluation.new do
+      navigation_promise = Concurrent::Promises.future do
         page.goto("#{server_prefix}/one-style.html")
       end
-      load_promise = Playwright::AsyncEvaluation.new do
+      load_promise = Concurrent::Promises.future do
         page.wait_for_url('**/one-style.html', waitUntil: 'load')
       end
 
@@ -118,7 +118,7 @@ RSpec.describe 'Page#wait_for_url' do
   it 'should work with url match for same document navigations', sinatra: true do
     with_page do |page|
       page.goto(server_empty_page)
-      wait_promise = Playwright::AsyncEvaluation.new do
+      wait_promise = Concurrent::Promises.future do
         page.wait_for_url(/third.html/)
       end
       expect(wait_promise).not_to be_resolved
