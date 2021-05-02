@@ -124,7 +124,9 @@ module Playwright
     end
 
     private def unwrap_impl(object)
-      if object.is_a?(PlaywrightApi)
+      if object.is_a?(Array)
+        object.map { |obj| unwrap_impl(obj) }
+      elsif object.is_a?(PlaywrightApi)
         object.instance_variable_get(:@impl)
       else
         object
