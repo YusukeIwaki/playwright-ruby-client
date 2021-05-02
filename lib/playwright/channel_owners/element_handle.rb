@@ -82,7 +82,7 @@ module Playwright
           modifiers: modifiers,
           position: position,
           timeout: timeout,
-        }
+        }.compact
         @channel.send_message_to_server('hover', params)
 
         nil
