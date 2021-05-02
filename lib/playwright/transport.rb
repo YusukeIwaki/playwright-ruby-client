@@ -33,7 +33,7 @@ module Playwright
         @stdin.write([msg.size].pack('V')) # unsigned 32bit, little endian
         @stdin.write(msg)
       }
-    rescue Errno::EPIPE
+    rescue Errno::EPIPE, IOError
       raise AlreadyDisconnectedError.new('send_message failed')
     end
 
