@@ -9,6 +9,14 @@ RSpec.describe 'Page#check' do
     end
   end
 
+  it 'should check the box with ElementHandle#check' do
+    with_page do |page|
+      page.content = "<input id='checkbox' type='checkbox'></input>"
+      page.query_selector('input').check
+      expect(page.evaluate("() => window['checkbox'].checked")).to eq(true)
+    end
+  end
+
   it 'should not check the checked box' do
     with_page do |page|
       page.content = "<input id='checkbox' type='checkbox' checked></input>"
@@ -21,6 +29,14 @@ RSpec.describe 'Page#check' do
     with_page do |page|
       page.content = "<input id='checkbox' type='checkbox' checked></input>"
       page.uncheck('input')
+      expect(page.evaluate("() => window['checkbox'].checked")).to eq(false)
+    end
+  end
+
+  it 'should uncheck the box with ElementHandle#uncheck' do
+    with_page do |page|
+      page.content = "<input id='checkbox' type='checkbox' checked></input>"
+      page.query_selector('input').uncheck
       expect(page.evaluate("() => window['checkbox'].checked")).to eq(false)
     end
   end
