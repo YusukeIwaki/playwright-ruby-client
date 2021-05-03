@@ -30,8 +30,8 @@ module Playwright
       debug_send_message(message) if @debug
       msg = JSON.dump(message)
       @mutex.synchronize {
-        @stdin.write([msg.size].pack('V')) # unsigned 32bit, little endian
-        @stdin.write(msg)
+        @stdin.write([msg.bytes.length].pack('V')) # unsigned 32bit, little endian, real byte size instead of chars
+        @stdin.write(msg) # write UTF-8 in binary mode as byte stream
       }
     rescue Errno::EPIPE, IOError
       raise AlreadyDisconnectedError.new('send_message failed')
@@ -48,6 +48,7 @@ module Playwright
     # @note This method blocks until playwright-cli exited. Consider using Thread or Future.
     def async_run
       @stdin, @stdout, @stderr, @thread = Open3.popen3("#{@driver_executable_path} run-driver")
+      @stdin.binmode  # Ensure Strings are written 1:1 without encoding conversion, necessary for integer values
 
       Thread.new { handle_stdout }
       Thread.new { handle_stderr }
