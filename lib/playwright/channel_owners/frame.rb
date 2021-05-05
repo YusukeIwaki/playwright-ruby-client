@@ -421,10 +421,8 @@ module Playwright
         value: value,
         label: label,
       ).as_params
-      params = base_params + { selector: selector, noWaitAfter: noWaitAfter, timeout: timeout }.compact
+      params = base_params.merge({ selector: selector, noWaitAfter: noWaitAfter, timeout: timeout }.compact)
       @channel.send_message_to_server('selectOption', params)
-
-      nil
     end
 
     def set_input_files(selector, files, noWaitAfter: nil, timeout: nil)
