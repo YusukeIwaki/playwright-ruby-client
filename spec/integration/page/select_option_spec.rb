@@ -123,22 +123,28 @@ RSpec.describe 'Page#select_option' do
     end
   end
 
-  # it('should select options with outer label', async ({page, server}) => {
-  #   await page.setContent(`<label for=pet-select>Choose a pet
-  #     <select id='pet-select'>
-  #       <option value='dog'>Dog</option>
-  #       <option value='cat'>Cat</option>
-  #     </select></label>`);
-  #   await page.selectOption('text=Choose a pet', 'cat');
-  #   expect(await page.$eval('select', select => select.options[select.selectedIndex].text)).toEqual('Cat');
-  # });
+  it 'should select options with outer label' do
+    with_page do |page|
+      page.content = <<~HTML
+      <label for=pet-select>Choose a pet
+      <select id='pet-select'>
+        <option value='dog'>Dog</option>
+        <option value='cat'>Cat</option>
+      </select></label>
+      HTML
+      page.select_option('text=Choose a pet', value: 'cat')
+      expect(page.eval_on_selector('select', 'select => select.options[select.selectedIndex].text')).to eq('Cat')
+    end
+  end
 
-  # it('should respect event bubbling', async ({page, server}) => {
-  #   await page.goto(server.PREFIX + '/input/select.html');
-  #   await page.selectOption('select', 'blue');
-  #   expect(await page.evaluate(() => window['result'].onBubblingInput)).toEqual(['blue']);
-  #   expect(await page.evaluate(() => window['result'].onBubblingChange)).toEqual(['blue']);
-  # });
+  it 'should respect event bubbling', sinatra: true do
+    with_page do |page|
+      page.goto("#{server_prefix}/input/select.html")
+      page.select_option('select', value: 'blue')
+      expect(page.evaluate("() => window['result'].onBubblingInput")).to eq(%w[blue])
+      expect(page.evaluate("() => window['result'].onBubblingChange")).to eq(%w[blue])
+    end
+  end
 
   it 'should throw when element is not a <select>', sinatra: true do
     with_page do |page|
@@ -146,14 +152,6 @@ RSpec.describe 'Page#select_option' do
       expect {
         page.select_option('body', value: '')
       }.to raise_error(/Element is not a <select> element./)
-    end
-  end
-
-  it 'should return [] on no matched values', sinatra: true do
-    with_page do |page|
-      page.goto("#{server_prefix}/input/select.html")
-      result = page.select_option('select', value: [])
-      expect(result).to eq([])
     end
   end
 
@@ -174,19 +172,23 @@ RSpec.describe 'Page#select_option' do
     end
   end
 
-  # it('should return [] on no values',async ({page, server}) => {
-  #   await page.goto(server.PREFIX + '/input/select.html');
-  #   const result = await page.selectOption('select', []);
-  #   expect(result).toEqual([]);
-  # });
+  it 'should return [] on no values', sinatra: true do
+    with_page do |page|
+      page.goto("#{server_prefix}/input/select.html")
+      result = page.select_option('select', value: [])
+      expect(result).to eq([])
+    end
+  end
 
-  # it('should not allow null items',async ({page, server}) => {
-  #   await page.goto(server.PREFIX + '/input/select.html');
-  #   await page.evaluate(() => window['makeMultiple']());
-  #   let error = null;
-  #   await page.selectOption('select', ['blue', null, 'black','magenta']).catch(e => error = e);
-  #   expect(error.message).toContain('options[1]: expected object, got null');
-  # });
+  it 'should not allow null items', sinatra: true do
+    with_page do |page|
+      page.goto("#{server_prefix}/input/select.html")
+      page.evaluate("() => window['makeMultiple']()")
+      expect {
+        page.select_option('select', value: ['blue', nil, 'black', 'magenta'])
+      }.to raise_error(/options\[1\]: expected object, got null/)
+    end
+  end
 
   it 'should unselect with null', sinatra: true do
     with_page do |page|
@@ -219,105 +221,73 @@ RSpec.describe 'Page#select_option' do
     end
   end
 
-  # it('should throw if passed wrong types', async ({page, server}) => {
-  #   let error;
-  #   await page.setContent('<select><option value="12"/></select>');
+  # @see https://github.com/GoogleChrome/puppeteer/issues/3327
+  it 'should work when re-defining top-level Event class', sinatra: true do
+    with_page do |page|
+      page.goto("#{server_prefix}/input/select.html")
+      page.evaluate('() => window.Event = null')
+      page.select_option('select', value: 'blue')
+      expect(page.evaluate("() => window['result'].onInput")).to eq(['blue'])
+      expect(page.evaluate("() => window['result'].onChange")).to eq(['blue'])
+    end
+  end
 
-  #   error = null;
-  #   try {
-  #     // @ts-expect-error cannot select numbers
-  #     await page.selectOption('select', 12);
-  #   } catch (e) {
-  #     error = e;
-  #   }
-  #   expect(error.message).toContain('options[0]: expected object, got number');
+  it 'should wait for option to be present', sinatra: true do
+    with_page do |page|
+      page.goto("#{server_prefix}/input/select.html")
+      select_promise = Concurrent::Promises.future { page.select_option('select', value: 'scarlet') }
+      give_it_a_chance_to_resolve(page)
+      expect(select_promise).not_to be_resolved
+      js = <<~JAVASCRIPT
+      select => {
+        const option = document.createElement('option');
+        option.value = 'scarlet';
+        option.textContent = 'Scarlet';
+        select.appendChild(option);
+      }
+      JAVASCRIPT
+      page.eval_on_selector('select', js)
+      Timeout.timeout(2) { expect(select_promise.value!).to contain_exactly('scarlet') }
+    end
+  end
 
-  #   error = null;
-  #   try {
-  #     // @ts-expect-error cannot select numbers
-  #     await page.selectOption('select', { value: 12 });
-  #   } catch (e) {
-  #     error = e;
-  #   }
-  #   expect(error.message).toContain('options[0].value: expected string, got number');
+  it 'should wait for option index to be present', sinatra: true do
+    with_page do |page|
+      page.goto("#{server_prefix}/input/select.html")
+      len = page.eval_on_selector('select', 'select => select.options.length')
+      select_promise = Concurrent::Promises.future { page.select_option('select', index: len) }
+      give_it_a_chance_to_resolve(page)
+      expect(select_promise).not_to be_resolved
+      js = <<~JAVASCRIPT
+      select => {
+        const option = document.createElement('option');
+        option.value = 'scarlet';
+        option.textContent = 'Scarlet';
+        select.appendChild(option);
+      }
+      JAVASCRIPT
+      page.eval_on_selector('select', js)
+      Timeout.timeout(2) { expect(select_promise.value!).to contain_exactly('scarlet') }
+    end
+  end
 
-  #   error = null;
-  #   try {
-  #     // @ts-expect-error cannot select numbers
-  #     await page.selectOption('select', { label: 12 });
-  #   } catch (e) {
-  #     error = e;
-  #   }
-  #   expect(error.message).toContain('options[0].label: expected string, got number');
-
-  #   error = null;
-  #   try {
-  #     // @ts-expect-error cannot select string indices
-  #     await page.selectOption('select', { index: '12' });
-  #   } catch (e) {
-  #     error = e;
-  #   }
-  #   expect(error.message).toContain('options[0].index: expected number, got string');
-  # });
-  # // @see https://github.com/GoogleChrome/puppeteer/issues/3327
-  # it('should work when re-defining top-level Event class', async ({page, server}) => {
-  #   await page.goto(server.PREFIX + '/input/select.html');
-  #   await page.evaluate(() => window.Event = null);
-  #   await page.selectOption('select', 'blue');
-  #   expect(await page.evaluate(() => window['result'].onInput)).toEqual(['blue']);
-  #   expect(await page.evaluate(() => window['result'].onChange)).toEqual(['blue']);
-  # });
-
-  # it('should wait for option to be present',async ({page, server}) => {
-  #   await page.goto(server.PREFIX + '/input/select.html');
-  #   const selectPromise  = page.selectOption('select', 'scarlet');
-  #   let didSelect = false;
-  #   selectPromise.then(() => didSelect = true);
-  #   await giveItAChanceToResolve(page);
-  #   expect(didSelect).toBe(false);
-  #   await page.$eval('select', select => {
-  #     const option = document.createElement('option');
-  #     option.value = 'scarlet';
-  #     option.textContent = 'Scarlet';
-  #     select.appendChild(option);
-  #   });
-  #   const items = await selectPromise;
-  #   expect(items).toStrictEqual(['scarlet']);
-  # });
-
-  # it('should wait for option index to be present',async ({page, server}) => {
-  #   await page.goto(server.PREFIX + '/input/select.html');
-  #   const len = await page.$eval('select', select => select.options.length);
-  #   const selectPromise  = page.selectOption('select', {index: len});
-  #   let didSelect = false;
-  #   selectPromise.then(() => didSelect = true);
-  #   await giveItAChanceToResolve(page);
-  #   expect(didSelect).toBe(false);
-  #   await page.$eval('select', select => {
-  #     const option = document.createElement('option');
-  #     option.value = 'scarlet';
-  #     option.textContent = 'Scarlet';
-  #     select.appendChild(option);
-  #   });
-  #   const items = await selectPromise;
-  #   expect(items).toStrictEqual(['scarlet']);
-  # });
-
-  # it('should wait for multiple options to be present',async ({page, server}) => {
-  #   await page.goto(server.PREFIX + '/input/select.html');
-  #   await page.evaluate(() => window['makeMultiple']());
-  #   const selectPromise  = page.selectOption('select', ['green', 'scarlet']);
-  #   let didSelect = false;
-  #   selectPromise.then(() => didSelect = true);
-  #   await giveItAChanceToResolve(page);
-  #   expect(didSelect).toBe(false);
-  #   await page.$eval('select', select => {
-  #     const option = document.createElement('option');
-  #     option.value = 'scarlet';
-  #     option.textContent = 'Scarlet';
-  #     select.appendChild(option);
-  #   });
-  #   const items = await selectPromise;
-  #   expect(items).toStrictEqual(['green', 'scarlet']);
-  # });
+  it 'should wait for multiple options to be present', sinatra: true do
+    with_page do |page|
+      page.goto("#{server_prefix}/input/select.html")
+      page.evaluate("() => window['makeMultiple']()")
+      select_promise = Concurrent::Promises.future { page.select_option('select', value: %w[green scarlet]) }
+      give_it_a_chance_to_resolve(page)
+      expect(select_promise).not_to be_resolved
+      js = <<~JAVASCRIPT
+      select => {
+        const option = document.createElement('option');
+        option.value = 'scarlet';
+        option.textContent = 'Scarlet';
+        select.appendChild(option);
+      }
+      JAVASCRIPT
+      page.eval_on_selector('select', js)
+      Timeout.timeout(2) { expect(select_promise.value!).to match_array(%w[green scarlet]) }
+    end
+  end
 end
