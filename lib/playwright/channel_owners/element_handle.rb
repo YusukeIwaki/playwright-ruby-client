@@ -149,10 +149,8 @@ module Playwright
           value: value,
           label: label,
         ).as_params
-        params = base_params + { noWaitAfter: noWaitAfter, timeout: timeout }.compact
+        params = base_params.merge({ noWaitAfter: noWaitAfter, timeout: timeout }.compact)
         @channel.send_message_to_server('selectOption', params)
-
-        nil
       end
 
       def tap_point(

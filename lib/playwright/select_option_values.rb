@@ -1,18 +1,30 @@
 module Playwright
   class SelectOptionValues
     def initialize(element: nil, index: nil, value: nil, label: nil)
-      @params =
-        if element
-          convert(elmeent)
-        elsif index
-          convert(index)
-        elsif value
-          convert(value)
-        elsif label
-          convert(label)
-        else
-          {}
-        end
+      params = {}
+
+      options = []
+      if value
+        options.concat(convert(:value, value))
+      end
+
+      if index
+        options.concat(convert(:index, index))
+      end
+
+      if label
+        options.concat(convert(:label, label))
+      end
+
+      unless options.empty?
+        params[:options] = options
+      end
+
+      if element
+        params[:elements] = convert(:element, element)
+      end
+
+      @params = params
     end
 
     # @return [Hash]
@@ -20,22 +32,19 @@ module Playwright
       @params
     end
 
-    private def convert(values)
-      return convert([values]) unless values.is_a?(Enumerable)
-      return {} if values.empty?
+    private def convert(key, values)
+      return convert(key, [values]) unless values.is_a?(Enumerable)
+      return [] if values.empty?
       values.each_with_index do |value, index|
-        unless values
+        unless value
           raise ArgumentError.new("options[#{index}]: expected object, got null")
         end
       end
 
-      case values.first
-      when ElementHandle
-        { elements: values.map(&:channel) }
-      when String
-        { options: values.map { |value| { value: value } } }
+      if key == :element
+        values.map(&:channel)
       else
-        { options: values }
+        values.map { |value| { key => value } }
       end
     end
   end
