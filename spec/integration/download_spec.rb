@@ -210,19 +210,24 @@ RSpec.describe 'download', sinatra: true do
   #   await page.close();
   # });
 
-  # it(`should report download path within page.on('download', …) handler for Files`, async ({browser, server}) => {
-  #   const page = await browser.newPage({ acceptDownloads: true });
-  #   const onDownloadPath = new Promise<string>(res => {
-  #     page.on('download', dl => {
-  #       dl.path().then(res);
-  #     });
-  #   });
-  #   await page.setContent(`<a href="${server.PREFIX}/download">download</a>`);
-  #   await page.click('a');
-  #   const path = await onDownloadPath;
-  #   expect(fs.readFileSync(path).toString()).toBe('Hello world');
-  #   await page.close();
-  # });
+  it "should report download path within page.on('download', …) handler for Files", sinatra: true do
+    with_page(acceptDownloads: true) do |page|
+      on_download_path = Concurrent::Promises.resolvable_future
+      page.once('download', ->(dl) {
+        # dl.path blocks until download completes.
+        Concurrent::Promises.future(dl) do |download|
+          on_download_path.fulfill(download.path)
+        end
+      })
+
+      page.content = "<a href=\"#{server_prefix}/download\">download</a>"
+      page.click('a')
+      path = on_download_path.value!
+
+      expect(File.read(path)).to eq('Hello world!')
+    end
+  end
+
   # it(`should report download path within page.on('download', …) handler for Blobs`, async ({browser, server}) => {
   #   const page = await browser.newPage({ acceptDownloads: true });
   #   const onDownloadPath = new Promise<string>(res => {
