@@ -17,7 +17,7 @@ jobs:
       with:
         ruby-version: 3.0
         bundler-cache: true
-    - name: Check Puppeteer::version
+    - name: Check Playwright::version
       run: bundle exec ruby -e 'raise "invalid Playwright::VERSION" unless Playwright::VERSION == ENV["RELEASE_TAG"]'
     - name: Generate API codes and build
       run: |
