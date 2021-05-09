@@ -14,7 +14,7 @@ module Playwright
       when ApiImplementation
         ApiImplementationWrapper.new(channel_owner_or_api_implementation).wrap
       else
-        nil
+        channel_owner_or_api_implementation
       end
     end
 
@@ -119,7 +119,7 @@ module Playwright
       if object.is_a?(Array)
         object.map { |obj| wrap_impl(obj) }
       else
-        ::Playwright::PlaywrightApi.wrap(object) || object
+        ::Playwright::PlaywrightApi.wrap(object)
       end
     end
 
