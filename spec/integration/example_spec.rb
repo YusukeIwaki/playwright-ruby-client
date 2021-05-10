@@ -55,4 +55,10 @@ RSpec.describe 'example' do
       expect(page.evaluate('() => { return { a: 3, b: 4 } }')).to eq({'a' => 3, 'b' => 4})
     end
   end
+
+  it 'exposes guid for Page' do
+    with_page do |page|
+      expect(browser.contexts.map(&:pages).flatten.map(&:guid)).to include(page.guid)
+    end
+  end
 end

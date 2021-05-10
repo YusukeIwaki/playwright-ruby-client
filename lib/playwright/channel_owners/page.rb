@@ -798,5 +798,11 @@ module Playwright
     private def has_bindings?(name)
       @bindings.key?(name)
     end
+
+    # Expose guid for library developers.
+    # Not intended to be used by users.
+    def guid
+      @guid
+    end
   end
 end
