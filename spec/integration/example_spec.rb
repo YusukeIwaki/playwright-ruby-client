@@ -61,4 +61,11 @@ RSpec.describe 'example' do
       expect(browser.contexts.map(&:pages).flatten.map(&:guid)).to include(page.guid)
     end
   end
+
+  it 'returns the same Playwright API instance for the same impl' do
+    with_page do |page|
+      expect(page.context.pages.last).to equal(page)
+      expect(browser.new_page).not_to equal(page)
+    end
+  end
 end
