@@ -10,6 +10,9 @@ module Playwright
       channel&.object
     end
 
+    # hidden field for caching API instance.
+    attr_accessor :_api
+
     # @param parent [Playwright::ChannelOwner|Playwright::Connection]
     # @param type [String]
     # @param guid [String]

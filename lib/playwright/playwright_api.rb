@@ -31,7 +31,7 @@ module Playwright
       def wrap
         api_class = detect_class_for(@impl.class)
         if api_class
-          api_class.new(@impl)
+          @impl._api ||= api_class.new(@impl)
         else
           raise NotImplementedError.new("Playwright::#{expected_class_name_for(@impl.class)} is not implemented")
         end
@@ -99,10 +99,6 @@ module Playwright
     # @param impl [Playwright::ChannelOwner|Playwright::ApiImplementation]
     def initialize(impl)
       @impl = impl
-    end
-
-    def ==(other)
-      @impl.to_s == other.instance_variable_get(:'@impl').to_s
     end
 
     # @param block [Proc]
