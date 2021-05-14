@@ -126,6 +126,11 @@ module Playwright
       nil
     end
 
+    def frame_element
+      resp = @channel.send_message_to_server('frameElement')
+      ChannelOwners::ElementHandle.from(resp)
+    end
+
     def evaluate(pageFunction, arg: nil)
       if JavaScript.function?(pageFunction)
         JavaScript::Function.new(pageFunction, arg).evaluate(@channel)

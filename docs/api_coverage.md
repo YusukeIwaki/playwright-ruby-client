@@ -140,7 +140,7 @@
 * evaluate_handle
 * fill
 * focus
-* ~~frame_element~~
+* frame_element
 * get_attribute
 * goto
 * hover
