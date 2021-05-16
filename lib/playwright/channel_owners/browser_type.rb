@@ -34,6 +34,7 @@ module Playwright
       }.compact
       result = @channel.send_message_to_server_result('connectOverCDP', params)
       browser = ChannelOwners::Browser.from(result['browser'])
+      browser.send(:update_as_remote)
 
       if result['defaultContext']
         context = ChannelOwners::BrowserContext.from(result['defaultContext'])
