@@ -783,12 +783,6 @@ module Playwright
       expect_event(Events::Page::Response, predicate: predicate, timeout: timeout)
     end
 
-    # called from BrowserContext#on_page with send(:update_browser_context, page), so keep private.
-    private def update_browser_context(context)
-      @browser_context = context
-      @timeout_settings = TimeoutSettings.new(context.send(:_timeout_settings))
-    end
-
     # called from Frame with send(:timeout_settings)
     private def timeout_settings
       @timeout_settings

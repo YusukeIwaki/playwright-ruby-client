@@ -20,7 +20,6 @@ module Playwright
     end
 
     private def on_page(page)
-      page.send(:update_browser_context, self)
       @pages << page
       emit(Events::BrowserContext::Page, page)
       page.send(:emit_popup_event_from_browser_context)
