@@ -43,4 +43,20 @@ RSpec.describe 'chromium' do
     cdp_browser.close
     browser_server.close
   end
+
+  it 'should send extra headers with connect request' do
+    browser_server = browser_type.launch(args: ["--remote-debugging-port=9339"])
+    resp = Net::HTTP.get_response(URI('http://localhost:9339/json/version/'))
+    json = JSON.parse(resp.body)
+    headers = {
+      'User-Agent' => 'Playwright',
+      'foo' => 'bar',
+    }
+    cdp_browser = browser_type.connect_over_cdp(json['webSocketDebuggerUrl'], headers: headers)
+
+    # TODO: check
+
+    cdp_browser.close
+    browser_server.close
+  end
 end
