@@ -76,12 +76,13 @@ module Playwright
         nil
       end
 
-      def hover(force: nil, modifiers: nil, position: nil, timeout: nil)
+      def hover(force: nil, modifiers: nil, position: nil, timeout: nil, trial: nil)
         params = {
           force: force,
           modifiers: modifiers,
           position: position,
           timeout: timeout,
+          trial: trial,
         }.compact
         @channel.send_message_to_server('hover', params)
 
@@ -96,7 +97,8 @@ module Playwright
             modifiers: nil,
             noWaitAfter: nil,
             position: nil,
-            timeout: nil)
+            timeout: nil,
+            trial: nil)
 
         params = {
           button: button,
@@ -107,6 +109,7 @@ module Playwright
           noWaitAfter: noWaitAfter,
           position: position,
           timeout: timeout,
+          trial: trial,
         }.compact
         @channel.send_message_to_server('click', params)
 
@@ -120,7 +123,8 @@ module Playwright
             modifiers: nil,
             noWaitAfter: nil,
             position: nil,
-            timeout: nil)
+            timeout: nil,
+            trial: nil)
 
         params = {
           button: button,
@@ -130,6 +134,7 @@ module Playwright
           noWaitAfter: noWaitAfter,
           position: position,
           timeout: timeout,
+          trial: trial,
         }.compact
         @channel.send_message_to_server('dblclick', params)
 
@@ -158,7 +163,8 @@ module Playwright
             modifiers: nil,
             noWaitAfter: nil,
             position: nil,
-            timeout: nil)
+            timeout: nil,
+            trial: nil)
 
         params = {
           force: force,
@@ -166,6 +172,7 @@ module Playwright
           noWaitAfter: noWaitAfter,
           position: position,
           timeout: timeout,
+          trial: trial,
         }.compact
         @channel.send_message_to_server('tap', params)
 
@@ -228,24 +235,26 @@ module Playwright
         nil
       end
 
-      def check(force: nil, noWaitAfter: nil, position: nil, timeout: nil)
+      def check(force: nil, noWaitAfter: nil, position: nil, timeout: nil, trial: nil)
         params = {
           force: force,
           noWaitAfter:  noWaitAfter,
           position: position,
           timeout: timeout,
+          trial: trial,
         }.compact
         @channel.send_message_to_server('check', params)
 
         nil
       end
 
-      def uncheck(force: nil, noWaitAfter: nil, position: nil, timeout: nil)
+      def uncheck(force: nil, noWaitAfter: nil, position: nil, timeout: nil, trial: nil)
         params = {
           force: force,
           noWaitAfter:  noWaitAfter,
           position: position,
           timeout: timeout,
+          trial: trial,
         }.compact
         @channel.send_message_to_server('uncheck', params)
 

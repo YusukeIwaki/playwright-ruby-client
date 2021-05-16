@@ -151,4 +151,20 @@ RSpec.describe 'Page#check' do
       expect(page.eval_on_selector('input', 'input => input.checked')).to eq(true)
     end
   end
+
+  it 'trial run should not check' do
+    with_page do |page|
+      page.content = "<input id='checkbox' type='checkbox'></input>"
+      page.check('input', trial: true)
+      expect(page.evaluate("() => window['checkbox'].checked")).to eq(false)
+    end
+  end
+
+  it 'trial run should not uncheck' do
+    with_page do |page|
+      page.content = "<input id='checkbox' type='checkbox' checked></input>"
+      page.uncheck('input', trial: true)
+      expect(page.evaluate("() => window['checkbox'].checked")).to eq(true)
+    end
+  end
 end

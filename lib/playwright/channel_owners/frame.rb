@@ -289,7 +289,8 @@ module Playwright
           modifiers: nil,
           noWaitAfter: nil,
           position: nil,
-          timeout: nil)
+          timeout: nil,
+          trial: nil)
 
       params = {
         selector: selector,
@@ -301,6 +302,7 @@ module Playwright
         noWaitAfter: noWaitAfter,
         position: position,
         timeout: timeout,
+        trial: trial,
       }.compact
       @channel.send_message_to_server('click', params)
 
@@ -315,7 +317,8 @@ module Playwright
           modifiers: nil,
           noWaitAfter: nil,
           position: nil,
-          timeout: nil)
+          timeout: nil,
+          trial: nil)
 
       params = {
         selector: selector,
@@ -326,6 +329,7 @@ module Playwright
         noWaitAfter: noWaitAfter,
         position: position,
         timeout: timeout,
+        trial: trial,
       }.compact
       @channel.send_message_to_server('dblclick', params)
 
@@ -338,7 +342,8 @@ module Playwright
           modifiers: nil,
           noWaitAfter: nil,
           position: nil,
-          timeout: nil)
+          timeout: nil,
+          trial: nil)
       params = {
         selector: selector,
         force: force,
@@ -346,6 +351,7 @@ module Playwright
         noWaitAfter: noWaitAfter,
         position: position,
         timeout: timeout,
+        trial: trial,
       }.compact
       @channel.send_message_to_server('tap', params)
 
@@ -399,13 +405,15 @@ module Playwright
           force: nil,
           modifiers: nil,
           position: nil,
-          timeout: nil)
+          timeout: nil,
+          trial: nil)
       params = {
         selector: selector,
         force: force,
         modifiers: modifiers,
         position: position,
         timeout: timeout,
+        trial: trial,
       }.compact
       @channel.send_message_to_server('hover', params)
 
@@ -481,7 +489,8 @@ module Playwright
       force: nil,
       noWaitAfter: nil,
       position: nil,
-      timeout: nil)
+      timeout: nil,
+      trial: nil)
 
       params = {
         selector: selector,
@@ -489,6 +498,7 @@ module Playwright
         noWaitAfter:  noWaitAfter,
         position: position,
         timeout: timeout,
+        trial: trial,
       }.compact
       @channel.send_message_to_server('check', params)
 
@@ -500,7 +510,8 @@ module Playwright
       force: nil,
       noWaitAfter: nil,
       position: nil,
-      timeout: nil)
+      timeout: nil,
+      trial: nil)
 
       params = {
         selector: selector,
@@ -508,6 +519,7 @@ module Playwright
         noWaitAfter:  noWaitAfter,
         position: position,
         timeout: timeout,
+        trial: trial,
       }.compact
       @channel.send_message_to_server('uncheck', params)
 

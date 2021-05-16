@@ -5,6 +5,10 @@ module Playwright
     include Utils::PrepareBrowserContextOptions
 
     private def after_initialize
+      @connected = true
+      @closed_or_closing = false
+      @remote = true
+
       @contexts = Set.new
       @channel.on('close', method(:on_close))
     end
@@ -48,6 +52,14 @@ module Playwright
 
     def close
       return if @closed_or_closing
+      if @remote
+        @contexts.each do |context|
+          context.pages.each do |page|
+            page.send(:on_close)
+          end
+          context.send(:on_close)
+        end
+      end
       @closed_or_closing = true
       @channel.send_message_to_server('close')
       nil
@@ -77,13 +89,26 @@ module Playwright
 
     private def on_close(_ = {})
       @connected = false
-      emit(Events::Browser::Disconnected)
-      @closed_or_closing = false
+      if @remote
+        @contexts.each do |context|
+          context.pages.each do |page|
+            page.send(:on_close)
+          end
+          context.send(:on_close)
+        end
+      end
+      emit(Events::Browser::Disconnected, self)
+      @closed_or_closing = true
     end
 
     # called from BrowserType#connectOverCDP
     private def add_context(context)
       @contexts << context
+    end
+
+    # called from BrowserType#connectOverCDP
+    private def update_as_remote
+      @remote = true
     end
 
     # called from BrowserContext#on_close with send(:remove_context), so keep private.

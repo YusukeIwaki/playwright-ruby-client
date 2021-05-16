@@ -464,7 +464,8 @@ module Playwright
           modifiers: nil,
           noWaitAfter: nil,
           position: nil,
-          timeout: nil)
+          timeout: nil,
+          trial: nil)
 
       @main_frame.click(
         selector,
@@ -476,6 +477,7 @@ module Playwright
         noWaitAfter: noWaitAfter,
         position: position,
         timeout: timeout,
+        trial: trial,
       )
     end
 
@@ -487,7 +489,8 @@ module Playwright
           modifiers: nil,
           noWaitAfter: nil,
           position: nil,
-          timeout: nil)
+          timeout: nil,
+          trial: nil)
       @main_frame.dblclick(
         selector,
         button: button,
@@ -497,6 +500,7 @@ module Playwright
         noWaitAfter: noWaitAfter,
         position: position,
         timeout: timeout,
+        trial: trial,
       )
     end
 
@@ -506,7 +510,8 @@ module Playwright
           modifiers: nil,
           noWaitAfter: nil,
           position: nil,
-          timeout: nil)
+          timeout: nil,
+          trial: nil)
       @main_frame.tap_point(
         selector,
         force: force,
@@ -514,6 +519,7 @@ module Playwright
         noWaitAfter: noWaitAfter,
         position: position,
         timeout: timeout,
+        trial: trial,
       )
     end
 
@@ -546,13 +552,15 @@ module Playwright
           force: nil,
           modifiers: nil,
           position: nil,
-          timeout: nil)
+          timeout: nil,
+          trial: nil)
       @main_frame.hover(
         selector,
         force: force,
         modifiers: modifiers,
         position: position,
         timeout: timeout,
+        trial: trial,
       )
     end
 
@@ -604,9 +612,10 @@ module Playwright
       force: nil,
       noWaitAfter: nil,
       position: nil,
-      timeout: nil)
+      timeout: nil,
+      trial: nil)
 
-      @main_frame.check(selector, force: force, noWaitAfter: noWaitAfter, position: position, timeout: timeout)
+      @main_frame.check(selector, force: force, noWaitAfter: noWaitAfter, position: position, timeout: timeout, trial: trial)
     end
 
     def uncheck(
@@ -614,9 +623,10 @@ module Playwright
       force: nil,
       noWaitAfter: nil,
       position: nil,
-      timeout: nil)
+      timeout: nil,
+      trial: nil)
 
-      @main_frame.uncheck(selector, force: force, noWaitAfter: noWaitAfter, position: position, timeout: timeout)
+      @main_frame.uncheck(selector, force: force, noWaitAfter: noWaitAfter, position: position, timeout: timeout, trial: trial)
     end
 
     def wait_for_function(pageFunction, arg: nil, polling: nil, timeout: nil)
@@ -781,12 +791,6 @@ module Playwright
         end
 
       expect_event(Events::Page::Response, predicate: predicate, timeout: timeout)
-    end
-
-    # called from BrowserContext#on_page with send(:update_browser_context, page), so keep private.
-    private def update_browser_context(context)
-      @browser_context = context
-      @timeout_settings = TimeoutSettings.new(context.send(:_timeout_settings))
     end
 
     # called from Frame with send(:timeout_settings)
