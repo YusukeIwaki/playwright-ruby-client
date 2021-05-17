@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['YusukeIwaki']
   spec.email         = ['q7w8e9w8q7w8e9@yahoo.co.jp']
 
-  spec.summary       = 'The Ruby binding of playwright driver'
+  spec.summary       = "The Ruby binding of playwright driver #{Playwright::COMPATIBLE_PLAYWRIGHT_VERSION}"
   spec.homepage      = 'https://github.com/YusukeIwaki/playwright-ruby-client'
   spec.license       = 'MIT'
 
