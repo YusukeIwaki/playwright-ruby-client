@@ -16,6 +16,39 @@ jobs:
         rm -rf spec/integration
         bundle exec rspec
 
+  check_example:
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby_version:
+          - 2.3.8
+          - 2.4.10
+          - 2.5.9
+          - 2.6.7
+          - 2.7.3
+          - 3.0.1
+    name: (${{ matrix.ruby_version }}) Example
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby_version }}
+          bundler-cache: true
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Install playwright driver via npx
+        run: |
+          npx playwright install
+      - run: bundle exec ruby development/generate_api.rb
+      - name: Check example
+        run: bundle exec rspec spec/integration/example_spec.rb
+        env:
+          PLAYWRIGHT_CLI_EXECUTABLE_PATH: npx playwright
+        timeout-minutes: 3
+
   integration_test_with_npm_playwright_driver:
     needs: unit_test
     strategy:
@@ -40,6 +73,7 @@ jobs:
         npm install playwright@${{ matrix.version }}
         ./node_modules/.bin/playwright install
     - run: bundle exec ruby development/generate_api.rb
+    - run: rm spec/integration/example_spec.rb
     - run: bundle exec rspec spec/integration --profile 10
       env:
         BROWSER: ${{ matrix.browser }}
