@@ -1,12 +1,13 @@
 module Playwright
   class Download
-    def initialize(url:, suggested_filename:, artifact:)
+    def initialize(page:, url:, suggested_filename:, artifact:)
+      @page = page
       @url = url
       @suggested_filename = suggested_filename
       @artifact = artifact
     end
 
-    attr_reader :url, :suggested_filename
+    attr_reader :page, :url, :suggested_filename
 
     def delete
       @artifact.delete

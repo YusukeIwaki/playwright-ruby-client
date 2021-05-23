@@ -28,6 +28,10 @@ end
     Close: 'close',
     Page: 'page',
     ServiceWorker: 'serviceworker',
+    Request: 'request',
+    Response: 'response',
+    RequestFailed: 'requestfailed',
+    RequestFinished: 'requestfinished',
   },
 
   BrowserServer: {

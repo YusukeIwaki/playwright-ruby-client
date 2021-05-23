@@ -17,6 +17,33 @@ module Playwright
       @channel.on('route', ->(params) {
         on_route(ChannelOwners::Route.from(params['route']), ChannelOwners::Request.from(params['request']))
       })
+      @channel.on('request', ->(params) {
+        on_request(
+          ChannelOwners::Request.from(params['request']),
+          ChannelOwners::Request.from_nullable(params['page']),
+        )
+      })
+      @channel.on('requestFailed', ->(params) {
+        on_request_failed(
+          ChannelOwners::Request.from(params['request']),
+          params['responseEndTiming'],
+          params['failureText'],
+          ChannelOwners::Request.from_nullable(params['page']),
+        )
+      })
+      @channel.on('requestFinished', ->(params) {
+        on_request_finished(
+          ChannelOwners::Request.from(params['request']),
+          params['responseEndTiming'],
+          ChannelOwners::Request.from_nullable(params['page']),
+        )
+      })
+      @channel.on('response', ->(params) {
+        on_response(
+          ChannelOwners::Response.from(params['response']),
+          ChannelOwners::Request.from_nullable(params['page']),
+        )
+      })
     end
 
     private def on_page(page)
@@ -42,6 +69,29 @@ module Playwright
       if func
         binding_call.call(func)
       end
+    end
+
+    private def on_request_failed(request, response_end_timing, failure_text, page)
+      request.send(:update_failure_text, failure_text)
+      request.send(:update_response_end_timing, response_end_timing)
+      emit(Events::BrowserContext::RequestFailed, request)
+      page&.emit(Events::Page::RequestFailed, request)
+    end
+
+    private def on_request_finished(request, response_end_timing, page)
+      request.send(:update_response_end_timing, response_end_timing)
+      emit(Events::BrowserContext::RequestFinished, request)
+      page&.emit(Events::Page::RequestFinished, request)
+    end
+
+    private def on_request(request, page)
+      emit(Events::BrowserContext::Request, request)
+      page&.emit(Events::Page::Request, request)
+    end
+
+    private def on_response(response, page)
+      emit(Events::BrowserContext::Response, response)
+      page&.emit(Events::Page::Response, response)
     end
 
     def set_default_navigation_timeout(timeout)

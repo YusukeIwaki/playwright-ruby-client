@@ -56,25 +56,6 @@ module Playwright
       @channel.on('pageError', ->(params) {
         emit(Events::Page::PageError, Error.parse(params['error']['error']))
       })
-      @channel.on('request', ->(params) {
-        emit(Events::Page::Request, ChannelOwners::Request.from(params['request']))
-      })
-      @channel.on('requestFailed', ->(params) {
-        on_request_failed(
-          ChannelOwners::Request.from(params['request']),
-          params['responseEndTiming'],
-          params['failureText'],
-        )
-      })
-      @channel.on('requestFinished', ->(params) {
-        on_request_finished(
-          ChannelOwners::Request.from(params['request']),
-          params['responseEndTiming'],
-        )
-      })
-      @channel.on('response', ->(params) {
-        emit(Events::Page::Response, ChannelOwners::Response.from(params['response']))
-      })
       @channel.on('route', ->(params) {
         on_route(ChannelOwners::Route.from(params['route']), ChannelOwners::Request.from(params['request']))
       })
@@ -94,17 +75,6 @@ module Playwright
       :touchscreen,
       :viewport_size,
       :main_frame
-
-    private def on_request_failed(request, response_end_timing, failure_text)
-      request.send(:update_failure_text, failure_text)
-      request.send(:update_response_end_timing, response_end_timing)
-      emit(Events::Page::RequestFailed, request)
-    end
-
-    private def on_request_finished(request, response_end_timing)
-      request.send(:update_response_end_timing, response_end_timing)
-      emit(Events::Page::RequestFinished, request)
-    end
 
     private def on_frame_attached(frame)
       frame.send(:update_page_from_page, self)
@@ -145,6 +115,7 @@ module Playwright
 
     private def on_download(params)
       download = Download.new(
+        page: self,
         url: params['url'],
         suggested_filename: params['suggestedFilename'],
         artifact: ChannelOwners::Artifact.from(params['artifact']),
