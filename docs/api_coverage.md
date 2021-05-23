@@ -313,7 +313,7 @@
 * expect_event
 * expect_page
 * ~~wait_for_event~~
-* ~~tracing~~
+* tracing
 
 ## ~~CDPSession~~
 
@@ -349,6 +349,12 @@
 * firefox
 * selectors
 * webkit
+
+## Tracing
+
+* export
+* start
+* stop
 
 ## Android
 

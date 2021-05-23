@@ -4,6 +4,7 @@ module Playwright
     include Utils::Errors::SafeCloseError
     attr_accessor :browser
     attr_writer :owner_page, :options
+    attr_reader :tracing
 
     private def after_initialize
       @pages = Set.new
@@ -11,6 +12,7 @@ module Playwright
       @bindings = {}
       @timeout_settings = TimeoutSettings.new
 
+      @tracing = TracingImpl.new(@channel, self)
       @channel.on('bindingCall', ->(params) { on_binding(ChannelOwners::BindingCall.from(params['binding'])) })
       @channel.once('close', ->(_) { on_close })
       @channel.on('page', ->(params) { on_page(ChannelOwners::Page.from(params['page']) )})

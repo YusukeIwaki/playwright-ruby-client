@@ -22,6 +22,7 @@ ALL_TYPES = %w[
     Browser
     BrowserType
     Playwright
+    Tracing
 ]
 EXPERIMENTAL = %w[
   Android
@@ -36,6 +37,7 @@ API_IMPLEMENTATIONS = %w[
   Keyboard
   Mouse
   Touchscreen
+  Tracing
 ]
 
 require 'bundler/setup'
