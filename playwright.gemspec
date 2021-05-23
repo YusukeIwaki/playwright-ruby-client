@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
+  spec.required_ruby_version = '>= 2.4'
   spec.add_dependency 'concurrent-ruby', '>= 1.1.6'
   spec.add_dependency 'mime-types', '>= 3.0'
   spec.add_development_dependency 'bundler', '~> 2.2.3'
@@ -33,7 +34,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake', '~> 13.0.3'
   spec.add_development_dependency 'rspec', '~> 3.10.0 '
   spec.add_development_dependency 'rspec_junit_formatter' # for CircleCI.
-  spec.add_development_dependency 'rubocop', '~> 1.7.0'
   spec.add_development_dependency 'rubocop-rspec'
   spec.add_development_dependency 'sinatra'
   spec.add_development_dependency 'webrick'
