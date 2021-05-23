@@ -90,7 +90,7 @@ RSpec.configure do |config|
     end
   end
   BROWSER_TYPES.each do |type|
-    IntegrationTestCaseMethods.define_method("#{type}?") { @playwright_browser_type == type }
+    IntegrationTestCaseMethods.send(:define_method, "#{type}?") { @playwright_browser_type == type }
   end
   config.include IntegrationTestCaseMethods, type: :integration
 
@@ -119,22 +119,24 @@ RSpec.configure do |config|
           @params[key] = force_encoding(val)
         end
 
-        invoke do
-          filter! :before do
-            @pinned_response = !@response['Content-Type'].nil?
-          end
-          route!
-          static! if settings.static? && (request.get? || request.head?)
-
-          route_missing_really!
-        end
-      rescue ::Exception => boom
-        invoke { handle_exception!(boom) }
-      ensure
         begin
-          filter! :after unless env['sinatra.static_file']
+          invoke do
+            filter! :before do
+              @pinned_response = !@response['Content-Type'].nil?
+            end
+            route!
+            static! if settings.static? && (request.get? || request.head?)
+
+            route_missing_really!
+          end
         rescue ::Exception => boom
-          invoke { handle_exception!(boom) } unless @env['sinatra.error']
+          invoke { handle_exception!(boom) }
+        ensure
+          begin
+            filter! :after unless env['sinatra.static_file']
+          rescue ::Exception => boom
+            invoke { handle_exception!(boom) } unless @env['sinatra.error']
+          end
         end
       end
 
@@ -158,12 +160,14 @@ RSpec.configure do |config|
     Thread.new { sinatra_app.run!(port: 4567) }
     Timeout.timeout(3) do
       loop do
-        Net::HTTP.get(URI("#{server_prefix}/_ping"))
-        break
-      rescue Errno::EADDRNOTAVAIL
-        sleep 1
-      rescue Errno::ECONNREFUSED
-        sleep 0.1
+        begin
+          Net::HTTP.get(URI("#{server_prefix}/_ping"))
+          break
+        rescue Errno::EADDRNOTAVAIL
+          sleep 1
+        rescue Errno::ECONNREFUSED
+          sleep 0.1
+        end
       end
     end
 
