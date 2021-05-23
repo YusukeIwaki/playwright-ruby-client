@@ -17,7 +17,6 @@ jobs:
       - name: Install playwright driver via npx
         run: |
           npx playwright install
-      - run: bundle exec ruby development/generate_api.rb
       - name: Check example
         run: bundle exec rspec spec/integration/example_spec.rb
         env:

@@ -42,7 +42,6 @@ jobs:
       - name: Install playwright driver via npx
         run: |
           npx playwright install
-      - run: bundle exec ruby development/generate_api.rb
       - name: Check example
         run: bundle exec rspec spec/integration/example_spec.rb
         env:
@@ -72,7 +71,6 @@ jobs:
       run: |
         npm install playwright@${{ matrix.version }}
         ./node_modules/.bin/playwright install
-    - run: bundle exec ruby development/generate_api.rb
     - run: rm spec/integration/example_spec.rb
     - run: bundle exec rspec spec/integration --profile 10
       env:
