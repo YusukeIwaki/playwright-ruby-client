@@ -33,7 +33,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake', '~> 13.0.3'
   spec.add_development_dependency 'rspec', '~> 3.10.0 '
   spec.add_development_dependency 'rspec_junit_formatter' # for CircleCI.
-  spec.add_development_dependency 'rubocop', '~> 1.7.0'
   spec.add_development_dependency 'rubocop-rspec'
   spec.add_development_dependency 'sinatra'
   spec.add_development_dependency 'webrick'
