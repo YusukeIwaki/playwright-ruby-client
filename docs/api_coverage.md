@@ -313,6 +313,7 @@
 * expect_event
 * expect_page
 * ~~wait_for_event~~
+* ~~tracing~~
 
 ## ~~CDPSession~~
 
