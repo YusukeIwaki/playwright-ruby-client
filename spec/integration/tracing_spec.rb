@@ -86,3 +86,71 @@ RSpec.describe 'tracing' do
     end
   end
 end
+
+# https://github.com/microsoft/playwright/blob/master/tests/tracing.spec.ts
+RSpec.describe 'tracing' do
+  before { skip unless chromium? }
+
+  it 'should collect trace', sinatra: true, tracing: true do
+    with_context do |context|
+      page = context.new_page
+
+      context.tracing.start(name: 'test', screenshots: true, snapshots: true)
+      page.goto(server_empty_page)
+      page.content = '<button>Click</button>'
+      page.click('"Click"')
+      page.close
+      context.tracing.stop
+
+      Dir.mktmpdir do |dir|
+        trace = File.join(dir, 'trace.zip')
+        context.tracing.export(trace)
+      end
+    end
+  end
+
+  it 'should collect trace', sinatra: true, tracing: true do
+    with_context do |context|
+      page = context.new_page
+
+      context.tracing.start(name: 'test')
+      page.goto(server_empty_page)
+      page.content = '<button>Click</button>'
+      page.click('"Click"')
+      page.close
+      context.tracing.stop
+
+      Dir.mktmpdir do |dir|
+        trace = File.join(dir, 'trace.zip')
+        context.tracing.export(trace)
+      end
+    end
+  end
+
+  it 'should collect two tracew', sinatra: true, tracing: true do
+    Dir.mktmpdir do |trace_dir|
+      with_context do |context|
+        page = context.new_page
+
+        context.tracing.start(name: 'test1', screenshots: true, snapshots: true)
+        page.goto(server_empty_page)
+        page.content = '<button>Click</button>'
+        page.click('"Click"')
+        context.tracing.stop
+        Dir.mktmpdir do |dir|
+          trace = File.join(dir, 'trace1.zip')
+          context.tracing.export(trace)
+        end
+
+        context.tracing.start(name: 'test2', screenshots: true, snapshots: true)
+        page.dblclick('"Click"')
+        page.close
+        context.tracing.stop
+        Dir.mktmpdir do |dir|
+          trace = File.join(dir, 'trace2.zip')
+          context.tracing.export(trace)
+        end
+      end
+    end
+  end
+end

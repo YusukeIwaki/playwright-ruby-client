@@ -21,15 +21,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        ruby_version: [2.7.3, 3.0.1]
         browser: [chromium, webkit]
-        version: [latest, next]
-    name: (${{ matrix.browser }} + playwright@${{ matrix.version }}) Integration test
+    name: (${{ matrix.browser }}/Ruby${{ matrix.ruby_version }}) Integration test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.7.2
+        ruby-version: ${{ matrix.ruby_version }}
         bundler-cache: true
     - uses: actions/setup-node@v1
       with:
@@ -37,7 +37,8 @@ jobs:
     - uses: microsoft/playwright-github-action@v1
     - name: setup ${{ matrix.version }} playwright via npm install
       run: |
-        npm install playwright@${{ matrix.version }}
+        export PLAYWRIGHT_CLI_VERSION=$(bundle exec ruby -e 'puts Playwright::COMPATIBLE_PLAYWRIGHT_VERSION.strip')
+        npm install playwright@${PLAYWRIGHT_CLI_VERSION} || npm install playwright@next
         ./node_modules/.bin/playwright install
     - run: bundle exec ruby development/generate_api.rb
     - run: bundle exec rspec spec/integration --profile 10
