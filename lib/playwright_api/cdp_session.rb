@@ -1,16 +1,16 @@
 module Playwright
   # - extends: [EventEmitter]
-  # 
+  #
   # The `CDPSession` instances are used to talk raw Chrome Devtools Protocol:
   # - protocol methods can be called with `session.send` method.
   # - protocol events can be subscribed to with `session.on` method.
-  # 
+  #
   # Useful links:
   # - Documentation on DevTools Protocol can be found here:
   #   [DevTools Protocol Viewer](https://chromedevtools.github.io/devtools-protocol/).
   # - Getting Started with DevTools Protocol:
   #   https://github.com/aslushnikov/getting-started-with-cdp/blob/master/README.md
-  # 
+  #
   #
   # ```js
   # const client = await page.context().newCDPSession(page);
@@ -22,7 +22,7 @@ module Playwright
   #   playbackRate: response.playbackRate / 2
   # });
   # ```
-  # 
+  #
   # ```python async
   # client = await page.context().new_cdp_session(page)
   # await client.send("animation.enable")
@@ -33,7 +33,7 @@ module Playwright
   #     playback_rate: response["playback_rate"] / 2
   # })
   # ```
-  # 
+  #
   # ```python sync
   # client = page.context().new_cdp_session(page)
   # client.send("animation.enable")

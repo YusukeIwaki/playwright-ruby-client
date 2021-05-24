@@ -1,16 +1,12 @@
 class UndocumentedMethodArgs
+  include Enumerable
+
   class RequiredArg
     def initialize(name)
       @name = name
     end
 
-    def as_method_definition
-      @name
-    end
-
-    def as_method_call
-      "unwrap_impl(#{@name})"
-    end
+    attr_reader :name
   end
 
   class OptionalKwArg
@@ -18,23 +14,10 @@ class UndocumentedMethodArgs
       @name = name
     end
 
-    def as_method_definition
-      "#{@name}: nil"
-    end
-
-    def as_method_call
-      "#{@name}: unwrap_impl(#{@name})"
-    end
+    attr_reader :name
   end
 
   class BlockArg
-    def as_method_definition
-      "&block"
-    end
-
-    def as_method_call
-      "&wrap_block_call(block)"
-    end
   end
 
   # @param inflector [Dry::Inflector]
@@ -70,25 +53,15 @@ class UndocumentedMethodArgs
     end
   end
 
+  def each(&block)
+    @args.each(&block)
+  end
+
   def empty?
     @args.empty?
   end
 
   def single?
     @args.size == 1
-  end
-
-  # ['var1', 'var2', 'var3: nil', 'var4: nil']
-  #
-  # @returns [Arrau<String>]
-  def for_method_definition
-    @args.map(&:as_method_definition)
-  end
-
-  # ['var1', 'var2', 'var3: var3', 'var4: var4']
-  #
-  # @returns [Arrau<String>]
-  def for_method_call
-    @args.map(&:as_method_call)
   end
 end

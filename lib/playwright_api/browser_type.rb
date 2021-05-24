@@ -1,11 +1,11 @@
 module Playwright
   # BrowserType provides methods to launch a specific browser instance or connect to an existing one. The following is a
   # typical example of using Playwright to drive automation:
-  # 
+  #
   #
   # ```js
   # const { chromium } = require('playwright');  // Or 'firefox' or 'webkit'.
-  # 
+  #
   # (async () => {
   #   const browser = await chromium.launch();
   #   const page = await browser.newPage();
@@ -14,10 +14,10 @@ module Playwright
   #   await browser.close();
   # })();
   # ```
-  # 
+  #
   # ```java
   # import com.microsoft.playwright.*;
-  # 
+  #
   # public class Example {
   #   public static void main(String[] args) {
   #     try (Playwright playwright = Playwright.create()) {
@@ -31,11 +31,11 @@ module Playwright
   #   }
   # }
   # ```
-  # 
+  #
   # ```python async
   # import asyncio
   # from playwright.async_api import async_playwright
-  # 
+  #
   # async def run(playwright):
   #     chromium = playwright.chromium
   #     browser = await chromium.launch()
@@ -43,16 +43,16 @@ module Playwright
   #     await page.goto("https://example.com")
   #     # other actions...
   #     await browser.close()
-  # 
+  #
   # async def main():
   #     async with async_playwright() as playwright:
   #         await run(playwright)
   # asyncio.run(main())
   # ```
-  # 
+  #
   # ```python sync
   # from playwright.sync_api import sync_playwright
-  # 
+  #
   # def run(playwright):
   #     chromium = playwright.chromium
   #     browser = chromium.launch()
@@ -60,15 +60,15 @@ module Playwright
   #     page.goto("https://example.com")
   #     # other actions...
   #     browser.close()
-  # 
+  #
   # with sync_playwright() as playwright:
   #     run(playwright)
   # ```
-  # 
+  #
   # ```csharp
   # using Microsoft.Playwright;
   # using System.Threading.Tasks;
-  # 
+  #
   # class BrowserTypeExamples
   # {
   #     public static async Task Run()
@@ -91,9 +91,9 @@ module Playwright
     end
 
     # This methods attaches Playwright to an existing browser instance using the Chrome DevTools Protocol.
-    # 
+    #
     # The default browser context is accessible via [`method: Browser.contexts`].
-    # 
+    #
     # > NOTE: Connecting over the Chrome DevTools Protocol is only supported for Chromium-based browsers.
     def connect_over_cdp(
           endpointURL,
@@ -110,38 +110,38 @@ module Playwright
     end
 
     # Returns the browser instance.
-    # 
+    #
     # You can use `ignoreDefaultArgs` to filter out `--mute-audio` from default arguments:
-    # 
+    #
     #
     # ```js
     # const browser = await chromium.launch({  // Or 'firefox' or 'webkit'.
     #   ignoreDefaultArgs: ['--mute-audio']
     # });
     # ```
-    # 
+    #
     # ```java
     # // Or "firefox" or "webkit".
     # Browser browser = chromium.launch(new BrowserType.LaunchOptions()
     #   .setIgnoreDefaultArgs(Arrays.asList("--mute-audio")));
     # ```
-    # 
+    #
     # ```python async
     # browser = await playwright.chromium.launch( # or "firefox" or "webkit".
     #     ignore_default_args=["--mute-audio"]
     # )
     # ```
-    # 
+    #
     # ```python sync
     # browser = playwright.chromium.launch( # or "firefox" or "webkit".
     #     ignore_default_args=["--mute-audio"]
     # )
     # ```
-    # 
+    #
     # ```csharp
     # var browser = await playwright.Chromium.LaunchAsync(ignoreDefaultArgs: new[] { "--mute-audio" })
     # ```
-    # 
+    #
     # > **Chromium-only** Playwright can also be used to control the Google Chrome or Microsoft Edge browsers, but it works
     # best with the version of Chromium it is bundled with. There is no guarantee it will work with any other version. Use
     # `executablePath` option with extreme caution.
@@ -179,7 +179,7 @@ module Playwright
     end
 
     # Returns the persistent browser context instance.
-    # 
+    #
     # Launches browser that uses persistent storage located at `userDataDir` and returns the only context. Closing this
     # context will automatically close the browser.
     def launch_persistent_context(
@@ -233,6 +233,12 @@ module Playwright
 
     # -- inherited from EventEmitter --
     # @nodoc
+    def on(event, callback)
+      event_emitter_proxy.on(event, callback)
+    end
+
+    # -- inherited from EventEmitter --
+    # @nodoc
     def off(event, callback)
       event_emitter_proxy.off(event, callback)
     end
@@ -241,12 +247,6 @@ module Playwright
     # @nodoc
     def once(event, callback)
       event_emitter_proxy.once(event, callback)
-    end
-
-    # -- inherited from EventEmitter --
-    # @nodoc
-    def on(event, callback)
-      event_emitter_proxy.on(event, callback)
     end
 
     private def event_emitter_proxy

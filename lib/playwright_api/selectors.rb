@@ -4,11 +4,11 @@ module Playwright
   class Selectors < PlaywrightApi
 
     # An example of registering selector engine that queries elements based on a tag name:
-    # 
+    #
     #
     # ```js
     # const { selectors, firefox } = require('playwright');  // Or 'chromium' or 'webkit'.
-    # 
+    #
     # (async () => {
     #   // Must be a function that evaluates to a selector engine instance.
     #   const createTagNameEngine = () => ({
@@ -16,31 +16,31 @@ module Playwright
     #     query(root, selector) {
     #       return root.querySelector(selector);
     #     },
-    # 
+    #
     #     // Returns all elements matching given selector in the root's subtree.
     #     queryAll(root, selector) {
     #       return Array.from(root.querySelectorAll(selector));
     #     }
     #   });
-    # 
+    #
     #   // Register the engine. Selectors will be prefixed with "tag=".
     #   await selectors.register('tag', createTagNameEngine);
-    # 
+    #
     #   const browser = await firefox.launch();
     #   const page = await browser.newPage();
     #   await page.setContent(`<div><button>Click me</button></div>`);
-    # 
+    #
     #   // Use the selector prefixed with its name.
     #   const button = await page.$('tag=button');
     #   // Combine it with other selector engines.
     #   await page.click('tag=div >> text="Click me"');
     #   // Can use it in any methods supporting selectors.
     #   const buttonCount = await page.$$eval('tag=button', buttons => buttons.length);
-    # 
+    #
     #   await browser.close();
     # })();
     # ```
-    # 
+    #
     # ```java
     # // Script that evaluates to a selector engine instance.
     # String createTagNameEngine = "{\n" +
@@ -66,15 +66,15 @@ module Playwright
     # int buttonCount = (int) page.evalOnSelectorAll("tag=button", "buttons => buttons.length");
     # browser.close();
     # ```
-    # 
+    #
     # ```python async
     # # FIXME: add snippet
     # ```
-    # 
+    #
     # ```python sync
     # # FIXME: add snippet
     # ```
-    # 
+    #
     # ```csharp
     # using var playwright = await Playwright.CreateAsync();
     # // Script that evaluates to a selector engine instance.
@@ -88,7 +88,7 @@ module Playwright
     #     return Array.from(root.querySelectorAll(selector));
     #   }
     # }");
-    # 
+    #
     # await using var browser = await playwright.Chromium.LaunchAsync();
     # var page = await browser.NewPageAsync();
     # await page.SetContentAsync("<div><button>Click me</button></div>");
@@ -105,6 +105,12 @@ module Playwright
 
     # -- inherited from EventEmitter --
     # @nodoc
+    def on(event, callback)
+      event_emitter_proxy.on(event, callback)
+    end
+
+    # -- inherited from EventEmitter --
+    # @nodoc
     def off(event, callback)
       event_emitter_proxy.off(event, callback)
     end
@@ -113,12 +119,6 @@ module Playwright
     # @nodoc
     def once(event, callback)
       event_emitter_proxy.once(event, callback)
-    end
-
-    # -- inherited from EventEmitter --
-    # @nodoc
-    def on(event, callback)
-      event_emitter_proxy.on(event, callback)
     end
 
     private def event_emitter_proxy

@@ -1,9 +1,9 @@
 module Playwright
   # API for collecting and saving Playwright traces. Playwright traces can be opened using the Playwright CLI after
   # Playwright script runs.
-  # 
+  #
   # Start with specifying the folder traces will be stored in:
-  # 
+  #
   #
   # ```js
   # const browser = await chromium.launch({ traceDir: 'traces' });
@@ -14,7 +14,7 @@ module Playwright
   # await context.tracing.stop();
   # await context.tracing.export('trace.zip');
   # ```
-  # 
+  #
   # ```java
   # Browser browser = chromium.launch(new BrowserType.LaunchOptions().setTraceDir("trace"));
   # BrowserContext context = browser.newContext();
@@ -27,7 +27,7 @@ module Playwright
   # context.tracing.stop();
   # context.tracing.export(Paths.get("trace.zip")))
   # ```
-  # 
+  #
   # ```python async
   # browser = await chromium.launch(traceDir='traces')
   # context = await browser.new_context()
@@ -36,7 +36,7 @@ module Playwright
   # await context.tracing.stop()
   # await context.tracing.export("trace.zip")
   # ```
-  # 
+  #
   # ```python sync
   # browser = chromium.launch(traceDir='traces')
   # context = browser.new_context()
@@ -53,7 +53,7 @@ module Playwright
     end
 
     # Start tracing.
-    # 
+    #
     #
     # ```js
     # await context.tracing.start({ name: 'trace', screenshots: true, snapshots: true });
@@ -62,7 +62,7 @@ module Playwright
     # await context.tracing.stop();
     # await context.tracing.export('trace.zip');
     # ```
-    # 
+    #
     # ```java
     # context.tracing.start(page, new Tracing.StartOptions()
     #   .setName("trace")
@@ -73,14 +73,14 @@ module Playwright
     # context.tracing.stop();
     # context.tracing.export(Paths.get("trace.zip")))
     # ```
-    # 
+    #
     # ```python async
     # await context.tracing.start(name="trace", screenshots=True, snapshots=True)
     # await page.goto("https://playwright.dev")
     # await context.tracing.stop()
     # await context.tracing.export("trace.zip")
     # ```
-    # 
+    #
     # ```python sync
     # context.tracing.start(name="trace", screenshots=True, snapshots=True)
     # page.goto("https://playwright.dev")

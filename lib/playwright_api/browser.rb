@@ -1,12 +1,12 @@
 module Playwright
   # - extends: [EventEmitter]
-  # 
+  #
   # A Browser is created via [`method: BrowserType.launch`]. An example of using a `Browser` to create a `Page`:
-  # 
+  #
   #
   # ```js
   # const { firefox } = require('playwright');  // Or 'chromium' or 'webkit'.
-  # 
+  #
   # (async () => {
   #   const browser = await firefox.launch();
   #   const page = await browser.newPage();
@@ -14,10 +14,10 @@ module Playwright
   #   await browser.close();
   # })();
   # ```
-  # 
+  #
   # ```java
   # import com.microsoft.playwright.*;
-  # 
+  #
   # public class Example {
   #   public static void main(String[] args) {
   #     try (Playwright playwright = Playwright.create()) {
@@ -30,42 +30,42 @@ module Playwright
   #   }
   # }
   # ```
-  # 
+  #
   # ```python async
   # import asyncio
   # from playwright.async_api import async_playwright
-  # 
+  #
   # async def run(playwright):
   #     firefox = playwright.firefox
   #     browser = await firefox.launch()
   #     page = await browser.new_page()
   #     await page.goto("https://example.com")
   #     await browser.close()
-  # 
+  #
   # async def main():
   #     async with async_playwright() as playwright:
   #         await run(playwright)
   # asyncio.run(main())
   # ```
-  # 
+  #
   # ```python sync
   # from playwright.sync_api import sync_playwright
-  # 
+  #
   # def run(playwright):
   #     firefox = playwright.firefox
   #     browser = firefox.launch()
   #     page = browser.new_page()
   #     page.goto("https://example.com")
   #     browser.close()
-  # 
+  #
   # with sync_playwright() as playwright:
   #     run(playwright)
   # ```
-  # 
+  #
   # ```csharp
   # using Microsoft.Playwright;
   # using System.Threading.Tasks;
-  # 
+  #
   # class BrowserExamples
   # {
   #     public static async Task Main()
@@ -83,47 +83,47 @@ module Playwright
 
     # In case this browser is obtained using [`method: BrowserType.launch`], closes the browser and all of its pages (if any
     # were opened).
-    # 
+    #
     # In case this browser is connected to, clears all created contexts belonging to this browser and disconnects from the
     # browser server.
-    # 
+    #
     # The `Browser` object itself is considered to be disposed and cannot be used anymore.
     def close
       wrap_impl(@impl.close)
     end
 
     # Returns an array of all open browser contexts. In a newly created browser, this will return zero browser contexts.
-    # 
+    #
     #
     # ```js
     # const browser = await pw.webkit.launch();
     # console.log(browser.contexts().length); // prints `0`
-    # 
+    #
     # const context = await browser.newContext();
     # console.log(browser.contexts().length); // prints `1`
     # ```
-    # 
+    #
     # ```java
     # Browser browser = pw.webkit().launch();
     # System.out.println(browser.contexts().size()); // prints "0"
     # BrowserContext context = browser.newContext();
     # System.out.println(browser.contexts().size()); // prints "1"
     # ```
-    # 
+    #
     # ```python async
     # browser = await pw.webkit.launch()
     # print(len(browser.contexts())) # prints `0`
     # context = await browser.new_context()
     # print(len(browser.contexts())) # prints `1`
     # ```
-    # 
+    #
     # ```python sync
     # browser = pw.webkit.launch()
     # print(len(browser.contexts())) # prints `0`
     # context = browser.new_context()
     # print(len(browser.contexts())) # prints `1`
     # ```
-    # 
+    #
     # ```csharp
     # using var playwright = await Playwright.CreateAsync();
     # var browser = await playwright.Webkit.LaunchAsync();
@@ -141,14 +141,14 @@ module Playwright
     end
 
     # > NOTE: CDP Sessions are only supported on Chromium-based browsers.
-    # 
+    #
     # Returns the newly created browser session.
     def new_browser_cdp_session
       raise NotImplementedError.new('new_browser_cdp_session is not implemented yet.')
     end
 
     # Creates a new browser context. It won't share cookies/cache with other browser contexts.
-    # 
+    #
     #
     # ```js
     # (async () => {
@@ -160,7 +160,7 @@ module Playwright
     #   await page.goto('https://example.com');
     # })();
     # ```
-    # 
+    #
     # ```java
     # Browser browser = playwright.firefox().launch();  // Or 'chromium' or 'webkit'.
     # // Create a new incognito browser context.
@@ -169,7 +169,7 @@ module Playwright
     # Page page = context.newPage();
     # page.navigate('https://example.com');
     # ```
-    # 
+    #
     # ```python async
     # browser = await playwright.firefox.launch() # or "chromium" or "webkit".
     # # create a new incognito browser context.
@@ -178,7 +178,7 @@ module Playwright
     # page = await context.new_page()
     # await page.goto("https://example.com")
     # ```
-    # 
+    #
     # ```python sync
     # browser = playwright.firefox.launch() # or "chromium" or "webkit".
     # # create a new incognito browser context.
@@ -187,7 +187,7 @@ module Playwright
     # page = context.new_page()
     # page.goto("https://example.com")
     # ```
-    # 
+    #
     # ```csharp
     # using var playwright = await Playwright.CreateAsync();
     # var browser = await playwright.Firefox.LaunchAsync();
@@ -228,7 +228,7 @@ module Playwright
     end
 
     # Creates a new page in a new browser context. Closing this page will close the context as well.
-    # 
+    #
     # This is a convenience API that should only be used for the single-page scenarios and short snippets. Production code and
     # testing frameworks should explicitly create [`method: Browser.newContext`] followed by the
     # [`method: BrowserContext.newPage`] to control their exact life times.
@@ -262,30 +262,30 @@ module Playwright
     end
 
     # > NOTE: Tracing is only supported on Chromium-based browsers.
-    # 
+    #
     # You can use [`method: Browser.startTracing`] and [`method: Browser.stopTracing`] to create a trace file that can be
     # opened in Chrome DevTools performance panel.
-    # 
+    #
     #
     # ```js
     # await browser.startTracing(page, {path: 'trace.json'});
     # await page.goto('https://www.google.com');
     # await browser.stopTracing();
     # ```
-    # 
+    #
     # ```java
     # browser.startTracing(page, new Browser.StartTracingOptions()
     #   .setPath(Paths.get("trace.json")));
     # page.goto('https://www.google.com');
     # browser.stopTracing();
     # ```
-    # 
+    #
     # ```python async
     # await browser.start_tracing(page, path="trace.json")
     # await page.goto("https://www.google.com")
     # await browser.stop_tracing()
     # ```
-    # 
+    #
     # ```python sync
     # browser.start_tracing(page, path="trace.json")
     # page.goto("https://www.google.com")
@@ -296,7 +296,7 @@ module Playwright
     end
 
     # > NOTE: Tracing is only supported on Chromium-based browsers.
-    # 
+    #
     # Returns the buffer with trace data.
     def stop_tracing
       wrap_impl(@impl.stop_tracing)
@@ -309,6 +309,12 @@ module Playwright
 
     # -- inherited from EventEmitter --
     # @nodoc
+    def on(event, callback)
+      event_emitter_proxy.on(event, callback)
+    end
+
+    # -- inherited from EventEmitter --
+    # @nodoc
     def off(event, callback)
       event_emitter_proxy.off(event, callback)
     end
@@ -317,12 +323,6 @@ module Playwright
     # @nodoc
     def once(event, callback)
       event_emitter_proxy.once(event, callback)
-    end
-
-    # -- inherited from EventEmitter --
-    # @nodoc
-    def on(event, callback)
-      event_emitter_proxy.on(event, callback)
     end
 
     private def event_emitter_proxy

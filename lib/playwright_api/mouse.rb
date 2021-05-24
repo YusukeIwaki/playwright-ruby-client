@@ -1,8 +1,8 @@
 module Playwright
   # The Mouse class operates in main-frame CSS pixels relative to the top-left corner of the viewport.
-  # 
+  #
   # Every `page` object has its own Mouse, accessible with [`property: Page.mouse`].
-  # 
+  #
   #
   # ```js
   # // Using ‘page.mouse’ to trace a 100x100 square.
@@ -14,7 +14,7 @@ module Playwright
   # await page.mouse.move(0, 0);
   # await page.mouse.up();
   # ```
-  # 
+  #
   # ```java
   # // Using ‘page.mouse’ to trace a 100x100 square.
   # page.mouse().move(0, 0);
@@ -25,7 +25,7 @@ module Playwright
   # page.mouse().move(0, 0);
   # page.mouse().up();
   # ```
-  # 
+  #
   # ```python async
   # # using ‘page.mouse’ to trace a 100x100 square.
   # await page.mouse.move(0, 0)
@@ -36,7 +36,7 @@ module Playwright
   # await page.mouse.move(0, 0)
   # await page.mouse.up()
   # ```
-  # 
+  #
   # ```python sync
   # # using ‘page.mouse’ to trace a 100x100 square.
   # page.mouse.move(0, 0)
@@ -47,7 +47,7 @@ module Playwright
   # page.mouse.move(0, 0)
   # page.mouse.up()
   # ```
-  # 
+  #
   # ```csharp
   # await Page.Mouse.MoveAsync(0, 0);
   # await Page.Mouse.DownAsync();

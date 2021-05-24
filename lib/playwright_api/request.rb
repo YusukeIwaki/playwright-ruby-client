@@ -3,38 +3,38 @@ module Playwright
   # - [`event: Page.request`] emitted when the request is issued by the page.
   # - [`event: Page.response`] emitted when/if the response status and headers are received for the request.
   # - [`event: Page.requestFinished`] emitted when the response body is downloaded and the request is complete.
-  # 
+  #
   # If request fails at some point, then instead of `'requestfinished'` event (and possibly instead of 'response' event),
   # the  [`event: Page.requestFailed`] event is emitted.
-  # 
+  #
   # > NOTE: HTTP Error responses, such as 404 or 503, are still successful responses from HTTP standpoint, so request will
   # complete with `'requestfinished'` event.
-  # 
+  #
   # If request gets a 'redirect' response, the request is successfully finished with the 'requestfinished' event, and a new
   # request is  issued to a redirected url.
   class Request < PlaywrightApi
 
     # The method returns `null` unless this request has failed, as reported by `requestfailed` event.
-    # 
+    #
     # Example of logging of all the failed requests:
-    # 
+    #
     #
     # ```js
     # page.on('requestfailed', request => {
     #   console.log(request.url() + ' ' + request.failure().errorText);
     # });
     # ```
-    # 
+    #
     # ```java
     # page.onRequestFailed(request -> {
     #   System.out.println(request.url() + " " + request.failure());
     # });
     # ```
-    # 
+    #
     # ```py
     # page.on("requestfailed", lambda request: print(request.url + " " + request.failure))
     # ```
-    # 
+    #
     # ```csharp
     # page.RequestFailed += (_, request) =>
     # {
@@ -76,7 +76,7 @@ module Playwright
     end
 
     # Returns parsed request's body for `form-urlencoded` and JSON as a fallback if any.
-    # 
+    #
     # When the response is `application/x-www-form-urlencoded` then a key/value object of the values will be returned.
     # Otherwise it will be parsed as JSON.
     def post_data_json
@@ -84,62 +84,62 @@ module Playwright
     end
 
     # Request that was redirected by the server to this one, if any.
-    # 
+    #
     # When the server responds with a redirect, Playwright creates a new `Request` object. The two requests are connected by
     # `redirectedFrom()` and `redirectedTo()` methods. When multiple server redirects has happened, it is possible to
     # construct the whole redirect chain by repeatedly calling `redirectedFrom()`.
-    # 
+    #
     # For example, if the website `http://example.com` redirects to `https://example.com`:
-    # 
+    #
     #
     # ```js
     # const response = await page.goto('http://example.com');
     # console.log(response.request().redirectedFrom().url()); // 'http://example.com'
     # ```
-    # 
+    #
     # ```java
     # Response response = page.navigate("http://example.com");
     # System.out.println(response.request().redirectedFrom().url()); // "http://example.com"
     # ```
-    # 
+    #
     # ```python async
     # response = await page.goto("http://example.com")
     # print(response.request.redirected_from.url) # "http://example.com"
     # ```
-    # 
+    #
     # ```python sync
     # response = page.goto("http://example.com")
     # print(response.request.redirected_from.url) # "http://example.com"
     # ```
-    # 
+    #
     # ```csharp
     # var response = await page.GotoAsync("http://www.microsoft.com");
     # Console.WriteLine(response.Request.RedirectedFrom?.Url); // http://www.microsoft.com
     # ```
-    # 
+    #
     # If the website `https://google.com` has no redirects:
-    # 
+    #
     #
     # ```js
     # const response = await page.goto('https://google.com');
     # console.log(response.request().redirectedFrom()); // null
     # ```
-    # 
+    #
     # ```java
     # Response response = page.navigate("https://google.com");
     # System.out.println(response.request().redirectedFrom()); // null
     # ```
-    # 
+    #
     # ```python async
     # response = await page.goto("https://google.com")
     # print(response.request.redirected_from) # None
     # ```
-    # 
+    #
     # ```python sync
     # response = page.goto("https://google.com")
     # print(response.request.redirected_from) # None
     # ```
-    # 
+    #
     # ```csharp
     # var response = await page.GotoAsync("https://www.google.com");
     # Console.WriteLine(response.Request.RedirectedFrom?.Url); // null
@@ -149,22 +149,22 @@ module Playwright
     end
 
     # New request issued by the browser if the server responded with redirect.
-    # 
+    #
     # This method is the opposite of [`method: Request.redirectedFrom`]:
-    # 
+    #
     #
     # ```js
     # console.log(request.redirectedFrom().redirectedTo() === request); // true
     # ```
-    # 
+    #
     # ```java
     # System.out.println(request.redirectedFrom().redirectedTo() == request); // true
     # ```
-    # 
+    #
     # ```py
     # assert request.redirected_from.redirected_to == request
     # ```
-    # 
+    #
     # ```csharp
     # Console.WriteLine(request.RedirectedFrom?.RedirectedTo == request); // True
     # ```
@@ -187,7 +187,7 @@ module Playwright
     # Returns resource timing information for given request. Most of the timing values become available upon the response,
     # `responseEnd` becomes available when request finishes. Find more information at
     # [Resource Timing API](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming).
-    # 
+    #
     #
     # ```js
     # const [request] = await Promise.all([
@@ -196,7 +196,7 @@ module Playwright
     # ]);
     # console.log(request.timing());
     # ```
-    # 
+    #
     # ```java
     # page.onRequestFinished(request -> {
     #   Timing timing = request.timing();
@@ -204,21 +204,21 @@ module Playwright
     # });
     # page.navigate("http://example.com");
     # ```
-    # 
+    #
     # ```python async
     # async with page.expect_event("requestfinished") as request_info:
     #     await page.goto("http://example.com")
     # request = await request_info.value
     # print(request.timing)
     # ```
-    # 
+    #
     # ```python sync
     # with page.expect_event("requestfinished") as request_info:
     #     page.goto("http://example.com")
     # request = request_info.value
     # print(request.timing)
     # ```
-    # 
+    #
     # ```csharp
     # var waitForEventTask = page.WaitForEventAsync(PageEvent.RequestFinished);
     # await page.GotoAsync("https://www.microsoft.com");
@@ -236,6 +236,12 @@ module Playwright
 
     # -- inherited from EventEmitter --
     # @nodoc
+    def on(event, callback)
+      event_emitter_proxy.on(event, callback)
+    end
+
+    # -- inherited from EventEmitter --
+    # @nodoc
     def off(event, callback)
       event_emitter_proxy.off(event, callback)
     end
@@ -244,12 +250,6 @@ module Playwright
     # @nodoc
     def once(event, callback)
       event_emitter_proxy.once(event, callback)
-    end
-
-    # -- inherited from EventEmitter --
-    # @nodoc
-    def on(event, callback)
-      event_emitter_proxy.on(event, callback)
     end
 
     private def event_emitter_proxy

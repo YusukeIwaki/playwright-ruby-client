@@ -19,7 +19,7 @@ module Playwright
     end
 
     # > NOTE: In most cases, you should use [`method: WebSocket.waitForEvent`].
-    # 
+    #
     # Waits for given `event` to fire. If predicate is provided, it passes event's value into the `predicate` function and
     # waits for `predicate(event)` to return a truthy value. Will throw an error if the socket is closed before the `event` is
     # fired.

@@ -1,11 +1,11 @@
 module Playwright
   # Playwright module provides a method to launch a browser instance. The following is a typical example of using Playwright
   # to drive automation:
-  # 
+  #
   #
   # ```js
   # const { chromium, firefox, webkit } = require('playwright');
-  # 
+  #
   # (async () => {
   #   const browser = await chromium.launch();  // Or 'firefox' or 'webkit'.
   #   const page = await browser.newPage();
@@ -14,10 +14,10 @@ module Playwright
   #   await browser.close();
   # })();
   # ```
-  # 
+  #
   # ```java
   # import com.microsoft.playwright.*;
-  # 
+  #
   # public class Example {
   #   public static void main(String[] args) {
   #     try (Playwright playwright = Playwright.create()) {
@@ -31,11 +31,11 @@ module Playwright
   #   }
   # }
   # ```
-  # 
+  #
   # ```python async
   # import asyncio
   # from playwright.async_api import async_playwright
-  # 
+  #
   # async def run(playwright):
   #     chromium = playwright.chromium # or "firefox" or "webkit".
   #     browser = await chromium.launch()
@@ -43,16 +43,16 @@ module Playwright
   #     await page.goto("http://example.com")
   #     # other actions...
   #     await browser.close()
-  # 
+  #
   # async def main():
   #     async with async_playwright() as playwright:
   #         await run(playwright)
   # asyncio.run(main())
   # ```
-  # 
+  #
   # ```python sync
   # from playwright.sync_api import sync_playwright
-  # 
+  #
   # def run(playwright):
   #     chromium = playwright.chromium # or "firefox" or "webkit".
   #     browser = chromium.launch()
@@ -60,15 +60,15 @@ module Playwright
   #     page.goto("http://example.com")
   #     # other actions...
   #     browser.close()
-  # 
+  #
   # with sync_playwright() as playwright:
   #     run(playwright)
   # ```
-  # 
+  #
   # ```csharp
   # using Microsoft.Playwright;
   # using System.Threading.Tasks;
-  # 
+  #
   # class PlaywrightExample
   # {
   #     public static async Task Main()
@@ -76,7 +76,7 @@ module Playwright
   #         using var playwright = await Playwright.CreateAsync();
   #         await using var browser = await playwright.Chromium.LaunchAsync();
   #         var page = await browser.NewPageAsync();
-  # 
+  #
   #         await page.GotoAsync("https://www.microsoft.com");
   #         // other actions...
   #     }
@@ -90,12 +90,12 @@ module Playwright
     end
 
     # Returns a dictionary of devices to be used with [`method: Browser.newContext`] or [`method: Browser.newPage`].
-    # 
+    #
     #
     # ```js
     # const { webkit, devices } = require('playwright');
     # const iPhone = devices['iPhone 6'];
-    # 
+    #
     # (async () => {
     #   const browser = await webkit.launch();
     #   const context = await browser.newContext({
@@ -107,11 +107,11 @@ module Playwright
     #   await browser.close();
     # })();
     # ```
-    # 
+    #
     # ```python async
     # import asyncio
     # from playwright.async_api import async_playwright
-    # 
+    #
     # async def run(playwright):
     #     webkit = playwright.webkit
     #     iphone = playwright.devices["iPhone 6"]
@@ -121,16 +121,16 @@ module Playwright
     #     await page.goto("http://example.com")
     #     # other actions...
     #     await browser.close()
-    # 
+    #
     # async def main():
     #     async with async_playwright() as playwright:
     #         await run(playwright)
     # asyncio.run(main())
     # ```
-    # 
+    #
     # ```python sync
     # from playwright.sync_api import sync_playwright
-    # 
+    #
     # def run(playwright):
     #     webkit = playwright.webkit
     #     iphone = playwright.devices["iPhone 6"]
@@ -140,7 +140,7 @@ module Playwright
     #     page.goto("http://example.com")
     #     # other actions...
     #     browser.close()
-    # 
+    #
     # with sync_playwright() as playwright:
     #     run(playwright)
     # ```
@@ -166,18 +166,18 @@ module Playwright
 
     # Terminates this instance of Playwright in case it was created bypassing the Python context manager. This is useful in
     # REPL applications.
-    # 
+    #
     # ```py
     # >>> from playwright.sync_api import sync_playwright
-    # 
+    #
     # >>> playwright = sync_playwright().start()
-    # 
+    #
     # >>> browser = playwright.chromium.launch()
     # >>> page = browser.new_page()
     # >>> page.goto("http://whatsmyuseragent.org/")
     # >>> page.screenshot(path="example.png")
     # >>> browser.close()
-    # 
+    #
     # >>> playwright.stop()
     # ```
     def stop
@@ -196,6 +196,12 @@ module Playwright
 
     # -- inherited from EventEmitter --
     # @nodoc
+    def on(event, callback)
+      event_emitter_proxy.on(event, callback)
+    end
+
+    # -- inherited from EventEmitter --
+    # @nodoc
     def off(event, callback)
       event_emitter_proxy.off(event, callback)
     end
@@ -204,12 +210,6 @@ module Playwright
     # @nodoc
     def once(event, callback)
       event_emitter_proxy.once(event, callback)
-    end
-
-    # -- inherited from EventEmitter --
-    # @nodoc
-    def on(event, callback)
-      event_emitter_proxy.on(event, callback)
     end
 
     private def event_emitter_proxy

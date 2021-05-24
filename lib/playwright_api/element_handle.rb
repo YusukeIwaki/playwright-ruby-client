@@ -2,14 +2,14 @@ require_relative './js_handle.rb'
 
 module Playwright
   # - extends: `JSHandle`
-  # 
+  #
   # ElementHandle represents an in-page DOM element. ElementHandles can be created with the [`method: Page.querySelector`]
   # method.
-  # 
+  #
   #
   # ```js
   # const { chromium } = require('playwright');  // Or 'firefox' or 'webkit'.
-  # 
+  #
   # (async () => {
   #   const browser = await chromium.launch();
   #   const page = await browser.newPage();
@@ -19,10 +19,10 @@ module Playwright
   #   // ...
   # })();
   # ```
-  # 
+  #
   # ```java
   # import com.microsoft.playwright.*;
-  # 
+  #
   # public class Example {
   #   public static void main(String[] args) {
   #     try (Playwright playwright = Playwright.create()) {
@@ -37,11 +37,11 @@ module Playwright
   #   }
   # }
   # ```
-  # 
+  #
   # ```python async
   # import asyncio
   # from playwright.async_api import async_playwright
-  # 
+  #
   # async def run(playwright):
   #     chromium = playwright.chromium
   #     browser = await chromium.launch()
@@ -50,16 +50,16 @@ module Playwright
   #     href_element = await page.query_selector("a")
   #     await href_element.click()
   #     # ...
-  # 
+  #
   # async def main():
   #     async with async_playwright() as playwright:
   #         await run(playwright)
   # asyncio.run(main())
   # ```
-  # 
+  #
   # ```python sync
   # from playwright.sync_api import sync_playwright
-  # 
+  #
   # def run(playwright):
   #     chromium = playwright.chromium
   #     browser = chromium.launch()
@@ -68,15 +68,15 @@ module Playwright
   #     href_element = page.query_selector("a")
   #     href_element.click()
   #     # ...
-  # 
+  #
   # with sync_playwright() as playwright:
   #     run(playwright)
   # ```
-  # 
+  #
   # ```csharp
   # using Microsoft.Playwright;
   # using System.Threading.Tasks;
-  # 
+  #
   # class HandleExamples
   # {
   #     public static async Task Run()
@@ -90,48 +90,48 @@ module Playwright
   #     }
   # }
   # ```
-  # 
+  #
   # ElementHandle prevents DOM element from garbage collection unless the handle is disposed with
   # [`method: JSHandle.dispose`]. ElementHandles are auto-disposed when their origin frame gets navigated.
-  # 
+  #
   # ElementHandle instances can be used as an argument in [`method: Page.evalOnSelector`] and [`method: Page.evaluate`]
   # methods.
   class ElementHandle < JSHandle
 
     # This method returns the bounding box of the element, or `null` if the element is not visible. The bounding box is
     # calculated relative to the main frame viewport - which is usually the same as the browser window.
-    # 
+    #
     # Scrolling affects the returned bonding box, similarly to
     # [Element.getBoundingClientRect](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect). That
     # means `x` and/or `y` may be negative.
-    # 
+    #
     # Elements from child frames return the bounding box relative to the main frame, unlike the
     # [Element.getBoundingClientRect](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect).
-    # 
+    #
     # Assuming the page is static, it is safe to use bounding box coordinates to perform input. For example, the following
     # snippet should click the center of the element.
-    # 
+    #
     #
     # ```js
     # const box = await elementHandle.boundingBox();
     # await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
     # ```
-    # 
+    #
     # ```java
     # BoundingBox box = elementHandle.boundingBox();
     # page.mouse().click(box.x + box.width / 2, box.y + box.height / 2);
     # ```
-    # 
+    #
     # ```python async
     # box = await element_handle.bounding_box()
     # await page.mouse.click(box["x"] + box["width"] / 2, box["y"] + box["height"] / 2)
     # ```
-    # 
+    #
     # ```python sync
     # box = element_handle.bounding_box()
     # page.mouse.click(box["x"] + box["width"] / 2, box["y"] + box["height"] / 2)
     # ```
-    # 
+    #
     # ```csharp
     # var box = await elementHandle.BoundingBoxAsync();
     # await page.Mouse.ClickAsync(box.X + box.Width / 2, box.Y + box.Height / 2);
@@ -148,9 +148,9 @@ module Playwright
     # 1. Use [`property: Page.mouse`] to click in the center of the element.
     # 1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
     # 1. Ensure that the element is now checked. If not, this method throws.
-    # 
+    #
     # If the element is detached from the DOM at any moment during the action, this method throws.
-    # 
+    #
     # When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing
     # zero timeout disables this.
     def check(
@@ -167,9 +167,9 @@ module Playwright
     # 1. Scroll the element into view if needed.
     # 1. Use [`property: Page.mouse`] to click in the center of the element, or the specified `position`.
     # 1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
-    # 
+    #
     # If the element is detached from the DOM at any moment during the action, this method throws.
-    # 
+    #
     # When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing
     # zero timeout disables this.
     def click(
@@ -196,12 +196,12 @@ module Playwright
     # 1. Use [`property: Page.mouse`] to double click in the center of the element, or the specified `position`.
     # 1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set. Note that if the
     #    first click of the `dblclick()` triggers a navigation event, this method will throw.
-    # 
+    #
     # If the element is detached from the DOM at any moment during the action, this method throws.
-    # 
+    #
     # When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing
     # zero timeout disables this.
-    # 
+    #
     # > NOTE: `elementHandle.dblclick()` dispatches two `click` events and a single `dblclick` event.
     def dblclick(
           button: nil,
@@ -218,31 +218,31 @@ module Playwright
     # The snippet below dispatches the `click` event on the element. Regardless of the visibility state of the element,
     # `click` is dispatched. This is equivalent to calling
     # [element.click()](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click).
-    # 
+    #
     #
     # ```js
     # await elementHandle.dispatchEvent('click');
     # ```
-    # 
+    #
     # ```java
     # elementHandle.dispatchEvent("click");
     # ```
-    # 
+    #
     # ```python async
     # await element_handle.dispatch_event("click")
     # ```
-    # 
+    #
     # ```python sync
     # element_handle.dispatch_event("click")
     # ```
-    # 
+    #
     # ```csharp
     # await elementHandle.DispatchEventAsync("click");
     # ```
-    # 
+    #
     # Under the hood, it creates an instance of an event based on the given `type`, initializes it with `eventInit` properties
     # and dispatches it on the element. Events are `composed`, `cancelable` and bubble by default.
-    # 
+    #
     # Since `eventInit` is event-specific, please refer to the events documentation for the lists of initial properties:
     # - [DragEvent](https://developer.mozilla.org/en-US/docs/Web/API/DragEvent/DragEvent)
     # - [FocusEvent](https://developer.mozilla.org/en-US/docs/Web/API/FocusEvent/FocusEvent)
@@ -251,16 +251,16 @@ module Playwright
     # - [PointerEvent](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/PointerEvent)
     # - [TouchEvent](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent/TouchEvent)
     # - [Event](https://developer.mozilla.org/en-US/docs/Web/API/Event/Event)
-    # 
+    #
     # You can also specify `JSHandle` as the property value if you want live objects to be passed into the event:
-    # 
+    #
     #
     # ```js
     # // Note you can only create DataTransfer in Chromium and Firefox
     # const dataTransfer = await page.evaluateHandle(() => new DataTransfer());
     # await elementHandle.dispatchEvent('dragstart', { dataTransfer });
     # ```
-    # 
+    #
     # ```java
     # // Note you can only create DataTransfer in Chromium and Firefox
     # JSHandle dataTransfer = page.evaluateHandle("() => new DataTransfer()");
@@ -268,19 +268,19 @@ module Playwright
     # arg.put("dataTransfer", dataTransfer);
     # elementHandle.dispatchEvent("dragstart", arg);
     # ```
-    # 
+    #
     # ```python async
     # # note you can only create data_transfer in chromium and firefox
     # data_transfer = await page.evaluate_handle("new DataTransfer()")
     # await element_handle.dispatch_event("#source", "dragstart", {"dataTransfer": data_transfer})
     # ```
-    # 
+    #
     # ```python sync
     # # note you can only create data_transfer in chromium and firefox
     # data_transfer = page.evaluate_handle("new DataTransfer()")
     # element_handle.dispatch_event("#source", "dragstart", {"dataTransfer": data_transfer})
     # ```
-    # 
+    #
     # ```csharp
     # var handle = await page.EvaluateHandleAsync("() => new DataTransfer()");
     # await handle.AsElement.DispatchEventAsync("dragstart", new Dictionary<string, object>
@@ -293,41 +293,41 @@ module Playwright
     end
 
     # Returns the return value of `expression`.
-    # 
+    #
     # The method finds an element matching the specified selector in the `ElementHandle`s subtree and passes it as a first
     # argument to `expression`. See [Working with selectors](./selectors.md) for more details. If no elements match the
     # selector, the method throws an error.
-    # 
+    #
     # If `expression` returns a [Promise], then [`method: ElementHandle.evalOnSelector`] would wait for the promise to resolve
     # and return its value.
-    # 
+    #
     # Examples:
-    # 
+    #
     #
     # ```js
     # const tweetHandle = await page.$('.tweet');
     # expect(await tweetHandle.$eval('.like', node => node.innerText)).toBe('100');
     # expect(await tweetHandle.$eval('.retweets', node => node.innerText)).toBe('10');
     # ```
-    # 
+    #
     # ```java
     # ElementHandle tweetHandle = page.querySelector(".tweet");
     # assertEquals("100", tweetHandle.evalOnSelector(".like", "node => node.innerText"));
     # assertEquals("10", tweetHandle.evalOnSelector(".retweets", "node => node.innerText"));
     # ```
-    # 
+    #
     # ```python async
     # tweet_handle = await page.query_selector(".tweet")
     # assert await tweet_handle.eval_on_selector(".like", "node => node.innerText") == "100"
     # assert await tweet_handle.eval_on_selector(".retweets", "node => node.innerText") = "10"
     # ```
-    # 
+    #
     # ```python sync
     # tweet_handle = page.query_selector(".tweet")
     # assert tweet_handle.eval_on_selector(".like", "node => node.innerText") == "100"
     # assert tweet_handle.eval_on_selector(".retweets", "node => node.innerText") = "10"
     # ```
-    # 
+    #
     # ```csharp
     # var tweetHandle = await page.QuerySelectorAsync(".tweet");
     # Assert.Equals("100", await tweetHandle.EvalOnSelectorAsync(".like", "node => node.innerText"));
@@ -338,43 +338,43 @@ module Playwright
     end
 
     # Returns the return value of `expression`.
-    # 
+    #
     # The method finds all elements matching the specified selector in the `ElementHandle`'s subtree and passes an array of
     # matched elements as a first argument to `expression`. See [Working with selectors](./selectors.md) for more details.
-    # 
+    #
     # If `expression` returns a [Promise], then [`method: ElementHandle.evalOnSelectorAll`] would wait for the promise to
     # resolve and return its value.
-    # 
+    #
     # Examples:
-    # 
+    #
     # ```html
     # <div class="feed">
     #   <div class="tweet">Hello!</div>
     #   <div class="tweet">Hi!</div>
     # </div>
     # ```
-    # 
+    #
     #
     # ```js
     # const feedHandle = await page.$('.feed');
     # expect(await feedHandle.$$eval('.tweet', nodes => nodes.map(n => n.innerText))).toEqual(['Hello!', 'Hi!']);
     # ```
-    # 
+    #
     # ```java
     # ElementHandle feedHandle = page.querySelector(".feed");
     # assertEquals(Arrays.asList("Hello!", "Hi!"), feedHandle.evalOnSelectorAll(".tweet", "nodes => nodes.map(n => n.innerText)"));
     # ```
-    # 
+    #
     # ```python async
     # feed_handle = await page.query_selector(".feed")
     # assert await feed_handle.eval_on_selector_all(".tweet", "nodes => nodes.map(n => n.innerText)") == ["hello!", "hi!"]
     # ```
-    # 
+    #
     # ```python sync
     # feed_handle = page.query_selector(".feed")
     # assert feed_handle.eval_on_selector_all(".tweet", "nodes => nodes.map(n => n.innerText)") == ["hello!", "hi!"]
     # ```
-    # 
+    #
     # ```csharp
     # var feedHandle = await page.QuerySelectorAsync(".feed");
     # Assert.Equals(new [] { "Hello!", "Hi!" }, await feedHandle.EvalOnSelectorAllAsync<string[]>(".tweet", "nodes => nodes.map(n => n.innerText)"));
@@ -385,12 +385,12 @@ module Playwright
 
     # This method waits for [actionability](./actionability.md) checks, focuses the element, fills it and triggers an `input`
     # event after filling. Note that you can pass an empty string to clear the input field.
-    # 
+    #
     # If the target element is not an `<input>`, `<textarea>` or `[contenteditable]` element, this method throws an error.
     # However, if the element is inside the `<label>` element that has an associated
     # [control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), the control will be filled
     # instead.
-    # 
+    #
     # To send fine-grained keyboard events, use [`method: ElementHandle.type`].
     def fill(value, noWaitAfter: nil, timeout: nil)
       wrap_impl(@impl.fill(unwrap_impl(value), noWaitAfter: unwrap_impl(noWaitAfter), timeout: unwrap_impl(timeout)))
@@ -412,9 +412,9 @@ module Playwright
     # 1. Scroll the element into view if needed.
     # 1. Use [`property: Page.mouse`] to hover over the center of the element, or the specified `position`.
     # 1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
-    # 
+    #
     # If the element is detached from the DOM at any moment during the action, this method throws.
-    # 
+    #
     # When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing
     # zero timeout disables this.
     def hover(
@@ -472,21 +472,21 @@ module Playwright
     end
 
     # Focuses the element, and then uses [`method: Keyboard.down`] and [`method: Keyboard.up`].
-    # 
+    #
     # `key` can specify the intended [keyboardEvent.key](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key)
     # value or a single character to generate the text for. A superset of the `key` values can be found
     # [here](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values). Examples of the keys are:
-    # 
+    #
     # `F1` - `F12`, `Digit0`- `Digit9`, `KeyA`- `KeyZ`, `Backquote`, `Minus`, `Equal`, `Backslash`, `Backspace`, `Tab`,
     # `Delete`, `Escape`, `ArrowDown`, `End`, `Enter`, `Home`, `Insert`, `PageDown`, `PageUp`, `ArrowRight`, `ArrowUp`, etc.
-    # 
+    #
     # Following modification shortcuts are also supported: `Shift`, `Control`, `Alt`, `Meta`, `ShiftLeft`.
-    # 
+    #
     # Holding down `Shift` will type the text that corresponds to the `key` in the upper case.
-    # 
+    #
     # If `key` is a single character, it is case-sensitive, so the values `a` and `A` will generate different respective
     # texts.
-    # 
+    #
     # Shortcuts such as `key: "Control+o"` or `key: "Control+Shift+T"` are supported as well. When specified with the
     # modifier, modifier is pressed and being held while the subsequent key is being pressed.
     def press(key, delay: nil, noWaitAfter: nil, timeout: nil)
@@ -506,7 +506,7 @@ module Playwright
     end
 
     # Returns the buffer with the captured screenshot.
-    # 
+    #
     # This method waits for the [actionability](./actionability.md) checks, then scrolls element into view before taking a
     # screenshot. If the element is detached from DOM, the method throws an error.
     def screenshot(
@@ -521,7 +521,7 @@ module Playwright
     # This method waits for [actionability](./actionability.md) checks, then tries to scroll element into view, unless it is
     # completely visible as defined by
     # [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)'s `ratio`.
-    # 
+    #
     # Throws when `elementHandle` does not point to an element
     # [connected](https://developer.mozilla.org/en-US/docs/Web/API/Node/isConnected) to a Document or a ShadowRoot.
     def scroll_into_view_if_needed(timeout: nil)
@@ -530,27 +530,27 @@ module Playwright
 
     # This method waits for [actionability](./actionability.md) checks, waits until all specified options are present in the
     # `<select>` element and selects these options.
-    # 
+    #
     # If the target element is not a `<select>` element, this method throws an error. However, if the element is inside the
     # `<label>` element that has an associated
     # [control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), the control will be used instead.
-    # 
+    #
     # Returns the array of option values that have been successfully selected.
-    # 
+    #
     # Triggers a `change` and `input` event once all the provided options have been selected.
-    # 
+    #
     #
     # ```js
     # // single selection matching the value
     # handle.selectOption('blue');
-    # 
+    #
     # // single selection matching the label
     # handle.selectOption({ label: 'Blue' });
-    # 
+    #
     # // multiple selection
     # handle.selectOption(['red', 'green', 'blue']);
     # ```
-    # 
+    #
     # ```java
     # // single selection matching the value
     # handle.selectOption("blue");
@@ -559,7 +559,7 @@ module Playwright
     # // multiple selection
     # handle.selectOption(new String[] {"red", "green", "blue"});
     # ```
-    # 
+    #
     # ```python async
     # # single selection matching the value
     # await handle.select_option("blue")
@@ -568,7 +568,7 @@ module Playwright
     # # multiple selection
     # await handle.select_option(value=["red", "green", "blue"])
     # ```
-    # 
+    #
     # ```python sync
     # # single selection matching the value
     # handle.select_option("blue")
@@ -577,7 +577,7 @@ module Playwright
     # # multiple selection
     # handle.select_option(value=["red", "green", "blue"])
     # ```
-    # 
+    #
     # ```python sync
     # # single selection matching the value
     # handle.select_option("blue")
@@ -588,7 +588,7 @@ module Playwright
     # # multiple selection for blue, red and second option
     # handle.select_option(value="blue", { index: 2 }, "red")
     # ```
-    # 
+    #
     # ```csharp
     # // single selection matching the value
     # await handle.SelectOptionAsync(new[] { "blue" });
@@ -620,7 +620,7 @@ module Playwright
 
     # This method expects `elementHandle` to point to an
     # [input element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input).
-    # 
+    #
     # Sets the value of the file input to these file paths or files. If some of the `filePaths` are relative paths, then they
     # are resolved relative to the the current working directory. For empty array, clears the selected files.
     def set_input_files(files, noWaitAfter: nil, timeout: nil)
@@ -633,12 +633,12 @@ module Playwright
     # 1. Scroll the element into view if needed.
     # 1. Use [`property: Page.touchscreen`] to tap the center of the element, or the specified `position`.
     # 1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
-    # 
+    #
     # If the element is detached from the DOM at any moment during the action, this method throws.
-    # 
+    #
     # When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing
     # zero timeout disables this.
-    # 
+    #
     # > NOTE: `elementHandle.tap()` requires that the `hasTouch` option of the browser context be set to true.
     def tap_point(
           force: nil,
@@ -656,62 +656,62 @@ module Playwright
     end
 
     # Focuses the element, and then sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text.
-    # 
+    #
     # To press a special key, like `Control` or `ArrowDown`, use [`method: ElementHandle.press`].
-    # 
+    #
     #
     # ```js
     # await elementHandle.type('Hello'); // Types instantly
     # await elementHandle.type('World', {delay: 100}); // Types slower, like a user
     # ```
-    # 
+    #
     # ```java
     # elementHandle.type("Hello"); // Types instantly
     # elementHandle.type("World", new ElementHandle.TypeOptions().setDelay(100)); // Types slower, like a user
     # ```
-    # 
+    #
     # ```python async
     # await element_handle.type("hello") # types instantly
     # await element_handle.type("world", delay=100) # types slower, like a user
     # ```
-    # 
+    #
     # ```python sync
     # element_handle.type("hello") # types instantly
     # element_handle.type("world", delay=100) # types slower, like a user
     # ```
-    # 
+    #
     # ```csharp
     # await elementHandle.TypeAsync("Hello"); // Types instantly
     # await elementHandle.TypeAsync("World", delay: 100); // Types slower, like a user
     # ```
-    # 
+    #
     # An example of typing into a text field and then submitting the form:
-    # 
+    #
     #
     # ```js
     # const elementHandle = await page.$('input');
     # await elementHandle.type('some text');
     # await elementHandle.press('Enter');
     # ```
-    # 
+    #
     # ```java
     # ElementHandle elementHandle = page.querySelector("input");
     # elementHandle.type("some text");
     # elementHandle.press("Enter");
     # ```
-    # 
+    #
     # ```python async
     # element_handle = await page.query_selector("input")
     # await element_handle.type("some text")
     # await element_handle.press("Enter")
     # ```
-    # 
+    #
     # ```python sync
     # element_handle = page.query_selector("input")
     # element_handle.type("some text")
     # element_handle.press("Enter")
     # ```
-    # 
+    #
     # ```csharp
     # var elementHandle = await page.QuerySelectorAsync("input");
     # await elementHandle.TypeAsync("some text");
@@ -729,9 +729,9 @@ module Playwright
     # 1. Use [`property: Page.mouse`] to click in the center of the element.
     # 1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
     # 1. Ensure that the element is now unchecked. If not, this method throws.
-    # 
+    #
     # If the element is detached from the DOM at any moment during the action, this method throws.
-    # 
+    #
     # When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing
     # zero timeout disables this.
     def uncheck(
@@ -744,7 +744,7 @@ module Playwright
     end
 
     # Returns when the element satisfies the `state`.
-    # 
+    #
     # Depending on the `state` parameter, this method waits for one of the [actionability](./actionability.md) checks to pass.
     # This method throws when the element is detached while waiting, unless waiting for the `"hidden"` state.
     # - `"visible"` Wait until the element is [visible](./actionability.md#visible).
@@ -755,7 +755,7 @@ module Playwright
     # - `"enabled"` Wait until the element is [enabled](./actionability.md#enabled).
     # - `"disabled"` Wait until the element is [not enabled](./actionability.md#enabled).
     # - `"editable"` Wait until the element is [editable](./actionability.md#editable).
-    # 
+    #
     # If the element does not satisfy the condition for the `timeout` milliseconds, this method will throw.
     def wait_for_element_state(state, timeout: nil)
       wrap_impl(@impl.wait_for_element_state(unwrap_impl(state), timeout: unwrap_impl(timeout)))
@@ -763,12 +763,12 @@ module Playwright
 
     # Returns element specified by selector when it satisfies `state` option. Returns `null` if waiting for `hidden` or
     # `detached`.
-    # 
+    #
     # Wait for the `selector` relative to the element handle to satisfy `state` option (either appear/disappear from dom, or
     # become visible/hidden). If at the moment of calling the method `selector` already satisfies the condition, the method
     # will return immediately. If the selector doesn't satisfy the condition for the `timeout` milliseconds, the function will
     # throw.
-    # 
+    #
     #
     # ```js
     # await page.setContent(`<div><span></span></div>`);
@@ -776,7 +776,7 @@ module Playwright
     # // Waiting for the 'span' selector relative to the div.
     # const span = await div.waitForSelector('span', { state: 'attached' });
     # ```
-    # 
+    #
     # ```java
     # page.setContent("<div><span></span></div>");
     # ElementHandle div = page.querySelector("div");
@@ -784,31 +784,37 @@ module Playwright
     # ElementHandle span = div.waitForSelector("span", new ElementHandle.WaitForSelectorOptions()
     #   .setState(WaitForSelectorState.ATTACHED));
     # ```
-    # 
+    #
     # ```python async
     # await page.set_content("<div><span></span></div>")
     # div = await page.query_selector("div")
     # # waiting for the "span" selector relative to the div.
     # span = await div.wait_for_selector("span", state="attached")
     # ```
-    # 
+    #
     # ```python sync
     # page.set_content("<div><span></span></div>")
     # div = page.query_selector("div")
     # # waiting for the "span" selector relative to the div.
     # span = div.wait_for_selector("span", state="attached")
     # ```
-    # 
+    #
     # ```csharp
     # await page.SetContentAsync("<div><span></span></div>");
     # var div = await page.QuerySelectorAsync("div");
     # // Waiting for the "span" selector relative to the div.
     # var span = await page.WaitForSelectorAsync("span", WaitForSelectorState.Attached);
     # ```
-    # 
+    #
     # > NOTE: This method does not work across navigations, use [`method: Page.waitForSelector`] instead.
     def wait_for_selector(selector, state: nil, timeout: nil)
       wrap_impl(@impl.wait_for_selector(unwrap_impl(selector), state: unwrap_impl(state), timeout: unwrap_impl(timeout)))
+    end
+
+    # -- inherited from EventEmitter --
+    # @nodoc
+    def on(event, callback)
+      event_emitter_proxy.on(event, callback)
     end
 
     # -- inherited from EventEmitter --
@@ -821,12 +827,6 @@ module Playwright
     # @nodoc
     def once(event, callback)
       event_emitter_proxy.once(event, callback)
-    end
-
-    # -- inherited from EventEmitter --
-    # @nodoc
-    def on(event, callback)
-      event_emitter_proxy.on(event, callback)
     end
 
     private def event_emitter_proxy

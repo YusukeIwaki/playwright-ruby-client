@@ -1,6 +1,6 @@
 module Playwright
   # `FileChooser` objects are dispatched by the page in the [`event: Page.fileChooser`] event.
-  # 
+  #
   #
   # ```js
   # const [fileChooser] = await Promise.all([
@@ -9,26 +9,26 @@ module Playwright
   # ]);
   # await fileChooser.setFiles('myfile.pdf');
   # ```
-  # 
+  #
   # ```java
   # FileChooser fileChooser = page.waitForFileChooser(() -> page.click("upload"));
   # fileChooser.setFiles(Paths.get("myfile.pdf"));
   # ```
-  # 
+  #
   # ```python async
   # async with page.expect_file_chooser() as fc_info:
   #     await page.click("upload")
   # file_chooser = await fc_info.value
   # await file_chooser.set_files("myfile.pdf")
   # ```
-  # 
+  #
   # ```python sync
   # with page.expect_file_chooser() as fc_info:
   #     page.click("upload")
   # file_chooser = fc_info.value
   # file_chooser.set_files("myfile.pdf")
   # ```
-  # 
+  #
   # ```csharp
   # var waitForFileChooserTask = page.WaitForFileChooserAsync();
   # await page.ClickAsync("upload");

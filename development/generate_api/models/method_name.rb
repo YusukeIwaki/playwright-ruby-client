@@ -6,8 +6,6 @@ class MethodName
     @js_method_name = js_method_name
   end
 
-  attr_reader :js_method_name
-
   # Some method names are already reserved in Ruby,
   # so replace them.
   DANGEROUS_NAME_MAP = {

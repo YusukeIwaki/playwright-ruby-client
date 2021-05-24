@@ -9,7 +9,7 @@ module Playwright
     end
 
     # Continues route's request with optional overrides.
-    # 
+    #
     #
     # ```js
     # await page.route('**/*', (route, request) => {
@@ -22,7 +22,7 @@ module Playwright
     #   route.continue({headers});
     # });
     # ```
-    # 
+    #
     # ```java
     # page.route("**/*", route -> {
     #   // Override headers
@@ -32,7 +32,7 @@ module Playwright
     #   route.resume(new Route.ResumeOptions().setHeaders(headers));
     # });
     # ```
-    # 
+    #
     # ```python async
     # async def handle(route, request):
     #     # override headers
@@ -45,7 +45,7 @@ module Playwright
     # }
     # await page.route("**/*", handle)
     # ```
-    # 
+    #
     # ```python sync
     # def handle(route, request):
     #     # override headers
@@ -58,7 +58,7 @@ module Playwright
     # }
     # page.route("**/*", handle)
     # ```
-    # 
+    #
     # ```csharp
     # await page.RouteAsync("**/*", route =>
     # {
@@ -72,9 +72,9 @@ module Playwright
     end
 
     # Fulfills route's request with given response.
-    # 
+    #
     # An example of fulfilling all requests with 404 responses:
-    # 
+    #
     #
     # ```js
     # await page.route('**/*', route => {
@@ -85,7 +85,7 @@ module Playwright
     #   });
     # });
     # ```
-    # 
+    #
     # ```java
     # page.route("**/*", route -> {
     #   route.fulfill(new Route.FulfillOptions()
@@ -94,48 +94,48 @@ module Playwright
     #     .setBody("Not Found!"));
     # });
     # ```
-    # 
+    #
     # ```python async
     # await page.route("**/*", lambda route: route.fulfill(
     #     status=404,
     #     content_type="text/plain",
     #     body="not found!"))
     # ```
-    # 
+    #
     # ```python sync
     # page.route("**/*", lambda route: route.fulfill(
     #     status=404,
     #     content_type="text/plain",
     #     body="not found!"))
     # ```
-    # 
+    #
     # ```csharp
     # await page.RouteAsync("**/*", route => route.FulfillAsync(
     #     status: 404,
-    #     contentType: "text/plain", 
+    #     contentType: "text/plain",
     #     body: "Not Found!"));
     # ```
-    # 
+    #
     # An example of serving static file:
-    # 
+    #
     #
     # ```js
     # await page.route('**/xhr_endpoint', route => route.fulfill({ path: 'mock_data.json' }));
     # ```
-    # 
+    #
     # ```java
     # page.route("**/xhr_endpoint", route -> route.fulfill(
     #   new Route.FulfillOptions().setPath(Paths.get("mock_data.json")));
     # ```
-    # 
+    #
     # ```python async
     # await page.route("**/xhr_endpoint", lambda route: route.fulfill(path="mock_data.json"))
     # ```
-    # 
+    #
     # ```python sync
     # page.route("**/xhr_endpoint", lambda route: route.fulfill(path="mock_data.json"))
     # ```
-    # 
+    #
     # ```csharp
     # await page.RouteAsync("**/xhr_endpoint", route => route.FulfillAsync(path: "mock_data.json"));
     # ```
@@ -155,6 +155,12 @@ module Playwright
 
     # -- inherited from EventEmitter --
     # @nodoc
+    def on(event, callback)
+      event_emitter_proxy.on(event, callback)
+    end
+
+    # -- inherited from EventEmitter --
+    # @nodoc
     def off(event, callback)
       event_emitter_proxy.off(event, callback)
     end
@@ -163,12 +169,6 @@ module Playwright
     # @nodoc
     def once(event, callback)
       event_emitter_proxy.once(event, callback)
-    end
-
-    # -- inherited from EventEmitter --
-    # @nodoc
-    def on(event, callback)
-      event_emitter_proxy.on(event, callback)
     end
 
     private def event_emitter_proxy

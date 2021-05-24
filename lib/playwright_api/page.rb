@@ -1,16 +1,16 @@
 module Playwright
   # - extends: [EventEmitter]
-  # 
+  #
   # Page provides methods to interact with a single tab in a `Browser`, or an
   # [extension background page](https://developer.chrome.com/extensions/background_pages) in Chromium. One `Browser`
   # instance might have multiple `Page` instances.
-  # 
+  #
   # This example creates a page, navigates it to a URL, and then saves a screenshot:
-  # 
+  #
   #
   # ```js
   # const { webkit } = require('playwright');  // Or 'chromium' or 'firefox'.
-  # 
+  #
   # (async () => {
   #   const browser = await webkit.launch();
   #   const context = await browser.newContext();
@@ -20,10 +20,10 @@ module Playwright
   #   await browser.close();
   # })();
   # ```
-  # 
+  #
   # ```java
   # import com.microsoft.playwright.*;
-  # 
+  #
   # public class Example {
   #   public static void main(String[] args) {
   #     try (Playwright playwright = Playwright.create()) {
@@ -38,11 +38,11 @@ module Playwright
   #   }
   # }
   # ```
-  # 
+  #
   # ```python async
   # import asyncio
   # from playwright.async_api import async_playwright
-  # 
+  #
   # async def run(playwright):
   #     webkit = playwright.webkit
   #     browser = await webkit.launch()
@@ -51,16 +51,16 @@ module Playwright
   #     await page.goto("https://example.com")
   #     await page.screenshot(path="screenshot.png")
   #     await browser.close()
-  # 
+  #
   # async def main():
   #     async with async_playwright() as playwright:
   #         await run(playwright)
   # asyncio.run(main())
   # ```
-  # 
+  #
   # ```python sync
   # from playwright.sync_api import sync_playwright
-  # 
+  #
   # def run(playwright):
   #     webkit = playwright.webkit
   #     browser = webkit.launch()
@@ -69,15 +69,15 @@ module Playwright
   #     page.goto("https://example.com")
   #     page.screenshot(path="screenshot.png")
   #     browser.close()
-  # 
+  #
   # with sync_playwright() as playwright:
   #     run(playwright)
   # ```
-  # 
+  #
   # ```csharp
   # using Microsoft.Playwright;
   # using System.Threading.Tasks;
-  # 
+  #
   # class PageExamples
   # {
   #     public static async Task Run()
@@ -90,32 +90,32 @@ module Playwright
   #     }
   # }
   # ```
-  # 
+  #
   # The Page class emits various events (described below) which can be handled using any of Node's native
   # [`EventEmitter`](https://nodejs.org/api/events.html#events_class_eventemitter) methods, such as `on`, `once` or
   # `removeListener`.
-  # 
+  #
   # This example logs a message for a single page `load` event:
-  # 
+  #
   #
   # ```js
   # page.once('load', () => console.log('Page loaded!'));
   # ```
-  # 
+  #
   # ```java
   # page.onLoad(p -> System.out.println("Page loaded!"));
   # ```
-  # 
+  #
   # ```py
   # page.once("load", lambda: print("page loaded!"))
   # ```
-  # 
+  #
   # ```csharp
   # page.Load += (_, _) => Console.WriteLine("Page loaded!");
   # ```
-  # 
+  #
   # To unsubscribe from events use the `removeListener` method:
-  # 
+  #
   #
   # ```js
   # function logRequest(interceptedRequest) {
@@ -125,7 +125,7 @@ module Playwright
   # // Sometime later...
   # page.removeListener('request', logRequest);
   # ```
-  # 
+  #
   # ```java
   # Consumer<Request> logRequest = interceptedRequest -> {
   #   System.out.println("A request was made: " + interceptedRequest.url());
@@ -134,7 +134,7 @@ module Playwright
   # // Sometime later...
   # page.offRequest(logRequest);
   # ```
-  # 
+  #
   # ```py
   # def log_request(intercepted_request):
   #     print("a request was made:", intercepted_request.url)
@@ -142,12 +142,12 @@ module Playwright
   # # sometime later...
   # page.remove_listener("request", log_request)
   # ```
-  # 
+  #
   # ```csharp
   # void PageLoadHandler(object _, IPage p) {
   #     Console.WriteLine("Page loaded!");
   # };
-  # 
+  #
   # page.Load += PageLoadHandler;
   # // Do some work...
   # page.Load -= PageLoadHandler;
@@ -174,43 +174,43 @@ module Playwright
     # - Whenever the page is navigated.
     # - Whenever the child frame is attached or navigated. In this case, the script is evaluated in the context of the newly
     #   attached frame.
-    # 
+    #
     # The script is evaluated after the document was created but before any of its scripts were run. This is useful to amend
     # the JavaScript environment, e.g. to seed `Math.random`.
-    # 
+    #
     # An example of overriding `Math.random` before the page loads:
-    # 
+    #
     #
     # ```js browser
     # // preload.js
     # Math.random = () => 42;
     # ```
-    # 
+    #
     #
     # ```js
     # // In your playwright script, assuming the preload.js file is in same directory
     # await page.addInitScript({ path: './preload.js' });
     # ```
-    # 
+    #
     # ```java
     # // In your playwright script, assuming the preload.js file is in same directory
     # page.addInitScript(Paths.get("./preload.js"));
     # ```
-    # 
+    #
     # ```python async
     # # in your playwright script, assuming the preload.js file is in same directory
     # await page.add_init_script(path="./preload.js")
     # ```
-    # 
+    #
     # ```python sync
     # # in your playwright script, assuming the preload.js file is in same directory
     # page.add_init_script(path="./preload.js")
     # ```
-    # 
+    #
     # ```csharp
     # await page.AddInitScriptAsync(scriptPath: "./preload.js");
     # ```
-    # 
+    #
     # > NOTE: The order of evaluation of multiple scripts installed via [`method: BrowserContext.addInitScript`] and
     # [`method: Page.addInitScript`] is not defined.
     def add_init_script(path: nil, script: nil)
@@ -219,7 +219,7 @@ module Playwright
 
     # Adds a `<script>` tag into the page with the desired url or content. Returns the added tag when the script's onload
     # fires or when the script content was injected into frame.
-    # 
+    #
     # Shortcut for main frame's [`method: Frame.addScriptTag`].
     def add_script_tag(content: nil, path: nil, type: nil, url: nil)
       wrap_impl(@impl.add_script_tag(content: unwrap_impl(content), path: unwrap_impl(path), type: unwrap_impl(type), url: unwrap_impl(url)))
@@ -227,7 +227,7 @@ module Playwright
 
     # Adds a `<link rel="stylesheet">` tag into the page with the desired url or a `<style type="text/css">` tag with the
     # content. Returns the added tag when the stylesheet's onload fires or when the CSS content was injected into frame.
-    # 
+    #
     # Shortcut for main frame's [`method: Frame.addStyleTag`].
     def add_style_tag(content: nil, path: nil, url: nil)
       wrap_impl(@impl.add_style_tag(content: unwrap_impl(content), path: unwrap_impl(path), url: unwrap_impl(url)))
@@ -248,10 +248,10 @@ module Playwright
     # 1. Use [`property: Page.mouse`] to click in the center of the element.
     # 1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
     # 1. Ensure that the element is now checked. If not, this method throws.
-    # 
+    #
     # When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing
     # zero timeout disables this.
-    # 
+    #
     # Shortcut for main frame's [`method: Frame.check`].
     def check(
           selector,
@@ -270,10 +270,10 @@ module Playwright
     # 1. Scroll the element into view if needed.
     # 1. Use [`property: Page.mouse`] to click in the center of the element, or the specified `position`.
     # 1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
-    # 
+    #
     # When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing
     # zero timeout disables this.
-    # 
+    #
     # Shortcut for main frame's [`method: Frame.click`].
     def click(
           selector,
@@ -291,9 +291,9 @@ module Playwright
 
     # If `runBeforeUnload` is `false`, does not run any unload handlers and waits for the page to be closed. If
     # `runBeforeUnload` is `true` the method will run unload handlers, but will **not** wait for the page to close.
-    # 
+    #
     # By default, `page.close()` **does not** run `beforeunload` handlers.
-    # 
+    #
     # > NOTE: if `runBeforeUnload` is passed as true, a `beforeunload` dialog might be summoned and should be handled manually
     # via [`event: Page.dialog`] event.
     def close(runBeforeUnload: nil)
@@ -318,12 +318,12 @@ module Playwright
     # 1. Use [`property: Page.mouse`] to double click in the center of the element, or the specified `position`.
     # 1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set. Note that if the
     #    first click of the `dblclick()` triggers a navigation event, this method will throw.
-    # 
+    #
     # When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing
     # zero timeout disables this.
-    # 
+    #
     # > NOTE: `page.dblclick()` dispatches two `click` events and a single `dblclick` event.
-    # 
+    #
     # Shortcut for main frame's [`method: Frame.dblclick`].
     def dblclick(
           selector,
@@ -341,31 +341,31 @@ module Playwright
     # The snippet below dispatches the `click` event on the element. Regardless of the visibility state of the element,
     # `click` is dispatched. This is equivalent to calling
     # [element.click()](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click).
-    # 
+    #
     #
     # ```js
     # await page.dispatchEvent('button#submit', 'click');
     # ```
-    # 
+    #
     # ```java
     # page.dispatchEvent("button#submit", "click");
     # ```
-    # 
+    #
     # ```python async
     # await page.dispatch_event("button#submit", "click")
     # ```
-    # 
+    #
     # ```python sync
     # page.dispatch_event("button#submit", "click")
     # ```
-    # 
+    #
     # ```csharp
     # await page.DispatchEventAsync("button#submit", "click");
     # ```
-    # 
+    #
     # Under the hood, it creates an instance of an event based on the given `type`, initializes it with `eventInit` properties
     # and dispatches it on the element. Events are `composed`, `cancelable` and bubble by default.
-    # 
+    #
     # Since `eventInit` is event-specific, please refer to the events documentation for the lists of initial properties:
     # - [DragEvent](https://developer.mozilla.org/en-US/docs/Web/API/DragEvent/DragEvent)
     # - [FocusEvent](https://developer.mozilla.org/en-US/docs/Web/API/FocusEvent/FocusEvent)
@@ -374,16 +374,16 @@ module Playwright
     # - [PointerEvent](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/PointerEvent)
     # - [TouchEvent](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent/TouchEvent)
     # - [Event](https://developer.mozilla.org/en-US/docs/Web/API/Event/Event)
-    # 
+    #
     # You can also specify `JSHandle` as the property value if you want live objects to be passed into the event:
-    # 
+    #
     #
     # ```js
     # // Note you can only create DataTransfer in Chromium and Firefox
     # const dataTransfer = await page.evaluateHandle(() => new DataTransfer());
     # await page.dispatchEvent('#source', 'dragstart', { dataTransfer });
     # ```
-    # 
+    #
     # ```java
     # // Note you can only create DataTransfer in Chromium and Firefox
     # JSHandle dataTransfer = page.evaluateHandle("() => new DataTransfer()");
@@ -391,19 +391,19 @@ module Playwright
     # arg.put("dataTransfer", dataTransfer);
     # page.dispatchEvent("#source", "dragstart", arg);
     # ```
-    # 
+    #
     # ```python async
     # # note you can only create data_transfer in chromium and firefox
     # data_transfer = await page.evaluate_handle("new DataTransfer()")
     # await page.dispatch_event("#source", "dragstart", { "dataTransfer": data_transfer })
     # ```
-    # 
+    #
     # ```python sync
     # # note you can only create data_transfer in chromium and firefox
     # data_transfer = page.evaluate_handle("new DataTransfer()")
     # page.dispatch_event("#source", "dragstart", { "dataTransfer": data_transfer })
     # ```
-    # 
+    #
     # ```csharp
     # var dataTransfer = await page.EvaluateHandleAsync("() => new DataTransfer()");
     # await page.DispatchEventAsync("#source", "dragstart", new { dataTransfer });
@@ -414,103 +414,103 @@ module Playwright
 
     # This method changes the `CSS media type` through the `media` argument, and/or the `'prefers-colors-scheme'` media
     # feature, using the `colorScheme` argument.
-    # 
+    #
     #
     # ```js
     # await page.evaluate(() => matchMedia('screen').matches);
     # // → true
     # await page.evaluate(() => matchMedia('print').matches);
     # // → false
-    # 
+    #
     # await page.emulateMedia({ media: 'print' });
     # await page.evaluate(() => matchMedia('screen').matches);
     # // → false
     # await page.evaluate(() => matchMedia('print').matches);
     # // → true
-    # 
+    #
     # await page.emulateMedia({});
     # await page.evaluate(() => matchMedia('screen').matches);
     # // → true
     # await page.evaluate(() => matchMedia('print').matches);
     # // → false
     # ```
-    # 
+    #
     # ```java
     # page.evaluate("() => matchMedia('screen').matches");
     # // → true
     # page.evaluate("() => matchMedia('print').matches");
     # // → false
-    # 
+    #
     # page.emulateMedia(new Page.EmulateMediaOptions().setMedia(Media.PRINT));
     # page.evaluate("() => matchMedia('screen').matches");
     # // → false
     # page.evaluate("() => matchMedia('print').matches");
     # // → true
-    # 
+    #
     # page.emulateMedia(new Page.EmulateMediaOptions());
     # page.evaluate("() => matchMedia('screen').matches");
     # // → true
     # page.evaluate("() => matchMedia('print').matches");
     # // → false
     # ```
-    # 
+    #
     # ```python async
     # await page.evaluate("matchMedia('screen').matches")
     # # → True
     # await page.evaluate("matchMedia('print').matches")
     # # → False
-    # 
+    #
     # await page.emulate_media(media="print")
     # await page.evaluate("matchMedia('screen').matches")
     # # → False
     # await page.evaluate("matchMedia('print').matches")
     # # → True
-    # 
+    #
     # await page.emulate_media()
     # await page.evaluate("matchMedia('screen').matches")
     # # → True
     # await page.evaluate("matchMedia('print').matches")
     # # → False
     # ```
-    # 
+    #
     # ```python sync
     # page.evaluate("matchMedia('screen').matches")
     # # → True
     # page.evaluate("matchMedia('print').matches")
     # # → False
-    # 
+    #
     # page.emulate_media(media="print")
     # page.evaluate("matchMedia('screen').matches")
     # # → False
     # page.evaluate("matchMedia('print').matches")
     # # → True
-    # 
+    #
     # page.emulate_media()
     # page.evaluate("matchMedia('screen').matches")
     # # → True
     # page.evaluate("matchMedia('print').matches")
     # # → False
     # ```
-    # 
+    #
     # ```csharp
     # await page.EvaluateAsync("() => matchMedia('screen').matches");
     # // → true
     # await page.EvaluateAsync("() => matchMedia('print').matches");
     # // → false
-    # 
+    #
     # await page.EmulateMediaAsync(Media.Print);
     # await page.EvaluateAsync("() => matchMedia('screen').matches");
     # // → false
     # await page.EvaluateAsync("() => matchMedia('print').matches");
     # // → true
-    # 
+    #
     # await page.EmulateMediaAsync(Media.Screen);
     # await page.EvaluateAsync("() => matchMedia('screen').matches");
     # // → true
     # await page.EvaluateAsync("() => matchMedia('print').matches");
     # // → false
     # ```
-    # 
+    #
     #
     # ```js
     # await page.emulateMedia({ colorScheme: 'dark' });
@@ -521,7 +521,7 @@ module Playwright
     # await page.evaluate(() => matchMedia('(prefers-color-scheme: no-preference)').matches);
     # // → false
     # ```
-    # 
+    #
     # ```java
     # page.emulateMedia(new Page.EmulateMediaOptions().setColorScheme(ColorScheme.DARK));
     # page.evaluate("() => matchMedia('(prefers-color-scheme: dark)').matches");
@@ -531,7 +531,7 @@ module Playwright
     # page.evaluate("() => matchMedia('(prefers-color-scheme: no-preference)').matches");
     # // → false
     # ```
-    # 
+    #
     # ```python async
     # await page.emulate_media(color_scheme="dark")
     # await page.evaluate("matchMedia('(prefers-color-scheme: dark)').matches")
@@ -541,7 +541,7 @@ module Playwright
     # await page.evaluate("matchMedia('(prefers-color-scheme: no-preference)').matches")
     # # → False
     # ```
-    # 
+    #
     # ```python sync
     # page.emulate_media(color_scheme="dark")
     # page.evaluate("matchMedia('(prefers-color-scheme: dark)').matches")
@@ -550,7 +550,7 @@ module Playwright
     # # → False
     # page.evaluate("matchMedia('(prefers-color-scheme: no-preference)').matches")
     # ```
-    # 
+    #
     # ```csharp
     # await page.EmulateMediaAsync(colorScheme: ColorScheme.Dark);
     # await page.EvaluateAsync("matchMedia('(prefers-color-scheme: dark)').matches");
@@ -566,43 +566,43 @@ module Playwright
 
     # The method finds an element matching the specified selector within the page and passes it as a first argument to
     # `expression`. If no elements match the selector, the method throws an error. Returns the value of `expression`.
-    # 
+    #
     # If `expression` returns a [Promise], then [`method: Page.evalOnSelector`] would wait for the promise to resolve and
     # return its value.
-    # 
+    #
     # Examples:
-    # 
+    #
     #
     # ```js
     # const searchValue = await page.$eval('#search', el => el.value);
     # const preloadHref = await page.$eval('link[rel=preload]', el => el.href);
     # const html = await page.$eval('.main-container', (e, suffix) => e.outerHTML + suffix, 'hello');
     # ```
-    # 
+    #
     # ```java
     # String searchValue = (String) page.evalOnSelector("#search", "el => el.value");
     # String preloadHref = (String) page.evalOnSelector("link[rel=preload]", "el => el.href");
     # String html = (String) page.evalOnSelector(".main-container", "(e, suffix) => e.outerHTML + suffix", "hello");
     # ```
-    # 
+    #
     # ```python async
     # search_value = await page.eval_on_selector("#search", "el => el.value")
     # preload_href = await page.eval_on_selector("link[rel=preload]", "el => el.href")
     # html = await page.eval_on_selector(".main-container", "(e, suffix) => e.outer_html + suffix", "hello")
     # ```
-    # 
+    #
     # ```python sync
     # search_value = page.eval_on_selector("#search", "el => el.value")
     # preload_href = page.eval_on_selector("link[rel=preload]", "el => el.href")
     # html = page.eval_on_selector(".main-container", "(e, suffix) => e.outer_html + suffix", "hello")
     # ```
-    # 
+    #
     # ```csharp
     # var searchValue = await page.EvalOnSelectorAsync<string>("#search", "el => el.value");
     # var preloadHref = await page.EvalOnSelectorAsync<string>("link[rel=preload]", "el => el.href");
     # var html = await page.EvalOnSelectorAsync(".main-container", "(e, suffix) => e.outerHTML + suffix", "hello");
     # ```
-    # 
+    #
     # Shortcut for main frame's [`method: Frame.evalOnSelector`].
     def eval_on_selector(selector, expression, arg: nil)
       wrap_impl(@impl.eval_on_selector(unwrap_impl(selector), unwrap_impl(expression), arg: unwrap_impl(arg)))
@@ -610,29 +610,29 @@ module Playwright
 
     # The method finds all elements matching the specified selector within the page and passes an array of matched elements as
     # a first argument to `expression`. Returns the result of `expression` invocation.
-    # 
+    #
     # If `expression` returns a [Promise], then [`method: Page.evalOnSelectorAll`] would wait for the promise to resolve and
     # return its value.
-    # 
+    #
     # Examples:
-    # 
+    #
     #
     # ```js
     # const divCounts = await page.$$eval('div', (divs, min) => divs.length >= min, 10);
     # ```
-    # 
+    #
     # ```java
     # boolean divCounts = (boolean) page.evalOnSelectorAll("div", "(divs, min) => divs.length >= min", 10);
     # ```
-    # 
+    #
     # ```python async
     # div_counts = await page.eval_on_selector_all("div", "(divs, min) => divs.length >= min", 10)
     # ```
-    # 
+    #
     # ```python sync
     # div_counts = page.eval_on_selector_all("div", "(divs, min) => divs.length >= min", 10)
     # ```
-    # 
+    #
     # ```csharp
     # var divsCount = await page.EvalOnSelectorAllAsync<bool>("div", "(divs, min) => divs.length >= min", 10);
     # ```
@@ -641,16 +641,16 @@ module Playwright
     end
 
     # Returns the value of the `expression` invocation.
-    # 
+    #
     # If the function passed to the [`method: Page.evaluate`] returns a [Promise], then [`method: Page.evaluate`] would wait
     # for the promise to resolve and return its value.
-    # 
+    #
     # If the function passed to the [`method: Page.evaluate`] returns a non-[Serializable] value, then
     # [`method: Page.evaluate`] resolves to `undefined`. Playwright also supports transferring some additional values that are
     # not serializable by `JSON`: `-0`, `NaN`, `Infinity`, `-Infinity`.
-    # 
+    #
     # Passing argument to `expression`:
-    # 
+    #
     #
     # ```js
     # const result = await page.evaluate(([x, y]) => {
@@ -658,155 +658,155 @@ module Playwright
     # }, [7, 8]);
     # console.log(result); // prints "56"
     # ```
-    # 
+    #
     # ```java
     # Object result = page.evaluate("([x, y]) => {\n" +
     #   "  return Promise.resolve(x * y);\n" +
     #   "}", Arrays.asList(7, 8));
     # System.out.println(result); // prints "56"
     # ```
-    # 
+    #
     # ```python async
     # result = await page.evaluate("([x, y]) => Promise.resolve(x * y)", [7, 8])
     # print(result) # prints "56"
     # ```
-    # 
+    #
     # ```python sync
     # result = page.evaluate("([x, y]) => Promise.resolve(x * y)", [7, 8])
     # print(result) # prints "56"
     # ```
-    # 
+    #
     # ```csharp
     # var result = await page.EvaluateAsync<int>("([x, y]) => Promise.resolve(x * y)", new[] { 7, 8 });
     # Console.WriteLine(result);
     # ```
-    # 
+    #
     # A string can also be passed in instead of a function:
-    # 
+    #
     #
     # ```js
     # console.log(await page.evaluate('1 + 2')); // prints "3"
     # const x = 10;
     # console.log(await page.evaluate(`1 + ${x}`)); // prints "11"
     # ```
-    # 
+    #
     # ```java
     # System.out.println(page.evaluate("1 + 2")); // prints "3"
     # ```
-    # 
+    #
     # ```python async
     # print(await page.evaluate("1 + 2")) # prints "3"
     # x = 10
     # print(await page.evaluate(f"1 + {x}")) # prints "11"
     # ```
-    # 
+    #
     # ```python sync
     # print(page.evaluate("1 + 2")) # prints "3"
     # x = 10
     # print(page.evaluate(f"1 + {x}")) # prints "11"
     # ```
-    # 
+    #
     # ```csharp
     # Console.WriteLine(await page.EvaluateAsync<int>("1 + 2")); // prints "3"
     # ```
-    # 
+    #
     # `ElementHandle` instances can be passed as an argument to the [`method: Page.evaluate`]:
-    # 
+    #
     #
     # ```js
     # const bodyHandle = await page.$('body');
     # const html = await page.evaluate(([body, suffix]) => body.innerHTML + suffix, [bodyHandle, 'hello']);
     # await bodyHandle.dispose();
     # ```
-    # 
+    #
     # ```java
     # ElementHandle bodyHandle = page.querySelector("body");
     # String html = (String) page.evaluate("([body, suffix]) => body.innerHTML + suffix", Arrays.asList(bodyHandle, "hello"));
     # bodyHandle.dispose();
     # ```
-    # 
+    #
     # ```python async
     # body_handle = await page.query_selector("body")
     # html = await page.evaluate("([body, suffix]) => body.innerHTML + suffix", [body_handle, "hello"])
     # await body_handle.dispose()
     # ```
-    # 
+    #
     # ```python sync
     # body_handle = page.query_selector("body")
     # html = page.evaluate("([body, suffix]) => body.innerHTML + suffix", [body_handle, "hello"])
     # body_handle.dispose()
     # ```
-    # 
+    #
     # ```csharp
     # var bodyHandle = await page.QuerySelectorAsync("body");
     # var html = await page.EvaluateAsync<string>("([body, suffix]) => body.innerHTML + suffix", new object [] { bodyHandle, "hello" });
     # await bodyHandle.DisposeAsync();
     # ```
-    # 
+    #
     # Shortcut for main frame's [`method: Frame.evaluate`].
     def evaluate(expression, arg: nil)
       wrap_impl(@impl.evaluate(unwrap_impl(expression), arg: unwrap_impl(arg)))
     end
 
     # Returns the value of the `expression` invocation as a `JSHandle`.
-    # 
+    #
     # The only difference between [`method: Page.evaluate`] and [`method: Page.evaluateHandle`] is that
     # [`method: Page.evaluateHandle`] returns `JSHandle`.
-    # 
+    #
     # If the function passed to the [`method: Page.evaluateHandle`] returns a [Promise], then [`method: Page.evaluateHandle`]
     # would wait for the promise to resolve and return its value.
-    # 
+    #
     #
     # ```js
     # const aWindowHandle = await page.evaluateHandle(() => Promise.resolve(window));
     # aWindowHandle; // Handle for the window object.
     # ```
-    # 
+    #
     # ```java
     # // Handle for the window object.
     # JSHandle aWindowHandle = page.evaluateHandle("() => Promise.resolve(window)");
     # ```
-    # 
+    #
     # ```python async
     # a_window_handle = await page.evaluate_handle("Promise.resolve(window)")
     # a_window_handle # handle for the window object.
     # ```
-    # 
+    #
     # ```python sync
     # a_window_handle = page.evaluate_handle("Promise.resolve(window)")
     # a_window_handle # handle for the window object.
     # ```
-    # 
+    #
     # ```csharp
     # // Handle for the window object.
     # var aWindowHandle = await page.EvaluateHandleAsync("() => Promise.resolve(window)");
     # ```
-    # 
+    #
     # A string can also be passed in instead of a function:
-    # 
+    #
     #
     # ```js
     # const aHandle = await page.evaluateHandle('document'); // Handle for the 'document'
     # ```
-    # 
+    #
     # ```java
     # JSHandle aHandle = page.evaluateHandle("document"); // Handle for the "document".
     # ```
-    # 
+    #
     # ```python async
     # a_handle = await page.evaluate_handle("document") # handle for the "document"
     # ```
-    # 
+    #
     # ```python sync
     # a_handle = page.evaluate_handle("document") # handle for the "document"
     # ```
-    # 
+    #
     # ```csharp
     # var docHandle = await page.EvalueHandleAsync("document"); // Handle for the `document`
     # ```
-    # 
+    #
     # `JSHandle` instances can be passed as an argument to the [`method: Page.evaluateHandle`]:
-    # 
+    #
     #
     # ```js
     # const aHandle = await page.evaluateHandle(() => document.body);
@@ -814,28 +814,28 @@ module Playwright
     # console.log(await resultHandle.jsonValue());
     # await resultHandle.dispose();
     # ```
-    # 
+    #
     # ```java
     # JSHandle aHandle = page.evaluateHandle("() => document.body");
     # JSHandle resultHandle = page.evaluateHandle("([body, suffix]) => body.innerHTML + suffix", Arrays.asList(aHandle, "hello"));
     # System.out.println(resultHandle.jsonValue());
     # resultHandle.dispose();
     # ```
-    # 
+    #
     # ```python async
     # a_handle = await page.evaluate_handle("document.body")
     # result_handle = await page.evaluate_handle("body => body.innerHTML", a_handle)
     # print(await result_handle.json_value())
     # await result_handle.dispose()
     # ```
-    # 
+    #
     # ```python sync
     # a_handle = page.evaluate_handle("document.body")
     # result_handle = page.evaluate_handle("body => body.innerHTML", a_handle)
     # print(result_handle.json_value())
     # result_handle.dispose()
     # ```
-    # 
+    #
     # ```csharp
     # var handle = await page.EvaluateHandleAsync("() => document.body");
     # var resultHandle = await page.EvaluateHandleAsync("([body, suffix]) => body.innerHTML + suffix", new object[] { handle, "hello" });
@@ -849,20 +849,20 @@ module Playwright
     # The method adds a function called `name` on the `window` object of every frame in this page. When called, the function
     # executes `callback` and returns a [Promise] which resolves to the return value of `callback`. If the `callback` returns
     # a [Promise], it will be awaited.
-    # 
+    #
     # The first argument of the `callback` function contains information about the caller: `{ browserContext: BrowserContext,
     # page: Page, frame: Frame }`.
-    # 
+    #
     # See [`method: BrowserContext.exposeBinding`] for the context-wide version.
-    # 
+    #
     # > NOTE: Functions installed via [`method: Page.exposeBinding`] survive navigations.
-    # 
+    #
     # An example of exposing page URL to all frames in a page:
-    # 
+    #
     #
     # ```js
     # const { webkit } = require('playwright');  // Or 'chromium' or 'firefox'.
-    # 
+    #
     # (async () => {
     #   const browser = await webkit.launch({ headless: false });
     #   const context = await browser.newContext();
@@ -880,10 +880,10 @@ module Playwright
     #   await page.click('button');
     # })();
     # ```
-    # 
+    #
     # ```java
     # import com.microsoft.playwright.*;
-    # 
+    #
     # public class Example {
     #   public static void main(String[] args) {
     #     try (Playwright playwright = Playwright.create()) {
@@ -904,11 +904,11 @@ module Playwright
     #   }
     # }
     # ```
-    # 
+    #
     # ```python async
     # import asyncio
     # from playwright.async_api import async_playwright
-    # 
+    #
     # async def run(playwright):
     #     webkit = playwright.webkit
     #     browser = await webkit.launch(headless=false)
@@ -925,16 +925,16 @@ module Playwright
     #     <div></div>
     #     """)
     #     await page.click("button")
-    # 
+    #
     # async def main():
     #     async with async_playwright() as playwright:
     #         await run(playwright)
     # asyncio.run(main())
     # ```
-    # 
+    #
     # ```python sync
     # from playwright.sync_api import sync_playwright
-    # 
+    #
     # def run(playwright):
     #     webkit = playwright.webkit
     #     browser = webkit.launch(headless=false)
@@ -951,15 +951,15 @@ module Playwright
     #     <div></div>
     #     """)
     #     page.click("button")
-    # 
+    #
     # with sync_playwright() as playwright:
     #     run(playwright)
     # ```
-    # 
+    #
     # ```csharp
     # using Microsoft.Playwright;
     # using System.Threading.Tasks;
-    # 
+    #
     # class PageExamples
     # {
     #   public static async Task Main()
@@ -967,7 +967,7 @@ module Playwright
     #       using var playwright = await Playwright.CreateAsync();
     #       await using var browser = await playwright.Webkit.LaunchAsync(headless: false);
     #       var page = await browser.NewPageAsync();
-    # 
+    #
     #       await page.ExposeBindingAsync("pageUrl", (source) => source.Page.Url);
     #       await page.SetContentAsync("<script>\n" +
     #       "  async function onClick() {\n" +
@@ -976,14 +976,14 @@ module Playwright
     #       "</script>\n" +
     #       "<button onclick=\"onClick()\">Click me</button>\n" +
     #       "<div></div>");
-    # 
+    #
     #       await page.ClickAsync("button");
     #   }
     # }
     # ```
-    # 
+    #
     # An example of passing an element handle:
-    # 
+    #
     #
     # ```js
     # await page.exposeBinding('clicked', async (source, element) => {
@@ -997,7 +997,7 @@ module Playwright
     #   <div>Or click me</div>
     # `);
     # ```
-    # 
+    #
     # ```java
     # page.exposeBinding("clicked", (source, args) -> {
     #   ElementHandle element = (ElementHandle) args[0];
@@ -1011,11 +1011,11 @@ module Playwright
     #   "<div>Click me</div>\n" +
     #   "<div>Or click me</div>\n");
     # ```
-    # 
+    #
     # ```python async
     # async def print(source, element):
     #     print(await element.text_content())
-    # 
+    #
     # await page.expose_binding("clicked", print, handle=true)
     # await page.set_content("""
     #   <script>
@@ -1025,11 +1025,11 @@ module Playwright
     #   <div>Or click me</div>
     # """)
     # ```
-    # 
+    #
     # ```python sync
     # def print(source, element):
     #     print(element.text_content())
-    # 
+    #
     # page.expose_binding("clicked", print, handle=true)
     # page.set_content("""
     #   <script>
@@ -1039,20 +1039,20 @@ module Playwright
     #   <div>Or click me</div>
     # """)
     # ```
-    # 
+    #
     # ```csharp
     # var result = new TaskCompletionSource<string>();
     # await page.ExposeBindingAsync("clicked", async (BindingSource _, IJSHandle t) =>
     # {
     #     return result.TrySetResult(await t.AsElement.TextContentAsync());
     # });
-    # 
+    #
     # await page.SetContentAsync("<script>\n" +
     #   "  document.addEventListener('click', event => window.clicked(event.target));\n" +
     #   "</script>\n" +
     #   "<div>Click me</div>\n" +
     #   "<div>Or click me</div>\n");
-    # 
+    #
     # await page.ClickAsync("div");
     # Console.WriteLine(await result.Task);
     # ```
@@ -1062,20 +1062,20 @@ module Playwright
 
     # The method adds a function called `name` on the `window` object of every frame in the page. When called, the function
     # executes `callback` and returns a [Promise] which resolves to the return value of `callback`.
-    # 
+    #
     # If the `callback` returns a [Promise], it will be awaited.
-    # 
+    #
     # See [`method: BrowserContext.exposeFunction`] for context-wide exposed function.
-    # 
+    #
     # > NOTE: Functions installed via [`method: Page.exposeFunction`] survive navigations.
-    # 
+    #
     # An example of adding an `sha1` function to the page:
-    # 
+    #
     #
     # ```js
     # const { webkit } = require('playwright');  // Or 'chromium' or 'firefox'.
     # const crypto = require('crypto');
-    # 
+    #
     # (async () => {
     #   const browser = await webkit.launch({ headless: false });
     #   const page = await browser.newPage();
@@ -1092,15 +1092,15 @@ module Playwright
     #   await page.click('button');
     # })();
     # ```
-    # 
+    #
     # ```java
     # import com.microsoft.playwright.*;
-    # 
+    #
     # import java.nio.charset.StandardCharsets;
     # import java.security.MessageDigest;
     # import java.security.NoSuchAlgorithmException;
     # import java.util.Base64;
-    # 
+    #
     # public class Example {
     #   public static void main(String[] args) {
     #     try (Playwright playwright = Playwright.create()) {
@@ -1130,18 +1130,18 @@ module Playwright
     #   }
     # }
     # ```
-    # 
+    #
     # ```python async
     # import asyncio
     # import hashlib
     # from playwright.async_api import async_playwright
-    # 
+    #
     # async def sha1(text):
     #     m = hashlib.sha1()
     #     m.update(bytes(text, "utf8"))
     #     return m.hexdigest()
-    # 
-    # 
+    #
+    #
     # async def run(playwright):
     #     webkit = playwright.webkit
     #     browser = await webkit.launch(headless=False)
@@ -1157,23 +1157,23 @@ module Playwright
     #         <div></div>
     #     """)
     #     await page.click("button")
-    # 
+    #
     # async def main():
     #     async with async_playwright() as playwright:
     #         await run(playwright)
     # asyncio.run(main())
     # ```
-    # 
+    #
     # ```python sync
     # import hashlib
     # from playwright.sync_api import sync_playwright
-    # 
+    #
     # def sha1(text):
     #     m = hashlib.sha1()
     #     m.update(bytes(text, "utf8"))
     #     return m.hexdigest()
-    # 
-    # 
+    #
+    #
     # def run(playwright):
     #     webkit = playwright.webkit
     #     browser = webkit.launch(headless=False)
@@ -1189,25 +1189,25 @@ module Playwright
     #         <div></div>
     #     """)
     #     page.click("button")
-    # 
+    #
     # with sync_playwright() as playwright:
     #     run(playwright)
     # ```
-    # 
+    #
     # ```csharp
     # using Microsoft.Playwright;
     # using System;
     # using System.Security.Cryptography;
     # using System.Threading.Tasks;
-    # 
+    #
     # class PageExamples
     # {
     #   public static async Task Main()
     #   {
     #       using var playwright = await Playwright.CreateAsync();
-    #       await using var browser = await playwright.Webkit.LaunchAsync(headless: false); 
+    #       await using var browser = await playwright.Webkit.LaunchAsync(headless: false);
     #       var page = await browser.NewPageAsync();
-    # 
+    #
     #       // NOTE: md5 is inherently insecure, and we strongly discourage using
     #       // this in production in any shape or form
     #       await page.ExposeFunctionAsync("sha1", (string input) =>
@@ -1215,7 +1215,7 @@ module Playwright
     #           return Convert.ToBase64String(
     #               MD5.Create().ComputeHash(System.Text.Encoding.UTF8.GetBytes(input)));
     #       });
-    # 
+    #
     #       await page.SetContentAsync("<script>\n" +
     #       "  async function onClick() {\n" +
     #       "    document.querySelector('div').textContent = await window.sha1('PLAYWRIGHT');\n" +
@@ -1223,7 +1223,7 @@ module Playwright
     #       "</script>\n" +
     #       "<button onclick=\"onClick()\">Click me</button>\n" +
     #       "<div></div>");
-    # 
+    #
     #       await page.ClickAsync("button");
     #       Console.WriteLine(await page.TextContentAsync("div"));
     #   }
@@ -1236,14 +1236,14 @@ module Playwright
     # This method waits for an element matching `selector`, waits for [actionability](./actionability.md) checks, focuses the
     # element, fills it and triggers an `input` event after filling. Note that you can pass an empty string to clear the input
     # field.
-    # 
+    #
     # If the target element is not an `<input>`, `<textarea>` or `[contenteditable]` element, this method throws an error.
     # However, if the element is inside the `<label>` element that has an associated
     # [control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), the control will be filled
     # instead.
-    # 
+    #
     # To send fine-grained keyboard events, use [`method: Page.type`].
-    # 
+    #
     # Shortcut for main frame's [`method: Frame.fill`].
     def fill(selector, value, noWaitAfter: nil, timeout: nil)
       wrap_impl(@impl.fill(unwrap_impl(selector), unwrap_impl(value), noWaitAfter: unwrap_impl(noWaitAfter), timeout: unwrap_impl(timeout)))
@@ -1251,44 +1251,44 @@ module Playwright
 
     # This method fetches an element with `selector` and focuses it. If there's no element matching `selector`, the method
     # waits until a matching element appears in the DOM.
-    # 
+    #
     # Shortcut for main frame's [`method: Frame.focus`].
     def focus(selector, timeout: nil)
       wrap_impl(@impl.focus(unwrap_impl(selector), timeout: unwrap_impl(timeout)))
     end
 
     # Returns frame matching the specified criteria. Either `name` or `url` must be specified.
-    # 
+    #
     #
     # ```js
     # const frame = page.frame('frame-name');
     # ```
-    # 
+    #
     # ```java
     # Frame frame = page.frame("frame-name");
     # ```
-    # 
+    #
     # ```py
     # frame = page.frame(name="frame-name")
     # ```
-    # 
+    #
     # ```csharp
     # var frame = page.Frame("frame-name");
     # ```
-    # 
+    #
     #
     # ```js
     # const frame = page.frame({ url: /.*domain.*/ });
     # ```
-    # 
+    #
     # ```java
     # Frame frame = page.frameByUrl(Pattern.compile(".*domain.*");
     # ```
-    # 
+    #
     # ```py
     # frame = page.frame(url=r".*domain.*")
     # ```
-    # 
+    #
     # ```csharp
     # var frame = page.FrameByUrl(".*domain.*");
     # ```
@@ -1308,7 +1308,7 @@ module Playwright
 
     # Returns the main resource response. In case of multiple redirects, the navigation will resolve with the response of the
     # last redirect. If can not go back, returns `null`.
-    # 
+    #
     # Navigate to the previous page in history.
     def go_back(timeout: nil, waitUntil: nil)
       wrap_impl(@impl.go_back(timeout: unwrap_impl(timeout), waitUntil: unwrap_impl(waitUntil)))
@@ -1316,7 +1316,7 @@ module Playwright
 
     # Returns the main resource response. In case of multiple redirects, the navigation will resolve with the response of the
     # last redirect. If can not go forward, returns `null`.
-    # 
+    #
     # Navigate to the next page in history.
     def go_forward(timeout: nil, waitUntil: nil)
       wrap_impl(@impl.go_forward(timeout: unwrap_impl(timeout), waitUntil: unwrap_impl(waitUntil)))
@@ -1324,23 +1324,23 @@ module Playwright
 
     # Returns the main resource response. In case of multiple redirects, the navigation will resolve with the response of the
     # last redirect.
-    # 
+    #
     # `page.goto` will throw an error if:
     # - there's an SSL error (e.g. in case of self-signed certificates).
     # - target URL is invalid.
     # - the `timeout` is exceeded during navigation.
     # - the remote server does not respond or is unreachable.
     # - the main resource failed to load.
-    # 
+    #
     # `page.goto` will not throw an error when any valid HTTP status code is returned by the remote server, including 404 "Not
     # Found" and 500 "Internal Server Error".  The status code for such responses can be retrieved by calling
     # [`method: Response.status`].
-    # 
+    #
     # > NOTE: `page.goto` either throws an error or returns a main resource response. The only exceptions are navigation to
     # `about:blank` or navigation to the same URL with a different hash, which would succeed and return `null`.
     # > NOTE: Headless mode doesn't support navigation to a PDF document. See the
     # [upstream issue](https://bugs.chromium.org/p/chromium/issues/detail?id=761295).
-    # 
+    #
     # Shortcut for main frame's [`method: Frame.goto`]
     def goto(url, referer: nil, timeout: nil, waitUntil: nil)
       wrap_impl(@impl.goto(unwrap_impl(url), referer: unwrap_impl(referer), timeout: unwrap_impl(timeout), waitUntil: unwrap_impl(waitUntil)))
@@ -1353,10 +1353,10 @@ module Playwright
     # 1. Scroll the element into view if needed.
     # 1. Use [`property: Page.mouse`] to hover over the center of the element, or the specified `position`.
     # 1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
-    # 
+    #
     # When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing
     # zero timeout disables this.
-    # 
+    #
     # Shortcut for main frame's [`method: Frame.hover`].
     def hover(
           selector,
@@ -1427,10 +1427,10 @@ module Playwright
 
     # Pauses script execution. Playwright will stop executing the script and wait for the user to either press 'Resume' button
     # in the page overlay or to call `playwright.resume()` in the DevTools console.
-    # 
+    #
     # User can inspect selectors or perform manual steps while paused. Resume will continue running the original script from
     # the place it was paused.
-    # 
+    #
     # > NOTE: This method requires Playwright to be started in a headed mode, with a falsy `headless` value in the
     # [`method: BrowserType.launch`].
     def pause
@@ -1438,60 +1438,60 @@ module Playwright
     end
 
     # Returns the PDF buffer.
-    # 
+    #
     # > NOTE: Generating a pdf is currently only supported in Chromium headless.
-    # 
+    #
     # `page.pdf()` generates a pdf of the page with `print` css media. To generate a pdf with `screen` media, call
     # [`method: Page.emulateMedia`] before calling `page.pdf()`:
-    # 
+    #
     # > NOTE: By default, `page.pdf()` generates a pdf with modified colors for printing. Use the
     # [`-webkit-print-color-adjust`](https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-print-color-adjust) property to
     # force rendering of exact colors.
-    # 
+    #
     #
     # ```js
     # // Generates a PDF with 'screen' media type.
     # await page.emulateMedia({media: 'screen'});
     # await page.pdf({path: 'page.pdf'});
     # ```
-    # 
+    #
     # ```java
     # // Generates a PDF with "screen" media type.
     # page.emulateMedia(new Page.EmulateMediaOptions().setMedia(Media.SCREEN));
     # page.pdf(new Page.PdfOptions().setPath(Paths.get("page.pdf")));
     # ```
-    # 
+    #
     # ```python async
     # # generates a pdf with "screen" media type.
     # await page.emulate_media(media="screen")
     # await page.pdf(path="page.pdf")
     # ```
-    # 
+    #
     # ```python sync
     # # generates a pdf with "screen" media type.
     # page.emulate_media(media="screen")
     # page.pdf(path="page.pdf")
     # ```
-    # 
+    #
     # ```csharp
     # // Generates a PDF with 'screen' media type
     # await page.EmulateMediaAsync(Media.Screen);
     # await page.PdfAsync("page.pdf");
     # ```
-    # 
+    #
     # The `width`, `height`, and `margin` options accept values labeled with units. Unlabeled values are treated as pixels.
-    # 
+    #
     # A few examples:
     # - `page.pdf({width: 100})` - prints with width set to 100 pixels
     # - `page.pdf({width: '100px'})` - prints with width set to 100 pixels
     # - `page.pdf({width: '10cm'})` - prints with width set to 10 centimeters.
-    # 
+    #
     # All possible units are:
     # - `px` - pixel
     # - `in` - inch
     # - `cm` - centimeter
     # - `mm` - millimeter
-    # 
+    #
     # The `format` options are:
     # - `Letter`: 8.5in x 11in
     # - `Legal`: 8.5in x 14in
@@ -1504,7 +1504,7 @@ module Playwright
     # - `A4`: 8.27in x 11.7in
     # - `A5`: 5.83in x 8.27in
     # - `A6`: 4.13in x 5.83in
-    # 
+    #
     # > NOTE: `headerTemplate` and `footerTemplate` markup have the following limitations: > 1. Script tags inside templates
     # are not evaluated. > 2. Page styles are not visible inside templates.
     def pdf(
@@ -1525,24 +1525,24 @@ module Playwright
     end
 
     # Focuses the element, and then uses [`method: Keyboard.down`] and [`method: Keyboard.up`].
-    # 
+    #
     # `key` can specify the intended [keyboardEvent.key](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key)
     # value or a single character to generate the text for. A superset of the `key` values can be found
     # [here](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values). Examples of the keys are:
-    # 
+    #
     # `F1` - `F12`, `Digit0`- `Digit9`, `KeyA`- `KeyZ`, `Backquote`, `Minus`, `Equal`, `Backslash`, `Backspace`, `Tab`,
     # `Delete`, `Escape`, `ArrowDown`, `End`, `Enter`, `Home`, `Insert`, `PageDown`, `PageUp`, `ArrowRight`, `ArrowUp`, etc.
-    # 
+    #
     # Following modification shortcuts are also supported: `Shift`, `Control`, `Alt`, `Meta`, `ShiftLeft`.
-    # 
+    #
     # Holding down `Shift` will type the text that corresponds to the `key` in the upper case.
-    # 
+    #
     # If `key` is a single character, it is case-sensitive, so the values `a` and `A` will generate different respective
     # texts.
-    # 
+    #
     # Shortcuts such as `key: "Control+o"` or `key: "Control+Shift+T"` are supported as well. When specified with the
     # modifier, modifier is pressed and being held while the subsequent key is being pressed.
-    # 
+    #
     #
     # ```js
     # const page = await browser.newPage();
@@ -1555,7 +1555,7 @@ module Playwright
     # await page.screenshot({ path: 'O.png' });
     # await browser.close();
     # ```
-    # 
+    #
     # ```java
     # Page page = browser.newPage();
     # page.navigate("https://keycode.info");
@@ -1566,7 +1566,7 @@ module Playwright
     # page.press("body", "Shift+O");
     # page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get("O.png" )));
     # ```
-    # 
+    #
     # ```python async
     # page = await browser.new_page()
     # await page.goto("https://keycode.info")
@@ -1578,7 +1578,7 @@ module Playwright
     # await page.screenshot(path="o.png")
     # await browser.close()
     # ```
-    # 
+    #
     # ```python sync
     # page = browser.new_page()
     # page.goto("https://keycode.info")
@@ -1590,7 +1590,7 @@ module Playwright
     # page.screenshot(path="o.png")
     # browser.close()
     # ```
-    # 
+    #
     # ```csharp
     # await using var browser = await playwright.Webkit.LaunchAsync(headless: false);
     # var page = await browser.NewPageAsync();
@@ -1613,7 +1613,7 @@ module Playwright
 
     # The method finds an element matching the specified selector within the page. If no elements match the selector, the
     # return value resolves to `null`. To wait for an element on the page, use [`method: Page.waitForSelector`].
-    # 
+    #
     # Shortcut for main frame's [`method: Frame.querySelector`].
     def query_selector(selector)
       wrap_impl(@impl.query_selector(unwrap_impl(selector)))
@@ -1621,7 +1621,7 @@ module Playwright
 
     # The method finds all elements matching the specified selector within the page. If no elements match the selector, the
     # return value resolves to `[]`.
-    # 
+    #
     # Shortcut for main frame's [`method: Frame.querySelectorAll`].
     def query_selector_all(selector)
       wrap_impl(@impl.query_selector_all(unwrap_impl(selector)))
@@ -1634,13 +1634,13 @@ module Playwright
     end
 
     # Routing provides the capability to modify network requests that are made by a page.
-    # 
+    #
     # Once routing is enabled, every request matching the url pattern will stall unless it's continued, fulfilled or aborted.
-    # 
+    #
     # > NOTE: The handler will only be called for the first url if the response is a redirect.
-    # 
+    #
     # An example of a naive handler that aborts all image requests:
-    # 
+    #
     #
     # ```js
     # const page = await browser.newPage();
@@ -1648,37 +1648,37 @@ module Playwright
     # await page.goto('https://example.com');
     # await browser.close();
     # ```
-    # 
+    #
     # ```java
     # Page page = browser.newPage();
     # page.route("**/*.{png,jpg,jpeg}", route -> route.abort());
     # page.navigate("https://example.com");
     # browser.close();
     # ```
-    # 
+    #
     # ```python async
     # page = await browser.new_page()
     # await page.route("**/*.{png,jpg,jpeg}", lambda route: route.abort())
     # await page.goto("https://example.com")
     # await browser.close()
     # ```
-    # 
+    #
     # ```python sync
     # page = browser.new_page()
     # page.route("**/*.{png,jpg,jpeg}", lambda route: route.abort())
     # page.goto("https://example.com")
     # browser.close()
     # ```
-    # 
+    #
     # ```csharp
     # await using var browser = await playwright.Webkit.LaunchAsync();
     # var page = await browser.NewPageAsync();
     # await page.RouteAsync("**/*.{png,jpg,jpeg}", async r => await r.AbortAsync());
     # await page.GotoAsync("https://www.microsoft.com");
     # ```
-    # 
+    #
     # or the same snippet using a regex pattern instead:
-    # 
+    #
     #
     # ```js
     # const page = await browser.newPage();
@@ -1686,38 +1686,38 @@ module Playwright
     # await page.goto('https://example.com');
     # await browser.close();
     # ```
-    # 
+    #
     # ```java
     # Page page = browser.newPage();
     # page.route(Pattern.compile("(\\.png$)|(\\.jpg$)"),route -> route.abort());
     # page.navigate("https://example.com");
     # browser.close();
     # ```
-    # 
+    #
     # ```python async
     # page = await browser.new_page()
     # await page.route(re.compile(r"(\.png$)|(\.jpg$)"), lambda route: route.abort())
     # await page.goto("https://example.com")
     # await browser.close()
     # ```
-    # 
+    #
     # ```python sync
     # page = browser.new_page()
     # page.route(re.compile(r"(\.png$)|(\.jpg$)"), lambda route: route.abort())
     # page.goto("https://example.com")
     # browser.close()
     # ```
-    # 
+    #
     # ```csharp
     # await using var browser = await playwright.Webkit.LaunchAsync();
     # var page = await browser.NewPageAsync();
     # await page.RouteAsync(new Regex("(\\.png$)|(\\.jpg$)"), async r => await r.AbortAsync());
     # await page.GotoAsync("https://www.microsoft.com");
     # ```
-    # 
+    #
     # It is possible to examine the request to decide the route action. For example, mocking all requests that contain some
     # post data, and leaving all other requests as is:
-    # 
+    #
     #
     # ```js
     # await page.route('/api/**', route => {
@@ -1727,7 +1727,7 @@ module Playwright
     #     route.continue();
     # });
     # ```
-    # 
+    #
     # ```java
     # page.route("/api/**", route -> {
     #   if (route.request().postData().contains("my-string"))
@@ -1736,7 +1736,7 @@ module Playwright
     #     route.resume();
     # });
     # ```
-    # 
+    #
     # ```python async
     # def handle_route(route):
     #   if ("my-string" in route.request.post_data)
@@ -1745,7 +1745,7 @@ module Playwright
     #     route.continue_()
     # await page.route("/api/**", handle_route)
     # ```
-    # 
+    #
     # ```python sync
     # def handle_route(route):
     #   if ("my-string" in route.request.post_data)
@@ -1754,7 +1754,7 @@ module Playwright
     #     route.continue_()
     # page.route("/api/**", handle_route)
     # ```
-    # 
+    #
     # ```csharp
     # await page.RouteAsync("/api/**", async r =>
     # {
@@ -1764,12 +1764,12 @@ module Playwright
     #       await r.ContinueAsync();
     # });
     # ```
-    # 
+    #
     # Page routes take precedence over browser context routes (set up with [`method: BrowserContext.route`]) when request
     # matches both handlers.
-    # 
+    #
     # To remove a route with its handler you can use [`method: Page.unroute`].
-    # 
+    #
     # > NOTE: Enabling routing disables http cache.
     def route(url, handler)
       wrap_impl(@impl.route(unwrap_impl(url), unwrap_impl(handler)))
@@ -1789,28 +1789,28 @@ module Playwright
 
     # This method waits for an element matching `selector`, waits for [actionability](./actionability.md) checks, waits until
     # all specified options are present in the `<select>` element and selects these options.
-    # 
+    #
     # If the target element is not a `<select>` element, this method throws an error. However, if the element is inside the
     # `<label>` element that has an associated
     # [control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), the control will be used instead.
-    # 
+    #
     # Returns the array of option values that have been successfully selected.
-    # 
+    #
     # Triggers a `change` and `input` event once all the provided options have been selected.
-    # 
+    #
     #
     # ```js
     # // single selection matching the value
     # page.selectOption('select#colors', 'blue');
-    # 
+    #
     # // single selection matching the label
     # page.selectOption('select#colors', { label: 'Blue' });
-    # 
+    #
     # // multiple selection
     # page.selectOption('select#colors', ['red', 'green', 'blue']);
-    # 
+    #
     # ```
-    # 
+    #
     # ```java
     # // single selection matching the value
     # page.selectOption("select#colors", "blue");
@@ -1819,7 +1819,7 @@ module Playwright
     # // multiple selection
     # page.selectOption("select#colors", new String[] {"red", "green", "blue"});
     # ```
-    # 
+    #
     # ```python async
     # # single selection matching the value
     # await page.select_option("select#colors", "blue")
@@ -1828,7 +1828,7 @@ module Playwright
     # # multiple selection
     # await page.select_option("select#colors", value=["red", "green", "blue"])
     # ```
-    # 
+    #
     # ```python sync
     # # single selection matching the value
     # page.select_option("select#colors", "blue")
@@ -1837,16 +1837,16 @@ module Playwright
     # # multiple selection
     # page.select_option("select#colors", value=["red", "green", "blue"])
     # ```
-    # 
+    #
     # ```csharp
     # // single selection matching the value
     # await page.SelectOptionAsync("select#colors", new[] { "blue" });
     # // single selection matching both the value and the label
     # await page.SelectOptionAsync("select#colors", new[] { new SelectOptionValue() { Label = "blue" } });
-    # // multiple 
+    # // multiple
     # await page.SelectOptionAsync("select#colors", new[] { "red", "green", "blue" });
     # ```
-    # 
+    #
     # Shortcut for main frame's [`method: Frame.selectOption`].
     def select_option(
           selector,
@@ -1872,7 +1872,7 @@ module Playwright
     # - [`method: Page.setContent`]
     # - [`method: Page.waitForNavigation`]
     # - [`method: Page.waitForURL`]
-    # 
+    #
     # > NOTE: [`method: Page.setDefaultNavigationTimeout`] takes priority over [`method: Page.setDefaultTimeout`],
     # [`method: BrowserContext.setDefaultTimeout`] and [`method: BrowserContext.setDefaultNavigationTimeout`].
     def set_default_navigation_timeout(timeout)
@@ -1881,7 +1881,7 @@ module Playwright
     alias_method :default_navigation_timeout=, :set_default_navigation_timeout
 
     # This setting will change the default maximum time for all the methods accepting `timeout` option.
-    # 
+    #
     # > NOTE: [`method: Page.setDefaultNavigationTimeout`] takes priority over [`method: Page.setDefaultTimeout`].
     def set_default_timeout(timeout)
       wrap_impl(@impl.set_default_timeout(unwrap_impl(timeout)))
@@ -1889,7 +1889,7 @@ module Playwright
     alias_method :default_timeout=, :set_default_timeout
 
     # The extra HTTP headers will be sent with every request the page initiates.
-    # 
+    #
     # > NOTE: [`method: Page.setExtraHTTPHeaders`] does not guarantee the order of headers in the outgoing requests.
     def set_extra_http_headers(headers)
       wrap_impl(@impl.set_extra_http_headers(unwrap_impl(headers)))
@@ -1898,7 +1898,7 @@ module Playwright
 
     # This method expects `selector` to point to an
     # [input element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input).
-    # 
+    #
     # Sets the value of the file input to these file paths or files. If some of the `filePaths` are relative paths, then they
     # are resolved relative to the the current working directory. For empty array, clears the selected files.
     def set_input_files(selector, files, noWaitAfter: nil, timeout: nil)
@@ -1907,10 +1907,10 @@ module Playwright
 
     # In the case of multiple pages in a single browser, each page can have its own viewport size. However,
     # [`method: Browser.newContext`] allows to set viewport size (and more) for all pages in the context at once.
-    # 
+    #
     # `page.setViewportSize` will resize the page. A lot of websites don't expect phones to change size, so you should set the
     # viewport size before navigating to the page.
-    # 
+    #
     #
     # ```js
     # const page = await browser.newPage();
@@ -1920,25 +1920,25 @@ module Playwright
     # });
     # await page.goto('https://example.com');
     # ```
-    # 
+    #
     # ```java
     # Page page = browser.newPage();
     # page.setViewportSize(640, 480);
     # page.navigate("https://example.com");
     # ```
-    # 
+    #
     # ```python async
     # page = await browser.new_page()
     # await page.set_viewport_size({"width": 640, "height": 480})
     # await page.goto("https://example.com")
     # ```
-    # 
+    #
     # ```python sync
     # page = browser.new_page()
     # page.set_viewport_size({"width": 640, "height": 480})
     # page.goto("https://example.com")
     # ```
-    # 
+    #
     # ```csharp
     # var page = await browser.NewPageAsync();
     # await page.SetViewportSizeAsync(640, 480);
@@ -1956,12 +1956,12 @@ module Playwright
     # 1. Scroll the element into view if needed.
     # 1. Use [`property: Page.touchscreen`] to tap the center of the element, or the specified `position`.
     # 1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
-    # 
+    #
     # When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing
     # zero timeout disables this.
-    # 
+    #
     # > NOTE: [`method: Page.tap`] requires that the `hasTouch` option of the browser context be set to true.
-    # 
+    #
     # Shortcut for main frame's [`method: Frame.tap`].
     def tap_point(
           selector,
@@ -1986,37 +1986,37 @@ module Playwright
 
     # Sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text. `page.type` can be used to send
     # fine-grained keyboard events. To fill values in form fields, use [`method: Page.fill`].
-    # 
+    #
     # To press a special key, like `Control` or `ArrowDown`, use [`method: Keyboard.press`].
-    # 
+    #
     #
     # ```js
     # await page.type('#mytextarea', 'Hello'); // Types instantly
     # await page.type('#mytextarea', 'World', {delay: 100}); // Types slower, like a user
     # ```
-    # 
+    #
     # ```java
     # // Types instantly
     # page.type("#mytextarea", "Hello");
     # // Types slower, like a user
     # page.type("#mytextarea", "World", new Page.TypeOptions().setDelay(100));
     # ```
-    # 
+    #
     # ```python async
     # await page.type("#mytextarea", "hello") # types instantly
     # await page.type("#mytextarea", "world", delay=100) # types slower, like a user
     # ```
-    # 
+    #
     # ```python sync
     # page.type("#mytextarea", "hello") # types instantly
     # page.type("#mytextarea", "world", delay=100) # types slower, like a user
     # ```
-    # 
+    #
     # ```csharp
     # await page.TypeAsync("#mytextarea", "hello"); // types instantly
     # await page.TypeAsync("#mytextarea", "world"); // types slower, like a user
     # ```
-    # 
+    #
     # Shortcut for main frame's [`method: Frame.type`].
     def type(
           selector,
@@ -2037,10 +2037,10 @@ module Playwright
     # 1. Use [`property: Page.mouse`] to click in the center of the element.
     # 1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
     # 1. Ensure that the element is now unchecked. If not, this method throws.
-    # 
+    #
     # When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing
     # zero timeout disables this.
-    # 
+    #
     # Shortcut for main frame's [`method: Frame.uncheck`].
     def uncheck(
           selector,
@@ -2087,7 +2087,7 @@ module Playwright
 
     # Waits for event to fire and passes its value into the predicate function. Returns when the predicate returns truthy
     # value. Will throw an error if the page is closed before the event is fired. Returns the event data value.
-    # 
+    #
     #
     # ```js
     # const [frame, _] = await Promise.all([
@@ -2095,19 +2095,19 @@ module Playwright
     #   page.click('button')
     # ]);
     # ```
-    # 
+    #
     # ```python async
     # async with page.expect_event("framenavigated") as event_info:
     #     await page.click("button")
     # frame = await event_info.value
     # ```
-    # 
+    #
     # ```python sync
     # with page.expect_event("framenavigated") as event_info:
     #     page.click("button")
     # frame = event_info.value
     # ```
-    # 
+    #
     # ```csharp
     # var waitTask = page.WaitForEventAsync(PageEvent.FrameNavigated);
     # await page.ClickAsync("button");
@@ -2125,13 +2125,13 @@ module Playwright
     end
 
     # Returns when the `expression` returns a truthy value. It resolves to a JSHandle of the truthy value.
-    # 
+    #
     # The [`method: Page.waitForFunction`] can be used to observe viewport size change:
-    # 
+    #
     #
     # ```js
     # const { webkit } = require('playwright');  // Or 'chromium' or 'firefox'.
-    # 
+    #
     # (async () => {
     #   const browser = await webkit.launch();
     #   const page = await browser.newPage();
@@ -2141,10 +2141,10 @@ module Playwright
     #   await browser.close();
     # })();
     # ```
-    # 
+    #
     # ```java
     # import com.microsoft.playwright.*;
-    # 
+    #
     # public class Example {
     #   public static void main(String[] args) {
     #     try (Playwright playwright = Playwright.create()) {
@@ -2158,11 +2158,11 @@ module Playwright
     #   }
     # }
     # ```
-    # 
+    #
     # ```python async
     # import asyncio
     # from playwright.async_api import async_playwright
-    # 
+    #
     # async def run(playwright):
     #     webkit = playwright.webkit
     #     browser = await webkit.launch()
@@ -2170,16 +2170,16 @@ module Playwright
     #     await page.evaluate("window.x = 0; setTimeout(() => { window.x = 100 }, 1000);")
     #     await page.wait_for_function("() => window.x > 0")
     #     await browser.close()
-    # 
+    #
     # async def main():
     #     async with async_playwright() as playwright:
     #         await run(playwright)
     # asyncio.run(main())
     # ```
-    # 
+    #
     # ```python sync
     # from playwright.sync_api import sync_playwright
-    # 
+    #
     # def run(playwright):
     #     webkit = playwright.webkit
     #     browser = webkit.launch()
@@ -2187,15 +2187,15 @@ module Playwright
     #     page.evaluate("window.x = 0; setTimeout(() => { window.x = 100 }, 1000);")
     #     page.wait_for_function("() => window.x > 0")
     #     browser.close()
-    # 
+    #
     # with sync_playwright() as playwright:
     #     run(playwright)
     # ```
-    # 
+    #
     # ```csharp
     # using Microsoft.Playwright;
     # using System.Threading.Tasks;
-    # 
+    #
     # class FrameExamples
     # {
     #   public static async Task WaitForFunction()
@@ -2208,71 +2208,71 @@ module Playwright
     #   }
     # }
     # ```
-    # 
+    #
     # To pass an argument to the predicate of [`method: Page.waitForFunction`] function:
-    # 
+    #
     #
     # ```js
     # const selector = '.foo';
     # await page.waitForFunction(selector => !!document.querySelector(selector), selector);
     # ```
-    # 
+    #
     # ```java
     # String selector = ".foo";
     # page.waitForFunction("selector => !!document.querySelector(selector)", selector);
     # ```
-    # 
+    #
     # ```python async
     # selector = ".foo"
     # await page.wait_for_function("selector => !!document.querySelector(selector)", selector)
     # ```
-    # 
+    #
     # ```python sync
     # selector = ".foo"
     # page.wait_for_function("selector => !!document.querySelector(selector)", selector)
     # ```
-    # 
+    #
     # ```csharp
     # var selector = ".foo";
     # await page.WaitForFunctionAsync("selector => !!document.querySelector(selector)", selector);
     # ```
-    # 
+    #
     # Shortcut for main frame's [`method: Frame.waitForFunction`].
     def wait_for_function(expression, arg: nil, polling: nil, timeout: nil)
       wrap_impl(@impl.wait_for_function(unwrap_impl(expression), arg: unwrap_impl(arg), polling: unwrap_impl(polling), timeout: unwrap_impl(timeout)))
     end
 
     # Returns when the required load state has been reached.
-    # 
+    #
     # This resolves when the page reaches a required load state, `load` by default. The navigation must have been committed
     # when this method is called. If current document has already reached the required state, resolves immediately.
-    # 
+    #
     #
     # ```js
     # await page.click('button'); // Click triggers navigation.
     # await page.waitForLoadState(); // The promise resolves after 'load' event.
     # ```
-    # 
+    #
     # ```java
     # page.click("button"); // Click triggers navigation.
     # page.waitForLoadState(); // The promise resolves after "load" event.
     # ```
-    # 
+    #
     # ```python async
     # await page.click("button") # click triggers navigation.
     # await page.wait_for_load_state() # the promise resolves after "load" event.
     # ```
-    # 
+    #
     # ```python sync
     # page.click("button") # click triggers navigation.
     # page.wait_for_load_state() # the promise resolves after "load" event.
     # ```
-    # 
+    #
     # ```csharp
     # await page.ClickAsync("button"); // Click triggers navigation.
     # await page.WaitForLoadStateAsync(); // The promise resolves after 'load' event.
     # ```
-    # 
+    #
     #
     # ```js
     # const [popup] = await Promise.all([
@@ -2282,7 +2282,7 @@ module Playwright
     # await popup.waitForLoadState('domcontentloaded'); // The promise resolves after 'domcontentloaded' event.
     # console.log(await popup.title()); // Popup is ready to use.
     # ```
-    # 
+    #
     # ```java
     # Page popup = page.waitForPopup(() -> {
     #   page.click("button"); // Click triggers a popup.
@@ -2290,7 +2290,7 @@ module Playwright
     # popup.waitForLoadState(LoadState.DOMCONTENTLOADED);
     # System.out.println(popup.title()); // Popup is ready to use.
     # ```
-    # 
+    #
     # ```python async
     # async with page.expect_popup() as page_info:
     #     await page.click("button") # click triggers a popup.
@@ -2299,7 +2299,7 @@ module Playwright
     # await popup.wait_for_load_state("domcontentloaded")
     # print(await popup.title()) # popup is ready to use.
     # ```
-    # 
+    #
     # ```python sync
     # with page.expect_popup() as page_info:
     #     page.click("button") # click triggers a popup.
@@ -2308,7 +2308,7 @@ module Playwright
     # popup.wait_for_load_state("domcontentloaded")
     # print(popup.title()) # popup is ready to use.
     # ```
-    # 
+    #
     # ```csharp
     # var popupTask = page.WaitForPopupAsync();
     # await page.ClickAsync("button"); // click triggers the popup/
@@ -2316,7 +2316,7 @@ module Playwright
     # await popup.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
     # Console.WriteLine(await popup.TitleAsync()); // popup is ready to use.
     # ```
-    # 
+    #
     # Shortcut for main frame's [`method: Frame.waitForLoadState`].
     def wait_for_load_state(state: nil, timeout: nil)
       wrap_impl(@impl.wait_for_load_state(state: unwrap_impl(state), timeout: unwrap_impl(timeout)))
@@ -2325,11 +2325,11 @@ module Playwright
     # Waits for the main frame navigation and returns the main resource response. In case of multiple redirects, the
     # navigation will resolve with the response of the last redirect. In case of navigation to a different anchor or
     # navigation due to History API usage, the navigation will resolve with `null`.
-    # 
+    #
     # This resolves when the page navigates to a new URL or reloads. It is useful for when you run code which will indirectly
     # cause the page to navigate. e.g. The click target has an `onclick` handler that triggers navigation from a `setTimeout`.
     # Consider this example:
-    # 
+    #
     #
     # ```js
     # const [response] = await Promise.all([
@@ -2337,35 +2337,35 @@ module Playwright
     #   page.click('a.delayed-navigation'), // Clicking the link will indirectly cause a navigation
     # ]);
     # ```
-    # 
+    #
     # ```java
     # // The method returns after navigation has finished
     # Response response = page.waitForNavigation(() -> {
     #   page.click("a.delayed-navigation"); // Clicking the link will indirectly cause a navigation
     # });
     # ```
-    # 
+    #
     # ```python async
     # async with page.expect_navigation():
     #     await page.click("a.delayed-navigation") # clicking the link will indirectly cause a navigation
     # # Resolves after navigation has finished
     # ```
-    # 
+    #
     # ```python sync
     # with page.expect_navigation():
     #     page.click("a.delayed-navigation") # clicking the link will indirectly cause a navigation
     # # Resolves after navigation has finished
     # ```
-    # 
+    #
     # ```csharp
     # await Task.WhenAll(page.WaitForNavigationAsync(),
     #     frame.ClickAsync("a.delayed-navigation")); // clicking the link will indirectly cause a navigation
     # // The method continues after navigation has finished
     # ```
-    # 
+    #
     # > NOTE: Usage of the [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API) to change the URL is
     # considered a navigation.
-    # 
+    #
     # Shortcut for main frame's [`method: Frame.waitForNavigation`].
     def expect_navigation(timeout: nil, url: nil, waitUntil: nil, &block)
       wrap_impl(@impl.expect_navigation(timeout: unwrap_impl(timeout), url: unwrap_impl(url), waitUntil: unwrap_impl(waitUntil), &wrap_block_call(block)))
@@ -2380,7 +2380,7 @@ module Playwright
 
     # Waits for the matching request and returns it.  See [waiting for event](./events.md#waiting-for-event) for more details
     # about events.
-    # 
+    #
     #
     # ```js
     # // Note that Promise.all prevents a race condition
@@ -2391,7 +2391,7 @@ module Playwright
     #   // Triggers the request
     #   page.click('button.triggers-request'),
     # ]);
-    # 
+    #
     # // Alternative way with a predicate.
     # const [request] = await Promise.all([
     #   // Waits for the next request matching some conditions
@@ -2400,53 +2400,53 @@ module Playwright
     #   page.click('button.triggers-request'),
     # ]);
     # ```
-    # 
+    #
     # ```java
     # // Waits for the next response with the specified url
     # Request request = page.waitForRequest("https://example.com/resource", () -> {
     #   // Triggers the request
     #   page.click("button.triggers-request");
     # });
-    # 
+    #
     # // Waits for the next request matching some conditions
     # Request request = page.waitForRequest(request -> "https://example.com".equals(request.url()) && "GET".equals(request.method()), () -> {
     #   // Triggers the request
     #   page.click("button.triggers-request");
     # });
     # ```
-    # 
+    #
     # ```python async
     # async with page.expect_request("http://example.com/resource") as first:
     #     await page.click('button')
     # first_request = await first.value
-    # 
+    #
     # # or with a lambda
     # async with page.expect_request(lambda request: request.url == "http://example.com" and request.method == "get") as second:
     #     await page.click('img')
     # second_request = await second.value
     # ```
-    # 
+    #
     # ```python sync
     # with page.expect_request("http://example.com/resource") as first:
     #     page.click('button')
     # first_request = first.value
-    # 
+    #
     # # or with a lambda
     # with page.expect_request(lambda request: request.url == "http://example.com" and request.method == "get") as second:
     #     page.click('img')
     # second_request = second.value
     # ```
-    # 
+    #
     # ```csharp
     # // Waits for the next response with the specified url
     # await Task.WhenAll(page.WaitForRequestAsync("https://example.com/resource"),
     #     page.ClickAsync("button.triggers-request"));
-    # 
+    #
     # // Waits for the next request matching some conditions
     # await Task.WhenAll(page.WaitForRequestAsync(r => "https://example.com".Equals(r.Url) && "GET" == r.Method),
     #     page.ClickAsync("button.triggers-request"));
     # ```
-    # 
+    #
     #
     # ```js
     # await page.waitForRequest(request => request.url().searchParams.get('foo') === 'bar' && request.url().searchParams.get('foo2') === 'bar2');
@@ -2456,7 +2456,7 @@ module Playwright
     end
 
     # Returns the matched response. See [waiting for event](./events.md#waiting-for-event) for more details about events.
-    # 
+    #
     #
     # ```js
     # // Note that Promise.all prevents a race condition
@@ -2467,7 +2467,7 @@ module Playwright
     #   // Triggers the response
     #   page.click('button.triggers-response'),
     # ]);
-    # 
+    #
     # // Alternative way with a predicate.
     # const [response] = await Promise.all([
     #   // Waits for the next response matching some conditions
@@ -2476,52 +2476,52 @@ module Playwright
     #   page.click('button.triggers-response'),
     # ]);
     # ```
-    # 
+    #
     # ```java
     # // Waits for the next response with the specified url
     # Response response = page.waitForResponse("https://example.com/resource", () -> {
     #   // Triggers the response
     #   page.click("button.triggers-response");
     # });
-    # 
+    #
     # // Waits for the next response matching some conditions
     # Response response = page.waitForResponse(response -> "https://example.com".equals(response.url()) && response.status() == 200, () -> {
     #   // Triggers the response
     #   page.click("button.triggers-response");
     # });
     # ```
-    # 
+    #
     # ```python async
     # async with page.expect_response("https://example.com/resource") as response_info:
     #     await page.click("input")
     # response = response_info.value
     # return response.ok
-    # 
+    #
     # # or with a lambda
     # async with page.expect_response(lambda response: response.url == "https://example.com" and response.status === 200) as response_info:
     #     await page.click("input")
     # response = response_info.value
     # return response.ok
     # ```
-    # 
+    #
     # ```python sync
     # with page.expect_response("https://example.com/resource") as response_info:
     #     page.click("input")
     # response = response_info.value
     # return response.ok
-    # 
+    #
     # # or with a lambda
     # with page.expect_response(lambda response: response.url == "https://example.com" and response.status === 200) as response_info:
     #     page.click("input")
     # response = response_info.value
     # return response.ok
     # ```
-    # 
+    #
     # ```csharp
     # // Waits for the next response with the specified url
     # await Task.WhenAll(page.WaitForResponseAsync("https://example.com/resource"),
     #     page.ClickAsync("button.triggers-response"));
-    # 
+    #
     # // Waits for the next response matching some conditions
     # await Task.WhenAll(page.WaitForResponseAsync(r => "https://example.com".Equals(r.Url) && r.Status == 200),
     #     page.ClickAsync("button.triggers-response"));
@@ -2532,17 +2532,17 @@ module Playwright
 
     # Returns when element specified by selector satisfies `state` option. Returns `null` if waiting for `hidden` or
     # `detached`.
-    # 
+    #
     # Wait for the `selector` to satisfy `state` option (either appear/disappear from dom, or become visible/hidden). If at
     # the moment of calling the method `selector` already satisfies the condition, the method will return immediately. If the
     # selector doesn't satisfy the condition for the `timeout` milliseconds, the function will throw.
-    # 
+    #
     # This method works across navigations:
-    # 
+    #
     #
     # ```js
     # const { chromium } = require('playwright');  // Or 'firefox' or 'webkit'.
-    # 
+    #
     # (async () => {
     #   const browser = await chromium.launch();
     #   const page = await browser.newPage();
@@ -2554,10 +2554,10 @@ module Playwright
     #   await browser.close();
     # })();
     # ```
-    # 
+    #
     # ```java
     # import com.microsoft.playwright.*;
-    # 
+    #
     # public class Example {
     #   public static void main(String[] args) {
     #     try (Playwright playwright = Playwright.create()) {
@@ -2574,11 +2574,11 @@ module Playwright
     #   }
     # }
     # ```
-    # 
+    #
     # ```python async
     # import asyncio
     # from playwright.async_api import async_playwright
-    # 
+    #
     # async def run(playwright):
     #     chromium = playwright.chromium
     #     browser = await chromium.launch()
@@ -2588,16 +2588,16 @@ module Playwright
     #         element = await page.wait_for_selector("img")
     #         print("Loaded image: " + str(await element.get_attribute("src")))
     #     await browser.close()
-    # 
+    #
     # async def main():
     #     async with async_playwright() as playwright:
     #         await run(playwright)
     # asyncio.run(main())
     # ```
-    # 
+    #
     # ```python sync
     # from playwright.sync_api import sync_playwright
-    # 
+    #
     # def run(playwright):
     #     chromium = playwright.chromium
     #     browser = chromium.launch()
@@ -2607,16 +2607,16 @@ module Playwright
     #         element = page.wait_for_selector("img")
     #         print("Loaded image: " + str(element.get_attribute("src")))
     #     browser.close()
-    # 
+    #
     # with sync_playwright() as playwright:
     #     run(playwright)
     # ```
-    # 
+    #
     # ```csharp
     # using Microsoft.Playwright;
     # using System;
     # using System.Threading.Tasks;
-    # 
+    #
     # class FrameExamples
     # {
     #   public static async Task Images()
@@ -2624,14 +2624,14 @@ module Playwright
     #       using var playwright = await Playwright.CreateAsync();
     #       await using var browser = await playwright.Chromium.LaunchAsync();
     #       var page = await browser.NewPageAsync();
-    # 
+    #
     #       foreach (var currentUrl in new[] { "https://www.google.com", "https://bbc.com" })
     #       {
     #           await page.GotoAsync(currentUrl);
     #           var element = await page.WaitForSelectorAsync("img");
     #           Console.WriteLine($"Loaded image: {await element.GetAttributeAsync("src")}");
     #       }
-    # 
+    #
     #       await browser.CloseAsync();
     #   }
     # }
@@ -2641,69 +2641,69 @@ module Playwright
     end
 
     # Waits for the given `timeout` in milliseconds.
-    # 
+    #
     # Note that `page.waitForTimeout()` should only be used for debugging. Tests using the timer in production are going to be
     # flaky. Use signals such as network events, selectors becoming visible and others instead.
-    # 
+    #
     #
     # ```js
     # // wait for 1 second
     # await page.waitForTimeout(1000);
     # ```
-    # 
+    #
     # ```java
     # // wait for 1 second
     # page.waitForTimeout(1000);
     # ```
-    # 
+    #
     # ```python async
     # # wait for 1 second
     # await page.wait_for_timeout(1000)
     # ```
-    # 
+    #
     # ```python sync
     # # wait for 1 second
     # page.wait_for_timeout(1000)
     # ```
-    # 
+    #
     # ```csharp
     # // Wait for 1 second
     # await page.WaitForTimeoutAsync(1000);
     # ```
-    # 
+    #
     # Shortcut for main frame's [`method: Frame.waitForTimeout`].
     def wait_for_timeout(timeout)
       raise NotImplementedError.new('wait_for_timeout is not implemented yet.')
     end
 
     # Waits for the main frame to navigate to the given URL.
-    # 
+    #
     #
     # ```js
     # await page.click('a.delayed-navigation'); // Clicking the link will indirectly cause a navigation
     # await page.waitForURL('**/target.html');
     # ```
-    # 
+    #
     # ```java
     # page.click("a.delayed-navigation"); // Clicking the link will indirectly cause a navigation
     # page.waitForURL("**/target.html");
     # ```
-    # 
+    #
     # ```python async
     # await page.click("a.delayed-navigation") # clicking the link will indirectly cause a navigation
     # await page.wait_for_url("**/target.html")
     # ```
-    # 
+    #
     # ```python sync
     # page.click("a.delayed-navigation") # clicking the link will indirectly cause a navigation
     # page.wait_for_url("**/target.html")
     # ```
-    # 
+    #
     # ```csharp
     # await page.ClickAsync("a.delayed-navigation"); // clicking the link will indirectly cause a navigation
     # await page.WaitForURLAsync("**/target.html");
     # ```
-    # 
+    #
     # Shortcut for main frame's [`method: Frame.waitForURL`].
     def wait_for_url(url, timeout: nil, waitUntil: nil)
       wrap_impl(@impl.wait_for_url(unwrap_impl(url), timeout: unwrap_impl(timeout), waitUntil: unwrap_impl(waitUntil)))
@@ -2718,14 +2718,14 @@ module Playwright
 
     # This method returns all of the dedicated [WebWorkers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API)
     # associated with the page.
-    # 
+    #
     # > NOTE: This does not contain ServiceWorkers
     def workers
       raise NotImplementedError.new('workers is not implemented yet.')
     end
 
     # > NOTE: In most cases, you should use [`method: Page.waitForEvent`].
-    # 
+    #
     # Waits for given `event` to fire. If predicate is provided, it passes event's value into the `predicate` function and
     # waits for `predicate(event)` to return a truthy value. Will throw an error if the socket is closed before the `event` is
     # fired.
@@ -2749,11 +2749,6 @@ module Playwright
     end
 
     # @nodoc
-    def stop_js_coverage
-      wrap_impl(@impl.stop_js_coverage)
-    end
-
-    # @nodoc
     def start_css_coverage(resetOnNavigation: nil, reportAnonymousScripts: nil)
       wrap_impl(@impl.start_css_coverage(resetOnNavigation: unwrap_impl(resetOnNavigation), reportAnonymousScripts: unwrap_impl(reportAnonymousScripts)))
     end
@@ -2761,6 +2756,17 @@ module Playwright
     # @nodoc
     def stop_css_coverage
       wrap_impl(@impl.stop_css_coverage)
+    end
+
+    # @nodoc
+    def stop_js_coverage
+      wrap_impl(@impl.stop_js_coverage)
+    end
+
+    # -- inherited from EventEmitter --
+    # @nodoc
+    def on(event, callback)
+      event_emitter_proxy.on(event, callback)
     end
 
     # -- inherited from EventEmitter --
@@ -2773,12 +2779,6 @@ module Playwright
     # @nodoc
     def once(event, callback)
       event_emitter_proxy.once(event, callback)
-    end
-
-    # -- inherited from EventEmitter --
-    # @nodoc
-    def on(event, callback)
-      event_emitter_proxy.on(event, callback)
     end
 
     private def event_emitter_proxy
