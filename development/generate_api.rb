@@ -49,17 +49,14 @@ require 'playwright/channel_owner'
 require 'playwright/api_implementation'
 
 Dir[File.join(__dir__, 'generate_api', 'models', '*.rb')].each { |f| require f }
-Dir[File.join(__dir__, 'generate_api', 'views', '*.rb')].each { |f| require f }
+Dir[File.join(__dir__, 'generate_api', 'renderers', '*.rb')].each { |f| require f }
 
 if $0 == __FILE__
   api_json = JSON.parse(File.read(File.join(__dir__, 'api.json')))
   inflector = Dry::Inflector.new
 
-  File.open(File.join('.', 'docs', 'api_coverage.md'), 'w') do |f|
-    f.write("# API coverages\n")
-  end
-
-  (ALL_TYPES + EXPERIMENTAL).each do |class_name|
+  # Aggregate document and actual implementation.
+  target_classes = (ALL_TYPES + EXPERIMENTAL).map do |class_name|
     doc_json = api_json.find { |json| json['name'] == class_name }
     doc = doc_json ? ClassDoc.new(doc_json, root: api_json) : nil
 
@@ -70,34 +67,26 @@ if $0 == __FILE__
         Playwright::ChannelOwners.const_get(class_name) rescue nil
       end
 
-    view =
-      if klass
-        if doc
-          ImplementedClassWithDoc.new(doc, klass, inflector)
-        else
-          ImplementedClassWithoutDoc.new(class_name, klass, inflector)
-        end
+    if klass
+      if doc
+        ImplementedClassWithDoc.new(doc, klass, inflector)
       else
-        if doc
-          UnimplementedClassWithDoc.new(doc, inflector)
-        else
-          raise "#{class_name} is not implemented nor not in api-docs. Something is wrong."
-        end
+        ImplementedClassWithoutDoc.new(class_name, klass, inflector)
       end
-
-    filename = "#{inflector.underscore(class_name)}.rb"
-    File.open(File.join('.', 'lib', 'playwright_api', filename), 'w') do |f|
-      view.lines.each do |line|
-        f.write(line)
-        f.write("\n")
-      end
-    end
-
-    File.open(File.join('.', 'docs', 'api_coverage.md'), 'a') do |f|
-      view.api_coverages.each do |line|
-        f.write(line)
-        f.write("\n")
+    else
+      if doc
+        UnimplementedClassWithDoc.new(doc, inflector)
+      else
+        raise "#{class_name} is not implemented nor not in api-docs. Something is wrong."
       end
     end
   end
+
+  # Mark as experimental
+  target_classes.each do |target_class|
+    target_class.mark_as_experimental if EXPERIMENTAL.include?(target_class.class_name)
+  end
+
+  PlaywrightApiRenderer.new(target_classes).render
+  ApiCoverageRenderer.new(target_classes).render
 end

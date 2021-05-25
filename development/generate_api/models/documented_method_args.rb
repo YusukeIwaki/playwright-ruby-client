@@ -1,25 +1,27 @@
 class DocumentedMethodArgs
+  include Enumerable
+
   class RequiredArg
     def initialize(doc)
       @doc = doc
     end
 
-    def options?
-      false
-    end
-
-    def as_method_definition
+    def name
       @doc.name
     end
 
-    def as_method_call
-      "unwrap_impl(#{@doc.name})"
+    def options?
+      false
     end
   end
 
   class OptionalArg
     def initialize(doc)
       @doc = doc
+    end
+
+    def name
+      @doc.name
     end
 
     def options?
@@ -31,14 +33,6 @@ class DocumentedMethodArgs
         OptionalKwArg.new(arg_doc)
       end || []
     end
-
-    def as_method_definition
-      "#{@doc.name}: nil"
-    end
-
-    def as_method_call
-      "#{@doc.name}: unwrap_impl(#{@doc.name})"
-    end
   end
 
   class OptionalKwArg
@@ -46,23 +40,12 @@ class DocumentedMethodArgs
       @doc = doc
     end
 
-    def as_method_definition
-      "#{@doc.name}: nil"
-    end
-
-    def as_method_call
-      "#{@doc.name}: unwrap_impl(#{@doc.name})"
+    def name
+      @doc.name
     end
   end
 
   class BlockArg
-    def as_method_definition
-      "&block"
-    end
-
-    def as_method_call
-      "&wrap_block_call(block)"
-    end
   end
 
   # @param inflector [Dry::Inflector]
@@ -86,7 +69,12 @@ class DocumentedMethodArgs
     extract_options
     if with_block
       @args << BlockArg.new
+      @with_block = with_block
     end
+  end
+
+  def each(&block)
+    @args.each(&block)
   end
 
   def empty?
@@ -99,20 +87,6 @@ class DocumentedMethodArgs
 
   def setter_parameter?
     @args.count { |arg| arg.is_a?(RequiredArg) } == 1
-  end
-
-  # ['var1', 'var2', 'var3: nil', 'var4: nil']
-  #
-  # @returns [Arrau<String>]
-  def for_method_definition
-    @args.map(&:as_method_definition)
-  end
-
-  # ['var1', 'var2', 'var3: var3', 'var4: var4']
-  #
-  # @returns [Arrau<String>]
-  def for_method_call
-    @args.map(&:as_method_call)
   end
 
   private

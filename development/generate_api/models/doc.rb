@@ -3,6 +3,11 @@ class Doc
     @json = json
   end
 
+  # suppress verbose printing.
+  def inspect
+    "#<Doc name=#{name}>"
+  end
+
   # @returns [String]
   def kind
     json_with_python_override['kind']
