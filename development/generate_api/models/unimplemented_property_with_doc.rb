@@ -10,6 +10,10 @@ class UnimplementedPropertyWithDoc
     @doc.comment_without_unusable_code_examples
   end
 
+  def js_property_name
+    @doc.name
+  end
+
   # @returns [String]
   def property_name
     MethodName.new(@inflector, @doc.name).rubyish_name
