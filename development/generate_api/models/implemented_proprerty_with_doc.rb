@@ -9,7 +9,7 @@ class ImplementedPropertyWithDoc
   end
 
   def property_comment
-    @doc.comment
+    @doc.comment_without_unusable_code_examples
   end
 
   # @returns [String]

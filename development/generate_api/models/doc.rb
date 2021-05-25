@@ -18,9 +18,14 @@ class Doc
     langs.alias_for_python || @json['name']
   end
 
-  # @returns [String]
+  # @returns [String|nil]
   def comment
     json_with_python_override['comment']
+  end
+
+  # @returns [String|nil]
+  def comment_without_unusable_code_examples
+    comment&.gsub(/```(js|js browser|java|python async|csharp)\n.*?```\n+/m, '')
   end
 
   private def json_with_python_override
