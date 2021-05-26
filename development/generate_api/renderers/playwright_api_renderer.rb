@@ -71,7 +71,6 @@ class PlaywrightApiRenderer
     private def class_comment_lines
       Enumerator.new do |data|
         @class_with_doc.class_comment&.split("\n")&.each do |line|
-          data << '#' if line.start_with?("```js")
           data << "# #{line}"
         end
       end
@@ -152,7 +151,6 @@ class PlaywrightApiRenderer
     private def property_comment_lines
       Enumerator.new do |data|
         @property_with_doc.property_comment&.split("\n")&.each do |line|
-          data << '#' if line.start_with?("```js")
           data << "# #{line}"
         end
       end
@@ -198,7 +196,6 @@ class PlaywrightApiRenderer
     private def method_comment_lines
       Enumerator.new do |data|
         @method_with_doc.method_comment&.split("\n")&.each do |line|
-          data << '#' if line.start_with?("```js")
           data << "# #{line}"
         end
       end

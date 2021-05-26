@@ -10,7 +10,11 @@ class ImplementedMethodWithDoc
 
   # @returns [String|nil]
   def method_comment
-    @doc.comment
+    @doc.comment_without_unusable_code_examples
+  end
+
+  def js_method_name
+    @inflector.camelize_lower(@doc.name)
   end
 
   # @returns [String]
