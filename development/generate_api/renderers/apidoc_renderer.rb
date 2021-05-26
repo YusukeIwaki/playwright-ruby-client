@@ -14,7 +14,13 @@ class ApidocRenderer
 
       renderer = ClassWithDocRenderer.new(target_class, @comment_converter, @example_code_converter)
 
-      File.open(File.join('.', 'docs', 'api', "#{target_class.filename}.md"), 'w') do |f|
+      filepath =
+        if target_class.experimental?
+          File.join('.', 'docs', 'api', 'experimental', "#{target_class.filename}.md")
+        else
+          File.join('.', 'docs', 'api', "#{target_class.filename}.md")
+        end
+      File.open(filepath, 'w') do |f|
         renderer.render_lines.each do |line|
           f.write(line)
           f.write("\n")
@@ -38,6 +44,10 @@ class ApidocRenderer
 
     def render_lines
       Enumerator.new do |data|
+        data << "---"
+        data << "sidebar_position: 10"
+        data << "---"
+        data << ''
         data << "# #{@class_with_doc.class_name}"
         data << ''
         if @implemented
