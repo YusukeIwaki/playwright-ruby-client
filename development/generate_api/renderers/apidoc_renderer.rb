@@ -1,14 +1,18 @@
+require_relative '../example_codes'
+require 'digest'
+
 class ApidocRenderer
   def initialize(target_classes)
     @target_classes = target_classes
     @comment_converter = CommentConverter.new(target_classes)
+    @example_code_converter = ExampleCodeConverter.new
   end
 
   def render
     @target_classes.each do |target_class|
       next if target_class.is_a?(ImplementedClassWithoutDoc)
 
-      renderer = ClassWithDocRenderer.new(target_class, @comment_converter)
+      renderer = ClassWithDocRenderer.new(target_class, @comment_converter, @example_code_converter)
 
       File.open(File.join('.', 'docs', 'api', "#{target_class.filename}.md"), 'w') do |f|
         renderer.render_lines.each do |line|
@@ -20,9 +24,10 @@ class ApidocRenderer
   end
 
   class ClassWithDocRenderer
-    def initialize(class_with_doc, comment_converter)
+    def initialize(class_with_doc, comment_converter, example_code_converter)
       @class_with_doc = class_with_doc
       @comment_converter = comment_converter
+      @example_code_converter = example_code_converter
       case class_with_doc
       when ImplementedClassWithDoc
         @implemented = true
@@ -37,7 +42,8 @@ class ApidocRenderer
         data << ''
         if @implemented
           if @class_with_doc.class_comment
-            data << @comment_converter.convert(@class_with_doc.class_comment)
+            comment = @comment_converter.convert(@class_with_doc.class_comment)
+            data << @example_code_converter.convert(comment)
           end
           method_lines.each do |line|
             data << line
@@ -57,7 +63,7 @@ class ApidocRenderer
           next unless method_with_doc.is_a?(ImplementedMethodWithDoc)
 
           data << ''
-          ImplementedMethodWithDocRenderer.new(method_with_doc, @comment_converter).render_lines.each do |line|
+          ImplementedMethodWithDocRenderer.new(method_with_doc, @comment_converter, @example_code_converter).render_lines.each do |line|
             data << line
           end
         end
@@ -65,9 +71,10 @@ class ApidocRenderer
     end
 
     class ImplementedMethodWithDocRenderer
-      def initialize(method_with_doc, comment_converter)
+      def initialize(method_with_doc, comment_converter, example_code_converter)
         @method_with_doc = method_with_doc
         @comment_converter = comment_converter
+        @example_code_converter = example_code_converter
       end
 
       def render_lines
@@ -78,7 +85,8 @@ class ApidocRenderer
           data << "def #{method_name_and_args}"
           data << '```'
           data << ''
-          data << @comment_converter.convert(@method_with_doc.method_comment)
+          comment = @comment_converter.convert(@method_with_doc.method_comment)
+          data << @example_code_converter.convert(comment)
         end
       end
 
@@ -126,7 +134,7 @@ class ApidocRenderer
           next unless property_with_doc.is_a?(ImplementedPropertyWithDoc)
 
           data << ''
-          ImplementedPropertyWithDocRenderer.new(property_with_doc, @comment_converter).render_lines.each do |line|
+          ImplementedPropertyWithDocRenderer.new(property_with_doc, @comment_converter, @example_code_converter).render_lines.each do |line|
             data << line
           end
         end
@@ -134,9 +142,10 @@ class ApidocRenderer
     end
 
     class ImplementedPropertyWithDocRenderer
-      def initialize(property_with_doc, comment_converter)
+      def initialize(property_with_doc, comment_converter, example_code_converter)
         @property_with_doc = property_with_doc
         @comment_converter = comment_converter
+        @example_code_converter = example_code_converter
       end
 
       def render_lines
@@ -145,7 +154,8 @@ class ApidocRenderer
 
           if @property_with_doc.property_comment && @property_with_doc.property_comment.size > 0
             data << ''
-            data << @comment_converter.convert(@property_with_doc.property_comment)
+            comment = @comment_converter.convert(@property_with_doc.property_comment)
+            data << @example_code_converter.convert(comment)
           end
         end
       end
@@ -224,6 +234,49 @@ class ApidocRenderer
 
     private def convert_local_md_link(content)
       content.gsub(/\[(.+)\]\(\.\/(.+)\.md(#.*)?\)/) { "[#{$1}](https://playwright.dev/python/docs/#{$2})"}
+    end
+  end
+
+  class ExampleCodeConverter
+    def initialize
+      @code_lines = File.readlines(Kernel.const_source_location(:ExampleCodes).first)
+      @methods = ExampleCodes.instance_methods.map do |sym|
+        [sym.to_s, definition_for(ExampleCodes.instance_method(sym))]
+      end.to_h
+    end
+
+    # @param example_method [UnboundMethod]
+    # @returns [String]
+    #
+    # This method uses AST and requires Ruby >= 2.6
+    private def definition_for(example_method)
+      ast = RubyVM::AbstractSyntaxTree.of(example_method)
+
+      # def example_xxxx <-- ast.first_lineno ... index = ast.first_lineno-1
+      #
+      # end <-- ast.last_lineno ... index= ast.last_lineno-1
+
+      @code_lines[ast.first_lineno..ast.last_lineno-2].map do |line|
+        if line.start_with?('    ')
+          line[4..-1] # remove indent
+        else
+          line
+        end
+      end.join("")
+    end
+
+    # @param content [String]
+    # @returns [String]
+    def convert(content)
+      content.gsub(/```(py.*?)\n(.*?)```/m).with_index do |code, index|
+        key = "example_#{Digest::SHA256.hexdigest(code)}"
+        if @methods[key]
+          "```ruby\n#{@methods[key].rstrip}\n```"
+        else
+          puts "Using Python code: [#{key}]"
+          "```#{$1} title=#{key}.py\n#{$2}\n```"
+        end
+      end
     end
   end
 end
