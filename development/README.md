@@ -22,6 +22,7 @@ $PLAYWRIGHT_CLI_EXECUTABLE_PATH --version | cut -d' ' -f2 > development/CLI_VERS
 
 ```
 rm lib/playwright_api/*.rb
+find documentation/docs -name "*.md" | grep -v documentation/docs/article/ | xargs rm
 bundle exec ruby development/generate_api.rb
 ```
 
