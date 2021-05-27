@@ -16,15 +16,25 @@ class ApidocRenderer
 
       filepath =
         if target_class.experimental?
-          File.join('.', 'docs', 'api', 'experimental', "#{target_class.filename}.md")
+          File.join('.', 'documentation', 'docs', 'api', 'experimental', "#{target_class.filename}.md")
         else
-          File.join('.', 'docs', 'api', "#{target_class.filename}.md")
+          File.join('.', 'documentation', 'docs', 'api', "#{target_class.filename}.md")
         end
       File.open(filepath, 'w') do |f|
         renderer.render_lines.each do |line|
           f.write(line)
           f.write("\n")
         end
+      end
+    end
+
+    File.open(File.join('.', 'development', 'unimplemented_examples.md'), 'w') do |f|
+      f.write("# Unimplemented examples\n\n")
+      f.write("Excample codes in API documentation is replaces with the methods defined in development/generate_api/example_codes.rb.\n\n")
+      f.write("The examples listed below is not yet implemented, and documentation shows Python code.\n\n")
+      @example_code_converter.no_impl_examples.each do |key, code|
+        f.write("\n### #{key}\n")
+        f.write("\n```\n#{code}\n```\n")
       end
     end
   end
@@ -253,7 +263,10 @@ class ApidocRenderer
       @methods = ExampleCodes.instance_methods.map do |sym|
         [sym.to_s, definition_for(ExampleCodes.instance_method(sym))]
       end.to_h
+      @no_impl_examples = []
     end
+
+    attr_reader :no_impl_examples
 
     # @param example_method [UnboundMethod]
     # @returns [String]
@@ -283,7 +296,7 @@ class ApidocRenderer
         if @methods[key]
           "```ruby\n#{@methods[key].rstrip}\n```"
         else
-          puts "Using Python code: [#{key}]"
+          @no_impl_examples << [key, $2]
           "```#{$1} title=#{key}.py\n#{$2}\n```"
         end
       end

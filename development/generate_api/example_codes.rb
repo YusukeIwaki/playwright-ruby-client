@@ -1,4 +1,16 @@
 module ExampleCodes
+  # Browser
+  def example_b8acc529feb6c35ab828780a127d7bf2c079dc7f2847ef251c4c1a33b4197bf9(playwright:)
+    firefox = playwright.firefox
+    browser = firefox.launch
+    begin
+      page = browser.new_page
+      page.goto("https://example.com")
+    ensure
+      browser.close
+    end
+  end
+
   # Playwright
   def example_efc99085566bf177ec87b1bd3bb30d75b6053ec9b579a8ac8bb9f22e5942289a
     require 'playwright'

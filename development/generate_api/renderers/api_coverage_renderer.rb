@@ -1,4 +1,4 @@
-# generating docs/api_coverage.md
+# generating documentation/docs/include/api_coverage.md
 class ApiCoverageRenderer
   def initialize(target_classes)
     @sub_renderers = target_classes.map do |target_class|
@@ -7,7 +7,7 @@ class ApiCoverageRenderer
   end
 
   def render
-    File.open(File.join('.', 'docs', 'api_coverage.md'), 'w') do |f|
+    File.open(File.join('.', 'documentation', 'docs', 'include', 'api_coverage.md'), 'w') do |f|
       f.write("# API coverages\n")
 
       @sub_renderers.each do |renderer|
