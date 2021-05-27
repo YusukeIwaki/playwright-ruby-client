@@ -1,5 +1,4 @@
 require 'base64'
-require 'mime/types'
 
 module Playwright
   class InputFiles
@@ -19,24 +18,17 @@ module Playwright
         when String
           {
             name: File.basename(file),
-            mimeType: mime_type_for(file),
             buffer: Base64.strict_encode64(File.read(file)),
           }
         when File
           {
             name: File.basename(file.path),
-            mimeType: mime_type_for(file.path),
             buffer: Base64.strict_encode64(file.read),
           }
         else
           raise ArgumentError.new('file must be a String or File.')
         end
       end
-    end
-
-    private def mime_type_for(filepath)
-      mime_types = MIME::Types.type_for(filepath)
-      mime_types.first.to_s || 'application/octet-stream'
     end
   end
 end
