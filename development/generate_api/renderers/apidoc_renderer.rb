@@ -16,9 +16,9 @@ class ApidocRenderer
 
       filepath =
         if target_class.experimental?
-          File.join('.', 'docs', 'api', 'experimental', "#{target_class.filename}.md")
+          File.join('.', 'documentation', 'docs', 'api', 'experimental', "#{target_class.filename}.md")
         else
-          File.join('.', 'docs', 'api', "#{target_class.filename}.md")
+          File.join('.', 'documentation', 'docs', 'api', "#{target_class.filename}.md")
         end
       File.open(filepath, 'w') do |f|
         renderer.render_lines.each do |line|
