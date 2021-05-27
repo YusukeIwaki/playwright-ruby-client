@@ -8,19 +8,15 @@ sidebar_position: 10
 
 A Browser is created via [BrowserType#launch](./browser_type#launch). An example of using a [Browser](./browser) to create a [Page](./page):
 
-```python sync title=example_b8acc529feb6c35ab828780a127d7bf2c079dc7f2847ef251c4c1a33b4197bf9.py
-from playwright.sync_api import sync_playwright
-
-def run(playwright):
-    firefox = playwright.firefox
-    browser = firefox.launch()
-    page = browser.new_page()
-    page.goto("https://example.com")
-    browser.close()
-
-with sync_playwright() as playwright:
-    run(playwright)
-
+```ruby
+firefox = playwright.firefox
+browser = firefox.launch
+begin
+  page = browser.new_page
+  page.goto("https://example.com")
+ensure
+  browser.close
+end
 ```
 
 

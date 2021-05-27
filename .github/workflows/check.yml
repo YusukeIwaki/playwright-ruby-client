@@ -27,7 +27,10 @@ jobs:
     - name: Check if api.json is updated
       run: git diff --exit-code development/api.json
     - name: Check if docs/ is updated
+      run: git diff --exit-code docs
+    - name: Check if docs/ is not forgot to git-add
       run: |
-        git diff --exit-code docs
         git add -N docs
         git diff --exit-code docs
+    - name: Check if unimplemented_examples.md is updated
+      run: git diff --exit-code development/unimplemented_examples.md
