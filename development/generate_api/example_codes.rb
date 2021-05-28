@@ -11,6 +11,37 @@ module ExampleCodes
     end
   end
 
+  # Browser#contexts
+  def example_7f9edd4a42641957d48081449ceb3c54829485d152db1cc82a82f1f21191b90c(playwright:)
+    playwright.webkit.launch do |browser|
+      puts browser.contexts.count # => 0
+      context = browser.new_context
+      puts browser.contexts.count # => 1
+    end
+  end
+
+  # Browser#new_context
+  def example_3661a62dd097b41417b066df731db5f80905ccb40be870c04c44980ee7425f56(playwright:)
+    playwright.firefox.launch do |browser| # or "chromium.launch" or "webkit.launch".
+      # create a new incognito browser context.
+      context = browser.new_context
+
+      # create a new page in a pristine context.
+      page = context.new_page()
+      page.goto("https://example.com")
+    end
+  end
+
+  # Browser#start_tracing
+  def example_5a1282084821fd9127ef5ca54bdda63cdff46564f3cb20e347317dee260d33b3(browser:, page:)
+    browser.start_tracing(page: page, path: "trace.json")
+    begin
+      page.goto("https://www.google.com")
+    ensure
+      browser.stop_tracing
+    end
+  end
+
   # Playwright
   def example_efc99085566bf177ec87b1bd3bb30d75b6053ec9b579a8ac8bb9f22e5942289a
     require 'playwright'

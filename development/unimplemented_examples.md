@@ -1062,37 +1062,6 @@ page = event_info.value
 
 ```
 
-### example_7f9edd4a42641957d48081449ceb3c54829485d152db1cc82a82f1f21191b90c
-
-```
-browser = pw.webkit.launch()
-print(len(browser.contexts())) # prints `0`
-context = browser.new_context()
-print(len(browser.contexts())) # prints `1`
-
-```
-
-### example_3661a62dd097b41417b066df731db5f80905ccb40be870c04c44980ee7425f56
-
-```
-browser = playwright.firefox.launch() # or "chromium" or "webkit".
-# create a new incognito browser context.
-context = browser.new_context()
-# create a new page in a pristine context.
-page = context.new_page()
-page.goto("https://example.com")
-
-```
-
-### example_5a1282084821fd9127ef5ca54bdda63cdff46564f3cb20e347317dee260d33b3
-
-```
-browser.start_tracing(page, path="trace.json")
-page.goto("https://www.google.com")
-browser.stop_tracing()
-
-```
-
 ### example_554dfa8c71a3e87116c6f226d58cdb57d7993dd5df94e22c8fc74c0f83ef7b50
 
 ```

@@ -43,12 +43,12 @@ def contexts
 
 Returns an array of all open browser contexts. In a newly created browser, this will return zero browser contexts.
 
-```python sync title=example_7f9edd4a42641957d48081449ceb3c54829485d152db1cc82a82f1f21191b90c.py
-browser = pw.webkit.launch()
-print(len(browser.contexts())) # prints `0`
-context = browser.new_context()
-print(len(browser.contexts())) # prints `1`
-
+```ruby
+playwright.webkit.launch do |browser|
+  puts browser.contexts.count # => 0
+  context = browser.new_context
+  puts browser.contexts.count # => 1
+end
 ```
 
 
@@ -95,14 +95,15 @@ def new_context(
 
 Creates a new browser context. It won't share cookies/cache with other browser contexts.
 
-```python sync title=example_3661a62dd097b41417b066df731db5f80905ccb40be870c04c44980ee7425f56.py
-browser = playwright.firefox.launch() # or "chromium" or "webkit".
-# create a new incognito browser context.
-context = browser.new_context()
-# create a new page in a pristine context.
-page = context.new_page()
-page.goto("https://example.com")
+```ruby
+playwright.firefox.launch do |browser| # or "chromium.launch" or "webkit.launch".
+  # create a new incognito browser context.
+  context = browser.new_context
 
+  # create a new page in a pristine context.
+  page = context.new_page()
+  page.goto("https://example.com")
+end
 ```
 
 
@@ -155,11 +156,13 @@ def start_tracing(page: nil, categories: nil, path: nil, screenshots: nil)
 You can use [Browser#start_tracing](./browser#start_tracing) and [Browser#stop_tracing](./browser#stop_tracing) to create a trace file that can be
 opened in Chrome DevTools performance panel.
 
-```python sync title=example_5a1282084821fd9127ef5ca54bdda63cdff46564f3cb20e347317dee260d33b3.py
-browser.start_tracing(page, path="trace.json")
-page.goto("https://www.google.com")
-browser.stop_tracing()
-
+```ruby
+browser.start_tracing(page: page, path: "trace.json")
+begin
+  page.goto("https://www.google.com")
+ensure
+  browser.stop_tracing
+end
 ```
 
 
