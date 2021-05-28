@@ -1,6 +1,11 @@
 name: RSpec
 
-on: [pull_request]
+on:
+  pull_request:
+    paths-ignore:
+      - development/generate_api/example_codes.rb
+      - development/unimplemented_examples.md
+      - 'documentation/**'
 
 jobs:
   unit_test:
