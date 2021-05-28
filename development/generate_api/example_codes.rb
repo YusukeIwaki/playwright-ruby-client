@@ -42,6 +42,27 @@ module ExampleCodes
     end
   end
 
+  # BrowserType
+  def example_554dfa8c71a3e87116c6f226d58cdb57d7993dd5df94e22c8fc74c0f83ef7b50(playwright:)
+    chromium = playwright.chromium
+    chromium.launch do |browser|
+      page = browser.new_page
+      page.goto('https://example.com/')
+
+      # other actions
+
+    end
+  end
+
+  # BrowserType#launch
+  def example_90d6ec37772ce92e29e8942ec516d4859264d02aa9b8b8e6f3a773318f567f90(playwright:)
+    browser = playwright.chromium.launch( # or "firefox" or "webkit".
+      ignoreDefaultArgs: ["--mute-audio"]
+    )
+
+    browser.close
+  end
+
   # Playwright
   def example_efc99085566bf177ec87b1bd3bb30d75b6053ec9b579a8ac8bb9f22e5942289a
     require 'playwright'

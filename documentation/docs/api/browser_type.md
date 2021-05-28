@@ -7,20 +7,15 @@ sidebar_position: 10
 BrowserType provides methods to launch a specific browser instance or connect to an existing one. The following is a
 typical example of using Playwright to drive automation:
 
-```python sync title=example_554dfa8c71a3e87116c6f226d58cdb57d7993dd5df94e22c8fc74c0f83ef7b50.py
-from playwright.sync_api import sync_playwright
+```ruby
+chromium = playwright.chromium
+chromium.launch do |browser|
+  page = browser.new_page
+  page.goto('https://example.com/')
 
-def run(playwright):
-    chromium = playwright.chromium
-    browser = chromium.launch()
-    page = browser.new_page()
-    page.goto("https://example.com")
-    # other actions...
-    browser.close()
+  # other actions
 
-with sync_playwright() as playwright:
-    run(playwright)
-
+end
 ```
 
 
@@ -78,11 +73,12 @@ Returns the browser instance.
 
 You can use `ignoreDefaultArgs` to filter out `--mute-audio` from default arguments:
 
-```python sync title=example_90d6ec37772ce92e29e8942ec516d4859264d02aa9b8b8e6f3a773318f567f90.py
+```ruby
 browser = playwright.chromium.launch( # or "firefox" or "webkit".
-    ignore_default_args=["--mute-audio"]
+  ignoreDefaultArgs: ["--mute-audio"]
 )
 
+browser.close
 ```
 
 > **Chromium-only** Playwright can also be used to control the Google Chrome or Microsoft Edge browsers, but it works
