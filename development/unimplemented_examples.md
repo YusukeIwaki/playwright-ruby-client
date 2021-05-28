@@ -1062,33 +1062,6 @@ page = event_info.value
 
 ```
 
-### example_554dfa8c71a3e87116c6f226d58cdb57d7993dd5df94e22c8fc74c0f83ef7b50
-
-```
-from playwright.sync_api import sync_playwright
-
-def run(playwright):
-    chromium = playwright.chromium
-    browser = chromium.launch()
-    page = browser.new_page()
-    page.goto("https://example.com")
-    # other actions...
-    browser.close()
-
-with sync_playwright() as playwright:
-    run(playwright)
-
-```
-
-### example_90d6ec37772ce92e29e8942ec516d4859264d02aa9b8b8e6f3a773318f567f90
-
-```
-browser = playwright.chromium.launch( # or "firefox" or "webkit".
-    ignore_default_args=["--mute-audio"]
-)
-
-```
-
 ### example_b375e389cd6685ec49d1ef57f3186da60ef682785c646fe8db351b6f39b1a34c
 
 ```
