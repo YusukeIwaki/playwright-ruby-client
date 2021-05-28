@@ -14,15 +14,16 @@ context.
 Playwright allows creation of "incognito" browser contexts with `browser.newContext()` method. "Incognito" browser
 contexts don't write any browsing data to disk.
 
-```python sync title=example_b9d02375c8dbbd86bc9ee14a9333ff363525bbec88d23ff8d8edbfda67301ad2.py
+```ruby
 # create a new incognito browser context
-context = browser.new_context()
+context = browser.new_context
+
 # create a new page inside context.
-page = context.new_page()
+page = context.new_page
 page.goto("https://example.com")
+
 # dispose context once it is no longer needed.
 context.close()
-
 ```
 
 
@@ -36,9 +37,8 @@ def add_cookies(cookies)
 Adds cookies into this browser context. All pages within this context will have these cookies installed. Cookies can be
 obtained via [BrowserContext#cookies](./browser_context#cookies).
 
-```python sync title=example_9a397455c0681f67226d5bcb8e14922d2a098e184daa133dc191b17bbf5c603e.py
+```ruby
 browser_context.add_cookies([cookie_object1, cookie_object2])
-
 ```
 
 
@@ -59,10 +59,9 @@ the JavaScript environment, e.g. to seed `Math.random`.
 
 An example of overriding `Math.random` before the page loads:
 
-```python sync title=example_16af9114b96dcc9b341808b8a5e2eb4bb1fa9541858e8d8432a33a979867ccc8.py
+```ruby
 # in your playwright script, assuming the preload.js file is in same directory.
-browser_context.add_init_script(path="preload.js")
-
+browser_context.add_init_script(path: "preload.js")
 ```
 
 > NOTE: The order of evaluation of multiple scripts installed via [BrowserContext#add_init_script](./browser_context#add_init_script) and
@@ -92,12 +91,13 @@ def clear_permissions
 
 Clears all permission overrides for the browser context.
 
-```python sync title=example_de61e349d06a98a38ba9bfccc5708125cd263b7d3a31b9a837eda3db0baac288.py
-context = browser.new_context()
+```ruby
+context = browser.new_context
 context.grant_permissions(["clipboard-read"])
-# do stuff ..
-context.clear_permissions()
 
+# do stuff ..
+
+context.clear_permissions
 ```
 
 
@@ -138,46 +138,44 @@ See [Page#expose_binding](./page#expose_binding) for page-only version.
 
 An example of exposing page URL to all frames in all pages in the context:
 
-```python sync title=example_81b90f669e98413d55dfbd74319b8b505b137187a593ed03c46b56125a286201.py
-from playwright.sync_api import sync_playwright
+```ruby
+browser_context.expose_binding("pageURL", ->(source) { source[:page].url })
+page = browser_context.new_page
 
-def run(playwright):
-    webkit = playwright.webkit
-    browser = webkit.launch(headless=false)
-    context = browser.new_context()
-    context.expose_binding("pageURL", lambda source: source["page"].url)
-    page = context.new_page()
-    page.set_content("""
-    <script>
-      async function onClick() {
-        document.querySelector('div').textContent = await window.pageURL();
-      }
-    </script>
-    <button onclick="onClick()">Click me</button>
-    <div></div>
-    """)
-    page.click("button")
+page.content = <<~HTML
+<script>
+  async function onClick() {
+    document.querySelector('div').textContent = await window.pageURL();
+  }
+</script>
+<button onclick="onClick()">Click me</button>
+<div></div>
+HTML
 
-with sync_playwright() as playwright:
-    run(playwright)
-
+page.click("button")
 ```
 
 An example of passing an element handle:
 
-```python sync title=example_93e847f70b01456eec429a1ebfaa6b8f5334f4c227fd73e62dd6a7facb48dbbd.py
-def print(source, element):
-    print(element.text_content())
+```ruby
+def print_text(source, element)
+  element.text_content
+end
 
-context.expose_binding("clicked", print, handle=true)
-page.set_content("""
-  <script>
-    document.addEventListener('click', event => window.clicked(event.target));
-  </script>
-  <div>Click me</div>
-  <div>Or click me</div>
-""")
+browser_context.expose_binding("clicked", method(:print_text), handle: true)
+page = browser_context.new_page
 
+page.content = <<~HTML
+<script>
+  document.addEventListener('click', async (event) => {
+    alert(await window.clicked(event.target));
+  })
+</script>
+<div>Click me</div>
+<div>Or click me</div>
+HTML
+
+page.click('div')
 ```
 
 
@@ -197,37 +195,25 @@ See [Page#expose_function](./page#expose_function) for page-only version.
 
 An example of adding an `md5` function to all pages in the context:
 
-```python sync title=example_ec3ef36671a002a6e12799fc5321ff60647c20c3f42fbd712d06e1c58cef75f5.py
-import hashlib
-from playwright.sync_api import sync_playwright
+```ruby
+require 'digest'
 
-def sha1(text):
-    m = hashlib.sha1()
-    m.update(bytes(text, "utf8"))
-    return m.hexdigest()
+def sha256(text)
+  Digest::SHA256.hexdigest(text)
+end
 
-
-def run(playwright):
-    webkit = playwright.webkit
-    browser = webkit.launch(headless=False)
-    context = browser.new_context()
-    context.expose_function("sha1", sha1)
-    page = context.new_page()
-    page.expose_function("sha1", sha1)
-    page.set_content("""
-        <script>
-          async function onClick() {
-            document.querySelector('div').textContent = await window.sha1('PLAYWRIGHT');
-          }
-        </script>
-        <button onclick="onClick()">Click me</button>
-        <div></div>
-    """)
-    page.click("button")
-
-with sync_playwright() as playwright:
-    run(playwright)
-
+browser_context.expose_function("sha256", method(:sha256))
+page = browser_context.new_page()
+page.content = <<~HTML
+<script>
+  async function onClick() {
+    document.querySelector('div').textContent = await window.sha256('PLAYWRIGHT');
+  }
+</script>
+<button onclick="onClick()">Click me</button>
+<div></div>
+HTML
+page.click("button")
 ```
 
 
@@ -268,39 +254,35 @@ is enabled, every request matching the url pattern will stall unless it's contin
 
 An example of a naive handler that aborts all image requests:
 
-```python sync title=example_8bee851cbea1ae0c60fba8361af41cc837666490d20c25552a32f79c4e044721.py
-context = browser.new_context()
-page = context.new_page()
-context.route("**/*.{png,jpg,jpeg}", lambda route: route.abort())
+```ruby
+context = browser.new_context
+page = context.new_page
+context.route("**/*.{png,jpg,jpeg}", ->(route, request) { route.abort })
 page.goto("https://example.com")
-browser.close()
-
 ```
 
 or the same snippet using a regex pattern instead:
 
-```python sync title=example_aa8a83c2ddd0d9a327cfce8528c61f52cb5d6ec0f0258e03d73fad5481f15360.py
-context = browser.new_context()
-page = context.new_page()
-context.route(re.compile(r"(\.png$)|(\.jpg$)"), lambda route: route.abort())
-page = await context.new_page()
-page = context.new_page()
+```ruby
+context = browser.new_context
+page = context.new_page
+context.route(/\.(png|jpg)$/, ->(route, request) { route.abort })
 page.goto("https://example.com")
-browser.close()
-
 ```
 
 It is possible to examine the request to decide the route action. For example, mocking all requests that contain some
 post data, and leaving all other requests as is:
 
-```python sync title=example_ac637e238bebf237fca2ef4fd8a2ef81644eefcf862b305de633c2fabc3b4721.py
-def handle_route(route):
-  if ("my-string" in route.request.post_data)
-    route.fulfill(body="mocked-data")
+```ruby
+def handle_route(route, request)
+  if request.post_data["my-string"]
+    mocked_data = request.post_data.merge({ "my-string" => 'mocked-data'})
+    route.fulfill(postData: mocked_data)
   else
-    route.continue_()
-context.route("/api/**", handle_route)
-
+    route.continue
+  end
+end
+context.route("/api/**", method(:handle_route))
 ```
 
 Page routes (set up with [Page#route](./page#route)) take precedence over browser context routes when request matches both
@@ -315,6 +297,7 @@ To remove a route with its handler you can use [BrowserContext#unroute](./browse
 ```
 def set_default_navigation_timeout(timeout)
 ```
+alias: `default_navigation_timeout=`
 
 This setting will change the default maximum navigation time for the following methods and related shortcuts:
 - [Page#go_back](./page#go_back)
@@ -332,6 +315,7 @@ This setting will change the default maximum navigation time for the following m
 ```
 def set_default_timeout(timeout)
 ```
+alias: `default_timeout=`
 
 This setting will change the default maximum time for all the methods accepting `timeout` option.
 
@@ -343,6 +327,7 @@ This setting will change the default maximum time for all the methods accepting 
 ```
 def set_extra_http_headers(headers)
 ```
+alias: `extra_http_headers=`
 
 The extra HTTP headers will be sent with every request initiated by any page in the context. These headers are merged
 with page-specific extra HTTP headers set with [Page#set_extra_http_headers](./page#set_extra_http_headers). If page overrides a particular
@@ -355,12 +340,12 @@ header, page-specific header value will be used instead of the browser context h
 ```
 def set_geolocation(geolocation)
 ```
+alias: `geolocation=`
 
 Sets the context's geolocation. Passing `null` or `undefined` emulates position unavailable.
 
-```python sync title=example_12142bb78171e322de3049ac91a332da192d99461076da67614b9520b7cd0c6f.py
-browser_context.set_geolocation({"latitude": 59.95, "longitude": 30.31667})
-
+```ruby
+browser_context.geolocation = { latitude: 59.95, longitude: 30.31667 }
 ```
 
 > NOTE: Consider using [BrowserContext#grant_permissions](./browser_context#grant_permissions) to grant permissions for the browser context pages to
@@ -371,6 +356,7 @@ read its geolocation.
 ```
 def set_offline(offline)
 ```
+alias: `offline=`
 
 
 
@@ -392,11 +378,10 @@ def expect_event(event, predicate: nil, timeout: nil, &block)
 Waits for event to fire and passes its value into the predicate function. Returns when the predicate returns truthy
 value. Will throw an error if the context closes before the event is fired. Returns the event data value.
 
-```python sync title=example_80ebd2eab628fbcf7b668dcf8abf7f058ec345ba2b67e6cc9330c1710c732240.py
-with context.expect_event("page") as event_info:
-    page.click("button")
-page = event_info.value
-
+```ruby
+new_page = browser_context.expect_event('page') do
+  page.click('button')
+end
 ```
 
 

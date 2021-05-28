@@ -81,6 +81,7 @@ See [Page#evaluate_handle](./page#evaluate_handle) for more details.
 ```
 def get_properties
 ```
+alias: `properties`
 
 The method returns a map with **own property names** as keys and JSHandle instances for the property values.
 

@@ -270,6 +270,7 @@ Calls [focus](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus
 ```
 def get_attribute(name)
 ```
+alias: `[]`
 
 Returns element attribute value.
 
@@ -500,6 +501,7 @@ content.
 ```
 def set_input_files(files, noWaitAfter: nil, timeout: nil)
 ```
+alias: `input_files=`
 
 This method expects `elementHandle` to point to an
 [input element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input).

@@ -104,6 +104,9 @@ class ApidocRenderer
           data << '```'
           data << "def #{method_name_and_args}"
           data << '```'
+          if @method_with_doc.method_alias
+            data << "alias: `#{@method_with_doc.method_alias}`"
+          end
           data << ''
           comment = @comment_converter.convert(@method_with_doc.method_comment)
           data << @example_code_converter.convert(comment)

@@ -187,8 +187,8 @@ class PlaywrightApiRenderer
         data << "def #{method_name_and_args}"
         data << "  #{body}"
         data << 'end'
-        method_alias_lines.each do |line|
-          data << line
+        if @method_with_doc.method_alias
+          data << "alias_method :#{@method_with_doc.method_alias}, :#{@method_with_doc.method_name}"
         end
       end
     end

@@ -621,6 +621,7 @@ frame.select_option("select#colors", value=["red", "green", "blue"])
 ```
 def set_content(html, timeout: nil, waitUntil: nil)
 ```
+alias: `content=`
 
 
 
