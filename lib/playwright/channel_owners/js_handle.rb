@@ -14,19 +14,11 @@ module Playwright
     end
 
     def evaluate(pageFunction, arg: nil)
-      if JavaScript.function?(pageFunction)
-        JavaScript::Function.new(pageFunction, arg).evaluate(@channel)
-      else
-        JavaScript::Expression.new(pageFunction).evaluate(@channel)
-      end
+      JavaScript::Expression.new(pageFunction, arg).evaluate(@channel)
     end
 
     def evaluate_handle(pageFunction, arg: nil)
-      if JavaScript.function?(pageFunction)
-        JavaScript::Function.new(pageFunction, arg).evaluate_handle(@channel)
-      else
-        JavaScript::Expression.new(pageFunction).evaluate_handle(@channel)
-      end
+      JavaScript::Expression.new(pageFunction, arg).evaluate_handle(@channel)
     end
 
     def get_properties

@@ -132,19 +132,11 @@ module Playwright
     end
 
     def evaluate(pageFunction, arg: nil)
-      if JavaScript.function?(pageFunction)
-        JavaScript::Function.new(pageFunction, arg).evaluate(@channel)
-      else
-        JavaScript::Expression.new(pageFunction).evaluate(@channel)
-      end
+      JavaScript::Expression.new(pageFunction, arg).evaluate(@channel)
     end
 
     def evaluate_handle(pageFunction, arg: nil)
-      if JavaScript.function?(pageFunction)
-        JavaScript::Function.new(pageFunction, arg).evaluate_handle(@channel)
-      else
-        JavaScript::Expression.new(pageFunction).evaluate_handle(@channel)
-      end
+      JavaScript::Expression.new(pageFunction, arg).evaluate_handle(@channel)
     end
 
     def query_selector(selector)
@@ -208,19 +200,11 @@ module Playwright
     end
 
     def eval_on_selector(selector, pageFunction, arg: nil)
-      if JavaScript.function?(pageFunction)
-        JavaScript::Function.new(pageFunction, arg).eval_on_selector(@channel, selector)
-      else
-        JavaScript::Expression.new(pageFunction).eval_on_selector(@channel, selector)
-      end
+      JavaScript::Expression.new(pageFunction, arg).eval_on_selector(@channel, selector)
     end
 
     def eval_on_selector_all(selector, pageFunction, arg: nil)
-      if JavaScript.function?(pageFunction)
-        JavaScript::Function.new(pageFunction, arg).eval_on_selector_all(@channel, selector)
-      else
-        JavaScript::Expression.new(pageFunction).eval_on_selector_all(@channel, selector)
-      end
+      JavaScript::Expression.new(pageFunction, arg).eval_on_selector_all(@channel, selector)
     end
 
     def content
@@ -531,14 +515,8 @@ module Playwright
         raise ArgumentError.new("Unknown polling option: #{polling}")
       end
 
-      function_or_expression =
-        if JavaScript.function?(pageFunction)
-          JavaScript::Function.new(pageFunction, arg)
-        else
-          JavaScript::Expression.new(pageFunction)
-        end
-
-      function_or_expression.wait_for_function(@channel, polling: polling, timeout: timeout)
+      expression = JavaScript::Expression.new(pageFunction, arg)
+      expression.wait_for_function(@channel, polling: polling, timeout: timeout)
     end
 
     def title

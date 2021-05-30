@@ -1,9 +1,9 @@
 module Playwright
   module JavaScript
     class Expression
-      def initialize(expression)
+      def initialize(expression, arg)
         @expression = expression
-        @serialized_arg = ValueSerializer.new(nil).serialize
+        @serialized_arg = ValueSerializer.new(arg).serialize
       end
 
       def evaluate(channel)
