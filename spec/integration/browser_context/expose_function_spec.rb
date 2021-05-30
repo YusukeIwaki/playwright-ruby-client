@@ -62,7 +62,7 @@ RSpec.describe 'expose function' do
       args.clear
       page.add_init_script(script: 'window["woof"]("page")')
       page.reload
-      expect(args).to eq(['context', 'page'])
+      expect(args).to contain_exactly('context', 'page')
     end
   end
 

@@ -4,6 +4,10 @@ module Playwright
       @initializer['name']
     end
 
+    def call_async(callback)
+      Thread.new(callback) { call(callback) }
+    end
+
     # @param callback [Proc]
     def call(callback)
       frame = ChannelOwners::Frame.from(@initializer['frame'])
@@ -15,20 +19,22 @@ module Playwright
         page: PlaywrightApi.wrap(frame.page),
         frame: PlaywrightApi.wrap(frame),
       }
-      result =
+      args =
         if @initializer['handle']
           handle = ChannelOwners::ElementHandle.from(@initializer['handle'])
-          callback.call(source, handle)
+          [handle]
         else
-          args = @initializer['args'].map do |arg|
+          @initializer['args'].map do |arg|
             JavaScript::ValueParser.new(arg).parse
           end
-          callback.call(source, *args)
         end
 
-      @channel.send_message_to_server('resolve', result: JavaScript::ValueSerializer.new(result).serialize)
-    rescue => err
-      @channel.send_message_to_server('reject', error: { error: { message: err.message, name: 'Error' }})
+      begin
+        result = callback.call(source, *args)
+        @channel.send_message_to_server('resolve', result: JavaScript::ValueSerializer.new(result).serialize)
+      rescue => err
+        @channel.send_message_to_server('reject', error: { error: { message: err.message, name: 'Error' }})
+      end
     end
   end
 end

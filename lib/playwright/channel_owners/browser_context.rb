@@ -69,9 +69,7 @@ module Playwright
     private def on_binding(binding_call)
       func = @bindings[binding_call.name]
       if func
-        Concurrent::Promises.future(func, binding_call) do |_func, _binding_call|
-          _binding_call.call(_func)
-        end
+        binding_call.call_async(func)
       end
     end
 
