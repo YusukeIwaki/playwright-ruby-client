@@ -10,7 +10,6 @@ module Playwright
         value = channel.send_message_to_server(
           'evaluateExpression',
           expression: @definition,
-          isFunction: true,
           arg: @serialized_arg,
         )
         ValueParser.new(value).parse
@@ -20,7 +19,6 @@ module Playwright
         resp = channel.send_message_to_server(
           'evaluateExpressionHandle',
           expression: @definition,
-          isFunction: true,
           arg: @serialized_arg,
         )
         ::Playwright::ChannelOwner.from(resp)
@@ -31,7 +29,6 @@ module Playwright
           'evalOnSelector',
           selector: selector,
           expression: @definition,
-          isFunction: true,
           arg: @serialized_arg,
         )
         ValueParser.new(value).parse
@@ -42,7 +39,6 @@ module Playwright
           'evalOnSelectorAll',
           selector: selector,
           expression: @definition,
-          isFunction: true,
           arg: @serialized_arg,
         )
         ValueParser.new(value).parse
@@ -51,7 +47,6 @@ module Playwright
       def wait_for_function(channel, polling:, timeout:)
         params = {
           expression: @definition,
-          isFunction: true,
           arg: @serialized_arg,
           polling: polling,
           timeout: timeout,
