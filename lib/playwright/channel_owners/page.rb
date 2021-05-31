@@ -713,7 +713,6 @@ module Playwright
       end
 
       wait_helper.wait_for_event(self, event, predicate: predicate)
-
       block&.call
 
       wait_helper.promise.value!
@@ -743,7 +742,7 @@ module Playwright
       expect_event(Events::Page::Popup, predicate: predicate, timeout: timeout, &block)
     end
 
-    def expect_request(urlOrPredicate, timeout: nil)
+    def expect_request(urlOrPredicate, timeout: nil, &block)
       predicate =
         case urlOrPredicate
         when String, Regexp
@@ -755,10 +754,10 @@ module Playwright
           -> (_) { true }
         end
 
-      expect_event(Events::Page::Request, predicate: predicate, timeout: timeout)
+      expect_event(Events::Page::Request, predicate: predicate, timeout: timeout, &block)
     end
 
-    def expect_response(urlOrPredicate, timeout: nil)
+    def expect_response(urlOrPredicate, timeout: nil, &block)
       predicate =
         case urlOrPredicate
         when String, Regexp
@@ -770,7 +769,7 @@ module Playwright
           -> (_) { true }
         end
 
-      expect_event(Events::Page::Response, predicate: predicate, timeout: timeout)
+      expect_event(Events::Page::Response, predicate: predicate, timeout: timeout, &block)
     end
 
     # called from Frame with send(:timeout_settings)
