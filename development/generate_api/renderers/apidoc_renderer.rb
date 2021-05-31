@@ -282,6 +282,8 @@ class ApidocRenderer
       convertion = {
         "If predicate is provided, it passes [Page](./page)\nvalue into the `predicate` function and waits for `predicate(event)` to return a truthy value." \
           => "If predicate is provided, it passes [Page](./page) value into the `predicate` and waits for `predicate.call(page)` to return a truthy value.",
+
+        # https://github.com/microsoft/playwright-python/issues/727
         "An example of adding an `md5` function to all pages in the context" \
           => "An example of adding an `sha256` function to all pages in the context"
       }
