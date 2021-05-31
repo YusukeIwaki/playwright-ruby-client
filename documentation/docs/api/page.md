@@ -1365,7 +1365,7 @@ popup event is fired.
 ## expect_request
 
 ```
-def expect_request(urlOrPredicate, timeout: nil)
+def expect_request(urlOrPredicate, timeout: nil, &block)
 ```
 
 Waits for the matching request and returns it.  See [waiting for event](https://playwright.dev/python/docs/events) for more details
@@ -1388,7 +1388,7 @@ second_request = second.value
 ## expect_response
 
 ```
-def expect_response(urlOrPredicate, timeout: nil)
+def expect_response(urlOrPredicate, timeout: nil, &block)
 ```
 
 Returns the matched response. See [waiting for event](https://playwright.dev/python/docs/events) for more details about events.
