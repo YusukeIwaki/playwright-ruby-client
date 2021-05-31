@@ -226,24 +226,6 @@ class PlaywrightApiRenderer
         "#{@method_with_doc.method_name}(#{renderer.render_for_method_call})"
       end
     end
-
-    private def method_alias_lines
-      Enumerator.new do |data|
-        if @method_with_doc.method_name.start_with?('set_')
-          if !@method_with_doc.has_block? && @method_with_doc.method_args.setter_parameter?
-            data << "alias_method :#{@method_with_doc.method_name[4..-1]}=, :#{@method_with_doc.method_name}"
-          end
-        end
-
-        if @method_with_doc.method_name == 'get_attribute' && @method_with_doc.method_args.single?
-          data << "alias_method :[], :get_attribute"
-        elsif @method_with_doc.method_name.start_with?('get_')
-          if !@method_with_doc.has_block? && @method_with_doc.method_args.empty?
-            data << "alias_method :#{@method_with_doc.method_name[4..-1]}, :#{@method_with_doc.method_name}"
-          end
-        end
-      end
-    end
   end
 
   class MethodWithoutDocRenderer
