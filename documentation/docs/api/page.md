@@ -1023,7 +1023,7 @@ This setting will change the default maximum navigation time for the following m
 - [Page#goto](./page#goto)
 - [Page#reload](./page#reload)
 - [Page#set_content](./page#set_content)
-- [`method: Page.waitForNavigation`]
+- [Page#expect_navigation](./page#expect_navigation)
 - [Page#wait_for_url](./page#wait_for_url)
 
 > NOTE: [Page#set_default_navigation_timeout](./page#set_default_navigation_timeout) takes priority over [Page#set_default_timeout](./page#set_default_timeout),

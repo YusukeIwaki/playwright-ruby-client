@@ -11,7 +11,7 @@ BrowserContexts provide a way to operate multiple independent browser sessions.
 If a page opens another page, e.g. with a `window.open` call, the popup will belong to the parent page's browser
 context.
 
-Playwright allows creation of "incognito" browser contexts with `browser.newContext()` method. "Incognito" browser
+Playwright allows creation of "incognito" browser contexts with [Browser#new_context](./browser#new_context) method. "Incognito" browser
 contexts don't write any browsing data to disk.
 
 ```ruby
@@ -193,7 +193,7 @@ If the `callback` returns a [Promise](https://developer.mozilla.org/en-US/docs/W
 
 See [Page#expose_function](./page#expose_function) for page-only version.
 
-An example of adding an `md5` function to all pages in the context:
+An example of adding an `sha256` function to all pages in the context:
 
 ```ruby
 require 'digest'
@@ -305,7 +305,7 @@ This setting will change the default maximum navigation time for the following m
 - [Page#goto](./page#goto)
 - [Page#reload](./page#reload)
 - [Page#set_content](./page#set_content)
-- [`method: Page.waitForNavigation`]
+- [Page#expect_navigation](./page#expect_navigation)
 
 > NOTE: [Page#set_default_navigation_timeout](./page#set_default_navigation_timeout) and [Page#set_default_timeout](./page#set_default_timeout) take priority over
 [BrowserContext#set_default_navigation_timeout](./browser_context#set_default_navigation_timeout).
@@ -392,8 +392,7 @@ end
 def expect_page(predicate: nil, timeout: nil)
 ```
 
-Performs action and waits for a new [Page](./page) to be created in the context. If predicate is provided, it passes [Page](./page)
-value into the `predicate` function and waits for `predicate(event)` to return a truthy value. Will throw an error if
+Performs action and waits for a new [Page](./page) to be created in the context. If predicate is provided, it passes [Page](./page) value into the `predicate` and waits for `predicate.call(page)` to return a truthy value. Will throw an error if
 the context closes before new [Page](./page) is created.
 
 ## tracing

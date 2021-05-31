@@ -212,6 +212,8 @@ class ApidocRenderer
         convert_event_link
         convert_js_class_link
         convert_local_md_link
+        convert_misc_static_link
+        convert_content_for_ruby
       ].inject(content) do |current, method_name|
         send(method_name, current)
       end
@@ -257,6 +259,36 @@ class ApidocRenderer
 
     private def convert_local_md_link(content)
       content.gsub(/\[(.+)\]\(\.\/(.+)\.md(#.*)?\)/) { "[#{$1}](https://playwright.dev/python/docs/#{$2})"}
+    end
+
+    private def convert_misc_static_link(content)
+      # Some links are not property documented yet in api.json.
+      # Convert staticaly.
+
+      convertion = {
+        "`browser.newContext()`" => "[Browser#new_context](./browser#new_context)",
+        "[`method: Page.waitForNavigation`]" => "[Page#expect_navigation](./page#expect_navigation)",
+      }
+      convertion.inject(content) do |current, entry|
+        str_from, str_to = entry
+        current.gsub(str_from, str_to)
+      end
+    end
+
+    private def convert_content_for_ruby(content)
+      # Some contents are not optimized for Ruby.
+      # Convert them staticaly
+
+      convertion = {
+        "If predicate is provided, it passes [Page](./page)\nvalue into the `predicate` function and waits for `predicate(event)` to return a truthy value." \
+          => "If predicate is provided, it passes [Page](./page) value into the `predicate` and waits for `predicate.call(page)` to return a truthy value.",
+        "An example of adding an `md5` function to all pages in the context" \
+          => "An example of adding an `sha256` function to all pages in the context"
+      }
+      convertion.inject(content) do |current, entry|
+        str_from, str_to = entry
+        current.gsub(str_from, str_to)
+      end
     end
   end
 
