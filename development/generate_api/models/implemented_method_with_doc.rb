@@ -1,4 +1,8 @@
+require_relative './method_aliasing'
+
 class ImplementedMethodWithDoc
+  include MethodAliasing
+
   # @param doc [Doc]
   # @param method [Method]
   # @param inflector [Dry::Inflector]

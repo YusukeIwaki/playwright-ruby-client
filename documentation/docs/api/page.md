@@ -1006,6 +1006,7 @@ Shortcut for main frame's [Frame#select_option](./frame#select_option).
 ```
 def set_content(html, timeout: nil, waitUntil: nil)
 ```
+alias: `content=`
 
 
 
@@ -1014,6 +1015,7 @@ def set_content(html, timeout: nil, waitUntil: nil)
 ```
 def set_default_navigation_timeout(timeout)
 ```
+alias: `default_navigation_timeout=`
 
 This setting will change the default maximum navigation time for the following methods and related shortcuts:
 - [Page#go_back](./page#go_back)
@@ -1021,7 +1023,7 @@ This setting will change the default maximum navigation time for the following m
 - [Page#goto](./page#goto)
 - [Page#reload](./page#reload)
 - [Page#set_content](./page#set_content)
-- [`method: Page.waitForNavigation`]
+- [Page#expect_navigation](./page#expect_navigation)
 - [Page#wait_for_url](./page#wait_for_url)
 
 > NOTE: [Page#set_default_navigation_timeout](./page#set_default_navigation_timeout) takes priority over [Page#set_default_timeout](./page#set_default_timeout),
@@ -1032,6 +1034,7 @@ This setting will change the default maximum navigation time for the following m
 ```
 def set_default_timeout(timeout)
 ```
+alias: `default_timeout=`
 
 This setting will change the default maximum time for all the methods accepting `timeout` option.
 
@@ -1042,6 +1045,7 @@ This setting will change the default maximum time for all the methods accepting 
 ```
 def set_extra_http_headers(headers)
 ```
+alias: `extra_http_headers=`
 
 The extra HTTP headers will be sent with every request the page initiates.
 
@@ -1064,6 +1068,7 @@ are resolved relative to the the current working directory. For empty array, cle
 ```
 def set_viewport_size(viewportSize)
 ```
+alias: `viewport_size=`
 
 In the case of multiple pages in a single browser, each page can have its own viewport size. However,
 [Browser#new_context](./browser#new_context) allows to set viewport size (and more) for all pages in the context at once.

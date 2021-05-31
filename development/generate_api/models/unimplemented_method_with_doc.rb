@@ -1,4 +1,8 @@
+require_relative './method_aliasing'
+
 class UnimplementedMethodWithDoc
+  include MethodAliasing
+
   # @param doc [Doc]
   # @param inflector [Dry::Inflector]
   def initialize(doc, inflector)

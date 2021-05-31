@@ -45,6 +45,7 @@ Returns page this file chooser belongs to.
 ```
 def set_files(files, noWaitAfter: nil, timeout: nil)
 ```
+alias: `files=`
 
 Sets the value of the file input this chooser is associated with. If some of the `filePaths` are relative paths, then
 they are resolved relative to the the current working directory. For empty array, clears the selected files.
