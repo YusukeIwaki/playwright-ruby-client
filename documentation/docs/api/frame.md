@@ -308,9 +308,8 @@ a_window_handle # handle for the window object.
 
 A string can also be passed in instead of a function.
 
-```python sync title=example_9daa37cfd3d747c9360d9544f64786bf49d291a6887b0efccc813215b62ae4c6.py
+```ruby
 a_handle = page.evaluate_handle("document") # handle for the "document"
-
 ```
 
 [JSHandle](./js_handle) instances can be passed as an argument to the [Frame#evaluate_handle](./frame#evaluate_handle):
@@ -318,8 +317,8 @@ a_handle = page.evaluate_handle("document") # handle for the "document"
 ```ruby
 body_handle = page.evaluate_handle("document.body")
 result_handle = page.evaluate_handle("body => body.innerHTML", arg: body_handle)
-puts result_handle.json_value()
-result_handle.dispose()
+puts result_handle.json_value
+result_handle.dispose
 ```
 
 
