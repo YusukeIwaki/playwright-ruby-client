@@ -120,16 +120,16 @@ module ExampleCodes
   def example_ec3ef36671a002a6e12799fc5321ff60647c20c3f42fbd712d06e1c58cef75f5(browser_context:)
     require 'digest'
 
-    def sha256(text)
-      Digest::SHA256.hexdigest(text)
+    def md5(text)
+      Digest::MD5.hexdigest(text)
     end
 
-    browser_context.expose_function("sha256", method(:sha256))
+    browser_context.expose_function("md5", method(:md5))
     page = browser_context.new_page()
     page.content = <<~HTML
     <script>
       async function onClick() {
-        document.querySelector('div').textContent = await window.sha256('PLAYWRIGHT');
+        document.querySelector('div').textContent = await window.md5('PLAYWRIGHT');
       }
     </script>
     <button onclick="onClick()">Click me</button>
