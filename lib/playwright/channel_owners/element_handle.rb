@@ -301,19 +301,11 @@ module Playwright
       end
 
       def eval_on_selector(selector, pageFunction, arg: nil)
-        if JavaScript.function?(pageFunction)
-          JavaScript::Function.new(pageFunction, arg).eval_on_selector(@channel, selector)
-        else
-          JavaScript::Expression.new(pageFunction).eval_on_selector(@channel, selector)
-        end
+        JavaScript::Expression.new(pageFunction, arg).eval_on_selector(@channel, selector)
       end
 
       def eval_on_selector_all(selector, pageFunction, arg: nil)
-        if JavaScript.function?(pageFunction)
-          JavaScript::Function.new(pageFunction, arg).eval_on_selector_all(@channel, selector)
-        else
-          JavaScript::Expression.new(pageFunction).eval_on_selector_all(@channel, selector)
-        end
+        JavaScript::Expression.new(pageFunction, arg).eval_on_selector_all(@channel, selector)
       end
 
       def wait_for_element_state(state, timeout: nil)

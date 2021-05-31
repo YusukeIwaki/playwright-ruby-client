@@ -30,6 +30,7 @@ module Playwright
       @frames << @main_frame
       @opener = ChannelOwners::Page.from_nullable(@initializer['opener'])
 
+      @channel.on('bindingCall', ->(params) { on_binding(ChannelOwners::BindingCall.from(params['binding'])) })
       @channel.once('close', ->(_) { on_close })
       @channel.on('console', ->(params) {
         console_message = ChannelOwners::ConsoleMessage.from(params['message'])
@@ -98,6 +99,14 @@ module Playwright
       if @routes.none? { |handler_entry| handler_entry.handle(wrapped_route, wrapped_request) }
         @browser_context.send(:on_route, route, request)
       end
+    end
+
+    private def on_binding(binding_call)
+      func = @bindings[binding_call.name]
+      if func
+        binding_call.call_async(func)
+      end
+      @browser_context.send(:on_binding, binding_call)
     end
 
     private def on_close
@@ -306,7 +315,7 @@ module Playwright
         timeout: timeout,
         waitUntil: waitUntil,
       }.compact
-      resp = @channel.send_message_to_server('reoad', params)
+      resp = @channel.send_message_to_server('reload', params)
       ChannelOwners::Response.from_nullable(resp)
     end
 

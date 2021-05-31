@@ -67,9 +67,9 @@ module Playwright
     end
 
     private def on_binding(binding_call)
-      func = @binding[binding_call.name]
+      func = @bindings[binding_call.name]
       if func
-        binding_call.call(func)
+        binding_call.call_async(func)
       end
     end
 

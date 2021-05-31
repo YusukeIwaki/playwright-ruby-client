@@ -1,16 +1,15 @@
 module Playwright
   module JavaScript
     class Expression
-      def initialize(expression)
+      def initialize(expression, arg)
         @expression = expression
-        @serialized_arg = ValueSerializer.new(nil).serialize
+        @serialized_arg = ValueSerializer.new(arg).serialize
       end
 
       def evaluate(channel)
         value = channel.send_message_to_server(
           'evaluateExpression',
           expression: @expression,
-          isFunction: false,
           arg: @serialized_arg,
         )
         ValueParser.new(value).parse
@@ -20,7 +19,6 @@ module Playwright
         resp = channel.send_message_to_server(
           'evaluateExpressionHandle',
           expression: @expression,
-          isFunction: false,
           arg: @serialized_arg,
         )
         ::Playwright::ChannelOwner.from(resp)
@@ -31,7 +29,6 @@ module Playwright
           'evalOnSelector',
           selector: selector,
           expression: @expression,
-          isFunction: false,
           arg: @serialized_arg,
         )
         ValueParser.new(value).parse
@@ -42,7 +39,6 @@ module Playwright
           'evalOnSelectorAll',
           selector: selector,
           expression: @expression,
-          isFunction: false,
           arg: @serialized_arg,
         )
         ValueParser.new(value).parse
@@ -51,7 +47,6 @@ module Playwright
       def wait_for_function(channel, polling:, timeout:)
         params = {
           expression: @expression,
-          isFunction: false,
           arg: @serialized_arg,
           polling: polling,
           timeout: timeout,
