@@ -263,7 +263,7 @@ class ApidocRenderer
 
     private def convert_misc_static_link(content)
       # Some links are not property documented yet in api.json.
-      # Convert staticaly.
+      # Convert statically.
 
       convertion = {
         "`browser.newContext()`" => "[Browser#new_context](./browser#new_context)",
@@ -277,7 +277,7 @@ class ApidocRenderer
 
     private def convert_content_for_ruby(content)
       # Some contents are not optimized for Ruby.
-      # Convert them staticaly
+      # Convert them statically
 
       convertion = {
         "If predicate is provided, it passes [Page](./page)\nvalue into the `predicate` function and waits for `predicate(event)` to return a truthy value." \
