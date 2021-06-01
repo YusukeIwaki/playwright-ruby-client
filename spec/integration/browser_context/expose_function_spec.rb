@@ -25,10 +25,7 @@ RSpec.describe 'expose function' do
       page.expose_function('mul', ->(a, b) { a * b })
       context.expose_function('sub', ->(a, b) { a - b })
       context.expose_binding('addHandle', ->(source, a, b) {
-        # Original implementation uses evaluateHandle, but ElementHandle cannot be parsed.
-        # (JS implementation is very special...)
-        # source[:frame].evaluate_handle('([a, b]) => a + b', arg: [a, b])
-        source[:frame].evaluate('([a, b]) => a + b', arg: [a, b])
+        source[:frame].evaluate_handle('([a, b]) => a + b', arg: [a, b])
       })
       result = page.evaluate('(async () => ({ mul: await mul(9, 4), add: await add(9, 4), sub: await sub(9, 4), addHandle: await addHandle(5, 6) }))()')
       expect(result).to eq({ 'mul' => 36, 'add' => 13, 'sub' => 5, 'addHandle' => 11 })

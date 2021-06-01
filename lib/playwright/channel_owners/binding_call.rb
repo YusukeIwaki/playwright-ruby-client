@@ -30,7 +30,7 @@ module Playwright
         end
 
       begin
-        result = callback.call(source, *args)
+        result = PlaywrightApi.unwrap(callback.call(source, *args))
         @channel.send_message_to_server('resolve', result: JavaScript::ValueSerializer.new(result).serialize)
       rescue => err
         @channel.send_message_to_server('reject', error: { error: { message: err.message, name: 'Error' }})

@@ -18,6 +18,17 @@ module Playwright
       end
     end
 
+    # Unwrap ChannelOwner / ApiImplementation.
+    # @note Intended for internal use only.
+    def self.unwrap(api)
+      case api
+      when PlaywrightApi
+        api.instance_variable_get(:@impl)
+      else
+        api
+      end
+    end
+
     class ChannelOwnerWrapper
       def initialize(impl)
         impl_class_name = impl.class.name
@@ -114,6 +125,8 @@ module Playwright
     private def wrap_impl(object)
       if object.is_a?(Array)
         object.map { |obj| wrap_impl(obj) }
+      elsif object.is_a?(Hash)
+        object.map { |key, obj| [key, wrap_impl(obj)] }.to_h
       else
         ::Playwright::PlaywrightApi.wrap(object)
       end
@@ -122,8 +135,10 @@ module Playwright
     private def unwrap_impl(object)
       if object.is_a?(Array)
         object.map { |obj| unwrap_impl(obj) }
+      elsif object.is_a?(Hash)
+        object.map { |key, obj| [key, unwrap_impl(obj)] }.to_h
       elsif object.is_a?(PlaywrightApi)
-        object.instance_variable_get(:@impl)
+        ::Playwright::PlaywrightApi.unwrap(object)
       else
         object
       end
