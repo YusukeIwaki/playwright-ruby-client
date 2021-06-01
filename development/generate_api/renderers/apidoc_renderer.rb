@@ -288,7 +288,10 @@ class ApidocRenderer
           => "If predicate is provided, it passes popup [Page](./page) value into the predicate function and waits for `predicate.call(page)` to return a truthy value. Will throw an error if the page is closed before the popup event is fired.",
 
         " waits for `predicate(fileChooser)` to return a truthy value" \
-          => " waits for `predicate.call(fileChooser)` to return a truthy value"
+          => " waits for `predicate.call(fileChooser)` to return a truthy value",
+
+        "The first argument of the `callback` function contains information about the caller: `{ browserContext: BrowserContext,\npage: Page, frame: Frame }`." \
+          => "The first argument of the `callback` function contains information about the caller: `{ browser_context: BrowserContext, page: Page, frame: Frame }`."
       }
       convertion.inject(content) do |current, entry|
         str_from, str_to = entry
