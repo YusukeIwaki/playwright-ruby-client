@@ -200,6 +200,106 @@ module ExampleCodes
     browser.close
   end
 
+  # ElementHandle
+  def example_5ba38bdc5d9e5ce7cfc9c8841eb0176efbb4690d18962066f9ee67f1e8b7b050(page:)
+    page.goto("https://example.com")
+    href_element = page.query_selector("a")
+    href_element.click
+    # ...
+  end
+
+  # ElementHandle#bounding_box
+  def example_8382aa7cfb42a9a17e348e2f738279f1bd9a038f1ea35cc3cb244cc64d768f93(page:, element_handle:)
+    box = element_handle.bounding_box
+    page.mouse.click(
+      box["x"] + box["width"] / 2,
+      box["y"] + box["height"] / 2,
+    )
+  end
+
+  # ElementHandle#dispatch_event
+  def example_3b86add6ce355082cd43f4ac0ba9e69c15960bbd7ca601d0618355fe53aa8902(element_handle:)
+    element_handle.dispatch_event("click")
+  end
+
+  # ElementHandle#dispatch_event
+  def example_6b70ea4cf0c7ae9c82cf0ed22ab0dbbb563e2d1419b35d04aa513cf91f0856f9(page:, element_handle:)
+    # note you can only create data_transfer in chromium and firefox
+    data_transfer = page.evaluate_handle("new DataTransfer()")
+    element_handle.dispatch_event("dragstart", eventInit: { dataTransfer: data_transfer })
+  end
+
+  # ElementHandle#eval_on_selector
+  def example_f6a83ec555fcf23877c11cf55f02a8c89a7fc11d3324859feda42e592e129f4f(page:)
+    tweet_handle = page.query_selector(".tweet")
+    tweet_handle.eval_on_selector(".like", "node => node.innerText") # => "100"
+    tweet_handle.eval_on_selector(".retweets", "node => node.innerText") # => "10"
+  end
+
+  # ElementHandle#eval_on_selector_all
+  def example_11b54bf5ec18a0d0ceee0868651bb41ab5cd3afcc6b20d5c44f90d835c8d6f81(page:)
+    feed_handle = page.query_selector(".feed")
+    feed_handle.eval_on_selector_all(".tweet", "nodes => nodes.map(n => n.innerText)") # => ["hello!", "hi!"]
+  end
+
+  # ElementHandle#select_option
+  def example_dc2ce38846b91d234483ed8b915b785ffbd9403213279465acd6605f314fe736(element_handle:)
+    # single selection matching the value
+    element_handle.select_option(value: "blue")
+    # single selection matching both the label
+    element_handle.select_option(label: "blue")
+    # multiple selection
+    element_handle.select_option(value: ["red", "green", "blue"])
+  end
+
+  # ElementHandle#select_option
+  def example_b4cdd4a1a4d0392c2d430e0fb5fc670df2d728b6907553650690a2d0377662e4(element_handle:)
+    # multiple selection for blue, red and second option
+    element_handle.select_option(value: "blue", index: 2, label: "red")
+  end
+
+  # ElementHandle#type
+  def example_2dc9720467640fd8bc581ed65159742e51ff91b209cb176fef8b95f14eaad54e(element_handle:)
+    element_handle.type("hello") # types instantly
+    element_handle.type("world", delay: 100) # types slower, like a user
+  end
+
+  # ElementHandle#type
+  def example_d13faaf53454653ce45371b5cf337082a82bf7bbb0aada7e97f47d14963bd6b0(page:)
+    element_handle = page.query_selector("input")
+    element_handle.type("some text")
+    element_handle.press("Enter")
+  end
+
+  # FileChooser
+  def example_371975841dd417527a865b1501e3a8ba40f905b895cf3317ca90d9890e980843(page:)
+    file_chooser = page.expect_file_chooser do
+      page.click("upload") # action to trigger file uploading
+    end
+    file_chooser.set_files("myfile.pdf")
+  end
+
+  # JSHandle
+  def example_c408a96b8ac9c9bd54d915009c8b477eb75b7bf9e879fd76b32f3d4b6340a667(page:)
+    window_handle = page.evaluate_handle("window")
+    # ...
+  end
+
+  # JSHandle#evaluate
+  def example_2400f96eaaed3bc6ef6b0a16ba48e83d38a166c7d55a5dba0025472cffc6f2be(page:)
+    tweet_handle = page.query_selector(".tweet .retweets")
+    tweet_handle.evaluate("node => node.innerText") # => "10 retweets"
+  end
+
+  # JSHandle#properties
+  def example_8292f0e8974d97d20be9bb303d55ccd2d50e42f954e0ada4958ddbef2c6c2977(page:)
+    page.goto('https://example.com/')
+    window_handle = page.evaluate_handle("window")
+    properties = window_handle.properties
+    puts properties
+    window_handle.dispose
+  end
+
   # Playwright
   def example_efc99085566bf177ec87b1bd3bb30d75b6053ec9b579a8ac8bb9f22e5942289a
     require 'playwright'

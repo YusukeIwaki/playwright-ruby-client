@@ -9,21 +9,11 @@ sidebar_position: 10
 ElementHandle represents an in-page DOM element. ElementHandles can be created with the [Page#query_selector](./page#query_selector)
 method.
 
-```python sync title=example_5ba38bdc5d9e5ce7cfc9c8841eb0176efbb4690d18962066f9ee67f1e8b7b050.py
-from playwright.sync_api import sync_playwright
-
-def run(playwright):
-    chromium = playwright.chromium
-    browser = chromium.launch()
-    page = browser.new_page()
-    page.goto("https://example.com")
-    href_element = page.query_selector("a")
-    href_element.click()
-    # ...
-
-with sync_playwright() as playwright:
-    run(playwright)
-
+```ruby
+page.goto("https://example.com")
+href_element = page.query_selector("a")
+href_element.click
+# ...
 ```
 
 ElementHandle prevents DOM element from garbage collection unless the handle is disposed with
@@ -51,10 +41,12 @@ Elements from child frames return the bounding box relative to the main frame, u
 Assuming the page is static, it is safe to use bounding box coordinates to perform input. For example, the following
 snippet should click the center of the element.
 
-```python sync title=example_8382aa7cfb42a9a17e348e2f738279f1bd9a038f1ea35cc3cb244cc64d768f93.py
-box = element_handle.bounding_box()
-page.mouse.click(box["x"] + box["width"] / 2, box["y"] + box["height"] / 2)
-
+```ruby
+box = element_handle.bounding_box
+page.mouse.click(
+  box["x"] + box["width"] / 2,
+  box["y"] + box["height"] / 2,
+)
 ```
 
 
@@ -156,9 +148,8 @@ The snippet below dispatches the `click` event on the element. Regardless of the
 `click` is dispatched. This is equivalent to calling
 [element.click()](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click).
 
-```python sync title=example_3b86add6ce355082cd43f4ac0ba9e69c15960bbd7ca601d0618355fe53aa8902.py
+```ruby
 element_handle.dispatch_event("click")
-
 ```
 
 Under the hood, it creates an instance of an event based on the given `type`, initializes it with `eventInit` properties
@@ -175,11 +166,10 @@ Since `eventInit` is event-specific, please refer to the events documentation fo
 
 You can also specify [JSHandle](./js_handle) as the property value if you want live objects to be passed into the event:
 
-```python sync title=example_6b70ea4cf0c7ae9c82cf0ed22ab0dbbb563e2d1419b35d04aa513cf91f0856f9.py
+```ruby
 # note you can only create data_transfer in chromium and firefox
 data_transfer = page.evaluate_handle("new DataTransfer()")
-element_handle.dispatch_event("#source", "dragstart", {"dataTransfer": data_transfer})
-
+element_handle.dispatch_event("dragstart", eventInit: { dataTransfer: data_transfer })
 ```
 
 
@@ -201,11 +191,10 @@ and return its value.
 
 Examples:
 
-```python sync title=example_f6a83ec555fcf23877c11cf55f02a8c89a7fc11d3324859feda42e592e129f4f.py
+```ruby
 tweet_handle = page.query_selector(".tweet")
-assert tweet_handle.eval_on_selector(".like", "node => node.innerText") == "100"
-assert tweet_handle.eval_on_selector(".retweets", "node => node.innerText") = "10"
-
+tweet_handle.eval_on_selector(".like", "node => node.innerText") # => "100"
+tweet_handle.eval_on_selector(".retweets", "node => node.innerText") # => "10"
 ```
 
 
@@ -233,10 +222,9 @@ Examples:
 </div>
 ```
 
-```python sync title=example_11b54bf5ec18a0d0ceee0868651bb41ab5cd3afcc6b20d5c44f90d835c8d6f81.py
+```ruby
 feed_handle = page.query_selector(".feed")
-assert feed_handle.eval_on_selector_all(".tweet", "nodes => nodes.map(n => n.innerText)") == ["hello!", "hi!"]
-
+feed_handle.eval_on_selector_all(".tweet", "nodes => nodes.map(n => n.innerText)") # => ["hello!", "hi!"]
 ```
 
 
@@ -463,26 +451,18 @@ Returns the array of option values that have been successfully selected.
 
 Triggers a `change` and `input` event once all the provided options have been selected.
 
-```python sync title=example_dc2ce38846b91d234483ed8b915b785ffbd9403213279465acd6605f314fe736.py
+```ruby
 # single selection matching the value
-handle.select_option("blue")
+element_handle.select_option(value: "blue")
 # single selection matching both the label
-handle.select_option(label="blue")
+element_handle.select_option(label: "blue")
 # multiple selection
-handle.select_option(value=["red", "green", "blue"])
-
+element_handle.select_option(value: ["red", "green", "blue"])
 ```
 
-```python sync title=example_b4cdd4a1a4d0392c2d430e0fb5fc670df2d728b6907553650690a2d0377662e4.py
-# single selection matching the value
-handle.select_option("blue")
-# single selection matching both the value and the label
-handle.select_option(label="blue")
-# multiple selection
-handle.select_option("red", "green", "blue")
+```ruby
 # multiple selection for blue, red and second option
-handle.select_option(value="blue", { index: 2 }, "red")
-
+element_handle.select_option(value: "blue", index: 2, label: "red")
 ```
 
 
@@ -552,19 +532,17 @@ Focuses the element, and then sends a `keydown`, `keypress`/`input`, and `keyup`
 
 To press a special key, like `Control` or `ArrowDown`, use [ElementHandle#press](./element_handle#press).
 
-```python sync title=example_2dc9720467640fd8bc581ed65159742e51ff91b209cb176fef8b95f14eaad54e.py
+```ruby
 element_handle.type("hello") # types instantly
-element_handle.type("world", delay=100) # types slower, like a user
-
+element_handle.type("world", delay: 100) # types slower, like a user
 ```
 
 An example of typing into a text field and then submitting the form:
 
-```python sync title=example_d13faaf53454653ce45371b5cf337082a82bf7bbb0aada7e97f47d14963bd6b0.py
+```ruby
 element_handle = page.query_selector("input")
 element_handle.type("some text")
 element_handle.press("Enter")
-
 ```
 
 

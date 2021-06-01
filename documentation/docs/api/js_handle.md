@@ -7,10 +7,9 @@ sidebar_position: 10
 JSHandle represents an in-page JavaScript object. JSHandles can be created with the [Page#evaluate_handle](./page#evaluate_handle)
 method.
 
-```python sync title=example_c408a96b8ac9c9bd54d915009c8b477eb75b7bf9e879fd76b32f3d4b6340a667.py
+```ruby
 window_handle = page.evaluate_handle("window")
 # ...
-
 ```
 
 JSHandle prevents the referenced JavaScript object being garbage collected unless the handle is exposed with
@@ -50,10 +49,9 @@ If `expression` returns a [Promise](https://developer.mozilla.org/en-US/docs/Web
 
 Examples:
 
-```python sync title=example_2400f96eaaed3bc6ef6b0a16ba48e83d38a166c7d55a5dba0025472cffc6f2be.py
+```ruby
 tweet_handle = page.query_selector(".tweet .retweets")
-assert tweet_handle.evaluate("node => node.innerText") == "10 retweets"
-
+tweet_handle.evaluate("node => node.innerText") # => "10 retweets"
 ```
 
 
@@ -68,10 +66,10 @@ Returns the return value of `expression` as a [JSHandle](./js_handle).
 
 This method passes this handle as the first argument to `expression`.
 
-The only difference between `jsHandle.evaluate` and `jsHandle.evaluateHandle` is that `jsHandle.evaluateHandle` returns
+The only difference between [JSHandle#evaluate](./js_handle#evaluate) and [JSHandle#evaluate_handle](./js_handle#evaluate_handle) is that [JSHandle#evaluate_handle](./js_handle#evaluate_handle) returns
 [JSHandle](./js_handle).
 
-If the function passed to the `jsHandle.evaluateHandle` returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), then `jsHandle.evaluateHandle` would wait
+If the function passed to the [JSHandle#evaluate_handle](./js_handle#evaluate_handle) returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), then [JSHandle#evaluate_handle](./js_handle#evaluate_handle) would wait
 for the promise to resolve and return its value.
 
 See [Page#evaluate_handle](./page#evaluate_handle) for more details.
@@ -85,13 +83,12 @@ alias: `properties`
 
 The method returns a map with **own property names** as keys and JSHandle instances for the property values.
 
-```python sync title=example_8292f0e8974d97d20be9bb303d55ccd2d50e42f954e0ada4958ddbef2c6c2977.py
-handle = page.evaluate_handle("{window, document}")
-properties = handle.get_properties()
-window_handle = properties.get("window")
-document_handle = properties.get("document")
-handle.dispose()
-
+```ruby
+page.goto('https://example.com/')
+window_handle = page.evaluate_handle("window")
+properties = window_handle.properties
+puts properties
+window_handle.dispose
 ```
 
 
