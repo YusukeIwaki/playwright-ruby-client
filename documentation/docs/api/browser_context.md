@@ -197,16 +197,16 @@ An example of adding an `md5` function to all pages in the context:
 ```ruby
 require 'digest'
 
-def md5(text)
-  Digest::MD5.hexdigest(text)
+def sha256(text)
+  Digest::SHA256.hexdigest(text)
 end
 
-browser_context.expose_function("md5", method(:md5))
+browser_context.expose_function("sha256", method(:sha256))
 page = browser_context.new_page()
 page.content = <<~HTML
 <script>
   async function onClick() {
-    document.querySelector('div').textContent = await window.md5('PLAYWRIGHT');
+    document.querySelector('div').textContent = await window.sha256('PLAYWRIGHT');
   }
 </script>
 <button onclick="onClick()">Click me</button>
