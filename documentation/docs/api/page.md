@@ -256,7 +256,7 @@ page.dispatch_event("#source", "dragstart", eventInit: { dataTransfer: data_tran
 ## emulate_media
 
 ```
-def emulate_media(colorScheme: nil, media: nil)
+def emulate_media(colorScheme: nil, media: nil, reducedMotion: nil)
 ```
 
 This method changes the `CSS media type` through the `media` argument, and/or the `'prefers-colors-scheme'` media
@@ -472,26 +472,37 @@ See [BrowserContext#expose_function](./browser_context#expose_function) for cont
 
 > NOTE: Functions installed via [Page#expose_function](./page#expose_function) survive navigations.
 
-An example of adding an `sha1` function to the page:
+An example of adding a `sha256` function to the page:
 
-```ruby
-require 'digest'
+```python sync title=example_3692cd13d12f1d501e2a5e8e6a60d335c5ad54ab3b5eb34e3cec0227106d89f0.py
+import hashlib
+from playwright.sync_api import sync_playwright
 
-def sha1(text)
-  Digest::SHA1.hexdigest(text)
-end
+def sha256(text):
+    m = hashlib.sha256()
+    m.update(bytes(text, "utf8"))
+    return m.hexdigest()
 
-page.expose_function("sha1", method(:sha1))
-page.content = <<~HTML
-<script>
-  async function onClick() {
-    document.querySelector('div').textContent = await window.sha1('PLAYWRIGHT');
-  }
-</script>
-<button onclick="onClick()">Click me</button>
-<div></div>
-HTML
-page.click("button")
+
+def run(playwright):
+    webkit = playwright.webkit
+    browser = webkit.launch(headless=False)
+    page = browser.new_page()
+    page.expose_function("sha256", sha256)
+    page.set_content("""
+        <script>
+          async function onClick() {
+            document.querySelector('div').textContent = await window.sha256('PLAYWRIGHT');
+          }
+        </script>
+        <button onclick="onClick()">Click me</button>
+        <div></div>
+    """)
+    page.click("button")
+
+with sync_playwright() as playwright:
+    run(playwright)
+
 ```
 
 
@@ -1177,7 +1188,7 @@ def expect_console_message(predicate: nil, timeout: nil, &block)
 
 Performs action and waits for a [ConsoleMessage](./console_message) to be logged by in the page. If predicate is provided, it passes
 [ConsoleMessage](./console_message) value into the `predicate` function and waits for `predicate(message)` to return a truthy value. Will
-throw an error if the page is closed before the console event is fired.
+throw an error if the page is closed before the [`event: Page.console`] event is fired.
 
 ## expect_download
 
@@ -1203,7 +1214,6 @@ frame = page.expect_event("framenavigated") do
   page.click("button")
 end
 ```
-
 
 
 ## expect_file_chooser

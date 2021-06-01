@@ -273,10 +273,12 @@
 * expect_navigation
 * expect_popup
 * expect_request
+* ~~expect_request_finished~~
 * expect_response
 * wait_for_selector
 * ~~wait_for_timeout~~
 * wait_for_url
+* ~~expect_websocket~~
 * ~~expect_worker~~
 * ~~workers~~
 * ~~wait_for_event~~

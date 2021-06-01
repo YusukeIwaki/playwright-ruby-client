@@ -192,27 +192,38 @@ If the `callback` returns a [Promise](https://developer.mozilla.org/en-US/docs/W
 
 See [Page#expose_function](./page#expose_function) for page-only version.
 
-An example of adding an `md5` function to all pages in the context:
+An example of adding a `sha256` function to all pages in the context:
 
-```ruby
-require 'digest'
+```python sync title=example_ed09ff5e8c17b09741f2221b75c3891c550a9bd02835d030532f76d85ec25011.py
+import hashlib
+from playwright.sync_api import sync_playwright
 
-def sha256(text)
-  Digest::SHA256.hexdigest(text)
-end
+def sha256(text):
+    m = hashlib.sha256()
+    m.update(bytes(text, "utf8"))
+    return m.hexdigest()
 
-browser_context.expose_function("sha256", method(:sha256))
-page = browser_context.new_page()
-page.content = <<~HTML
-<script>
-  async function onClick() {
-    document.querySelector('div').textContent = await window.sha256('PLAYWRIGHT');
-  }
-</script>
-<button onclick="onClick()">Click me</button>
-<div></div>
-HTML
-page.click("button")
+
+def run(playwright):
+    webkit = playwright.webkit
+    browser = webkit.launch(headless=False)
+    context = browser.new_context()
+    context.expose_function("sha256", sha256)
+    page = context.new_page()
+    page.set_content("""
+        <script>
+          async function onClick() {
+            document.querySelector('div').textContent = await window.sha256('PLAYWRIGHT');
+          }
+        </script>
+        <button onclick="onClick()">Click me</button>
+        <div></div>
+    """)
+    page.click("button")
+
+with sync_playwright() as playwright:
+    run(playwright)
+
 ```
 
 
