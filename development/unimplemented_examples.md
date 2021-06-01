@@ -501,6 +501,21 @@ frame.wait_for_url("**/target.html")
 
 ```
 
+### example_29716fdd4471a97923a64eebeee96330ab508226a496ae8fd13f12eb07d55ee6
+
+```
+def handle_worker(worker):
+    print("worker created: " + worker.url)
+    worker.on("close", lambda: print("worker destroyed: " + worker.url))
+
+page.on('worker', handle_worker)
+
+print("current workers:")
+for worker in page.workers:
+    print("    " + worker.url)
+
+```
+
 ### example_49f0cb9b5a21d0d5fe2b180c847bdb21068b335b4c2f42d5c05eb1957297899f
 
 ```

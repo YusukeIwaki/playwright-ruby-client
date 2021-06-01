@@ -175,7 +175,7 @@
 * ~~wait_for_timeout~~
 * wait_for_url
 
-## ~~Worker~~
+## Worker
 
 * ~~evaluate~~
 * ~~evaluate_handle~~
