@@ -267,6 +267,8 @@ class ApidocRenderer
 
       convertion = {
         "`browser.newContext()`" => "[Browser#new_context](./browser#new_context)",
+        "`jsHandle.evaluate`" => "[JSHandle#evaluate](./js_handle#evaluate)",
+        "`jsHandle.evaluateHandle`" => "[JSHandle#evaluate_handle](./js_handle#evaluate_handle)",
         "[`method: Page.waitForNavigation`]" => "[Page#expect_navigation](./page#expect_navigation)",
         "[`method: Frame.waitForNavigation`]" => "[Frame#expect_navigation](./frame#expect_navigation)",
       }

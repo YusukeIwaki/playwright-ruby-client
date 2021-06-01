@@ -155,136 +155,6 @@ page.mouse.up()
 
 ```
 
-### example_c408a96b8ac9c9bd54d915009c8b477eb75b7bf9e879fd76b32f3d4b6340a667
-
-```
-window_handle = page.evaluate_handle("window")
-# ...
-
-```
-
-### example_2400f96eaaed3bc6ef6b0a16ba48e83d38a166c7d55a5dba0025472cffc6f2be
-
-```
-tweet_handle = page.query_selector(".tweet .retweets")
-assert tweet_handle.evaluate("node => node.innerText") == "10 retweets"
-
-```
-
-### example_8292f0e8974d97d20be9bb303d55ccd2d50e42f954e0ada4958ddbef2c6c2977
-
-```
-handle = page.evaluate_handle("{window, document}")
-properties = handle.get_properties()
-window_handle = properties.get("window")
-document_handle = properties.get("document")
-handle.dispose()
-
-```
-
-### example_5ba38bdc5d9e5ce7cfc9c8841eb0176efbb4690d18962066f9ee67f1e8b7b050
-
-```
-from playwright.sync_api import sync_playwright
-
-def run(playwright):
-    chromium = playwright.chromium
-    browser = chromium.launch()
-    page = browser.new_page()
-    page.goto("https://example.com")
-    href_element = page.query_selector("a")
-    href_element.click()
-    # ...
-
-with sync_playwright() as playwright:
-    run(playwright)
-
-```
-
-### example_8382aa7cfb42a9a17e348e2f738279f1bd9a038f1ea35cc3cb244cc64d768f93
-
-```
-box = element_handle.bounding_box()
-page.mouse.click(box["x"] + box["width"] / 2, box["y"] + box["height"] / 2)
-
-```
-
-### example_3b86add6ce355082cd43f4ac0ba9e69c15960bbd7ca601d0618355fe53aa8902
-
-```
-element_handle.dispatch_event("click")
-
-```
-
-### example_6b70ea4cf0c7ae9c82cf0ed22ab0dbbb563e2d1419b35d04aa513cf91f0856f9
-
-```
-# note you can only create data_transfer in chromium and firefox
-data_transfer = page.evaluate_handle("new DataTransfer()")
-element_handle.dispatch_event("#source", "dragstart", {"dataTransfer": data_transfer})
-
-```
-
-### example_f6a83ec555fcf23877c11cf55f02a8c89a7fc11d3324859feda42e592e129f4f
-
-```
-tweet_handle = page.query_selector(".tweet")
-assert tweet_handle.eval_on_selector(".like", "node => node.innerText") == "100"
-assert tweet_handle.eval_on_selector(".retweets", "node => node.innerText") = "10"
-
-```
-
-### example_11b54bf5ec18a0d0ceee0868651bb41ab5cd3afcc6b20d5c44f90d835c8d6f81
-
-```
-feed_handle = page.query_selector(".feed")
-assert feed_handle.eval_on_selector_all(".tweet", "nodes => nodes.map(n => n.innerText)") == ["hello!", "hi!"]
-
-```
-
-### example_dc2ce38846b91d234483ed8b915b785ffbd9403213279465acd6605f314fe736
-
-```
-# single selection matching the value
-handle.select_option("blue")
-# single selection matching both the label
-handle.select_option(label="blue")
-# multiple selection
-handle.select_option(value=["red", "green", "blue"])
-
-```
-
-### example_b4cdd4a1a4d0392c2d430e0fb5fc670df2d728b6907553650690a2d0377662e4
-
-```
-# single selection matching the value
-handle.select_option("blue")
-# single selection matching both the value and the label
-handle.select_option(label="blue")
-# multiple selection
-handle.select_option("red", "green", "blue")
-# multiple selection for blue, red and second option
-handle.select_option(value="blue", { index: 2 }, "red")
-
-```
-
-### example_2dc9720467640fd8bc581ed65159742e51ff91b209cb176fef8b95f14eaad54e
-
-```
-element_handle.type("hello") # types instantly
-element_handle.type("world", delay=100) # types slower, like a user
-
-```
-
-### example_d13faaf53454653ce45371b5cf337082a82bf7bbb0aada7e97f47d14963bd6b0
-
-```
-element_handle = page.query_selector("input")
-element_handle.type("some text")
-element_handle.press("Enter")
-
-```
-
 ### example_3b0f6c6573db513b7b707a39d6c5bbf5ce5896b4785466d80f525968cfbd0be7
 
 ```
@@ -292,16 +162,6 @@ page.set_content("<div><span></span></div>")
 div = page.query_selector("div")
 # waiting for the "span" selector relative to the div.
 span = div.wait_for_selector("span", state="attached")
-
-```
-
-### example_371975841dd417527a865b1501e3a8ba40f905b895cf3317ca90d9890e980843
-
-```
-with page.expect_file_chooser() as fc_info:
-    page.click("upload")
-file_chooser = fc_info.value
-file_chooser.set_files("myfile.pdf")
 
 ```
 
@@ -513,28 +373,6 @@ for worker in page.workers:
 
 ```
 # FIXME: add snippet
-
-```
-
-### example_c954c35627e62be69e1f138f25d7377b13e18d08039d476946217827fa95db52
-
-```
-from playwright.sync_api import sync_playwright
-
-def handle_dialog(dialog):
-    print(dialog.message)
-    dialog.dismiss()
-
-def run(playwright):
-    chromium = playwright.chromium
-    browser = chromium.launch()
-    page = browser.new_page()
-    page.on("dialog", handle_dialog)
-    page.evaluate("alert('1')")
-    browser.close()
-
-with sync_playwright() as playwright:
-    run(playwright)
 
 ```
 
