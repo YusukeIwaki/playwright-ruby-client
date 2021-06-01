@@ -268,6 +268,7 @@ class ApidocRenderer
       convertion = {
         "`browser.newContext()`" => "[Browser#new_context](./browser#new_context)",
         "[`method: Page.waitForNavigation`]" => "[Page#expect_navigation](./page#expect_navigation)",
+        "[`method: Frame.waitForNavigation`]" => "[Frame#expect_navigation](./frame#expect_navigation)",
       }
       convertion.inject(content) do |current, entry|
         str_from, str_to = entry
@@ -282,6 +283,15 @@ class ApidocRenderer
       convertion = {
         "If predicate is provided, it passes [Page](./page)\nvalue into the `predicate` function and waits for `predicate(event)` to return a truthy value." \
           => "If predicate is provided, it passes [Page](./page) value into the `predicate` and waits for `predicate.call(page)` to return a truthy value.",
+
+        "If predicate is provided, it passes [Popup] value into the `predicate`\nfunction and waits for `predicate(page)` to return a truthy value. Will throw an error if the page is closed before the\npopup event is fired." \
+          => "If predicate is provided, it passes popup [Page](./page) value into the predicate function and waits for `predicate.call(page)` to return a truthy value. Will throw an error if the page is closed before the popup event is fired.",
+
+        " waits for `predicate(fileChooser)` to return a truthy value" \
+          => " waits for `predicate.call(fileChooser)` to return a truthy value",
+
+        "The first argument of the `callback` function contains information about the caller: `{ browserContext: BrowserContext,\npage: Page, frame: Frame }`." \
+          => "The first argument of the `callback` function contains information about the caller: `{ browser_context: BrowserContext, page: Page, frame: Frame }`."
       }
       convertion.inject(content) do |current, entry|
         str_from, str_to = entry

@@ -131,8 +131,7 @@ The method adds a function called `name` on the `window` object of every frame i
 called, the function executes `callback` and returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) which resolves to the return value of `callback`. If
 the `callback` returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), it will be awaited.
 
-The first argument of the `callback` function contains information about the caller: `{ browserContext: BrowserContext,
-page: Page, frame: Frame }`.
+The first argument of the `callback` function contains information about the caller: `{ browser_context: BrowserContext, page: Page, frame: Frame }`.
 
 See [Page#expose_binding](./page#expose_binding) for page-only version.
 
