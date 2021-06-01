@@ -376,28 +376,6 @@ for worker in page.workers:
 
 ```
 
-### example_c954c35627e62be69e1f138f25d7377b13e18d08039d476946217827fa95db52
-
-```
-from playwright.sync_api import sync_playwright
-
-def handle_dialog(dialog):
-    print(dialog.message)
-    dialog.dismiss()
-
-def run(playwright):
-    chromium = playwright.chromium
-    browser = chromium.launch()
-    page = browser.new_page()
-    page.on("dialog", handle_dialog)
-    page.evaluate("alert('1')")
-    browser.close()
-
-with sync_playwright() as playwright:
-    run(playwright)
-
-```
-
 ### example_b375e389cd6685ec49d1ef57f3186da60ef682785c646fe8db351b6f39b1a34c
 
 ```

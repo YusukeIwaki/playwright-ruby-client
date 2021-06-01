@@ -92,6 +92,12 @@ RSpec.describe 'example' do
       end
     end
 
+    it 'should work with Dialog' do
+      with_page do |page|
+        example_c954c35627e62be69e1f138f25d7377b13e18d08039d476946217827fa95db52(page: page)
+      end
+    end
+
     it 'should work with JSHandle#properties' do
       with_page do |page|
         example_8292f0e8974d97d20be9bb303d55ccd2d50e42f954e0ada4958ddbef2c6c2977(page: page)

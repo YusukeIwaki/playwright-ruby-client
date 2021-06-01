@@ -200,6 +200,24 @@ module ExampleCodes
     browser.close
   end
 
+  # Dialog
+  def example_c954c35627e62be69e1f138f25d7377b13e18d08039d476946217827fa95db52(page:)
+    def handle_dialog(dialog)
+      puts "[#{dialog.type}] #{dialog.message}"
+      if dialog.message =~ /foo/
+        dialog.accept_async
+      else
+        dialog.dismiss
+      end
+    end
+
+    page.on("dialog", method(:handle_dialog))
+    page.evaluate("confirm('foo')") # will be accepted
+    # => [confirm] foo
+    page.evaluate("alert('bar')") # will be dismissed
+    # => [alert] bar
+  end
+
   # ElementHandle
   def example_5ba38bdc5d9e5ce7cfc9c8841eb0176efbb4690d18962066f9ee67f1e8b7b050(page:)
     page.goto("https://example.com")
