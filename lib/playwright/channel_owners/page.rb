@@ -339,10 +339,11 @@ module Playwright
       ChannelOwners::Response.from_nullable(resp)
     end
 
-    def emulate_media(colorScheme: nil, media: nil)
+    def emulate_media(colorScheme: nil, media: nil, reducedMotion: nil)
       params = {
         colorScheme: colorScheme,
         media: media,
+        reducedMotion: reducedMotion,
       }.compact
       @channel.send_message_to_server('emulateMedia', params)
 
