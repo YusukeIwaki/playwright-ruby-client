@@ -474,35 +474,24 @@ See [BrowserContext#expose_function](./browser_context#expose_function) for cont
 
 An example of adding a `sha256` function to the page:
 
-```python sync title=example_3692cd13d12f1d501e2a5e8e6a60d335c5ad54ab3b5eb34e3cec0227106d89f0.py
-import hashlib
-from playwright.sync_api import sync_playwright
+```ruby
+require 'digest'
 
-def sha256(text):
-    m = hashlib.sha256()
-    m.update(bytes(text, "utf8"))
-    return m.hexdigest()
+def sha1(text)
+  Digest::SHA256.hexdigest(text)
+end
 
-
-def run(playwright):
-    webkit = playwright.webkit
-    browser = webkit.launch(headless=False)
-    page = browser.new_page()
-    page.expose_function("sha256", sha256)
-    page.set_content("""
-        <script>
-          async function onClick() {
-            document.querySelector('div').textContent = await window.sha256('PLAYWRIGHT');
-          }
-        </script>
-        <button onclick="onClick()">Click me</button>
-        <div></div>
-    """)
-    page.click("button")
-
-with sync_playwright() as playwright:
-    run(playwright)
-
+page.expose_function("sha256", method(:sha256))
+page.content = <<~HTML
+<script>
+  async function onClick() {
+    document.querySelector('div').textContent = await window.sha256('PLAYWRIGHT');
+  }
+</script>
+<button onclick="onClick()">Click me</button>
+<div></div>
+HTML
+page.click("button")
 ```
 
 

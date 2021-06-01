@@ -117,7 +117,7 @@ module ExampleCodes
   end
 
   # BrowserContext#expose_function
-  def example_ec3ef36671a002a6e12799fc5321ff60647c20c3f42fbd712d06e1c58cef75f5(browser_context:)
+  def example_ed09ff5e8c17b09741f2221b75c3891c550a9bd02835d030532f76d85ec25011(browser_context:)
     require 'digest'
 
     def sha256(text)
@@ -504,18 +504,18 @@ module ExampleCodes
   end
 
   # Page#expose_function
-  def example_496ab45e0c5f4c47869f66c2b738fbd9eef0ef4065fa923caf9c929e50e14c21(page:)
+  def example_3692cd13d12f1d501e2a5e8e6a60d335c5ad54ab3b5eb34e3cec0227106d89f0(page:)
     require 'digest'
 
     def sha1(text)
-      Digest::SHA1.hexdigest(text)
+      Digest::SHA256.hexdigest(text)
     end
 
-    page.expose_function("sha1", method(:sha1))
+    page.expose_function("sha256", method(:sha256))
     page.content = <<~HTML
     <script>
       async function onClick() {
-        document.querySelector('div').textContent = await window.sha1('PLAYWRIGHT');
+        document.querySelector('div').textContent = await window.sha256('PLAYWRIGHT');
       }
     </script>
     <button onclick="onClick()">Click me</button>
