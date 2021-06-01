@@ -192,7 +192,7 @@ If the `callback` returns a [Promise](https://developer.mozilla.org/en-US/docs/W
 
 See [Page#expose_function](./page#expose_function) for page-only version.
 
-An example of adding an `md5` function to all pages in the context:
+An example of adding a `sha256` function to all pages in the context:
 
 ```ruby
 require 'digest'
