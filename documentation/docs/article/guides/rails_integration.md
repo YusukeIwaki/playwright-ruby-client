@@ -48,4 +48,113 @@ Capybara.default_driver = :playwright
 Capybara.javascript_driver = :playwright
 ```
 
-It is not mandatry. Without changing the default driver, you can still use Playwright driver by specifying `Capybara.current_driver = :playwrite` (or `driven_by :playwright` in system spec) explicitly.
+It is not mandatry. Without changing the default driver, you can still use Playwright driver by specifying `Capybara.current_driver = :playwright` (or `driven_by :playwright` in system spec) explicitly.
+
+### (reference) Available driver options
+
+These parameters can be passed into `Capybara::Playwright::Driver.new`
+
+* `playwright_cli_executable_path`
+  * Refer [this article](./download_playwright_driver) to understand what to specify.
+* `browser_type`
+  * `:chromium` (default), `:firefox`, or `:webkit`
+* Parameters for [Playwright::BrowserType#launch](/docs/api/browser_type#launch)
+  * args
+  * devtools
+  * downloadsPath
+  * env
+  * executablePath
+  * firefoxUserPrefs
+  * headless
+  * ignoreDefaultArgs
+  * proxy
+  * slowMo
+  * timeout
+* Parameters for [Playwright::Browser#new_context](/docs/api/browser#new_context)
+  * bypassCSP
+  * colorScheme
+  * deviceScaleFactor
+  * extraHTTPHeaders
+  * geolocation
+  * hasTouch
+  * httpCredentials
+  * ignoreHTTPSErrors
+  * isMobile
+  * javaScriptEnabled
+  * locale
+  * noViewport
+  * offline
+  * permissions
+  * proxy
+  * record_har_omit_content
+  * record_har_path
+  * record_video_dir
+  * record_video_size
+  * screen
+  * storageState
+  * timezoneId
+  * userAgent
+  * viewport
+
+```ruby
+driver_opts = {
+  # `playwright` command path.
+  playwright_cli_executable_path: './node_modules/.bin/playwright',
+
+  # Use firefox for testing.
+  browser_type: :firefox,
+
+  # Headful mode.
+  headless: false,
+
+  # Slower operation
+  slowMo: 50, # integer. (50-100 would be good for most cases)
+}
+
+Capybara::Playwright::Driver.new(app, driver_opts)
+```
+
+
+## Available functions and Limitations
+
+### Capybara DSL
+
+Most of the methods of `Capybara::Session` and `Capybara::Node::Element` are available. Howevert following 2 methods are not yet implemented.
+
+* `Capybara::Node::Element#drag_to`
+* `Capybara::Node::Element#drop`
+
+### Playwright-native scripting
+
+We can also describe Playwright-native automation script using `with_playwright_page` and `with_playwright_element_handle`.
+
+```ruby
+# With Capybara DSL
+find('a[data-item-type="global_search"]').click
+
+# With Playwright-native Page
+Capybara.current_session.driver.with_playwright_page do |page|
+  # `page` is an instance of Playwright::Page.
+  page.click('a[data-item-type="global_search"]')
+end
+```
+
+```ruby
+all('.list-item').each do |li|
+  # With Capybara::Node::Element method
+  puts li.all('a').first.text
+
+  # With Playwright-native ElementHandle
+  puts li.with_playwright_element_handle do |handle|
+    # `handle` is an instance of Playwright::ElementHandle
+    handle.query_selector('a').text_content
+  end
+end
+```
+
+Generally, Capybara DSL seems simple, but Playwright-native scripting are more precise and efficient. Also `waitForNavigation`, `waitForSelector`, and many other Playwright functions are available with Playwright-native scripting.
+
+### Limitations
+
+* Playwright doesn't allow clicking invisible DOM elements or moving elements. `click` sometimes doesn't work as Selenium does. See the detail in https://playwright.dev/docs/actionability/
+* `current_window.maximize` and `current_window.fullscreen` work only on headful (non-headless) mode, as selenium driver does.
