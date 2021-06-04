@@ -119,9 +119,8 @@ Capybara::Playwright::Driver.new(app, driver_opts)
 
 ### Capybara DSL
 
-Most of the methods of `Capybara::Session` and `Capybara::Node::Element` are available. Howevert following 2 methods are not yet implemented.
+Most of the methods of `Capybara::Session` and `Capybara::Node::Element` are available. However the following method is not yet implemented.
 
-* `Capybara::Node::Element#drag_to`
 * `Capybara::Node::Element#drop`
 
 ### Playwright-native scripting
@@ -158,3 +157,4 @@ Generally, Capybara DSL seems simple, but Playwright-native scripting are more p
 
 * Playwright doesn't allow clicking invisible DOM elements or moving elements. `click` sometimes doesn't work as Selenium does. See the detail in https://playwright.dev/docs/actionability/
 * `current_window.maximize` and `current_window.fullscreen` work only on headful (non-headless) mode, as selenium driver does.
+* `Capybara::Node::Element#drag_to` does not accept `html5` parameter, since [Playwright doesn't implement the feature yet](https://github.com/microsoft/playwright/pull/6207).
