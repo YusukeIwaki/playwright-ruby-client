@@ -60,6 +60,8 @@ These parameters can be passed into `Capybara::Playwright::Driver.new`
   * `:chromium` (default), `:firefox`, or `:webkit`
 * Parameters for [Playwright::BrowserType#launch](/docs/api/browser_type#launch)
   * args
+  * channel
+    * `chrome`, `msedge`, `chrome-beta`, `chrome-dev`, `chrome-canary`, `msedge-beta`, `msedge-dev` Browser distribution channel. Read more about using [Google Chrome & Microsoft Edge](https://playwright.dev/docs/browsers#google-chrome--microsoft-edge)
   * devtools
   * downloadsPath
   * env
