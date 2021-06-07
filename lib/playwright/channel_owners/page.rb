@@ -65,7 +65,8 @@ module Playwright
         emit(Events::Page::WebSocket, ChannelOwners::WebSocket.from(params['webSocket']))
       })
       @channel.on('worker', ->(params) {
-        on_worker(ChannelOwners::Worker.from(params['worker']))
+        worker = ChannelOwners::Worker.from(params['worker'])
+        # on_worker(worker)
       })
     end
 
