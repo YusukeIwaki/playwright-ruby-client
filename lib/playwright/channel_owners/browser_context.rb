@@ -46,6 +46,8 @@ module Playwright
           ChannelOwners::Request.from_nullable(params['page']),
         )
       })
+
+      @closed_promise = Concurrent::Promises.resolvable_future
     end
 
     private def on_page(page)
@@ -223,15 +225,14 @@ module Playwright
     end
 
     private def on_close
-      @closed_or_closing = true
       @browser&.send(:remove_context, self)
       emit(Events::BrowserContext::Close)
+      @closed_promise.fulfill(true)
     end
 
     def close
-      return if @closed_or_closing
-      @closed_or_closing = true
       @channel.send_message_to_server('close')
+      @closed_promise.value!
       nil
     rescue => err
       raise unless safe_close_error?(err)

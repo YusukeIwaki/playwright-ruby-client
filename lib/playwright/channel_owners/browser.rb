@@ -7,7 +7,7 @@ module Playwright
     private def after_initialize
       @connected = true
       @closed_or_closing = false
-      @remote = true
+      @remote = false
 
       @contexts = Set.new
       @channel.on('close', method(:on_close))
@@ -52,14 +52,6 @@ module Playwright
 
     def close
       return if @closed_or_closing
-      if @remote
-        @contexts.each do |context|
-          context.pages.each do |page|
-            page.send(:on_close)
-          end
-          context.send(:on_close)
-        end
-      end
       @closed_or_closing = true
       @channel.send_message_to_server('close')
       nil
@@ -89,14 +81,6 @@ module Playwright
 
     private def on_close(_ = {})
       @connected = false
-      if @remote
-        @contexts.each do |context|
-          context.pages.each do |page|
-            page.send(:on_close)
-          end
-          context.send(:on_close)
-        end
-      end
       emit(Events::Browser::Disconnected, self)
       @closed_or_closing = true
     end
