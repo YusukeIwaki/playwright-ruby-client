@@ -817,7 +817,7 @@
     "spec": [
       {
         "type": "text",
-        "text": "Playwright has **experimental** support for Android automation. You can access android namespace via:"
+        "text": "Playwright has **experimental** support for Android automation. See [here](./mobile.md) for more information. You can access android namespace via:"
       },
       {
         "type": "code",
@@ -893,7 +893,7 @@
         "lines": [
           "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm i -D playwright"
         ],
-        "codeLang": "sh js"
+        "codeLang": "bash js"
       }
     ],
     "langs": {
@@ -904,7 +904,7 @@
       "types": {},
       "overrides": {}
     },
-    "comment": "Playwright has **experimental** support for Android automation. You can access android namespace via:\n\n```js\nconst { _android: android } = require('playwright');\n```\n\nAn example of the Android automation script would be:\n\n```js\nconst { _android: android } = require('playwright');\n\n(async () => {\n  // Connect to the device.\n  const [device] = await android.devices();\n  console.log(`Model: ${device.model()}`);\n  console.log(`Serial: ${device.serial()}`);\n  // Take screenshot of the whole device.\n  await device.screenshot({ path: 'device.png' });\n\n  {\n    // --------------------- WebView -----------------------\n\n    // Launch an application with WebView.\n    await device.shell('am force-stop org.chromium.webview_shell');\n    await device.shell('am start org.chromium.webview_shell/.WebViewBrowserActivity');\n    // Get the WebView.\n    const webview = await device.webView({ pkg: 'org.chromium.webview_shell' });\n\n    // Fill the input box.\n    await device.fill({ res: 'org.chromium.webview_shell:id/url_field' }, 'github.com/microsoft/playwright');\n    await device.press({ res: 'org.chromium.webview_shell:id/url_field' }, 'Enter');\n\n    // Work with WebView's page as usual.\n    const page = await webview.page();\n    await page.waitForNavigation({ url: /.*microsoft\\/playwright.*/ });\n    console.log(await page.title());\n  }\n\n  {\n    // --------------------- Browser -----------------------\n\n    // Launch Chrome browser.\n    await device.shell('am force-stop com.android.chrome');\n    const context = await device.launchBrowser();\n\n    // Use BrowserContext as usual.\n    const page = await context.newPage();\n    await page.goto('https://webkit.org/');\n    console.log(await page.evaluate(() => window.location.href));\n    await page.screenshot({ path: 'page.png' });\n\n    await context.close();\n  }\n\n  // Close the device.\n  await device.close();\n})();\n```\n\nNote that since you don't need Playwright to install web browsers when testing Android, you can omit browser download\nvia setting the following environment variable when installing Playwright:\n\n```sh js\nPLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm i -D playwright\n```\n",
+    "comment": "Playwright has **experimental** support for Android automation. See [here](./mobile.md) for more information. You can\naccess android namespace via:\n\n```js\nconst { _android: android } = require('playwright');\n```\n\nAn example of the Android automation script would be:\n\n```js\nconst { _android: android } = require('playwright');\n\n(async () => {\n  // Connect to the device.\n  const [device] = await android.devices();\n  console.log(`Model: ${device.model()}`);\n  console.log(`Serial: ${device.serial()}`);\n  // Take screenshot of the whole device.\n  await device.screenshot({ path: 'device.png' });\n\n  {\n    // --------------------- WebView -----------------------\n\n    // Launch an application with WebView.\n    await device.shell('am force-stop org.chromium.webview_shell');\n    await device.shell('am start org.chromium.webview_shell/.WebViewBrowserActivity');\n    // Get the WebView.\n    const webview = await device.webView({ pkg: 'org.chromium.webview_shell' });\n\n    // Fill the input box.\n    await device.fill({ res: 'org.chromium.webview_shell:id/url_field' }, 'github.com/microsoft/playwright');\n    await device.press({ res: 'org.chromium.webview_shell:id/url_field' }, 'Enter');\n\n    // Work with WebView's page as usual.\n    const page = await webview.page();\n    await page.waitForNavigation({ url: /.*microsoft\\/playwright.*/ });\n    console.log(await page.title());\n  }\n\n  {\n    // --------------------- Browser -----------------------\n\n    // Launch Chrome browser.\n    await device.shell('am force-stop com.android.chrome');\n    const context = await device.launchBrowser();\n\n    // Use BrowserContext as usual.\n    const page = await context.newPage();\n    await page.goto('https://webkit.org/');\n    console.log(await page.evaluate(() => window.location.href));\n    await page.screenshot({ path: 'page.png' });\n\n    await context.close();\n  }\n\n  // Close the device.\n  await device.close();\n})();\n```\n\nNote that since you don't need Playwright to install web browsers when testing Android, you can omit browser download\nvia setting the following environment variable when installing Playwright:\n\n```bash js\nPLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm i -D playwright\n```\n",
     "members": [
       {
         "kind": "method",
@@ -2438,16 +2438,7 @@
                 },
                 {
                   "kind": "property",
-                  "langs": {
-                    "only": [
-                      "js",
-                      "python",
-                      "java"
-                    ],
-                    "aliases": {},
-                    "types": {},
-                    "overrides": {}
-                  },
+                  "langs": {},
                   "name": "reducedMotion",
                   "type": {
                     "name": "ReducedMotion",
@@ -6500,16 +6491,7 @@
                 },
                 {
                   "kind": "property",
-                  "langs": {
-                    "only": [
-                      "js",
-                      "python",
-                      "java"
-                    ],
-                    "aliases": {},
-                    "types": {},
-                    "overrides": {}
-                  },
+                  "langs": {},
                   "name": "reducedMotion",
                   "type": {
                     "name": "ReducedMotion",
@@ -8355,16 +8337,7 @@
                 },
                 {
                   "kind": "property",
-                  "langs": {
-                    "only": [
-                      "js",
-                      "python",
-                      "java"
-                    ],
-                    "aliases": {},
-                    "types": {},
-                    "overrides": {}
-                  },
+                  "langs": {},
                   "name": "reducedMotion",
                   "type": {
                     "name": "ReducedMotion",
@@ -9764,16 +9737,7 @@
       },
       {
         "kind": "event",
-        "langs": {
-          "only": [
-            "js",
-            "python",
-            "java"
-          ],
-          "aliases": {},
-          "types": {},
-          "overrides": {}
-        },
+        "langs": {},
         "name": "request",
         "type": {
           "name": "Request",
@@ -9798,16 +9762,7 @@
       },
       {
         "kind": "event",
-        "langs": {
-          "only": [
-            "js",
-            "python",
-            "java"
-          ],
-          "aliases": {},
-          "types": {},
-          "overrides": {}
-        },
+        "langs": {},
         "name": "requestFailed",
         "type": {
           "name": "Request",
@@ -9833,16 +9788,7 @@
       },
       {
         "kind": "event",
-        "langs": {
-          "only": [
-            "js",
-            "python",
-            "java"
-          ],
-          "aliases": {},
-          "types": {},
-          "overrides": {}
-        },
+        "langs": {},
         "name": "requestFinished",
         "type": {
           "name": "Request",
@@ -9863,16 +9809,7 @@
       },
       {
         "kind": "event",
-        "langs": {
-          "only": [
-            "js",
-            "python",
-            "java"
-          ],
-          "aliases": {},
-          "types": {},
-          "overrides": {}
-        },
+        "langs": {},
         "name": "response",
         "type": {
           "name": "Response",
@@ -12960,16 +12897,7 @@
       },
       {
         "kind": "property",
-        "langs": {
-          "only": [
-            "js",
-            "python",
-            "java"
-          ],
-          "aliases": {},
-          "types": {},
-          "overrides": {}
-        },
+        "langs": {},
         "name": "tracing",
         "type": {
           "name": "Tracing",
@@ -15265,17 +15193,8 @@
                 },
                 {
                   "kind": "property",
-                  "langs": {
-                    "only": [
-                      "js",
-                      "python",
-                      "java"
-                    ],
-                    "aliases": {},
-                    "types": {},
-                    "overrides": {}
-                  },
-                  "name": "traceDir",
+                  "langs": {},
+                  "name": "tracesDir",
                   "type": {
                     "name": "path",
                     "expression": "[path]"
@@ -15290,7 +15209,7 @@
                   "comment": "If specified, traces are saved into this directory.",
                   "deprecated": false,
                   "async": false,
-                  "alias": "traceDir"
+                  "alias": "tracesDir"
                 }
               ]
             },
@@ -16650,16 +16569,7 @@
                 },
                 {
                   "kind": "property",
-                  "langs": {
-                    "only": [
-                      "js",
-                      "python",
-                      "java"
-                    ],
-                    "aliases": {},
-                    "types": {},
-                    "overrides": {}
-                  },
+                  "langs": {},
                   "name": "reducedMotion",
                   "type": {
                     "name": "ReducedMotion",
@@ -16816,17 +16726,8 @@
                 },
                 {
                   "kind": "property",
-                  "langs": {
-                    "only": [
-                      "js",
-                      "python",
-                      "java"
-                    ],
-                    "aliases": {},
-                    "types": {},
-                    "overrides": {}
-                  },
-                  "name": "traceDir",
+                  "langs": {},
+                  "name": "tracesDir",
                   "type": {
                     "name": "path",
                     "expression": "[path]"
@@ -16841,7 +16742,7 @@
                   "comment": "If specified, traces are saved into this directory.",
                   "deprecated": false,
                   "async": false,
-                  "alias": "traceDir"
+                  "alias": "tracesDir"
                 },
                 {
                   "kind": "property",
@@ -17842,17 +17743,8 @@
                 },
                 {
                   "kind": "property",
-                  "langs": {
-                    "only": [
-                      "js",
-                      "python",
-                      "java"
-                    ],
-                    "aliases": {},
-                    "types": {},
-                    "overrides": {}
-                  },
-                  "name": "traceDir",
+                  "langs": {},
+                  "name": "tracesDir",
                   "type": {
                     "name": "path",
                     "expression": "[path]"
@@ -17867,7 +17759,7 @@
                   "comment": "If specified, traces are saved into this directory.",
                   "deprecated": false,
                   "async": false,
-                  "alias": "traceDir"
+                  "alias": "tracesDir"
                 }
               ]
             },
@@ -19284,16 +19176,7 @@
       },
       {
         "kind": "method",
-        "langs": {
-          "only": [
-            "js",
-            "python",
-            "java"
-          ],
-          "aliases": {},
-          "types": {},
-          "overrides": {}
-        },
+        "langs": {},
         "name": "page",
         "type": {
           "name": "Page",
@@ -19486,7 +19369,7 @@
         "lines": [
           "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm i -D playwright"
         ],
-        "codeLang": "sh js"
+        "codeLang": "bash js"
       }
     ],
     "langs": {
@@ -19497,7 +19380,7 @@
       "types": {},
       "overrides": {}
     },
-    "comment": "Playwright has **experimental** support for Electron automation. You can access electron namespace via:\n\n```js\nconst { _electron } = require('playwright');\n```\n\nAn example of the Electron automation script would be:\n\n```js\nconst { _electron: electron } = require('playwright');\n\n(async () => {\n  // Launch Electron app.\n  const electronApp = await electron.launch({ args: ['main.js'] });\n\n  // Evaluation expression in the Electron context.\n  const appPath = await electronApp.evaluate(async ({ app }) => {\n    // This runs in the main Electron process, parameter here is always\n    // the result of the require('electron') in the main app script.\n    return app.getAppPath();\n  });\n  console.log(appPath);\n\n  // Get the first window that the app opens, wait if necessary.\n  const window = await electronApp.firstWindow();\n  // Print the title.\n  console.log(await window.title());\n  // Capture a screenshot.\n  await window.screenshot({ path: 'intro.png' });\n  // Direct Electron console to Node terminal.\n  window.on('console', console.log);\n  // Click button.\n  await window.click('text=Click me');\n  // Exit app.\n  await electronApp.close();\n})();\n```\n\nNote that since you don't need Playwright to install web browsers when testing Electron, you can omit browser download\nvia setting the following environment variable when installing Playwright:\n\n```sh js\nPLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm i -D playwright\n```\n",
+    "comment": "Playwright has **experimental** support for Electron automation. You can access electron namespace via:\n\n```js\nconst { _electron } = require('playwright');\n```\n\nAn example of the Electron automation script would be:\n\n```js\nconst { _electron: electron } = require('playwright');\n\n(async () => {\n  // Launch Electron app.\n  const electronApp = await electron.launch({ args: ['main.js'] });\n\n  // Evaluation expression in the Electron context.\n  const appPath = await electronApp.evaluate(async ({ app }) => {\n    // This runs in the main Electron process, parameter here is always\n    // the result of the require('electron') in the main app script.\n    return app.getAppPath();\n  });\n  console.log(appPath);\n\n  // Get the first window that the app opens, wait if necessary.\n  const window = await electronApp.firstWindow();\n  // Print the title.\n  console.log(await window.title());\n  // Capture a screenshot.\n  await window.screenshot({ path: 'intro.png' });\n  // Direct Electron console to Node terminal.\n  window.on('console', console.log);\n  // Click button.\n  await window.click('text=Click me');\n  // Exit app.\n  await electronApp.close();\n})();\n```\n\nNote that since you don't need Playwright to install web browsers when testing Electron, you can omit browser download\nvia setting the following environment variable when installing Playwright:\n\n```bash js\nPLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm i -D playwright\n```\n",
     "members": [
       {
         "kind": "method",
@@ -38469,6 +38352,44 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "reducedMotion"
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "csharp"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "reducedMotion",
+                  "type": {
+                    "name": "ReducedMotion",
+                    "union": [
+                      {
+                        "name": "\"reduce\""
+                      },
+                      {
+                        "name": "\"no-preference\""
+                      },
+                      {
+                        "name": "\"null\""
+                      }
+                    ],
+                    "expression": "[ReducedMotion]<\"reduce\"|\"no-preference\"|\"null\">"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Emulates `'prefers-reduced-motion'` media feature, supported values are `'reduce'`, `'no-preference'`. Passing `null` disables reduced motion emulation."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Emulates `'prefers-reduced-motion'` media feature, supported values are `'reduce'`, `'no-preference'`. Passing `null`\ndisables reduced motion emulation.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "reducedMotion"
                 }
               ]
             },
@@ -38513,7 +38434,9 @@
             "lines": [
               "const searchValue = await page.$eval('#search', el => el.value);",
               "const preloadHref = await page.$eval('link[rel=preload]', el => el.href);",
-              "const html = await page.$eval('.main-container', (e, suffix) => e.outerHTML + suffix, 'hello');"
+              "const html = await page.$eval('.main-container', (e, suffix) => e.outerHTML + suffix, 'hello');",
+              "// In TypeScript, this example requires an explicit type annotation (HTMLLinkElement) on el:",
+              "const preloadHrefTS = await page.$eval('link[rel=preload]', (el: HTMLLinkElement) => el.href);"
             ],
             "codeLang": "js"
           },
@@ -38559,7 +38482,7 @@
           }
         ],
         "required": true,
-        "comment": "The method finds an element matching the specified selector within the page and passes it as a first argument to\n`expression`. If no elements match the selector, the method throws an error. Returns the value of `expression`.\n\nIf `expression` returns a [Promise], then [`method: Page.evalOnSelector`] would wait for the promise to resolve and\nreturn its value.\n\nExamples:\n\n```js\nconst searchValue = await page.$eval('#search', el => el.value);\nconst preloadHref = await page.$eval('link[rel=preload]', el => el.href);\nconst html = await page.$eval('.main-container', (e, suffix) => e.outerHTML + suffix, 'hello');\n```\n\n```java\nString searchValue = (String) page.evalOnSelector(\"#search\", \"el => el.value\");\nString preloadHref = (String) page.evalOnSelector(\"link[rel=preload]\", \"el => el.href\");\nString html = (String) page.evalOnSelector(\".main-container\", \"(e, suffix) => e.outerHTML + suffix\", \"hello\");\n```\n\n```python async\nsearch_value = await page.eval_on_selector(\"#search\", \"el => el.value\")\npreload_href = await page.eval_on_selector(\"link[rel=preload]\", \"el => el.href\")\nhtml = await page.eval_on_selector(\".main-container\", \"(e, suffix) => e.outer_html + suffix\", \"hello\")\n```\n\n```python sync\nsearch_value = page.eval_on_selector(\"#search\", \"el => el.value\")\npreload_href = page.eval_on_selector(\"link[rel=preload]\", \"el => el.href\")\nhtml = page.eval_on_selector(\".main-container\", \"(e, suffix) => e.outer_html + suffix\", \"hello\")\n```\n\n```csharp\nvar searchValue = await page.EvalOnSelectorAsync<string>(\"#search\", \"el => el.value\");\nvar preloadHref = await page.EvalOnSelectorAsync<string>(\"link[rel=preload]\", \"el => el.href\");\nvar html = await page.EvalOnSelectorAsync(\".main-container\", \"(e, suffix) => e.outerHTML + suffix\", \"hello\");\n```\n\nShortcut for main frame's [`method: Frame.evalOnSelector`].",
+        "comment": "The method finds an element matching the specified selector within the page and passes it as a first argument to\n`expression`. If no elements match the selector, the method throws an error. Returns the value of `expression`.\n\nIf `expression` returns a [Promise], then [`method: Page.evalOnSelector`] would wait for the promise to resolve and\nreturn its value.\n\nExamples:\n\n```js\nconst searchValue = await page.$eval('#search', el => el.value);\nconst preloadHref = await page.$eval('link[rel=preload]', el => el.href);\nconst html = await page.$eval('.main-container', (e, suffix) => e.outerHTML + suffix, 'hello');\n// In TypeScript, this example requires an explicit type annotation (HTMLLinkElement) on el:\nconst preloadHrefTS = await page.$eval('link[rel=preload]', (el: HTMLLinkElement) => el.href);\n```\n\n```java\nString searchValue = (String) page.evalOnSelector(\"#search\", \"el => el.value\");\nString preloadHref = (String) page.evalOnSelector(\"link[rel=preload]\", \"el => el.href\");\nString html = (String) page.evalOnSelector(\".main-container\", \"(e, suffix) => e.outerHTML + suffix\", \"hello\");\n```\n\n```python async\nsearch_value = await page.eval_on_selector(\"#search\", \"el => el.value\")\npreload_href = await page.eval_on_selector(\"link[rel=preload]\", \"el => el.href\")\nhtml = await page.eval_on_selector(\".main-container\", \"(e, suffix) => e.outer_html + suffix\", \"hello\")\n```\n\n```python sync\nsearch_value = page.eval_on_selector(\"#search\", \"el => el.value\")\npreload_href = page.eval_on_selector(\"link[rel=preload]\", \"el => el.href\")\nhtml = page.eval_on_selector(\".main-container\", \"(e, suffix) => e.outer_html + suffix\", \"hello\")\n```\n\n```csharp\nvar searchValue = await page.EvalOnSelectorAsync<string>(\"#search\", \"el => el.value\");\nvar preloadHref = await page.EvalOnSelectorAsync<string>(\"link[rel=preload]\", \"el => el.href\");\nvar html = await page.EvalOnSelectorAsync(\".main-container\", \"(e, suffix) => e.outerHTML + suffix\", \"hello\");\n```\n\nShortcut for main frame's [`method: Frame.evalOnSelector`].",
         "deprecated": false,
         "async": true,
         "alias": "evalOnSelector",
@@ -48655,6 +48578,33 @@
             "deprecated": false,
             "async": false,
             "alias": "action"
+          },
+          {
+            "kind": "property",
+            "langs": {
+              "only": [
+                "java"
+              ],
+              "aliases": {},
+              "types": {},
+              "overrides": {}
+            },
+            "name": "callback",
+            "type": {
+              "name": "Runnable",
+              "expression": "[Runnable]"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Callback that performs the action triggering the event."
+              }
+            ],
+            "required": true,
+            "comment": "Callback that performs the action triggering the event.",
+            "deprecated": false,
+            "async": false,
+            "alias": "callback"
           }
         ]
       },
@@ -53076,110 +53026,75 @@
       {
         "type": "code",
         "lines": [
-          "const browser = await chromium.launch({ traceDir: 'traces' });",
+          "const browser = await chromium.launch();",
           "const context = await browser.newContext();",
-          "await context.tracing.start({ name: 'trace', screenshots: true, snapshots: true });",
+          "await context.tracing.start({ screenshots: true, snapshots: true });",
           "const page = await context.newPage();",
           "await page.goto('https://playwright.dev');",
-          "await context.tracing.stop();",
-          "await context.tracing.export('trace.zip');"
+          "await context.tracing.stop({ path: 'trace.zip' });"
         ],
         "codeLang": "js"
       },
       {
         "type": "code",
         "lines": [
-          "Browser browser = chromium.launch(new BrowserType.LaunchOptions().setTraceDir(\"trace\"));",
+          "Browser browser = chromium.launch();",
           "BrowserContext context = browser.newContext();",
-          "context.tracing.start(page, new Tracing.StartOptions()",
-          "  .setName(\"trace\")",
+          "context.tracing.start(new Tracing.StartOptions()",
           "  .setScreenshots(true)",
           "  .setSnapshots(true);",
           "Page page = context.newPage();",
           "page.goto(\"https://playwright.dev\");",
-          "context.tracing.stop();",
-          "context.tracing.export(Paths.get(\"trace.zip\")))"
+          "context.tracing.stop(new Tracing.StopOptions()",
+          "  .setPath(Paths.get(\"trace.zip\")));"
         ],
         "codeLang": "java"
       },
       {
         "type": "code",
         "lines": [
-          "browser = await chromium.launch(traceDir='traces')",
+          "browser = await chromium.launch()",
           "context = await browser.new_context()",
-          "await context.tracing.start(name=\"trace\", screenshots=True, snapshots=True)",
+          "await context.tracing.start(screenshots=True, snapshots=True)",
           "await page.goto(\"https://playwright.dev\")",
-          "await context.tracing.stop()",
-          "await context.tracing.export(\"trace.zip\")"
+          "await context.tracing.stop(path = \"trace.zip\")"
         ],
         "codeLang": "python async"
       },
       {
         "type": "code",
         "lines": [
-          "browser = chromium.launch(traceDir='traces')",
+          "browser = chromium.launch()",
           "context = browser.new_context()",
-          "context.tracing.start(name=\"trace\", screenshots=True, snapshots=True)",
+          "context.tracing.start(screenshots=True, snapshots=True)",
           "page.goto(\"https://playwright.dev\")",
-          "context.tracing.stop()",
-          "context.tracing.export(\"trace.zip\")"
+          "context.tracing.stop(path = \"trace.zip\")"
         ],
         "codeLang": "python sync"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "await using var browser = playwright.Chromium.LaunchAsync();",
+          "await using var context = await browser.NewContextAsync();",
+          "await context.Tracing.StartAsync(new TracingStartOptions",
+          "{",
+          "  Screenshots: true,",
+          "  Snapshots: true",
+          "});",
+          "var page = context.NewPageAsync();",
+          "await page.GotoAsync(\"https://playwright.dev\");",
+          "await context.Tracing.StopAsync(new TracingStopOptions",
+          "{",
+          "  Path: \"trace.zip\"",
+          "});"
+        ],
+        "codeLang": "csharp"
       }
     ],
-    "langs": {
-      "only": [
-        "js",
-        "python",
-        "java"
-      ],
-      "aliases": {},
-      "types": {},
-      "overrides": {}
-    },
-    "comment": "API for collecting and saving Playwright traces. Playwright traces can be opened using the Playwright CLI after\nPlaywright script runs.\n\nStart with specifying the folder traces will be stored in:\n\n```js\nconst browser = await chromium.launch({ traceDir: 'traces' });\nconst context = await browser.newContext();\nawait context.tracing.start({ name: 'trace', screenshots: true, snapshots: true });\nconst page = await context.newPage();\nawait page.goto('https://playwright.dev');\nawait context.tracing.stop();\nawait context.tracing.export('trace.zip');\n```\n\n```java\nBrowser browser = chromium.launch(new BrowserType.LaunchOptions().setTraceDir(\"trace\"));\nBrowserContext context = browser.newContext();\ncontext.tracing.start(page, new Tracing.StartOptions()\n  .setName(\"trace\")\n  .setScreenshots(true)\n  .setSnapshots(true);\nPage page = context.newPage();\npage.goto(\"https://playwright.dev\");\ncontext.tracing.stop();\ncontext.tracing.export(Paths.get(\"trace.zip\")))\n```\n\n```python async\nbrowser = await chromium.launch(traceDir='traces')\ncontext = await browser.new_context()\nawait context.tracing.start(name=\"trace\", screenshots=True, snapshots=True)\nawait page.goto(\"https://playwright.dev\")\nawait context.tracing.stop()\nawait context.tracing.export(\"trace.zip\")\n```\n\n```python sync\nbrowser = chromium.launch(traceDir='traces')\ncontext = browser.new_context()\ncontext.tracing.start(name=\"trace\", screenshots=True, snapshots=True)\npage.goto(\"https://playwright.dev\")\ncontext.tracing.stop()\ncontext.tracing.export(\"trace.zip\")\n```\n",
+    "langs": {},
+    "comment": "API for collecting and saving Playwright traces. Playwright traces can be opened using the Playwright CLI after\nPlaywright script runs.\n\nStart with specifying the folder traces will be stored in:\n\n```js\nconst browser = await chromium.launch();\nconst context = await browser.newContext();\nawait context.tracing.start({ screenshots: true, snapshots: true });\nconst page = await context.newPage();\nawait page.goto('https://playwright.dev');\nawait context.tracing.stop({ path: 'trace.zip' });\n```\n\n```java\nBrowser browser = chromium.launch();\nBrowserContext context = browser.newContext();\ncontext.tracing.start(new Tracing.StartOptions()\n  .setScreenshots(true)\n  .setSnapshots(true);\nPage page = context.newPage();\npage.goto(\"https://playwright.dev\");\ncontext.tracing.stop(new Tracing.StopOptions()\n  .setPath(Paths.get(\"trace.zip\")));\n```\n\n```python async\nbrowser = await chromium.launch()\ncontext = await browser.new_context()\nawait context.tracing.start(screenshots=True, snapshots=True)\nawait page.goto(\"https://playwright.dev\")\nawait context.tracing.stop(path = \"trace.zip\")\n```\n\n```python sync\nbrowser = chromium.launch()\ncontext = browser.new_context()\ncontext.tracing.start(screenshots=True, snapshots=True)\npage.goto(\"https://playwright.dev\")\ncontext.tracing.stop(path = \"trace.zip\")\n```\n\n```csharp\nawait using var browser = playwright.Chromium.LaunchAsync();\nawait using var context = await browser.NewContextAsync();\nawait context.Tracing.StartAsync(new TracingStartOptions\n{\n  Screenshots: true,\n  Snapshots: true\n});\nvar page = context.NewPageAsync();\nawait page.GotoAsync(\"https://playwright.dev\");\nawait context.Tracing.StopAsync(new TracingStopOptions\n{\n  Path: \"trace.zip\"\n});\n```\n",
     "members": [
-      {
-        "kind": "method",
-        "langs": {},
-        "name": "export",
-        "type": {
-          "name": "void"
-        },
-        "spec": [
-          {
-            "type": "text",
-            "text": "Export trace into the file with the given name. Should be called after the tracing has stopped."
-          }
-        ],
-        "required": true,
-        "comment": "Export trace into the file with the given name. Should be called after the tracing has stopped.",
-        "deprecated": false,
-        "async": true,
-        "alias": "export",
-        "args": [
-          {
-            "kind": "property",
-            "langs": {},
-            "name": "path",
-            "type": {
-              "name": "path",
-              "expression": "[path]"
-            },
-            "spec": [
-              {
-                "type": "text",
-                "text": "File to save the trace into."
-              }
-            ],
-            "required": true,
-            "comment": "File to save the trace into.",
-            "deprecated": false,
-            "async": false,
-            "alias": "path"
-          }
-        ]
-      },
       {
         "kind": "method",
         "langs": {},
@@ -53195,25 +53110,23 @@
           {
             "type": "code",
             "lines": [
-              "await context.tracing.start({ name: 'trace', screenshots: true, snapshots: true });",
+              "await context.tracing.start({ screenshots: true, snapshots: true });",
               "const page = await context.newPage();",
               "await page.goto('https://playwright.dev');",
-              "await context.tracing.stop();",
-              "await context.tracing.export('trace.zip');"
+              "await context.tracing.stop({ path: 'trace.zip' });"
             ],
             "codeLang": "js"
           },
           {
             "type": "code",
             "lines": [
-              "context.tracing.start(page, new Tracing.StartOptions()",
-              "  .setName(\"trace\")",
+              "context.tracing.start(new Tracing.StartOptions()",
               "  .setScreenshots(true)",
               "  .setSnapshots(true);",
               "Page page = context.newPage();",
               "page.goto('https://playwright.dev');",
-              "context.tracing.stop();",
-              "context.tracing.export(Paths.get(\"trace.zip\")))"
+              "context.tracing.stop(new Tracing.StopOptions()",
+              "  .setPath(Paths.get(\"trace.zip\")));"
             ],
             "codeLang": "java"
           },
@@ -53223,7 +53136,7 @@
               "await context.tracing.start(name=\"trace\", screenshots=True, snapshots=True)",
               "await page.goto(\"https://playwright.dev\")",
               "await context.tracing.stop()",
-              "await context.tracing.export(\"trace.zip\")"
+              "await context.tracing.stop(path = \"trace.zip\")"
             ],
             "codeLang": "python async"
           },
@@ -53233,13 +53146,32 @@
               "context.tracing.start(name=\"trace\", screenshots=True, snapshots=True)",
               "page.goto(\"https://playwright.dev\")",
               "context.tracing.stop()",
-              "context.tracing.export(\"trace.zip\")"
+              "context.tracing.stop(path = \"trace.zip\")"
             ],
             "codeLang": "python sync"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "await using var browser = playwright.Chromium.LaunchAsync();",
+              "await using var context = await browser.NewContextAsync();",
+              "await context.Tracing.StartAsync(new TracingStartOptions",
+              "{",
+              "  Screenshots: true,",
+              "  Snapshots: true",
+              "});",
+              "var page = context.NewPageAsync();",
+              "await page.GotoAsync(\"https://playwright.dev\");",
+              "await context.Tracing.StopAsync(new TracingStopOptions",
+              "{",
+              "  Path: \"trace.zip\"",
+              "});"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Start tracing.\n\n```js\nawait context.tracing.start({ name: 'trace', screenshots: true, snapshots: true });\nconst page = await context.newPage();\nawait page.goto('https://playwright.dev');\nawait context.tracing.stop();\nawait context.tracing.export('trace.zip');\n```\n\n```java\ncontext.tracing.start(page, new Tracing.StartOptions()\n  .setName(\"trace\")\n  .setScreenshots(true)\n  .setSnapshots(true);\nPage page = context.newPage();\npage.goto('https://playwright.dev');\ncontext.tracing.stop();\ncontext.tracing.export(Paths.get(\"trace.zip\")))\n```\n\n```python async\nawait context.tracing.start(name=\"trace\", screenshots=True, snapshots=True)\nawait page.goto(\"https://playwright.dev\")\nawait context.tracing.stop()\nawait context.tracing.export(\"trace.zip\")\n```\n\n```python sync\ncontext.tracing.start(name=\"trace\", screenshots=True, snapshots=True)\npage.goto(\"https://playwright.dev\")\ncontext.tracing.stop()\ncontext.tracing.export(\"trace.zip\")\n```\n",
+        "comment": "Start tracing.\n\n```js\nawait context.tracing.start({ screenshots: true, snapshots: true });\nconst page = await context.newPage();\nawait page.goto('https://playwright.dev');\nawait context.tracing.stop({ path: 'trace.zip' });\n```\n\n```java\ncontext.tracing.start(new Tracing.StartOptions()\n  .setScreenshots(true)\n  .setSnapshots(true);\nPage page = context.newPage();\npage.goto('https://playwright.dev');\ncontext.tracing.stop(new Tracing.StopOptions()\n  .setPath(Paths.get(\"trace.zip\")));\n```\n\n```python async\nawait context.tracing.start(name=\"trace\", screenshots=True, snapshots=True)\nawait page.goto(\"https://playwright.dev\")\nawait context.tracing.stop()\nawait context.tracing.stop(path = \"trace.zip\")\n```\n\n```python sync\ncontext.tracing.start(name=\"trace\", screenshots=True, snapshots=True)\npage.goto(\"https://playwright.dev\")\ncontext.tracing.stop()\ncontext.tracing.stop(path = \"trace.zip\")\n```\n\n```csharp\nawait using var browser = playwright.Chromium.LaunchAsync();\nawait using var context = await browser.NewContextAsync();\nawait context.Tracing.StartAsync(new TracingStartOptions\n{\n  Screenshots: true,\n  Snapshots: true\n});\nvar page = context.NewPageAsync();\nawait page.GotoAsync(\"https://playwright.dev\");\nawait context.Tracing.StopAsync(new TracingStopOptions\n{\n  Path: \"trace.zip\"\n});\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "start",
@@ -53262,11 +53194,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "If specified, the trace is going to be saved into the file with the given name inside the `traceDir` folder specified in [`method: BrowserType.launch`]."
+                      "text": "If specified, the trace is going to be saved into the file with the given name inside the `tracesDir` folder specified in [`method: BrowserType.launch`]."
                     }
                   ],
                   "required": false,
-                  "comment": "If specified, the trace is going to be saved into the file with the given name inside the `traceDir` folder specified in\n[`method: BrowserType.launch`].",
+                  "comment": "If specified, the trace is going to be saved into the file with the given name inside the `tracesDir` folder specified\nin [`method: BrowserType.launch`].",
                   "deprecated": false,
                   "async": false,
                   "alias": "name"
@@ -53339,7 +53271,43 @@
         "deprecated": false,
         "async": true,
         "alias": "stop",
-        "args": []
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "path",
+                  "type": {
+                    "name": "path",
+                    "expression": "[path]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Export trace into the file with the given name."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Export trace into the file with the given name.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "path"
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "options"
+          }
+        ]
       }
     ]
   },
