@@ -40,12 +40,7 @@ RSpec.configure do |config|
     Playwright.create(playwright_cli_executable_path: ENV['PLAYWRIGHT_CLI_EXECUTABLE_PATH']) do |playwright|
       @playwright_playwright = playwright
 
-      params = {}
-      if example.metadata[:tracing]
-        params[:traceDir] = Dir.mktmpdir
-      end
-
-      playwright.send(@playwright_browser_type).launch(**params) do |browser|
+      playwright.send(@playwright_browser_type).launch do |browser|
         @playwright_browser = browser
 
         if ENV['CI']
@@ -54,10 +49,6 @@ RSpec.configure do |config|
         else
           example.run
         end
-      end
-    ensure
-      if params[:traceDir]
-        FileUtils.remove_entry(params[:traceDir], true)
       end
     end
   end

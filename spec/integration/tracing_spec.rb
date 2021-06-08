@@ -100,11 +100,9 @@ RSpec.describe 'tracing' do
       page.content = '<button>Click</button>'
       page.click('"Click"')
       page.close
-      context.tracing.stop
-
       Dir.mktmpdir do |dir|
         trace = File.join(dir, 'trace.zip')
-        context.tracing.export(trace)
+        context.tracing.stop(path: trace)
       end
     end
   end
@@ -118,16 +116,14 @@ RSpec.describe 'tracing' do
       page.content = '<button>Click</button>'
       page.click('"Click"')
       page.close
-      context.tracing.stop
-
       Dir.mktmpdir do |dir|
         trace = File.join(dir, 'trace.zip')
-        context.tracing.export(trace)
+        context.tracing.stop(path: trace)
       end
     end
   end
 
-  it 'should collect two tracew', sinatra: true, tracing: true do
+  it 'should collect two trace', sinatra: true, tracing: true do
     Dir.mktmpdir do |trace_dir|
       with_context do |context|
         page = context.new_page
@@ -136,19 +132,17 @@ RSpec.describe 'tracing' do
         page.goto(server_empty_page)
         page.content = '<button>Click</button>'
         page.click('"Click"')
-        context.tracing.stop
         Dir.mktmpdir do |dir|
           trace = File.join(dir, 'trace1.zip')
-          context.tracing.export(trace)
+          context.tracing.stop(path: trace)
         end
 
         context.tracing.start(name: 'test2', screenshots: true, snapshots: true)
         page.dblclick('"Click"')
         page.close
-        context.tracing.stop
         Dir.mktmpdir do |dir|
           trace = File.join(dir, 'trace2.zip')
-          context.tracing.export(trace)
+          context.tracing.stop(path: trace)
         end
       end
     end
