@@ -138,7 +138,8 @@ def new_page(
       storageState: nil,
       timezoneId: nil,
       userAgent: nil,
-      viewport: nil)
+      viewport: nil,
+      &block)
 ```
 
 Creates a new page in a new browser context. Closing this page will close the context as well.

@@ -11,15 +11,12 @@ module Playwright
     def launch(options, &block)
       resp = @channel.send_message_to_server('launch', options.compact)
       browser = ChannelOwners::Browser.from(resp)
+      return browser unless block
 
-      if block
-        begin
-          block.call(browser)
-        ensure
-          browser.close
-        end
-      else
-        browser
+      begin
+        block.call(browser)
+      ensure
+        browser.close
       end
     end
 
