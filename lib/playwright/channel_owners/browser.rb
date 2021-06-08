@@ -30,24 +30,28 @@ module Playwright
       @contexts << context
       context.browser = self
       context.options = params
+      return context unless block
 
-      if block
-        begin
-          block.call(context)
-        ensure
-          context.close
-        end
-      else
-        context
+      begin
+        block.call(context)
+      ensure
+        context.close
       end
     end
 
-    def new_page(**options)
+    def new_page(**options, &block)
       context = new_context(**options)
       page = context.new_page
       page.owned_context = context
       context.owner_page = page
-      page
+
+      return page unless block
+
+      begin
+        block.call(page)
+      ensure
+        page.close
+      end
     end
 
     def close

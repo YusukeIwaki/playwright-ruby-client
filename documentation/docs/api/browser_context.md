@@ -229,7 +229,7 @@ specified.
 ## new_page
 
 ```
-def new_page
+def new_page(&block)
 ```
 
 Creates a new page in the browser context.
