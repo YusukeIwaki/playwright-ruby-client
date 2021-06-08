@@ -155,6 +155,49 @@ end
 
 Generally, Capybara DSL seems simple, but Playwright-native scripting are more precise and efficient. Also `waitForNavigation`, `waitForSelector`, and many other Playwright functions are available with Playwright-native scripting.
 
+### Screen recording
+
+NO NEED to keep sitting in front of screen during test. Just record what happened with video.
+
+For example, we can store the video for [Allure report](https://github.com/allure-framework/allure-ruby) as below:
+
+```ruby
+before do |example|
+  Capybara.current_session.driver.on_save_screenrecord do |video_path|
+    Allure.add_attachment(
+      name: "screenrecord - #{example.description}",
+      source: File.read(video_path),
+      type: Allure::ContentType::WEBM,
+      test_case: true,
+    )
+  end
+end
+```
+
+![sceenrecord](https://user-images.githubusercontent.com/11763113/121126629-71b5f600-c863-11eb-8f88-7924ab669946.gif)
+
+For more details, refer [Recording video](./recording_video.md#using-screen-recording-from-capybara-driver)
+
+
+### Screenshot just before teardown
+
+In addition to `Capybara::Session#save_screenshot`, capybara-playwright-driver have another method for storing last screen state just before teardown.
+
+For example, we can attach the screenshot for [Allure report](https://github.com/allure-framework/allure-ruby) as below:
+
+```ruby
+before do |example|
+  Capybara.current_session.driver.on_save_raw_screenshot_before_reset do |raw_screenshot|
+    Allure.add_attachment(
+      name: "screenshot - #{example.description}",
+      source: raw_screenshot,
+      type: Allure::ContentType::PNG,
+      test_case: true,
+    )
+  end
+end
+```
+
 ### Limitations
 
 * Playwright doesn't allow clicking invisible DOM elements or moving elements. `click` sometimes doesn't work as Selenium does. See the detail in https://playwright.dev/docs/actionability/
