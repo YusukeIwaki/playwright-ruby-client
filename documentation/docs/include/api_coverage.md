@@ -354,7 +354,6 @@
 
 ## Tracing
 
-* export
 * start
 * stop
 

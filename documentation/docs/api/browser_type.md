@@ -65,7 +65,7 @@ def launch(
       proxy: nil,
       slowMo: nil,
       timeout: nil,
-      traceDir: nil,
+      tracesDir: nil,
       &block)
 ```
 
