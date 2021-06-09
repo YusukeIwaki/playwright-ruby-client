@@ -202,4 +202,4 @@ end
 
 * Playwright doesn't allow clicking invisible DOM elements or moving elements. `click` sometimes doesn't work as Selenium does. See the detail in https://playwright.dev/docs/actionability/
 * `current_window.maximize` and `current_window.fullscreen` work only on headful (non-headless) mode, as selenium driver does.
-* `Capybara::Node::Element#drag_to` does not accept `html5` parameter, since [Playwright doesn't implement the feature yet](https://github.com/microsoft/playwright/pull/6207).
+* `Capybara::Node::Element#drag_to` does not accept `html5` parameter.
