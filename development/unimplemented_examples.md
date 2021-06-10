@@ -45,39 +45,6 @@ print(request.timing)
 
 ```
 
-### example_1960aabd58c9553683368e29429d39c1209d35e6e3625bbef1280a1fa022a9ee
-
-```
-def handle(route, request):
-    # override headers
-    headers = {
-        **request.headers,
-        "foo": "bar" # set "foo" header
-        "origin": None # remove "origin" header
-    }
-    route.continue_(headers=headers)
-}
-page.route("**/*", handle)
-
-```
-
-### example_6d2dfd4bb5c8360f8d80bb91c563b0bd9b99aa24595063cf85e5a6e1b105f89c
-
-```
-page.route("**/*", lambda route: route.fulfill(
-    status=404,
-    content_type="text/plain",
-    body="not found!"))
-
-```
-
-### example_c77fd0986d0b74c905cd9417756c76775e612cc86410f9a5aabc5b46d233d150
-
-```
-page.route("**/xhr_endpoint", lambda route: route.fulfill(path="mock_data.json"))
-
-```
-
 ### example_575870a45e4fe08d3e06be3420e8a11be03f85791cd8174f27198c016031ae72
 
 ```
