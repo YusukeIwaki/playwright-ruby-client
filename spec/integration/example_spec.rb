@@ -134,5 +134,30 @@ RSpec.describe 'example' do
         example_0a62ff34b0d31a64dd1597b9dff456e4139b36207d26efdec7109e278dc315a3(page: page)
       end
     end
+
+    it 'should work with Route#continue', sinatra: true do
+      with_page do |page|
+        headers = []
+        page.once('response', ->(res) {
+          headers = res.request.headers
+        })
+        example_1960aabd58c9553683368e29429d39c1209d35e6e3625bbef1280a1fa022a9ee(page: page)
+        page.content = "<a href=\"#{server_cross_process_prefix}/empty.html\">link</a>"
+        page.expect_navigation { page.click('a') }
+
+        expect(headers['foo']).to eq('bar')
+        expect(headers['user-agent']).to eq('Unknown Browser')
+      end
+    end
+
+    it 'should work with Route#fulfill', sinatra: true do
+      with_page do |page|
+        example_6d2dfd4bb5c8360f8d80bb91c563b0bd9b99aa24595063cf85e5a6e1b105f89c(page: page)
+        page.content = "<a href=\"#{server_cross_process_prefix}/empty.html\">link</a>"
+        response = page.expect_navigation { page.click('a') }
+        expect(response.status).to eq(404)
+        expect(response.body).to eq('not found!!')
+      end
+    end
   end
 end
