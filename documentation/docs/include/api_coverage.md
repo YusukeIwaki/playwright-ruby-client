@@ -340,7 +340,7 @@
 * connect_over_cdp
 * executable_path
 * launch
-* ~~launch_persistent_context~~
+* launch_persistent_context
 * name
 
 ## Playwright

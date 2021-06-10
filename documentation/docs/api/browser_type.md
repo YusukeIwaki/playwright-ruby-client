@@ -96,6 +96,59 @@ differences between Chromium and Chrome.
 [This article](https://chromium.googlesource.com/chromium/src/+/lkgr/docs/chromium_browser_vs_google_chrome.md)
 describes some differences for Linux users.
 
+## launch_persistent_context
+
+```
+def launch_persistent_context(
+      userDataDir,
+      acceptDownloads: nil,
+      args: nil,
+      bypassCSP: nil,
+      channel: nil,
+      chromiumSandbox: nil,
+      colorScheme: nil,
+      deviceScaleFactor: nil,
+      devtools: nil,
+      downloadsPath: nil,
+      env: nil,
+      executablePath: nil,
+      extraHTTPHeaders: nil,
+      geolocation: nil,
+      handleSIGHUP: nil,
+      handleSIGINT: nil,
+      handleSIGTERM: nil,
+      hasTouch: nil,
+      headless: nil,
+      httpCredentials: nil,
+      ignoreDefaultArgs: nil,
+      ignoreHTTPSErrors: nil,
+      isMobile: nil,
+      javaScriptEnabled: nil,
+      locale: nil,
+      noViewport: nil,
+      offline: nil,
+      permissions: nil,
+      proxy: nil,
+      record_har_omit_content: nil,
+      record_har_path: nil,
+      record_video_dir: nil,
+      record_video_size: nil,
+      reducedMotion: nil,
+      screen: nil,
+      slowMo: nil,
+      timeout: nil,
+      timezoneId: nil,
+      tracesDir: nil,
+      userAgent: nil,
+      viewport: nil,
+      &block)
+```
+
+Returns the persistent browser context instance.
+
+Launches browser that uses persistent storage located at `userDataDir` and returns the only context. Closing this
+context will automatically close the browser.
+
 ## name
 
 ```

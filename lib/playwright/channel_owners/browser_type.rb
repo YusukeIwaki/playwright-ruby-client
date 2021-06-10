@@ -1,5 +1,7 @@
 module Playwright
   define_channel_owner :BrowserType do
+    include Utils::PrepareBrowserContextOptions
+
     def name
       @initializer['name']
     end
@@ -17,6 +19,22 @@ module Playwright
         block.call(browser)
       ensure
         browser.close
+      end
+    end
+
+    def launch_persistent_context(userDataDir, **options, &block)
+      params = options.dup
+      prepare_browser_context_options(params)
+      params['userDataDir'] = userDataDir
+
+      resp = @channel.send_message_to_server('launchPersistentContext', params.compact)
+      context = ChannelOwners::Browser.from(resp)
+      return context unless block
+
+      begin
+        block.call(context)
+      ensure
+        context.close
       end
     end
 
