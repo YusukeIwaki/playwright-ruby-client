@@ -41,7 +41,7 @@ Capybara.default_max_wait_time = 15
 
 ### (Optional) Update default driver
 
-By default, Capybara driver is set to `:rack_test`, which works only with non-JS contents. If your Rails application has many JavaScript contents, it is recommended to change the default driver to `:playwrite`.
+By default, Capybara driver is set to `:rack_test`, which works only with non-JS contents. If your Rails application has many JavaScript contents, it is recommended to change the default driver to `:playwright`.
 
 ```rb
 Capybara.default_driver = :playwright
