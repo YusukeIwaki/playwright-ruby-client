@@ -38,7 +38,7 @@
 * fulfill
 * request
 
-## ~~WebSocket~~
+## WebSocket
 
 * ~~closed?~~
 * ~~url~~
