@@ -117,3 +117,5 @@ Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwrig
   end
 end
 ```
+
+Note that each browser context is isolated and not persisted by default. When persistent browser context is needed, we can use [BrowserType#launch_persistent_context](/docs/api/browser_type#launch_persistent_context).
