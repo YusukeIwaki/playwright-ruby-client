@@ -40,10 +40,10 @@
 
 ## WebSocket
 
-* ~~closed?~~
-* ~~url~~
-* ~~expect_event~~
-* ~~wait_for_event~~
+* closed?
+* url
+* expect_event
+* wait_for_event
 
 ## Keyboard
 
@@ -278,7 +278,7 @@
 * wait_for_selector
 * ~~wait_for_timeout~~
 * wait_for_url
-* ~~expect_websocket~~
+* expect_websocket
 * ~~expect_worker~~
 * ~~workers~~
 * ~~wait_for_event~~

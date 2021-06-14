@@ -289,6 +289,9 @@ class ApidocRenderer
         "If predicate is provided, it passes [Popup] value into the `predicate`\nfunction and waits for `predicate(page)` to return a truthy value. Will throw an error if the page is closed before the\npopup event is fired." \
           => "If predicate is provided, it passes popup [Page](./page) value into the predicate function and waits for `predicate.call(page)` to return a truthy value. Will throw an error if the page is closed before the popup event is fired.",
 
+        "If predicate is provided, it passes [WebSocket](./web_socket) value into the\n`predicate` function and waits for `predicate(webSocket)` to return a truthy value. Will throw an error if the page is\nclosed before the WebSocket event is fired." \
+        => "If predicate is provided, it passes [WebSocket](./web_socket) value into the `predicate` function and waits for `predicate.call(web_socket)` to return a truthy value. Will throw an error if the page is closed before the WebSocket event is fired.",
+
         " waits for `predicate(fileChooser)` to return a truthy value" \
           => " waits for `predicate.call(fileChooser)` to return a truthy value",
 

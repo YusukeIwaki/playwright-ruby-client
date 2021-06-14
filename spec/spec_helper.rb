@@ -94,9 +94,45 @@ RSpec.configure do |config|
   #     url = "#{server_prefix}/awesome" # => http://localhost:4567/awesome
   #
   test_with_sinatra = Module.new do
-    attr_reader :server_prefix, :server_cross_process_prefix, :server_empty_page, :sinatra
+    attr_reader :ws_url, :server_prefix, :server_cross_process_prefix, :server_empty_page, :sinatra
   end
   config.include(test_with_sinatra, sinatra: true)
+
+  # ref: https://devcenter.heroku.com/articles/ruby-websockets
+  class WsApp
+    KEEPALIVE_TIME = 15 # in seconds
+
+    def initialize(app)
+      @app = app
+    end
+
+    def call(env)
+      # require here for avoiding Windows CI failure in example spec.
+      require 'faye/websocket'
+
+      if Faye::WebSocket.websocket?(env)
+        ws = Faye::WebSocket.new(env, nil, { ping: KEEPALIVE_TIME })
+
+        ws.on(:open) do |event|
+          ws.send('incoming')
+        end
+
+        ws.on(:message) do |event|
+          p [:message, event.data]
+        end
+
+        ws.on(:close) do |event|
+          ws = nil
+        end
+
+        # Return async Rack response
+        ws.rack_response
+      else
+        @app.call(env)
+      end
+    end
+  end
+
   config.around(sinatra: true) do |example|
     require 'net/http'
     require 'sinatra/base'
@@ -143,6 +179,8 @@ RSpec.configure do |config|
 
     sinatra_app.disable(:protection)
     sinatra_app.set(:public_folder, File.join(__dir__, 'assets'))
+    sinatra_app.use(WsApp) if example.metadata[:web_socket]
+    @ws_url = 'ws://localhost:4567/ws'
     @server_prefix = "http://localhost:4567"
     @server_cross_process_prefix = "http://127.0.0.1:4567"
     @server_empty_page = "#{@server_prefix}/empty.html"
