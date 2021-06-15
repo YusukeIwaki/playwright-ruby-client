@@ -109,8 +109,7 @@ RSpec.configure do |config|
     def call(env)
       # require here for avoiding Windows CI failure in example spec.
       require 'faye/websocket'
-
-      if Faye::WebSocket.websocket?(env)
+      if Faye::WebSocket.websocket?(env) && env['PATH_INFO'] == '/ws'
         ws = Faye::WebSocket.new(env, nil, { ping: KEEPALIVE_TIME })
 
         ws.on(:open) do |event|
@@ -118,7 +117,18 @@ RSpec.configure do |config|
         end
 
         ws.on(:message) do |event|
-          p [:message, event.data]
+          case event.data
+          when 'echo-bin'
+            ws.send([4, 2])
+            ws.close
+          when 'echo-text'
+            ws.send('text')
+            ws.close
+          when 'close'
+            ws.close
+          else
+            puts "[WebSocket#on_message] message=#{event.data}"
+          end
         end
 
         ws.on(:close) do |event|
