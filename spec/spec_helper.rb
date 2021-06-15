@@ -133,6 +133,24 @@ RSpec.configure do |config|
     end
   end
 
+  if ENV['CI']
+    module PumaEventsLogSuppressing
+      ACCEPT= [
+        /^\* Listening on http/,
+      ]
+
+      def log(str)
+        if ACCEPT.any? { |regex| regex.match?(str) }
+          super
+        else
+          # suppress log
+        end
+      end
+    end
+    require 'puma/events'
+    Puma::Events.prepend(PumaEventsLogSuppressing)
+  end
+
   config.around(sinatra: true) do |example|
     require 'net/http'
     require 'sinatra/base'
