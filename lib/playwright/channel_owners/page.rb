@@ -774,6 +774,10 @@ module Playwright
       expect_event(Events::Page::Response, predicate: predicate, timeout: timeout, &block)
     end
 
+    def expect_websocket(predicate: nil, timeout: nil, &block)
+      expect_event(Events::Page::WebSocket, predicate: predicate, timeout: timeout, &block)
+    end
+
     # called from Frame with send(:timeout_settings)
     private def timeout_settings
       @timeout_settings

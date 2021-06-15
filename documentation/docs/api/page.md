@@ -1393,6 +1393,14 @@ page.wait_for_url("**/target.html")
 
 Shortcut for main frame's [Frame#wait_for_url](./frame#wait_for_url).
 
+## expect_websocket
+
+```
+def expect_websocket(predicate: nil, timeout: nil, &block)
+```
+
+Performs action and waits for a new [WebSocket](./web_socket). If predicate is provided, it passes [WebSocket](./web_socket) value into the `predicate` function and waits for `predicate.call(web_socket)` to return a truthy value. Will throw an error if the page is closed before the WebSocket event is fired.
+
 ## accessibility
 
 ## keyboard
