@@ -273,7 +273,7 @@
 * expect_navigation
 * expect_popup
 * expect_request
-* ~~expect_request_finished~~
+* expect_request_finished
 * expect_response
 * wait_for_selector
 * ~~wait_for_timeout~~

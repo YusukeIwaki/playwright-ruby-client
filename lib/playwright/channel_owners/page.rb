@@ -759,6 +759,10 @@ module Playwright
       expect_event(Events::Page::Request, predicate: predicate, timeout: timeout, &block)
     end
 
+    def expect_request_finished(predicate: nil, timeout: nil, &block)
+      expect_event(Events::Page::RequestFinished, predicate: predicate, timeout: timeout, &block)
+    end
+
     def expect_response(urlOrPredicate, timeout: nil, &block)
       predicate =
         case urlOrPredicate

@@ -1328,6 +1328,16 @@ puts request.headers
 
 
 
+## expect_request_finished
+
+```
+def expect_request_finished(predicate: nil, timeout: nil, &block)
+```
+
+Performs action and waits for a [Request](./request) to finish loading. If predicate is provided, it passes [Request](./request) value into
+the `predicate` function and waits for `predicate(request)` to return a truthy value. Will throw an error if the page is
+closed before the [`event: Page.requestFinished`] event is fired.
+
 ## expect_response
 
 ```
