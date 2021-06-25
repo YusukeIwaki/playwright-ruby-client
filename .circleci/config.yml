@@ -9,17 +9,8 @@ jobs:
       - run:
           name: Install Ruby 2.7.2 via RVM
           command: |
-            count=0
-            until gpg --keyserver hkp://ipv4.pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-            do
-                count=$((count+1)); sleep 10;
-                if [ $count -gt 2 ]; then
-                    echo "Unable to receive GPG keys, FAILING";
-                    exit 1;
-                fi;
-                echo "Network error: Unable to receive GPG keys. Will attempt again ($count/3)";
-            done;
-
+            curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+            curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -
             curl -sSL https://get.rvm.io | bash -s stable --ruby
             source /usr/local/rvm/scripts/rvm
             rvm install 2.7.2
@@ -53,17 +44,8 @@ jobs:
       - run:
           name: Install Ruby 2.7.2 via RVM
           command: |
-            count=0
-            until gpg --keyserver hkp://ipv4.pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-            do
-                count=$((count+1)); sleep 10;
-                if [ $count -gt 2 ]; then
-                    echo "Unable to receive GPG keys, FAILING";
-                    exit 1;
-                fi;
-                echo "Network error: Unable to receive GPG keys. Will attempt again ($count/3)";
-            done;
-
+            curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+            curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -
             curl -sSL https://get.rvm.io | bash -s stable --ruby
             source /usr/local/rvm/scripts/rvm
             rvm install 2.7.2

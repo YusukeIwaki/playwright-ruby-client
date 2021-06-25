@@ -296,7 +296,10 @@ class ApidocRenderer
           => " waits for `predicate.call(fileChooser)` to return a truthy value",
 
         "The first argument of the `callback` function contains information about the caller: `{ browserContext: BrowserContext,\npage: Page, frame: Frame }`." \
-          => "The first argument of the `callback` function contains information about the caller: `{ browser_context: BrowserContext, page: Page, frame: Frame }`."
+          => "The first argument of the `callback` function contains information about the caller: `{ browser_context: BrowserContext, page: Page, frame: Frame }`.",
+
+        'protocol methods can be called with `session.send` method.' \
+          => 'protocol methods can be called with `session.send_message` method.',
       }
       convertion.inject(content) do |current, entry|
         str_from, str_to = entry

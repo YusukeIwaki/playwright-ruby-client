@@ -67,6 +67,11 @@ module Playwright
       @initializer['version']
     end
 
+    def new_browser_cdp_session
+      resp = @channel.send_message_to_server('newBrowserCDPSession')
+      ChannelOwners::CDPSession.from(resp)
+    end
+
     def start_tracing(page: nil, categories: nil, path: nil, screenshots: nil)
       params = {
         page: page&.channel,

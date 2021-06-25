@@ -98,6 +98,11 @@ module Playwright
       page&.emit(Events::Page::Response, response)
     end
 
+    def new_cdp_session(page)
+      resp = @channel.send_message_to_server('newCDPSession', page: page.channel)
+      ChannelOwners::CDPSession.from(resp)
+    end
+
     def set_default_navigation_timeout(timeout)
       @timeout_settings.default_navigation_timeout = timeout
       @channel.send_message_to_server('setDefaultNavigationTimeoutNoReply', timeout: timeout)

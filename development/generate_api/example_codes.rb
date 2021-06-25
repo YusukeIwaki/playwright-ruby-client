@@ -200,6 +200,19 @@ module ExampleCodes
     browser.close
   end
 
+  # CDPSession
+  def example_bed004cd0b9cde7e172522563fa7a2be13934496c0789c7f9067c3c4e1ee9ded(page:)
+    client = page.context.new_cdp_session(page)
+    client.send_message('Animation.enable')
+    client.on('Animation.animationCreated', -> (_) { puts 'Animation Created' })
+    response = client.send_message('Animation.getPlaybackRate')
+    puts "Playback rate is #{response['playbackRate']}"
+    client.send_message(
+      'Animation.setPlaybackRate',
+      params: { playbackRate: response['playbackRate'] / 2.0 },
+    )
+  end
+
   # Dialog
   def example_c954c35627e62be69e1f138f25d7377b13e18d08039d476946217827fa95db52(page:)
     def handle_dialog(dialog)
