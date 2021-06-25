@@ -4,7 +4,7 @@ require 'json'
 module Playwright
   # @ref https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_network.py
   define_channel_owner :Response do
-    def after_initialize
+    private def after_initialize
       @request = ChannelOwners::Request.from(@initializer['request'])
       timing = @initializer['timing']
       @request.send(:update_timings,

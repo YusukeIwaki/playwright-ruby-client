@@ -300,7 +300,7 @@
 * expose_binding
 * expose_function
 * grant_permissions
-* ~~new_cdp_session~~
+* new_cdp_session
 * new_page
 * pages
 * route
@@ -317,17 +317,17 @@
 * ~~wait_for_event~~
 * tracing
 
-## ~~CDPSession~~
+## CDPSession
 
-* ~~detach~~
-* ~~send_message~~
+* detach
+* send_message
 
 ## Browser
 
 * close
 * contexts
 * connected?
-* ~~new_browser_cdp_session~~
+* new_browser_cdp_session
 * new_context
 * new_page
 * start_tracing

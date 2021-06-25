@@ -226,6 +226,16 @@ def grant_permissions(permissions, origin: nil)
 Grants specified permissions to the browser context. Only grants corresponding permissions to the given origin if
 specified.
 
+## new_cdp_session
+
+```
+def new_cdp_session(page)
+```
+
+> NOTE: CDP sessions are only supported on Chromium-based browsers.
+
+Returns the newly created session.
+
 ## new_page
 
 ```

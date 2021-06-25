@@ -343,6 +343,20 @@ for worker in page.workers:
 
 ```
 
+### example_bed004cd0b9cde7e172522563fa7a2be13934496c0789c7f9067c3c4e1ee9ded
+
+```
+client = page.context().new_cdp_session(page)
+client.send("animation.enable")
+client.on("animation.animation_created", lambda: print("animation created!"))
+response = client.send("animation.get_playback_rate")
+print("playback rate is " + response["playback_rate"])
+client.send("animation.set_playback_rate", {
+    playback_rate: response["playback_rate"] / 2
+})
+
+```
+
 ### example_a767dfb400d98aef50f2767b94171d23474ea1ac1cf9b4d75d412936208e652d
 
 ```

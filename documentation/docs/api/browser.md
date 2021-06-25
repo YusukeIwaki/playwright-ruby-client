@@ -61,6 +61,16 @@ def connected?
 
 Indicates that the browser is connected.
 
+## new_browser_cdp_session
+
+```
+def new_browser_cdp_session
+```
+
+> NOTE: CDP Sessions are only supported on Chromium-based browsers.
+
+Returns the newly created browser session.
+
 ## new_context
 
 ```
