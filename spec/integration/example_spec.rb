@@ -92,6 +92,14 @@ RSpec.describe 'example' do
       end
     end
 
+    it 'should work with CDPSession' do
+      skip unless chromium?
+
+      with_page do |page|
+        example_bed004cd0b9cde7e172522563fa7a2be13934496c0789c7f9067c3c4e1ee9ded(page: page)
+      end
+    end
+
     it 'should work with Dialog' do
       with_page do |page|
         example_c954c35627e62be69e1f138f25d7377b13e18d08039d476946217827fa95db52(page: page)
