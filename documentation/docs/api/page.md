@@ -499,7 +499,12 @@ page.click("button")
 ## fill
 
 ```
-def fill(selector, value, noWaitAfter: nil, timeout: nil)
+def fill(
+      selector,
+      value,
+      force: nil,
+      noWaitAfter: nil,
+      timeout: nil)
 ```
 
 This method waits for an element matching `selector`, waits for [actionability](https://playwright.dev/python/docs/actionability) checks, focuses the
@@ -934,6 +939,7 @@ def select_option(
       index: nil,
       value: nil,
       label: nil,
+      force: nil,
       noWaitAfter: nil,
       timeout: nil)
 ```

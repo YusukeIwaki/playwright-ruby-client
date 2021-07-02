@@ -26,6 +26,8 @@
 * json
 * ok
 * request
+* ~~security_details~~
+* ~~server_addr~~
 * status
 * status_text
 * text
@@ -36,6 +38,7 @@
 * abort
 * continue
 * fulfill
+* ~~intercept~~
 * request
 
 ## WebSocket
@@ -91,6 +94,7 @@
 * hover
 * inner_html
 * inner_text
+* ~~input_value~~
 * checked?
 * disabled?
 * editable?
@@ -146,6 +150,7 @@
 * hover
 * inner_html
 * inner_text
+* ~~input_value~~
 * checked?
 * detached?
 * disabled?
@@ -231,6 +236,7 @@
 * hover
 * inner_html
 * inner_text
+* ~~input_value~~
 * checked?
 * closed?
 * disabled?

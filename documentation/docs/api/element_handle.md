@@ -232,7 +232,7 @@ feed_handle.eval_on_selector_all(".tweet", "nodes => nodes.map(n => n.innerText)
 ## fill
 
 ```
-def fill(value, noWaitAfter: nil, timeout: nil)
+def fill(value, force: nil, noWaitAfter: nil, timeout: nil)
 ```
 
 This method waits for [actionability](https://playwright.dev/python/docs/actionability) checks, focuses the element, fills it and triggers an `input`
@@ -436,6 +436,7 @@ def select_option(
       index: nil,
       value: nil,
       label: nil,
+      force: nil,
       noWaitAfter: nil,
       timeout: nil)
 ```
@@ -470,7 +471,7 @@ element_handle.select_option(value: "blue", index: 2, label: "red")
 ## select_text
 
 ```
-def select_text(timeout: nil)
+def select_text(force: nil, timeout: nil)
 ```
 
 This method waits for [actionability](https://playwright.dev/python/docs/actionability) checks, then focuses the element and selects all its text
