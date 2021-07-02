@@ -94,7 +94,7 @@
 * hover
 * inner_html
 * inner_text
-* ~~input_value~~
+* input_value
 * checked?
 * disabled?
 * editable?
@@ -150,7 +150,7 @@
 * hover
 * inner_html
 * inner_text
-* ~~input_value~~
+* input_value
 * checked?
 * detached?
 * disabled?
@@ -236,7 +236,7 @@
 * hover
 * inner_html
 * inner_text
-* ~~input_value~~
+* input_value
 * checked?
 * closed?
 * disabled?

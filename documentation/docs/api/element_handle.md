@@ -300,6 +300,14 @@ def inner_text
 
 Returns the `element.innerText`.
 
+## input_value
+
+```
+def input_value(timeout: nil)
+```
+
+Returns `input.value` for `<input>` or `<textarea>` element. Throws for non-input elements.
+
 ## checked?
 
 ```

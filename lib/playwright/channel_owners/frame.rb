@@ -342,10 +342,16 @@ module Playwright
       nil
     end
 
-    def fill(selector, value, noWaitAfter: nil, timeout: nil)
+    def fill(
+          selector,
+          value,
+          force: nil,
+          noWaitAfter: nil,
+          timeout: nil)
       params = {
         selector: selector,
         value: value,
+        force: force,
         noWaitAfter: noWaitAfter,
         timeout: timeout,
       }.compact
@@ -410,6 +416,7 @@ module Playwright
           index: nil,
           value: nil,
           label: nil,
+          force: nil,
           noWaitAfter: nil,
           timeout: nil)
       base_params = SelectOptionValues.new(
@@ -418,8 +425,13 @@ module Playwright
         value: value,
         label: label,
       ).as_params
-      params = base_params.merge({ selector: selector, noWaitAfter: noWaitAfter, timeout: timeout }.compact)
+      params = base_params.merge({ selector: selector, force: force, noWaitAfter: noWaitAfter, timeout: timeout }.compact)
       @channel.send_message_to_server('selectOption', params)
+    end
+
+    def input_value(selector, timeout: nil)
+      params = { selector: selector, timeout: timeout }.compact
+      @channel.send_message_to_server('inputValue', params)
     end
 
     def set_input_files(selector, files, noWaitAfter: nil, timeout: nil)
