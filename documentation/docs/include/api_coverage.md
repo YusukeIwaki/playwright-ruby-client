@@ -26,8 +26,8 @@
 * json
 * ok
 * request
-* ~~security_details~~
-* ~~server_addr~~
+* security_details
+* server_addr
 * status
 * status_text
 * text
