@@ -505,8 +505,13 @@ module Playwright
       )
     end
 
-    def fill(selector, value, noWaitAfter: nil, timeout: nil)
-      @main_frame.fill(selector, value, noWaitAfter: noWaitAfter, timeout: timeout)
+    def fill(
+      selector,
+      value,
+      force: nil,
+      noWaitAfter: nil,
+      timeout: nil)
+      @main_frame.fill(selector, value, force: force, noWaitAfter: noWaitAfter, timeout: timeout)
     end
 
     def focus(selector, timeout: nil)
@@ -552,6 +557,7 @@ module Playwright
           index: nil,
           value: nil,
           label: nil,
+          force: nil,
           noWaitAfter: nil,
           timeout: nil)
       @main_frame.select_option(
@@ -560,9 +566,14 @@ module Playwright
         index: index,
         value: value,
         label: label,
+        force: force,
         noWaitAfter: noWaitAfter,
         timeout: timeout,
       )
+    end
+
+    def input_value(selector, timeout: nil)
+      @main_frame.input_value(selector, timeout: timeout)
     end
 
     def set_input_files(selector, files, noWaitAfter: nil, timeout: nil)

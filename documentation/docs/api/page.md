@@ -499,7 +499,12 @@ page.click("button")
 ## fill
 
 ```
-def fill(selector, value, noWaitAfter: nil, timeout: nil)
+def fill(
+      selector,
+      value,
+      force: nil,
+      noWaitAfter: nil,
+      timeout: nil)
 ```
 
 This method waits for an element matching `selector`, waits for [actionability](https://playwright.dev/python/docs/actionability) checks, focuses the
@@ -649,6 +654,14 @@ def inner_text(selector, timeout: nil)
 ```
 
 Returns `element.innerText`.
+
+## input_value
+
+```
+def input_value(selector, timeout: nil)
+```
+
+Returns `input.value` for the selected `<input>` or `<textarea>` element. Throws for non-input elements.
 
 ## checked?
 
@@ -934,6 +947,7 @@ def select_option(
       index: nil,
       value: nil,
       label: nil,
+      force: nil,
       noWaitAfter: nil,
       timeout: nil)
 ```

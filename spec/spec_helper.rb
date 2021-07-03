@@ -94,7 +94,7 @@ RSpec.configure do |config|
   #     url = "#{server_prefix}/awesome" # => http://localhost:4567/awesome
   #
   test_with_sinatra = Module.new do
-    attr_reader :ws_url, :server_prefix, :server_cross_process_prefix, :server_empty_page, :sinatra
+    attr_reader :ws_url, :server_prefix, :server_cross_process_prefix, :server_empty_page, :server_port, :sinatra
   end
   config.include(test_with_sinatra, sinatra: true)
 
@@ -212,6 +212,7 @@ RSpec.configure do |config|
     @server_prefix = "http://localhost:4567"
     @server_cross_process_prefix = "http://127.0.0.1:4567"
     @server_empty_page = "#{@server_prefix}/empty.html"
+    @server_port = 4567
 
     sinatra_app.get('/_ping') { '_pong' }
 

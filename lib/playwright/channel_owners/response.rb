@@ -44,6 +44,14 @@ module Playwright
       end.to_h
     end
 
+    def server_addr
+      @channel.send_message_to_server('serverAddr')
+    end
+
+    def security_details
+      @channel.send_message_to_server('securityDetails')
+    end
+
     def finished
       @channel.send_message_to_server('finished')
     end

@@ -27,6 +27,30 @@ RSpec.describe 'ElementHandle' do
     end
   end
 
+  it 'input_value should work', sinatra: true do
+    with_page do |page|
+      page.goto("#{server_prefix}/dom.html")
+
+      page.fill('#textarea', 'text value')
+      expect(page.input_value('#textarea')).to eq('text value')
+
+      page.fill('#input', 'input value')
+      expect(page.input_value('#input')).to eq('input value')
+
+      handle = page.query_selector('#input')
+      expect(handle.input_value).to eq('input value')
+
+      expect {
+        page.input_value('#inner')
+      }.to raise_error(/Node is not an HTMLInputElement or HTMLTextAreaElement/)
+
+      handle2 = page.query_selector('#inner')
+      expect {
+        handle2.input_value
+      }.to raise_error(/Node is not an HTMLInputElement or HTMLTextAreaElement/)
+    end
+  end
+
   it 'inner_html should work', sinatra: true do
     with_page do |page|
       page.goto("#{server_prefix}/dom.html")

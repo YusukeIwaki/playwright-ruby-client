@@ -64,6 +64,22 @@ def request
 
 Returns the matching [Request](./request) object.
 
+## security_details
+
+```
+def security_details
+```
+
+Returns SSL and other security information.
+
+## server_addr
+
+```
+def server_addr
+```
+
+Returns the IP address and port of the server.
+
 ## status
 
 ```
