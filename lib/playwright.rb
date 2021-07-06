@@ -81,8 +81,4 @@ module Playwright
       execution
     end
   end
-
-  module_function def instance
-    @playwright_instance
-  end
 end
