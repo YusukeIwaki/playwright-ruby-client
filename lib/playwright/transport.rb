@@ -8,7 +8,6 @@ module Playwright
   # ref: https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_transport.py
   class Transport
     # @param playwright_cli_executable_path [String] path to playwright-cli.
-    # @param debug [Boolean]
     def initialize(playwright_cli_executable_path:)
       @driver_executable_path = playwright_cli_executable_path
       @debug = ENV['DEBUG'].to_s == 'true' || ENV['DEBUG'].to_s == '1'
