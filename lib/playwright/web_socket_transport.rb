@@ -33,9 +33,23 @@ module Playwright
 
     # Terminate playwright-cli driver.
     def stop
-      @ws&.close
-    rescue EOFError => err
-      # ignore EOLError. The connection is already closed.
+      return unless @ws
+
+      future = Concurrent::Promises.resolvable_future
+
+      @ws.on_close do
+        future.fulfill(nil)
+      end
+
+      begin
+        @ws.close
+      rescue EOFError => err
+        # ignore EOLError. The connection is already closed.
+        future.fulfill(err)
+      end
+
+      # Wait for closed actually.
+      future.value!
     end
 
     # Start `playwright-cli run-driver`
