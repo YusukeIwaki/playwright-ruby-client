@@ -56,7 +56,7 @@ module Playwright
     #
     # @note This method blocks until playwright-cli exited. Consider using Thread or Future.
     def async_run
-      ws = ::Playwright::WebSocket.new(
+      ws = WebSocketClient.new(
         url: @ws_endpoint,
         max_payload_size: 256 * 1024 * 1024, # 256MB
       )
@@ -65,7 +65,7 @@ module Playwright
         promise.fulfill(ws)
       end
       ws.on_error do |error_message|
-        promise.reject(::Playwright::WebSocket::TransportError.new(error_message))
+        promise.reject(WebSocketClient::TransportError.new(error_message))
       end
 
       # Some messages can be sent just after start, before setting @ws.on_message
@@ -81,7 +81,7 @@ module Playwright
         @on_driver_crashed&.call
       end
     rescue Errno::ECONNREFUSED => err
-      raise ::Playwright::WebSocket::TransportError.new(err)
+      raise WebSocketClient::TransportError.new(err)
     end
 
     private

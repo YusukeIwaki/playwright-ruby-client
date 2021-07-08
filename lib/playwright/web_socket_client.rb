@@ -10,7 +10,7 @@ end
 # ref: https://github.com/rails/rails/blob/master/actioncable/lib/action_cable/connection/client_socket.rb
 # ref: https://github.com/cavalle/chrome_remote/blob/master/lib/chrome_remote/web_socket_client.rb
 module Playwright
-  class WebSocket
+  class WebSocketClient
     class SecureSocketFactory
       def initialize(host, port)
         @host = host

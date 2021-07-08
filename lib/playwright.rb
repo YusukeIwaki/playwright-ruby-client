@@ -92,7 +92,7 @@ module Playwright
   #
   # @experimental
   module_function def connect_to_playwright_server(ws_endpoint, &block)
-    require 'playwright/web_socket'
+    require 'playwright/web_socket_client'
     require 'playwright/web_socket_transport'
 
     transport = WebSocketTransport.new(ws_endpoint: ws_endpoint)
