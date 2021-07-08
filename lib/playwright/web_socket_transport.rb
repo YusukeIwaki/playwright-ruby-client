@@ -67,11 +67,15 @@ module Playwright
       ws.on_error do |error_message|
         promise.reject(::Playwright::WebSocket::TransportError.new(error_message))
       end
-      ws.start
-      @ws = promise.value!
-      @ws.on_message do |data|
+
+      # Some messages can be sent just after start, before setting @ws.on_message
+      # So set this handler before ws.start.
+      ws.on_message do |data|
         handle_on_message(data)
       end
+
+      ws.start
+      @ws = promise.value!
       @ws.on_error do |error|
         puts "[WebSocketTransport] error: #{error}"
         @on_driver_crashed&.call
