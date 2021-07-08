@@ -159,6 +159,32 @@ end
 
 ```
 
+### Communicate with Playwright server
+
+If your environment doesn't accept installing browser or creating browser process, consider separating Ruby client and Playwright server.
+
+![structure](https://user-images.githubusercontent.com/11763113/124934448-ad4d0700-e03f-11eb-942e-b9f3282bb703.png)
+
+For launching Playwright server, just execute:
+
+```
+npx playwright install && npx playwright run-server 8080
+```
+
+and we can connect to the server with the code like this:
+
+```ruby
+Playwright.connect_to_playwright_server('ws://127.0.0.1:8080') do |playwright|
+  playwright.chromium.launch do |browser|
+    page = browser.new_page
+    page.goto('https://github.com/YusukeIwaki')
+    page.screenshot(path: './YusukeIwaki.png')
+  end
+end
+```
+
+When `Playwright.connect_to_playwright_server` is used, playwright_cli_executable_path is not required.
+
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).

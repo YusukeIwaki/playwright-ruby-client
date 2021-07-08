@@ -5,10 +5,8 @@ module Playwright
   # https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_connection.py
   # https://github.com/microsoft/playwright-java/blob/master/playwright/src/main/java/com/microsoft/playwright/impl/Connection.java
   class Connection
-    def initialize(playwright_cli_executable_path:)
-      @transport = Transport.new(
-        playwright_cli_executable_path: playwright_cli_executable_path
-      )
+    def initialize(transport)
+      @transport = transport
       @transport.on_message_received do |message|
         dispatch(message)
       end
