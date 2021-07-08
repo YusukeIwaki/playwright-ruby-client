@@ -37,7 +37,7 @@ RSpec.configure do |config|
   config.around(:each, type: :integration) do |example|
     @playwright_browser_type_param = browser_type
 
-    Playwright.create(playwright_cli_executable_path: ENV['PLAYWRIGHT_CLI_EXECUTABLE_PATH']) do |playwright|
+    block = ->(playwright) {
       @playwright_playwright = playwright
       @playwright_browser_type = playwright.send(@playwright_browser_type_param)
 
@@ -51,6 +51,12 @@ RSpec.configure do |config|
           example.run
         end
       end
+    }
+
+    if ENV['PLAYWRIGHT_WS_ENDPOINT']
+      Playwright.connect_to_playwright_server(ENV['PLAYWRIGHT_WS_ENDPOINT'], &block)
+    else
+      Playwright.create(playwright_cli_executable_path: ENV['PLAYWRIGHT_CLI_EXECUTABLE_PATH'], &block)
     end
   end
 
