@@ -214,17 +214,23 @@ RSpec.configure do |config|
     sinatra_app.disable(:protection)
     sinatra_app.set(:public_folder, File.join(__dir__, 'assets'))
     sinatra_app.use(WsApp) if example.metadata[:web_socket]
-    @ws_url = 'ws://localhost:4567/ws'
-    @server_prefix = "http://localhost:4567"
-    @server_cross_process_prefix = "http://127.0.0.1:4567"
-    @server_empty_page = "#{@server_prefix}/empty.html"
-    @server_port = 4567
+
+    (8000..8010).each do |server_port|
+      @ws_url = "ws://localhost:#{server_port}/ws"
+      @server_prefix = "http://localhost:#{server_port}"
+      @server_cross_process_prefix = "http://127.0.0.1:#{server_port}"
+      @server_empty_page = "#{@server_prefix}/empty.html"
+      @server_port = server_port
+
+      port_is_used = Socket.tcp('localhost', server_port, connect_timeout: 1) { true } rescue false
+      break unless port_is_used
+    end
 
     sinatra_app.get('/_ping') { '_pong' }
 
     # Start server and wait for server ready.
     # FIXME should change port when Errno::EADDRINUSE
-    Thread.new { sinatra_app.run!(port: 4567) }
+    Thread.new(@server_port) { |port| sinatra_app.run!(port: port) }
     Timeout.timeout(3) do
       loop do
         Net::HTTP.get(URI("#{server_prefix}/_ping"))
