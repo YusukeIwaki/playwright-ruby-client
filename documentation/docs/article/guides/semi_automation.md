@@ -1,3 +1,7 @@
+---
+sidebar_position: 5
+---
+
 # Semi-automation
 
 Playwright Browser context is isolated and not persisted by default. But we can also use persistent browser context using [BrowserType#launch_persistent_context](/docs/api/browser_type#launch_persistent_context).
