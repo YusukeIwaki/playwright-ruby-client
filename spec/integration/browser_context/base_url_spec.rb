@@ -37,10 +37,10 @@ RSpec.describe 'baseUrl' do
       expect(page.goto(server_empty_page).url).to eq(server_empty_page)
 
       page.goto('data:text/html,Hello world')
-      expect(page.evaluate('window.location.href')).to eq('data:text/html,Hello world')
+      expect(page.evaluate('() => window.location.href')).to eq('data:text/html,Hello world')
 
       page.goto('about:blank')
-      expect(page.evaluate('window.location.href')).to eq('about:blank')
+      expect(page.evaluate('() => window.location.href')).to eq('about:blank')
     end
   end
 
