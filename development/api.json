@@ -1699,6 +1699,37 @@
                 {
                   "kind": "property",
                   "langs": {},
+                  "name": "baseURL",
+                  "type": {
+                    "name": "string",
+                    "expression": "[string]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "When using [`method: Page.goto`], [`method: Page.route`], [`method: Page.waitForURL`], [`method: Page.waitForRequest`], or [`method: Page.waitForResponse`] it takes the base URL in consideration by using the [`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor for building the corresponding URL. Examples:"
+                    },
+                    {
+                      "type": "li",
+                      "text": "baseURL: `http://localhost:3000` and navigating to `/bar.html` results in `http://localhost:3000/bar.html`",
+                      "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "baseURL: `http://localhost:3000/foo/` and navigating to `./bar.html` results in `http://localhost:3000/foo/bar.html`",
+                      "liType": "bullet"
+                    }
+                  ],
+                  "required": false,
+                  "comment": "When using [`method: Page.goto`], [`method: Page.route`], [`method: Page.waitForURL`], [`method: Page.waitForRequest`],\nor [`method: Page.waitForResponse`] it takes the base URL in consideration by using the\n[`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor for building the corresponding URL.\nExamples:\n- baseURL: `http://localhost:3000` and navigating to `/bar.html` results in `http://localhost:3000/bar.html`\n- baseURL: `http://localhost:3000/foo/` and navigating to `./bar.html` results in `http://localhost:3000/foo/bar.html`",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "baseURL",
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
                   "name": "bypassCSP",
                   "type": {
                     "name": "boolean",
@@ -5832,6 +5863,37 @@
                 {
                   "kind": "property",
                   "langs": {},
+                  "name": "baseURL",
+                  "type": {
+                    "name": "string",
+                    "expression": "[string]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "When using [`method: Page.goto`], [`method: Page.route`], [`method: Page.waitForURL`], [`method: Page.waitForRequest`], or [`method: Page.waitForResponse`] it takes the base URL in consideration by using the [`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor for building the corresponding URL. Examples:"
+                    },
+                    {
+                      "type": "li",
+                      "text": "baseURL: `http://localhost:3000` and navigating to `/bar.html` results in `http://localhost:3000/bar.html`",
+                      "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "baseURL: `http://localhost:3000/foo/` and navigating to `./bar.html` results in `http://localhost:3000/foo/bar.html`",
+                      "liType": "bullet"
+                    }
+                  ],
+                  "required": false,
+                  "comment": "When using [`method: Page.goto`], [`method: Page.route`], [`method: Page.waitForURL`], [`method: Page.waitForRequest`],\nor [`method: Page.waitForResponse`] it takes the base URL in consideration by using the\n[`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor for building the corresponding URL.\nExamples:\n- baseURL: `http://localhost:3000` and navigating to `/bar.html` results in `http://localhost:3000/bar.html`\n- baseURL: `http://localhost:3000/foo/` and navigating to `./bar.html` results in `http://localhost:3000/foo/bar.html`",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "baseURL",
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
                   "name": "bypassCSP",
                   "type": {
                     "name": "boolean",
@@ -7752,6 +7814,37 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "acceptDownloads",
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "baseURL",
+                  "type": {
+                    "name": "string",
+                    "expression": "[string]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "When using [`method: Page.goto`], [`method: Page.route`], [`method: Page.waitForURL`], [`method: Page.waitForRequest`], or [`method: Page.waitForResponse`] it takes the base URL in consideration by using the [`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor for building the corresponding URL. Examples:"
+                    },
+                    {
+                      "type": "li",
+                      "text": "baseURL: `http://localhost:3000` and navigating to `/bar.html` results in `http://localhost:3000/bar.html`",
+                      "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "baseURL: `http://localhost:3000/foo/` and navigating to `./bar.html` results in `http://localhost:3000/foo/bar.html`",
+                      "liType": "bullet"
+                    }
+                  ],
+                  "required": false,
+                  "comment": "When using [`method: Page.goto`], [`method: Page.route`], [`method: Page.waitForURL`], [`method: Page.waitForRequest`],\nor [`method: Page.waitForResponse`] it takes the base URL in consideration by using the\n[`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor for building the corresponding URL.\nExamples:\n- baseURL: `http://localhost:3000` and navigating to `/bar.html` results in `http://localhost:3000/bar.html`\n- baseURL: `http://localhost:3000/foo/` and navigating to `./bar.html` results in `http://localhost:3000/foo/bar.html`",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "baseURL",
                   "paramOrOption": null
                 },
                 {
@@ -12390,11 +12483,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A glob pattern, regex pattern or predicate receiving [URL] to match while routing."
+                "text": "A glob pattern, regex pattern or predicate receiving [URL] to match while routing. When a `baseURL` via the context options was provided and the passed URL is a path, it gets merged via the [`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor."
               }
             ],
             "required": true,
-            "comment": "A glob pattern, regex pattern or predicate receiving [URL] to match while routing.",
+            "comment": "A glob pattern, regex pattern or predicate receiving [URL] to match while routing. When a `baseURL` via the context\noptions was provided and the passed URL is a path, it gets merged via the\n[`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor.",
             "deprecated": false,
             "async": false,
             "alias": "url",
@@ -15892,6 +15985,37 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "args",
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "baseURL",
+                  "type": {
+                    "name": "string",
+                    "expression": "[string]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "When using [`method: Page.goto`], [`method: Page.route`], [`method: Page.waitForURL`], [`method: Page.waitForRequest`], or [`method: Page.waitForResponse`] it takes the base URL in consideration by using the [`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor for building the corresponding URL. Examples:"
+                    },
+                    {
+                      "type": "li",
+                      "text": "baseURL: `http://localhost:3000` and navigating to `/bar.html` results in `http://localhost:3000/bar.html`",
+                      "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "baseURL: `http://localhost:3000/foo/` and navigating to `./bar.html` results in `http://localhost:3000/foo/bar.html`",
+                      "liType": "bullet"
+                    }
+                  ],
+                  "required": false,
+                  "comment": "When using [`method: Page.goto`], [`method: Page.route`], [`method: Page.waitForURL`], [`method: Page.waitForRequest`],\nor [`method: Page.waitForResponse`] it takes the base URL in consideration by using the\n[`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor for building the corresponding URL.\nExamples:\n- baseURL: `http://localhost:3000` and navigating to `/bar.html` results in `http://localhost:3000/bar.html`\n- baseURL: `http://localhost:3000/foo/` and navigating to `./bar.html` results in `http://localhost:3000/foo/bar.html`",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "baseURL",
                   "paramOrOption": null
                 },
                 {
@@ -19811,6 +19935,27 @@
     "members": [
       {
         "kind": "method",
+        "langs": {},
+        "name": "cancel",
+        "type": {
+          "name": "void"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Cancels a download. Will not fail if the download is already finished or canceled. Upon successful cancellations, `download.failure()` would resolve to `'canceled'`."
+          }
+        ],
+        "required": true,
+        "comment": "Cancels a download. Will not fail if the download is already finished or canceled. Upon successful cancellations,\n`download.failure()` would resolve to `'canceled'`.",
+        "deprecated": false,
+        "async": true,
+        "alias": "cancel",
+        "paramOrOption": null,
+        "args": []
+      },
+      {
+        "kind": "method",
         "langs": {
           "only": [
             "java",
@@ -19941,10 +20086,14 @@
           {
             "type": "text",
             "text": "Returns path to the downloaded file in case of successful download. The method will wait for the download to finish if necessary. The method throws when connected remotely."
+          },
+          {
+            "type": "text",
+            "text": "Note that the download's file name is a random GUID, use [`method: Download.suggestedFilename`] to get suggested file name."
           }
         ],
         "required": true,
-        "comment": "Returns path to the downloaded file in case of successful download. The method will wait for the download to finish if\nnecessary. The method throws when connected remotely.",
+        "comment": "Returns path to the downloaded file in case of successful download. The method will wait for the download to finish if\nnecessary. The method throws when connected remotely.\n\nNote that the download's file name is a random GUID, use [`method: Download.suggestedFilename`] to get suggested file\nname.",
         "deprecated": false,
         "async": true,
         "alias": "path",
@@ -30968,43 +31117,6 @@
             "async": false,
             "alias": "selector",
             "paramOrOption": null
-          },
-          {
-            "kind": "property",
-            "langs": {},
-            "name": "options",
-            "type": {
-              "name": "Object",
-              "properties": [
-                {
-                  "kind": "property",
-                  "langs": {},
-                  "name": "timeout",
-                  "type": {
-                    "name": "float",
-                    "expression": "[float]"
-                  },
-                  "spec": [
-                    {
-                      "type": "text",
-                      "text": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by using the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods."
-                    }
-                  ],
-                  "required": false,
-                  "comment": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by\nusing the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods.",
-                  "deprecated": false,
-                  "async": false,
-                  "alias": "timeout",
-                  "paramOrOption": null
-                }
-              ]
-            },
-            "required": false,
-            "comment": "",
-            "deprecated": false,
-            "async": false,
-            "alias": "options",
-            "paramOrOption": null
           }
         ]
       },
@@ -31048,43 +31160,6 @@
             "deprecated": false,
             "async": false,
             "alias": "selector",
-            "paramOrOption": null
-          },
-          {
-            "kind": "property",
-            "langs": {},
-            "name": "options",
-            "type": {
-              "name": "Object",
-              "properties": [
-                {
-                  "kind": "property",
-                  "langs": {},
-                  "name": "timeout",
-                  "type": {
-                    "name": "float",
-                    "expression": "[float]"
-                  },
-                  "spec": [
-                    {
-                      "type": "text",
-                      "text": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by using the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods."
-                    }
-                  ],
-                  "required": false,
-                  "comment": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by\nusing the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods.",
-                  "deprecated": false,
-                  "async": false,
-                  "alias": "timeout",
-                  "paramOrOption": null
-                }
-              ]
-            },
-            "required": false,
-            "comment": "",
-            "deprecated": false,
-            "async": false,
-            "alias": "options",
             "paramOrOption": null
           }
         ]
@@ -42612,11 +42687,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "URL to navigate page to. The url should include scheme, e.g. `https://`."
+                "text": "URL to navigate page to. The url should include scheme, e.g. `https://`. When a `baseURL` via the context options was provided and the passed URL is a path, it gets merged via the [`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor."
               }
             ],
             "required": true,
-            "comment": "URL to navigate page to. The url should include scheme, e.g. `https://`.",
+            "comment": "URL to navigate page to. The url should include scheme, e.g. `https://`. When a `baseURL` via the context options was\nprovided and the passed URL is a path, it gets merged via the\n[`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor.",
             "deprecated": false,
             "async": false,
             "alias": "url",
@@ -43619,43 +43694,6 @@
             "async": false,
             "alias": "selector",
             "paramOrOption": null
-          },
-          {
-            "kind": "property",
-            "langs": {},
-            "name": "options",
-            "type": {
-              "name": "Object",
-              "properties": [
-                {
-                  "kind": "property",
-                  "langs": {},
-                  "name": "timeout",
-                  "type": {
-                    "name": "float",
-                    "expression": "[float]"
-                  },
-                  "spec": [
-                    {
-                      "type": "text",
-                      "text": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by using the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods."
-                    }
-                  ],
-                  "required": false,
-                  "comment": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by\nusing the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods.",
-                  "deprecated": false,
-                  "async": false,
-                  "alias": "timeout",
-                  "paramOrOption": null
-                }
-              ]
-            },
-            "required": false,
-            "comment": "",
-            "deprecated": false,
-            "async": false,
-            "alias": "options",
-            "paramOrOption": null
           }
         ]
       },
@@ -43699,43 +43737,6 @@
             "deprecated": false,
             "async": false,
             "alias": "selector",
-            "paramOrOption": null
-          },
-          {
-            "kind": "property",
-            "langs": {},
-            "name": "options",
-            "type": {
-              "name": "Object",
-              "properties": [
-                {
-                  "kind": "property",
-                  "langs": {},
-                  "name": "timeout",
-                  "type": {
-                    "name": "float",
-                    "expression": "[float]"
-                  },
-                  "spec": [
-                    {
-                      "type": "text",
-                      "text": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by using the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods."
-                    }
-                  ],
-                  "required": false,
-                  "comment": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by\nusing the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods.",
-                  "deprecated": false,
-                  "async": false,
-                  "alias": "timeout",
-                  "paramOrOption": null
-                }
-              ]
-            },
-            "required": false,
-            "comment": "",
-            "deprecated": false,
-            "async": false,
-            "alias": "options",
             "paramOrOption": null
           }
         ]
@@ -45415,11 +45416,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A glob pattern, regex pattern or predicate receiving [URL] to match while routing."
+                "text": "A glob pattern, regex pattern or predicate receiving [URL] to match while routing. When a `baseURL` via the context options was provided and the passed URL is a path, it gets merged via the [`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor."
               }
             ],
             "required": true,
-            "comment": "A glob pattern, regex pattern or predicate receiving [URL] to match while routing.",
+            "comment": "A glob pattern, regex pattern or predicate receiving [URL] to match while routing. When a `baseURL` via the context\noptions was provided and the passed URL is a path, it gets merged via the\n[`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor.",
             "deprecated": false,
             "async": false,
             "alias": "url",
@@ -45868,7 +45869,7 @@
               "await page.SelectOptionAsync(\"select#colors\", new[] { \"blue\" });",
               "// single selection matching both the value and the label",
               "await page.SelectOptionAsync(\"select#colors\", new[] { new SelectOptionValue() { Label = \"blue\" } });",
-              "// multiple ",
+              "// multiple",
               "await page.SelectOptionAsync(\"select#colors\", new[] { \"red\", \"green\", \"blue\" });"
             ],
             "codeLang": "csharp"
@@ -45879,7 +45880,7 @@
           }
         ],
         "required": true,
-        "comment": "This method waits for an element matching `selector`, waits for [actionability](./actionability.md) checks, waits until\nall specified options are present in the `<select>` element and selects these options.\n\nIf the target element is not a `<select>` element, this method throws an error. However, if the element is inside the\n`<label>` element that has an associated\n[control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), the control will be used instead.\n\nReturns the array of option values that have been successfully selected.\n\nTriggers a `change` and `input` event once all the provided options have been selected.\n\n```js\n// single selection matching the value\npage.selectOption('select#colors', 'blue');\n\n// single selection matching the label\npage.selectOption('select#colors', { label: 'Blue' });\n\n// multiple selection\npage.selectOption('select#colors', ['red', 'green', 'blue']);\n\n```\n\n```java\n// single selection matching the value\npage.selectOption(\"select#colors\", \"blue\");\n// single selection matching both the value and the label\npage.selectOption(\"select#colors\", new SelectOption().setLabel(\"Blue\"));\n// multiple selection\npage.selectOption(\"select#colors\", new String[] {\"red\", \"green\", \"blue\"});\n```\n\n```python async\n# single selection matching the value\nawait page.select_option(\"select#colors\", \"blue\")\n# single selection matching the label\nawait page.select_option(\"select#colors\", label=\"blue\")\n# multiple selection\nawait page.select_option(\"select#colors\", value=[\"red\", \"green\", \"blue\"])\n```\n\n```python sync\n# single selection matching the value\npage.select_option(\"select#colors\", \"blue\")\n# single selection matching both the label\npage.select_option(\"select#colors\", label=\"blue\")\n# multiple selection\npage.select_option(\"select#colors\", value=[\"red\", \"green\", \"blue\"])\n```\n\n```csharp\n// single selection matching the value\nawait page.SelectOptionAsync(\"select#colors\", new[] { \"blue\" });\n// single selection matching both the value and the label\nawait page.SelectOptionAsync(\"select#colors\", new[] { new SelectOptionValue() { Label = \"blue\" } });\n// multiple \nawait page.SelectOptionAsync(\"select#colors\", new[] { \"red\", \"green\", \"blue\" });\n```\n\nShortcut for main frame's [`method: Frame.selectOption`].",
+        "comment": "This method waits for an element matching `selector`, waits for [actionability](./actionability.md) checks, waits until\nall specified options are present in the `<select>` element and selects these options.\n\nIf the target element is not a `<select>` element, this method throws an error. However, if the element is inside the\n`<label>` element that has an associated\n[control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), the control will be used instead.\n\nReturns the array of option values that have been successfully selected.\n\nTriggers a `change` and `input` event once all the provided options have been selected.\n\n```js\n// single selection matching the value\npage.selectOption('select#colors', 'blue');\n\n// single selection matching the label\npage.selectOption('select#colors', { label: 'Blue' });\n\n// multiple selection\npage.selectOption('select#colors', ['red', 'green', 'blue']);\n\n```\n\n```java\n// single selection matching the value\npage.selectOption(\"select#colors\", \"blue\");\n// single selection matching both the value and the label\npage.selectOption(\"select#colors\", new SelectOption().setLabel(\"Blue\"));\n// multiple selection\npage.selectOption(\"select#colors\", new String[] {\"red\", \"green\", \"blue\"});\n```\n\n```python async\n# single selection matching the value\nawait page.select_option(\"select#colors\", \"blue\")\n# single selection matching the label\nawait page.select_option(\"select#colors\", label=\"blue\")\n# multiple selection\nawait page.select_option(\"select#colors\", value=[\"red\", \"green\", \"blue\"])\n```\n\n```python sync\n# single selection matching the value\npage.select_option(\"select#colors\", \"blue\")\n# single selection matching both the label\npage.select_option(\"select#colors\", label=\"blue\")\n# multiple selection\npage.select_option(\"select#colors\", value=[\"red\", \"green\", \"blue\"])\n```\n\n```csharp\n// single selection matching the value\nawait page.SelectOptionAsync(\"select#colors\", new[] { \"blue\" });\n// single selection matching both the value and the label\nawait page.SelectOptionAsync(\"select#colors\", new[] { new SelectOptionValue() { Label = \"blue\" } });\n// multiple\nawait page.SelectOptionAsync(\"select#colors\", new[] { \"red\", \"green\", \"blue\" });\n```\n\nShortcut for main frame's [`method: Frame.selectOption`].",
         "deprecated": false,
         "async": true,
         "alias": "selectOption",
@@ -50203,7 +50204,7 @@
         "spec": [
           {
             "type": "text",
-            "text": "Waits for the matching request and returns it.  See [waiting for event](./events.md#waiting-for-event) for more details about events."
+            "text": "Waits for the matching request and returns it. See [waiting for event](./events.md#waiting-for-event) for more details about events."
           },
           {
             "type": "code",
@@ -50291,7 +50292,7 @@
           }
         ],
         "required": true,
-        "comment": "Waits for the matching request and returns it.  See [waiting for event](./events.md#waiting-for-event) for more details\nabout events.\n\n```js\n// Note that Promise.all prevents a race condition\n// between clicking and waiting for the request.\nconst [request] = await Promise.all([\n  // Waits for the next request with the specified url\n  page.waitForRequest('https://example.com/resource'),\n  // Triggers the request\n  page.click('button.triggers-request'),\n]);\n\n// Alternative way with a predicate.\nconst [request] = await Promise.all([\n  // Waits for the next request matching some conditions\n  page.waitForRequest(request => request.url() === 'https://example.com' && request.method() === 'GET'),\n  // Triggers the request\n  page.click('button.triggers-request'),\n]);\n```\n\n```java\n// Waits for the next request with the specified url\nRequest request = page.waitForRequest(\"https://example.com/resource\", () -> {\n  // Triggers the request\n  page.click(\"button.triggers-request\");\n});\n\n// Waits for the next request matching some conditions\nRequest request = page.waitForRequest(request -> \"https://example.com\".equals(request.url()) && \"GET\".equals(request.method()), () -> {\n  // Triggers the request\n  page.click(\"button.triggers-request\");\n});\n```\n\n```python async\nasync with page.expect_request(\"http://example.com/resource\") as first:\n    await page.click('button')\nfirst_request = await first.value\n\n# or with a lambda\nasync with page.expect_request(lambda request: request.url == \"http://example.com\" and request.method == \"get\") as second:\n    await page.click('img')\nsecond_request = await second.value\n```\n\n```python sync\nwith page.expect_request(\"http://example.com/resource\") as first:\n    page.click('button')\nfirst_request = first.value\n\n# or with a lambda\nwith page.expect_request(lambda request: request.url == \"http://example.com\" and request.method == \"get\") as second:\n    page.click('img')\nsecond_request = second.value\n```\n\n```csharp\n// Waits for the next request with the specified url.\nawait page.RunAndWaitForRequestAsync(async () =>\n{\n    await page.ClickAsync(\"button\");\n}, \"http://example.com/resource\");\n\n// Alternative way with a predicate.\nawait page.RunAndWaitForRequestAsync(async () =>\n{\n    await page.ClickAsync(\"button\");\n}, request => request.Url == \"https://example.com\" && request.Method == \"GET\");\n```\n",
+        "comment": "Waits for the matching request and returns it. See [waiting for event](./events.md#waiting-for-event) for more details\nabout events.\n\n```js\n// Note that Promise.all prevents a race condition\n// between clicking and waiting for the request.\nconst [request] = await Promise.all([\n  // Waits for the next request with the specified url\n  page.waitForRequest('https://example.com/resource'),\n  // Triggers the request\n  page.click('button.triggers-request'),\n]);\n\n// Alternative way with a predicate.\nconst [request] = await Promise.all([\n  // Waits for the next request matching some conditions\n  page.waitForRequest(request => request.url() === 'https://example.com' && request.method() === 'GET'),\n  // Triggers the request\n  page.click('button.triggers-request'),\n]);\n```\n\n```java\n// Waits for the next request with the specified url\nRequest request = page.waitForRequest(\"https://example.com/resource\", () -> {\n  // Triggers the request\n  page.click(\"button.triggers-request\");\n});\n\n// Waits for the next request matching some conditions\nRequest request = page.waitForRequest(request -> \"https://example.com\".equals(request.url()) && \"GET\".equals(request.method()), () -> {\n  // Triggers the request\n  page.click(\"button.triggers-request\");\n});\n```\n\n```python async\nasync with page.expect_request(\"http://example.com/resource\") as first:\n    await page.click('button')\nfirst_request = await first.value\n\n# or with a lambda\nasync with page.expect_request(lambda request: request.url == \"http://example.com\" and request.method == \"get\") as second:\n    await page.click('img')\nsecond_request = await second.value\n```\n\n```python sync\nwith page.expect_request(\"http://example.com/resource\") as first:\n    page.click('button')\nfirst_request = first.value\n\n# or with a lambda\nwith page.expect_request(lambda request: request.url == \"http://example.com\" and request.method == \"get\") as second:\n    page.click('img')\nsecond_request = second.value\n```\n\n```csharp\n// Waits for the next request with the specified url.\nawait page.RunAndWaitForRequestAsync(async () =>\n{\n    await page.ClickAsync(\"button\");\n}, \"http://example.com/resource\");\n\n// Alternative way with a predicate.\nawait page.RunAndWaitForRequestAsync(async () =>\n{\n    await page.ClickAsync(\"button\");\n}, request => request.Url == \"https://example.com\" && request.Method == \"GET\");\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "waitForRequest",
@@ -50426,11 +50427,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "Request URL string, regex or predicate receiving `Request` object."
+                "text": "Request URL string, regex or predicate receiving `Request` object. When a `baseURL` via the context options was provided and the passed URL is a path, it gets merged via the [`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor."
               }
             ],
             "required": true,
-            "comment": "Request URL string, regex or predicate receiving `Request` object.",
+            "comment": "Request URL string, regex or predicate receiving `Request` object. When a `baseURL` via the context options was provided\nand the passed URL is a path, it gets merged via the\n[`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor.",
             "deprecated": false,
             "async": false,
             "alias": "urlOrPredicate",
@@ -50897,7 +50898,7 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Request URL string, regex or predicate receiving [Response] object."
+                      "text": "Request URL string, regex or predicate receiving [Response] object. When a [`option: baseURL`] via the context options was provided and the passed URL is a path, it gets merged via the [`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor."
                     }
                   ],
                   "argsArray": [],
@@ -50939,11 +50940,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "Request URL string, regex or predicate receiving `Response` object."
+                "text": "Request URL string, regex or predicate receiving `Response` object. When a `baseURL` via the context options was provided and the passed URL is a path, it gets merged via the [`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor."
               }
             ],
             "required": true,
-            "comment": "Request URL string, regex or predicate receiving `Response` object.",
+            "comment": "Request URL string, regex or predicate receiving `Response` object. When a `baseURL` via the context options was\nprovided and the passed URL is a path, it gets merged via the\n[`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor.",
             "deprecated": false,
             "async": false,
             "alias": "urlOrPredicate",
@@ -54917,145 +54918,6 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "status",
-                  "paramOrOption": null
-                }
-              ]
-            },
-            "required": false,
-            "comment": "",
-            "deprecated": false,
-            "async": false,
-            "alias": "options",
-            "paramOrOption": null
-          }
-        ]
-      },
-      {
-        "kind": "method",
-        "langs": {},
-        "name": "intercept",
-        "type": {
-          "name": "Response",
-          "expression": "[Response]"
-        },
-        "spec": [
-          {
-            "type": "text",
-            "text": "Continues route's request with optional overrides and intercepts response."
-          }
-        ],
-        "required": true,
-        "comment": "Continues route's request with optional overrides and intercepts response.",
-        "deprecated": false,
-        "async": true,
-        "alias": "intercept",
-        "paramOrOption": null,
-        "args": [
-          {
-            "kind": "property",
-            "langs": {},
-            "name": "options",
-            "type": {
-              "name": "Object",
-              "properties": [
-                {
-                  "kind": "property",
-                  "langs": {},
-                  "name": "headers",
-                  "type": {
-                    "name": "Object",
-                    "templates": [
-                      {
-                        "name": "string"
-                      },
-                      {
-                        "name": "string"
-                      }
-                    ],
-                    "expression": "[Object]<[string], [string]>"
-                  },
-                  "spec": [
-                    {
-                      "type": "text",
-                      "text": "If set changes the request HTTP headers. Header values will be converted to a string."
-                    }
-                  ],
-                  "required": false,
-                  "comment": "If set changes the request HTTP headers. Header values will be converted to a string.",
-                  "deprecated": false,
-                  "async": false,
-                  "alias": "headers",
-                  "paramOrOption": null
-                },
-                {
-                  "kind": "property",
-                  "langs": {},
-                  "name": "method",
-                  "type": {
-                    "name": "string",
-                    "expression": "[string]"
-                  },
-                  "spec": [
-                    {
-                      "type": "text",
-                      "text": "If set changes the request method (e.g. GET or POST)"
-                    }
-                  ],
-                  "required": false,
-                  "comment": "If set changes the request method (e.g. GET or POST)",
-                  "deprecated": false,
-                  "async": false,
-                  "alias": "method",
-                  "paramOrOption": null
-                },
-                {
-                  "kind": "property",
-                  "langs": {},
-                  "name": "postData",
-                  "type": {
-                    "name": "",
-                    "union": [
-                      {
-                        "name": "string"
-                      },
-                      {
-                        "name": "Buffer"
-                      }
-                    ],
-                    "expression": "[string]|[Buffer]"
-                  },
-                  "spec": [
-                    {
-                      "type": "text",
-                      "text": "If set changes the post data of request"
-                    }
-                  ],
-                  "required": false,
-                  "comment": "If set changes the post data of request",
-                  "deprecated": false,
-                  "async": false,
-                  "alias": "postData",
-                  "paramOrOption": null
-                },
-                {
-                  "kind": "property",
-                  "langs": {},
-                  "name": "url",
-                  "type": {
-                    "name": "string",
-                    "expression": "[string]"
-                  },
-                  "spec": [
-                    {
-                      "type": "text",
-                      "text": "If set changes the request URL. New URL must have same protocol as original one."
-                    }
-                  ],
-                  "required": false,
-                  "comment": "If set changes the request URL. New URL must have same protocol as original one.",
-                  "deprecated": false,
-                  "async": false,
-                  "alias": "url",
                   "paramOrOption": null
                 }
               ]

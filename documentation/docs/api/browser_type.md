@@ -103,6 +103,7 @@ def launch_persistent_context(
       userDataDir,
       acceptDownloads: nil,
       args: nil,
+      baseURL: nil,
       bypassCSP: nil,
       channel: nil,
       chromiumSandbox: nil,

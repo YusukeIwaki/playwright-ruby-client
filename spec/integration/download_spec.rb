@@ -18,6 +18,15 @@ RSpec.describe 'download', sinatra: true do
       )
       body('It works!')
     end
+
+    sinatra.get('/downloadWithDelay') do
+      headers(
+        'Content-Type' => 'application/octet-stream',
+        'Content-Disposition' => 'attachment; filename=file.txt',
+      )
+      # Chromium requires a large enough payload to trigger the download event soon enough
+      body("#{'a'*4096000}\nIt works!")
+    end
   }
 
   it 'should report downloads with acceptDownloads: false' do
@@ -398,4 +407,98 @@ RSpec.describe 'download', sinatra: true do
   #   expect(downloadPath).toBe(null);
   #   expect(saveError.message).toContain('Download deleted upon browser context closure.');
   # });
+
+  # it('should throw if browser dies', async ({ server, browserType, browserName, browserOptions, platform}, testInfo) => {
+  #   it.skip(browserName === 'webkit' && platform === 'linux', 'WebKit on linux does not convert to the download immediately upon receiving headers');
+  #   server.setRoute('/downloadStall', (req, res) => {
+  #     res.setHeader('Content-Type', 'application/octet-stream');
+  #     res.setHeader('Content-Disposition', 'attachment; filename=file.txt');
+  #     res.writeHead(200);
+  #     res.flushHeaders();
+  #     res.write(`Hello world`);
+  #   });
+
+  #   const browser = await browserType.launch(browserOptions);
+  #   const page = await browser.newPage({ acceptDownloads: true });
+  #   await page.setContent(`<a href="${server.PREFIX}/downloadStall">click me</a>`);
+  #   const [download] = await Promise.all([
+  #     page.waitForEvent('download'),
+  #     page.click('a')
+  #   ]);
+  #   const [downloadPath, saveError] = await Promise.all([
+  #     download.path(),
+  #     download.saveAs(testInfo.outputPath('download.txt')).catch(e => e),
+  #     (browser as any)._channel.killForTests(),
+  #   ]);
+  #   expect(downloadPath).toBe(null);
+  #   expect(saveError.message).toContain('File deleted upon browser context closure.');
+  # });
+
+  # it('should download large binary.zip', async ({browser, server, browserName}, testInfo) => {
+  #   const zipFile = testInfo.outputPath('binary.zip');
+  #   const content = crypto.randomBytes(1 << 20);
+  #   fs.writeFileSync(zipFile, content);
+  #   server.setRoute('/binary.zip', (req, res) => server.serveFile(req, res, zipFile));
+
+  #   const page = await browser.newPage({ acceptDownloads: true });
+  #   await page.goto(server.PREFIX + '/empty.html');
+  #   await page.setContent(`<a href="${server.PREFIX}/binary.zip" download="binary.zip">download</a>`);
+  #   const [ download ] = await Promise.all([
+  #     page.waitForEvent('download'),
+  #     page.click('a')
+  #   ]);
+  #   const downloadPath = await download.path();
+  #   const fileContent = fs.readFileSync(downloadPath);
+  #   expect(fileContent.byteLength).toBe(content.byteLength);
+  #   expect(fileContent.equals(content)).toBe(true);
+
+  #   const stream = await download.createReadStream();
+  #   const data = await new Promise<Buffer>((fulfill, reject) => {
+  #     const bufs = [];
+  #     stream.on('data', d => bufs.push(d));
+  #     stream.on('error', reject);
+  #     stream.on('end', () => fulfill(Buffer.concat(bufs)));
+  #   });
+  #   expect(data.byteLength).toBe(content.byteLength);
+  #   expect(data.equals(content)).toBe(true);
+  #   await page.close();
+  # });
+
+  it 'should be able to cancel pending downloads' do
+    with_page(acceptDownloads: true) do |page|
+      page.content = "<a href=\"#{server_prefix}/downloadWithDelay\">download</a>"
+      download = page.expect_download do
+        page.click('a')
+      end
+      download.cancel
+      expect(download.failure).to eq('canceled')
+    end
+  end
+
+  it 'should not fail explicitly to cancel a download even if that is already finished' do
+    with_page(acceptDownloads: true) do |page|
+      page.content = "<a href=\"#{server_prefix}/download\">download</a>"
+      download = page.expect_download do
+        page.click('a')
+      end
+      path = download.path
+      expect(File.exist?(path)).to eq(true)
+      expect(File.read(download.path)).to eq('Hello world!')
+      download.cancel
+      expect(download.failure).to be_nil
+    end
+  end
+
+  it 'should report downloads with interception' do
+    with_page(acceptDownloads: true) do |page|
+      page.route(/.*/, -> (route, _) { route.continue })
+      page.content = "<a href=\"#{server_prefix}/download\">download</a>"
+      download = page.expect_download do
+        page.click('a')
+      end
+      path = download.path
+      expect(File.exist?(path)).to eq(true)
+      expect(File.read(download.path)).to eq('Hello world!')
+    end
+  end
 end

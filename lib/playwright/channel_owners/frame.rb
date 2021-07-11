@@ -71,7 +71,7 @@ module Playwright
 
       predicate =
         if url
-          matcher = UrlMatcher.new(url)
+          matcher = UrlMatcher.new(url, base_url: @page.context.send(:base_url))
           ->(event) { event['error'] || matcher.match?(event['url']) }
         else
           ->(_) { true }
@@ -99,7 +99,7 @@ module Playwright
     end
 
     def wait_for_url(url, timeout: nil, waitUntil: nil)
-      matcher = UrlMatcher.new(url)
+      matcher = UrlMatcher.new(url, base_url: @page.context.send(:base_url))
       if matcher.match?(@url)
         wait_for_load_state(state: waitUntil, timeout: timeout)
       else
@@ -177,14 +177,12 @@ module Playwright
       @channel.send_message_to_server('isEnabled', params)
     end
 
-    def hidden?(selector, timeout: nil)
-      params = { selector: selector, timeout: timeout }.compact
-      @channel.send_message_to_server('isHidden', params)
+    def hidden?(selector)
+      @channel.send_message_to_server('isHidden', selector: selector)
     end
 
-    def visible?(selector, timeout: nil)
-      params = { selector: selector, timeout: timeout }.compact
-      @channel.send_message_to_server('isVisible', params)
+    def visible?(selector)
+      @channel.send_message_to_server('isVisible', selector: selector)
     end
 
     def dispatch_event(selector, type, eventInit: nil, timeout: nil)

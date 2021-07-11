@@ -28,6 +28,7 @@ Returns information about a widget defined by `selector`.
 ```
 def launch_browser(
       acceptDownloads: nil,
+      baseURL: nil,
       bypassCSP: nil,
       colorScheme: nil,
       command: nil,

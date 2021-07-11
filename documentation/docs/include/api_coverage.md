@@ -38,7 +38,6 @@
 * abort
 * continue
 * fulfill
-* ~~intercept~~
 * request
 
 ## WebSocket
