@@ -184,15 +184,8 @@ module Playwright
       if name
         @frames.find { |f| f.name == name }
       elsif url
-        # ref: https://github.com/microsoft/playwright-python/blob/c4320c27cb080b385a5e45be46baa3cb7a9409ff/playwright/_impl/_helper.py#L104
-        case url
-        when String
-          @frames.find { |f| f.url == url }
-        when Regexp
-          @frames.find { |f| url.match?(f.url) }
-        else
-          raise NotImplementedError.new('Page#frame with url is not completely implemented yet')
-        end
+        matcher = UrlMatcher.new(url, base_url: @browser_context.send(:base_url))
+        @frames.find { |f| matcher.match?(f.url) }
       else
         raise ArgumentError.new('Either name or url matcher should be specified')
       end
@@ -377,7 +370,7 @@ module Playwright
     end
 
     def route(url, handler)
-      entry = RouteHandlerEntry.new(url, handler)
+      entry = RouteHandlerEntry.new(url, @browser_context.send(:base_url), handler)
       @routes << entry
       if @routes.count >= 1
         @channel.send_message_to_server('setNetworkInterceptionEnabled', enabled: true)
@@ -759,7 +752,7 @@ module Playwright
       predicate =
         case urlOrPredicate
         when String, Regexp
-          url_matcher = UrlMatcher.new(urlOrPredicate)
+          url_matcher = UrlMatcher.new(urlOrPredicate, base_url: @browser_context.send(:base_url))
           -> (req){ url_matcher.match?(req.url) }
         when Proc
           urlOrPredicate
@@ -778,7 +771,7 @@ module Playwright
       predicate =
         case urlOrPredicate
         when String, Regexp
-          url_matcher = UrlMatcher.new(urlOrPredicate)
+          url_matcher = UrlMatcher.new(urlOrPredicate, base_url: @browser_context.send(:base_url))
           -> (req){ url_matcher.match?(req.url) }
         when Proc
           urlOrPredicate

@@ -71,7 +71,7 @@ module Playwright
 
       predicate =
         if url
-          matcher = UrlMatcher.new(url)
+          matcher = UrlMatcher.new(url, base_url: @page.context.send(:base_url))
           ->(event) { event['error'] || matcher.match?(event['url']) }
         else
           ->(_) { true }
@@ -99,7 +99,7 @@ module Playwright
     end
 
     def wait_for_url(url, timeout: nil, waitUntil: nil)
-      matcher = UrlMatcher.new(url)
+      matcher = UrlMatcher.new(url, base_url: @page.context.send(:base_url))
       if matcher.match?(@url)
         wait_for_load_state(state: waitUntil, timeout: timeout)
       else

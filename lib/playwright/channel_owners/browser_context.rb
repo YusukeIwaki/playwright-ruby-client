@@ -210,7 +210,7 @@ module Playwright
     end
 
     def route(url, handler)
-      entry = RouteHandlerEntry.new(url, handler)
+      entry = RouteHandlerEntry.new(url, base_url, handler)
       @routes << entry
       if @routes.count >= 1
         @channel.send_message_to_server('setNetworkInterceptionEnabled', enabled: true)
@@ -274,6 +274,10 @@ module Playwright
 
     private def has_record_video_option?
       @options.key?(:recordVideo)
+    end
+
+    private def base_url
+      @options[:baseURL]
     end
   end
 end
