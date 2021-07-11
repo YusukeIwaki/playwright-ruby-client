@@ -76,6 +76,7 @@ Returns the newly created browser session.
 ```
 def new_context(
       acceptDownloads: nil,
+      baseURL: nil,
       bypassCSP: nil,
       colorScheme: nil,
       deviceScaleFactor: nil,
@@ -124,6 +125,7 @@ end
 ```
 def new_page(
       acceptDownloads: nil,
+      baseURL: nil,
       bypassCSP: nil,
       colorScheme: nil,
       deviceScaleFactor: nil,

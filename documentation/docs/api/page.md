@@ -706,7 +706,7 @@ Returns whether the element is [enabled](https://playwright.dev/python/docs/acti
 ## hidden?
 
 ```
-def hidden?(selector, timeout: nil)
+def hidden?(selector)
 ```
 
 Returns whether the element is hidden, the opposite of [visible](https://playwright.dev/python/docs/actionability).  `selector` that does not
@@ -715,7 +715,7 @@ match any elements is considered hidden.
 ## visible?
 
 ```
-def visible?(selector, timeout: nil)
+def visible?(selector)
 ```
 
 Returns whether the element is [visible](https://playwright.dev/python/docs/actionability). `selector` that does not match any elements is
@@ -1320,7 +1320,7 @@ Performs action and waits for a popup [Page](./page). If predicate is provided, 
 def expect_request(urlOrPredicate, timeout: nil, &block)
 ```
 
-Waits for the matching request and returns it.  See [waiting for event](https://playwright.dev/python/docs/events) for more details
+Waits for the matching request and returns it. See [waiting for event](https://playwright.dev/python/docs/events) for more details
 about events.
 
 ```ruby
