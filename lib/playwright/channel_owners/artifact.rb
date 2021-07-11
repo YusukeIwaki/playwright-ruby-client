@@ -26,5 +26,9 @@ module Playwright
     def delete
       @channel.send_message_to_server('delete')
     end
+
+    def cancel
+      @channel.send_message_to_server('cancel')
+    end
   end
 end

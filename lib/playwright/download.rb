@@ -24,5 +24,9 @@ module Playwright
     def save_as(path)
       @artifact.save_as(path)
     end
+
+    def cancel
+      @artifact.cancel
+    end
   end
 end
