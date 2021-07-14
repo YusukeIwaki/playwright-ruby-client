@@ -12,35 +12,31 @@ to manually fire events as if they were generated from a real keyboard.
 
 An example of holding down `Shift` in order to select and delete some text:
 
-```python sync title=example_575870a45e4fe08d3e06be3420e8a11be03f85791cd8174f27198c016031ae72.py
+```ruby
 page.keyboard.type("Hello World!")
 page.keyboard.press("ArrowLeft")
 page.keyboard.down("Shift")
-for i in range(6):
-    page.keyboard.press("ArrowLeft")
+6.times { page.keyboard.press("ArrowLeft") }
 page.keyboard.up("Shift")
 page.keyboard.press("Backspace")
 # result text will end up saying "Hello!"
-
 ```
 
 An example of pressing uppercase `A`
 
-```python sync title=example_a4f00f0cd486431b7eca785304f4e9715522da45b66dda7f3a5f6899b889b9fd.py
+```ruby
 page.keyboard.press("Shift+KeyA")
 # or
 page.keyboard.press("Shift+A")
-
 ```
 
 An example to trigger select-all with the keyboard
 
-```python sync title=example_2deda0786a20a28cec9e8b438078a5fc567f7c7e5cf369419ab3c4d80a319ff6.py
+```ruby
 # on windows and linux
 page.keyboard.press("Control+A")
 # on mac_os
 page.keyboard.press("Meta+A")
-
 ```
 
 
@@ -84,9 +80,8 @@ def insert_text(text)
 
 Dispatches only `input` event, does not emit the `keydown`, `keyup` or `keypress` events.
 
-```python sync title=example_a9cc2667e9f3e3b8c619649d7e4a7f5db9463e0b76d67a5e588158093a9e9124.py
+```ruby
 page.keyboard.insert_text("嗨")
-
 ```
 
 > NOTE: Modifier keys DO NOT effect `keyboard.insertText`. Holding down `Shift` will not type the text in upper case.
@@ -114,17 +109,14 @@ texts.
 Shortcuts such as `key: "Control+o"` or `key: "Control+Shift+T"` are supported as well. When specified with the
 modifier, modifier is pressed and being held while the subsequent key is being pressed.
 
-```python sync title=example_88943eb85c1ac7c261601e6edbdead07a31c2784326c496e10667ede1a853bab.py
-page = browser.new_page()
+```ruby
 page.goto("https://keycode.info")
 page.keyboard.press("a")
-page.screenshot(path="a.png")
+page.screenshot(path: "a.png")
 page.keyboard.press("ArrowLeft")
-page.screenshot(path="arrow_left.png")
+page.screenshot(path: "arrow_left.png")
 page.keyboard.press("Shift+O")
-page.screenshot(path="o.png")
-browser.close()
-
+page.screenshot(path: "o.png")
 ```
 
 Shortcut for [Keyboard#down](./keyboard#down) and [Keyboard#up](./keyboard#up).
@@ -139,10 +131,9 @@ Sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in t
 
 To press a special key, like `Control` or `ArrowDown`, use [Keyboard#press](./keyboard#press).
 
-```python sync title=example_d9ced919f139961fd2b795c71375ca96f788a19c1f8e1479c5ec905fb5c02d43.py
+```ruby
 page.keyboard.type("Hello") # types instantly
-page.keyboard.type("World", delay=100) # types slower, like a user
-
+page.keyboard.type("World", delay: 100) # types slower, like a user
 ```
 
 > NOTE: Modifier keys DO NOT effect `keyboard.type`. Holding down `Shift` will not type the text in upper case.

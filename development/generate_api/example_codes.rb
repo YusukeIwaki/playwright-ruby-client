@@ -331,6 +331,54 @@ module ExampleCodes
     window_handle.dispose
   end
 
+  # Keyboard
+  def example_575870a45e4fe08d3e06be3420e8a11be03f85791cd8174f27198c016031ae72(page:)
+    page.keyboard.type("Hello World!")
+    page.keyboard.press("ArrowLeft")
+    page.keyboard.down("Shift")
+    6.times { page.keyboard.press("ArrowLeft") }
+    page.keyboard.up("Shift")
+    page.keyboard.press("Backspace")
+    # result text will end up saying "Hello!"
+  end
+
+  # Keyboard
+  def example_a4f00f0cd486431b7eca785304f4e9715522da45b66dda7f3a5f6899b889b9fd(page:)
+    page.keyboard.press("Shift+KeyA")
+    # or
+    page.keyboard.press("Shift+A")
+  end
+
+  # Keyboard
+  def example_2deda0786a20a28cec9e8b438078a5fc567f7c7e5cf369419ab3c4d80a319ff6
+    # on windows and linux
+    page.keyboard.press("Control+A")
+    # on mac_os
+    page.keyboard.press("Meta+A")
+  end
+
+  # Keyboard#insert_text
+  def example_a9cc2667e9f3e3b8c619649d7e4a7f5db9463e0b76d67a5e588158093a9e9124(page:)
+    page.keyboard.insert_text("嗨")
+  end
+
+  # Keyboard#press
+  def example_88943eb85c1ac7c261601e6edbdead07a31c2784326c496e10667ede1a853bab(page:)
+    page.goto("https://keycode.info")
+    page.keyboard.press("a")
+    page.screenshot(path: "a.png")
+    page.keyboard.press("ArrowLeft")
+    page.screenshot(path: "arrow_left.png")
+    page.keyboard.press("Shift+O")
+    page.screenshot(path: "o.png")
+  end
+
+  # Keyboard#type
+  def example_d9ced919f139961fd2b795c71375ca96f788a19c1f8e1479c5ec905fb5c02d43(page:)
+    page.keyboard.type("Hello") # types instantly
+    page.keyboard.type("World", delay: 100) # types slower, like a user
+  end
+
   # Playwright
   def example_efc99085566bf177ec87b1bd3bb30d75b6053ec9b579a8ac8bb9f22e5942289a
     require 'playwright'

@@ -112,6 +112,34 @@ RSpec.describe 'example' do
       end
     end
 
+    it 'should work with Keyboard' do
+      with_page do |page|
+        page.content = '<input type="text"/>'
+        page.focus('input')
+        example_575870a45e4fe08d3e06be3420e8a11be03f85791cd8174f27198c016031ae72(page: page)
+        expect(page.input_value('input')).to eq('Hello!')
+
+        page.fill('input', '')
+        example_a4f00f0cd486431b7eca785304f4e9715522da45b66dda7f3a5f6899b889b9fd(page: page)
+        expect(page.input_value('input')).to eq('AA')
+      end
+    end
+
+    it 'should work with Keyboard#press' do
+      with_page do |page|
+        example_88943eb85c1ac7c261601e6edbdead07a31c2784326c496e10667ede1a853bab(page: page)
+      end
+    end
+
+    it 'should work with Keyboard#type' do
+      with_page do |page|
+        page.content = '<input type="text"/>'
+        page.focus('input')
+        example_d9ced919f139961fd2b795c71375ca96f788a19c1f8e1479c5ec905fb5c02d43(page: page)
+        expect(page.input_value('input')).to eq('HelloWorld')
+      end
+    end
+
     it 'should work with Page#dispatch_event' do
       with_page do |page|
         example_9220b94fd2fa381ab91448dcb551e2eb9806ad331c83454a710f4d8a280990e8(page: page)
