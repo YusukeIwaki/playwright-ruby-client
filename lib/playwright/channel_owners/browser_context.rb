@@ -8,7 +8,7 @@ module Playwright
 
     private def after_initialize
       @pages = Set.new
-      @routes = Set.new
+      @routes = []
       @bindings = {}
       @timeout_settings = TimeoutSettings.new
 
@@ -211,7 +211,7 @@ module Playwright
 
     def route(url, handler)
       entry = RouteHandlerEntry.new(url, base_url, handler)
-      @routes << entry
+      @routes.unshift(entry)
       if @routes.count >= 1
         @channel.send_message_to_server('setNetworkInterceptionEnabled', enabled: true)
       end
