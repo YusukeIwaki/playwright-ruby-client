@@ -32,11 +32,10 @@ RSpec.describe 'BrowserContext#route', sinatra: true do
   it 'should unroute' do
     with_context do |context|
       intercepted = Set.new
-      handler1 = -> (route, _) {
+      context.route('**/*', -> (route, _) {
         intercepted << 1
         route.continue
-      }
-      context.route('**/empty.html', handler1)
+      })
       context.route('**/empty.html', -> (route, _) {
         intercepted << 2
         route.continue
@@ -45,24 +44,25 @@ RSpec.describe 'BrowserContext#route', sinatra: true do
         intercepted << 3
         route.continue
       })
-      context.route('**/*', -> (route, _) {
+      handler4 =  -> (route, _) {
         intercepted << 4
         route.continue
-      })
+      }
+      context.route('**/empty.html', handler4)
 
       page = context.new_page
       page.goto(server_empty_page)
-      expect(intercepted).to contain_exactly(1)
+      expect(intercepted).to contain_exactly(4)
 
       intercepted.clear
-      context.unroute('**/empty.html', handler: handler1)
+      context.unroute('**/empty.html', handler: handler4)
       page.goto(server_empty_page)
-      expect(intercepted).to contain_exactly(2)
+      expect(intercepted).to contain_exactly(3)
 
       intercepted.clear
       context.unroute('**/empty.html')
       page.goto(server_empty_page)
-      expect(intercepted).to contain_exactly(4)
+      expect(intercepted).to contain_exactly(1)
     end
   end
 

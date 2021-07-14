@@ -22,7 +22,7 @@ module Playwright
       end
       @closed = false
       @bindings = {}
-      @routes = Set.new
+      @routes = []
 
       @main_frame = ChannelOwners::Frame.from(@initializer['mainFrame'])
       @main_frame.send(:update_page_from_page, self)
@@ -371,7 +371,7 @@ module Playwright
 
     def route(url, handler)
       entry = RouteHandlerEntry.new(url, @browser_context.send(:base_url), handler)
-      @routes << entry
+      @routes.unshift(entry)
       if @routes.count >= 1
         @channel.send_message_to_server('setNetworkInterceptionEnabled', enabled: true)
       end

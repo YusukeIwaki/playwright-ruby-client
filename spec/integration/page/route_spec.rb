@@ -31,11 +31,10 @@ RSpec.describe 'Page#route', sinatra: true do
   it 'should unroute' do
     with_page do |page|
       intercepted = Set.new
-      handler1 = -> (route, _) {
+      page.route('**/*', -> (route, _) {
         intercepted << 1
         route.continue
-      }
-      page.route('**/empty.html', handler1)
+      })
       page.route('**/empty.html', -> (route, _) {
         intercepted << 2
         route.continue
@@ -44,23 +43,24 @@ RSpec.describe 'Page#route', sinatra: true do
         intercepted << 3
         route.continue
       })
-      page.route('**/*', -> (route, _) {
+      handler4 = -> (route, _) {
         intercepted << 4
         route.continue
-      })
+      }
+      page.route('**/empty.html', handler4)
 
       page.goto(server_empty_page)
-      expect(intercepted).to contain_exactly(1)
+      expect(intercepted).to contain_exactly(4)
 
       intercepted.clear
-      page.unroute('**/empty.html', handler: handler1)
+      page.unroute('**/empty.html', handler: handler4)
       page.goto(server_empty_page)
-      expect(intercepted).to contain_exactly(2)
+      expect(intercepted).to contain_exactly(3)
 
       intercepted.clear
       page.unroute('**/empty.html')
       page.goto(server_empty_page)
-      expect(intercepted).to contain_exactly(4)
+      expect(intercepted).to contain_exactly(1)
     end
   end
 
