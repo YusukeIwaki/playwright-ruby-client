@@ -177,12 +177,14 @@ module Playwright
       @channel.send_message_to_server('isEnabled', params)
     end
 
-    def hidden?(selector)
-      @channel.send_message_to_server('isHidden', selector: selector)
+    def hidden?(selector, timeout: nil)
+      params = { selector: selector, timeout: timeout }.compact
+      @channel.send_message_to_server('isHidden', params)
     end
 
-    def visible?(selector)
-      @channel.send_message_to_server('isVisible', selector: selector)
+    def visible?(selector, timeout: nil)
+      params = { selector: selector, timeout: timeout }.compact
+      @channel.send_message_to_server('isVisible', params)
     end
 
     def dispatch_event(selector, type, eventInit: nil, timeout: nil)

@@ -233,12 +233,12 @@ module Playwright
       @main_frame.enabled?(selector, timeout: timeout)
     end
 
-    def hidden?(selector)
-      @main_frame.hidden?(selector)
+    def hidden?(selector, timeout: nil)
+      @main_frame.hidden?(selector, timeout: timeout)
     end
 
-    def visible?(selector)
-      @main_frame.visible?(selector)
+    def visible?(selector, timeout: nil)
+      @main_frame.visible?(selector, timeout: timeout)
     end
 
     def dispatch_event(selector, type, eventInit: nil, timeout: nil)
