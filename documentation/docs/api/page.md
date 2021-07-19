@@ -706,7 +706,7 @@ Returns whether the element is [enabled](https://playwright.dev/python/docs/acti
 ## hidden?
 
 ```
-def hidden?(selector)
+def hidden?(selector, timeout: nil)
 ```
 
 Returns whether the element is hidden, the opposite of [visible](https://playwright.dev/python/docs/actionability).  `selector` that does not
@@ -715,7 +715,7 @@ match any elements is considered hidden.
 ## visible?
 
 ```
-def visible?(selector)
+def visible?(selector, timeout: nil)
 ```
 
 Returns whether the element is [visible](https://playwright.dev/python/docs/actionability). `selector` that does not match any elements is

@@ -31117,6 +31117,43 @@
             "async": false,
             "alias": "selector",
             "paramOrOption": null
+          },
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by using the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by\nusing the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "paramOrOption": null
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "options",
+            "paramOrOption": null
           }
         ]
       },
@@ -31160,6 +31197,43 @@
             "deprecated": false,
             "async": false,
             "alias": "selector",
+            "paramOrOption": null
+          },
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by using the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by\nusing the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "paramOrOption": null
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "options",
             "paramOrOption": null
           }
         ]
@@ -43694,6 +43768,43 @@
             "async": false,
             "alias": "selector",
             "paramOrOption": null
+          },
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by using the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by\nusing the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "paramOrOption": null
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "options",
+            "paramOrOption": null
           }
         ]
       },
@@ -43737,6 +43848,43 @@
             "deprecated": false,
             "async": false,
             "alias": "selector",
+            "paramOrOption": null
+          },
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by using the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by\nusing the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "paramOrOption": null
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "options",
             "paramOrOption": null
           }
         ]
@@ -45869,7 +46017,7 @@
               "await page.SelectOptionAsync(\"select#colors\", new[] { \"blue\" });",
               "// single selection matching both the value and the label",
               "await page.SelectOptionAsync(\"select#colors\", new[] { new SelectOptionValue() { Label = \"blue\" } });",
-              "// multiple",
+              "// multiple ",
               "await page.SelectOptionAsync(\"select#colors\", new[] { \"red\", \"green\", \"blue\" });"
             ],
             "codeLang": "csharp"
@@ -45880,7 +46028,7 @@
           }
         ],
         "required": true,
-        "comment": "This method waits for an element matching `selector`, waits for [actionability](./actionability.md) checks, waits until\nall specified options are present in the `<select>` element and selects these options.\n\nIf the target element is not a `<select>` element, this method throws an error. However, if the element is inside the\n`<label>` element that has an associated\n[control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), the control will be used instead.\n\nReturns the array of option values that have been successfully selected.\n\nTriggers a `change` and `input` event once all the provided options have been selected.\n\n```js\n// single selection matching the value\npage.selectOption('select#colors', 'blue');\n\n// single selection matching the label\npage.selectOption('select#colors', { label: 'Blue' });\n\n// multiple selection\npage.selectOption('select#colors', ['red', 'green', 'blue']);\n\n```\n\n```java\n// single selection matching the value\npage.selectOption(\"select#colors\", \"blue\");\n// single selection matching both the value and the label\npage.selectOption(\"select#colors\", new SelectOption().setLabel(\"Blue\"));\n// multiple selection\npage.selectOption(\"select#colors\", new String[] {\"red\", \"green\", \"blue\"});\n```\n\n```python async\n# single selection matching the value\nawait page.select_option(\"select#colors\", \"blue\")\n# single selection matching the label\nawait page.select_option(\"select#colors\", label=\"blue\")\n# multiple selection\nawait page.select_option(\"select#colors\", value=[\"red\", \"green\", \"blue\"])\n```\n\n```python sync\n# single selection matching the value\npage.select_option(\"select#colors\", \"blue\")\n# single selection matching both the label\npage.select_option(\"select#colors\", label=\"blue\")\n# multiple selection\npage.select_option(\"select#colors\", value=[\"red\", \"green\", \"blue\"])\n```\n\n```csharp\n// single selection matching the value\nawait page.SelectOptionAsync(\"select#colors\", new[] { \"blue\" });\n// single selection matching both the value and the label\nawait page.SelectOptionAsync(\"select#colors\", new[] { new SelectOptionValue() { Label = \"blue\" } });\n// multiple\nawait page.SelectOptionAsync(\"select#colors\", new[] { \"red\", \"green\", \"blue\" });\n```\n\nShortcut for main frame's [`method: Frame.selectOption`].",
+        "comment": "This method waits for an element matching `selector`, waits for [actionability](./actionability.md) checks, waits until\nall specified options are present in the `<select>` element and selects these options.\n\nIf the target element is not a `<select>` element, this method throws an error. However, if the element is inside the\n`<label>` element that has an associated\n[control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), the control will be used instead.\n\nReturns the array of option values that have been successfully selected.\n\nTriggers a `change` and `input` event once all the provided options have been selected.\n\n```js\n// single selection matching the value\npage.selectOption('select#colors', 'blue');\n\n// single selection matching the label\npage.selectOption('select#colors', { label: 'Blue' });\n\n// multiple selection\npage.selectOption('select#colors', ['red', 'green', 'blue']);\n\n```\n\n```java\n// single selection matching the value\npage.selectOption(\"select#colors\", \"blue\");\n// single selection matching both the value and the label\npage.selectOption(\"select#colors\", new SelectOption().setLabel(\"Blue\"));\n// multiple selection\npage.selectOption(\"select#colors\", new String[] {\"red\", \"green\", \"blue\"});\n```\n\n```python async\n# single selection matching the value\nawait page.select_option(\"select#colors\", \"blue\")\n# single selection matching the label\nawait page.select_option(\"select#colors\", label=\"blue\")\n# multiple selection\nawait page.select_option(\"select#colors\", value=[\"red\", \"green\", \"blue\"])\n```\n\n```python sync\n# single selection matching the value\npage.select_option(\"select#colors\", \"blue\")\n# single selection matching both the label\npage.select_option(\"select#colors\", label=\"blue\")\n# multiple selection\npage.select_option(\"select#colors\", value=[\"red\", \"green\", \"blue\"])\n```\n\n```csharp\n// single selection matching the value\nawait page.SelectOptionAsync(\"select#colors\", new[] { \"blue\" });\n// single selection matching both the value and the label\nawait page.SelectOptionAsync(\"select#colors\", new[] { new SelectOptionValue() { Label = \"blue\" } });\n// multiple \nawait page.SelectOptionAsync(\"select#colors\", new[] { \"red\", \"green\", \"blue\" });\n```\n\nShortcut for main frame's [`method: Frame.selectOption`].",
         "deprecated": false,
         "async": true,
         "alias": "selectOption",
@@ -54046,8 +54194,8 @@
                   "langs": {},
                   "name": "validFrom",
                   "type": {
-                    "name": "int",
-                    "expression": "[int]"
+                    "name": "float",
+                    "expression": "[float]"
                   },
                   "spec": [
                     {
@@ -54067,8 +54215,8 @@
                   "langs": {},
                   "name": "validTo",
                   "type": {
-                    "name": "int",
-                    "expression": "[int]"
+                    "name": "float",
+                    "expression": "[float]"
                   },
                   "spec": [
                     {
