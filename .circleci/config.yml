@@ -24,6 +24,7 @@ jobs:
             wget -O driver.zip https://playwright.azureedge.net/builds/driver/next/playwright-$(cat development/CLI_VERSION)-linux.zip
             unzip driver.zip && rm driver.zip
             ./playwright.sh install
+            ./playwright.sh install-deps chromium
       - run:
           command: bundle exec ruby development/generate_api.rb
       - run:
@@ -60,6 +61,7 @@ jobs:
             wget -O driver.zip https://playwright.azureedge.net/builds/driver/next/playwright-$(cat development/CLI_VERSION)-linux.zip
             unzip driver.zip && rm driver.zip
             ./playwright.sh install
+            ./playwright.sh install-deps webkit
       - run:
           command: bundle exec ruby development/generate_api.rb
       - run:
