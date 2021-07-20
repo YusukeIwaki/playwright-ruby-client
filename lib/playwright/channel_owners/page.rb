@@ -456,6 +456,23 @@ module Playwright
       )
     end
 
+    def drag_and_drop(
+          source,
+          target,
+          force: nil,
+          noWaitAfter: nil,
+          timeout: nil,
+          trial: nil)
+
+      @main_frame.drag_and_drop(
+        source,
+        target,
+        force: force,
+        noWaitAfter: noWaitAfter,
+        timeout: timeout,
+        trial: trial)
+    end
+
     def dblclick(
           selector,
           button: nil,

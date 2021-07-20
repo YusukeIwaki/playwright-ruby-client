@@ -9739,7 +9739,7 @@
           {
             "type": "note",
             "noteType": "note",
-            "text": "Tracing is only supported on Chromium-based browsers."
+            "text": "This API controls [Chromium Tracing](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool) which is a low-level chromium-specific debugging tool. API to control [Playwright Tracing](../trace-viewer) could be found [here](./class-tracing)."
           },
           {
             "type": "text",
@@ -9784,7 +9784,7 @@
           }
         ],
         "required": true,
-        "comment": "> NOTE: Tracing is only supported on Chromium-based browsers.\n\nYou can use [`method: Browser.startTracing`] and [`method: Browser.stopTracing`] to create a trace file that can be\nopened in Chrome DevTools performance panel.\n\n```js\nawait browser.startTracing(page, {path: 'trace.json'});\nawait page.goto('https://www.google.com');\nawait browser.stopTracing();\n```\n\n```java\nbrowser.startTracing(page, new Browser.StartTracingOptions()\n  .setPath(Paths.get(\"trace.json\")));\npage.goto('https://www.google.com');\nbrowser.stopTracing();\n```\n\n```python async\nawait browser.start_tracing(page, path=\"trace.json\")\nawait page.goto(\"https://www.google.com\")\nawait browser.stop_tracing()\n```\n\n```python sync\nbrowser.start_tracing(page, path=\"trace.json\")\npage.goto(\"https://www.google.com\")\nbrowser.stop_tracing()\n```\n",
+        "comment": "> NOTE: This API controls [Chromium Tracing](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool)\nwhich is a low-level chromium-specific debugging tool. API to control [Playwright Tracing](../trace-viewer) could be\nfound [here](./class-tracing).\n\nYou can use [`method: Browser.startTracing`] and [`method: Browser.stopTracing`] to create a trace file that can be\nopened in Chrome DevTools performance panel.\n\n```js\nawait browser.startTracing(page, {path: 'trace.json'});\nawait page.goto('https://www.google.com');\nawait browser.stopTracing();\n```\n\n```java\nbrowser.startTracing(page, new Browser.StartTracingOptions()\n  .setPath(Paths.get(\"trace.json\")));\npage.goto('https://www.google.com');\nbrowser.stopTracing();\n```\n\n```python async\nawait browser.start_tracing(page, path=\"trace.json\")\nawait page.goto(\"https://www.google.com\")\nawait browser.stop_tracing()\n```\n\n```python sync\nbrowser.start_tracing(page, path=\"trace.json\")\npage.goto(\"https://www.google.com\")\nbrowser.stop_tracing()\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "startTracing",
@@ -9918,7 +9918,7 @@
           {
             "type": "note",
             "noteType": "note",
-            "text": "Tracing is only supported on Chromium-based browsers."
+            "text": "This API controls [Chromium Tracing](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool) which is a low-level chromium-specific debugging tool. API to control [Playwright Tracing](../trace-viewer) could be found [here](./class-tracing)."
           },
           {
             "type": "text",
@@ -9926,7 +9926,7 @@
           }
         ],
         "required": true,
-        "comment": "> NOTE: Tracing is only supported on Chromium-based browsers.\n\nReturns the buffer with trace data.",
+        "comment": "> NOTE: This API controls [Chromium Tracing](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool)\nwhich is a low-level chromium-specific debugging tool. API to control [Playwright Tracing](../trace-viewer) could be\nfound [here](./class-tracing).\n\nReturns the buffer with trace data.",
         "deprecated": false,
         "async": true,
         "alias": "stopTracing",
@@ -19851,7 +19851,7 @@
       },
       {
         "type": "text",
-        "text": "If `downloadsPath` isn't specified, all the downloaded files belonging to the browser context are deleted when the browser context is closed. And all downloaded files are deleted when the browser closes."
+        "text": "All the downloaded files belonging to the browser context are deleted when the browser context is closed."
       },
       {
         "type": "text",
@@ -19931,7 +19931,7 @@
       }
     ],
     "langs": {},
-    "comment": "`Download` objects are dispatched by page via the [`event: Page.download`] event.\n\nIf `downloadsPath` isn't specified, all the downloaded files belonging to the browser context are deleted when the\nbrowser context is closed. And all downloaded files are deleted when the browser closes.\n\nDownload event is emitted once the download starts. Download path becomes available once download completes:\n\n```js\nconst [ download ] = await Promise.all([\n  page.waitForEvent('download'), // wait for download to start\n  page.click('a')\n]);\n// wait for download to complete\nconst path = await download.path();\n```\n\n```java\n// wait for download to start\nDownload download  = page.waitForDownload(() -> page.click(\"a\"));\n// wait for download to complete\nPath path = download.path();\n```\n\n```java\n// wait for download to start\nDownload download = page.waitForDownload(() -> {\n  page.click(\"a\");\n});\n// wait for download to complete\nPath path = download.path();\n```\n\n```python async\nasync with page.expect_download() as download_info:\n    await page.click(\"a\")\ndownload = await download_info.value\n# waits for download to complete\npath = await download.path()\n```\n\n```python sync\nwith page.expect_download() as download_info:\n    page.click(\"a\")\ndownload = download_info.value\n# wait for download to complete\npath = download.path()\n```\n\n```csharp\nvar download = await page.RunAndWaitForDownloadAsync(async () =>\n{\n    await page.ClickAsync(\"#downloadButton\");\n});\nConsole.WriteLine(await download.PathAsync());\n```\n\n> NOTE: Browser context **must** be created with the `acceptDownloads` set to `true` when user needs access to the\ndownloaded content. If `acceptDownloads` is not set, download events are emitted, but the actual download is not\nperformed and user has no access to the downloaded files.",
+    "comment": "`Download` objects are dispatched by page via the [`event: Page.download`] event.\n\nAll the downloaded files belonging to the browser context are deleted when the browser context is closed.\n\nDownload event is emitted once the download starts. Download path becomes available once download completes:\n\n```js\nconst [ download ] = await Promise.all([\n  page.waitForEvent('download'), // wait for download to start\n  page.click('a')\n]);\n// wait for download to complete\nconst path = await download.path();\n```\n\n```java\n// wait for download to start\nDownload download  = page.waitForDownload(() -> page.click(\"a\"));\n// wait for download to complete\nPath path = download.path();\n```\n\n```java\n// wait for download to start\nDownload download = page.waitForDownload(() -> {\n  page.click(\"a\");\n});\n// wait for download to complete\nPath path = download.path();\n```\n\n```python async\nasync with page.expect_download() as download_info:\n    await page.click(\"a\")\ndownload = await download_info.value\n# waits for download to complete\npath = await download.path()\n```\n\n```python sync\nwith page.expect_download() as download_info:\n    page.click(\"a\")\ndownload = download_info.value\n# wait for download to complete\npath = download.path()\n```\n\n```csharp\nvar download = await page.RunAndWaitForDownloadAsync(async () =>\n{\n    await page.ClickAsync(\"#downloadButton\");\n});\nConsole.WriteLine(await download.PathAsync());\n```\n\n> NOTE: Browser context **must** be created with the `acceptDownloads` set to `true` when user needs access to the\ndownloaded content. If `acceptDownloads` is not set, download events are emitted, but the actual download is not\nperformed and user has no access to the downloaded files.",
     "members": [
       {
         "kind": "method",
@@ -27571,11 +27571,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -27830,11 +27830,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -28214,11 +28214,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -28644,11 +28644,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -28722,6 +28722,155 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "timeout",
+                  "paramOrOption": null
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "options",
+            "paramOrOption": null
+          }
+        ]
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "dragAndDrop",
+        "type": {
+          "name": "void"
+        },
+        "spec": [],
+        "required": true,
+        "comment": "",
+        "deprecated": false,
+        "async": true,
+        "alias": "dragAndDrop",
+        "paramOrOption": null,
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "source",
+            "type": {
+              "name": "string",
+              "expression": "[string]"
+            },
+            "spec": [],
+            "required": true,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "source",
+            "paramOrOption": null
+          },
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "target",
+            "type": {
+              "name": "string",
+              "expression": "[string]"
+            },
+            "spec": [],
+            "required": true,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "target",
+            "paramOrOption": null
+          },
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "force",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "force",
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "noWaitAfter",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to inaccessible pages. Defaults to `false`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can\nopt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to\ninaccessible pages. Defaults to `false`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "noWaitAfter",
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by using the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by\nusing the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "trial",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to `false`. Useful to wait until the element is ready for the action without performing it."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to\n`false`. Useful to wait until the element is ready for the action without performing it.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "trial",
                   "paramOrOption": null
                 }
               ]
@@ -29648,11 +29797,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -29791,11 +29940,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -29955,11 +30104,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -30291,11 +30440,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -30519,11 +30668,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -30600,11 +30749,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -30681,11 +30830,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -30762,11 +30911,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -30865,11 +31014,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -30946,11 +31095,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -31027,11 +31176,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -31108,11 +31257,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -31189,11 +31338,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -31372,11 +31521,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -32328,11 +32477,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -32633,11 +32782,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -32890,11 +33039,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -33038,11 +33187,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -33220,11 +33369,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -38429,11 +38578,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -38670,11 +38819,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -39182,11 +39331,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -39611,11 +39760,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -39689,6 +39838,155 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "timeout",
+                  "paramOrOption": null
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "options",
+            "paramOrOption": null
+          }
+        ]
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "dragAndDrop",
+        "type": {
+          "name": "void"
+        },
+        "spec": [],
+        "required": true,
+        "comment": "",
+        "deprecated": false,
+        "async": true,
+        "alias": "dragAndDrop",
+        "paramOrOption": null,
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "source",
+            "type": {
+              "name": "string",
+              "expression": "[string]"
+            },
+            "spec": [],
+            "required": true,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "source",
+            "paramOrOption": null
+          },
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "target",
+            "type": {
+              "name": "string",
+              "expression": "[string]"
+            },
+            "spec": [],
+            "required": true,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "target",
+            "paramOrOption": null
+          },
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "force",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Whether to bypass the [actionability](./actionability.md) checks. Defaults to `false`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "force",
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "noWaitAfter",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to inaccessible pages. Defaults to `false`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You can\nopt out of waiting via setting this flag. You would only need this option in the exceptional cases such as navigating to\ninaccessible pages. Defaults to `false`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "noWaitAfter",
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by using the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by\nusing the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "trial",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to `false`. Useful to wait until the element is ready for the action without performing it."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "When set, this method only performs the [actionability](./actionability.md) checks and skips the action. Defaults to\n`false`. Useful to wait until the element is ready for the action without performing it.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "trial",
                   "paramOrOption": null
                 }
               ]
@@ -41704,11 +42002,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -41851,11 +42149,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -42360,11 +42658,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -42942,11 +43240,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -43170,11 +43468,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -43251,11 +43549,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -43332,11 +43630,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -43413,11 +43711,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -43516,11 +43814,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -43597,11 +43895,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -43678,11 +43976,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -43759,11 +44057,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -43840,11 +44138,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -44971,11 +45269,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -46045,11 +46343,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -46842,11 +47140,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -47341,11 +47639,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -47598,11 +47896,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -47767,11 +48065,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",
@@ -47953,11 +48251,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
+                "text": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See [working with selectors](./selectors.md) for more details."
               }
             ],
             "required": true,
-            "comment": "A selector to search for element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
+            "comment": "A selector to search for an element. If there are multiple elements satisfying the selector, the first will be used. See\n[working with selectors](./selectors.md) for more details.",
             "deprecated": false,
             "async": false,
             "alias": "selector",

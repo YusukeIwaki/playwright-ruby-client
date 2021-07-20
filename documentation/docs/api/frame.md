@@ -196,6 +196,20 @@ frame.dispatch_event("#source", "dragstart", { "dataTransfer": data_transfer })
 
 
 
+## drag_and_drop
+
+```
+def drag_and_drop(
+      source,
+      target,
+      force: nil,
+      noWaitAfter: nil,
+      timeout: nil,
+      trial: nil)
+```
+
+
+
 ## eval_on_selector
 
 ```
