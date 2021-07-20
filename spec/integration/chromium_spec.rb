@@ -2,6 +2,8 @@ require 'spec_helper'
 require 'net/http'
 
 RSpec.describe 'chromium' do
+  before { skip unless chromium? }
+
   before(:all) do
     @execution = Playwright.create(playwright_cli_executable_path: ENV['PLAYWRIGHT_CLI_EXECUTABLE_PATH'])
     @playwright_chromium = @execution.playwright.chromium
