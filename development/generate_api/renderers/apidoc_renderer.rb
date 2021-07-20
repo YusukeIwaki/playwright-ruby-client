@@ -271,6 +271,8 @@ class ApidocRenderer
         "`jsHandle.evaluateHandle`" => "[JSHandle#evaluate_handle](./js_handle#evaluate_handle)",
         "[`method: Page.waitForNavigation`]" => "[Page#expect_navigation](./page#expect_navigation)",
         "[`method: Frame.waitForNavigation`]" => "[Frame#expect_navigation](./frame#expect_navigation)",
+        '[Playwright Tracing](../trace-viewer)' => '[Playwright Tracing](https://playwright.dev/python/docs/trace-viewer)',
+        '[here](./class-tracing)' => '[here](./tracing)',
       }
       convertion.inject(content) do |current, entry|
         str_from, str_to = entry

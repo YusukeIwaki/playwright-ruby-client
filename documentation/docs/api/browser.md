@@ -167,8 +167,8 @@ def start_tracing(page: nil, categories: nil, path: nil, screenshots: nil)
 ```
 
 > NOTE: This API controls [Chromium Tracing](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool)
-which is a low-level chromium-specific debugging tool. API to control [Playwright Tracing](../trace-viewer) could be
-found [here](./class-tracing).
+which is a low-level chromium-specific debugging tool. API to control [Playwright Tracing](https://playwright.dev/python/docs/trace-viewer) could be
+found [here](./tracing).
 
 You can use [Browser#start_tracing](./browser#start_tracing) and [Browser#stop_tracing](./browser#stop_tracing) to create a trace file that can be
 opened in Chrome DevTools performance panel.
@@ -190,8 +190,8 @@ def stop_tracing
 ```
 
 > NOTE: This API controls [Chromium Tracing](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool)
-which is a low-level chromium-specific debugging tool. API to control [Playwright Tracing](../trace-viewer) could be
-found [here](./class-tracing).
+which is a low-level chromium-specific debugging tool. API to control [Playwright Tracing](https://playwright.dev/python/docs/trace-viewer) could be
+found [here](./tracing).
 
 Returns the buffer with trace data.
 
