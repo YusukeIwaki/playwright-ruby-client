@@ -253,6 +253,20 @@ page.dispatch_event("#source", "dragstart", eventInit: { dataTransfer: data_tran
 
 
 
+## drag_and_drop
+
+```
+def drag_and_drop(
+      source,
+      target,
+      force: nil,
+      noWaitAfter: nil,
+      timeout: nil,
+      trial: nil)
+```
+
+
+
 ## emulate_media
 
 ```

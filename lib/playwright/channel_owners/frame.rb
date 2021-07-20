@@ -293,6 +293,26 @@ module Playwright
       nil
     end
 
+    def drag_and_drop(
+          source,
+          target,
+          force: nil,
+          noWaitAfter: nil,
+          timeout: nil,
+          trial: nil)
+      params = {
+        source: source,
+        target: target,
+        force: force,
+        noWaitAfter: noWaitAfter,
+        timeout: timeout,
+        trial: trial,
+      }.compact
+      @channel.send_message_to_server('dragAndDrop', params)
+
+      nil
+    end
+
     def dblclick(
           selector,
           button: nil,

@@ -137,7 +137,7 @@
 * content
 * dblclick
 * dispatch_event
-* ~~drag_and_drop~~
+* drag_and_drop
 * eval_on_selector
 * eval_on_selector_all
 * evaluate
@@ -218,7 +218,7 @@
 * context
 * dblclick
 * dispatch_event
-* ~~drag_and_drop~~
+* drag_and_drop
 * emulate_media
 * eval_on_selector
 * eval_on_selector_all
