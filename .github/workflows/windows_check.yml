@@ -16,7 +16,7 @@ jobs:
           node-version: 14
       - name: Install playwright driver via npx
         run: |
-          npx playwright@next install
+          npx playwright@next install chromium
           npx playwright@next install-deps chromium
       - run: bundle exec ruby development/generate_api.rb
       - name: Check example
