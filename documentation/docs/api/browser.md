@@ -166,7 +166,9 @@ testing frameworks should explicitly create [Browser#new_context](./browser#new_
 def start_tracing(page: nil, categories: nil, path: nil, screenshots: nil)
 ```
 
-> NOTE: Tracing is only supported on Chromium-based browsers.
+> NOTE: This API controls [Chromium Tracing](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool)
+which is a low-level chromium-specific debugging tool. API to control [Playwright Tracing](../trace-viewer) could be
+found [here](./class-tracing).
 
 You can use [Browser#start_tracing](./browser#start_tracing) and [Browser#stop_tracing](./browser#stop_tracing) to create a trace file that can be
 opened in Chrome DevTools performance panel.
@@ -187,7 +189,9 @@ end
 def stop_tracing
 ```
 
-> NOTE: Tracing is only supported on Chromium-based browsers.
+> NOTE: This API controls [Chromium Tracing](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool)
+which is a low-level chromium-specific debugging tool. API to control [Playwright Tracing](../trace-viewer) could be
+found [here](./class-tracing).
 
 Returns the buffer with trace data.
 
