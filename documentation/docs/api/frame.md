@@ -68,6 +68,7 @@ def check(
       force: nil,
       noWaitAfter: nil,
       position: nil,
+      strict: nil,
       timeout: nil,
       trial: nil)
 ```
@@ -106,6 +107,7 @@ def click(
       modifiers: nil,
       noWaitAfter: nil,
       position: nil,
+      strict: nil,
       timeout: nil,
       trial: nil)
 ```
@@ -140,6 +142,7 @@ def dblclick(
       modifiers: nil,
       noWaitAfter: nil,
       position: nil,
+      strict: nil,
       timeout: nil,
       trial: nil)
 ```
@@ -161,7 +164,12 @@ zero timeout disables this.
 ## dispatch_event
 
 ```
-def dispatch_event(selector, type, eventInit: nil, timeout: nil)
+def dispatch_event(
+      selector,
+      type,
+      eventInit: nil,
+      strict: nil,
+      timeout: nil)
 ```
 
 The snippet below dispatches the `click` event on the element. Regardless of the visibility state of the element,
@@ -204,6 +212,7 @@ def drag_and_drop(
       target,
       force: nil,
       noWaitAfter: nil,
+      strict: nil,
       timeout: nil,
       trial: nil)
 ```
@@ -213,7 +222,7 @@ def drag_and_drop(
 ## eval_on_selector
 
 ```
-def eval_on_selector(selector, expression, arg: nil)
+def eval_on_selector(selector, expression, arg: nil, strict: nil)
 ```
 
 Returns the return value of `expression`.
@@ -362,7 +371,7 @@ To send fine-grained keyboard events, use [Frame#type](./frame#type).
 ## focus
 
 ```
-def focus(selector, timeout: nil)
+def focus(selector, strict: nil, timeout: nil)
 ```
 
 This method fetches an element with `selector` and focuses it. If there's no element matching `selector`, the method
@@ -393,7 +402,7 @@ assert frame == content_frame
 ## get_attribute
 
 ```
-def get_attribute(selector, name, timeout: nil)
+def get_attribute(selector, name, strict: nil, timeout: nil)
 ```
 
 Returns element attribute value.
@@ -431,6 +440,7 @@ def hover(
       force: nil,
       modifiers: nil,
       position: nil,
+      strict: nil,
       timeout: nil,
       trial: nil)
 ```
@@ -449,7 +459,7 @@ zero timeout disables this.
 ## inner_html
 
 ```
-def inner_html(selector, timeout: nil)
+def inner_html(selector, strict: nil, timeout: nil)
 ```
 
 Returns `element.innerHTML`.
@@ -457,7 +467,7 @@ Returns `element.innerHTML`.
 ## inner_text
 
 ```
-def inner_text(selector, timeout: nil)
+def inner_text(selector, strict: nil, timeout: nil)
 ```
 
 Returns `element.innerText`.
@@ -465,7 +475,7 @@ Returns `element.innerText`.
 ## input_value
 
 ```
-def input_value(selector, timeout: nil)
+def input_value(selector, strict: nil, timeout: nil)
 ```
 
 Returns `input.value` for the selected `<input>` or `<textarea>` element. Throws for non-input elements.
@@ -473,7 +483,7 @@ Returns `input.value` for the selected `<input>` or `<textarea>` element. Throws
 ## checked?
 
 ```
-def checked?(selector, timeout: nil)
+def checked?(selector, strict: nil, timeout: nil)
 ```
 
 Returns whether the element is checked. Throws if the element is not a checkbox or radio input.
@@ -489,7 +499,7 @@ Returns `true` if the frame has been detached, or `false` otherwise.
 ## disabled?
 
 ```
-def disabled?(selector, timeout: nil)
+def disabled?(selector, strict: nil, timeout: nil)
 ```
 
 Returns whether the element is disabled, the opposite of [enabled](https://playwright.dev/python/docs/actionability).
@@ -497,7 +507,7 @@ Returns whether the element is disabled, the opposite of [enabled](https://playw
 ## editable?
 
 ```
-def editable?(selector, timeout: nil)
+def editable?(selector, strict: nil, timeout: nil)
 ```
 
 Returns whether the element is [editable](https://playwright.dev/python/docs/actionability).
@@ -505,7 +515,7 @@ Returns whether the element is [editable](https://playwright.dev/python/docs/act
 ## enabled?
 
 ```
-def enabled?(selector, timeout: nil)
+def enabled?(selector, strict: nil, timeout: nil)
 ```
 
 Returns whether the element is [enabled](https://playwright.dev/python/docs/actionability).
@@ -513,7 +523,7 @@ Returns whether the element is [enabled](https://playwright.dev/python/docs/acti
 ## hidden?
 
 ```
-def hidden?(selector, timeout: nil)
+def hidden?(selector, strict: nil, timeout: nil)
 ```
 
 Returns whether the element is hidden, the opposite of [visible](https://playwright.dev/python/docs/actionability).  `selector` that does not
@@ -522,7 +532,7 @@ match any elements is considered hidden.
 ## visible?
 
 ```
-def visible?(selector, timeout: nil)
+def visible?(selector, strict: nil, timeout: nil)
 ```
 
 Returns whether the element is [visible](https://playwright.dev/python/docs/actionability). `selector` that does not match any elements is
@@ -564,6 +574,7 @@ def press(
       key,
       delay: nil,
       noWaitAfter: nil,
+      strict: nil,
       timeout: nil)
 ```
 
@@ -587,7 +598,7 @@ modifier, modifier is pressed and being held while the subsequent key is being p
 ## query_selector
 
 ```
-def query_selector(selector)
+def query_selector(selector, strict: nil)
 ```
 
 Returns the ElementHandle pointing to the frame element.
@@ -617,6 +628,7 @@ def select_option(
       label: nil,
       force: nil,
       noWaitAfter: nil,
+      strict: nil,
       timeout: nil)
 ```
 
@@ -655,7 +667,12 @@ alias: `content=`
 ## set_input_files
 
 ```
-def set_input_files(selector, files, noWaitAfter: nil, timeout: nil)
+def set_input_files(
+      selector,
+      files,
+      noWaitAfter: nil,
+      strict: nil,
+      timeout: nil)
 ```
 
 This method expects `selector` to point to an
@@ -673,6 +690,7 @@ def tap_point(
       modifiers: nil,
       noWaitAfter: nil,
       position: nil,
+      strict: nil,
       timeout: nil,
       trial: nil)
 ```
@@ -693,7 +711,7 @@ zero timeout disables this.
 ## text_content
 
 ```
-def text_content(selector, timeout: nil)
+def text_content(selector, strict: nil, timeout: nil)
 ```
 
 Returns `element.textContent`.
@@ -714,6 +732,7 @@ def type(
       text,
       delay: nil,
       noWaitAfter: nil,
+      strict: nil,
       timeout: nil)
 ```
 
@@ -738,6 +757,7 @@ def uncheck(
       force: nil,
       noWaitAfter: nil,
       position: nil,
+      strict: nil,
       timeout: nil,
       trial: nil)
 ```
@@ -845,7 +865,7 @@ considered a navigation.
 ## wait_for_selector
 
 ```
-def wait_for_selector(selector, state: nil, timeout: nil)
+def wait_for_selector(selector, state: nil, strict: nil, timeout: nil)
 ```
 
 Returns when element specified by selector satisfies `state` option. Returns `null` if waiting for `hidden` or

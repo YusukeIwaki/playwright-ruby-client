@@ -158,6 +158,7 @@
 * enabled?
 * hidden?
 * visible?
+* ~~locator~~
 * name
 * page
 * parent_frame
@@ -245,6 +246,7 @@
 * enabled?
 * hidden?
 * visible?
+* ~~locator~~
 * main_frame
 * opener
 * ~~pause~~
