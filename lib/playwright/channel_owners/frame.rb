@@ -191,6 +191,10 @@ module Playwright
       @channel.send_message_to_server('isVisible', params)
     end
 
+    def locator(selector)
+      LocatorImpl.new(frame: self, timeout_settings: @page.send(:timeout_settings), selector: selector)
+    end
+
     def dispatch_event(selector, type, eventInit: nil, strict: nil, timeout: nil)
       params = {
         selector: selector,

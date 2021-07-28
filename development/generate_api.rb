@@ -23,6 +23,7 @@ ALL_TYPES = %w[
     BrowserType
     Playwright
     Tracing
+    Locator
 ]
 EXPERIMENTAL = %w[
   Android
@@ -38,6 +39,7 @@ API_IMPLEMENTATIONS = %w[
   Mouse
   Touchscreen
   Tracing
+  Locator
 ]
 
 require 'bundler/setup'

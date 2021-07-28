@@ -241,6 +241,10 @@ module Playwright
       @main_frame.visible?(selector, strict: strict, timeout: timeout)
     end
 
+    def locator(selector)
+      @main_frame.locator(selector)
+    end
+
     def dispatch_event(selector, type, eventInit: nil, strict: nil, timeout: nil)
       @main_frame.dispatch_event(selector, type, eventInit: eventInit, strict: strict, timeout: timeout)
     end

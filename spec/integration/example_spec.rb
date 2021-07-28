@@ -70,6 +70,22 @@ RSpec.describe 'example' do
     end
   end
 
+  it 'should auto-wait for visible' do
+    with_page do |page|
+      page.content = '<p>loading</p>'
+      div = page.locator('div')
+      promise = Concurrent::Promises.future {
+        puts "TRY CLICKING"
+        div.click
+        puts "DONE!!"
+      }
+      sleep 1
+      page.evaluate("(html) => document.body.innerHTML=html", arg: "<div onclick='this.innerText=\"clicked\"'>content</div>")
+      promise.value!
+      expect(div.text_content).to eq('clicked')
+    end
+  end
+
   context 'with ExampleCodes' do
     include ExampleCodes
 
