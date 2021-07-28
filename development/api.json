@@ -29838,6 +29838,27 @@
                 {
                   "kind": "property",
                   "langs": {},
+                  "name": "strict",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "strict",
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
                   "name": "timeout",
                   "type": {
                     "name": "float",
@@ -36694,7 +36715,7 @@
       {
         "type": "code",
         "lines": [
-          "var element = page.Finder(\"text=Submit\");",
+          "var element = page.Locator(\"text=Submit\");",
           "await element.HoverAsync();",
           "await element.ClickAsync();"
         ],
@@ -36702,7 +36723,7 @@
       }
     ],
     "langs": {},
-    "comment": "Locator represents a view to the element(s) on the page. It captures the logic sufficient to retrieve the element at any\ngiven moment. Locator can be created with the [`method: Page.locator`] method.\n\nThe difference between the Locator and `ElementHandle` is that the latter points to a particular element, while Locator\nonly captures the logic of how to retrieve an element at any given moment.\n\nIn the example below, handle points to a particular DOM element on page. If that element changes text or is used by\nReact to render an entirely different component, handle is still pointing to that very DOM element.\n\n```js\nconst handle = await page.$('text=Submit');\n// ...\nawait handle.hover();\nawait handle.click();\n```\n\n```java\nElementHandle handle = page.querySelector(\"text=Submit\");\nhandle.hover();\nhandle.click();\n```\n\n```python async\nhandle = await page.query_selector(\"text=Submit\")\nawait handle.hover()\nawait handle.click()\n```\n\n```python sync\nhandle = page.query_selector(\"text=Submit\")\nhandle.hover()\nhandle.click()\n```\n\n```csharp\nvar handle = await page.QuerySelectorAsync(\"text=Submit\");\nawait handle.HoverAsync();\nawait handle.ClickAsync();\n```\n\nWith the locator, every time the `element` is used, corresponding DOM element is located in the page using given\nselector. So in the snippet below, underlying DOM element is going to be located twice, using the given selector.\n\n```js\nconst element = page.locator('text=Submit');\n// ...\nawait element.hover();\nawait element.click();\n```\n\n```java\nLocator element = page.locator(\"text=Submit\");\nelement.hover();\nelement.click();\n```\n\n```python async\nelement = page.locator(\"text=Submit\")\nawait element.hover()\nawait element.click()\n```\n\n```python sync\nelement = page.locator(\"text=Submit\")\nelement.hover()\nelement.click()\n```\n\n```csharp\nvar element = page.Finder(\"text=Submit\");\nawait element.HoverAsync();\nawait element.ClickAsync();\n```\n",
+    "comment": "Locator represents a view to the element(s) on the page. It captures the logic sufficient to retrieve the element at any\ngiven moment. Locator can be created with the [`method: Page.locator`] method.\n\nThe difference between the Locator and `ElementHandle` is that the latter points to a particular element, while Locator\nonly captures the logic of how to retrieve an element at any given moment.\n\nIn the example below, handle points to a particular DOM element on page. If that element changes text or is used by\nReact to render an entirely different component, handle is still pointing to that very DOM element.\n\n```js\nconst handle = await page.$('text=Submit');\n// ...\nawait handle.hover();\nawait handle.click();\n```\n\n```java\nElementHandle handle = page.querySelector(\"text=Submit\");\nhandle.hover();\nhandle.click();\n```\n\n```python async\nhandle = await page.query_selector(\"text=Submit\")\nawait handle.hover()\nawait handle.click()\n```\n\n```python sync\nhandle = page.query_selector(\"text=Submit\")\nhandle.hover()\nhandle.click()\n```\n\n```csharp\nvar handle = await page.QuerySelectorAsync(\"text=Submit\");\nawait handle.HoverAsync();\nawait handle.ClickAsync();\n```\n\nWith the locator, every time the `element` is used, corresponding DOM element is located in the page using given\nselector. So in the snippet below, underlying DOM element is going to be located twice, using the given selector.\n\n```js\nconst element = page.locator('text=Submit');\n// ...\nawait element.hover();\nawait element.click();\n```\n\n```java\nLocator element = page.locator(\"text=Submit\");\nelement.hover();\nelement.click();\n```\n\n```python async\nelement = page.locator(\"text=Submit\")\nawait element.hover()\nawait element.click()\n```\n\n```python sync\nelement = page.locator(\"text=Submit\")\nelement.hover()\nelement.click()\n```\n\n```csharp\nvar element = page.Locator(\"text=Submit\");\nawait element.HoverAsync();\nawait element.ClickAsync();\n```\n",
     "members": [
       {
         "kind": "method",
@@ -38085,27 +38106,6 @@
                   "async": false,
                   "alias": "timeout",
                   "paramOrOption": null
-                },
-                {
-                  "kind": "property",
-                  "langs": {},
-                  "name": "timeout",
-                  "type": {
-                    "name": "float",
-                    "expression": "[float]"
-                  },
-                  "spec": [
-                    {
-                      "type": "text",
-                      "text": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by using the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods."
-                    }
-                  ],
-                  "required": false,
-                  "comment": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by\nusing the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods.",
-                  "deprecated": false,
-                  "async": false,
-                  "alias": "timeout",
-                  "paramOrOption": null
                 }
               ]
             },
@@ -38205,14 +38205,14 @@
           {
             "type": "code",
             "lines": [
-              "var tweets = page.Finder(\".tweet .retweets\");",
+              "var tweets = page.Locator(\".tweet .retweets\");",
               "Assert.Equals(\"10 retweets\", await tweets.EvaluateAsync(\"node => node.innerText\"));"
             ],
             "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Returns the return value of `expression`.\n\nThis method passes this handle as the first argument to `expression`.\n\nIf `expression` returns a [Promise], then `handle.evaluate` would wait for the promise to resolve and return its value.\n\nExamples:\n\n```js\nconst tweets = await page.locator('.tweet .retweets');\nexpect(await tweets.evaluate(node => node.innerText)).toBe('10 retweets');\n```\n\n```java\nLocator tweets = page.locator(\".tweet .retweets\");\nassertEquals(\"10 retweets\", tweets.evaluate(\"node => node.innerText\"));\n```\n\n```python async\ntweets = await page.locator(\".tweet .retweets\")\nassert await tweets.evaluate(\"node => node.innerText\") == \"10 retweets\"\n```\n\n```python sync\ntweets = page.locator(\".tweet .retweets\")\nassert tweets.evaluate(\"node => node.innerText\") == \"10 retweets\"\n```\n\n```csharp\nvar tweets = page.Finder(\".tweet .retweets\");\nAssert.Equals(\"10 retweets\", await tweets.EvaluateAsync(\"node => node.innerText\"));\n```\n",
+        "comment": "Returns the return value of `expression`.\n\nThis method passes this handle as the first argument to `expression`.\n\nIf `expression` returns a [Promise], then `handle.evaluate` would wait for the promise to resolve and return its value.\n\nExamples:\n\n```js\nconst tweets = await page.locator('.tweet .retweets');\nexpect(await tweets.evaluate(node => node.innerText)).toBe('10 retweets');\n```\n\n```java\nLocator tweets = page.locator(\".tweet .retweets\");\nassertEquals(\"10 retweets\", tweets.evaluate(\"node => node.innerText\"));\n```\n\n```python async\ntweets = await page.locator(\".tweet .retweets\")\nassert await tweets.evaluate(\"node => node.innerText\") == \"10 retweets\"\n```\n\n```python sync\ntweets = page.locator(\".tweet .retweets\")\nassert tweets.evaluate(\"node => node.innerText\") == \"10 retweets\"\n```\n\n```csharp\nvar tweets = page.Locator(\".tweet .retweets\");\nAssert.Equals(\"10 retweets\", await tweets.EvaluateAsync(\"node => node.innerText\"));\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "evaluate",
@@ -41355,7 +41355,7 @@
           {
             "type": "code",
             "lines": [
-              "var element = page.Finder(\"input\");",
+              "var element = page.Locator(\"input\");",
               "await element.TypeAsync(\"some text\");",
               "await element.PressAsync(\"Enter\");"
             ],
@@ -41363,7 +41363,7 @@
           }
         ],
         "required": true,
-        "comment": "Focuses the element, and then sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text.\n\nTo press a special key, like `Control` or `ArrowDown`, use [`method: Locator.press`].\n\n```js\nawait element.type('Hello'); // Types instantly\nawait element.type('World', {delay: 100}); // Types slower, like a user\n```\n\n```java\nelement.type(\"Hello\"); // Types instantly\nelement.type(\"World\", new Locator.TypeOptions().setDelay(100)); // Types slower, like a user\n```\n\n```python async\nawait element.type(\"hello\") # types instantly\nawait element.type(\"world\", delay=100) # types slower, like a user\n```\n\n```python sync\nelement.type(\"hello\") # types instantly\nelement.type(\"world\", delay=100) # types slower, like a user\n```\n\n```csharp\nawait element.TypeAsync(\"Hello\"); // Types instantly\nawait element.TypeAsync(\"World\", delay: 100); // Types slower, like a user\n```\n\nAn example of typing into a text field and then submitting the form:\n\n```js\nconst element = page.locator('input');\nawait element.type('some text');\nawait element.press('Enter');\n```\n\n```java\nLocator element = page.locator(\"input\");\nelement.type(\"some text\");\nelement.press(\"Enter\");\n```\n\n```python async\nelement = page.locator(\"input\")\nawait element.type(\"some text\")\nawait element.press(\"Enter\")\n```\n\n```python sync\nelement = page.locator(\"input\")\nelement.type(\"some text\")\nelement.press(\"Enter\")\n```\n\n```csharp\nvar element = page.Finder(\"input\");\nawait element.TypeAsync(\"some text\");\nawait element.PressAsync(\"Enter\");\n```\n",
+        "comment": "Focuses the element, and then sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text.\n\nTo press a special key, like `Control` or `ArrowDown`, use [`method: Locator.press`].\n\n```js\nawait element.type('Hello'); // Types instantly\nawait element.type('World', {delay: 100}); // Types slower, like a user\n```\n\n```java\nelement.type(\"Hello\"); // Types instantly\nelement.type(\"World\", new Locator.TypeOptions().setDelay(100)); // Types slower, like a user\n```\n\n```python async\nawait element.type(\"hello\") # types instantly\nawait element.type(\"world\", delay=100) # types slower, like a user\n```\n\n```python sync\nelement.type(\"hello\") # types instantly\nelement.type(\"world\", delay=100) # types slower, like a user\n```\n\n```csharp\nawait element.TypeAsync(\"Hello\"); // Types instantly\nawait element.TypeAsync(\"World\", delay: 100); // Types slower, like a user\n```\n\nAn example of typing into a text field and then submitting the form:\n\n```js\nconst element = page.locator('input');\nawait element.type('some text');\nawait element.press('Enter');\n```\n\n```java\nLocator element = page.locator(\"input\");\nelement.type(\"some text\");\nelement.press(\"Enter\");\n```\n\n```python async\nelement = page.locator(\"input\")\nawait element.type(\"some text\")\nawait element.press(\"Enter\")\n```\n\n```python sync\nelement = page.locator(\"input\")\nelement.type(\"some text\")\nelement.press(\"Enter\")\n```\n\n```csharp\nvar element = page.Locator(\"input\");\nawait element.TypeAsync(\"some text\");\nawait element.PressAsync(\"Enter\");\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "type",
@@ -41683,150 +41683,6 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "trial",
-                  "paramOrOption": null
-                }
-              ]
-            },
-            "required": false,
-            "comment": "",
-            "deprecated": false,
-            "async": false,
-            "alias": "options",
-            "paramOrOption": null
-          }
-        ]
-      },
-      {
-        "kind": "method",
-        "langs": {},
-        "name": "waitFor",
-        "type": {
-          "name": "",
-          "union": [
-            {
-              "name": "null"
-            },
-            {
-              "name": "ElementHandle",
-              "templates": [
-                {
-                  "name": "",
-                  "union": [
-                    {
-                      "name": "HTMLElement"
-                    },
-                    {
-                      "name": "SVGElement"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "expression": "[null]|[ElementHandle]<[HTMLElement]|[SVGElement]>"
-        },
-        "spec": [
-          {
-            "type": "text",
-            "text": "Returns when element specified by selector satisfies `state` option. Returns `null` if waiting for `hidden` or `detached`."
-          },
-          {
-            "type": "text",
-            "text": "Wait for the element to satisfy `state` option (either appear/disappear from dom, or become visible/hidden). If at the moment of calling the method it already satisfies the condition, the method will return immediately. If the selector doesn't satisfy the condition for the `timeout` milliseconds, the function will throw."
-          },
-          {
-            "type": "text",
-            "text": "This method works across navigations."
-          }
-        ],
-        "required": true,
-        "comment": "Returns when element specified by selector satisfies `state` option. Returns `null` if waiting for `hidden` or\n`detached`.\n\nWait for the element to satisfy `state` option (either appear/disappear from dom, or become visible/hidden). If at the\nmoment of calling the method it already satisfies the condition, the method will return immediately. If the selector\ndoesn't satisfy the condition for the `timeout` milliseconds, the function will throw.\n\nThis method works across navigations.",
-        "deprecated": false,
-        "async": true,
-        "alias": "waitFor",
-        "paramOrOption": null,
-        "args": [
-          {
-            "kind": "property",
-            "langs": {},
-            "name": "options",
-            "type": {
-              "name": "Object",
-              "properties": [
-                {
-                  "kind": "property",
-                  "langs": {},
-                  "name": "state",
-                  "type": {
-                    "name": "WaitForSelectorState",
-                    "union": [
-                      {
-                        "name": "\"attached\""
-                      },
-                      {
-                        "name": "\"detached\""
-                      },
-                      {
-                        "name": "\"visible\""
-                      },
-                      {
-                        "name": "\"hidden\""
-                      }
-                    ],
-                    "expression": "[WaitForSelectorState]<\"attached\"|\"detached\"|\"visible\"|\"hidden\">"
-                  },
-                  "spec": [
-                    {
-                      "type": "text",
-                      "text": "Defaults to `'visible'`. Can be either:"
-                    },
-                    {
-                      "type": "li",
-                      "text": "`'attached'` - wait for element to be present in DOM.",
-                      "liType": "bullet"
-                    },
-                    {
-                      "type": "li",
-                      "text": "`'detached'` - wait for element to not be present in DOM.",
-                      "liType": "bullet"
-                    },
-                    {
-                      "type": "li",
-                      "text": "`'visible'` - wait for element to have non-empty bounding box and no `visibility:hidden`. Note that element without any content or with `display:none` has an empty bounding box and is not considered visible.",
-                      "liType": "bullet"
-                    },
-                    {
-                      "type": "li",
-                      "text": "`'hidden'` - wait for element to be either detached from DOM, or have an empty bounding box or `visibility:hidden`. This is opposite to the `'visible'` option.",
-                      "liType": "bullet"
-                    }
-                  ],
-                  "required": false,
-                  "comment": "Defaults to `'visible'`. Can be either:\n- `'attached'` - wait for element to be present in DOM.\n- `'detached'` - wait for element to not be present in DOM.\n- `'visible'` - wait for element to have non-empty bounding box and no `visibility:hidden`. Note that element without\n  any content or with `display:none` has an empty bounding box and is not considered visible.\n- `'hidden'` - wait for element to be either detached from DOM, or have an empty bounding box or `visibility:hidden`.\n  This is opposite to the `'visible'` option.",
-                  "deprecated": false,
-                  "async": false,
-                  "alias": "state",
-                  "paramOrOption": null
-                },
-                {
-                  "kind": "property",
-                  "langs": {},
-                  "name": "timeout",
-                  "type": {
-                    "name": "float",
-                    "expression": "[float]"
-                  },
-                  "spec": [
-                    {
-                      "type": "text",
-                      "text": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by using the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods."
-                    }
-                  ],
-                  "required": false,
-                  "comment": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by\nusing the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods.",
-                  "deprecated": false,
-                  "async": false,
-                  "alias": "timeout",
                   "paramOrOption": null
                 }
               ]

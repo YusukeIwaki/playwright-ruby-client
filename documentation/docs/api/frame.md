@@ -354,6 +354,7 @@ def fill(
       value,
       force: nil,
       noWaitAfter: nil,
+      strict: nil,
       timeout: nil)
 ```
 

@@ -12,7 +12,6 @@ class ArgDoc < Doc
   def properties
     json_with_python_override['type']['properties']&.
       map { |json| ArgDoc.new(json) }.
-      reject { |doc| doc.langs.not_for_python? }.
-      uniq { |doc| doc.name } # TEMPORARY WORKAROUND for Locator#elementHandle(timeout, timeout)
+      reject { |doc| doc.langs.not_for_python? }
   end
 end
