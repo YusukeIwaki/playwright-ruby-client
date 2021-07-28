@@ -24,13 +24,14 @@ module Playwright
         ::Playwright::ChannelOwner.from(resp)
       end
 
-      def eval_on_selector(channel, selector)
-        value = channel.send_message_to_server(
-          'evalOnSelector',
+      def eval_on_selector(channel, selector, strict: nil)
+        params = {
           selector: selector,
           expression: @expression,
           arg: @serialized_arg,
-        )
+        }
+        params[:strict] = strict if strict
+        value = channel.send_message_to_server('evalOnSelector', params)
         ValueParser.new(value).parse
       end
 

@@ -139,8 +139,12 @@ module Playwright
       JavaScript::Expression.new(pageFunction, arg).evaluate_handle(@channel)
     end
 
-    def query_selector(selector)
-      resp = @channel.send_message_to_server('querySelector', selector: selector)
+    def query_selector(selector, strict: nil)
+      params = {
+        selector: selector,
+        strict: strict,
+      }.compact
+      resp = @channel.send_message_to_server('querySelector', params)
       ChannelOwners::ElementHandle.from_nullable(resp)
     end
 
@@ -150,48 +154,49 @@ module Playwright
       end
     end
 
-    def wait_for_selector(selector, state: nil, timeout: nil)
-      params = { selector: selector, state: state, timeout: timeout }.compact
+    def wait_for_selector(selector, state: nil, strict: nil, timeout: nil)
+      params = { selector: selector, state: state, strict: strict, timeout: timeout }.compact
       resp = @channel.send_message_to_server('waitForSelector', params)
 
       ChannelOwners::ElementHandle.from_nullable(resp)
     end
 
-    def checked?(selector, timeout: nil)
-      params = { selector: selector, timeout: timeout }.compact
+    def checked?(selector, strict: nil, timeout: nil)
+      params = { selector: selector, strict: strict, timeout: timeout }.compact
       @channel.send_message_to_server('isChecked', params)
     end
 
-    def disabled?(selector, timeout: nil)
-      params = { selector: selector, timeout: timeout }.compact
+    def disabled?(selector, strict: nil, timeout: nil)
+      params = { selector: selector, strict: strict, timeout: timeout }.compact
       @channel.send_message_to_server('isDisabled', params)
     end
 
-    def editable?(selector, timeout: nil)
-      params = { selector: selector, timeout: timeout }.compact
+    def editable?(selector, strict: nil, timeout: nil)
+      params = { selector: selector, strict: strict, timeout: timeout }.compact
       @channel.send_message_to_server('isEditable', params)
     end
 
-    def enabled?(selector, timeout: nil)
-      params = { selector: selector, timeout: timeout }.compact
+    def enabled?(selector, strict: nil, timeout: nil)
+      params = { selector: selector, strict: strict, timeout: timeout }.compact
       @channel.send_message_to_server('isEnabled', params)
     end
 
-    def hidden?(selector, timeout: nil)
-      params = { selector: selector, timeout: timeout }.compact
+    def hidden?(selector, strict: nil, timeout: nil)
+      params = { selector: selector, strict: strict, timeout: timeout }.compact
       @channel.send_message_to_server('isHidden', params)
     end
 
-    def visible?(selector, timeout: nil)
-      params = { selector: selector, timeout: timeout }.compact
+    def visible?(selector, strict: nil, timeout: nil)
+      params = { selector: selector, strict: strict, timeout: timeout }.compact
       @channel.send_message_to_server('isVisible', params)
     end
 
-    def dispatch_event(selector, type, eventInit: nil, timeout: nil)
+    def dispatch_event(selector, type, eventInit: nil, strict: nil, timeout: nil)
       params = {
         selector: selector,
         type: type,
         eventInit: JavaScript::ValueSerializer.new(eventInit).serialize,
+        strict: strict,
         timeout: timeout,
       }.compact
       @channel.send_message_to_server('dispatchEvent', params)
@@ -199,8 +204,8 @@ module Playwright
       nil
     end
 
-    def eval_on_selector(selector, pageFunction, arg: nil)
-      JavaScript::Expression.new(pageFunction, arg).eval_on_selector(@channel, selector)
+    def eval_on_selector(selector, pageFunction, arg: nil, strict: nil)
+      JavaScript::Expression.new(pageFunction, arg).eval_on_selector(@channel, selector, strict: strict)
     end
 
     def eval_on_selector_all(selector, pageFunction, arg: nil)
@@ -273,6 +278,7 @@ module Playwright
           modifiers: nil,
           noWaitAfter: nil,
           position: nil,
+          strict: nil,
           timeout: nil,
           trial: nil)
 
@@ -285,6 +291,7 @@ module Playwright
         modifiers: modifiers,
         noWaitAfter: noWaitAfter,
         position: position,
+        strict: strict,
         timeout: timeout,
         trial: trial,
       }.compact
@@ -298,6 +305,7 @@ module Playwright
           target,
           force: nil,
           noWaitAfter: nil,
+          strict: nil,
           timeout: nil,
           trial: nil)
       params = {
@@ -305,6 +313,7 @@ module Playwright
         target: target,
         force: force,
         noWaitAfter: noWaitAfter,
+        strict: strict,
         timeout: timeout,
         trial: trial,
       }.compact
@@ -321,6 +330,7 @@ module Playwright
           modifiers: nil,
           noWaitAfter: nil,
           position: nil,
+          strict: nil,
           timeout: nil,
           trial: nil)
 
@@ -332,6 +342,7 @@ module Playwright
         modifiers: modifiers,
         noWaitAfter: noWaitAfter,
         position: position,
+        strict: strict,
         timeout: timeout,
         trial: trial,
       }.compact
@@ -346,6 +357,7 @@ module Playwright
           modifiers: nil,
           noWaitAfter: nil,
           position: nil,
+          strict: nil,
           timeout: nil,
           trial: nil)
       params = {
@@ -354,6 +366,7 @@ module Playwright
         modifiers: modifiers,
         noWaitAfter: noWaitAfter,
         position: position,
+        strict: strict,
         timeout: timeout,
         trial: trial,
       }.compact
@@ -367,12 +380,14 @@ module Playwright
           value,
           force: nil,
           noWaitAfter: nil,
+          strict: nil,
           timeout: nil)
       params = {
         selector: selector,
         value: value,
         force: force,
         noWaitAfter: noWaitAfter,
+        strict: strict,
         timeout: timeout,
       }.compact
       @channel.send_message_to_server('fill', params)
@@ -380,31 +395,32 @@ module Playwright
       nil
     end
 
-    def focus(selector, timeout: nil)
-      params = { selector: selector, timeout: timeout }.compact
+    def focus(selector, strict: nil, timeout: nil)
+      params = { selector: selector, strict: strict, timeout: timeout }.compact
       @channel.send_message_to_server('focus', params)
       nil
     end
 
-    def text_content(selector, timeout: nil)
-      params = { selector: selector, timeout: timeout }.compact
+    def text_content(selector, strict: nil, timeout: nil)
+      params = { selector: selector, strict: strict, timeout: timeout }.compact
       @channel.send_message_to_server('textContent', params)
     end
 
-    def inner_text(selector, timeout: nil)
-      params = { selector: selector, timeout: timeout }.compact
+    def inner_text(selector, strict: nil, timeout: nil)
+      params = { selector: selector, strict: strict, timeout: timeout }.compact
       @channel.send_message_to_server('innerText', params)
     end
 
-    def inner_html(selector, timeout: nil)
-      params = { selector: selector, timeout: timeout }.compact
+    def inner_html(selector, strict: nil, timeout: nil)
+      params = { selector: selector, strict: strict, timeout: timeout }.compact
       @channel.send_message_to_server('innerHTML', params)
     end
 
-    def get_attribute(selector, name, timeout: nil)
+    def get_attribute(selector, name, strict: nil, timeout: nil)
       params = {
         selector: selector,
         name: name,
+        strict: strict,
         timeout: timeout,
       }.compact
       @channel.send_message_to_server('getAttribute', params)
@@ -415,6 +431,7 @@ module Playwright
           force: nil,
           modifiers: nil,
           position: nil,
+          strict: nil,
           timeout: nil,
           trial: nil)
       params = {
@@ -422,6 +439,7 @@ module Playwright
         force: force,
         modifiers: modifiers,
         position: position,
+        strict: strict,
         timeout: timeout,
         trial: trial,
       }.compact
@@ -438,6 +456,7 @@ module Playwright
           label: nil,
           force: nil,
           noWaitAfter: nil,
+          strict: nil,
           timeout: nil)
       base_params = SelectOptionValues.new(
         element: element,
@@ -445,18 +464,24 @@ module Playwright
         value: value,
         label: label,
       ).as_params
-      params = base_params.merge({ selector: selector, force: force, noWaitAfter: noWaitAfter, timeout: timeout }.compact)
+      params = base_params.merge({ selector: selector, force: force, noWaitAfter: noWaitAfter, strict: strict, timeout: timeout }.compact)
       @channel.send_message_to_server('selectOption', params)
     end
 
-    def input_value(selector, timeout: nil)
-      params = { selector: selector, timeout: timeout }.compact
+    def input_value(selector, strict: nil, timeout: nil)
+      params = { selector: selector, strict: strict, timeout: timeout }.compact
       @channel.send_message_to_server('inputValue', params)
     end
 
-    def set_input_files(selector, files, noWaitAfter: nil, timeout: nil)
+    def set_input_files(selector, files, noWaitAfter: nil, strict: nil, timeout: nil)
       file_payloads = InputFiles.new(files).as_params
-      params = { files: file_payloads, selector: selector, noWaitAfter: noWaitAfter, timeout: timeout }.compact
+      params = {
+        files: file_payloads,
+        selector: selector,
+        noWaitAfter: noWaitAfter,
+        strict: strict,
+        timeout: timeout,
+      }.compact
       @channel.send_message_to_server('setInputFiles', params)
 
       nil
@@ -467,6 +492,7 @@ module Playwright
           text,
           delay: nil,
           noWaitAfter: nil,
+          strict: nil,
           timeout: nil)
 
       params = {
@@ -474,6 +500,7 @@ module Playwright
         text: text,
         delay: delay,
         noWaitAfter: noWaitAfter,
+        strict: strict,
         timeout: timeout,
       }.compact
       @channel.send_message_to_server('type', params)
@@ -486,6 +513,7 @@ module Playwright
           key,
           delay: nil,
           noWaitAfter: nil,
+          strict: nil,
           timeout: nil)
 
       params = {
@@ -493,6 +521,7 @@ module Playwright
         key: key,
         delay: delay,
         noWaitAfter: noWaitAfter,
+        strict: strict,
         timeout: timeout,
       }.compact
       @channel.send_message_to_server('press', params)
@@ -505,6 +534,7 @@ module Playwright
       force: nil,
       noWaitAfter: nil,
       position: nil,
+      strict: nil,
       timeout: nil,
       trial: nil)
 
@@ -513,6 +543,7 @@ module Playwright
         force: force,
         noWaitAfter:  noWaitAfter,
         position: position,
+        strict: strict,
         timeout: timeout,
         trial: trial,
       }.compact
@@ -526,6 +557,7 @@ module Playwright
       force: nil,
       noWaitAfter: nil,
       position: nil,
+      strict: nil,
       timeout: nil,
       trial: nil)
 
@@ -534,6 +566,7 @@ module Playwright
         force: force,
         noWaitAfter:  noWaitAfter,
         position: position,
+        strict: strict,
         timeout: timeout,
         trial: trial,
       }.compact
