@@ -14,7 +14,7 @@ Keep in mind repeatedly that persistent browser context is NOT RECOMMENDED for m
 
 ## Pause automation for manual operation
 
-`Page#pause` is not implemented yet, however we can use `binding.pry`  (with `pry-byebug` installed) instead.
+We can simply use `binding.pry`  (with `pry-byebug` installed).
 
 ```ruby {4}
 playwright.chromium.launch_persistent_context('./data/', headless: false) do |context|
