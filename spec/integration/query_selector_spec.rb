@@ -3,7 +3,7 @@ require 'spec_helper'
 RSpec.describe 'query selector' do
   it 'should throw for non-string selector' do
     with_page do |page|
-      expect { page.query_selector(nil) }.to raise_error(/selector: expected string, got object/)
+      expect { page.query_selector(nil) }.to raise_error(/selector: expected string, got undefined/)
     end
   end
 

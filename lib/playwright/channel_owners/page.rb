@@ -205,44 +205,48 @@ module Playwright
       @channel.send_message_to_server('setDefaultTimeoutNoReply', timeout: timeout)
     end
 
-    def query_selector(selector)
-      @main_frame.query_selector(selector)
+    def query_selector(selector, strict: nil)
+      @main_frame.query_selector(selector, strict: strict)
     end
 
     def query_selector_all(selector)
       @main_frame.query_selector_all(selector)
     end
 
-    def wait_for_selector(selector, state: nil, timeout: nil)
-      @main_frame.wait_for_selector(selector, state: state, timeout: timeout)
+    def wait_for_selector(selector, state: nil, strict: nil, timeout: nil)
+      @main_frame.wait_for_selector(selector, state: state, strict: strict, timeout: timeout)
     end
 
-    def checked?(selector, timeout: nil)
-      @main_frame.checked?(selector, timeout: timeout)
+    def checked?(selector, strict: nil, timeout: nil)
+      @main_frame.checked?(selector, strict: strict, timeout: timeout)
     end
 
-    def disabled?(selector, timeout: nil)
-      @main_frame.disabled?(selector, timeout: timeout)
+    def disabled?(selector, strict: nil, timeout: nil)
+      @main_frame.disabled?(selector, strict: strict, timeout: timeout)
     end
 
-    def editable?(selector, timeout: nil)
-      @main_frame.editable?(selector, timeout: timeout)
+    def editable?(selector, strict: nil, timeout: nil)
+      @main_frame.editable?(selector, strict: strict, timeout: timeout)
     end
 
-    def enabled?(selector, timeout: nil)
-      @main_frame.enabled?(selector, timeout: timeout)
+    def enabled?(selector, strict: nil, timeout: nil)
+      @main_frame.enabled?(selector, strict: strict, timeout: timeout)
     end
 
-    def hidden?(selector, timeout: nil)
-      @main_frame.hidden?(selector, timeout: timeout)
+    def hidden?(selector, strict: nil, timeout: nil)
+      @main_frame.hidden?(selector, strict: strict, timeout: timeout)
     end
 
-    def visible?(selector, timeout: nil)
-      @main_frame.visible?(selector, timeout: timeout)
+    def visible?(selector, strict: nil, timeout: nil)
+      @main_frame.visible?(selector, strict: strict, timeout: timeout)
     end
 
-    def dispatch_event(selector, type, eventInit: nil, timeout: nil)
-      @main_frame.dispatch_event(selector, type, eventInit: eventInit, timeout: timeout)
+    def locator(selector)
+      @main_frame.locator(selector)
+    end
+
+    def dispatch_event(selector, type, eventInit: nil, strict: nil, timeout: nil)
+      @main_frame.dispatch_event(selector, type, eventInit: eventInit, strict: strict, timeout: timeout)
     end
 
     def evaluate(pageFunction, arg: nil)
@@ -253,8 +257,8 @@ module Playwright
       @main_frame.evaluate_handle(pageFunction, arg: arg)
     end
 
-    def eval_on_selector(selector, pageFunction, arg: nil)
-      @main_frame.eval_on_selector(selector, pageFunction, arg: arg)
+    def eval_on_selector(selector, pageFunction, arg: nil, strict: nil)
+      @main_frame.eval_on_selector(selector, pageFunction, arg: arg, strict: strict)
     end
 
     def eval_on_selector_all(selector, pageFunction, arg: nil)
@@ -439,6 +443,7 @@ module Playwright
           modifiers: nil,
           noWaitAfter: nil,
           position: nil,
+          strict: nil,
           timeout: nil,
           trial: nil)
 
@@ -451,6 +456,7 @@ module Playwright
         modifiers: modifiers,
         noWaitAfter: noWaitAfter,
         position: position,
+        strict: strict,
         timeout: timeout,
         trial: trial,
       )
@@ -461,6 +467,7 @@ module Playwright
           target,
           force: nil,
           noWaitAfter: nil,
+          strict: nil,
           timeout: nil,
           trial: nil)
 
@@ -469,6 +476,7 @@ module Playwright
         target,
         force: force,
         noWaitAfter: noWaitAfter,
+        strict: strict,
         timeout: timeout,
         trial: trial)
     end
@@ -481,6 +489,7 @@ module Playwright
           modifiers: nil,
           noWaitAfter: nil,
           position: nil,
+          strict: nil,
           timeout: nil,
           trial: nil)
       @main_frame.dblclick(
@@ -491,6 +500,7 @@ module Playwright
         modifiers: modifiers,
         noWaitAfter: noWaitAfter,
         position: position,
+        strict: strict,
         timeout: timeout,
         trial: trial,
       )
@@ -502,6 +512,7 @@ module Playwright
           modifiers: nil,
           noWaitAfter: nil,
           position: nil,
+          strict: nil,
           timeout: nil,
           trial: nil)
       @main_frame.tap_point(
@@ -510,6 +521,7 @@ module Playwright
         modifiers: modifiers,
         noWaitAfter: noWaitAfter,
         position: position,
+        strict: strict,
         timeout: timeout,
         trial: trial,
       )
@@ -520,28 +532,35 @@ module Playwright
       value,
       force: nil,
       noWaitAfter: nil,
+      strict: nil,
       timeout: nil)
-      @main_frame.fill(selector, value, force: force, noWaitAfter: noWaitAfter, timeout: timeout)
+      @main_frame.fill(
+        selector,
+        value,
+        force: force,
+        noWaitAfter: noWaitAfter,
+        strict: strict,
+        timeout: timeout)
     end
 
-    def focus(selector, timeout: nil)
-      @main_frame.focus(selector, timeout: timeout)
+    def focus(selector, strict: nil, timeout: nil)
+      @main_frame.focus(selector, strict: strict, timeout: timeout)
     end
 
-    def text_content(selector, timeout: nil)
-      @main_frame.text_content(selector, timeout: timeout)
+    def text_content(selector, strict: nil, timeout: nil)
+      @main_frame.text_content(selector, strict: strict, timeout: timeout)
     end
 
-    def inner_text(selector, timeout: nil)
-      @main_frame.inner_text(selector, timeout: timeout)
+    def inner_text(selector, strict: nil, timeout: nil)
+      @main_frame.inner_text(selector, strict: strict, timeout: timeout)
     end
 
-    def inner_html(selector, timeout: nil)
-      @main_frame.inner_html(selector, timeout: timeout)
+    def inner_html(selector, strict: nil, timeout: nil)
+      @main_frame.inner_html(selector, strict: strict, timeout: timeout)
     end
 
-    def get_attribute(selector, name, timeout: nil)
-      @main_frame.get_attribute(selector, name, timeout: timeout)
+    def get_attribute(selector, name, strict: nil, timeout: nil)
+      @main_frame.get_attribute(selector, name, strict: strict, timeout: timeout)
     end
 
     def hover(
@@ -549,6 +568,7 @@ module Playwright
           force: nil,
           modifiers: nil,
           position: nil,
+          strict: nil,
           timeout: nil,
           trial: nil)
       @main_frame.hover(
@@ -556,6 +576,7 @@ module Playwright
         force: force,
         modifiers: modifiers,
         position: position,
+        strict: strict,
         timeout: timeout,
         trial: trial,
       )
@@ -569,6 +590,7 @@ module Playwright
           label: nil,
           force: nil,
           noWaitAfter: nil,
+          strict: nil,
           timeout: nil)
       @main_frame.select_option(
         selector,
@@ -578,16 +600,22 @@ module Playwright
         label: label,
         force: force,
         noWaitAfter: noWaitAfter,
+        strict: strict,
         timeout: timeout,
       )
     end
 
-    def input_value(selector, timeout: nil)
-      @main_frame.input_value(selector, timeout: timeout)
+    def input_value(selector, strict: nil, timeout: nil)
+      @main_frame.input_value(selector, strict: strict, timeout: timeout)
     end
 
-    def set_input_files(selector, files, noWaitAfter: nil, timeout: nil)
-      @main_frame.set_input_files(selector, files, noWaitAfter: noWaitAfter, timeout: timeout)
+    def set_input_files(selector, files, noWaitAfter: nil, strict: nil,timeout: nil)
+      @main_frame.set_input_files(
+        selector,
+        files,
+        noWaitAfter: noWaitAfter,
+        strict: strict,
+        timeout: timeout)
     end
 
     def type(
@@ -595,9 +623,16 @@ module Playwright
       text,
       delay: nil,
       noWaitAfter: nil,
+      strict: nil,
       timeout: nil)
 
-      @main_frame.type(selector, text, delay: delay, noWaitAfter: noWaitAfter, timeout: timeout)
+      @main_frame.type(
+        selector,
+        text,
+        delay: delay,
+        noWaitAfter: noWaitAfter,
+        strict: strict,
+        timeout: timeout)
     end
 
     def press(
@@ -605,9 +640,16 @@ module Playwright
       key,
       delay: nil,
       noWaitAfter: nil,
+      strict: nil,
       timeout: nil)
 
-      @main_frame.press(selector, key, delay: delay, noWaitAfter: noWaitAfter, timeout: timeout)
+      @main_frame.press(
+        selector,
+        key,
+        delay: delay,
+        noWaitAfter: noWaitAfter,
+        strict: strict,
+        timeout: timeout)
     end
 
     def check(
@@ -615,10 +657,18 @@ module Playwright
       force: nil,
       noWaitAfter: nil,
       position: nil,
+      strict: nil,
       timeout: nil,
       trial: nil)
 
-      @main_frame.check(selector, force: force, noWaitAfter: noWaitAfter, position: position, timeout: timeout, trial: trial)
+      @main_frame.check(
+        selector,
+        force: force,
+        noWaitAfter: noWaitAfter,
+        position: position,
+        strict: strict,
+        timeout: timeout,
+        trial: trial)
     end
 
     def uncheck(
@@ -626,10 +676,18 @@ module Playwright
       force: nil,
       noWaitAfter: nil,
       position: nil,
+      strict: nil,
       timeout: nil,
       trial: nil)
 
-      @main_frame.uncheck(selector, force: force, noWaitAfter: noWaitAfter, position: position, timeout: timeout, trial: trial)
+      @main_frame.uncheck(
+        selector,
+        force: force,
+        noWaitAfter: noWaitAfter,
+        position: position,
+        strict: strict,
+        timeout: timeout,
+        trial: trial)
     end
 
     def wait_for_function(pageFunction, arg: nil, polling: nil, timeout: nil)

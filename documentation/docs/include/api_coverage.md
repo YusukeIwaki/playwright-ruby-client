@@ -158,6 +158,7 @@
 * enabled?
 * hidden?
 * visible?
+* locator
 * name
 * page
 * parent_frame
@@ -245,6 +246,7 @@
 * enabled?
 * hidden?
 * visible?
+* locator
 * main_frame
 * opener
 * ~~pause~~
@@ -363,6 +365,47 @@
 
 * start
 * stop
+
+## Locator
+
+* bounding_box
+* ~~check~~
+* click
+* ~~count~~
+* ~~dblclick~~
+* ~~dispatch_event~~
+* element_handle
+* ~~element_handles~~
+* ~~evaluate~~
+* ~~evaluate_all~~
+* ~~evaluate_handle~~
+* ~~fill~~
+* ~~first~~
+* ~~focus~~
+* ~~get_attribute~~
+* ~~hover~~
+* inner_html
+* inner_text
+* input_value
+* ~~checked?~~
+* ~~disabled?~~
+* ~~editable?~~
+* ~~enabled?~~
+* ~~hidden?~~
+* ~~visible?~~
+* ~~last~~
+* ~~locator~~
+* ~~nth~~
+* ~~press~~
+* ~~screenshot~~
+* ~~scroll_into_view_if_needed~~
+* ~~select_option~~
+* ~~select_text~~
+* ~~set_input_files~~
+* ~~tap_point~~
+* text_content
+* ~~type~~
+* ~~uncheck~~
 
 ## Android
 
