@@ -250,7 +250,32 @@ module Playwright
       raise unless safe_close_error?(err)
     end
 
+    # REMARK: enable_debug_console is playwright-ruby-client specific method.
+    def enable_debug_console!
+      # Ruby is not supported in Playwright officially,
+      # and causes error:
+      #
+      #  Error:
+      #  ===============================
+      #  Unsupported language: 'ruby'
+      #  ===============================
+      #
+      # So, launch inspector as Python app.
+      # NOTE: This should be used only for Page#pause at this moment.
+      @channel.send_message_to_server('recorderSupplementEnable', language: :python)
+      @debug_console_enabled = true
+    end
+
+    class DebugConsoleNotEnabledError < StandardError
+      def initialize
+        super('Debug console should be enabled in advance, by calling `browser_context.enable_debug_console!`')
+      end
+    end
+
     def pause
+      unless @debug_console_enabled
+        raise DebugConsoleNotEnabledError.new
+      end
       @channel.send_message_to_server('pause')
     end
 

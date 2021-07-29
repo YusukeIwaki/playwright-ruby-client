@@ -694,6 +694,10 @@ module Playwright
       @main_frame.wait_for_function(pageFunction, arg: arg, polling: polling, timeout: timeout)
     end
 
+    def pause
+      @browser_context.send(:pause)
+    end
+
     def pdf(
           displayHeaderFooter: nil,
           footerTemplate: nil,

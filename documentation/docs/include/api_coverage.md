@@ -249,7 +249,7 @@
 * locator
 * main_frame
 * opener
-* ~~pause~~
+* pause
 * pdf
 * press
 * query_selector
