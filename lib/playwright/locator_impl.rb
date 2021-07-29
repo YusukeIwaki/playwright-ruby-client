@@ -4,13 +4,12 @@ module Playwright
       @frame = frame
       @timeout_settings = timeout_settings
       @selector = selector
-      @visible_selector = "#{selector} >> _visible=true"
     end
 
     private def with_element(timeout: nil, &block)
       start_time = Time.now
 
-      handle = @frame.wait_for_selector(@visible_selector, strict: true, timeout: timeout)
+      handle = @frame.wait_for_selector(@selector, strict: true, timeout: timeout)
       unless handle
         raise "Could not resolve #{@selector} to DOM Element"
       end
@@ -44,7 +43,7 @@ module Playwright
           timeout: nil,
           trial: nil)
 
-      @frame.click(@visible_selector,
+      @frame.click(@selector,
         strict: true,
         button: button,
         clickCount: clickCount,
@@ -58,7 +57,7 @@ module Playwright
     end
 
     def element_handle(timeout: nil)
-      @frame.wait_for_selector(@visible_selector, strict: true, timeout: timeout)
+      @frame.wait_for_selector(@selector, strict: true, timeout: timeout)
     end
 
     def inner_html(timeout: nil)
