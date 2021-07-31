@@ -231,6 +231,16 @@ module ExampleCodes
     # => [alert] bar
   end
 
+  # Download
+  def example_1392659acf52ded5cc668ec84a8a9ee4ad0b5a474f61e8ed565d5e29cb35ab2a(page:)
+    download = page.expect_download do
+      page.click('a')
+    end
+
+    # wait for download to complete
+    path = download.path
+  end
+
   # ElementHandle
   def example_5ba38bdc5d9e5ce7cfc9c8841eb0176efbb4690d18962066f9ee67f1e8b7b050(page:)
     page.goto("https://example.com")

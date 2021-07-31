@@ -280,17 +280,6 @@ for worker in page.workers:
 
 ```
 
-### example_1392659acf52ded5cc668ec84a8a9ee4ad0b5a474f61e8ed565d5e29cb35ab2a
-
-```
-with page.expect_download() as download_info:
-    page.click("a")
-download = download_info.value
-# wait for download to complete
-path = download.path()
-
-```
-
 ### example_a767dfb400d98aef50f2767b94171d23474ea1ac1cf9b4d75d412936208e652d
 
 ```

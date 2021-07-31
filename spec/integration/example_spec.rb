@@ -122,6 +122,22 @@ RSpec.describe 'example' do
       end
     end
 
+    it 'should work with Download', sinatra: true do
+      sinatra.get('/download') do
+        headers(
+          'Content-Type' => 'application/octet-stream',
+          'Content-Disposition' => 'attachment',
+        )
+        body('Hello world!')
+      end
+
+      with_page(acceptDownloads: true) do |page|
+        page.content = "<a href=\"#{server_prefix}/download\">download</a>"
+        path = example_1392659acf52ded5cc668ec84a8a9ee4ad0b5a474f61e8ed565d5e29cb35ab2a(page: page)
+        expect(File.exist?(path)).to eq(true)
+      end
+    end
+
     it 'should work with JSHandle#properties' do
       with_page do |page|
         example_8292f0e8974d97d20be9bb303d55ccd2d50e42f954e0ada4958ddbef2c6c2977(page: page)
