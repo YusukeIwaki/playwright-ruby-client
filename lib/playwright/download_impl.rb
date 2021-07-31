@@ -1,5 +1,5 @@
 module Playwright
-  class Download
+  define_api_implementation :DownloadImpl do
     def initialize(page:, url:, suggested_filename:, artifact:)
       @page = page
       @url = url

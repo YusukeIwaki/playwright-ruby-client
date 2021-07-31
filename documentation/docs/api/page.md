@@ -1263,7 +1263,7 @@ throw an error if the page is closed before the [`event: Page.console`] event is
 def expect_download(predicate: nil, timeout: nil, &block)
 ```
 
-Performs action and waits for a new `Download`. If predicate is provided, it passes `Download` value into the
+Performs action and waits for a new [Download](./download). If predicate is provided, it passes [Download](./download) value into the
 `predicate` function and waits for `predicate(download)` to return a truthy value. Will throw an error if the page is
 closed before the download event is fired.
 

@@ -124,7 +124,7 @@ module Playwright
     end
 
     private def on_download(params)
-      download = Download.new(
+      download = DownloadImpl.new(
         page: self,
         url: params['url'],
         suggested_filename: params['suggestedFilename'],
