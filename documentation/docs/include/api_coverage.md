@@ -206,6 +206,17 @@
 * message
 * type
 
+## Download
+
+* cancel
+* delete
+* failure
+* page
+* path
+* save_as
+* suggested_filename
+* url
+
 ## Page
 
 * add_init_script

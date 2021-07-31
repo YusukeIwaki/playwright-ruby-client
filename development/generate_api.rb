@@ -16,6 +16,7 @@ ALL_TYPES = %w[
     Selectors
     ConsoleMessage
     Dialog
+    Download
     Page
     BrowserContext
     CDPSession
@@ -39,6 +40,7 @@ API_IMPLEMENTATIONS = %w[
   Mouse
   Touchscreen
   Tracing
+  Download
   Locator
 ]
 
