@@ -242,11 +242,23 @@ module ExampleCodes
   end
 
   # ElementHandle
-  def example_5ba38bdc5d9e5ce7cfc9c8841eb0176efbb4690d18962066f9ee67f1e8b7b050(page:)
-    page.goto("https://example.com")
+  def example_79d8d3cbe504c5562bfee5b1e40f4dfddf2cca147b57c9dac0249bcf96978263(page:)
     href_element = page.query_selector("a")
     href_element.click
-    # ...
+  end
+
+  # ElementHandle
+  def example_01a453e4368b0eae393813ed13b9cd67aa07743e178567efdf8822cfd9b3b232(page:)
+    handle = page.query_selector("text=Submit")
+    handle.hover
+    handle.click
+  end
+
+  # ElementHandle
+  def example_72d79aac84ca1f30354016c388b09aa8f9e10ef146d517bb70de34ba79f90691(page:)
+    locator = page.locator("text=Submit")
+    locator.hover
+    locator.click
   end
 
   # ElementHandle#bounding_box
