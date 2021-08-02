@@ -7,27 +7,32 @@ sidebar_position: 10
 Locator represents a view to the element(s) on the page. It captures the logic sufficient to retrieve the element at any
 given moment. Locator can be created with the [Page#locator](./page#locator) method.
 
-The difference between the Locator and [ElementHandle](./element_handle) is that the latter points to a particular element, while Locator
-only captures the logic of how to retrieve an element at any given moment.
-
-In the example below, handle points to a particular DOM element on page. If that element changes text or is used by
-React to render an entirely different component, handle is still pointing to that very DOM element.
-
-```python sync title=example_01a453e4368b0eae393813ed13b9cd67aa07743e178567efdf8822cfd9b3b232.py
-handle = page.query_selector("text=Submit")
-handle.hover()
-handle.click()
+```python sync title=example_9f72eed0cd4b2405e6a115b812b36ff2624e889f9086925c47665333a7edabbc.py
+locator = page.locator("text=Submit")
+locator.click()
 
 ```
 
-With the locator, every time the `element` is used, corresponding DOM element is located in the page using given
-selector. So in the snippet below, underlying DOM element is going to be located twice, using the given selector.
+The difference between the Locator and [ElementHandle](./element_handle) is that the latter points to a particular element, while Locator
+captures the logic of how to retrieve that element.
 
-```python sync title=example_2afd3c53fa2e68c0d9ec7a61f84db4e92c2c5889255e194195066b5515d0e931.py
-element = page.locator("text=Submit")
-element.hover()
-element.click()
+In the example below, handle points to a particular DOM element on page. If that element changes text or is used by
+React to render an entirely different component, handle is still pointing to that very DOM element. This can lead to
+unexpected behaviors.
 
+```ruby
+handle = page.query_selector("text=Submit")
+handle.hover
+handle.click
+```
+
+With the locator, every time the `element` is used, up-to-date DOM element is located in the page using the selector. So
+in the snippet below, underlying DOM element is going to be located twice.
+
+```ruby
+locator = page.locator("text=Submit")
+locator.hover
+locator.click
 ```
 
 

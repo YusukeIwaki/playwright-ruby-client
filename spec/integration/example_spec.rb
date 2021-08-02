@@ -138,6 +138,14 @@ RSpec.describe 'example' do
       end
     end
 
+    it 'should work with ElementHandle' do
+      with_page do |page|
+        page.content = "<a onclick=\"this.innerText='clicked!'\">Click Me</a>"
+        example_79d8d3cbe504c5562bfee5b1e40f4dfddf2cca147b57c9dac0249bcf96978263(page: page)
+        expect(page.text_content('a')).to eq('clicked!')
+      end
+    end
+
     it 'should work with JSHandle#properties' do
       with_page do |page|
         example_8292f0e8974d97d20be9bb303d55ccd2d50e42f954e0ada4958ddbef2c6c2977(page: page)

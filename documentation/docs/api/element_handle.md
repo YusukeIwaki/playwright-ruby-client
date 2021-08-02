@@ -10,10 +10,8 @@ ElementHandle represents an in-page DOM element. ElementHandles can be created w
 method.
 
 ```ruby
-page.goto("https://example.com")
 href_element = page.query_selector("a")
 href_element.click
-# ...
 ```
 
 ElementHandle prevents DOM element from garbage collection unless the handle is disposed with
@@ -21,6 +19,33 @@ ElementHandle prevents DOM element from garbage collection unless the handle is 
 
 ElementHandle instances can be used as an argument in [Page#eval_on_selector](./page#eval_on_selector) and [Page#evaluate](./page#evaluate)
 methods.
+
+> NOTE: In most cases, you would want to use the [Locator](./locator) object instead. You should only use [ElementHandle](./element_handle) if you
+want to retain a handle to a particular DOM Node that you intend to pass into [Page#evaluate](./page#evaluate) as an argument.
+
+The difference between the [Locator](./locator) and ElementHandle is that the ElementHandle points to a particular element, while
+[Locator](./locator) captures the logic of how to retrieve an element.
+
+In the example below, handle points to a particular DOM element on page. If that element changes text or is used by
+React to render an entirely different component, handle is still pointing to that very DOM element. This can lead to
+unexpected behaviors.
+
+```ruby
+handle = page.query_selector("text=Submit")
+handle.hover
+handle.click
+```
+
+With the locator, every time the `element` is used, up-to-date DOM element is located in the page using the selector. So
+in the snippet below, underlying DOM element is going to be located twice.
+
+```ruby
+locator = page.locator("text=Submit")
+locator.hover
+locator.click
+```
+
+
 
 ## bounding_box
 

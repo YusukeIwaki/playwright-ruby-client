@@ -379,6 +379,8 @@
 
 ## Locator
 
+* ~~all_inner_texts~~
+* ~~all_text_contents~~
 * bounding_box
 * ~~check~~
 * click
