@@ -9,11 +9,10 @@ sidebar_position: 10
 ElementHandle represents an in-page DOM element. ElementHandles can be created with the [Page#query_selector](./page#query_selector)
 method.
 
-```ruby
-page.goto("https://example.com")
+```python sync title=example_79d8d3cbe504c5562bfee5b1e40f4dfddf2cca147b57c9dac0249bcf96978263.py
 href_element = page.query_selector("a")
-href_element.click
-# ...
+href_element.click()
+
 ```
 
 ElementHandle prevents DOM element from garbage collection unless the handle is disposed with
@@ -21,6 +20,35 @@ ElementHandle prevents DOM element from garbage collection unless the handle is 
 
 ElementHandle instances can be used as an argument in [Page#eval_on_selector](./page#eval_on_selector) and [Page#evaluate](./page#evaluate)
 methods.
+
+> NOTE: In most cases, you would want to use the [Locator](./locator) object instead. You should only use [ElementHandle](./element_handle) if you
+want to retain a handle to a particular DOM Node that you intend to pass into [Page#evaluate](./page#evaluate) as an argument.
+
+The difference between the [Locator](./locator) and ElementHandle is that the ElementHandle points to a particular element, while
+[Locator](./locator) captures the logic of how to retrieve an element.
+
+In the example below, handle points to a particular DOM element on page. If that element changes text or is used by
+React to render an entirely different component, handle is still pointing to that very DOM element. This can lead to
+unexpected behaviors.
+
+```python sync title=example_01a453e4368b0eae393813ed13b9cd67aa07743e178567efdf8822cfd9b3b232.py
+handle = page.query_selector("text=Submit")
+handle.hover()
+handle.click()
+
+```
+
+With the locator, every time the `element` is used, up-to-date DOM element is located in the page using the selector. So
+in the snippet below, underlying DOM element is going to be located twice.
+
+```python sync title=example_72d79aac84ca1f30354016c388b09aa8f9e10ef146d517bb70de34ba79f90691.py
+locator = page.locator("text=Submit")
+locator.hover()
+locator.click()
+
+```
+
+
 
 ## bounding_box
 

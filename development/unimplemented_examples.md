@@ -59,6 +59,32 @@ page.mouse.up()
 
 ```
 
+### example_79d8d3cbe504c5562bfee5b1e40f4dfddf2cca147b57c9dac0249bcf96978263
+
+```
+href_element = page.query_selector("a")
+href_element.click()
+
+```
+
+### example_01a453e4368b0eae393813ed13b9cd67aa07743e178567efdf8822cfd9b3b232
+
+```
+handle = page.query_selector("text=Submit")
+handle.hover()
+handle.click()
+
+```
+
+### example_72d79aac84ca1f30354016c388b09aa8f9e10ef146d517bb70de34ba79f90691
+
+```
+locator = page.locator("text=Submit")
+locator.hover()
+locator.click()
+
+```
+
 ### example_3b0f6c6573db513b7b707a39d6c5bbf5ce5896b4785466d80f525968cfbd0be7
 
 ```
@@ -301,6 +327,14 @@ context.tracing.stop(path = "trace.zip")
 
 ```
 
+### example_9f72eed0cd4b2405e6a115b812b36ff2624e889f9086925c47665333a7edabbc
+
+```
+locator = page.locator("text=Submit")
+locator.click()
+
+```
+
 ### example_01a453e4368b0eae393813ed13b9cd67aa07743e178567efdf8822cfd9b3b232
 
 ```
@@ -310,12 +344,12 @@ handle.click()
 
 ```
 
-### example_2afd3c53fa2e68c0d9ec7a61f84db4e92c2c5889255e194195066b5515d0e931
+### example_72d79aac84ca1f30354016c388b09aa8f9e10ef146d517bb70de34ba79f90691
 
 ```
-element = page.locator("text=Submit")
-element.hover()
-element.click()
+locator = page.locator("text=Submit")
+locator.hover()
+locator.click()
 
 ```
 

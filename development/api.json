@@ -21535,99 +21535,40 @@
       {
         "type": "code",
         "lines": [
-          "const { chromium } = require('playwright');  // Or 'firefox' or 'webkit'.",
-          "",
-          "(async () => {",
-          "  const browser = await chromium.launch();",
-          "  const page = await browser.newPage();",
-          "  await page.goto('https://example.com');",
-          "  const hrefElement = await page.$('a');",
-          "  await hrefElement.click();",
-          "  // ...",
-          "})();"
+          "const hrefElement = await page.$('a');",
+          "await hrefElement.click();"
         ],
         "codeLang": "js"
       },
       {
         "type": "code",
         "lines": [
-          "import com.microsoft.playwright.*;",
-          "",
-          "public class Example {",
-          "  public static void main(String[] args) {",
-          "    try (Playwright playwright = Playwright.create()) {",
-          "      BrowserType chromium = playwright.chromium();",
-          "      Browser browser = chromium.launch();",
-          "      Page page = browser.newPage();",
-          "      page.navigate(\"https://example.com\");",
-          "      ElementHandle hrefElement = page.querySelector(\"a\");",
-          "      hrefElement.click();",
-          "      // ...",
-          "    }",
-          "  }",
-          "}"
+          "ElementHandle hrefElement = page.querySelector(\"a\");",
+          "hrefElement.click();"
         ],
         "codeLang": "java"
       },
       {
         "type": "code",
         "lines": [
-          "import asyncio",
-          "from playwright.async_api import async_playwright",
-          "",
-          "async def run(playwright):",
-          "    chromium = playwright.chromium",
-          "    browser = await chromium.launch()",
-          "    page = await browser.new_page()",
-          "    await page.goto(\"https://example.com\")",
-          "    href_element = await page.query_selector(\"a\")",
-          "    await href_element.click()",
-          "    # ...",
-          "",
-          "async def main():",
-          "    async with async_playwright() as playwright:",
-          "        await run(playwright)",
-          "asyncio.run(main())"
+          "href_element = await page.query_selector(\"a\")",
+          "await href_element.click()"
         ],
         "codeLang": "python async"
       },
       {
         "type": "code",
         "lines": [
-          "from playwright.sync_api import sync_playwright",
-          "",
-          "def run(playwright):",
-          "    chromium = playwright.chromium",
-          "    browser = chromium.launch()",
-          "    page = browser.new_page()",
-          "    page.goto(\"https://example.com\")",
-          "    href_element = page.query_selector(\"a\")",
-          "    href_element.click()",
-          "    # ...",
-          "",
-          "with sync_playwright() as playwright:",
-          "    run(playwright)"
+          "href_element = page.query_selector(\"a\")",
+          "href_element.click()"
         ],
         "codeLang": "python sync"
       },
       {
         "type": "code",
         "lines": [
-          "using Microsoft.Playwright;",
-          "using System.Threading.Tasks;",
-          "",
-          "class HandleExamples",
-          "{",
-          "    public static async Task Run()",
-          "    {",
-          "        using var playwright = await Playwright.CreateAsync();",
-          "        var browser = await playwright.Chromium.LaunchAsync();",
-          "        var page = await browser.NewPageAsync();",
-          "        await page.GotoAsync(\"https://www.bing.com\");",
-          "        var handle = await page.QuerySelectorAsync(\"a\");",
-          "        await handle.ClickAsync();",
-          "    }",
-          "}"
+          "var handle = await page.QuerySelectorAsync(\"a\");",
+          "await handle.ClickAsync();"
         ],
         "codeLang": "csharp"
       },
@@ -21638,11 +21579,120 @@
       {
         "type": "text",
         "text": "ElementHandle instances can be used as an argument in [`method: Page.evalOnSelector`] and [`method: Page.evaluate`] methods."
+      },
+      {
+        "type": "note",
+        "noteType": "note",
+        "text": "In most cases, you would want to use the `Locator` object instead. You should only use `ElementHandle` if you want to retain a handle to a particular DOM Node that you intend to pass into [`method: Page.evaluate`] as an argument."
+      },
+      {
+        "type": "text",
+        "text": "The difference between the `Locator` and ElementHandle is that the ElementHandle points to a particular element, while `Locator` captures the logic of how to retrieve an element."
+      },
+      {
+        "type": "text",
+        "text": "In the example below, handle points to a particular DOM element on page. If that element changes text or is used by React to render an entirely different component, handle is still pointing to that very DOM element. This can lead to unexpected behaviors."
+      },
+      {
+        "type": "code",
+        "lines": [
+          "const handle = await page.$('text=Submit');",
+          "// ...",
+          "await handle.hover();",
+          "await handle.click();"
+        ],
+        "codeLang": "js"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "ElementHandle handle = page.querySelector(\"text=Submit\");",
+          "handle.hover();",
+          "handle.click();"
+        ],
+        "codeLang": "java"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "handle = await page.query_selector(\"text=Submit\")",
+          "await handle.hover()",
+          "await handle.click()"
+        ],
+        "codeLang": "python async"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "handle = page.query_selector(\"text=Submit\")",
+          "handle.hover()",
+          "handle.click()"
+        ],
+        "codeLang": "python sync"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "var handle = await page.QuerySelectorAsync(\"text=Submit\");",
+          "await handle.HoverAsync();",
+          "await handle.ClickAsync();"
+        ],
+        "codeLang": "csharp"
+      },
+      {
+        "type": "text",
+        "text": "With the locator, every time the `element` is used, up-to-date DOM element is located in the page using the selector. So in the snippet below, underlying DOM element is going to be located twice."
+      },
+      {
+        "type": "code",
+        "lines": [
+          "const locator = page.locator('text=Submit');",
+          "// ...",
+          "await locator.hover();",
+          "await locator.click();"
+        ],
+        "codeLang": "js"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "Locator locator = page.locator(\"text=Submit\");",
+          "locator.hover();",
+          "locator.click();"
+        ],
+        "codeLang": "java"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "locator = page.locator(\"text=Submit\")",
+          "await locator.hover()",
+          "await locator.click()"
+        ],
+        "codeLang": "python async"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "locator = page.locator(\"text=Submit\")",
+          "locator.hover()",
+          "locator.click()"
+        ],
+        "codeLang": "python sync"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "var locator = page.Locator(\"text=Submit\");",
+          "await locator.HoverAsync();",
+          "await locator.ClickAsync();"
+        ],
+        "codeLang": "csharp"
       }
     ],
     "extends": "JSHandle",
     "langs": {},
-    "comment": "- extends: `JSHandle`\n\nElementHandle represents an in-page DOM element. ElementHandles can be created with the [`method: Page.querySelector`]\nmethod.\n\n```js\nconst { chromium } = require('playwright');  // Or 'firefox' or 'webkit'.\n\n(async () => {\n  const browser = await chromium.launch();\n  const page = await browser.newPage();\n  await page.goto('https://example.com');\n  const hrefElement = await page.$('a');\n  await hrefElement.click();\n  // ...\n})();\n```\n\n```java\nimport com.microsoft.playwright.*;\n\npublic class Example {\n  public static void main(String[] args) {\n    try (Playwright playwright = Playwright.create()) {\n      BrowserType chromium = playwright.chromium();\n      Browser browser = chromium.launch();\n      Page page = browser.newPage();\n      page.navigate(\"https://example.com\");\n      ElementHandle hrefElement = page.querySelector(\"a\");\n      hrefElement.click();\n      // ...\n    }\n  }\n}\n```\n\n```python async\nimport asyncio\nfrom playwright.async_api import async_playwright\n\nasync def run(playwright):\n    chromium = playwright.chromium\n    browser = await chromium.launch()\n    page = await browser.new_page()\n    await page.goto(\"https://example.com\")\n    href_element = await page.query_selector(\"a\")\n    await href_element.click()\n    # ...\n\nasync def main():\n    async with async_playwright() as playwright:\n        await run(playwright)\nasyncio.run(main())\n```\n\n```python sync\nfrom playwright.sync_api import sync_playwright\n\ndef run(playwright):\n    chromium = playwright.chromium\n    browser = chromium.launch()\n    page = browser.new_page()\n    page.goto(\"https://example.com\")\n    href_element = page.query_selector(\"a\")\n    href_element.click()\n    # ...\n\nwith sync_playwright() as playwright:\n    run(playwright)\n```\n\n```csharp\nusing Microsoft.Playwright;\nusing System.Threading.Tasks;\n\nclass HandleExamples\n{\n    public static async Task Run()\n    {\n        using var playwright = await Playwright.CreateAsync();\n        var browser = await playwright.Chromium.LaunchAsync();\n        var page = await browser.NewPageAsync();\n        await page.GotoAsync(\"https://www.bing.com\");\n        var handle = await page.QuerySelectorAsync(\"a\");\n        await handle.ClickAsync();\n    }\n}\n```\n\nElementHandle prevents DOM element from garbage collection unless the handle is disposed with\n[`method: JSHandle.dispose`]. ElementHandles are auto-disposed when their origin frame gets navigated.\n\nElementHandle instances can be used as an argument in [`method: Page.evalOnSelector`] and [`method: Page.evaluate`]\nmethods.",
+    "comment": "- extends: `JSHandle`\n\nElementHandle represents an in-page DOM element. ElementHandles can be created with the [`method: Page.querySelector`]\nmethod.\n\n```js\nconst hrefElement = await page.$('a');\nawait hrefElement.click();\n```\n\n```java\nElementHandle hrefElement = page.querySelector(\"a\");\nhrefElement.click();\n```\n\n```python async\nhref_element = await page.query_selector(\"a\")\nawait href_element.click()\n```\n\n```python sync\nhref_element = page.query_selector(\"a\")\nhref_element.click()\n```\n\n```csharp\nvar handle = await page.QuerySelectorAsync(\"a\");\nawait handle.ClickAsync();\n```\n\nElementHandle prevents DOM element from garbage collection unless the handle is disposed with\n[`method: JSHandle.dispose`]. ElementHandles are auto-disposed when their origin frame gets navigated.\n\nElementHandle instances can be used as an argument in [`method: Page.evalOnSelector`] and [`method: Page.evaluate`]\nmethods.\n\n> NOTE: In most cases, you would want to use the `Locator` object instead. You should only use `ElementHandle` if you\nwant to retain a handle to a particular DOM Node that you intend to pass into [`method: Page.evaluate`] as an argument.\n\nThe difference between the `Locator` and ElementHandle is that the ElementHandle points to a particular element, while\n`Locator` captures the logic of how to retrieve an element.\n\nIn the example below, handle points to a particular DOM element on page. If that element changes text or is used by\nReact to render an entirely different component, handle is still pointing to that very DOM element. This can lead to\nunexpected behaviors.\n\n```js\nconst handle = await page.$('text=Submit');\n// ...\nawait handle.hover();\nawait handle.click();\n```\n\n```java\nElementHandle handle = page.querySelector(\"text=Submit\");\nhandle.hover();\nhandle.click();\n```\n\n```python async\nhandle = await page.query_selector(\"text=Submit\")\nawait handle.hover()\nawait handle.click()\n```\n\n```python sync\nhandle = page.query_selector(\"text=Submit\")\nhandle.hover()\nhandle.click()\n```\n\n```csharp\nvar handle = await page.QuerySelectorAsync(\"text=Submit\");\nawait handle.HoverAsync();\nawait handle.ClickAsync();\n```\n\nWith the locator, every time the `element` is used, up-to-date DOM element is located in the page using the selector. So\nin the snippet below, underlying DOM element is going to be located twice.\n\n```js\nconst locator = page.locator('text=Submit');\n// ...\nawait locator.hover();\nawait locator.click();\n```\n\n```java\nLocator locator = page.locator(\"text=Submit\");\nlocator.hover();\nlocator.click();\n```\n\n```python async\nlocator = page.locator(\"text=Submit\")\nawait locator.hover()\nawait locator.click()\n```\n\n```python sync\nlocator = page.locator(\"text=Submit\")\nlocator.hover()\nlocator.click()\n```\n\n```csharp\nvar locator = page.Locator(\"text=Submit\");\nawait locator.HoverAsync();\nawait locator.ClickAsync();\n```\n",
     "members": [
       {
         "kind": "method",
@@ -36618,12 +36668,52 @@
         "text": "Locator represents a view to the element(s) on the page. It captures the logic sufficient to retrieve the element at any given moment. Locator can be created with the [`method: Page.locator`] method."
       },
       {
-        "type": "text",
-        "text": "The difference between the Locator and `ElementHandle` is that the latter points to a particular element, while Locator only captures the logic of how to retrieve an element at any given moment."
+        "type": "code",
+        "lines": [
+          "const locator = page.locator('text=Submit');",
+          "await locator.click();"
+        ],
+        "codeLang": "js"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "Locator locator = page.locator(\"text=Submit\");",
+          "locator.click();"
+        ],
+        "codeLang": "java"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "locator = page.locator(\"text=Submit\")",
+          "await locator.click()"
+        ],
+        "codeLang": "python async"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "locator = page.locator(\"text=Submit\")",
+          "locator.click()"
+        ],
+        "codeLang": "python sync"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "var locator = page.Locator(\"text=Submit\");",
+          "await locator.ClickAsync();"
+        ],
+        "codeLang": "csharp"
       },
       {
         "type": "text",
-        "text": "In the example below, handle points to a particular DOM element on page. If that element changes text or is used by React to render an entirely different component, handle is still pointing to that very DOM element."
+        "text": "The difference between the Locator and `ElementHandle` is that the latter points to a particular element, while Locator captures the logic of how to retrieve that element."
+      },
+      {
+        "type": "text",
+        "text": "In the example below, handle points to a particular DOM element on page. If that element changes text or is used by React to render an entirely different component, handle is still pointing to that very DOM element. This can lead to unexpected behaviors."
       },
       {
         "type": "code",
@@ -36673,58 +36763,112 @@
       },
       {
         "type": "text",
-        "text": "With the locator, every time the `element` is used, corresponding DOM element is located in the page using given selector. So in the snippet below, underlying DOM element is going to be located twice, using the given selector."
+        "text": "With the locator, every time the `element` is used, up-to-date DOM element is located in the page using the selector. So in the snippet below, underlying DOM element is going to be located twice."
       },
       {
         "type": "code",
         "lines": [
-          "const element = page.locator('text=Submit');",
+          "const locator = page.locator('text=Submit');",
           "// ...",
-          "await element.hover();",
-          "await element.click();"
+          "await locator.hover();",
+          "await locator.click();"
         ],
         "codeLang": "js"
       },
       {
         "type": "code",
         "lines": [
-          "Locator element = page.locator(\"text=Submit\");",
-          "element.hover();",
-          "element.click();"
+          "Locator locator = page.locator(\"text=Submit\");",
+          "locator.hover();",
+          "locator.click();"
         ],
         "codeLang": "java"
       },
       {
         "type": "code",
         "lines": [
-          "element = page.locator(\"text=Submit\")",
-          "await element.hover()",
-          "await element.click()"
+          "locator = page.locator(\"text=Submit\")",
+          "await locator.hover()",
+          "await locator.click()"
         ],
         "codeLang": "python async"
       },
       {
         "type": "code",
         "lines": [
-          "element = page.locator(\"text=Submit\")",
-          "element.hover()",
-          "element.click()"
+          "locator = page.locator(\"text=Submit\")",
+          "locator.hover()",
+          "locator.click()"
         ],
         "codeLang": "python sync"
       },
       {
         "type": "code",
         "lines": [
-          "var element = page.Locator(\"text=Submit\");",
-          "await element.HoverAsync();",
-          "await element.ClickAsync();"
+          "var locator = page.Locator(\"text=Submit\");",
+          "await locator.HoverAsync();",
+          "await locator.ClickAsync();"
         ],
         "codeLang": "csharp"
       }
     ],
     "langs": {},
-    "comment": "Locator represents a view to the element(s) on the page. It captures the logic sufficient to retrieve the element at any\ngiven moment. Locator can be created with the [`method: Page.locator`] method.\n\nThe difference between the Locator and `ElementHandle` is that the latter points to a particular element, while Locator\nonly captures the logic of how to retrieve an element at any given moment.\n\nIn the example below, handle points to a particular DOM element on page. If that element changes text or is used by\nReact to render an entirely different component, handle is still pointing to that very DOM element.\n\n```js\nconst handle = await page.$('text=Submit');\n// ...\nawait handle.hover();\nawait handle.click();\n```\n\n```java\nElementHandle handle = page.querySelector(\"text=Submit\");\nhandle.hover();\nhandle.click();\n```\n\n```python async\nhandle = await page.query_selector(\"text=Submit\")\nawait handle.hover()\nawait handle.click()\n```\n\n```python sync\nhandle = page.query_selector(\"text=Submit\")\nhandle.hover()\nhandle.click()\n```\n\n```csharp\nvar handle = await page.QuerySelectorAsync(\"text=Submit\");\nawait handle.HoverAsync();\nawait handle.ClickAsync();\n```\n\nWith the locator, every time the `element` is used, corresponding DOM element is located in the page using given\nselector. So in the snippet below, underlying DOM element is going to be located twice, using the given selector.\n\n```js\nconst element = page.locator('text=Submit');\n// ...\nawait element.hover();\nawait element.click();\n```\n\n```java\nLocator element = page.locator(\"text=Submit\");\nelement.hover();\nelement.click();\n```\n\n```python async\nelement = page.locator(\"text=Submit\")\nawait element.hover()\nawait element.click()\n```\n\n```python sync\nelement = page.locator(\"text=Submit\")\nelement.hover()\nelement.click()\n```\n\n```csharp\nvar element = page.Locator(\"text=Submit\");\nawait element.HoverAsync();\nawait element.ClickAsync();\n```\n",
+    "comment": "Locator represents a view to the element(s) on the page. It captures the logic sufficient to retrieve the element at any\ngiven moment. Locator can be created with the [`method: Page.locator`] method.\n\n```js\nconst locator = page.locator('text=Submit');\nawait locator.click();\n```\n\n```java\nLocator locator = page.locator(\"text=Submit\");\nlocator.click();\n```\n\n```python async\nlocator = page.locator(\"text=Submit\")\nawait locator.click()\n```\n\n```python sync\nlocator = page.locator(\"text=Submit\")\nlocator.click()\n```\n\n```csharp\nvar locator = page.Locator(\"text=Submit\");\nawait locator.ClickAsync();\n```\n\nThe difference between the Locator and `ElementHandle` is that the latter points to a particular element, while Locator\ncaptures the logic of how to retrieve that element.\n\nIn the example below, handle points to a particular DOM element on page. If that element changes text or is used by\nReact to render an entirely different component, handle is still pointing to that very DOM element. This can lead to\nunexpected behaviors.\n\n```js\nconst handle = await page.$('text=Submit');\n// ...\nawait handle.hover();\nawait handle.click();\n```\n\n```java\nElementHandle handle = page.querySelector(\"text=Submit\");\nhandle.hover();\nhandle.click();\n```\n\n```python async\nhandle = await page.query_selector(\"text=Submit\")\nawait handle.hover()\nawait handle.click()\n```\n\n```python sync\nhandle = page.query_selector(\"text=Submit\")\nhandle.hover()\nhandle.click()\n```\n\n```csharp\nvar handle = await page.QuerySelectorAsync(\"text=Submit\");\nawait handle.HoverAsync();\nawait handle.ClickAsync();\n```\n\nWith the locator, every time the `element` is used, up-to-date DOM element is located in the page using the selector. So\nin the snippet below, underlying DOM element is going to be located twice.\n\n```js\nconst locator = page.locator('text=Submit');\n// ...\nawait locator.hover();\nawait locator.click();\n```\n\n```java\nLocator locator = page.locator(\"text=Submit\");\nlocator.hover();\nlocator.click();\n```\n\n```python async\nlocator = page.locator(\"text=Submit\")\nawait locator.hover()\nawait locator.click()\n```\n\n```python sync\nlocator = page.locator(\"text=Submit\")\nlocator.hover()\nlocator.click()\n```\n\n```csharp\nvar locator = page.Locator(\"text=Submit\");\nawait locator.HoverAsync();\nawait locator.ClickAsync();\n```\n",
     "members": [
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "allInnerTexts",
+        "type": {
+          "name": "Array",
+          "templates": [
+            {
+              "name": "string"
+            }
+          ],
+          "expression": "[Array]<[string]>"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Returns an array of `node.innerText` values for all matching nodes."
+          }
+        ],
+        "required": true,
+        "comment": "Returns an array of `node.innerText` values for all matching nodes.",
+        "deprecated": false,
+        "async": true,
+        "alias": "allInnerTexts",
+        "paramOrOption": null,
+        "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "allTextContents",
+        "type": {
+          "name": "Array",
+          "templates": [
+            {
+              "name": "string"
+            }
+          ],
+          "expression": "[Array]<[string]>"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Returns an array of `node.textContent` values for all matching nodes."
+          }
+        ],
+        "required": true,
+        "comment": "Returns an array of `node.textContent` values for all matching nodes.",
+        "deprecated": false,
+        "async": true,
+        "alias": "allTextContents",
+        "paramOrOption": null,
+        "args": []
+      },
       {
         "kind": "method",
         "langs": {},
