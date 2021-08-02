@@ -59,7 +59,7 @@ RSpec.describe 'locator' do
       end
     end
 
-    it 'should select single option', sinatra: true do
+    it 'should select single option', sinatra: true, pending: true do
       with_page do |page|
         page.goto("#{server_prefix}/input/select.html")
         sel = page.locator('select')
