@@ -59,11 +59,11 @@ RSpec.describe 'locator' do
       end
     end
 
-    it 'should select single option', sinatra: true, pending: true do
+    it 'should select single option', sinatra: true do
       with_page do |page|
         page.goto("#{server_prefix}/input/select.html")
         sel = page.locator('select')
-        sel.select_option('blue')
+        sel.select_option(value: 'blue')
         expect(page.evaluate("() => window['result'].onInput")).to contain_exactly('blue')
         expect(page.evaluate("() => window['result'].onChange")).to contain_exactly('blue')
       end

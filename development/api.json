@@ -40735,6 +40735,170 @@
             "async": false,
             "alias": "options",
             "paramOrOption": null
+          },
+          {
+            "kind": "property",
+            "langs": {
+              "only": [
+                "python"
+              ],
+              "aliases": {},
+              "types": {},
+              "overrides": {}
+            },
+            "name": "element",
+            "type": {
+              "name": "",
+              "union": [
+                {
+                  "name": "ElementHandle"
+                },
+                {
+                  "name": "Array",
+                  "templates": [
+                    {
+                      "name": "ElementHandle"
+                    }
+                  ]
+                }
+              ],
+              "expression": "[ElementHandle]|[Array]<[ElementHandle]>"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Option elements to select. Optional."
+              }
+            ],
+            "required": false,
+            "comment": "Option elements to select. Optional.",
+            "deprecated": false,
+            "async": false,
+            "alias": "element",
+            "paramOrOption": null
+          },
+          {
+            "kind": "property",
+            "langs": {
+              "only": [
+                "python"
+              ],
+              "aliases": {},
+              "types": {},
+              "overrides": {}
+            },
+            "name": "index",
+            "type": {
+              "name": "",
+              "union": [
+                {
+                  "name": "int"
+                },
+                {
+                  "name": "Array",
+                  "templates": [
+                    {
+                      "name": "int"
+                    }
+                  ]
+                }
+              ],
+              "expression": "[int]|[Array]<[int]>"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Options to select by index. Optional."
+              }
+            ],
+            "required": false,
+            "comment": "Options to select by index. Optional.",
+            "deprecated": false,
+            "async": false,
+            "alias": "index",
+            "paramOrOption": null
+          },
+          {
+            "kind": "property",
+            "langs": {
+              "only": [
+                "python"
+              ],
+              "aliases": {},
+              "types": {},
+              "overrides": {}
+            },
+            "name": "value",
+            "type": {
+              "name": "",
+              "union": [
+                {
+                  "name": "string"
+                },
+                {
+                  "name": "Array",
+                  "templates": [
+                    {
+                      "name": "string"
+                    }
+                  ]
+                }
+              ],
+              "expression": "[string]|[Array]<[string]>"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Options to select by value. If the `<select>` has the `multiple` attribute, all given options are selected, otherwise only the first option matching one of the passed options is selected. Optional."
+              }
+            ],
+            "required": false,
+            "comment": "Options to select by value. If the `<select>` has the `multiple` attribute, all given options are selected, otherwise\nonly the first option matching one of the passed options is selected. Optional.",
+            "deprecated": false,
+            "async": false,
+            "alias": "value",
+            "paramOrOption": null
+          },
+          {
+            "kind": "property",
+            "langs": {
+              "only": [
+                "python"
+              ],
+              "aliases": {},
+              "types": {},
+              "overrides": {}
+            },
+            "name": "label",
+            "type": {
+              "name": "",
+              "union": [
+                {
+                  "name": "string"
+                },
+                {
+                  "name": "Array",
+                  "templates": [
+                    {
+                      "name": "string"
+                    }
+                  ]
+                }
+              ],
+              "expression": "[string]|[Array]<[string]>"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Options to select by label. If the `<select>` has the `multiple` attribute, all given options are selected, otherwise only the first option matching one of the passed options is selected. Optional."
+              }
+            ],
+            "required": false,
+            "comment": "Options to select by label. If the `<select>` has the `multiple` attribute, all given options are selected, otherwise\nonly the first option matching one of the passed options is selected. Optional.",
+            "deprecated": false,
+            "async": false,
+            "alias": "label",
+            "paramOrOption": null
           }
         ]
       },

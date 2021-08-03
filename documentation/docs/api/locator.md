@@ -494,6 +494,54 @@ This method waits for [actionability](https://playwright.dev/python/docs/actiona
 completely visible as defined by
 [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)'s `ratio`.
 
+## select_option
+
+```
+def select_option(
+      element: nil,
+      index: nil,
+      value: nil,
+      label: nil,
+      force: nil,
+      noWaitAfter: nil,
+      timeout: nil)
+```
+
+This method waits for [actionability](https://playwright.dev/python/docs/actionability) checks, waits until all specified options are present in the
+`<select>` element and selects these options.
+
+If the target element is not a `<select>` element, this method throws an error. However, if the element is inside the
+`<label>` element that has an associated
+[control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), the control will be used instead.
+
+Returns the array of option values that have been successfully selected.
+
+Triggers a `change` and `input` event once all the provided options have been selected.
+
+```python sync title=example_2825b0a50091868d1ce3ea0752d94ba32d826d504c1ac6842522796ca405913e.py
+# single selection matching the value
+element.select_option("blue")
+# single selection matching both the label
+element.select_option(label="blue")
+# multiple selection
+element.select_option(value=["red", "green", "blue"])
+
+```
+
+```python sync title=example_3aaff4985dc38e64fad34696c88a6a68a633e26aabee6fc749125f3ee1784e34.py
+# single selection matching the value
+element.select_option("blue")
+# single selection matching both the value and the label
+element.select_option(label="blue")
+# multiple selection
+element.select_option("red", "green", "blue")
+# multiple selection for blue, red and second option
+element.select_option(value="blue", { index: 2 }, "red")
+
+```
+
+
+
 ## select_text
 
 ```
