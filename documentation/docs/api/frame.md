@@ -910,6 +910,17 @@ with sync_playwright() as playwright:
 
 
 
+## wait_for_timeout
+
+```
+def wait_for_timeout(timeout)
+```
+
+Waits for the given `timeout` in milliseconds.
+
+Note that `frame.waitForTimeout()` should only be used for debugging. Tests using the timer in production are going to
+be flaky. Use signals such as network events, selectors becoming visible and others instead.
+
 ## wait_for_url
 
 ```

@@ -689,6 +689,11 @@ module ExampleCodes
     end
   end
 
+  # Page#wait_for_timeout
+  def example_950cdc32e1332d1b12e420a817caa4317d0346ddda1b3cec97d77abe13c95260(page:)
+    page.wait_for_timeout(1000)
+  end
+
   # Page#wait_for_function
   def example_e50869c913bec2f0a89a22ff1c438128c3c8f2e3710acb10665445cf52e3ec73(page:)
     page.evaluate("window.x = 0; setTimeout(() => { window.x = 100 }, 1000);")

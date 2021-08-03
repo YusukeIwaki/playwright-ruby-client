@@ -1466,6 +1466,23 @@ end
 
 
 
+## wait_for_timeout
+
+```
+def wait_for_timeout(timeout)
+```
+
+Waits for the given `timeout` in milliseconds.
+
+Note that `page.waitForTimeout()` should only be used for debugging. Tests using the timer in production are going to be
+flaky. Use signals such as network events, selectors becoming visible and others instead.
+
+```ruby
+page.wait_for_timeout(1000)
+```
+
+Shortcut for main frame's [Frame#wait_for_timeout](./frame#wait_for_timeout).
+
 ## wait_for_url
 
 ```
