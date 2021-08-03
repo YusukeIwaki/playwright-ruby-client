@@ -690,6 +690,10 @@ module Playwright
         trial: trial)
     end
 
+    def wait_for_timeout(timeout)
+      @main_frame.wait_for_timeout(timeout)
+    end
+
     def wait_for_function(pageFunction, arg: nil, polling: nil, timeout: nil)
       @main_frame.wait_for_function(pageFunction, arg: arg, polling: polling, timeout: timeout)
     end

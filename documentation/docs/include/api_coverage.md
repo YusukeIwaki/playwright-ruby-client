@@ -178,7 +178,7 @@
 * wait_for_load_state
 * expect_navigation
 * wait_for_selector
-* ~~wait_for_timeout~~
+* wait_for_timeout
 * wait_for_url
 
 ## Worker
@@ -296,7 +296,7 @@
 * expect_request_finished
 * expect_response
 * wait_for_selector
-* ~~wait_for_timeout~~
+* wait_for_timeout
 * wait_for_url
 * expect_websocket
 * ~~expect_worker~~

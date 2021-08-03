@@ -579,6 +579,10 @@ module Playwright
       nil
     end
 
+    def wait_for_timeout(timeout)
+      sleep(timeout / 1000.0)
+    end
+
     def wait_for_function(pageFunction, arg: nil, polling: nil, timeout: nil)
       if polling.is_a?(String) && polling != 'raf'
         raise ArgumentError.new("Unknown polling option: #{polling}")
