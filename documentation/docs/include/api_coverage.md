@@ -412,7 +412,7 @@
 * press
 * screenshot
 * scroll_into_view_if_needed
-* ~~select_option~~
+* select_option
 * select_text
 * set_input_files
 * tap_point

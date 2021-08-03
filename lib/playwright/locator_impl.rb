@@ -233,9 +233,25 @@ module Playwright
       end
     end
 
-    # def select_option(force: nil, noWaitAfter: nil, timeout: nil)
-    #   @frame.select_option(@selector, values, strict: true, force: force, noWaitAfter: noWaitAfter, timeout: timeout)
-    # end
+    def select_option(
+          element: nil,
+          index: nil,
+          value: nil,
+          label: nil,
+          force: nil,
+          noWaitAfter: nil,
+          timeout: nil)
+
+      @frame.select_option(@selector,
+        strict: true,
+        element: element,
+        index: index,
+        value: value,
+        label: label,
+        force: force,
+        noWaitAfter: noWaitAfter,
+        timeout: timeout)
+    end
 
     def select_text(force: nil, timeout: nil)
       with_element(timeout: timeout) do |handle, options|

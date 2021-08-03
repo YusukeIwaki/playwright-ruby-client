@@ -349,6 +349,32 @@ div_counts = elements("(divs, min) => divs.length >= min", 10)
 
 ```
 
+### example_2825b0a50091868d1ce3ea0752d94ba32d826d504c1ac6842522796ca405913e
+
+```
+# single selection matching the value
+element.select_option("blue")
+# single selection matching both the label
+element.select_option(label="blue")
+# multiple selection
+element.select_option(value=["red", "green", "blue"])
+
+```
+
+### example_3aaff4985dc38e64fad34696c88a6a68a633e26aabee6fc749125f3ee1784e34
+
+```
+# single selection matching the value
+element.select_option("blue")
+# single selection matching both the value and the label
+element.select_option(label="blue")
+# multiple selection
+element.select_option("red", "green", "blue")
+# multiple selection for blue, red and second option
+element.select_option(value="blue", { index: 2 }, "red")
+
+```
+
 ### example_fa1712c0b6ceb96fcaa74790d33f2c2eefe2bd1f06e61b78e0bb84a6f22c7961
 
 ```
