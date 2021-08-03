@@ -316,3 +316,52 @@ box = element.bounding_box()
 page.mouse.click(box["x"] + box["width"] / 2, box["y"] + box["height"] / 2)
 
 ```
+
+### example_8d92b900a98c237ffdcb102ddc35660e37101bde7d107dc64d97a7edeed62a43
+
+```
+element.dispatch_event("click")
+
+```
+
+### example_e369442a3ff291ab476da408ef63a63dacf47984dc766ff7189d82008ae2848b
+
+```
+# note you can only create data_transfer in chromium and firefox
+data_transfer = page.evaluate_handle("new DataTransfer()")
+element.dispatch_event("#source", "dragstart", {"dataTransfer": data_transfer})
+
+```
+
+### example_df39b3df921f81e7cfb71cd873b76a5e91e46b4aa41e1f164128cb322aa38305
+
+```
+tweets = page.locator(".tweet .retweets")
+assert tweets.evaluate("node => node.innerText") == "10 retweets"
+
+```
+
+### example_32478e941514ed28b6ac221e6d54b55cf117038ecac6f4191db676480ab68d44
+
+```
+elements = page.locator("div")
+div_counts = elements("(divs, min) => divs.length >= min", 10)
+
+```
+
+### example_fa1712c0b6ceb96fcaa74790d33f2c2eefe2bd1f06e61b78e0bb84a6f22c7961
+
+```
+element.type("hello") # types instantly
+element.type("world", delay=100) # types slower, like a user
+
+```
+
+### example_adefe90dee78708d4375c20f081f12f2b71f2becb472a2e0d4fdc8cc49c37809
+
+```
+element = page.locator("input")
+element.type("some text")
+element.press("Enter")
+
+```
