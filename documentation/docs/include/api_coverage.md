@@ -65,7 +65,7 @@
 
 ## Touchscreen
 
-* ~~tap_point~~
+* tap_point
 
 ## JSHandle
 
