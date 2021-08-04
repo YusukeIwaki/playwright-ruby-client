@@ -34,6 +34,7 @@ EXPERIMENTAL = %w[
   AndroidWebView
 ]
 API_IMPLEMENTATIONS = %w[
+  Accessibility
   AndroidInput
   FileChooser
   Keyboard

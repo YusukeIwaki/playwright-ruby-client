@@ -9,7 +9,7 @@ module Playwright
     private def after_initialize
       @browser_context = @parent
       @timeout_settings = TimeoutSettings.new(@browser_context.send(:_timeout_settings))
-      @accessibility = Accessibility.new(@channel)
+      @accessibility = AccessibilityImpl.new(@channel)
       @keyboard = KeyboardImpl.new(@channel)
       @mouse = MouseImpl.new(@channel)
       @touchscreen = TouchscreenImpl.new(@channel)
