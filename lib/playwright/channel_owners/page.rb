@@ -113,6 +113,7 @@ module Playwright
     private def on_close
       @closed = true
       @browser_context.send(:remove_page, self)
+      @browser_context.send(:remove_background_page, self)
       emit(Events::Page::Close)
     end
 

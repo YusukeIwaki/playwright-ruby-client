@@ -11,6 +11,7 @@ module Playwright
       @routes = []
       @bindings = {}
       @timeout_settings = TimeoutSettings.new
+      @background_pages = Set.new
 
       @tracing = TracingImpl.new(@channel, self)
       @channel.on('bindingCall', ->(params) { on_binding(ChannelOwners::BindingCall.from(params['binding'])) })
@@ -18,6 +19,9 @@ module Playwright
       @channel.on('page', ->(params) { on_page(ChannelOwners::Page.from(params['page']) )})
       @channel.on('route', ->(params) {
         on_route(ChannelOwners::Route.from(params['route']), ChannelOwners::Request.from(params['request']))
+      })
+      @channel.on('backgroundPage', ->(params) {
+        on_background_page(ChannelOwners::Page.from(params['page']))
       })
       @channel.on('request', ->(params) {
         on_request(
@@ -54,6 +58,11 @@ module Playwright
       @pages << page
       emit(Events::BrowserContext::Page, page)
       page.send(:emit_popup_event_from_browser_context)
+    end
+
+    private def on_background_page(page)
+      @background_pages << page
+      emit(Events::BrowserContext::BackgroundPage, page)
     end
 
     private def on_route(route, request)
@@ -96,6 +105,10 @@ module Playwright
     private def on_response(response, page)
       emit(Events::BrowserContext::Response, response)
       page&.emit(Events::Page::Response, response)
+    end
+
+    def background_pages
+      @background_pages.to_a
     end
 
     def new_cdp_session(page)
@@ -290,6 +303,10 @@ module Playwright
     # called from Page#on_close with send(:remove_page, page), so keep private
     private def remove_page(page)
       @pages.delete(page)
+    end
+
+    private def remove_background_page(page)
+      @background_pages.delete(page)
     end
 
     # called from Page with send(:_timeout_settings), so keep private.
