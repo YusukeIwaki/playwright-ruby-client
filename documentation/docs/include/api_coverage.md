@@ -311,7 +311,7 @@
 
 * add_cookies
 * add_init_script
-* ~~background_pages~~
+* background_pages
 * browser
 * clear_cookies
 * clear_permissions

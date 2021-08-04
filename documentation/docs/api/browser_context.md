@@ -67,6 +67,16 @@ browser_context.add_init_script(path: "preload.js")
 > NOTE: The order of evaluation of multiple scripts installed via [BrowserContext#add_init_script](./browser_context#add_init_script) and
 [Page#add_init_script](./page#add_init_script) is not defined.
 
+## background_pages
+
+```
+def background_pages
+```
+
+> NOTE: Background pages are only supported on Chromium-based browsers.
+
+All existing background pages in the context.
+
 ## browser
 
 ```
