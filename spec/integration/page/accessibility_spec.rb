@@ -52,7 +52,7 @@ RSpec.describe 'accessibility' do
               { 'role' => 'textbox', 'name' => '', 'value' => 'value only' },
               { 'role' => 'textbox', 'name' => 'placeholder', 'value' => 'and a value' },
               # webkit uses the description over placeholder for the name
-              { 'role' => 'textbox', 'name' => 'This is a description!', 'value' => 'and a value', 'description' => 'This is a description!' },
+              { 'role' => 'textbox', 'name' => 'This is a description!', 'value' => 'and a value' },
             ],
           }
         else
@@ -62,265 +62,232 @@ RSpec.describe 'accessibility' do
     end
   end
 
+  it 'should work with regular text' do
+    with_page do |page|
+      page.content = '<div>Hello World</div>'
+      snapshot = page.accessibility.snapshot
+      expect(snapshot['children'].first).to eq({ 'role' => 'text', 'name' => 'Hello World' })
+    end
+  end
 
-  # it('should work with regular text', async ({page, browserName}) => {
-  #   await page.setContent(`<div>Hello World</div>`);
-  #   const snapshot = await page.accessibility.snapshot();
-  #   expect(snapshot.children[0]).toEqual({
-  #     role: browserName === 'firefox' ? 'text leaf' : 'text',
-  #     name: 'Hello World',
-  #   });
-  # });
+  it 'roledescription' do
+    with_page do |page|
+      page.content = '<div tabIndex=-1 aria-roledescription="foo">Hi</div>'
+      snapshot = page.accessibility.snapshot
+      expect(snapshot['children'].first['roledescription']).to eq('foo')
+    end
+  end
 
-  # it('roledescription', async ({page}) => {
-  #   await page.setContent('<div tabIndex=-1 aria-roledescription="foo">Hi</div>');
-  #   const snapshot = await page.accessibility.snapshot();
-  #   expect(snapshot.children[0].roledescription).toEqual('foo');
-  # });
+  it 'orientation' do
+    with_page do |page|
+      page.content = '<a href="" role="slider" aria-orientation="vertical">11</a>'
+      snapshot = page.accessibility.snapshot
+      expect(snapshot['children'].first['orientation']).to eq('vertical')
+    end
+  end
 
-  # it('orientation', async ({page}) => {
-  #   await page.setContent('<a href="" role="slider" aria-orientation="vertical">11</a>');
-  #   const snapshot = await page.accessibility.snapshot();
-  #   expect(snapshot.children[0].orientation).toEqual('vertical');
-  # });
+  it 'autocomplete' do
+    with_page do |page|
+      page.content = '<div role="textbox" aria-autocomplete="list">hi</div>'
+      snapshot = page.accessibility.snapshot
+      expect(snapshot['children'].first['autocomplete']).to eq('list')
+    end
+  end
 
-  # it('autocomplete', async ({page}) => {
-  #   await page.setContent('<div role="textbox" aria-autocomplete="list">hi</div>');
-  #   const snapshot = await page.accessibility.snapshot();
-  #   expect(snapshot.children[0].autocomplete).toEqual('list');
-  # });
+  it 'multiselectable' do
+    with_page do |page|
+      page.content = '<div role="grid" tabIndex=-1 aria-multiselectable=true>hey</div>'
+      snapshot = page.accessibility.snapshot
+      expect(snapshot['children'].first['multiselectable']).to eq(true)
+    end
+  end
 
-  # it('multiselectable', async ({page}) => {
-  #   await page.setContent('<div role="grid" tabIndex=-1 aria-multiselectable=true>hey</div>');
-  #   const snapshot = await page.accessibility.snapshot();
-  #   expect(snapshot.children[0].multiselectable).toEqual(true);
-  # });
+  it 'keyshortcuts' do
+    with_page do |page|
+      page.content = '<div role="grid" tabIndex=-1 aria-keyshortcuts="foo">hey</div>'
+      snapshot = page.accessibility.snapshot
+      expect(snapshot['children'].first['keyshortcuts']).to eq('foo')
+    end
+  end
 
-  # it('keyshortcuts', async ({page}) => {
-  #   await page.setContent('<div role="grid" tabIndex=-1 aria-keyshortcuts="foo">hey</div>');
-  #   const snapshot = await page.accessibility.snapshot();
-  #   expect(snapshot.children[0].keyshortcuts).toEqual('foo');
-  # });
+  it 'should not report text nodes inside controls' do
+    with_page do |page|
+      page.content = <<~HTML
+      <div role="tablist">
+        <div role="tab" aria-selected="true"><b>Tab1</b></div>
+        <div role="tab">Tab2</div>
+      </div>
+      HTML
 
-  # it('should not report text nodes inside controls', async function({page, browserName}) {
-  #   await page.setContent(`
-  #   <div role="tablist">
-  #     <div role="tab" aria-selected="true"><b>Tab1</b></div>
-  #     <div role="tab">Tab2</div>
-  #   </div>`);
-  #   const golden = {
-  #     role: browserName === 'firefox' ? 'document' : 'WebArea',
-  #     name: '',
-  #     children: [{
-  #       role: 'tab',
-  #       name: 'Tab1',
-  #       selected: true
-  #     }, {
-  #       role: 'tab',
-  #       name: 'Tab2'
-  #     }]
-  #   };
-  #   expect(await page.accessibility.snapshot()).toEqual(golden);
-  # });
+      golden = {
+        'role' => 'WebArea',
+        'name' => '',
+        'children' => [
+          {
+            'role' => 'tab',
+            'name' => 'Tab1',
+            'selected' => true,
+          },
+          {
+            'role' => 'tab',
+            'name' => 'Tab2',
+          },
+        ]
+      }
 
-  # it('rich text editable fields should have children', async function({page, browserName}) {
-  #   it.skip(browserName === 'webkit', 'WebKit rich text accessibility is iffy');
+      expect(page.accessibility.snapshot).to eq(golden)
+    end
+  end
 
-  #   await page.setContent(`
-  #   <div contenteditable="true">
-  #     Edit this image: <img src="fakeimage.png" alt="my fake image">
-  #   </div>`);
-  #   const golden = browserName === 'firefox' ? {
-  #     role: 'section',
-  #     name: '',
-  #     children: [{
-  #       role: 'text leaf',
-  #       name: 'Edit this image: '
-  #     }, {
-  #       role: 'text',
-  #       name: 'my fake image'
-  #     }]
-  #   } : {
-  #     role: 'generic',
-  #     name: '',
-  #     value: 'Edit this image: ',
-  #     children: [{
-  #       role: 'text',
-  #       name: 'Edit this image:'
-  #     }, {
-  #       role: 'img',
-  #       name: 'my fake image'
-  #     }]
-  #   };
-  #   const snapshot = await page.accessibility.snapshot();
-  #   expect(snapshot.children[0]).toEqual(golden);
-  # });
+  it 'non editable textbox with role and tabIndex and label should not have children' do
+    with_page do |page|
+      page.content = <<~HTML
+      <div role="textbox" tabIndex=0 aria-checked="true" aria-label="my favorite textbox">
+        this is the inner content<img alt="yo" src="fakeimg.png">
+      </div>
+      HTML
 
-  # it('rich text editable fields with role should have children', async function({page, browserName, browserMajorVersion}) {
-  #   it.skip(browserName === 'webkit', 'WebKit rich text accessibility is iffy');
+      golden = {
+        'role' => 'textbox',
+        'name' => 'my favorite textbox',
+        'value' => 'this is the inner content',
+      }
+      snapshot = page.accessibility.snapshot
+      expect(snapshot['children'].first).to eq(golden)
+    end
+  end
 
-  #   await page.setContent(`
-  #   <div contenteditable="true" role='textbox'>
-  #     Edit this image: <img src="fakeimage.png" alt="my fake image">
-  #   </div>`);
-  #   const golden = browserName === 'firefox' ? {
-  #     role: 'textbox',
-  #     name: '',
-  #     value: 'Edit this image: my fake image',
-  #     children: [{
-  #       role: 'text',
-  #       name: 'my fake image'
-  #     }]
-  #   } : {
-  #     role: 'textbox',
-  #     name: '',
-  #     multiline: (browserName === 'chromium' && browserMajorVersion >= 92) ? true : undefined,
-  #     value: 'Edit this image: ',
-  #     children: [{
-  #       role: 'text',
-  #       name: 'Edit this image:'
-  #     }, {
-  #       role: 'img',
-  #       name: 'my fake image'
-  #     }]
-  #   };
-  #   const snapshot = await page.accessibility.snapshot();
-  #   expect(snapshot.children[0]).toEqual(golden);
-  # });
+  it 'checkbox with and tabIndex and label should not have children' do
+    with_page do |page|
+      page.content = <<~HTML
+      <div role="checkbox" tabIndex=0 aria-checked="true" aria-label="my favorite checkbox">
+        this is the inner content
+        <img alt="yo" src="fakeimg.png">
+      </div>
+      HTML
 
-  # it('non editable textbox with role and tabIndex and label should not have children', async function({page, browserName}) {
-  #   await page.setContent(`
-  #   <div role="textbox" tabIndex=0 aria-checked="true" aria-label="my favorite textbox">
-  #     this is the inner content
-  #     <img alt="yo" src="fakeimg.png">
-  #   </div>`);
-  #   const golden = (browserName === 'firefox') ? {
-  #     role: 'textbox',
-  #     name: 'my favorite textbox',
-  #     value: 'this is the inner content yo'
-  #   } : (browserName === 'chromium') ? {
-  #     role: 'textbox',
-  #     name: 'my favorite textbox',
-  #     value: 'this is the inner content '
-  #   } : {
-  #     role: 'textbox',
-  #     name: 'my favorite textbox',
-  #     value: 'this is the inner content  ',
-  #   };
-  #   const snapshot = await page.accessibility.snapshot();
-  #   expect(snapshot.children[0]).toEqual(golden);
-  # });
+      golden = {
+        'role' => 'checkbox',
+        'name' => 'my favorite checkbox',
+        'checked' => true,
+      }
+      snapshot = page.accessibility.snapshot
+      expect(snapshot['children'].first).to eq(golden)
+    end
+  end
 
-  # it('checkbox with and tabIndex and label should not have children', async function({page}) {
-  #   await page.setContent(`
-  #   <div role="checkbox" tabIndex=0 aria-checked="true" aria-label="my favorite checkbox">
-  #     this is the inner content
-  #     <img alt="yo" src="fakeimg.png">
-  #   </div>`);
-  #   const golden = {
-  #     role: 'checkbox',
-  #     name: 'my favorite checkbox',
-  #     checked: true
-  #   };
-  #   const snapshot = await page.accessibility.snapshot();
-  #   expect(snapshot.children[0]).toEqual(golden);
-  # });
+  it 'checkbox without label should not have children' do
+    with_page do |page|
+      page.content = <<~HTML
+      <div role="checkbox" aria-checked="true">
+        this is the inner content
+        <img alt="yo" src="fakeimg.png">
+      </div>
+      HTML
 
-  # it('checkbox without label should not have children', async ({page, browserName}) => {
-  #   await page.setContent(`
-  #   <div role="checkbox" aria-checked="true">
-  #     this is the inner content
-  #     <img alt="yo" src="fakeimg.png">
-  #   </div>`);
-  #   const golden = browserName === 'firefox' ? {
-  #     role: 'checkbox',
-  #     name: 'this is the inner content yo',
-  #     checked: true
-  #   } : {
-  #     role: 'checkbox',
-  #     name: 'this is the inner content yo',
-  #     checked: true
-  #   };
-  #   const snapshot = await page.accessibility.snapshot();
-  #   expect(snapshot.children[0]).toEqual(golden);
-  # });
+      golden = {
+        'role' => 'checkbox',
+        'name' => 'this is the inner content yo',
+        'checked' => true,
+      }
+      snapshot = page.accessibility.snapshot
+      expect(snapshot['children'].first).to eq(golden)
+    end
+  end
 
-  # it('should work a button', async ({page}) => {
-  #   await page.setContent(`<button>My Button</button>`);
+  it 'should work a button' do
+    with_page do |page|
+      page.content = '<button>My Button</button>'
 
-  #   const button = await page.$('button');
-  #   expect(await page.accessibility.snapshot({root: button})).toEqual({
-  #     role: 'button',
-  #     name: 'My Button'
-  #   });
-  # });
+      button = page.query_selector('button')
+      expect(page.accessibility.snapshot(root: button)).to eq({
+        'role' => 'button',
+        'name' => 'My Button',
+      })
+    end
+  end
 
-  # it('should work an input', async ({page}) => {
-  #   await page.setContent(`<input title="My Input" value="My Value">`);
+  it 'should work an input' do
+    with_page do |page|
+      page.content = '<input title="My Input" value="My Value">'
 
-  #   const input = await page.$('input');
-  #   expect(await page.accessibility.snapshot({root: input})).toEqual({
-  #     role: 'textbox',
-  #     name: 'My Input',
-  #     value: 'My Value'
-  #   });
-  # });
+      input = page.query_selector('input')
+      expect(page.accessibility.snapshot(root: input)).to eq({
+        'role' => 'textbox',
+        'name' => 'My Input',
+        'value' => 'My Value',
+      })
+    end
+  end
 
-  # it('should work on a menu', async ({page, browserName}) => {
-  #   await page.setContent(`
-  #     <div role="menu" title="My Menu">
-  #       <div role="menuitem">First Item</div>
-  #       <div role="menuitem">Second Item</div>
-  #       <div role="menuitem">Third Item</div>
-  #     </div>
-  #   `);
+  it 'should work on a menu' do
+    with_page do |page|
+      page.content = <<~HTML
+      <div role="menu" title="My Menu">
+        <div role="menuitem">First Item</div>
+        <div role="menuitem">Second Item</div>
+        <div role="menuitem">Third Item</div>
+      </div>
+      HTML
 
-  #   const menu = await page.$('div[role="menu"]');
-  #   expect(await page.accessibility.snapshot({root: menu})).toEqual({
-  #     role: 'menu',
-  #     name: 'My Menu',
-  #     children:
-  #     [ { role: 'menuitem', name: 'First Item' },
-  #       { role: 'menuitem', name: 'Second Item' },
-  #       { role: 'menuitem', name: 'Third Item' } ],
-  #     orientation: browserName === 'webkit' ? 'vertical' : undefined
-  #   });
-  # });
+      menu = page.query_selector('div[role="menu"]')
+      golden = {
+        'role' => 'menu',
+        'name' => 'My Menu',
+        'children' => [
+          { 'role' => 'menuitem', 'name' => 'First Item' },
+          { 'role' => 'menuitem', 'name' => 'Second Item' },
+          { 'role' => 'menuitem', 'name' => 'Third Item' },
+        ]
+      }
+      golden['orientation'] = 'vertical' if webkit?
+      expect(page.accessibility.snapshot(root: menu)).to eq(golden)
+    end
+  end
 
-  # it('should return null when the element is no longer in DOM', async ({page}) => {
-  #   await page.setContent(`<button>My Button</button>`);
-  #   const button = await page.$('button');
-  #   await page.$eval('button', button => button.remove());
-  #   expect(await page.accessibility.snapshot({root: button})).toEqual(null);
-  # });
+  it 'should return null when the element is no longer in DOM' do
+    with_page do |page|
+      page.content = '<button>My Button</button>'
 
-  # it('should show uninteresting nodes', async ({page}) => {
-  #   await page.setContent(`
-  #     <div id="root" role="textbox">
-  #       <div>
-  #         hello
-  #         <div>
-  #           world
-  #         </div>
-  #       </div>
-  #     </div>
-  #   `);
+      button = page.query_selector('button')
+      page.eval_on_selector('button', 'btn => btn.remove()')
+      expect(page.accessibility.snapshot(root: button)).to be_nil
+    end
+  end
 
-  #   const root = await page.$('#root');
-  #   const snapshot = await page.accessibility.snapshot({root, interestingOnly: false});
-  #   expect(snapshot.role).toBe('textbox');
-  #   expect(snapshot.value).toContain('hello');
-  #   expect(snapshot.value).toContain('world');
-  #   expect(!!snapshot.children).toBe(true);
-  # });
+  it 'should show uninteresting nodes' do
+    with_page do |page|
+      page.content = <<~HTML
+      <div id="root" role="textbox">
+        <div>
+          hello
+          <div>
+            world
+          </div>
+        </div>
+      </div>
+      HTML
 
-  # it('should work when there is a title ', async ({page}) => {
-  #   await page.setContent(`
-  #     <title>This is the title</title>
-  #     <div>This is the content</div>
-  #   `);
-  #   const snapshot = await page.accessibility.snapshot();
-  #   expect(snapshot.name).toBe('This is the title');
-  #   expect(snapshot.children[0].name).toBe('This is the content');
-  # });
+      root = page.query_selector('#root')
+      snapshot = page.accessibility.snapshot(root: root, interestingOnly: false)
+      expect(snapshot['role']).to eq('textbox')
+      expect(snapshot['value']).to include('hello')
+      expect(snapshot['value']).to include('world')
+      expect(snapshot['children']).not_to be_empty
+    end
+  end
+
+  it 'should work when there is a title ' do
+    with_page do |page|
+      page.content = <<~HTML
+      <title>This is the title</title>
+      <div>This is the content</div>
+      HTML
+
+      root = page.query_selector('#root')
+      snapshot = page.accessibility.snapshot
+      expect(snapshot['name']).to eq('This is the title')
+      expect(snapshot['children'].first['name']).to eq('This is the content')
+    end
+  end
 end

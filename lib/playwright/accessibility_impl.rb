@@ -10,7 +10,7 @@ module Playwright
         root: root&.channel,
       }.compact
       result = @channel.send_message_to_server('accessibilitySnapshot', params)
-      format_ax_node_from_protocol(result)
+      format_ax_node_from_protocol(result) if result
       result
     end
 
