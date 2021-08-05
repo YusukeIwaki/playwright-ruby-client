@@ -292,6 +292,16 @@ module Playwright
       @channel.send_message_to_server('pause')
     end
 
+    def storage_state(path: nil)
+      @channel.send_message_to_server_result('storageState', {}).tap do |result|
+        if path
+          File.open(path, 'w') do |f|
+            f.write(JSON.dump(result))
+          end
+        end
+      end
+    end
+
     def expect_page(predicate: nil, timeout: nil)
       params = {
         predicate: predicate,

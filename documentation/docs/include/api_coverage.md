@@ -330,7 +330,7 @@
 * set_extra_http_headers
 * set_geolocation
 * set_offline
-* ~~storage_state~~
+* storage_state
 * unroute
 * expect_event
 * expect_page

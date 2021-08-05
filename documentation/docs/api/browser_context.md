@@ -379,6 +379,14 @@ alias: `offline=`
 
 
 
+## storage_state
+
+```
+def storage_state(path: nil)
+```
+
+Returns storage state for this browser context, contains current cookies and local storage snapshot.
+
 ## unroute
 
 ```
