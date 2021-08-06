@@ -183,9 +183,9 @@
 
 ## Worker
 
-* ~~evaluate~~
-* ~~evaluate_handle~~
-* ~~url~~
+* evaluate
+* evaluate_handle
+* url
 
 ## Selectors
 
@@ -299,8 +299,8 @@
 * wait_for_timeout
 * wait_for_url
 * expect_websocket
-* ~~expect_worker~~
-* ~~workers~~
+* expect_worker
+* workers
 * ~~wait_for_event~~
 * accessibility
 * keyboard
@@ -324,7 +324,7 @@
 * new_page
 * pages
 * route
-* ~~service_workers~~
+* service_workers
 * set_default_navigation_timeout
 * set_default_timeout
 * set_extra_http_headers

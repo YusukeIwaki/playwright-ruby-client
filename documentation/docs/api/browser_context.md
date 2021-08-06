@@ -311,6 +311,16 @@ To remove a route with its handler you can use [BrowserContext#unroute](./browse
 
 > NOTE: Enabling routing disables http cache.
 
+## service_workers
+
+```
+def service_workers
+```
+
+> NOTE: Service workers are only supported on Chromium-based browsers.
+
+All existing service workers in the context.
+
 ## set_default_navigation_timeout
 
 ```

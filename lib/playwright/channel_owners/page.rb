@@ -21,6 +21,7 @@ module Playwright
         }
       end
       @closed = false
+      @workers = Set.new
       @bindings = {}
       @routes = []
 
@@ -66,7 +67,7 @@ module Playwright
       })
       @channel.on('worker', ->(params) {
         worker = ChannelOwners::Worker.from(params['worker'])
-        # on_worker(worker)
+        on_worker(worker)
       })
     end
 
@@ -108,6 +109,12 @@ module Playwright
         binding_call.call_async(func)
       end
       @browser_context.send(:on_binding, binding_call)
+    end
+
+    private def on_worker(worker)
+      worker.page = self
+      @workers << worker
+      emit(Events::Page::Worker, worker)
     end
 
     private def on_close
@@ -699,6 +706,10 @@ module Playwright
       @main_frame.wait_for_function(pageFunction, arg: arg, polling: polling, timeout: timeout)
     end
 
+    def workers
+      @workers.to_a
+    end
+
     def pause
       @browser_context.send(:pause)
     end
@@ -870,6 +881,10 @@ module Playwright
       expect_event(Events::Page::WebSocket, predicate: predicate, timeout: timeout, &block)
     end
 
+    def expect_worker(predicate: nil, timeout: nil, &block)
+      expect_event(Events::Page::Worker, predicate: predicate, timeout: timeout, &block)
+    end
+
     # called from Frame with send(:timeout_settings)
     private def timeout_settings
       @timeout_settings
@@ -878,6 +893,11 @@ module Playwright
     # called from BrowserContext#expose_binding
     private def has_bindings?(name)
       @bindings.key?(name)
+    end
+
+    # called from Worker#on_close
+    private def remove_worker(worker)
+      @workers.delete(worker)
     end
 
     # Expose guid for library developers.
