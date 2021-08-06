@@ -269,7 +269,9 @@ def drag_and_drop(
       target,
       force: nil,
       noWaitAfter: nil,
+      sourcePosition: nil,
       strict: nil,
+      targetPosition: nil,
       timeout: nil,
       trial: nil)
 ```
@@ -686,7 +688,7 @@ Returns `element.innerText`.
 def input_value(selector, strict: nil, timeout: nil)
 ```
 
-Returns `input.value` for the selected `<input>` or `<textarea>` element. Throws for non-input elements.
+Returns `input.value` for the selected `<input>` or `<textarea>` or `<select>` element. Throws for non-input elements.
 
 ## checked?
 

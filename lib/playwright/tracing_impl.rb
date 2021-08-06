@@ -16,16 +16,17 @@ module Playwright
 
     # Stop tracing.
     def stop(path: nil)
+      export(path: path) if path
       @channel.send_message_to_server('tracingStop')
+    end
 
-      if path
-        resp = @channel.send_message_to_server('tracingExport')
-        artifact = ChannelOwners::Artifact.from(resp)
-        # if self._context._browser:
-        #   artifact._is_remote = self._context._browser._is_remote
-        artifact.save_as(path)
-        artifact.delete
-      end
+    private def export(path:)
+      resp = @channel.send_message_to_server('tracingExport')
+      artifact = ChannelOwners::Artifact.from(resp)
+      # if self._context._browser:
+      #   artifact._is_remote = self._context._browser._is_remote
+      artifact.save_as(path)
+      artifact.delete
     end
   end
 end

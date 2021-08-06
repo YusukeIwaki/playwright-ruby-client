@@ -309,15 +309,20 @@ module Playwright
           target,
           force: nil,
           noWaitAfter: nil,
+          sourcePosition: nil,
           strict: nil,
+          targetPosition: nil,
           timeout: nil,
           trial: nil)
+
       params = {
         source: source,
         target: target,
         force: force,
         noWaitAfter: noWaitAfter,
+        sourcePosition: sourcePosition,
         strict: strict,
+        targetPosition: targetPosition,
         timeout: timeout,
         trial: trial,
       }.compact

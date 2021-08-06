@@ -91,14 +91,15 @@ end
 RSpec.describe 'tracing' do
   before { skip unless chromium? }
 
-  it 'should collect trace', sinatra: true, tracing: true do
+  it 'should collect trace with resources, but no js', sinatra: true, tracing: true do
     with_context do |context|
       page = context.new_page
 
-      context.tracing.start(name: 'test', screenshots: true, snapshots: true)
-      page.goto(server_empty_page)
+      context.tracing.start(screenshots: true, snapshots: true)
+      page.goto("#{server_prefix}/frames/frame.html")
       page.content = '<button>Click</button>'
       page.click('"Click"')
+      sleep 2 # Give it some time to produce screenshots.
       page.close
       Dir.mktmpdir do |dir|
         trace = File.join(dir, 'trace.zip')

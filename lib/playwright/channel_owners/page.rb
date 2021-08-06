@@ -475,7 +475,9 @@ module Playwright
           target,
           force: nil,
           noWaitAfter: nil,
+          sourcePosition: nil,
           strict: nil,
+          targetPosition: nil,
           timeout: nil,
           trial: nil)
 
@@ -484,7 +486,9 @@ module Playwright
         target,
         force: force,
         noWaitAfter: noWaitAfter,
+        sourcePosition: sourcePosition,
         strict: strict,
+        targetPosition: targetPosition,
         timeout: timeout,
         trial: trial)
     end

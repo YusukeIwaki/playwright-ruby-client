@@ -331,7 +331,7 @@ Returns the `element.innerText`.
 def input_value(timeout: nil)
 ```
 
-Returns `input.value` for `<input>` or `<textarea>` element. Throws for non-input elements.
+Returns `input.value` for `<input>` or `<textarea>` or `<select>` element. Throws for non-input elements.
 
 ## checked?
 
