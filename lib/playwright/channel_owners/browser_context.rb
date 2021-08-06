@@ -11,6 +11,7 @@ module Playwright
       @routes = []
       @bindings = {}
       @timeout_settings = TimeoutSettings.new
+      @service_workers = Set.new
       @background_pages = Set.new
 
       @tracing = TracingImpl.new(@channel, self)
@@ -22,6 +23,9 @@ module Playwright
       })
       @channel.on('backgroundPage', ->(params) {
         on_background_page(ChannelOwners::Page.from(params['page']))
+      })
+      @channel.on('serviceWorker', ->(params) {
+        on_service_worker(ChannelOwners::Worker.from(params['worker']))
       })
       @channel.on('request', ->(params) {
         on_request(
@@ -107,8 +111,18 @@ module Playwright
       page&.emit(Events::Page::Response, response)
     end
 
+    private def on_service_worker(worker)
+      worker.context = self
+      @service_workers << worker
+      emit(Events::BrowserContext::ServiceWorker, worker)
+    end
+
     def background_pages
       @background_pages.to_a
+    end
+
+    def service_workers
+      @service_workers.to_a
     end
 
     def new_cdp_session(page)
@@ -317,6 +331,10 @@ module Playwright
 
     private def remove_background_page(page)
       @background_pages.delete(page)
+    end
+
+    private def remove_service_worker(worker)
+      @service_workers.delete(worker)
     end
 
     # called from Page with send(:_timeout_settings), so keep private.

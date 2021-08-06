@@ -1506,6 +1506,27 @@ def expect_websocket(predicate: nil, timeout: nil, &block)
 
 Performs action and waits for a new [WebSocket](./web_socket). If predicate is provided, it passes [WebSocket](./web_socket) value into the `predicate` function and waits for `predicate.call(web_socket)` to return a truthy value. Will throw an error if the page is closed before the WebSocket event is fired.
 
+## expect_worker
+
+```
+def expect_worker(predicate: nil, timeout: nil, &block)
+```
+
+Performs action and waits for a new [Worker](./worker). If predicate is provided, it passes [Worker](./worker) value into the `predicate`
+function and waits for `predicate(worker)` to return a truthy value. Will throw an error if the page is closed before
+the worker event is fired.
+
+## workers
+
+```
+def workers
+```
+
+This method returns all of the dedicated [WebWorkers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API)
+associated with the page.
+
+> NOTE: This does not contain ServiceWorkers
+
 ## accessibility
 
 ## keyboard
