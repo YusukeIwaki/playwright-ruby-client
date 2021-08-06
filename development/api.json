@@ -23842,11 +23842,11 @@
         "spec": [
           {
             "type": "text",
-            "text": "Returns `input.value` for `<input>` or `<textarea>` element. Throws for non-input elements."
+            "text": "Returns `input.value` for `<input>` or `<textarea>` or `<select>` element. Throws for non-input elements."
           }
         ],
         "required": true,
-        "comment": "Returns `input.value` for `<input>` or `<textarea>` element. Throws for non-input elements.",
+        "comment": "Returns `input.value` for `<input>` or `<textarea>` or `<select>` element. Throws for non-input elements.",
         "deprecated": false,
         "async": true,
         "alias": "inputValue",
@@ -28784,6 +28784,71 @@
                 {
                   "kind": "property",
                   "langs": {},
+                  "name": "sourcePosition",
+                  "type": {
+                    "name": "Object",
+                    "properties": [
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "x",
+                        "type": {
+                          "name": "float",
+                          "expression": "[float]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": ""
+                          }
+                        ],
+                        "required": true,
+                        "comment": "",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "x",
+                        "paramOrOption": null
+                      },
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "y",
+                        "type": {
+                          "name": "float",
+                          "expression": "[float]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": ""
+                          }
+                        ],
+                        "required": true,
+                        "comment": "",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "y",
+                        "paramOrOption": null
+                      }
+                    ],
+                    "expression": "[Object]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Clicks on the source element at this point relative to the top-left corner of the element's padding box. If not specified, some visible point of the element is used."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Clicks on the source element at this point relative to the top-left corner of the element's padding box. If not\nspecified, some visible point of the element is used.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "sourcePosition",
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
                   "name": "strict",
                   "type": {
                     "name": "boolean",
@@ -28800,6 +28865,71 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "targetPosition",
+                  "type": {
+                    "name": "Object",
+                    "properties": [
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "x",
+                        "type": {
+                          "name": "float",
+                          "expression": "[float]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": ""
+                          }
+                        ],
+                        "required": true,
+                        "comment": "",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "x",
+                        "paramOrOption": null
+                      },
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "y",
+                        "type": {
+                          "name": "float",
+                          "expression": "[float]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": ""
+                          }
+                        ],
+                        "required": true,
+                        "comment": "",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "y",
+                        "paramOrOption": null
+                      }
+                    ],
+                    "expression": "[Object]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Drops on the target element at this point relative to the top-left corner of the element's padding box. If not specified, some visible point of the element is used."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Drops on the target element at this point relative to the top-left corner of the element's padding box. If not\nspecified, some visible point of the element is used.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "targetPosition",
                   "paramOrOption": null
                 },
                 {
@@ -30943,11 +31073,11 @@
         "spec": [
           {
             "type": "text",
-            "text": "Returns `input.value` for the selected `<input>` or `<textarea>` element. Throws for non-input elements."
+            "text": "Returns `input.value` for the selected `<input>` or `<textarea>` or `<select>` element. Throws for non-input elements."
           }
         ],
         "required": true,
-        "comment": "Returns `input.value` for the selected `<input>` or `<textarea>` element. Throws for non-input elements.",
+        "comment": "Returns `input.value` for the selected `<input>` or `<textarea>` or `<select>` element. Throws for non-input elements.",
         "deprecated": false,
         "async": true,
         "alias": "inputValue",
@@ -39465,11 +39595,11 @@
         "spec": [
           {
             "type": "text",
-            "text": "Returns `input.value` for `<input>` or `<textarea>` element. Throws for non-input elements."
+            "text": "Returns `input.value` for `<input>` or `<textarea>` or `<select>` element. Throws for non-input elements."
           }
         ],
         "required": true,
-        "comment": "Returns `input.value` for `<input>` or `<textarea>` element. Throws for non-input elements.",
+        "comment": "Returns `input.value` for `<input>` or `<textarea>` or `<select>` element. Throws for non-input elements.",
         "deprecated": false,
         "async": true,
         "alias": "inputValue",
@@ -45914,6 +46044,71 @@
                 {
                   "kind": "property",
                   "langs": {},
+                  "name": "sourcePosition",
+                  "type": {
+                    "name": "Object",
+                    "properties": [
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "x",
+                        "type": {
+                          "name": "float",
+                          "expression": "[float]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": ""
+                          }
+                        ],
+                        "required": true,
+                        "comment": "",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "x",
+                        "paramOrOption": null
+                      },
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "y",
+                        "type": {
+                          "name": "float",
+                          "expression": "[float]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": ""
+                          }
+                        ],
+                        "required": true,
+                        "comment": "",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "y",
+                        "paramOrOption": null
+                      }
+                    ],
+                    "expression": "[Object]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Clicks on the source element at this point relative to the top-left corner of the element's padding box. If not specified, some visible point of the element is used."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Clicks on the source element at this point relative to the top-left corner of the element's padding box. If not\nspecified, some visible point of the element is used.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "sourcePosition",
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
                   "name": "strict",
                   "type": {
                     "name": "boolean",
@@ -45930,6 +46125,71 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "targetPosition",
+                  "type": {
+                    "name": "Object",
+                    "properties": [
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "x",
+                        "type": {
+                          "name": "float",
+                          "expression": "[float]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": ""
+                          }
+                        ],
+                        "required": true,
+                        "comment": "",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "x",
+                        "paramOrOption": null
+                      },
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "y",
+                        "type": {
+                          "name": "float",
+                          "expression": "[float]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": ""
+                          }
+                        ],
+                        "required": true,
+                        "comment": "",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "y",
+                        "paramOrOption": null
+                      }
+                    ],
+                    "expression": "[Object]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Drops on the target element at this point relative to the top-left corner of the element's padding box. If not specified, some visible point of the element is used."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Drops on the target element at this point relative to the top-left corner of the element's padding box. If not\nspecified, some visible point of the element is used.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "targetPosition",
                   "paramOrOption": null
                 },
                 {
@@ -49757,11 +50017,11 @@
         "spec": [
           {
             "type": "text",
-            "text": "Returns `input.value` for the selected `<input>` or `<textarea>` element. Throws for non-input elements."
+            "text": "Returns `input.value` for the selected `<input>` or `<textarea>` or `<select>` element. Throws for non-input elements."
           }
         ],
         "required": true,
-        "comment": "Returns `input.value` for the selected `<input>` or `<textarea>` element. Throws for non-input elements.",
+        "comment": "Returns `input.value` for the selected `<input>` or `<textarea>` or `<select>` element. Throws for non-input elements.",
         "deprecated": false,
         "async": true,
         "alias": "inputValue",
