@@ -807,4 +807,24 @@ module ExampleCodes
   def example_c77fd0986d0b74c905cd9417756c76775e612cc86410f9a5aabc5b46d233d150(page:)
     page.route("**/xhr_endpoint", ->(route, _) { route.fulfill(path: "mock_data.json") })
   end
+
+  # Tracing
+  def example_a767dfb400d98aef50f2767b94171d23474ea1ac1cf9b4d75d412936208e652d(browser:)
+    browser.new_page do |page|
+      context = page.context
+
+      context.tracing.start(screenshots: true, snapshots: true)
+      page.goto('https://playwright.dev')
+      context.tracing.stop(path: 'trace.zip')
+    end
+  end
+
+  # Tracing#start
+  def example_e611abc8b1066118d0c87eae1bbbb08df655f36d50a94402fc56b8713150997b(page:)
+    context = page.context
+
+    context.tracing.start(name: 'trace', screenshots: true, snapshots: true)
+    page.goto('https://playwright.dev')
+    context.tracing.stop(path: 'trace.zip')
+  end
 end

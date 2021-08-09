@@ -306,27 +306,6 @@ for worker in page.workers:
 
 ```
 
-### example_a767dfb400d98aef50f2767b94171d23474ea1ac1cf9b4d75d412936208e652d
-
-```
-browser = chromium.launch()
-context = browser.new_context()
-context.tracing.start(screenshots=True, snapshots=True)
-page.goto("https://playwright.dev")
-context.tracing.stop(path = "trace.zip")
-
-```
-
-### example_e611abc8b1066118d0c87eae1bbbb08df655f36d50a94402fc56b8713150997b
-
-```
-context.tracing.start(name="trace", screenshots=True, snapshots=True)
-page.goto("https://playwright.dev")
-context.tracing.stop()
-context.tracing.stop(path = "trace.zip")
-
-```
-
 ### example_9f72eed0cd4b2405e6a115b812b36ff2624e889f9086925c47665333a7edabbc
 
 ```
