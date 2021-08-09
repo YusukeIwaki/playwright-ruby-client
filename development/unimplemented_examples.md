@@ -69,32 +69,6 @@ span = div.wait_for_selector("span", state="attached")
 
 ```
 
-### example_2e5019929403491cde0c78bed1e0e18e0c86ab423d7ac8715876c4de4814f483
-
-```
-snapshot = page.accessibility.snapshot()
-print(snapshot)
-
-```
-
-### example_df2acadf9e261a7624d83399f0d8b0910293a6a7081c812474715f22f8af7a4a
-
-```
-def find_focused_node(node):
-    if (node.get("focused"))
-        return node
-    for child in (node.get("children") or []):
-        found_node = find_focused_node(child)
-        return found_node
-    return None
-
-snapshot = page.accessibility.snapshot()
-node = find_focused_node(snapshot)
-if node:
-    print(node["name"])
-
-```
-
 ### example_a4a9e01d1e0879958d591c4bc9061574f5c035e821a94214e650d15564d77bf4
 
 ```

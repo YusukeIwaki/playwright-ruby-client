@@ -1,4 +1,27 @@
 module ExampleCodes
+  # Accessibility
+  def example_2e5019929403491cde0c78bed1e0e18e0c86ab423d7ac8715876c4de4814f483(page:)
+    snapshot = page.accessibility.snapshot
+    puts snapshot
+  end
+
+  # Accessibility
+  def example_df2acadf9e261a7624d83399f0d8b0910293a6a7081c812474715f22f8af7a4a(page:)
+    def find_focused_node(node)
+      if node['focused']
+        node
+      else
+        node['children']&.find do |child|
+          find_focused_node(child)
+        end
+      end
+    end
+
+    snapshot = page.accessibility.snapshot
+    node = find_focused_node(snapshot)
+    puts node['name']
+  end
+
   # Browser
   def example_b8acc529feb6c35ab828780a127d7bf2c079dc7f2847ef251c4c1a33b4197bf9(playwright:)
     firefox = playwright.firefox
