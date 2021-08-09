@@ -5,46 +5,6 @@ Excample codes in API documentation is replaces with the methods defined in deve
 The examples listed below is not yet implemented, and documentation shows Python code.
 
 
-### example_5f3f4534ab17f584cfd41ca38448ce7de9490b6588e29e73116ede3cb15a25a5
-
-```
-page.on("requestfailed", lambda request: print(request.url + " " + request.failure))
-
-```
-
-### example_89568fc86bf623eef37b68c6659b1a8524647c8365bb32a7a8af63bd86111075
-
-```
-response = page.goto("http://example.com")
-print(response.request.redirected_from.url) # "http://example.com"
-
-```
-
-### example_6d7b3fbf8d69dbe639b71fedc5a8977777fca29dfb16d38012bb07c496342472
-
-```
-response = page.goto("https://google.com")
-print(response.request.redirected_from) # None
-
-```
-
-### example_922623f4033e7ec2158787e54a8554655f7e1e20a024e4bf4f69337f781ab88a
-
-```
-assert request.redirected_from.redirected_to == request
-
-```
-
-### example_e2a297fe95fd0699b6a856c3be2f28106daa2615c0f4d6084f5012682a619d20
-
-```
-with page.expect_event("requestfinished") as request_info:
-    page.goto("http://example.com")
-request = request_info.value
-print(request.timing)
-
-```
-
 ### example_3b0f6c6573db513b7b707a39d6c5bbf5ce5896b4785466d80f525968cfbd0be7
 
 ```
