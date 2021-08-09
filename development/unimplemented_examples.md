@@ -45,20 +45,6 @@ print(request.timing)
 
 ```
 
-### example_ba01da1f358cafb4c22b792488ff2f3de4dbd82d4ee1cc4050e3f0c24a2bd7dd
-
-```
-# using ‘page.mouse’ to trace a 100x100 square.
-page.mouse.move(0, 0)
-page.mouse.down()
-page.mouse.move(0, 100)
-page.mouse.move(100, 100)
-page.mouse.move(100, 0)
-page.mouse.move(0, 0)
-page.mouse.up()
-
-```
-
 ### example_3b0f6c6573db513b7b707a39d6c5bbf5ce5896b4785466d80f525968cfbd0be7
 
 ```
