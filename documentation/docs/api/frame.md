@@ -16,25 +16,16 @@ At every point of time, page exposes its current frame tree via the [Page#main_f
 
 An example of dumping frame tree:
 
-```python sync title=example_a4a9e01d1e0879958d591c4bc9061574f5c035e821a94214e650d15564d77bf4.py
-from playwright.sync_api import sync_playwright
+```ruby
+def dump_frame_tree(frame, indent = 0)
+  puts "#{' ' * indent}#{frame.name}@#{frame.url}"
+  frame.child_frames.each do |child|
+    dump_frame_tree(child, indent + 2)
+  end
+end
 
-def run(playwright):
-    firefox = playwright.firefox
-    browser = firefox.launch()
-    page = browser.new_page()
-    page.goto("https://www.theverge.com")
-    dump_frame_tree(page.main_frame, "")
-    browser.close()
-
-def dump_frame_tree(frame, indent):
-    print(indent + frame.name + '@' + frame.url)
-    for child in frame.child_frames:
-        dump_frame_tree(child, indent + "    ")
-
-with sync_playwright() as playwright:
-    run(playwright)
-
+page.goto("https://www.theverge.com")
+dump_frame_tree(page.main_frame)
 ```
 
 
@@ -176,9 +167,8 @@ The snippet below dispatches the `click` event on the element. Regardless of the
 `click` is dispatched. This is equivalent to calling
 [element.click()](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click).
 
-```python sync title=example_de439a4f4839a9b1bc72dbe0890d6b989c437620ba1b88a2150faa79f98184fc.py
+```ruby
 frame.dispatch_event("button#submit", "click")
-
 ```
 
 Under the hood, it creates an instance of an event based on the given `type`, initializes it with `eventInit` properties
@@ -195,11 +185,10 @@ Since `eventInit` is event-specific, please refer to the events documentation fo
 
 You can also specify [JSHandle](./js_handle) as the property value if you want live objects to be passed into the event:
 
-```python sync title=example_5410f49339561b3cc9d91c7548c8195a570c8be704bb62f45d90c68f869d450d.py
+```ruby
 # note you can only create data_transfer in chromium and firefox
 data_transfer = frame.evaluate_handle("new DataTransfer()")
-frame.dispatch_event("#source", "dragstart", { "dataTransfer": data_transfer })
-
+frame.dispatch_event("#source", "dragstart", eventInit: { dataTransfer: data_transfer })
 ```
 
 
@@ -238,11 +227,10 @@ return its value.
 
 Examples:
 
-```python sync title=example_6814d0e91763f4d27a0d6a380c36d62b551e4c3e902d1157012dde0a49122abe.py
+```ruby
 search_value = frame.eval_on_selector("#search", "el => el.value")
 preload_href = frame.eval_on_selector("link[rel=preload]", "el => el.href")
-html = frame.eval_on_selector(".main-container", "(e, suffix) => e.outerHTML + suffix", "hello")
-
+html = frame.eval_on_selector(".main-container", "(e, suffix) => e.outerHTML + suffix", arg: "hello")
 ```
 
 
@@ -263,9 +251,8 @@ return its value.
 
 Examples:
 
-```python sync title=example_618e7f8f681d1c4a1c0c9b8d23892e37cbbef013bf3d8906fd4311c51d9819d7.py
-divs_counts = frame.eval_on_selector_all("div", "(divs, min) => divs.length >= min", 10)
-
+```ruby
+divs_counts = frame.eval_on_selector_all("div", "(divs, min) => divs.length >= min", arg: 10)
 ```
 
 
@@ -285,28 +272,25 @@ If the function passed to the [Frame#evaluate](./frame#evaluate) returns a non-[
 [Frame#evaluate](./frame#evaluate) returns `undefined`. Playwright also supports transferring some additional values that are
 not serializable by `JSON`: `-0`, `NaN`, `Infinity`, `-Infinity`.
 
-```python sync title=example_15a235841cd1bc56fad6e3c8aaea2a30e352fedd8238017f22f97fc70e058d2b.py
-result = frame.evaluate("([x, y]) => Promise.resolve(x * y)", [7, 8])
-print(result) # prints "56"
-
+```ruby
+result = frame.evaluate("([x, y]) => Promise.resolve(x * y)", arg: [7, 8])
+puts result # => "56"
 ```
 
 A string can also be passed in instead of a function.
 
-```python sync title=example_9c73167b900498bca191abc2ce2627e063f84b0abc8ce3a117416cb734602760.py
-print(frame.evaluate("1 + 2")) # prints "3"
+```ruby
+puts frame.evaluate("1 + 2") # => 3
 x = 10
-print(frame.evaluate(f"1 + {x}")) # prints "11"
-
+puts frame.evaluate("1 + #{x}") # => "11"
 ```
 
 [ElementHandle](./element_handle) instances can be passed as an argument to the [Frame#evaluate](./frame#evaluate):
 
-```python sync title=example_05568c81173717fa6841099571d8a66e14fc0853e01684630d1622baedc25f67.py
+```ruby
 body_handle = frame.query_selector("body")
-html = frame.evaluate("([body, suffix]) => body.innerHTML + suffix", [body_handle, "hello"])
-body_handle.dispose()
-
+html = frame.evaluate("([body, suffix]) => body.innerHTML + suffix", arg: [body_handle, "hello"])
+body_handle.dispose
 ```
 
 
@@ -325,10 +309,9 @@ The only difference between [Frame#evaluate](./frame#evaluate) and [Frame#evalua
 If the function, passed to the [Frame#evaluate_handle](./frame#evaluate_handle), returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), then
 [Frame#evaluate_handle](./frame#evaluate_handle) would wait for the promise to resolve and return its value.
 
-```python sync title=example_a1c8e837e826079359d01d6f7eecc64092a45d8c74280d23ee9039c379132c51.py
+```ruby
 a_window_handle = frame.evaluate_handle("Promise.resolve(window)")
 a_window_handle # handle for the window object.
-
 ```
 
 A string can also be passed in instead of a function.
@@ -393,11 +376,10 @@ frame.
 
 This method throws an error if the frame has been detached before `frameElement()` returns.
 
-```python sync title=example_e6b4fdef29a401d84b17acfa319bee08f39e1f28e07c435463622220c6a24747.py
-frame_element = frame.frame_element()
-content_frame = frame_element.content_frame()
-assert frame == content_frame
-
+```ruby
+frame_element = frame.frame_element
+content_frame = frame_element.content_frame
+puts frame == content_frame # => true
 ```
 
 
@@ -658,14 +640,13 @@ Returns the array of option values that have been successfully selected.
 
 Triggers a `change` and `input` event once all the provided options have been selected.
 
-```python sync title=example_230c12044664b222bf35d6163b1e415c011d87d9911a4d39648c7f601b344a31.py
+```ruby
 # single selection matching the value
-frame.select_option("select#colors", "blue")
+frame.select_option("select#colors", value: "blue")
 # single selection matching both the label
-frame.select_option("select#colors", label="blue")
+frame.select_option("select#colors", label: "blue")
 # multiple selection
-frame.select_option("select#colors", value=["red", "green", "blue"])
-
+frame.select_option("select#colors", value: ["red", "green", "blue"])
 ```
 
 
@@ -756,10 +737,9 @@ send fine-grained keyboard events. To fill values in form fields, use [Frame#fil
 
 To press a special key, like `Control` or `ArrowDown`, use [Keyboard#press](./keyboard#press).
 
-```python sync title=example_beae7f0d11663c3c98b9d3a8e6ab76b762578cf2856e3b04ad8e42bfb23bb1e1.py
+```ruby
 frame.type("#mytextarea", "hello") # types instantly
-frame.type("#mytextarea", "world", delay=100) # types slower, like a user
-
+frame.type("#mytextarea", "world", delay: 100) # types slower, like a user
 ```
 
 
@@ -809,28 +789,16 @@ Returns when the `expression` returns a truthy value, returns that value.
 
 The [Frame#wait_for_function](./frame#wait_for_function) can be used to observe viewport size change:
 
-```python sync title=example_2f82dcf15fa9338be87a4faf7fe7de3c542040924db1e1ad1c98468ec0f425ce.py
-from playwright.sync_api import sync_playwright
-
-def run(playwright):
-    webkit = playwright.webkit
-    browser = webkit.launch()
-    page = browser.new_page()
-    page.evaluate("window.x = 0; setTimeout(() => { window.x = 100 }, 1000);")
-    page.main_frame.wait_for_function("() => window.x > 0")
-    browser.close()
-
-with sync_playwright() as playwright:
-    run(playwright)
-
+```ruby
+frame.evaluate("window.x = 0; setTimeout(() => { window.x = 100 }, 1000);")
+frame.wait_for_function("() => window.x > 0")
 ```
 
 To pass an argument to the predicate of `frame.waitForFunction` function:
 
-```python sync title=example_8b95be0fb4d149890f7817d9473428a50dc631d3a75baf89846648ca6a157562.py
+```ruby
 selector = ".foo"
-frame.wait_for_function("selector => !!document.querySelector(selector)", selector)
-
+frame.wait_for_function("selector => !!document.querySelector(selector)", arg: selector)
 ```
 
 
@@ -846,10 +814,9 @@ Waits for the required load state to be reached.
 This returns when the frame reaches a required load state, `load` by default. The navigation must have been committed
 when this method is called. If current document has already reached the required state, resolves immediately.
 
-```python sync title=example_fe41b79b58d046cda4673ededd4d216cb97a63204fcba69375ce8a84ea3f6894.py
+```ruby
 frame.click("button") # click triggers navigation.
-frame.wait_for_load_state() # the promise resolves after "load" event.
-
+frame.wait_for_load_state # the promise resolves after "load" event.
 ```
 
 
@@ -867,11 +834,10 @@ History API usage, the navigation will resolve with `null`.
 This method waits for the frame to navigate to a new URL. It is useful for when you run code which will indirectly cause
 the frame to navigate. Consider this example:
 
-```python sync title=example_03f0ac17eb6c1ce8780cfa83c4ae15a9ddbfde3f96c96f36fdf3fbf9aac721f7.py
-with frame.expect_navigation():
-    frame.click("a.delayed-navigation") # clicking the link will indirectly cause a navigation
-# Resolves after navigation has finished
-
+```ruby
+frame.expect_navigation do
+  frame.click("a.delayed-navigation") # clicking the link will indirectly cause a navigation
+end # Resolves after navigation has finished
 ```
 
 > NOTE: Usage of the [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API) to change the URL is
@@ -892,22 +858,13 @@ selector doesn't satisfy the condition for the `timeout` milliseconds, the funct
 
 This method works across navigations:
 
-```python sync title=example_a5b9dd4745d45ac630e5953be1c1815ae8e8ab03399fb35f45ea77c434f17eea.py
-from playwright.sync_api import sync_playwright
-
-def run(playwright):
-    chromium = playwright.chromium
-    browser = chromium.launch()
-    page = browser.new_page()
-    for current_url in ["https://google.com", "https://bbc.com"]:
-        page.goto(current_url, wait_until="domcontentloaded")
-        element = page.main_frame.wait_for_selector("img")
-        print("Loaded image: " + str(element.get_attribute("src")))
-    browser.close()
-
-with sync_playwright() as playwright:
-    run(playwright)
-
+```ruby
+%w[https://google.com https://bbc.com].each do |current_url|
+  page.goto(current_url, waitUntil: "domcontentloaded")
+  frame = page.main_frame
+  element = frame.wait_for_selector("img")
+  puts "Loaded image: #{element["src"]}"
+end
 ```
 
 
@@ -931,10 +888,9 @@ def wait_for_url(url, timeout: nil, waitUntil: nil)
 
 Waits for the frame to navigate to the given URL.
 
-```python sync title=example_86a9a19ec4c41e1a5ac302fbca9a3d3d6dca3fe3314e065b8062ddf5f75abfbd.py
+```ruby
 frame.click("a.delayed-navigation") # clicking the link will indirectly cause a navigation
 frame.wait_for_url("**/target.html")
-
 ```
 
 

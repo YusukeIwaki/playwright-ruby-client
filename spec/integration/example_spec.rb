@@ -172,6 +172,12 @@ RSpec.describe 'example' do
       end
     end
 
+    it 'should work with Frame' do
+      with_page do |page|
+        example_a4a9e01d1e0879958d591c4bc9061574f5c035e821a94214e650d15564d77bf4(page: page)
+      end
+    end
+
     it 'should work with JSHandle#properties' do
       with_page do |page|
         example_8292f0e8974d97d20be9bb303d55ccd2d50e42f954e0ada4958ddbef2c6c2977(page: page)
