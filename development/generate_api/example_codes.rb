@@ -401,6 +401,18 @@ module ExampleCodes
     page.keyboard.type("World", delay: 100) # types slower, like a user
   end
 
+  # Mouse
+  def example_ba01da1f358cafb4c22b792488ff2f3de4dbd82d4ee1cc4050e3f0c24a2bd7dd(page:)
+    # using ‘page.mouse’ to trace a 100x100 square.
+    page.mouse.move(0, 0)
+    page.mouse.down
+    page.mouse.move(0, 100)
+    page.mouse.move(100, 100)
+    page.mouse.move(100, 0)
+    page.mouse.move(0, 0)
+    page.mouse.up
+  end
+
   # Playwright
   def example_efc99085566bf177ec87b1bd3bb30d75b6053ec9b579a8ac8bb9f22e5942289a
     require 'playwright'
