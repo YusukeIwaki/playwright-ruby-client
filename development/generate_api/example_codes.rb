@@ -941,6 +941,37 @@ module ExampleCodes
     page.wait_for_url("**/target.html")
   end
 
+  # Request#failure
+  def example_5f3f4534ab17f584cfd41ca38448ce7de9490b6588e29e73116ede3cb15a25a5(page:)
+    page.on("requestfailed", ->(request) { puts "#{request.url} #{request.failure}" })
+  end
+
+  # Request#redirected_from
+  def example_89568fc86bf623eef37b68c6659b1a8524647c8365bb32a7a8af63bd86111075(page:)
+    response = page.goto("http://github.com")
+    puts response.url # => "https://github.com"
+    puts response.request.redirected_from&.url # => "http://github.com"
+  end
+
+  # Request#redirected_from
+  def example_6d7b3fbf8d69dbe639b71fedc5a8977777fca29dfb16d38012bb07c496342472(page:)
+    response = page.goto("https://google.com")
+    puts response.request.redirected_from&.url # => nil
+  end
+
+  # Request#redirected_to
+  def example_922623f4033e7ec2158787e54a8554655f7e1e20a024e4bf4f69337f781ab88a(request:)
+    request.redirected_from.redirected_to # equals to request
+  end
+
+  # Request#timing
+  def example_e2a297fe95fd0699b6a856c3be2f28106daa2615c0f4d6084f5012682a619d20(page:)
+    request = page.expect_event("requestfinished") do
+      page.goto("https://example.com")
+    end
+    puts request.timing
+  end
+
   # Route#continue
   def example_1960aabd58c9553683368e29429d39c1209d35e6e3625bbef1280a1fa022a9ee(page:)
     def handle(route, request)

@@ -28,9 +28,8 @@ The method returns `null` unless this request has failed, as reported by `reques
 
 Example of logging of all the failed requests:
 
-```py title=example_5f3f4534ab17f584cfd41ca38448ce7de9490b6588e29e73116ede3cb15a25a5.py
-page.on("requestfailed", lambda request: print(request.url + " " + request.failure))
-
+```ruby
+page.on("requestfailed", ->(request) { puts "#{request.url} #{request.failure}" })
 ```
 
 
@@ -108,18 +107,17 @@ construct the whole redirect chain by repeatedly calling `redirectedFrom()`.
 
 For example, if the website `http://example.com` redirects to `https://example.com`:
 
-```python sync title=example_89568fc86bf623eef37b68c6659b1a8524647c8365bb32a7a8af63bd86111075.py
-response = page.goto("http://example.com")
-print(response.request.redirected_from.url) # "http://example.com"
-
+```ruby
+response = page.goto("http://github.com")
+puts response.url # => "https://github.com"
+puts response.request.redirected_from&.url # => "http://github.com"
 ```
 
 If the website `https://google.com` has no redirects:
 
-```python sync title=example_6d7b3fbf8d69dbe639b71fedc5a8977777fca29dfb16d38012bb07c496342472.py
+```ruby
 response = page.goto("https://google.com")
-print(response.request.redirected_from) # None
-
+puts response.request.redirected_from&.url # => nil
 ```
 
 
@@ -134,9 +132,8 @@ New request issued by the browser if the server responded with redirect.
 
 This method is the opposite of [Request#redirected_from](./request#redirected_from):
 
-```py title=example_922623f4033e7ec2158787e54a8554655f7e1e20a024e4bf4f69337f781ab88a.py
-assert request.redirected_from.redirected_to == request
-
+```ruby
+request.redirected_from.redirected_to # equals to request
 ```
 
 
@@ -169,12 +166,11 @@ Returns resource timing information for given request. Most of the timing values
 `responseEnd` becomes available when request finishes. Find more information at
 [Resource Timing API](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming).
 
-```python sync title=example_e2a297fe95fd0699b6a856c3be2f28106daa2615c0f4d6084f5012682a619d20.py
-with page.expect_event("requestfinished") as request_info:
-    page.goto("http://example.com")
-request = request_info.value
-print(request.timing)
-
+```ruby
+request = page.expect_event("requestfinished") do
+  page.goto("https://example.com")
+end
+puts request.timing
 ```
 
 

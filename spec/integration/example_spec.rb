@@ -243,6 +243,26 @@ RSpec.describe 'example' do
       end
     end
 
+    it 'should work with Request#redirected_from' do
+      with_page do |page|
+        example_89568fc86bf623eef37b68c6659b1a8524647c8365bb32a7a8af63bd86111075(page: page)
+      end
+    end
+
+    it 'should work with Request#redirected_to' do
+      with_page do |page|
+        req = page.goto('http://github.com/').request
+        req2 = example_922623f4033e7ec2158787e54a8554655f7e1e20a024e4bf4f69337f781ab88a(request: req)
+        expect(req2).to eq(req)
+      end
+    end
+
+    it 'should work with Request#timing' do
+      with_page do |page|
+        example_e2a297fe95fd0699b6a856c3be2f28106daa2615c0f4d6084f5012682a619d20(page: page)
+      end
+    end
+
     it 'should work with Route#continue', sinatra: true do
       with_page do |page|
         headers = []

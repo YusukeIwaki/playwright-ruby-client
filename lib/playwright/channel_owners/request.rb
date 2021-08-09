@@ -100,14 +100,14 @@ module Playwright
                   request_start:,
                   response_start:)
 
-      @timing["startTime"] = start_time
-      @timing["domainLookupStart"] = domain_lookup_start
-      @timing["domainLookupEnd"] = domain_lookup_end
-      @timing["connectStart"] = connect_start
-      @timing["secureConnectionStart"] = secure_connection_start
-      @timing["connectEnd"] = connect_end
-      @timing["requestStart"] = request_start
-      @timing["responseStart"] = response_start
+      @timing[:startTime] = start_time
+      @timing[:domainLookupStart] = domain_lookup_start
+      @timing[:domainLookupEnd] = domain_lookup_end
+      @timing[:connectStart] = connect_start
+      @timing[:secureConnectionStart] = secure_connection_start
+      @timing[:connectEnd] = connect_end
+      @timing[:requestStart] = request_start
+      @timing[:responseStart] = response_start
     end
 
     private def update_headers(headers)
