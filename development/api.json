@@ -847,14 +847,54 @@
     "spec": [
       {
         "type": "text",
-        "text": "Playwright has **experimental** support for Android automation. See [here](./mobile.md) for more information. You can access android namespace via:"
+        "text": "Playwright has **experimental** support for Android automation. This includes Chrome for Android and Android WebView."
       },
       {
-        "type": "code",
-        "lines": [
-          "const { _android: android } = require('playwright');"
-        ],
-        "codeLang": "js"
+        "type": "text",
+        "text": "*Requirements*"
+      },
+      {
+        "type": "li",
+        "text": "Android device or AVD Emulator.",
+        "liType": "bullet"
+      },
+      {
+        "type": "li",
+        "text": "[ADB daemon](https://developer.android.com/studio/command-line/adb) running and authenticated with your device. Typically running `adb devices` is all you need to do.",
+        "liType": "bullet"
+      },
+      {
+        "type": "li",
+        "text": "[`Chrome 87`](https://play.google.com/store/apps/details?id=com.android.chrome) or newer installed on the device",
+        "liType": "bullet"
+      },
+      {
+        "type": "li",
+        "text": "\"Enable command line on non-rooted devices\" enabled in `chrome://flags`.",
+        "liType": "bullet"
+      },
+      {
+        "type": "text",
+        "text": "*Known limitations*"
+      },
+      {
+        "type": "li",
+        "text": "Raw USB operation is not yet supported, so you need ADB.",
+        "liType": "bullet"
+      },
+      {
+        "type": "li",
+        "text": "Device needs to be awake to produce screenshots. Enabling \"Stay awake\" developer mode will help.",
+        "liType": "bullet"
+      },
+      {
+        "type": "li",
+        "text": "We didn't run all the tests against the device, so not everything works.",
+        "liType": "bullet"
+      },
+      {
+        "type": "text",
+        "text": "*How to run*"
       },
       {
         "type": "text",
@@ -934,7 +974,7 @@
       "types": {},
       "overrides": {}
     },
-    "comment": "Playwright has **experimental** support for Android automation. See [here](./mobile.md) for more information. You can\naccess android namespace via:\n\n```js\nconst { _android: android } = require('playwright');\n```\n\nAn example of the Android automation script would be:\n\n```js\nconst { _android: android } = require('playwright');\n\n(async () => {\n  // Connect to the device.\n  const [device] = await android.devices();\n  console.log(`Model: ${device.model()}`);\n  console.log(`Serial: ${device.serial()}`);\n  // Take screenshot of the whole device.\n  await device.screenshot({ path: 'device.png' });\n\n  {\n    // --------------------- WebView -----------------------\n\n    // Launch an application with WebView.\n    await device.shell('am force-stop org.chromium.webview_shell');\n    await device.shell('am start org.chromium.webview_shell/.WebViewBrowserActivity');\n    // Get the WebView.\n    const webview = await device.webView({ pkg: 'org.chromium.webview_shell' });\n\n    // Fill the input box.\n    await device.fill({ res: 'org.chromium.webview_shell:id/url_field' }, 'github.com/microsoft/playwright');\n    await device.press({ res: 'org.chromium.webview_shell:id/url_field' }, 'Enter');\n\n    // Work with WebView's page as usual.\n    const page = await webview.page();\n    await page.waitForNavigation({ url: /.*microsoft\\/playwright.*/ });\n    console.log(await page.title());\n  }\n\n  {\n    // --------------------- Browser -----------------------\n\n    // Launch Chrome browser.\n    await device.shell('am force-stop com.android.chrome');\n    const context = await device.launchBrowser();\n\n    // Use BrowserContext as usual.\n    const page = await context.newPage();\n    await page.goto('https://webkit.org/');\n    console.log(await page.evaluate(() => window.location.href));\n    await page.screenshot({ path: 'page.png' });\n\n    await context.close();\n  }\n\n  // Close the device.\n  await device.close();\n})();\n```\n\nNote that since you don't need Playwright to install web browsers when testing Android, you can omit browser download\nvia setting the following environment variable when installing Playwright:\n\n```bash js\nPLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm i -D playwright\n```\n",
+    "comment": "Playwright has **experimental** support for Android automation. This includes Chrome for Android and Android WebView.\n\n*Requirements*\n- Android device or AVD Emulator.\n- [ADB daemon](https://developer.android.com/studio/command-line/adb) running and authenticated with your device.\n  Typically running `adb devices` is all you need to do.\n- [`Chrome 87`](https://play.google.com/store/apps/details?id=com.android.chrome) or newer installed on the device\n- \"Enable command line on non-rooted devices\" enabled in `chrome://flags`.\n\n*Known limitations*\n- Raw USB operation is not yet supported, so you need ADB.\n- Device needs to be awake to produce screenshots. Enabling \"Stay awake\" developer mode will help.\n- We didn't run all the tests against the device, so not everything works.\n\n*How to run*\n\nAn example of the Android automation script would be:\n\n```js\nconst { _android: android } = require('playwright');\n\n(async () => {\n  // Connect to the device.\n  const [device] = await android.devices();\n  console.log(`Model: ${device.model()}`);\n  console.log(`Serial: ${device.serial()}`);\n  // Take screenshot of the whole device.\n  await device.screenshot({ path: 'device.png' });\n\n  {\n    // --------------------- WebView -----------------------\n\n    // Launch an application with WebView.\n    await device.shell('am force-stop org.chromium.webview_shell');\n    await device.shell('am start org.chromium.webview_shell/.WebViewBrowserActivity');\n    // Get the WebView.\n    const webview = await device.webView({ pkg: 'org.chromium.webview_shell' });\n\n    // Fill the input box.\n    await device.fill({ res: 'org.chromium.webview_shell:id/url_field' }, 'github.com/microsoft/playwright');\n    await device.press({ res: 'org.chromium.webview_shell:id/url_field' }, 'Enter');\n\n    // Work with WebView's page as usual.\n    const page = await webview.page();\n    await page.waitForNavigation({ url: /.*microsoft\\/playwright.*/ });\n    console.log(await page.title());\n  }\n\n  {\n    // --------------------- Browser -----------------------\n\n    // Launch Chrome browser.\n    await device.shell('am force-stop com.android.chrome');\n    const context = await device.launchBrowser();\n\n    // Use BrowserContext as usual.\n    const page = await context.newPage();\n    await page.goto('https://webkit.org/');\n    console.log(await page.evaluate(() => window.location.href));\n    await page.screenshot({ path: 'page.png' });\n\n    await context.close();\n  }\n\n  // Close the device.\n  await device.close();\n})();\n```\n\nNote that since you don't need Playwright to install web browsers when testing Android, you can omit browser download\nvia setting the following environment variable when installing Playwright:\n\n```bash js\nPLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm i -D playwright\n```\n",
     "members": [
       {
         "kind": "method",
