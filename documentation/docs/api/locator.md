@@ -253,8 +253,8 @@ def evaluate_all(expression, arg: nil)
 The method finds all elements matching the specified locator and passes an array of matched elements as a first argument
 to `expression`. Returns the result of `expression` invocation.
 
-If `expression` returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), then [`Locator.evaluateAll`] would wait for the promise to resolve and return its
-value.
+If `expression` returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), then [Locator#evaluate_all](./locator#evaluate_all) would wait for the promise to resolve and
+return its value.
 
 Examples:
 
