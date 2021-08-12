@@ -37,7 +37,7 @@ RSpec.describe 'Locator' do
   it 'should throw on capture w/ nth()' do
     with_page do |page|
       page.content = '<section><div><p>A</p></div></section>'
-      expect { page.locator('*css=div >> p').nth(0).click }.to raise_error(/Can't query n-th element/)
+      expect { page.locator('*css=div >> p').nth(1).click }.to raise_error(/Can't query n-th element/)
     end
   end
 
