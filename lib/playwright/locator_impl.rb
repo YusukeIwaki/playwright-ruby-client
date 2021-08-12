@@ -142,7 +142,7 @@ module Playwright
       LocatorImpl.new(
         frame: @frame,
         timeout_settings: @timeout_settings,
-        selector: "#{@selector} >> _nth=first",
+        selector: "#{@selector} >> nth=0",
       )
     end
 
@@ -150,7 +150,7 @@ module Playwright
       LocatorImpl.new(
         frame: @frame,
         timeout_settings: @timeout_settings,
-        selector: "#{@selector} >> _nth=last",
+        selector: "#{@selector} >> nth=-1",
       )
     end
 
@@ -158,7 +158,7 @@ module Playwright
       LocatorImpl.new(
         frame: @frame,
         timeout_settings: @timeout_settings,
-        selector: "#{@selector} >> _nth=#{index}",
+        selector: "#{@selector} >> nth=#{index}",
       )
     end
 

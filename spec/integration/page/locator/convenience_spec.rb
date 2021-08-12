@@ -85,6 +85,19 @@ RSpec.describe 'Locator' do
     end
   end
 
+  it '">> visible=true" should work' do
+    with_page do |page|
+      page.content = '<div>Hi</div><span></span>'
+
+      visible_div = page.locator('div >> visible=true')
+      expect(visible_div.count).to eq(1)
+      expect(visible_div.text_content).to eq('Hi')
+
+      visible_span = page.locator('span >> visible=true')
+      expect(visible_span.count).to eq(0)
+    end
+  end
+
   it 'enabled? and disabled? should work' do
     with_page do |page|
       page.content = <<~HTML
