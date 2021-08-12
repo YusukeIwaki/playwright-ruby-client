@@ -47,7 +47,7 @@ RSpec.describe 'Page#workers' do
       log = page.expect_event('console') do
         page.evaluate("() => new Worker(URL.createObjectURL(new Blob(['console.log(1,2,3,this)'], {type: 'application/javascript'})))")
       end
-      expect(log.text).to eq('1 2 3 JSHandle@object')
+      expect(log.text).to eq('1 2 3 DedicatedWorkerGlobalScope')
       expect(log.args.size).to eq(4)
       expect(log.args.last.get_property('origin').json_value).to eq('null')
     end
