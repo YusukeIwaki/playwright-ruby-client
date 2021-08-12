@@ -38670,7 +38670,7 @@
           },
           {
             "type": "text",
-            "text": "If `expression` returns a [Promise], then [`Locator.evaluateAll`] would wait for the promise to resolve and return its value."
+            "text": "If `expression` returns a [Promise], then [`method: Locator.evaluateAll`] would wait for the promise to resolve and return its value."
           },
           {
             "type": "text",
@@ -38718,7 +38718,7 @@
           }
         ],
         "required": true,
-        "comment": "The method finds all elements matching the specified locator and passes an array of matched elements as a first argument\nto `expression`. Returns the result of `expression` invocation.\n\nIf `expression` returns a [Promise], then [`Locator.evaluateAll`] would wait for the promise to resolve and return its\nvalue.\n\nExamples:\n\n```js\nconst elements = page.locator('div');\nconst divCounts = await elements.evaluateAll((divs, min) => divs.length >= min, 10);\n```\n\n```java\nLocator elements = page.locator(\"div\");\nboolean divCounts = (boolean) elements.evaluateAll(\"(divs, min) => divs.length >= min\", 10);\n```\n\n```python async\nelements = page.locator(\"div\")\ndiv_counts = await elements(\"(divs, min) => divs.length >= min\", 10)\n```\n\n```python sync\nelements = page.locator(\"div\")\ndiv_counts = elements(\"(divs, min) => divs.length >= min\", 10)\n```\n\n```csharp\nvar elements = page.Locator(\"div\");\nvar divsCount = await elements.EvaluateAll<bool>(\"(divs, min) => divs.length >= min\", 10);\n```\n",
+        "comment": "The method finds all elements matching the specified locator and passes an array of matched elements as a first argument\nto `expression`. Returns the result of `expression` invocation.\n\nIf `expression` returns a [Promise], then [`method: Locator.evaluateAll`] would wait for the promise to resolve and\nreturn its value.\n\nExamples:\n\n```js\nconst elements = page.locator('div');\nconst divCounts = await elements.evaluateAll((divs, min) => divs.length >= min, 10);\n```\n\n```java\nLocator elements = page.locator(\"div\");\nboolean divCounts = (boolean) elements.evaluateAll(\"(divs, min) => divs.length >= min\", 10);\n```\n\n```python async\nelements = page.locator(\"div\")\ndiv_counts = await elements(\"(divs, min) => divs.length >= min\", 10)\n```\n\n```python sync\nelements = page.locator(\"div\")\ndiv_counts = elements(\"(divs, min) => divs.length >= min\", 10)\n```\n\n```csharp\nvar elements = page.Locator(\"div\");\nvar divsCount = await elements.EvaluateAll<bool>(\"(divs, min) => divs.length >= min\", 10);\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "evaluateAll",
