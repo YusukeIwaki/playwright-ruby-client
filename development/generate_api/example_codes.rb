@@ -347,6 +347,14 @@ module ExampleCodes
     element_handle.press("Enter")
   end
 
+  # ElementHandle#wait_for_selector
+  def example_3b0f6c6573db513b7b707a39d6c5bbf5ce5896b4785466d80f525968cfbd0be7(page:)
+    page.content = "<div><span></span></div>"
+    div = page.query_selector("div")
+    # waiting for the "span" selector relative to the div.
+    span = div.wait_for_selector("span", state: "attached")
+  end
+
   # FileChooser
   def example_371975841dd417527a865b1501e3a8ba40f905b895cf3317ca90d9890e980843(page:)
     file_chooser = page.expect_file_chooser do
@@ -549,6 +557,74 @@ module ExampleCodes
   def example_d9ced919f139961fd2b795c71375ca96f788a19c1f8e1479c5ec905fb5c02d43(page:)
     page.keyboard.type("Hello") # types instantly
     page.keyboard.type("World", delay: 100) # types slower, like a user
+  end
+
+  # Locator
+  def example_9f72eed0cd4b2405e6a115b812b36ff2624e889f9086925c47665333a7edabbc(page:)
+    locator = page.locator("text=Submit")
+    locator.click
+  end
+
+  # Locator#bounding_box
+  def example_4d635e937854fa2ee56b7c43151ded535940f0bbafc00cf48e8214bed86715eb(page:)
+    box = element.bounding_box
+    page.mouse.click(
+      box["x"] + box["width"] / 2,
+      box["y"] + box["height"] / 2,
+    )
+  end
+
+  # Locator#dispatch_event
+  def example_8d92b900a98c237ffdcb102ddc35660e37101bde7d107dc64d97a7edeed62a43(element_handle:)
+    element.dispatch_event("click")
+  end
+
+  # Locator#dispatch_event
+  def example_e369442a3ff291ab476da408ef63a63dacf47984dc766ff7189d82008ae2848b(page:, element_handle:)
+    # note you can only create data_transfer in chromium and firefox
+    data_transfer = page.evaluate_handle("new DataTransfer()")
+    element.dispatch_event("dragstart", eventInit: { dataTransfer: data_transfer })
+  end
+
+  # Locator#evaluate
+  def example_df39b3df921f81e7cfb71cd873b76a5e91e46b4aa41e1f164128cb322aa38305(page:)
+    tweet = page.query_selector(".tweet .retweets")
+    tweet.evaluate("node => node.innerText") # => "10 retweets"
+  end
+
+  # Locator#evaluate_all
+  def example_32478e941514ed28b6ac221e6d54b55cf117038ecac6f4191db676480ab68d44(page:)
+    elements = page.locator("div")
+    elements.evaluate_all("(divs, min) => divs.length >= min", arg: 10)
+  end
+
+  # Locator#select_option
+  def example_2825b0a50091868d1ce3ea0752d94ba32d826d504c1ac6842522796ca405913e(element_handle:)
+    # single selection matching the value
+    element.select_option(value: "blue")
+    # single selection matching both the label
+    element.select_option(label: "blue")
+    # multiple selection
+    element.select_option(value: ["red", "green", "blue"])
+  end
+
+  # Locator#select_option
+  def example_3aaff4985dc38e64fad34696c88a6a68a633e26aabee6fc749125f3ee1784e34(element_handle:)
+    # multiple selection for blue, red and second option
+    element.select_option(value: "blue", index: 2, label: "red")
+  end
+
+  # Locator#type
+  def example_fa1712c0b6ceb96fcaa74790d33f2c2eefe2bd1f06e61b78e0bb84a6f22c7961(element_handle:)
+    element.type("hello") # types instantly
+    element.type("world", delay: 100) # types slower, like a user
+  end
+
+  # Locator#type
+  def example_adefe90dee78708d4375c20f081f12f2b71f2becb472a2e0d4fdc8cc49c37809(page:)
+    element = page.locator("input")
+    element.type("some text")
+    element.press("Enter")
   end
 
   # Mouse
@@ -1019,5 +1095,20 @@ module ExampleCodes
     context.tracing.start(name: 'trace', screenshots: true, snapshots: true)
     page.goto('https://playwright.dev')
     context.tracing.stop(path: 'trace.zip')
+  end
+
+  # Worker
+  def example_29716fdd4471a97923a64eebeee96330ab508226a496ae8fd13f12eb07d55ee6(page:)
+    def handle_worker(worker)
+      puts "worker created: #{worker.url}"
+      worker.once("close", -> (w) { puts "worker destroyed: #{w.url}" })
+    end
+
+    page.on('worker', method(:handle_worker))
+
+    puts "current workers:"
+    page.workers.each do |worker|
+      puts "    #{worker.url}"
+    end
   end
 end

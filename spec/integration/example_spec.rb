@@ -212,6 +212,32 @@ RSpec.describe 'example' do
       end
     end
 
+    it 'should work with Locator' do
+      with_page do |page|
+        page.content = "<button onclick=\"this.innerText='clicked!'\">Submit</button>"
+        example_9f72eed0cd4b2405e6a115b812b36ff2624e889f9086925c47665333a7edabbc(page: page)
+        expect(page.eval_on_selector('button', 'el => el.innerText')).to eq('clicked!')
+      end
+    end
+
+    it 'should work with Locator#evaluate_all' do
+      with_page do |page|
+        page.content = <<~HTML
+        <body>
+        #{10.times.map { |i| "<div>#{i}</div>" } }
+        </body>
+        HTML
+        expect(example_32478e941514ed28b6ac221e6d54b55cf117038ecac6f4191db676480ab68d44(page: page)).to eq(true)
+
+        page.content = <<~HTML
+        <body>
+        #{9.times.map { |i| "<div>#{i}</div>" } }
+        </body>
+        HTML
+        expect(example_32478e941514ed28b6ac221e6d54b55cf117038ecac6f4191db676480ab68d44(page: page)).to eq(false)
+      end
+    end
+
     it 'should work with Page#dispatch_event' do
       with_page do |page|
         example_9220b94fd2fa381ab91448dcb551e2eb9806ad331c83454a710f4d8a280990e8(page: page)
@@ -285,6 +311,25 @@ RSpec.describe 'example' do
         response = page.expect_navigation { page.click('a') }
         expect(response.status).to eq(404)
         expect(response.body).to eq('not found!!')
+      end
+    end
+
+    it 'should work with Worker', skip: ENV['CI'] do
+      with_page do |page|
+        worker_objs = []
+        page.expect_worker do
+          worker_objs << page.evaluate_handle("() => new Worker(URL.createObjectURL(new Blob(['1'], {type: 'application/javascript'})))")
+        end
+
+        example_29716fdd4471a97923a64eebeee96330ab508226a496ae8fd13f12eb07d55ee6(page: page)
+
+        page.expect_worker do
+          worker_objs << page.evaluate_handle("() => new Worker(URL.createObjectURL(new Blob(['2'], {type: 'application/javascript'})))")
+        end
+
+        expect(page.workers.size).to eq(2)
+        page.evaluate('workerObjs => workerObjs.forEach(worker => worker.terminate())', arg: worker_objs)
+        expect(page.workers).to be_empty
       end
     end
   end
