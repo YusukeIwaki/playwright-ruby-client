@@ -7,10 +7,9 @@ sidebar_position: 10
 Locator represents a view to the element(s) on the page. It captures the logic sufficient to retrieve the element at any
 given moment. Locator can be created with the [Page#locator](./page#locator) method.
 
-```python sync title=example_9f72eed0cd4b2405e6a115b812b36ff2624e889f9086925c47665333a7edabbc.py
+```ruby
 locator = page.locator("text=Submit")
-locator.click()
-
+locator.click
 ```
 
 The difference between the Locator and [ElementHandle](./element_handle) is that the latter points to a particular element, while Locator
@@ -72,10 +71,12 @@ Elements from child frames return the bounding box relative to the main frame, u
 Assuming the page is static, it is safe to use bounding box coordinates to perform input. For example, the following
 snippet should click the center of the element.
 
-```python sync title=example_4d635e937854fa2ee56b7c43151ded535940f0bbafc00cf48e8214bed86715eb.py
-box = element.bounding_box()
-page.mouse.click(box["x"] + box["width"] / 2, box["y"] + box["height"] / 2)
-
+```ruby
+box = element.bounding_box
+page.mouse.click(
+  box["x"] + box["width"] / 2,
+  box["y"] + box["height"] / 2,
+)
 ```
 
 
@@ -177,9 +178,8 @@ The snippet below dispatches the `click` event on the element. Regardless of the
 `click` is dispatched. This is equivalent to calling
 [element.click()](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click).
 
-```python sync title=example_8d92b900a98c237ffdcb102ddc35660e37101bde7d107dc64d97a7edeed62a43.py
+```ruby
 element.dispatch_event("click")
-
 ```
 
 Under the hood, it creates an instance of an event based on the given `type`, initializes it with `eventInit` properties
@@ -196,11 +196,10 @@ Since `eventInit` is event-specific, please refer to the events documentation fo
 
 You can also specify [JSHandle](./js_handle) as the property value if you want live objects to be passed into the event:
 
-```python sync title=example_e369442a3ff291ab476da408ef63a63dacf47984dc766ff7189d82008ae2848b.py
+```ruby
 # note you can only create data_transfer in chromium and firefox
 data_transfer = page.evaluate_handle("new DataTransfer()")
-element.dispatch_event("#source", "dragstart", {"dataTransfer": data_transfer})
-
+element.dispatch_event("dragstart", eventInit: { dataTransfer: data_transfer })
 ```
 
 
@@ -236,10 +235,9 @@ If `expression` returns a [Promise](https://developer.mozilla.org/en-US/docs/Web
 
 Examples:
 
-```python sync title=example_df39b3df921f81e7cfb71cd873b76a5e91e46b4aa41e1f164128cb322aa38305.py
-tweets = page.locator(".tweet .retweets")
-assert tweets.evaluate("node => node.innerText") == "10 retweets"
-
+```ruby
+tweet = page.query_selector(".tweet .retweets")
+tweet.evaluate("node => node.innerText") # => "10 retweets"
 ```
 
 
@@ -258,10 +256,9 @@ return its value.
 
 Examples:
 
-```python sync title=example_32478e941514ed28b6ac221e6d54b55cf117038ecac6f4191db676480ab68d44.py
+```ruby
 elements = page.locator("div")
-div_counts = elements("(divs, min) => divs.length >= min", 10)
-
+elements.evaluate_all("(divs, min) => divs.length >= min", arg: 10)
 ```
 
 
@@ -518,26 +515,18 @@ Returns the array of option values that have been successfully selected.
 
 Triggers a `change` and `input` event once all the provided options have been selected.
 
-```python sync title=example_2825b0a50091868d1ce3ea0752d94ba32d826d504c1ac6842522796ca405913e.py
+```ruby
 # single selection matching the value
-element.select_option("blue")
+element.select_option(value: "blue")
 # single selection matching both the label
-element.select_option(label="blue")
+element.select_option(label: "blue")
 # multiple selection
-element.select_option(value=["red", "green", "blue"])
-
+element.select_option(value: ["red", "green", "blue"])
 ```
 
-```python sync title=example_3aaff4985dc38e64fad34696c88a6a68a633e26aabee6fc749125f3ee1784e34.py
-# single selection matching the value
-element.select_option("blue")
-# single selection matching both the value and the label
-element.select_option(label="blue")
-# multiple selection
-element.select_option("red", "green", "blue")
+```ruby
 # multiple selection for blue, red and second option
-element.select_option(value="blue", { index: 2 }, "red")
-
+element.select_option(value: "blue", index: 2, label: "red")
 ```
 
 
@@ -607,19 +596,17 @@ Focuses the element, and then sends a `keydown`, `keypress`/`input`, and `keyup`
 
 To press a special key, like `Control` or `ArrowDown`, use [Locator#press](./locator#press).
 
-```python sync title=example_fa1712c0b6ceb96fcaa74790d33f2c2eefe2bd1f06e61b78e0bb84a6f22c7961.py
+```ruby
 element.type("hello") # types instantly
-element.type("world", delay=100) # types slower, like a user
-
+element.type("world", delay: 100) # types slower, like a user
 ```
 
 An example of typing into a text field and then submitting the form:
 
-```python sync title=example_adefe90dee78708d4375c20f081f12f2b71f2becb472a2e0d4fdc8cc49c37809.py
+```ruby
 element = page.locator("input")
 element.type("some text")
 element.press("Enter")
-
 ```
 
 

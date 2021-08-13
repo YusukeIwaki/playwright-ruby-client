@@ -8,17 +8,18 @@ The Worker class represents a [WebWorker](https://developer.mozilla.org/en-US/do
 event is emitted on the page object to signal a worker creation. `close` event is emitted on the worker object when the
 worker is gone.
 
-```py title=example_29716fdd4471a97923a64eebeee96330ab508226a496ae8fd13f12eb07d55ee6.py
-def handle_worker(worker):
-    print("worker created: " + worker.url)
-    worker.on("close", lambda: print("worker destroyed: " + worker.url))
+```ruby
+def handle_worker(worker)
+  puts "worker created: #{worker.url}"
+  worker.once("close", -> (w) { puts "worker destroyed: #{w.url}" })
+end
 
-page.on('worker', handle_worker)
+page.on('worker', method(:handle_worker))
 
-print("current workers:")
-for worker in page.workers:
-    print("    " + worker.url)
-
+puts "current workers:"
+page.workers.each do |worker|
+  puts "    #{worker.url}"
+end
 ```
 
 

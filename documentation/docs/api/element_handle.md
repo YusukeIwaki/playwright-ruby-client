@@ -641,12 +641,11 @@ become visible/hidden). If at the moment of calling the method `selector` alread
 will return immediately. If the selector doesn't satisfy the condition for the `timeout` milliseconds, the function will
 throw.
 
-```python sync title=example_3b0f6c6573db513b7b707a39d6c5bbf5ce5896b4785466d80f525968cfbd0be7.py
-page.set_content("<div><span></span></div>")
+```ruby
+page.content = "<div><span></span></div>"
 div = page.query_selector("div")
 # waiting for the "span" selector relative to the div.
-span = div.wait_for_selector("span", state="attached")
-
+span = div.wait_for_selector("span", state: "attached")
 ```
 
 > NOTE: This method does not work across navigations, use [Page#wait_for_selector](./page#wait_for_selector) instead.

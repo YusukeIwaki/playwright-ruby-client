@@ -23,4 +23,4 @@ jobs:
         run: bundle exec rspec spec/integration/example_spec.rb
         env:
           PLAYWRIGHT_CLI_EXECUTABLE_PATH: npx playwright@next
-        timeout-minutes: 3
+        timeout-minutes: 5
