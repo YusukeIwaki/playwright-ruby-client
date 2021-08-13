@@ -10,7 +10,7 @@ This allow us to intermediate into automation, for example
 * Authenticate with OAuth2 manually before automation
 * Testing a page after some chrome extensions are installed manually
 
-Keep in mind repeatedly that persistent browser context is NOT RECOMMENDED for most cases because it would bring many side effects.
+Keep in mind repeatedly that persistent browser context is NOT RECOMMENDED for most cases because it would bring many side effects. Consider [reusing cookie and local storage](./use_storage_state) when you just want to keep authenticated across browser contexts.
 
 ## Pause automation for manual operation
 
