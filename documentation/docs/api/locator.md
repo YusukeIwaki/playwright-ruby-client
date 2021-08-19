@@ -34,6 +34,19 @@ locator.hover
 locator.click
 ```
 
+**Strictness**
+
+Locators are strict. This means that all operations on locators that imply some target DOM element will throw if more
+than one element matches given selector.
+
+```ruby
+# Throws if there are several buttons in DOM:
+page.locator('button').click
+
+# Works because we explicitly tell locator to pick the first element:
+page.locator('button').first.click
+```
+
 
 
 ## all_inner_texts

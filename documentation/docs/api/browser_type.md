@@ -137,6 +137,7 @@ def launch_persistent_context(
       reducedMotion: nil,
       screen: nil,
       slowMo: nil,
+      strictSelectors: nil,
       timeout: nil,
       timezoneId: nil,
       tracesDir: nil,

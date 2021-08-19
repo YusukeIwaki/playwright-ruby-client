@@ -565,6 +565,15 @@ module ExampleCodes
     locator.click
   end
 
+  # Locator
+  def example_3f41557af799b9052d1528388da041f15a0b8655d10d992e79cbac950b41d93c(page:)
+    # Throws if there are several buttons in DOM:
+    page.locator('button').click
+
+    # Works because we explicitly tell locator to pick the first element:
+    page.locator('button').first.click
+  end
+
   # Locator#bounding_box
   def example_4d635e937854fa2ee56b7c43151ded535940f0bbafc00cf48e8214bed86715eb(page:)
     box = element.bounding_box

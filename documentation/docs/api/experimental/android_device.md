@@ -50,6 +50,7 @@ def launch_browser(
       record_video_size: nil,
       reducedMotion: nil,
       screen: nil,
+      strictSelectors: nil,
       timezoneId: nil,
       userAgent: nil,
       viewport: nil,

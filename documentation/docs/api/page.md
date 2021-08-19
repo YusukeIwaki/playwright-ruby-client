@@ -758,8 +758,6 @@ The method returns an element locator that can be used to perform actions on the
 element immediately before performing an action, so a series of actions on the same locator can in fact be performed on
 different DOM elements. That would happen if the DOM structure between those actions has changed.
 
-Note that locator always implies visibility, so it will always be locating visible elements.
-
 Shortcut for main frame's [Frame#locator](./frame#locator).
 
 ## main_frame
