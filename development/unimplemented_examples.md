@@ -11,3 +11,14 @@ The examples listed below is not yet implemented, and documentation shows Python
 # FIXME: add snippet
 
 ```
+
+### example_3f41557af799b9052d1528388da041f15a0b8655d10d992e79cbac950b41d93c
+
+```
+# Throws if there are several buttons in DOM:
+page.locator('button').click()
+
+# Works because we explicitly tell locator to pick the first element:
+page.locator('button').first.click()
+
+```

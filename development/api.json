@@ -2709,6 +2709,27 @@
                 {
                   "kind": "property",
                   "langs": {},
+                  "name": "strictSelectors",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "It specified, enables strict selectors mode for this context. In the strict selectors mode all operations on selectors that imply single target DOM element will throw when more than one element matches the selector. See `Locator` to learn more about the strict mode."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "It specified, enables strict selectors mode for this context. In the strict selectors mode all operations on selectors\nthat imply single target DOM element will throw when more than one element matches the selector. See `Locator` to learn\nmore about the strict mode.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "strictSelectors",
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
                   "name": "timezoneId",
                   "type": {
                     "name": "string",
@@ -7408,6 +7429,27 @@
                 {
                   "kind": "property",
                   "langs": {},
+                  "name": "strictSelectors",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "It specified, enables strict selectors mode for this context. In the strict selectors mode all operations on selectors that imply single target DOM element will throw when more than one element matches the selector. See `Locator` to learn more about the strict mode."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "It specified, enables strict selectors mode for this context. In the strict selectors mode all operations on selectors\nthat imply single target DOM element will throw when more than one element matches the selector. See `Locator` to learn\nmore about the strict mode.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "strictSelectors",
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
                   "name": "timezoneId",
                   "type": {
                     "name": "string",
@@ -9364,6 +9406,27 @@
                 {
                   "kind": "property",
                   "langs": {},
+                  "name": "strictSelectors",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "It specified, enables strict selectors mode for this context. In the strict selectors mode all operations on selectors that imply single target DOM element will throw when more than one element matches the selector. See `Locator` to learn more about the strict mode."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "It specified, enables strict selectors mode for this context. In the strict selectors mode all operations on selectors\nthat imply single target DOM element will throw when more than one element matches the selector. See `Locator` to learn\nmore about the strict mode.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "strictSelectors",
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
                   "name": "timezoneId",
                   "type": {
                     "name": "string",
@@ -11123,7 +11186,7 @@
             "lines": [
               "var context = await browser.NewContextAsync();",
               "await context.GrantPermissionsAsync(new[] { \"clipboard-read\" });",
-              "// Alternatively, you can use the helper class ContextPermissions ",
+              "// Alternatively, you can use the helper class ContextPermissions",
               "//  to specify the permissions...",
               "// do stuff ...",
               "await context.ClearPermissionsAsync();"
@@ -11132,7 +11195,7 @@
           }
         ],
         "required": true,
-        "comment": "Clears all permission overrides for the browser context.\n\n```js\nconst context = await browser.newContext();\nawait context.grantPermissions(['clipboard-read']);\n// do stuff ..\ncontext.clearPermissions();\n```\n\n```java\nBrowserContext context = browser.newContext();\ncontext.grantPermissions(Arrays.asList(\"clipboard-read\"));\n// do stuff ..\ncontext.clearPermissions();\n```\n\n```python async\ncontext = await browser.new_context()\nawait context.grant_permissions([\"clipboard-read\"])\n# do stuff ..\ncontext.clear_permissions()\n```\n\n```python sync\ncontext = browser.new_context()\ncontext.grant_permissions([\"clipboard-read\"])\n# do stuff ..\ncontext.clear_permissions()\n```\n\n```csharp\nvar context = await browser.NewContextAsync();\nawait context.GrantPermissionsAsync(new[] { \"clipboard-read\" });\n// Alternatively, you can use the helper class ContextPermissions \n//  to specify the permissions...\n// do stuff ...\nawait context.ClearPermissionsAsync();\n```\n",
+        "comment": "Clears all permission overrides for the browser context.\n\n```js\nconst context = await browser.newContext();\nawait context.grantPermissions(['clipboard-read']);\n// do stuff ..\ncontext.clearPermissions();\n```\n\n```java\nBrowserContext context = browser.newContext();\ncontext.grantPermissions(Arrays.asList(\"clipboard-read\"));\n// do stuff ..\ncontext.clearPermissions();\n```\n\n```python async\ncontext = await browser.new_context()\nawait context.grant_permissions([\"clipboard-read\"])\n# do stuff ..\ncontext.clear_permissions()\n```\n\n```python sync\ncontext = browser.new_context()\ncontext.grant_permissions([\"clipboard-read\"])\n# do stuff ..\ncontext.clear_permissions()\n```\n\n```csharp\nvar context = await browser.NewContextAsync();\nawait context.GrantPermissionsAsync(new[] { \"clipboard-read\" });\n// Alternatively, you can use the helper class ContextPermissions\n//  to specify the permissions...\n// do stuff ...\nawait context.ClearPermissionsAsync();\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "clearPermissions",
@@ -11657,7 +11720,7 @@
               "  \"<div>Or click me</div>\\n\");",
               "",
               "await page.ClickAsync(\"div\");",
-              "// Note: it makes sense to await the result here, because otherwise, the context ",
+              "// Note: it makes sense to await the result here, because otherwise, the context",
               "//  gets closed and the binding function will throw an exception.",
               "Assert.Equal(\"Click me\", await result.Task);"
             ],
@@ -11665,7 +11728,7 @@
           }
         ],
         "required": true,
-        "comment": "The method adds a function called `name` on the `window` object of every frame in every page in the context. When\ncalled, the function executes `callback` and returns a [Promise] which resolves to the return value of `callback`. If\nthe `callback` returns a [Promise], it will be awaited.\n\nThe first argument of the `callback` function contains information about the caller: `{ browserContext: BrowserContext,\npage: Page, frame: Frame }`.\n\nSee [`method: Page.exposeBinding`] for page-only version.\n\nAn example of exposing page URL to all frames in all pages in the context:\n\n```js\nconst { webkit } = require('playwright');  // Or 'chromium' or 'firefox'.\n\n(async () => {\n  const browser = await webkit.launch({ headless: false });\n  const context = await browser.newContext();\n  await context.exposeBinding('pageURL', ({ page }) => page.url());\n  const page = await context.newPage();\n  await page.setContent(`\n    <script>\n      async function onClick() {\n        document.querySelector('div').textContent = await window.pageURL();\n      }\n    </script>\n    <button onclick=\"onClick()\">Click me</button>\n    <div></div>\n  `);\n  await page.click('button');\n})();\n```\n\n```java\nimport com.microsoft.playwright.*;\n\npublic class Example {\n  public static void main(String[] args) {\n    try (Playwright playwright = Playwright.create()) {\n      BrowserType webkit = playwright.webkit()\n      Browser browser = webkit.launch(new BrowserType.LaunchOptions().setHeadless(false));\n      BrowserContext context = browser.newContext();\n      context.exposeBinding(\"pageURL\", (source, args) -> source.page().url());\n      Page page = context.newPage();\n      page.setContent(\"<script>\\n\" +\n        \"  async function onClick() {\\n\" +\n        \"    document.querySelector('div').textContent = await window.pageURL();\\n\" +\n        \"  }\\n\" +\n        \"</script>\\n\" +\n        \"<button onclick=\\\"onClick()\\\">Click me</button>\\n\" +\n        \"<div></div>\");\n      page.click(\"button\");\n    }\n  }\n}\n```\n\n```python async\nimport asyncio\nfrom playwright.async_api import async_playwright\n\nasync def run(playwright):\n    webkit = playwright.webkit\n    browser = await webkit.launch(headless=false)\n    context = await browser.new_context()\n    await context.expose_binding(\"pageURL\", lambda source: source[\"page\"].url)\n    page = await context.new_page()\n    await page.set_content(\"\"\"\n    <script>\n      async function onClick() {\n        document.querySelector('div').textContent = await window.pageURL();\n      }\n    </script>\n    <button onclick=\"onClick()\">Click me</button>\n    <div></div>\n    \"\"\")\n    await page.click(\"button\")\n\nasync def main():\n    async with async_playwright() as playwright:\n        await run(playwright)\nasyncio.run(main())\n```\n\n```python sync\nfrom playwright.sync_api import sync_playwright\n\ndef run(playwright):\n    webkit = playwright.webkit\n    browser = webkit.launch(headless=false)\n    context = browser.new_context()\n    context.expose_binding(\"pageURL\", lambda source: source[\"page\"].url)\n    page = context.new_page()\n    page.set_content(\"\"\"\n    <script>\n      async function onClick() {\n        document.querySelector('div').textContent = await window.pageURL();\n      }\n    </script>\n    <button onclick=\"onClick()\">Click me</button>\n    <div></div>\n    \"\"\")\n    page.click(\"button\")\n\nwith sync_playwright() as playwright:\n    run(playwright)\n```\n\n```csharp\nusing Microsoft.Playwright;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    public static async Task Main()\n    {\n        using var playwright = await Playwright.CreateAsync();\n        var browser = await playwright.Webkit.LaunchAsync(new BrowserTypeLaunchOptions { Headless = false });\n        var context = await browser.NewContextAsync();\n\n        await context.ExposeBindingAsync(\"pageURL\", source => source.Page.Url);\n        var page = await context.NewPageAsync();\n        await page.SetContentAsync(\"<script>\\n\" +\n        \"  async function onClick() {\\n\" +\n        \"    document.querySelector('div').textContent = await window.pageURL();\\n\" +\n        \"  }\\n\" +\n        \"</script>\\n\" +\n        \"<button onclick=\\\"onClick()\\\">Click me</button>\\n\" +\n        \"<div></div>\");\n        await page.ClickAsync(\"button\");\n    }\n}\n```\n\nAn example of passing an element handle:\n\n```js\nawait context.exposeBinding('clicked', async (source, element) => {\n  console.log(await element.textContent());\n}, { handle: true });\nawait page.setContent(`\n  <script>\n    document.addEventListener('click', event => window.clicked(event.target));\n  </script>\n  <div>Click me</div>\n  <div>Or click me</div>\n`);\n```\n\n```java\ncontext.exposeBinding(\"clicked\", (source, args) -> {\n  ElementHandle element = (ElementHandle) args[0];\n  System.out.println(element.textContent());\n  return null;\n}, new BrowserContext.ExposeBindingOptions().setHandle(true));\npage.setContent(\"\" +\n  \"<script>\\n\" +\n  \"  document.addEventListener('click', event => window.clicked(event.target));\\n\" +\n  \"</script>\\n\" +\n  \"<div>Click me</div>\\n\" +\n  \"<div>Or click me</div>\\n\");\n```\n\n```python async\nasync def print(source, element):\n    print(await element.text_content())\n\nawait context.expose_binding(\"clicked\", print, handle=true)\nawait page.set_content(\"\"\"\n  <script>\n    document.addEventListener('click', event => window.clicked(event.target));\n  </script>\n  <div>Click me</div>\n  <div>Or click me</div>\n\"\"\")\n```\n\n```python sync\ndef print(source, element):\n    print(element.text_content())\n\ncontext.expose_binding(\"clicked\", print, handle=true)\npage.set_content(\"\"\"\n  <script>\n    document.addEventListener('click', event => window.clicked(event.target));\n  </script>\n  <div>Click me</div>\n  <div>Or click me</div>\n\"\"\")\n```\n\n```csharp\nvar result = new TaskCompletionSource<string>();\nvar page = await Context.NewPageAsync();\nawait Context.ExposeBindingAsync(\"clicked\", async (BindingSource _, IJSHandle t) =>\n{\n    return result.TrySetResult(await t.AsElement().TextContentAsync());\n});\n\nawait page.SetContentAsync(\"<script>\\n\" +\n  \"  document.addEventListener('click', event => window.clicked(event.target));\\n\" +\n  \"</script>\\n\" +\n  \"<div>Click me</div>\\n\" +\n  \"<div>Or click me</div>\\n\");\n\nawait page.ClickAsync(\"div\");\n// Note: it makes sense to await the result here, because otherwise, the context \n//  gets closed and the binding function will throw an exception.\nAssert.Equal(\"Click me\", await result.Task);\n```\n",
+        "comment": "The method adds a function called `name` on the `window` object of every frame in every page in the context. When\ncalled, the function executes `callback` and returns a [Promise] which resolves to the return value of `callback`. If\nthe `callback` returns a [Promise], it will be awaited.\n\nThe first argument of the `callback` function contains information about the caller: `{ browserContext: BrowserContext,\npage: Page, frame: Frame }`.\n\nSee [`method: Page.exposeBinding`] for page-only version.\n\nAn example of exposing page URL to all frames in all pages in the context:\n\n```js\nconst { webkit } = require('playwright');  // Or 'chromium' or 'firefox'.\n\n(async () => {\n  const browser = await webkit.launch({ headless: false });\n  const context = await browser.newContext();\n  await context.exposeBinding('pageURL', ({ page }) => page.url());\n  const page = await context.newPage();\n  await page.setContent(`\n    <script>\n      async function onClick() {\n        document.querySelector('div').textContent = await window.pageURL();\n      }\n    </script>\n    <button onclick=\"onClick()\">Click me</button>\n    <div></div>\n  `);\n  await page.click('button');\n})();\n```\n\n```java\nimport com.microsoft.playwright.*;\n\npublic class Example {\n  public static void main(String[] args) {\n    try (Playwright playwright = Playwright.create()) {\n      BrowserType webkit = playwright.webkit()\n      Browser browser = webkit.launch(new BrowserType.LaunchOptions().setHeadless(false));\n      BrowserContext context = browser.newContext();\n      context.exposeBinding(\"pageURL\", (source, args) -> source.page().url());\n      Page page = context.newPage();\n      page.setContent(\"<script>\\n\" +\n        \"  async function onClick() {\\n\" +\n        \"    document.querySelector('div').textContent = await window.pageURL();\\n\" +\n        \"  }\\n\" +\n        \"</script>\\n\" +\n        \"<button onclick=\\\"onClick()\\\">Click me</button>\\n\" +\n        \"<div></div>\");\n      page.click(\"button\");\n    }\n  }\n}\n```\n\n```python async\nimport asyncio\nfrom playwright.async_api import async_playwright\n\nasync def run(playwright):\n    webkit = playwright.webkit\n    browser = await webkit.launch(headless=false)\n    context = await browser.new_context()\n    await context.expose_binding(\"pageURL\", lambda source: source[\"page\"].url)\n    page = await context.new_page()\n    await page.set_content(\"\"\"\n    <script>\n      async function onClick() {\n        document.querySelector('div').textContent = await window.pageURL();\n      }\n    </script>\n    <button onclick=\"onClick()\">Click me</button>\n    <div></div>\n    \"\"\")\n    await page.click(\"button\")\n\nasync def main():\n    async with async_playwright() as playwright:\n        await run(playwright)\nasyncio.run(main())\n```\n\n```python sync\nfrom playwright.sync_api import sync_playwright\n\ndef run(playwright):\n    webkit = playwright.webkit\n    browser = webkit.launch(headless=false)\n    context = browser.new_context()\n    context.expose_binding(\"pageURL\", lambda source: source[\"page\"].url)\n    page = context.new_page()\n    page.set_content(\"\"\"\n    <script>\n      async function onClick() {\n        document.querySelector('div').textContent = await window.pageURL();\n      }\n    </script>\n    <button onclick=\"onClick()\">Click me</button>\n    <div></div>\n    \"\"\")\n    page.click(\"button\")\n\nwith sync_playwright() as playwright:\n    run(playwright)\n```\n\n```csharp\nusing Microsoft.Playwright;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    public static async Task Main()\n    {\n        using var playwright = await Playwright.CreateAsync();\n        var browser = await playwright.Webkit.LaunchAsync(new BrowserTypeLaunchOptions { Headless = false });\n        var context = await browser.NewContextAsync();\n\n        await context.ExposeBindingAsync(\"pageURL\", source => source.Page.Url);\n        var page = await context.NewPageAsync();\n        await page.SetContentAsync(\"<script>\\n\" +\n        \"  async function onClick() {\\n\" +\n        \"    document.querySelector('div').textContent = await window.pageURL();\\n\" +\n        \"  }\\n\" +\n        \"</script>\\n\" +\n        \"<button onclick=\\\"onClick()\\\">Click me</button>\\n\" +\n        \"<div></div>\");\n        await page.ClickAsync(\"button\");\n    }\n}\n```\n\nAn example of passing an element handle:\n\n```js\nawait context.exposeBinding('clicked', async (source, element) => {\n  console.log(await element.textContent());\n}, { handle: true });\nawait page.setContent(`\n  <script>\n    document.addEventListener('click', event => window.clicked(event.target));\n  </script>\n  <div>Click me</div>\n  <div>Or click me</div>\n`);\n```\n\n```java\ncontext.exposeBinding(\"clicked\", (source, args) -> {\n  ElementHandle element = (ElementHandle) args[0];\n  System.out.println(element.textContent());\n  return null;\n}, new BrowserContext.ExposeBindingOptions().setHandle(true));\npage.setContent(\"\" +\n  \"<script>\\n\" +\n  \"  document.addEventListener('click', event => window.clicked(event.target));\\n\" +\n  \"</script>\\n\" +\n  \"<div>Click me</div>\\n\" +\n  \"<div>Or click me</div>\\n\");\n```\n\n```python async\nasync def print(source, element):\n    print(await element.text_content())\n\nawait context.expose_binding(\"clicked\", print, handle=true)\nawait page.set_content(\"\"\"\n  <script>\n    document.addEventListener('click', event => window.clicked(event.target));\n  </script>\n  <div>Click me</div>\n  <div>Or click me</div>\n\"\"\")\n```\n\n```python sync\ndef print(source, element):\n    print(element.text_content())\n\ncontext.expose_binding(\"clicked\", print, handle=true)\npage.set_content(\"\"\"\n  <script>\n    document.addEventListener('click', event => window.clicked(event.target));\n  </script>\n  <div>Click me</div>\n  <div>Or click me</div>\n\"\"\")\n```\n\n```csharp\nvar result = new TaskCompletionSource<string>();\nvar page = await Context.NewPageAsync();\nawait Context.ExposeBindingAsync(\"clicked\", async (BindingSource _, IJSHandle t) =>\n{\n    return result.TrySetResult(await t.AsElement().TextContentAsync());\n});\n\nawait page.SetContentAsync(\"<script>\\n\" +\n  \"  document.addEventListener('click', event => window.clicked(event.target));\\n\" +\n  \"</script>\\n\" +\n  \"<div>Click me</div>\\n\" +\n  \"<div>Or click me</div>\\n\");\n\nawait page.ClickAsync(\"div\");\n// Note: it makes sense to await the result here, because otherwise, the context\n//  gets closed and the binding function will throw an exception.\nAssert.Equal(\"Click me\", await result.Task);\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "exposeBinding",
@@ -12207,17 +12270,25 @@
             "langs": {},
             "name": "page",
             "type": {
-              "name": "Page",
-              "expression": "[Page]"
+              "name": "",
+              "union": [
+                {
+                  "name": "Page"
+                },
+                {
+                  "name": "Frame"
+                }
+              ],
+              "expression": "[Page]|[Frame]"
             },
             "spec": [
               {
                 "type": "text",
-                "text": "Page to create new session for."
+                "text": "Target to create new session for. For backwards-compatability, this parameter is named `page`, but it can be a `Page` or `Frame` type."
               }
             ],
             "required": true,
-            "comment": "Page to create new session for.",
+            "comment": "Target to create new session for. For backwards-compatability, this parameter is named `page`, but it can be a `Page` or\n`Frame` type.",
             "deprecated": false,
             "async": false,
             "alias": "page",
@@ -14482,16 +14553,7 @@
     "members": [
       {
         "kind": "method",
-        "langs": {
-          "only": [
-            "js",
-            "python",
-            "java"
-          ],
-          "aliases": {},
-          "types": {},
-          "overrides": {}
-        },
+        "langs": {},
         "name": "connect",
         "type": {
           "name": "Browser",
@@ -14512,16 +14574,7 @@
         "args": [
           {
             "kind": "property",
-            "langs": {
-              "only": [
-                "java",
-                "python",
-                "js"
-              ],
-              "aliases": {},
-              "types": {},
-              "overrides": {}
-            },
+            "langs": {},
             "name": "wsEndpoint",
             "type": {
               "name": "string",
@@ -14549,16 +14602,7 @@
               "properties": [
                 {
                   "kind": "property",
-                  "langs": {
-                    "only": [
-                      "java",
-                      "python",
-                      "js"
-                    ],
-                    "aliases": {},
-                    "types": {},
-                    "overrides": {}
-                  },
+                  "langs": {},
                   "name": "headers",
                   "type": {
                     "name": "Object",
@@ -14615,16 +14659,7 @@
                 },
                 {
                   "kind": "property",
-                  "langs": {
-                    "only": [
-                      "java",
-                      "python",
-                      "js"
-                    ],
-                    "aliases": {},
-                    "types": {},
-                    "overrides": {}
-                  },
+                  "langs": {},
                   "name": "slowMo",
                   "type": {
                     "name": "float",
@@ -14645,16 +14680,7 @@
                 },
                 {
                   "kind": "property",
-                  "langs": {
-                    "only": [
-                      "java",
-                      "python",
-                      "js"
-                    ],
-                    "aliases": {},
-                    "types": {},
-                    "overrides": {}
-                  },
+                  "langs": {},
                   "name": "timeout",
                   "type": {
                     "name": "float",
@@ -17297,6 +17323,27 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "slowMo",
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "strictSelectors",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "It specified, enables strict selectors mode for this context. In the strict selectors mode all operations on selectors that imply single target DOM element will throw when more than one element matches the selector. See `Locator` to learn more about the strict mode."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "It specified, enables strict selectors mode for this context. In the strict selectors mode all operations on selectors\nthat imply single target DOM element will throw when more than one element matches the selector. See `Locator` to learn\nmore about the strict mode.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "strictSelectors",
                   "paramOrOption": null
                 },
                 {
@@ -31850,14 +31897,10 @@
           {
             "type": "text",
             "text": "The method returns an element locator that can be used to perform actions in the frame. Locator is resolved to the element immediately before performing an action, so a series of actions on the same locator can in fact be performed on different DOM elements. That would happen if the DOM structure between those actions has changed."
-          },
-          {
-            "type": "text",
-            "text": "Note that locator always implies visibility, so it will always be locating visible elements."
           }
         ],
         "required": true,
-        "comment": "The method returns an element locator that can be used to perform actions in the frame. Locator is resolved to the\nelement immediately before performing an action, so a series of actions on the same locator can in fact be performed on\ndifferent DOM elements. That would happen if the DOM structure between those actions has changed.\n\nNote that locator always implies visibility, so it will always be locating visible elements.",
+        "comment": "The method returns an element locator that can be used to perform actions in the frame. Locator is resolved to the\nelement immediately before performing an action, so a series of actions on the same locator can in fact be performed on\ndifferent DOM elements. That would happen if the DOM structure between those actions has changed.",
         "deprecated": false,
         "async": false,
         "alias": "locator",
@@ -36980,10 +37023,72 @@
           "await locator.ClickAsync();"
         ],
         "codeLang": "csharp"
+      },
+      {
+        "type": "text",
+        "text": "**Strictness**"
+      },
+      {
+        "type": "text",
+        "text": "Locators are strict. This means that all operations on locators that imply some target DOM element will throw if more than one element matches given selector."
+      },
+      {
+        "type": "code",
+        "lines": [
+          "// Throws if there are several buttons in DOM:",
+          "await page.locator('button').click();",
+          "",
+          "// Works because we explicitly tell locator to pick the first element:",
+          "await page.locator('button').first().click();"
+        ],
+        "codeLang": "js"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "# Throws if there are several buttons in DOM:",
+          "await page.locator('button').click()",
+          "",
+          "# Works because we explicitly tell locator to pick the first element:",
+          "await page.locator('button').first.click()"
+        ],
+        "codeLang": "python async"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "# Throws if there are several buttons in DOM:",
+          "page.locator('button').click()",
+          "",
+          "# Works because we explicitly tell locator to pick the first element:",
+          "page.locator('button').first.click()"
+        ],
+        "codeLang": "python sync"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "// Throws if there are several buttons in DOM:",
+          "page.locator(\"button\").click();",
+          "",
+          "// Works because you explicitly tell locator to pick the first element:",
+          "page.locator(\"button\").first().click();"
+        ],
+        "codeLang": "java"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "// Throws if there are several buttons in DOM:",
+          "await page.Locator(\"button\").ClickAsync();",
+          "// Works because you explicitly tell locator to pick the first element:",
+          "await page.Locator(\"button\").First.ClickAsync();"
+        ],
+        "codeLang": "csharp"
       }
     ],
     "langs": {},
-    "comment": "Locator represents a view to the element(s) on the page. It captures the logic sufficient to retrieve the element at any\ngiven moment. Locator can be created with the [`method: Page.locator`] method.\n\n```js\nconst locator = page.locator('text=Submit');\nawait locator.click();\n```\n\n```java\nLocator locator = page.locator(\"text=Submit\");\nlocator.click();\n```\n\n```python async\nlocator = page.locator(\"text=Submit\")\nawait locator.click()\n```\n\n```python sync\nlocator = page.locator(\"text=Submit\")\nlocator.click()\n```\n\n```csharp\nvar locator = page.Locator(\"text=Submit\");\nawait locator.ClickAsync();\n```\n\nThe difference between the Locator and `ElementHandle` is that the latter points to a particular element, while Locator\ncaptures the logic of how to retrieve that element.\n\nIn the example below, handle points to a particular DOM element on page. If that element changes text or is used by\nReact to render an entirely different component, handle is still pointing to that very DOM element. This can lead to\nunexpected behaviors.\n\n```js\nconst handle = await page.$('text=Submit');\n// ...\nawait handle.hover();\nawait handle.click();\n```\n\n```java\nElementHandle handle = page.querySelector(\"text=Submit\");\nhandle.hover();\nhandle.click();\n```\n\n```python async\nhandle = await page.query_selector(\"text=Submit\")\nawait handle.hover()\nawait handle.click()\n```\n\n```python sync\nhandle = page.query_selector(\"text=Submit\")\nhandle.hover()\nhandle.click()\n```\n\n```csharp\nvar handle = await page.QuerySelectorAsync(\"text=Submit\");\nawait handle.HoverAsync();\nawait handle.ClickAsync();\n```\n\nWith the locator, every time the `element` is used, up-to-date DOM element is located in the page using the selector. So\nin the snippet below, underlying DOM element is going to be located twice.\n\n```js\nconst locator = page.locator('text=Submit');\n// ...\nawait locator.hover();\nawait locator.click();\n```\n\n```java\nLocator locator = page.locator(\"text=Submit\");\nlocator.hover();\nlocator.click();\n```\n\n```python async\nlocator = page.locator(\"text=Submit\")\nawait locator.hover()\nawait locator.click()\n```\n\n```python sync\nlocator = page.locator(\"text=Submit\")\nlocator.hover()\nlocator.click()\n```\n\n```csharp\nvar locator = page.Locator(\"text=Submit\");\nawait locator.HoverAsync();\nawait locator.ClickAsync();\n```\n",
+    "comment": "Locator represents a view to the element(s) on the page. It captures the logic sufficient to retrieve the element at any\ngiven moment. Locator can be created with the [`method: Page.locator`] method.\n\n```js\nconst locator = page.locator('text=Submit');\nawait locator.click();\n```\n\n```java\nLocator locator = page.locator(\"text=Submit\");\nlocator.click();\n```\n\n```python async\nlocator = page.locator(\"text=Submit\")\nawait locator.click()\n```\n\n```python sync\nlocator = page.locator(\"text=Submit\")\nlocator.click()\n```\n\n```csharp\nvar locator = page.Locator(\"text=Submit\");\nawait locator.ClickAsync();\n```\n\nThe difference between the Locator and `ElementHandle` is that the latter points to a particular element, while Locator\ncaptures the logic of how to retrieve that element.\n\nIn the example below, handle points to a particular DOM element on page. If that element changes text or is used by\nReact to render an entirely different component, handle is still pointing to that very DOM element. This can lead to\nunexpected behaviors.\n\n```js\nconst handle = await page.$('text=Submit');\n// ...\nawait handle.hover();\nawait handle.click();\n```\n\n```java\nElementHandle handle = page.querySelector(\"text=Submit\");\nhandle.hover();\nhandle.click();\n```\n\n```python async\nhandle = await page.query_selector(\"text=Submit\")\nawait handle.hover()\nawait handle.click()\n```\n\n```python sync\nhandle = page.query_selector(\"text=Submit\")\nhandle.hover()\nhandle.click()\n```\n\n```csharp\nvar handle = await page.QuerySelectorAsync(\"text=Submit\");\nawait handle.HoverAsync();\nawait handle.ClickAsync();\n```\n\nWith the locator, every time the `element` is used, up-to-date DOM element is located in the page using the selector. So\nin the snippet below, underlying DOM element is going to be located twice.\n\n```js\nconst locator = page.locator('text=Submit');\n// ...\nawait locator.hover();\nawait locator.click();\n```\n\n```java\nLocator locator = page.locator(\"text=Submit\");\nlocator.hover();\nlocator.click();\n```\n\n```python async\nlocator = page.locator(\"text=Submit\")\nawait locator.hover()\nawait locator.click()\n```\n\n```python sync\nlocator = page.locator(\"text=Submit\")\nlocator.hover()\nlocator.click()\n```\n\n```csharp\nvar locator = page.Locator(\"text=Submit\");\nawait locator.HoverAsync();\nawait locator.ClickAsync();\n```\n\n**Strictness**\n\nLocators are strict. This means that all operations on locators that imply some target DOM element will throw if more\nthan one element matches given selector.\n\n```js\n// Throws if there are several buttons in DOM:\nawait page.locator('button').click();\n\n// Works because we explicitly tell locator to pick the first element:\nawait page.locator('button').first().click();\n```\n\n```python async\n# Throws if there are several buttons in DOM:\nawait page.locator('button').click()\n\n# Works because we explicitly tell locator to pick the first element:\nawait page.locator('button').first.click()\n```\n\n```python sync\n# Throws if there are several buttons in DOM:\npage.locator('button').click()\n\n# Works because we explicitly tell locator to pick the first element:\npage.locator('button').first.click()\n```\n\n```java\n// Throws if there are several buttons in DOM:\npage.locator(\"button\").click();\n\n// Works because you explicitly tell locator to pick the first element:\npage.locator(\"button\").first().click();\n```\n\n```csharp\n// Throws if there are several buttons in DOM:\nawait page.Locator(\"button\").ClickAsync();\n// Works because you explicitly tell locator to pick the first element:\nawait page.Locator(\"button\").First.ClickAsync();\n```\n",
     "members": [
       {
         "kind": "method",
@@ -38487,7 +38592,7 @@
           {
             "type": "code",
             "lines": [
-              "const tweets = await page.locator('.tweet .retweets');",
+              "const tweets = page.locator('.tweet .retweets');",
               "expect(await tweets.evaluate(node => node.innerText)).toBe('10 retweets');"
             ],
             "codeLang": "js"
@@ -38503,7 +38608,7 @@
           {
             "type": "code",
             "lines": [
-              "tweets = await page.locator(\".tweet .retweets\")",
+              "tweets = page.locator(\".tweet .retweets\")",
               "assert await tweets.evaluate(\"node => node.innerText\") == \"10 retweets\""
             ],
             "codeLang": "python async"
@@ -38526,7 +38631,7 @@
           }
         ],
         "required": true,
-        "comment": "Returns the return value of `expression`.\n\nThis method passes this handle as the first argument to `expression`.\n\nIf `expression` returns a [Promise], then `handle.evaluate` would wait for the promise to resolve and return its value.\n\nExamples:\n\n```js\nconst tweets = await page.locator('.tweet .retweets');\nexpect(await tweets.evaluate(node => node.innerText)).toBe('10 retweets');\n```\n\n```java\nLocator tweets = page.locator(\".tweet .retweets\");\nassertEquals(\"10 retweets\", tweets.evaluate(\"node => node.innerText\"));\n```\n\n```python async\ntweets = await page.locator(\".tweet .retweets\")\nassert await tweets.evaluate(\"node => node.innerText\") == \"10 retweets\"\n```\n\n```python sync\ntweets = page.locator(\".tweet .retweets\")\nassert tweets.evaluate(\"node => node.innerText\") == \"10 retweets\"\n```\n\n```csharp\nvar tweets = page.Locator(\".tweet .retweets\");\nAssert.Equals(\"10 retweets\", await tweets.EvaluateAsync(\"node => node.innerText\"));\n```\n",
+        "comment": "Returns the return value of `expression`.\n\nThis method passes this handle as the first argument to `expression`.\n\nIf `expression` returns a [Promise], then `handle.evaluate` would wait for the promise to resolve and return its value.\n\nExamples:\n\n```js\nconst tweets = page.locator('.tweet .retweets');\nexpect(await tweets.evaluate(node => node.innerText)).toBe('10 retweets');\n```\n\n```java\nLocator tweets = page.locator(\".tweet .retweets\");\nassertEquals(\"10 retweets\", tweets.evaluate(\"node => node.innerText\"));\n```\n\n```python async\ntweets = page.locator(\".tweet .retweets\")\nassert await tweets.evaluate(\"node => node.innerText\") == \"10 retweets\"\n```\n\n```python sync\ntweets = page.locator(\".tweet .retweets\")\nassert tweets.evaluate(\"node => node.innerText\") == \"10 retweets\"\n```\n\n```csharp\nvar tweets = page.Locator(\".tweet .retweets\");\nAssert.Equals(\"10 retweets\", await tweets.EvaluateAsync(\"node => node.innerText\"));\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "evaluate",
@@ -50814,15 +50919,11 @@
           },
           {
             "type": "text",
-            "text": "Note that locator always implies visibility, so it will always be locating visible elements."
-          },
-          {
-            "type": "text",
             "text": "Shortcut for main frame's [`method: Frame.locator`]."
           }
         ],
         "required": true,
-        "comment": "The method returns an element locator that can be used to perform actions on the page. Locator is resolved to the\nelement immediately before performing an action, so a series of actions on the same locator can in fact be performed on\ndifferent DOM elements. That would happen if the DOM structure between those actions has changed.\n\nNote that locator always implies visibility, so it will always be locating visible elements.\n\nShortcut for main frame's [`method: Frame.locator`].",
+        "comment": "The method returns an element locator that can be used to perform actions on the page. Locator is resolved to the\nelement immediately before performing an action, so a series of actions on the same locator can in fact be performed on\ndifferent DOM elements. That would happen if the DOM structure between those actions has changed.\n\nShortcut for main frame's [`method: Frame.locator`].",
         "deprecated": false,
         "async": false,
         "alias": "locator",
