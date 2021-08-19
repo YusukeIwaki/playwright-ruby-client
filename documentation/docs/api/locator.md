@@ -39,13 +39,12 @@ locator.click
 Locators are strict. This means that all operations on locators that imply some target DOM element will throw if more
 than one element matches given selector.
 
-```python sync title=example_3f41557af799b9052d1528388da041f15a0b8655d10d992e79cbac950b41d93c.py
+```ruby
 # Throws if there are several buttons in DOM:
-page.locator('button').click()
+page.locator('button').click
 
 # Works because we explicitly tell locator to pick the first element:
-page.locator('button').first.click()
-
+page.locator('button').first.click
 ```
 
 

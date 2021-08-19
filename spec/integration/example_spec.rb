@@ -220,6 +220,19 @@ RSpec.describe 'example' do
       end
     end
 
+    it 'should work with Locator/strictness' do
+      with_page do |page|
+        page.content = "<button onclick=\"this.innerText='clicked!'\">Submit</button>"
+        example_3f41557af799b9052d1528388da041f15a0b8655d10d992e79cbac950b41d93c(page: page)
+        expect(page.eval_on_selector('button', 'el => el.innerText')).to eq('clicked!')
+      end
+
+      with_page do |page|
+        page.content = "<button>1</button><button>2</button>"
+        expect { example_3f41557af799b9052d1528388da041f15a0b8655d10d992e79cbac950b41d93c(page: page) }.to raise_error(/strict mode violation/)
+      end
+    end
+
     it 'should work with Locator#evaluate_all' do
       with_page do |page|
         page.content = <<~HTML
