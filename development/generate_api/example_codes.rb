@@ -1086,6 +1086,38 @@ module ExampleCodes
     page.route("**/xhr_endpoint", ->(route, _) { route.fulfill(path: "mock_data.json") })
   end
 
+  # Selectors
+  def example_79053fe985428755ac11bbb07990e18ca0c1367946f7162bc6d8b0030454bdab(playwright:)
+    tag_selector = <<~JAVASCRIPT
+    {
+        // Returns the first element matching given selector in the root's subtree.
+        query(root, selector) {
+            return root.querySelector(selector);
+        },
+        // Returns all elements matching given selector in the root's subtree.
+        queryAll(root, selector) {
+            return Array.from(root.querySelectorAll(selector));
+        }
+    }
+    JAVASCRIPT
+
+    # Register the engine. Selectors will be prefixed with "tag=".
+    playwright.selectors.register("tag", script: tag_selector)
+    playwright.chromium.launch do |browser|
+      page = browser.new_page()
+      page.content = '<div><button>Click me</button></div>'
+
+      # Use the selector prefixed with its name.
+      button = page.query_selector('tag=button')
+      # Combine it with other selector engines.
+      page.click('tag=div >> text="Click me"')
+
+      # Can use it in any methods supporting selectors.
+      button_count = page.eval_on_selector_all('tag=button', 'buttons => buttons.length')
+      button_count # => 1
+    end
+  end
+
   # Tracing
   def example_a767dfb400d98aef50f2767b94171d23474ea1ac1cf9b4d75d412936208e652d(browser:)
     browser.new_page do |page|

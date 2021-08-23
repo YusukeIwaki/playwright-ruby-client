@@ -31,14 +31,9 @@ module Playwright
       @transport.stop
     end
 
-    def wait_for_object_with_known_name(guid)
-      if @objects[guid]
-        return @objects[guid]
-      end
-
-      callback = Concurrent::Promises.resolvable_future
-      @waiting_for_object[guid] = callback
-      callback.value!
+    def initialize_playwright
+      result = send_message_to_server('', 'initialize', { sdkLanguage: 'ruby' })
+      ChannelOwners::Playwright.from(result['playwright'])
     end
 
     def async_send_message_to_server(guid, method, params)
