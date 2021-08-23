@@ -15170,11 +15170,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "If specified, accepted downloads are downloaded into this directory. Otherwise, temporary directory is created and is deleted when browser is closed."
+                      "text": "If specified, accepted downloads are downloaded into this directory. Otherwise, temporary directory is created and is deleted when browser is closed. In either case, the downloads are deleted when the browser context they were created in is closed."
                     }
                   ],
                   "required": false,
-                  "comment": "If specified, accepted downloads are downloaded into this directory. Otherwise, temporary directory is created and is\ndeleted when browser is closed.",
+                  "comment": "If specified, accepted downloads are downloaded into this directory. Otherwise, temporary directory is created and is\ndeleted when browser is closed. In either case, the downloads are deleted when the browser context they were created in\nis closed.",
                   "deprecated": false,
                   "async": false,
                   "alias": "downloadsPath",
@@ -16048,11 +16048,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "If specified, accepted downloads are downloaded into this directory. Otherwise, temporary directory is created and is deleted when browser is closed."
+                      "text": "If specified, accepted downloads are downloaded into this directory. Otherwise, temporary directory is created and is deleted when browser is closed. In either case, the downloads are deleted when the browser context they were created in is closed."
                     }
                   ],
                   "required": false,
-                  "comment": "If specified, accepted downloads are downloaded into this directory. Otherwise, temporary directory is created and is\ndeleted when browser is closed.",
+                  "comment": "If specified, accepted downloads are downloaded into this directory. Otherwise, temporary directory is created and is\ndeleted when browser is closed. In either case, the downloads are deleted when the browser context they were created in\nis closed.",
                   "deprecated": false,
                   "async": false,
                   "alias": "downloadsPath",
@@ -17941,11 +17941,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "If specified, accepted downloads are downloaded into this directory. Otherwise, temporary directory is created and is deleted when browser is closed."
+                      "text": "If specified, accepted downloads are downloaded into this directory. Otherwise, temporary directory is created and is deleted when browser is closed. In either case, the downloads are deleted when the browser context they were created in is closed."
                     }
                   ],
                   "required": false,
-                  "comment": "If specified, accepted downloads are downloaded into this directory. Otherwise, temporary directory is created and is\ndeleted when browser is closed.",
+                  "comment": "If specified, accepted downloads are downloaded into this directory. Otherwise, temporary directory is created and is\ndeleted when browser is closed. In either case, the downloads are deleted when the browser context they were created in\nis closed.",
                   "deprecated": false,
                   "async": false,
                   "alias": "downloadsPath",
@@ -18464,6 +18464,32 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "tracesDir",
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "wsPath",
+                  "type": {
+                    "name": "string",
+                    "expression": "[string]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Path at which to serve the Browser Server. For security, this defaults to an unguessable string."
+                    },
+                    {
+                      "type": "note",
+                      "noteType": "warning",
+                      "text": "Any process or web page (including those running in Playwright) with knowledge of the `wsPath` can take control of the OS user. For this reason, you should use an unguessable token when using this option."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Path at which to serve the Browser Server. For security, this defaults to an unguessable string.\n\n> NOTE: Any process or web page (including those running in Playwright) with knowledge of the `wsPath` can take control\nof the OS user. For this reason, you should use an unguessable token when using this option.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "wsPath",
                   "paramOrOption": null
                 }
               ]
@@ -30491,7 +30517,7 @@
           },
           {
             "type": "text",
-            "text": "`frame.goto` will throw an error if:"
+            "text": "The method will throw an error if:"
           },
           {
             "type": "li",
@@ -30520,12 +30546,12 @@
           },
           {
             "type": "text",
-            "text": "`frame.goto` will not throw an error when any valid HTTP status code is returned by the remote server, including 404 \"Not Found\" and 500 \"Internal Server Error\".  The status code for such responses can be retrieved by calling [`method: Response.status`]."
+            "text": "The method will not throw an error when any valid HTTP status code is returned by the remote server, including 404 \"Not Found\" and 500 \"Internal Server Error\".  The status code for such responses can be retrieved by calling [`method: Response.status`]."
           },
           {
             "type": "note",
             "noteType": "note",
-            "text": "`frame.goto` either throws an error or returns a main resource response. The only exceptions are navigation to `about:blank` or navigation to the same URL with a different hash, which would succeed and return `null`."
+            "text": "The method either throws an error or returns a main resource response. The only exceptions are navigation to `about:blank` or navigation to the same URL with a different hash, which would succeed and return `null`."
           },
           {
             "type": "note",
@@ -30534,7 +30560,7 @@
           }
         ],
         "required": true,
-        "comment": "Returns the main resource response. In case of multiple redirects, the navigation will resolve with the response of the\nlast redirect.\n\n`frame.goto` will throw an error if:\n- there's an SSL error (e.g. in case of self-signed certificates).\n- target URL is invalid.\n- the `timeout` is exceeded during navigation.\n- the remote server does not respond or is unreachable.\n- the main resource failed to load.\n\n`frame.goto` will not throw an error when any valid HTTP status code is returned by the remote server, including 404\n\"Not Found\" and 500 \"Internal Server Error\".  The status code for such responses can be retrieved by calling\n[`method: Response.status`].\n\n> NOTE: `frame.goto` either throws an error or returns a main resource response. The only exceptions are navigation to\n`about:blank` or navigation to the same URL with a different hash, which would succeed and return `null`.\n> NOTE: Headless mode doesn't support navigation to a PDF document. See the\n[upstream issue](https://bugs.chromium.org/p/chromium/issues/detail?id=761295).",
+        "comment": "Returns the main resource response. In case of multiple redirects, the navigation will resolve with the response of the\nlast redirect.\n\nThe method will throw an error if:\n- there's an SSL error (e.g. in case of self-signed certificates).\n- target URL is invalid.\n- the `timeout` is exceeded during navigation.\n- the remote server does not respond or is unreachable.\n- the main resource failed to load.\n\nThe method will not throw an error when any valid HTTP status code is returned by the remote server, including 404 \"Not\nFound\" and 500 \"Internal Server Error\".  The status code for such responses can be retrieved by calling\n[`method: Response.status`].\n\n> NOTE: The method either throws an error or returns a main resource response. The only exceptions are navigation to\n`about:blank` or navigation to the same URL with a different hash, which would succeed and return `null`.\n> NOTE: Headless mode doesn't support navigation to a PDF document. See the\n[upstream issue](https://bugs.chromium.org/p/chromium/issues/detail?id=761295).",
         "deprecated": false,
         "async": true,
         "alias": "goto",
@@ -49485,7 +49511,7 @@
           },
           {
             "type": "text",
-            "text": "`page.goto` will throw an error if:"
+            "text": "The method will throw an error if:"
           },
           {
             "type": "li",
@@ -49514,12 +49540,12 @@
           },
           {
             "type": "text",
-            "text": "`page.goto` will not throw an error when any valid HTTP status code is returned by the remote server, including 404 \"Not Found\" and 500 \"Internal Server Error\".  The status code for such responses can be retrieved by calling [`method: Response.status`]."
+            "text": "The method will not throw an error when any valid HTTP status code is returned by the remote server, including 404 \"Not Found\" and 500 \"Internal Server Error\".  The status code for such responses can be retrieved by calling [`method: Response.status`]."
           },
           {
             "type": "note",
             "noteType": "note",
-            "text": "`page.goto` either throws an error or returns a main resource response. The only exceptions are navigation to `about:blank` or navigation to the same URL with a different hash, which would succeed and return `null`."
+            "text": "The method either throws an error or returns a main resource response. The only exceptions are navigation to `about:blank` or navigation to the same URL with a different hash, which would succeed and return `null`."
           },
           {
             "type": "note",
@@ -49532,7 +49558,7 @@
           }
         ],
         "required": true,
-        "comment": "Returns the main resource response. In case of multiple redirects, the navigation will resolve with the response of the\nlast redirect.\n\n`page.goto` will throw an error if:\n- there's an SSL error (e.g. in case of self-signed certificates).\n- target URL is invalid.\n- the `timeout` is exceeded during navigation.\n- the remote server does not respond or is unreachable.\n- the main resource failed to load.\n\n`page.goto` will not throw an error when any valid HTTP status code is returned by the remote server, including 404 \"Not\nFound\" and 500 \"Internal Server Error\".  The status code for such responses can be retrieved by calling\n[`method: Response.status`].\n\n> NOTE: `page.goto` either throws an error or returns a main resource response. The only exceptions are navigation to\n`about:blank` or navigation to the same URL with a different hash, which would succeed and return `null`.\n> NOTE: Headless mode doesn't support navigation to a PDF document. See the\n[upstream issue](https://bugs.chromium.org/p/chromium/issues/detail?id=761295).\n\nShortcut for main frame's [`method: Frame.goto`]",
+        "comment": "Returns the main resource response. In case of multiple redirects, the navigation will resolve with the response of the\nlast redirect.\n\nThe method will throw an error if:\n- there's an SSL error (e.g. in case of self-signed certificates).\n- target URL is invalid.\n- the `timeout` is exceeded during navigation.\n- the remote server does not respond or is unreachable.\n- the main resource failed to load.\n\nThe method will not throw an error when any valid HTTP status code is returned by the remote server, including 404 \"Not\nFound\" and 500 \"Internal Server Error\".  The status code for such responses can be retrieved by calling\n[`method: Response.status`].\n\n> NOTE: The method either throws an error or returns a main resource response. The only exceptions are navigation to\n`about:blank` or navigation to the same URL with a different hash, which would succeed and return `null`.\n> NOTE: Headless mode doesn't support navigation to a PDF document. See the\n[upstream issue](https://bugs.chromium.org/p/chromium/issues/detail?id=761295).\n\nShortcut for main frame's [`method: Frame.goto`]",
         "deprecated": false,
         "async": true,
         "alias": "goto",
@@ -62092,7 +62118,7 @@
             "type": "code",
             "lines": [
               "page.route(\"**/xhr_endpoint\", route -> route.fulfill(",
-              "  new Route.FulfillOptions().setPath(Paths.get(\"mock_data.json\")));"
+              "  new Route.FulfillOptions().setPath(Paths.get(\"mock_data.json\"))));"
             ],
             "codeLang": "java"
           },
@@ -62119,7 +62145,7 @@
           }
         ],
         "required": true,
-        "comment": "Fulfills route's request with given response.\n\nAn example of fulfilling all requests with 404 responses:\n\n```js\nawait page.route('**/*', route => {\n  route.fulfill({\n    status: 404,\n    contentType: 'text/plain',\n    body: 'Not Found!'\n  });\n});\n```\n\n```java\npage.route(\"**/*\", route -> {\n  route.fulfill(new Route.FulfillOptions()\n    .setStatus(404)\n    .setContentType(\"text/plain\")\n    .setBody(\"Not Found!\"));\n});\n```\n\n```python async\nawait page.route(\"**/*\", lambda route: route.fulfill(\n    status=404,\n    content_type=\"text/plain\",\n    body=\"not found!\"))\n```\n\n```python sync\npage.route(\"**/*\", lambda route: route.fulfill(\n    status=404,\n    content_type=\"text/plain\",\n    body=\"not found!\"))\n```\n\n```csharp\nawait page.RouteAsync(\"**/*\", route => route.FulfillAsync(\n    status: 404,\n    contentType: \"text/plain\", \n    body: \"Not Found!\"));\n```\n\nAn example of serving static file:\n\n```js\nawait page.route('**/xhr_endpoint', route => route.fulfill({ path: 'mock_data.json' }));\n```\n\n```java\npage.route(\"**/xhr_endpoint\", route -> route.fulfill(\n  new Route.FulfillOptions().setPath(Paths.get(\"mock_data.json\")));\n```\n\n```python async\nawait page.route(\"**/xhr_endpoint\", lambda route: route.fulfill(path=\"mock_data.json\"))\n```\n\n```python sync\npage.route(\"**/xhr_endpoint\", lambda route: route.fulfill(path=\"mock_data.json\"))\n```\n\n```csharp\nawait page.RouteAsync(\"**/xhr_endpoint\", route => route.FulfillAsync(new RouteFulfillOptions { Path = \"mock_data.json\" }));\n```\n",
+        "comment": "Fulfills route's request with given response.\n\nAn example of fulfilling all requests with 404 responses:\n\n```js\nawait page.route('**/*', route => {\n  route.fulfill({\n    status: 404,\n    contentType: 'text/plain',\n    body: 'Not Found!'\n  });\n});\n```\n\n```java\npage.route(\"**/*\", route -> {\n  route.fulfill(new Route.FulfillOptions()\n    .setStatus(404)\n    .setContentType(\"text/plain\")\n    .setBody(\"Not Found!\"));\n});\n```\n\n```python async\nawait page.route(\"**/*\", lambda route: route.fulfill(\n    status=404,\n    content_type=\"text/plain\",\n    body=\"not found!\"))\n```\n\n```python sync\npage.route(\"**/*\", lambda route: route.fulfill(\n    status=404,\n    content_type=\"text/plain\",\n    body=\"not found!\"))\n```\n\n```csharp\nawait page.RouteAsync(\"**/*\", route => route.FulfillAsync(\n    status: 404,\n    contentType: \"text/plain\", \n    body: \"Not Found!\"));\n```\n\nAn example of serving static file:\n\n```js\nawait page.route('**/xhr_endpoint', route => route.fulfill({ path: 'mock_data.json' }));\n```\n\n```java\npage.route(\"**/xhr_endpoint\", route -> route.fulfill(\n  new Route.FulfillOptions().setPath(Paths.get(\"mock_data.json\"))));\n```\n\n```python async\nawait page.route(\"**/xhr_endpoint\", lambda route: route.fulfill(path=\"mock_data.json\"))\n```\n\n```python sync\npage.route(\"**/xhr_endpoint\", lambda route: route.fulfill(path=\"mock_data.json\"))\n```\n\n```csharp\nawait page.RouteAsync(\"**/xhr_endpoint\", route => route.FulfillAsync(new RouteFulfillOptions { Path = \"mock_data.json\" }));\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "fulfill",
@@ -62447,14 +62473,80 @@
           {
             "type": "code",
             "lines": [
-              "# FIXME: add snippet"
+              "import asyncio",
+              "from playwright.async_api import async_playwright",
+              "",
+              "async def run(playwright):",
+              "    tag_selector = \"\"\"",
+              "      {",
+              "          // Returns the first element matching given selector in the root's subtree.",
+              "          query(root, selector) {",
+              "              return root.querySelector(selector);",
+              "          },",
+              "          // Returns all elements matching given selector in the root's subtree.",
+              "          queryAll(root, selector) {",
+              "              return Array.from(root.querySelectorAll(selector));",
+              "          }",
+              "      }\"\"\"",
+              "",
+              "    # Register the engine. Selectors will be prefixed with \"tag=\".",
+              "    await playwright.selectors.register(\"tag\", tag_selector)",
+              "    browser = await playwright.chromium.launch()",
+              "    page = await browser.new_page()",
+              "    await page.set_content('<div><button>Click me</button></div>')",
+              "",
+              "    # Use the selector prefixed with its name.",
+              "    button = await page.query_selector('tag=button')",
+              "    # Combine it with other selector engines.",
+              "    await page.click('tag=div >> text=\"Click me\"')",
+              "    # Can use it in any methods supporting selectors.",
+              "    button_count = await page.eval_on_selector_all('tag=button', 'buttons => buttons.length')",
+              "    print(button_count)",
+              "    await browser.close()",
+              "",
+              "async def main():",
+              "    async with async_playwright() as playwright:",
+              "        await run(playwright)",
+              "",
+              "asyncio.run(main())"
             ],
             "codeLang": "python async"
           },
           {
             "type": "code",
             "lines": [
-              "# FIXME: add snippet"
+              "from playwright.sync_api import sync_playwright",
+              "",
+              "def run(playwright):",
+              "    tag_selector = \"\"\"",
+              "      {",
+              "          // Returns the first element matching given selector in the root's subtree.",
+              "          query(root, selector) {",
+              "              return root.querySelector(selector);",
+              "          },",
+              "          // Returns all elements matching given selector in the root's subtree.",
+              "          queryAll(root, selector) {",
+              "              return Array.from(root.querySelectorAll(selector));",
+              "          }",
+              "      }\"\"\"",
+              "",
+              "    # Register the engine. Selectors will be prefixed with \"tag=\".",
+              "    playwright.selectors.register(\"tag\", tag_selector)",
+              "    browser = playwright.chromium.launch()",
+              "    page = browser.new_page()",
+              "    page.set_content('<div><button>Click me</button></div>')",
+              "",
+              "    # Use the selector prefixed with its name.",
+              "    button = page.query_selector('tag=button')",
+              "    # Combine it with other selector engines.",
+              "    page.click('tag=div >> text=\"Click me\"')",
+              "    # Can use it in any methods supporting selectors.",
+              "    button_count = page.eval_on_selector_all('tag=button', 'buttons => buttons.length')",
+              "    print(button_count)",
+              "    browser.close()",
+              "",
+              "with sync_playwright() as playwright:",
+              "    run(playwright)"
             ],
             "codeLang": "python sync"
           },
@@ -62488,7 +62580,7 @@
           }
         ],
         "required": true,
-        "comment": "An example of registering selector engine that queries elements based on a tag name:\n\n```js\nconst { selectors, firefox } = require('playwright');  // Or 'chromium' or 'webkit'.\n\n(async () => {\n  // Must be a function that evaluates to a selector engine instance.\n  const createTagNameEngine = () => ({\n    // Returns the first element matching given selector in the root's subtree.\n    query(root, selector) {\n      return root.querySelector(selector);\n    },\n\n    // Returns all elements matching given selector in the root's subtree.\n    queryAll(root, selector) {\n      return Array.from(root.querySelectorAll(selector));\n    }\n  });\n\n  // Register the engine. Selectors will be prefixed with \"tag=\".\n  await selectors.register('tag', createTagNameEngine);\n\n  const browser = await firefox.launch();\n  const page = await browser.newPage();\n  await page.setContent(`<div><button>Click me</button></div>`);\n\n  // Use the selector prefixed with its name.\n  const button = await page.$('tag=button');\n  // Combine it with other selector engines.\n  await page.click('tag=div >> text=\"Click me\"');\n  // Can use it in any methods supporting selectors.\n  const buttonCount = await page.$$eval('tag=button', buttons => buttons.length);\n\n  await browser.close();\n})();\n```\n\n```java\n// Script that evaluates to a selector engine instance.\nString createTagNameEngine = \"{\\n\" +\n  \"  // Returns the first element matching given selector in the root's subtree.\\n\" +\n  \"  query(root, selector) {\\n\" +\n  \"    return root.querySelector(selector);\\n\" +\n  \"  },\\n\" +\n  \"  // Returns all elements matching given selector in the root's subtree.\\n\" +\n  \"  queryAll(root, selector) {\\n\" +\n  \"    return Array.from(root.querySelectorAll(selector));\\n\" +\n  \"  }\\n\" +\n  \"}\";\n// Register the engine. Selectors will be prefixed with \"tag=\".\nplaywright.selectors().register(\"tag\", createTagNameEngine);\nBrowser browser = playwright.firefox().launch();\nPage page = browser.newPage();\npage.setContent(\"<div><button>Click me</button></div>\");\n// Use the selector prefixed with its name.\nElementHandle button = page.querySelector(\"tag=button\");\n// Combine it with other selector engines.\npage.click(\"tag=div >> text=\\\"Click me\\\"\");\n// Can use it in any methods supporting selectors.\nint buttonCount = (int) page.evalOnSelectorAll(\"tag=button\", \"buttons => buttons.length\");\nbrowser.close();\n```\n\n```python async\n# FIXME: add snippet\n```\n\n```python sync\n# FIXME: add snippet\n```\n\n```csharp\nusing var playwright = await Playwright.CreateAsync();\n// Script that evaluates to a selector engine instance.\nawait playwright.Selectors.RegisterAsync(\"tag\", @\"{\n// Returns the first element matching given selector in the root's subtree.\nquery(root, selector) {\n    return root.querySelector(selector);\n  },\n  // Returns all elements matching given selector in the root's subtree.\n  queryAll(root, selector) {\n    return Array.from(root.querySelectorAll(selector));\n  }\n}\");\n\nawait using var browser = await playwright.Chromium.LaunchAsync();\nvar page = await browser.NewPageAsync();\nawait page.SetContentAsync(\"<div><button>Click me</button></div>\");\n// Use the selector prefixed with its name.\nvar button = await page.QuerySelectorAsync(\"tag=button\");\n// Combine it with other selector engines.\nawait page.ClickAsync(\"tag=div >> text=\\\"Click me\\\"\");\n// Can use it in any methods supporting selectors.\nint buttonCount = await page.EvalOnSelectorAllAsync<int>(\"tag=button\", \"buttons => buttons.length\");\n```\n",
+        "comment": "An example of registering selector engine that queries elements based on a tag name:\n\n```js\nconst { selectors, firefox } = require('playwright');  // Or 'chromium' or 'webkit'.\n\n(async () => {\n  // Must be a function that evaluates to a selector engine instance.\n  const createTagNameEngine = () => ({\n    // Returns the first element matching given selector in the root's subtree.\n    query(root, selector) {\n      return root.querySelector(selector);\n    },\n\n    // Returns all elements matching given selector in the root's subtree.\n    queryAll(root, selector) {\n      return Array.from(root.querySelectorAll(selector));\n    }\n  });\n\n  // Register the engine. Selectors will be prefixed with \"tag=\".\n  await selectors.register('tag', createTagNameEngine);\n\n  const browser = await firefox.launch();\n  const page = await browser.newPage();\n  await page.setContent(`<div><button>Click me</button></div>`);\n\n  // Use the selector prefixed with its name.\n  const button = await page.$('tag=button');\n  // Combine it with other selector engines.\n  await page.click('tag=div >> text=\"Click me\"');\n  // Can use it in any methods supporting selectors.\n  const buttonCount = await page.$$eval('tag=button', buttons => buttons.length);\n\n  await browser.close();\n})();\n```\n\n```java\n// Script that evaluates to a selector engine instance.\nString createTagNameEngine = \"{\\n\" +\n  \"  // Returns the first element matching given selector in the root's subtree.\\n\" +\n  \"  query(root, selector) {\\n\" +\n  \"    return root.querySelector(selector);\\n\" +\n  \"  },\\n\" +\n  \"  // Returns all elements matching given selector in the root's subtree.\\n\" +\n  \"  queryAll(root, selector) {\\n\" +\n  \"    return Array.from(root.querySelectorAll(selector));\\n\" +\n  \"  }\\n\" +\n  \"}\";\n// Register the engine. Selectors will be prefixed with \"tag=\".\nplaywright.selectors().register(\"tag\", createTagNameEngine);\nBrowser browser = playwright.firefox().launch();\nPage page = browser.newPage();\npage.setContent(\"<div><button>Click me</button></div>\");\n// Use the selector prefixed with its name.\nElementHandle button = page.querySelector(\"tag=button\");\n// Combine it with other selector engines.\npage.click(\"tag=div >> text=\\\"Click me\\\"\");\n// Can use it in any methods supporting selectors.\nint buttonCount = (int) page.evalOnSelectorAll(\"tag=button\", \"buttons => buttons.length\");\nbrowser.close();\n```\n\n```python async\nimport asyncio\nfrom playwright.async_api import async_playwright\n\nasync def run(playwright):\n    tag_selector = \"\"\"\n      {\n          // Returns the first element matching given selector in the root's subtree.\n          query(root, selector) {\n              return root.querySelector(selector);\n          },\n          // Returns all elements matching given selector in the root's subtree.\n          queryAll(root, selector) {\n              return Array.from(root.querySelectorAll(selector));\n          }\n      }\"\"\"\n\n    # Register the engine. Selectors will be prefixed with \"tag=\".\n    await playwright.selectors.register(\"tag\", tag_selector)\n    browser = await playwright.chromium.launch()\n    page = await browser.new_page()\n    await page.set_content('<div><button>Click me</button></div>')\n\n    # Use the selector prefixed with its name.\n    button = await page.query_selector('tag=button')\n    # Combine it with other selector engines.\n    await page.click('tag=div >> text=\"Click me\"')\n    # Can use it in any methods supporting selectors.\n    button_count = await page.eval_on_selector_all('tag=button', 'buttons => buttons.length')\n    print(button_count)\n    await browser.close()\n\nasync def main():\n    async with async_playwright() as playwright:\n        await run(playwright)\n\nasyncio.run(main())\n```\n\n```python sync\nfrom playwright.sync_api import sync_playwright\n\ndef run(playwright):\n    tag_selector = \"\"\"\n      {\n          // Returns the first element matching given selector in the root's subtree.\n          query(root, selector) {\n              return root.querySelector(selector);\n          },\n          // Returns all elements matching given selector in the root's subtree.\n          queryAll(root, selector) {\n              return Array.from(root.querySelectorAll(selector));\n          }\n      }\"\"\"\n\n    # Register the engine. Selectors will be prefixed with \"tag=\".\n    playwright.selectors.register(\"tag\", tag_selector)\n    browser = playwright.chromium.launch()\n    page = browser.new_page()\n    page.set_content('<div><button>Click me</button></div>')\n\n    # Use the selector prefixed with its name.\n    button = page.query_selector('tag=button')\n    # Combine it with other selector engines.\n    page.click('tag=div >> text=\"Click me\"')\n    # Can use it in any methods supporting selectors.\n    button_count = page.eval_on_selector_all('tag=button', 'buttons => buttons.length')\n    print(button_count)\n    browser.close()\n\nwith sync_playwright() as playwright:\n    run(playwright)\n```\n\n```csharp\nusing var playwright = await Playwright.CreateAsync();\n// Script that evaluates to a selector engine instance.\nawait playwright.Selectors.RegisterAsync(\"tag\", @\"{\n// Returns the first element matching given selector in the root's subtree.\nquery(root, selector) {\n    return root.querySelector(selector);\n  },\n  // Returns all elements matching given selector in the root's subtree.\n  queryAll(root, selector) {\n    return Array.from(root.querySelectorAll(selector));\n  }\n}\");\n\nawait using var browser = await playwright.Chromium.LaunchAsync();\nvar page = await browser.NewPageAsync();\nawait page.SetContentAsync(\"<div><button>Click me</button></div>\");\n// Use the selector prefixed with its name.\nvar button = await page.QuerySelectorAsync(\"tag=button\");\n// Combine it with other selector engines.\nawait page.ClickAsync(\"tag=div >> text=\\\"Click me\\\"\");\n// Can use it in any methods supporting selectors.\nint buttonCount = await page.EvalOnSelectorAllAsync<int>(\"tag=button\", \"buttons => buttons.length\");\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "register",
