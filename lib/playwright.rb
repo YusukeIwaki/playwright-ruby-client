@@ -66,7 +66,7 @@ module Playwright
 
     execution =
       begin
-        playwright = connection.wait_for_object_with_known_name('Playwright')
+        playwright = connection.initialize_playwright
         Execution.new(connection, PlaywrightApi.wrap(playwright))
       rescue
         connection.stop
@@ -102,7 +102,7 @@ module Playwright
 
     execution =
       begin
-        playwright = connection.wait_for_object_with_known_name('Playwright')
+        playwright = connection.initialize_playwright
         Execution.new(connection, PlaywrightApi.wrap(playwright))
       rescue
         connection.stop
@@ -138,7 +138,7 @@ module Playwright
 
     execution =
       begin
-        playwright = connection.wait_for_object_with_known_name('Playwright')
+        playwright = connection.initialize_playwright
         browser = playwright.send(:pre_launched_browser)
         browser.send(:update_as_remote)
         Execution.new(connection, PlaywrightApi.wrap(playwright), PlaywrightApi.wrap(browser))
