@@ -42,7 +42,6 @@ module Playwright
       raise 'Connecting over CDP is only supported in Chromium.' unless name == 'chromium'
 
       params = {
-        sdkLanguage: 'ruby',
         endpointURL: endpointURL,
         headers: headers,
         slowMo: slowMo,
