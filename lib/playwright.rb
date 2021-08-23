@@ -35,16 +35,18 @@ Dir[File.join(__dir__, 'playwright_api', '*.rb')].each { |f| require f }
 
 module Playwright
   class Execution
-    def initialize(connection, playwright)
+    def initialize(connection, playwright, browser = nil)
       @connection = connection
       @playwright = playwright
+      @browser = browser
     end
 
     def stop
+      @browser&.close
       @connection.stop
     end
 
-    attr_reader :playwright
+    attr_reader :playwright, :browser
   end
 
   # Recommended to call this method with block.
@@ -110,6 +112,44 @@ module Playwright
     if block
       begin
         block.call(execution.playwright)
+      ensure
+        execution.stop
+      end
+    else
+      execution
+    end
+  end
+
+  # Connects to Playwright server, launched by `npx playwright launch-server chromium` or `playwright.chromium.launchServer()`
+  #
+  # Playwright.connect_to_browser_server('ws://....') do |browser|
+  #   page = browser.new_page
+  #   ...
+  # end
+  #
+  # @experimental
+  module_function def connect_to_browser_server(ws_endpoint, &block)
+    require 'playwright/web_socket_client'
+    require 'playwright/web_socket_transport'
+
+    transport = WebSocketTransport.new(ws_endpoint: ws_endpoint)
+    connection = Connection.new(transport)
+    connection.async_run
+
+    execution =
+      begin
+        playwright = connection.wait_for_object_with_known_name('Playwright')
+        browser = playwright.send(:pre_launched_browser)
+        browser.send(:update_as_remote)
+        Execution.new(connection, PlaywrightApi.wrap(playwright), PlaywrightApi.wrap(browser))
+      rescue
+        connection.stop
+        raise
+      end
+
+    if block
+      begin
+        block.call(execution.browser)
       ensure
         execution.stop
       end

@@ -30,6 +30,15 @@ module Playwright
       end.to_h
     end
 
+    # used only from Playwright#connect_to_browser_server
+    private def pre_launched_browser
+      unless @initializer['preLaunchedBrowser']
+        raise 'Malformed endpoint. Did you use launchServer method?'
+      end
+
+      ::Playwright::ChannelOwners::Browser.from(@initializer['preLaunchedBrowser'])
+    end
+
     private def parse_device_descriptor(descriptor)
       # This return value can be passed into Browser#new_context as it is.
       # ex:
