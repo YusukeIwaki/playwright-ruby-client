@@ -12,6 +12,15 @@ Choose any of the three ways as you prefer to download the driver:
 * `npm install`: the best choice for most use cases, with existing Node.js environment.
 * Direct download: maybe a good choice for Docker :whale: integration.
 
+:::note
+
+Also the article [Playwright on Alpine Linux](./playwright_on_alpine_linux) would be helpful if you plan to
+
+* Build a browser server/container like Selenium Grid
+* Run automation scripts on Alpine Linux
+
+:::
+
 ## Using `npx`
 
 ```shell

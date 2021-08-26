@@ -4,13 +4,22 @@ sidebar_position: 0
 
 # Getting started
 
-`playwright-ruby-client` doesn't include Playwright driver nor its downloader. **We have to install Playwright in advance**
+```
+gem 'playwright-ruby-client'
+```
+
+Add the line above and then `bundle install`.
+
+
+Since `playwright-ruby-client` doesn't include Playwright driver nor its downloader, **we have to install Playwright in advance**
 
 ```shell
 $ npx playwright install
 ```
 
 and then set `playwright_cli_executable_path: "npx playwright"` into `Playwright.create`.
+
+Other methods of installation is also available. See the detail in [Download Playwright driver](./guides/download_playwright_driver)
 
 ## Enjoy with examples
 
