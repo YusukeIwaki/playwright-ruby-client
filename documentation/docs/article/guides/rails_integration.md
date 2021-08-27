@@ -2,9 +2,11 @@
 sidebar_position: 3
 ---
 
-# Integration into Ruby on Rails application
+# Capybara driver for Ruby on Rails application
 
-`playwright-ruby-client` is a client library just for browser automation. `capybara-playwright-driver` provides the [Capybara](https://github.com/teamcapybara/capybara) driver based on playwright-ruby-client and makes it easy to integrate into Ruby on Rails applications.
+`playwright-ruby-client` is a client library just for browser automation, while Rails uses [Capybara](https://github.com/teamcapybara/capybara) for system testing.
+
+`capybara-playwright-driver` provides a [Capybara](https://github.com/teamcapybara/capybara) driver based on playwright-ruby-client and makes it easy to integrate into Ruby on Rails applications.
 
 ## Installation
 
