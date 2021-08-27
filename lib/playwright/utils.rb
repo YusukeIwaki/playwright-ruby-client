@@ -10,6 +10,14 @@ module Playwright
         if params[:extraHTTPHeaders]
           params[:extraHTTPHeaders] = ::Playwright::HttpHeaders.new(params[:extraHTTPHeaders]).as_serialized
         end
+        if params[:record_har_path]
+          params[:recordHar] = {
+            path: params.delete(:record_har_path)
+          }
+          if params[:record_har_omit_content]
+            params[:recordHar][:omitContent] = params.delete(:record_har_omit_content)
+          end
+        end
         if params[:record_video_dir]
           params[:recordVideo] = {
             dir: params.delete(:record_video_dir)

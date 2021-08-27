@@ -132,17 +132,24 @@ module Playwright
     end
 
     private def on_download(params)
+      artifact = ChannelOwners::Artifact.from(params['artifact'])
+      if @browser_context.browser.send(:remote?)
+        artifact.update_as_remote
+      end
       download = DownloadImpl.new(
         page: self,
         url: params['url'],
         suggested_filename: params['suggestedFilename'],
-        artifact: ChannelOwners::Artifact.from(params['artifact']),
+        artifact: artifact,
       )
       emit(Events::Page::Download, download)
     end
 
     private def on_video(params)
       artifact = ChannelOwners::Artifact.from(params['artifact'])
+      if @browser_context.browser.send(:remote?)
+        artifact.update_as_remote
+      end
       video.send(:set_artifact, artifact)
     end
 

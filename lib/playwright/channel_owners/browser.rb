@@ -104,6 +104,10 @@ module Playwright
       @remote = true
     end
 
+    private def remote?
+      @remote
+    end
+
     # called from BrowserContext#on_close with send(:remove_context), so keep private.
     private def remove_context(context)
       @contexts.delete(context)
