@@ -630,7 +630,7 @@ If the element does not satisfy the condition for the `timeout` milliseconds, th
 ## wait_for_selector
 
 ```
-def wait_for_selector(selector, state: nil, timeout: nil)
+def wait_for_selector(selector, state: nil, strict: nil, timeout: nil)
 ```
 
 Returns element specified by selector when it satisfies `state` option. Returns `null` if waiting for `hidden` or

@@ -12284,11 +12284,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "Target to create new session for. For backwards-compatability, this parameter is named `page`, but it can be a `Page` or `Frame` type."
+                "text": "Target to create new session for. For backwards-compatibility, this parameter is named `page`, but it can be a `Page` or `Frame` type."
               }
             ],
             "required": true,
-            "comment": "Target to create new session for. For backwards-compatability, this parameter is named `page`, but it can be a `Page` or\n`Frame` type.",
+            "comment": "Target to create new session for. For backwards-compatibility, this parameter is named `page`, but it can be a `Page` or\n`Frame` type.",
             "deprecated": false,
             "async": false,
             "alias": "page",
@@ -12356,6 +12356,11 @@
           {
             "type": "text",
             "text": "Routing provides the capability to modify network requests that are made by any page in the browser context. Once route is enabled, every request matching the url pattern will stall unless it's continued, fulfilled or aborted."
+          },
+          {
+            "type": "note",
+            "noteType": "note",
+            "text": "[`method: Page.route`] will not intercept requests intercepted by Service Worker. See [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using request interception. Via `await context.addInitScript(() => delete window.navigator.serviceWorker);`"
           },
           {
             "type": "text",
@@ -12558,7 +12563,7 @@
           }
         ],
         "required": true,
-        "comment": "Routing provides the capability to modify network requests that are made by any page in the browser context. Once route\nis enabled, every request matching the url pattern will stall unless it's continued, fulfilled or aborted.\n\nAn example of a naive handler that aborts all image requests:\n\n```js\nconst context = await browser.newContext();\nawait context.route('**/*.{png,jpg,jpeg}', route => route.abort());\nconst page = await context.newPage();\nawait page.goto('https://example.com');\nawait browser.close();\n```\n\n```java\nBrowserContext context = browser.newContext();\ncontext.route(\"**/*.{png,jpg,jpeg}\", route -> route.abort());\nPage page = context.newPage();\npage.navigate(\"https://example.com\");\nbrowser.close();\n```\n\n```python async\ncontext = await browser.new_context()\npage = await context.new_page()\nawait context.route(\"**/*.{png,jpg,jpeg}\", lambda route: route.abort())\nawait page.goto(\"https://example.com\")\nawait browser.close()\n```\n\n```python sync\ncontext = browser.new_context()\npage = context.new_page()\ncontext.route(\"**/*.{png,jpg,jpeg}\", lambda route: route.abort())\npage.goto(\"https://example.com\")\nbrowser.close()\n```\n\n```csharp\nvar context = await browser.NewContextAsync();\nvar page = await context.NewPageAsync();\nawait context.RouteAsync(\"**/*.{png,jpg,jpeg}\", r => r.AbortAsync());\nawait page.GotoAsync(\"https://theverge.com\");\nawait browser.CloseAsync();\n```\n\nor the same snippet using a regex pattern instead:\n\n```js\nconst context = await browser.newContext();\nawait context.route(/(\\.png$)|(\\.jpg$)/, route => route.abort());\nconst page = await context.newPage();\nawait page.goto('https://example.com');\nawait browser.close();\n```\n\n```java\nBrowserContext context = browser.newContext();\ncontext.route(Pattern.compile(\"(\\\\.png$)|(\\\\.jpg$)\"), route -> route.abort());\nPage page = context.newPage();\npage.navigate(\"https://example.com\");\nbrowser.close();\n```\n\n```python async\ncontext = await browser.new_context()\npage = await context.new_page()\nawait context.route(re.compile(r\"(\\.png$)|(\\.jpg$)\"), lambda route: route.abort())\npage = await context.new_page()\nawait page.goto(\"https://example.com\")\nawait browser.close()\n```\n\n```python sync\ncontext = browser.new_context()\npage = context.new_page()\ncontext.route(re.compile(r\"(\\.png$)|(\\.jpg$)\"), lambda route: route.abort())\npage = await context.new_page()\npage = context.new_page()\npage.goto(\"https://example.com\")\nbrowser.close()\n```\n\n```csharp\nvar context = await browser.NewContextAsync();\nvar page = await context.NewPageAsync();\nawait context.RouteAsync(new Regex(\"(\\\\.png$)|(\\\\.jpg$)\"), r => r.AbortAsync());\nawait page.GotoAsync(\"https://theverge.com\");\nawait browser.CloseAsync();\n```\n\nIt is possible to examine the request to decide the route action. For example, mocking all requests that contain some\npost data, and leaving all other requests as is:\n\n```js\nawait context.route('/api/**', route => {\n  if (route.request().postData().includes('my-string'))\n    route.fulfill({ body: 'mocked-data' });\n  else\n    route.continue();\n});\n```\n\n```java\ncontext.route(\"/api/**\", route -> {\n  if (route.request().postData().contains(\"my-string\"))\n    route.fulfill(new Route.FulfillOptions().setBody(\"mocked-data\"));\n  else\n    route.resume();\n});\n```\n\n```python async\ndef handle_route(route):\n  if (\"my-string\" in route.request.post_data)\n    route.fulfill(body=\"mocked-data\")\n  else\n    route.continue_()\nawait context.route(\"/api/**\", handle_route)\n```\n\n```python sync\ndef handle_route(route):\n  if (\"my-string\" in route.request.post_data)\n    route.fulfill(body=\"mocked-data\")\n  else\n    route.continue_()\ncontext.route(\"/api/**\", handle_route)\n```\n\n```csharp\nawait page.RouteAsync(\"/api/**\", async r =>\n{\n    if (r.Request.PostData.Contains(\"my-string\"))\n        await r.FulfillAsync(body: \"mocked-data\");\n    else\n        await r.ContinueAsync();\n});\n```\n\nPage routes (set up with [`method: Page.route`]) take precedence over browser context routes when request matches both\nhandlers.\n\nTo remove a route with its handler you can use [`method: BrowserContext.unroute`].\n\n> NOTE: Enabling routing disables http cache.",
+        "comment": "Routing provides the capability to modify network requests that are made by any page in the browser context. Once route\nis enabled, every request matching the url pattern will stall unless it's continued, fulfilled or aborted.\n\n> NOTE: [`method: Page.route`] will not intercept requests intercepted by Service Worker. See\n[this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using\nrequest interception. Via `await context.addInitScript(() => delete window.navigator.serviceWorker);`\n\nAn example of a naive handler that aborts all image requests:\n\n```js\nconst context = await browser.newContext();\nawait context.route('**/*.{png,jpg,jpeg}', route => route.abort());\nconst page = await context.newPage();\nawait page.goto('https://example.com');\nawait browser.close();\n```\n\n```java\nBrowserContext context = browser.newContext();\ncontext.route(\"**/*.{png,jpg,jpeg}\", route -> route.abort());\nPage page = context.newPage();\npage.navigate(\"https://example.com\");\nbrowser.close();\n```\n\n```python async\ncontext = await browser.new_context()\npage = await context.new_page()\nawait context.route(\"**/*.{png,jpg,jpeg}\", lambda route: route.abort())\nawait page.goto(\"https://example.com\")\nawait browser.close()\n```\n\n```python sync\ncontext = browser.new_context()\npage = context.new_page()\ncontext.route(\"**/*.{png,jpg,jpeg}\", lambda route: route.abort())\npage.goto(\"https://example.com\")\nbrowser.close()\n```\n\n```csharp\nvar context = await browser.NewContextAsync();\nvar page = await context.NewPageAsync();\nawait context.RouteAsync(\"**/*.{png,jpg,jpeg}\", r => r.AbortAsync());\nawait page.GotoAsync(\"https://theverge.com\");\nawait browser.CloseAsync();\n```\n\nor the same snippet using a regex pattern instead:\n\n```js\nconst context = await browser.newContext();\nawait context.route(/(\\.png$)|(\\.jpg$)/, route => route.abort());\nconst page = await context.newPage();\nawait page.goto('https://example.com');\nawait browser.close();\n```\n\n```java\nBrowserContext context = browser.newContext();\ncontext.route(Pattern.compile(\"(\\\\.png$)|(\\\\.jpg$)\"), route -> route.abort());\nPage page = context.newPage();\npage.navigate(\"https://example.com\");\nbrowser.close();\n```\n\n```python async\ncontext = await browser.new_context()\npage = await context.new_page()\nawait context.route(re.compile(r\"(\\.png$)|(\\.jpg$)\"), lambda route: route.abort())\npage = await context.new_page()\nawait page.goto(\"https://example.com\")\nawait browser.close()\n```\n\n```python sync\ncontext = browser.new_context()\npage = context.new_page()\ncontext.route(re.compile(r\"(\\.png$)|(\\.jpg$)\"), lambda route: route.abort())\npage = await context.new_page()\npage = context.new_page()\npage.goto(\"https://example.com\")\nbrowser.close()\n```\n\n```csharp\nvar context = await browser.NewContextAsync();\nvar page = await context.NewPageAsync();\nawait context.RouteAsync(new Regex(\"(\\\\.png$)|(\\\\.jpg$)\"), r => r.AbortAsync());\nawait page.GotoAsync(\"https://theverge.com\");\nawait browser.CloseAsync();\n```\n\nIt is possible to examine the request to decide the route action. For example, mocking all requests that contain some\npost data, and leaving all other requests as is:\n\n```js\nawait context.route('/api/**', route => {\n  if (route.request().postData().includes('my-string'))\n    route.fulfill({ body: 'mocked-data' });\n  else\n    route.continue();\n});\n```\n\n```java\ncontext.route(\"/api/**\", route -> {\n  if (route.request().postData().contains(\"my-string\"))\n    route.fulfill(new Route.FulfillOptions().setBody(\"mocked-data\"));\n  else\n    route.resume();\n});\n```\n\n```python async\ndef handle_route(route):\n  if (\"my-string\" in route.request.post_data)\n    route.fulfill(body=\"mocked-data\")\n  else\n    route.continue_()\nawait context.route(\"/api/**\", handle_route)\n```\n\n```python sync\ndef handle_route(route):\n  if (\"my-string\" in route.request.post_data)\n    route.fulfill(body=\"mocked-data\")\n  else\n    route.continue_()\ncontext.route(\"/api/**\", handle_route)\n```\n\n```csharp\nawait page.RouteAsync(\"/api/**\", async r =>\n{\n    if (r.Request.PostData.Contains(\"my-string\"))\n        await r.FulfillAsync(body: \"mocked-data\");\n    else\n        await r.ContinueAsync();\n});\n```\n\nPage routes (set up with [`method: Page.route`]) take precedence over browser context routes when request matches both\nhandlers.\n\nTo remove a route with its handler you can use [`method: BrowserContext.unroute`].\n\n> NOTE: Enabling routing disables http cache.",
         "deprecated": false,
         "async": true,
         "alias": "route",
@@ -12675,6 +12680,43 @@
             "deprecated": false,
             "async": false,
             "alias": "handler",
+            "paramOrOption": null
+          },
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "times",
+                  "type": {
+                    "name": "int",
+                    "expression": "[int]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "How often a route should be used. By default it will be used every time."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "How often a route should be used. By default it will be used every time.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "times",
+                  "paramOrOption": null
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "options",
             "paramOrOption": null
           }
         ]
@@ -17819,7 +17861,7 @@
               "  const browserServer = await chromium.launchServer();",
               "  const wsEndpoint = browserServer.wsEndpoint();",
               "  // Use web socket endpoint later to establish a connection.",
-              "  const browser = await chromium.connect({ wsEndpoint });",
+              "  const browser = await chromium.connect(wsEndpoint);",
               "  // Close browser instance.",
               "  await browserServer.close();",
               "})();"
@@ -17828,7 +17870,7 @@
           }
         ],
         "required": true,
-        "comment": "Returns the browser app instance.\n\nLaunches browser server that client can connect to. An example of launching a browser executable and connecting to it\nlater:\n\n```js\nconst { chromium } = require('playwright');  // Or 'webkit' or 'firefox'.\n\n(async () => {\n  const browserServer = await chromium.launchServer();\n  const wsEndpoint = browserServer.wsEndpoint();\n  // Use web socket endpoint later to establish a connection.\n  const browser = await chromium.connect({ wsEndpoint });\n  // Close browser instance.\n  await browserServer.close();\n})();\n```\n",
+        "comment": "Returns the browser app instance.\n\nLaunches browser server that client can connect to. An example of launching a browser executable and connecting to it\nlater:\n\n```js\nconst { chromium } = require('playwright');  // Or 'webkit' or 'firefox'.\n\n(async () => {\n  const browserServer = await chromium.launchServer();\n  const wsEndpoint = browserServer.wsEndpoint();\n  // Use web socket endpoint later to establish a connection.\n  const browser = await chromium.connect(wsEndpoint);\n  // Close browser instance.\n  await browserServer.close();\n})();\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "launchServer",
@@ -20986,6 +21028,27 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "recordVideoSize",
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Maximum time in milliseconds to wait for the application to start. Defaults to `30000` (30 seconds). Pass `0` to disable timeout."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Maximum time in milliseconds to wait for the application to start. Defaults to `30000` (30 seconds). Pass `0` to disable\ntimeout.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
                   "paramOrOption": null
                 },
                 {
@@ -26585,6 +26648,27 @@
                 {
                   "kind": "property",
                   "langs": {},
+                  "name": "strict",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "strict",
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
                   "name": "timeout",
                   "type": {
                     "name": "float",
@@ -31788,12 +31872,12 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by using the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods."
+                      "text": "**DEPRECATED** This option is ignored. [`method: Frame.isHidden`] does not wait for the element to become hidden and returns immediately."
                     }
                   ],
                   "required": false,
-                  "comment": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by\nusing the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods.",
-                  "deprecated": false,
+                  "comment": "**DEPRECATED** This option is ignored. [`method: Frame.isHidden`] does not wait for the element to become hidden and\nreturns immediately.",
+                  "deprecated": true,
                   "async": false,
                   "alias": "timeout",
                   "paramOrOption": null
@@ -31890,12 +31974,12 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by using the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods."
+                      "text": "**DEPRECATED** This option is ignored. [`method: Frame.isVisible`] does not wait for the element to become visible and returns immediately."
                     }
                   ],
                   "required": false,
-                  "comment": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by\nusing the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods.",
-                  "deprecated": false,
+                  "comment": "**DEPRECATED** This option is ignored. [`method: Frame.isVisible`] does not wait for the element to become visible and\nreturns immediately.",
+                  "deprecated": true,
                   "async": false,
                   "alias": "timeout",
                   "paramOrOption": null
@@ -36772,7 +36856,7 @@
             "type": "code",
             "lines": [
               "await page.Keyboard.TypeAsync(\"Hello\"); // types instantly",
-              "await page.Keyboard.TypeAsync(\"World\"); // types slower, like a user"
+              "await page.Keyboard.TypeAsync(\"World\", new KeyboardTypeOptions { Delay = 100 }); // types slower, like a user"
             ],
             "codeLang": "csharp"
           },
@@ -36788,7 +36872,7 @@
           }
         ],
         "required": true,
-        "comment": "Sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text.\n\nTo press a special key, like `Control` or `ArrowDown`, use [`method: Keyboard.press`].\n\n```js\nawait page.keyboard.type('Hello'); // Types instantly\nawait page.keyboard.type('World', {delay: 100}); // Types slower, like a user\n```\n\n```java\n// Types instantly\npage.keyboard().type(\"Hello\");\n// Types slower, like a user\npage.keyboard().type(\"World\", new Keyboard.TypeOptions().setDelay(100));\n```\n\n```python async\nawait page.keyboard.type(\"Hello\") # types instantly\nawait page.keyboard.type(\"World\", delay=100) # types slower, like a user\n```\n\n```python sync\npage.keyboard.type(\"Hello\") # types instantly\npage.keyboard.type(\"World\", delay=100) # types slower, like a user\n```\n\n```csharp\nawait page.Keyboard.TypeAsync(\"Hello\"); // types instantly\nawait page.Keyboard.TypeAsync(\"World\"); // types slower, like a user\n```\n\n> NOTE: Modifier keys DO NOT effect `keyboard.type`. Holding down `Shift` will not type the text in upper case.\n> NOTE: For characters that are not on a US keyboard, only an `input` event will be sent.",
+        "comment": "Sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text.\n\nTo press a special key, like `Control` or `ArrowDown`, use [`method: Keyboard.press`].\n\n```js\nawait page.keyboard.type('Hello'); // Types instantly\nawait page.keyboard.type('World', {delay: 100}); // Types slower, like a user\n```\n\n```java\n// Types instantly\npage.keyboard().type(\"Hello\");\n// Types slower, like a user\npage.keyboard().type(\"World\", new Keyboard.TypeOptions().setDelay(100));\n```\n\n```python async\nawait page.keyboard.type(\"Hello\") # types instantly\nawait page.keyboard.type(\"World\", delay=100) # types slower, like a user\n```\n\n```python sync\npage.keyboard.type(\"Hello\") # types instantly\npage.keyboard.type(\"World\", delay=100) # types slower, like a user\n```\n\n```csharp\nawait page.Keyboard.TypeAsync(\"Hello\"); // types instantly\nawait page.Keyboard.TypeAsync(\"World\", new KeyboardTypeOptions { Delay = 100 }); // types slower, like a user\n```\n\n> NOTE: Modifier keys DO NOT effect `keyboard.type`. Holding down `Shift` will not type the text in upper case.\n> NOTE: For characters that are not on a US keyboard, only an `input` event will be sent.",
         "deprecated": false,
         "async": true,
         "alias": "type",
@@ -40094,12 +40178,12 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by using the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods."
+                      "text": "**DEPRECATED** This option is ignored. [`method: Locator.isHidden`] does not wait for the element to become hidden and returns immediately."
                     }
                   ],
                   "required": false,
-                  "comment": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by\nusing the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods.",
-                  "deprecated": false,
+                  "comment": "**DEPRECATED** This option is ignored. [`method: Locator.isHidden`] does not wait for the element to become hidden and\nreturns immediately.",
+                  "deprecated": true,
                   "async": false,
                   "alias": "timeout",
                   "paramOrOption": null
@@ -40154,12 +40238,12 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by using the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods."
+                      "text": "**DEPRECATED** This option is ignored. [`method: Locator.isVisible`] does not wait for the element to become visible and returns immediately."
                     }
                   ],
                   "required": false,
-                  "comment": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by\nusing the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods.",
-                  "deprecated": false,
+                  "comment": "**DEPRECATED** This option is ignored. [`method: Locator.isVisible`] does not wait for the element to become visible and\nreturns immediately.",
+                  "deprecated": true,
                   "async": false,
                   "alias": "timeout",
                   "paramOrOption": null
@@ -50790,12 +50874,12 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by using the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods."
+                      "text": "**DEPRECATED** This option is ignored. [`method: Page.isHidden`] does not wait for the element to become hidden and returns immediately."
                     }
                   ],
                   "required": false,
-                  "comment": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by\nusing the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods.",
-                  "deprecated": false,
+                  "comment": "**DEPRECATED** This option is ignored. [`method: Page.isHidden`] does not wait for the element to become hidden and\nreturns immediately.",
+                  "deprecated": true,
                   "async": false,
                   "alias": "timeout",
                   "paramOrOption": null
@@ -50892,12 +50976,12 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by using the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods."
+                      "text": "**DEPRECATED** This option is ignored. [`method: Page.isVisible`] does not wait for the element to become visible and returns immediately."
                     }
                   ],
                   "required": false,
-                  "comment": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by\nusing the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods.",
-                  "deprecated": false,
+                  "comment": "**DEPRECATED** This option is ignored. [`method: Page.isVisible`] does not wait for the element to become visible and\nreturns immediately.",
+                  "deprecated": true,
                   "async": false,
                   "alias": "timeout",
                   "paramOrOption": null
@@ -52473,6 +52557,11 @@
             "text": "The handler will only be called for the first url if the response is a redirect."
           },
           {
+            "type": "note",
+            "noteType": "note",
+            "text": "[`method: Page.route`] will not intercept requests intercepted by Service Worker. See [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using request interception. Via `await context.addInitScript(() => delete window.navigator.serviceWorker);`"
+          },
+          {
             "type": "text",
             "text": "An example of a naive handler that aborts all image requests:"
           },
@@ -52658,7 +52747,7 @@
           }
         ],
         "required": true,
-        "comment": "Routing provides the capability to modify network requests that are made by a page.\n\nOnce routing is enabled, every request matching the url pattern will stall unless it's continued, fulfilled or aborted.\n\n> NOTE: The handler will only be called for the first url if the response is a redirect.\n\nAn example of a naive handler that aborts all image requests:\n\n```js\nconst page = await browser.newPage();\nawait page.route('**/*.{png,jpg,jpeg}', route => route.abort());\nawait page.goto('https://example.com');\nawait browser.close();\n```\n\n```java\nPage page = browser.newPage();\npage.route(\"**/*.{png,jpg,jpeg}\", route -> route.abort());\npage.navigate(\"https://example.com\");\nbrowser.close();\n```\n\n```python async\npage = await browser.new_page()\nawait page.route(\"**/*.{png,jpg,jpeg}\", lambda route: route.abort())\nawait page.goto(\"https://example.com\")\nawait browser.close()\n```\n\n```python sync\npage = browser.new_page()\npage.route(\"**/*.{png,jpg,jpeg}\", lambda route: route.abort())\npage.goto(\"https://example.com\")\nbrowser.close()\n```\n\n```csharp\nvar page = await browser.NewPageAsync();\nawait page.RouteAsync(\"**/*.{png,jpg,jpeg}\", async r => await r.AbortAsync());\nawait page.GotoAsync(\"https://www.microsoft.com\");\n```\n\nor the same snippet using a regex pattern instead:\n\n```js\nconst page = await browser.newPage();\nawait page.route(/(\\.png$)|(\\.jpg$)/, route => route.abort());\nawait page.goto('https://example.com');\nawait browser.close();\n```\n\n```java\nPage page = browser.newPage();\npage.route(Pattern.compile(\"(\\\\.png$)|(\\\\.jpg$)\"),route -> route.abort());\npage.navigate(\"https://example.com\");\nbrowser.close();\n```\n\n```python async\npage = await browser.new_page()\nawait page.route(re.compile(r\"(\\.png$)|(\\.jpg$)\"), lambda route: route.abort())\nawait page.goto(\"https://example.com\")\nawait browser.close()\n```\n\n```python sync\npage = browser.new_page()\npage.route(re.compile(r\"(\\.png$)|(\\.jpg$)\"), lambda route: route.abort())\npage.goto(\"https://example.com\")\nbrowser.close()\n```\n\n```csharp\nvar page = await browser.NewPageAsync();\nawait page.RouteAsync(new Regex(\"(\\\\.png$)|(\\\\.jpg$)\"), async r => await r.AbortAsync());\nawait page.GotoAsync(\"https://www.microsoft.com\");\n```\n\nIt is possible to examine the request to decide the route action. For example, mocking all requests that contain some\npost data, and leaving all other requests as is:\n\n```js\nawait page.route('/api/**', route => {\n  if (route.request().postData().includes('my-string'))\n    route.fulfill({ body: 'mocked-data' });\n  else\n    route.continue();\n});\n```\n\n```java\npage.route(\"/api/**\", route -> {\n  if (route.request().postData().contains(\"my-string\"))\n    route.fulfill(new Route.FulfillOptions().setBody(\"mocked-data\"));\n  else\n    route.resume();\n});\n```\n\n```python async\ndef handle_route(route):\n  if (\"my-string\" in route.request.post_data)\n    route.fulfill(body=\"mocked-data\")\n  else\n    route.continue_()\nawait page.route(\"/api/**\", handle_route)\n```\n\n```python sync\ndef handle_route(route):\n  if (\"my-string\" in route.request.post_data)\n    route.fulfill(body=\"mocked-data\")\n  else\n    route.continue_()\npage.route(\"/api/**\", handle_route)\n```\n\n```csharp\nawait page.RouteAsync(\"/api/**\", async r =>\n{\n  if (r.Request.PostData.Contains(\"my-string\"))\n      await r.FulfillAsync(new RouteFulfillOptions { Body = \"mocked-data\" });\n  else\n      await r.ContinueAsync();\n});\n```\n\nPage routes take precedence over browser context routes (set up with [`method: BrowserContext.route`]) when request\nmatches both handlers.\n\nTo remove a route with its handler you can use [`method: Page.unroute`].\n\n> NOTE: Enabling routing disables http cache.",
+        "comment": "Routing provides the capability to modify network requests that are made by a page.\n\nOnce routing is enabled, every request matching the url pattern will stall unless it's continued, fulfilled or aborted.\n\n> NOTE: The handler will only be called for the first url if the response is a redirect.\n> NOTE: [`method: Page.route`] will not intercept requests intercepted by Service Worker. See\n[this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using\nrequest interception. Via `await context.addInitScript(() => delete window.navigator.serviceWorker);`\n\nAn example of a naive handler that aborts all image requests:\n\n```js\nconst page = await browser.newPage();\nawait page.route('**/*.{png,jpg,jpeg}', route => route.abort());\nawait page.goto('https://example.com');\nawait browser.close();\n```\n\n```java\nPage page = browser.newPage();\npage.route(\"**/*.{png,jpg,jpeg}\", route -> route.abort());\npage.navigate(\"https://example.com\");\nbrowser.close();\n```\n\n```python async\npage = await browser.new_page()\nawait page.route(\"**/*.{png,jpg,jpeg}\", lambda route: route.abort())\nawait page.goto(\"https://example.com\")\nawait browser.close()\n```\n\n```python sync\npage = browser.new_page()\npage.route(\"**/*.{png,jpg,jpeg}\", lambda route: route.abort())\npage.goto(\"https://example.com\")\nbrowser.close()\n```\n\n```csharp\nvar page = await browser.NewPageAsync();\nawait page.RouteAsync(\"**/*.{png,jpg,jpeg}\", async r => await r.AbortAsync());\nawait page.GotoAsync(\"https://www.microsoft.com\");\n```\n\nor the same snippet using a regex pattern instead:\n\n```js\nconst page = await browser.newPage();\nawait page.route(/(\\.png$)|(\\.jpg$)/, route => route.abort());\nawait page.goto('https://example.com');\nawait browser.close();\n```\n\n```java\nPage page = browser.newPage();\npage.route(Pattern.compile(\"(\\\\.png$)|(\\\\.jpg$)\"),route -> route.abort());\npage.navigate(\"https://example.com\");\nbrowser.close();\n```\n\n```python async\npage = await browser.new_page()\nawait page.route(re.compile(r\"(\\.png$)|(\\.jpg$)\"), lambda route: route.abort())\nawait page.goto(\"https://example.com\")\nawait browser.close()\n```\n\n```python sync\npage = browser.new_page()\npage.route(re.compile(r\"(\\.png$)|(\\.jpg$)\"), lambda route: route.abort())\npage.goto(\"https://example.com\")\nbrowser.close()\n```\n\n```csharp\nvar page = await browser.NewPageAsync();\nawait page.RouteAsync(new Regex(\"(\\\\.png$)|(\\\\.jpg$)\"), async r => await r.AbortAsync());\nawait page.GotoAsync(\"https://www.microsoft.com\");\n```\n\nIt is possible to examine the request to decide the route action. For example, mocking all requests that contain some\npost data, and leaving all other requests as is:\n\n```js\nawait page.route('/api/**', route => {\n  if (route.request().postData().includes('my-string'))\n    route.fulfill({ body: 'mocked-data' });\n  else\n    route.continue();\n});\n```\n\n```java\npage.route(\"/api/**\", route -> {\n  if (route.request().postData().contains(\"my-string\"))\n    route.fulfill(new Route.FulfillOptions().setBody(\"mocked-data\"));\n  else\n    route.resume();\n});\n```\n\n```python async\ndef handle_route(route):\n  if (\"my-string\" in route.request.post_data)\n    route.fulfill(body=\"mocked-data\")\n  else\n    route.continue_()\nawait page.route(\"/api/**\", handle_route)\n```\n\n```python sync\ndef handle_route(route):\n  if (\"my-string\" in route.request.post_data)\n    route.fulfill(body=\"mocked-data\")\n  else\n    route.continue_()\npage.route(\"/api/**\", handle_route)\n```\n\n```csharp\nawait page.RouteAsync(\"/api/**\", async r =>\n{\n  if (r.Request.PostData.Contains(\"my-string\"))\n      await r.FulfillAsync(new RouteFulfillOptions { Body = \"mocked-data\" });\n  else\n      await r.ContinueAsync();\n});\n```\n\nPage routes take precedence over browser context routes (set up with [`method: BrowserContext.route`]) when request\nmatches both handlers.\n\nTo remove a route with its handler you can use [`method: Page.unroute`].\n\n> NOTE: Enabling routing disables http cache.",
         "deprecated": false,
         "async": true,
         "alias": "route",
@@ -52775,6 +52864,43 @@
             "deprecated": false,
             "async": false,
             "alias": "handler",
+            "paramOrOption": null
+          },
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "times",
+                  "type": {
+                    "name": "int",
+                    "expression": "[int]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "How often a route should be used. By default it will be used every time."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "How often a route should be used. By default it will be used every time.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "times",
+                  "paramOrOption": null
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "options",
             "paramOrOption": null
           }
         ]
@@ -53147,7 +53273,7 @@
               "await page.SelectOptionAsync(\"select#colors\", new[] { \"blue\" });",
               "// single selection matching both the value and the label",
               "await page.SelectOptionAsync(\"select#colors\", new[] { new SelectOptionValue() { Label = \"blue\" } });",
-              "// multiple ",
+              "// multiple",
               "await page.SelectOptionAsync(\"select#colors\", new[] { \"red\", \"green\", \"blue\" });"
             ],
             "codeLang": "csharp"
@@ -53158,7 +53284,7 @@
           }
         ],
         "required": true,
-        "comment": "This method waits for an element matching `selector`, waits for [actionability](./actionability.md) checks, waits until\nall specified options are present in the `<select>` element and selects these options.\n\nIf the target element is not a `<select>` element, this method throws an error. However, if the element is inside the\n`<label>` element that has an associated\n[control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), the control will be used instead.\n\nReturns the array of option values that have been successfully selected.\n\nTriggers a `change` and `input` event once all the provided options have been selected.\n\n```js\n// single selection matching the value\npage.selectOption('select#colors', 'blue');\n\n// single selection matching the label\npage.selectOption('select#colors', { label: 'Blue' });\n\n// multiple selection\npage.selectOption('select#colors', ['red', 'green', 'blue']);\n\n```\n\n```java\n// single selection matching the value\npage.selectOption(\"select#colors\", \"blue\");\n// single selection matching both the value and the label\npage.selectOption(\"select#colors\", new SelectOption().setLabel(\"Blue\"));\n// multiple selection\npage.selectOption(\"select#colors\", new String[] {\"red\", \"green\", \"blue\"});\n```\n\n```python async\n# single selection matching the value\nawait page.select_option(\"select#colors\", \"blue\")\n# single selection matching the label\nawait page.select_option(\"select#colors\", label=\"blue\")\n# multiple selection\nawait page.select_option(\"select#colors\", value=[\"red\", \"green\", \"blue\"])\n```\n\n```python sync\n# single selection matching the value\npage.select_option(\"select#colors\", \"blue\")\n# single selection matching both the label\npage.select_option(\"select#colors\", label=\"blue\")\n# multiple selection\npage.select_option(\"select#colors\", value=[\"red\", \"green\", \"blue\"])\n```\n\n```csharp\n// single selection matching the value\nawait page.SelectOptionAsync(\"select#colors\", new[] { \"blue\" });\n// single selection matching both the value and the label\nawait page.SelectOptionAsync(\"select#colors\", new[] { new SelectOptionValue() { Label = \"blue\" } });\n// multiple \nawait page.SelectOptionAsync(\"select#colors\", new[] { \"red\", \"green\", \"blue\" });\n```\n\nShortcut for main frame's [`method: Frame.selectOption`].",
+        "comment": "This method waits for an element matching `selector`, waits for [actionability](./actionability.md) checks, waits until\nall specified options are present in the `<select>` element and selects these options.\n\nIf the target element is not a `<select>` element, this method throws an error. However, if the element is inside the\n`<label>` element that has an associated\n[control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), the control will be used instead.\n\nReturns the array of option values that have been successfully selected.\n\nTriggers a `change` and `input` event once all the provided options have been selected.\n\n```js\n// single selection matching the value\npage.selectOption('select#colors', 'blue');\n\n// single selection matching the label\npage.selectOption('select#colors', { label: 'Blue' });\n\n// multiple selection\npage.selectOption('select#colors', ['red', 'green', 'blue']);\n\n```\n\n```java\n// single selection matching the value\npage.selectOption(\"select#colors\", \"blue\");\n// single selection matching both the value and the label\npage.selectOption(\"select#colors\", new SelectOption().setLabel(\"Blue\"));\n// multiple selection\npage.selectOption(\"select#colors\", new String[] {\"red\", \"green\", \"blue\"});\n```\n\n```python async\n# single selection matching the value\nawait page.select_option(\"select#colors\", \"blue\")\n# single selection matching the label\nawait page.select_option(\"select#colors\", label=\"blue\")\n# multiple selection\nawait page.select_option(\"select#colors\", value=[\"red\", \"green\", \"blue\"])\n```\n\n```python sync\n# single selection matching the value\npage.select_option(\"select#colors\", \"blue\")\n# single selection matching both the label\npage.select_option(\"select#colors\", label=\"blue\")\n# multiple selection\npage.select_option(\"select#colors\", value=[\"red\", \"green\", \"blue\"])\n```\n\n```csharp\n// single selection matching the value\nawait page.SelectOptionAsync(\"select#colors\", new[] { \"blue\" });\n// single selection matching both the value and the label\nawait page.SelectOptionAsync(\"select#colors\", new[] { new SelectOptionValue() { Label = \"blue\" } });\n// multiple\nawait page.SelectOptionAsync(\"select#colors\", new[] { \"red\", \"green\", \"blue\" });\n```\n\nShortcut for main frame's [`method: Frame.selectOption`].",
         "deprecated": false,
         "async": true,
         "alias": "selectOption",
@@ -62890,11 +63016,123 @@
       {
         "type": "text",
         "text": "TimeoutError is emitted whenever certain operations are terminated due to timeout, e.g. [`method: Page.waitForSelector`] or [`method: BrowserType.launch`]."
+      },
+      {
+        "type": "code",
+        "lines": [
+          "const playwright = require('playwright');",
+          "",
+          "(async () => {",
+          "  const browser = await playwright.chromium.launch();",
+          "  const context = await browser.newContext();",
+          "  const page = await context.newPage();",
+          "  try {",
+          "    await page.click(\"text=Foo\", {",
+          "      timeout: 100,",
+          "    })",
+          "  } catch (error) {",
+          "    if (error instanceof playwright.errors.TimeoutError)",
+          "      console.log(\"Timeout!\")",
+          "  }",
+          "  await browser.close();",
+          "})();"
+        ],
+        "codeLang": "js"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "import asyncio",
+          "from playwright.async_api import async_playwright, TimeoutError as PlaywrightTimeoutError",
+          "",
+          "async def run(playwright):",
+          "    browser = await playwright.chromium.launch()",
+          "    page = await browser.new_page()",
+          "    try:",
+          "      await page.click(\"text=Example\", timeout=100)",
+          "    except PlaywrightTimeoutError:",
+          "      print(\"Timeout!\")",
+          "    await browser.close()",
+          "",
+          "async def main():",
+          "    async with async_playwright() as playwright:",
+          "        await run(playwright)",
+          "",
+          "asyncio.run(main())"
+        ],
+        "codeLang": "python async"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError",
+          "",
+          "with sync_playwright() as p:",
+          "    browser = p.chromium.launch()",
+          "    page = browser.new_page()",
+          "    try:",
+          "      page.click(\"text=Example\", timeout=100)",
+          "    except PlaywrightTimeoutError:",
+          "      print(\"Timeout!\")",
+          "    browser.close()"
+        ],
+        "codeLang": "python sync"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "package org.example;",
+          "",
+          "import com.microsoft.playwright.*;",
+          "",
+          "public class TimeoutErrorExample {",
+          "  public static void main(String[] args) {",
+          "    try (Playwright playwright = Playwright.create()) {",
+          "      Browser browser = playwright.firefox().launch();",
+          "      BrowserContext context = browser.newContext();",
+          "      Page page = context.newPage();",
+          "      try {",
+          "        page.click(\"text=Example\", new Page.ClickOptions().setTimeout(100));",
+          "      } catch (TimeoutError e) {",
+          "        System.out.println(\"Timeout!\");",
+          "      }",
+          "    }",
+          "  }",
+          "}"
+        ],
+        "codeLang": "java"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "using System.Threading.Tasks;",
+          "using Microsoft.Playwright;",
+          "using System;",
+          "",
+          "class Program",
+          "{",
+          "    public static async Task Main()",
+          "    {",
+          "        using var playwright = await Playwright.CreateAsync();",
+          "        await using var browser = await playwright.Chromium.LaunchAsync();",
+          "        var page = await browser.NewPageAsync();",
+          "        try",
+          "        {",
+          "            await page.ClickAsync(\"text=Example\", new() { Timeout = 100 });",
+          "        }",
+          "        catch (TimeoutException)",
+          "        {",
+          "            Console.WriteLine(\"Timeout!\");",
+          "        }",
+          "    }",
+          "}"
+        ],
+        "codeLang": "csharp"
       }
     ],
     "extends": "Error",
     "langs": {},
-    "comment": "- extends: `Error`\n\nTimeoutError is emitted whenever certain operations are terminated due to timeout, e.g. [`method: Page.waitForSelector`]\nor [`method: BrowserType.launch`].",
+    "comment": "- extends: `Error`\n\nTimeoutError is emitted whenever certain operations are terminated due to timeout, e.g. [`method: Page.waitForSelector`]\nor [`method: BrowserType.launch`].\n\n```js\nconst playwright = require('playwright');\n\n(async () => {\n  const browser = await playwright.chromium.launch();\n  const context = await browser.newContext();\n  const page = await context.newPage();\n  try {\n    await page.click(\"text=Foo\", {\n      timeout: 100,\n    })\n  } catch (error) {\n    if (error instanceof playwright.errors.TimeoutError)\n      console.log(\"Timeout!\")\n  }\n  await browser.close();\n})();\n```\n\n```python async\nimport asyncio\nfrom playwright.async_api import async_playwright, TimeoutError as PlaywrightTimeoutError\n\nasync def run(playwright):\n    browser = await playwright.chromium.launch()\n    page = await browser.new_page()\n    try:\n      await page.click(\"text=Example\", timeout=100)\n    except PlaywrightTimeoutError:\n      print(\"Timeout!\")\n    await browser.close()\n\nasync def main():\n    async with async_playwright() as playwright:\n        await run(playwright)\n\nasyncio.run(main())\n```\n\n```python sync\nfrom playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError\n\nwith sync_playwright() as p:\n    browser = p.chromium.launch()\n    page = browser.new_page()\n    try:\n      page.click(\"text=Example\", timeout=100)\n    except PlaywrightTimeoutError:\n      print(\"Timeout!\")\n    browser.close()\n```\n\n```java\npackage org.example;\n\nimport com.microsoft.playwright.*;\n\npublic class TimeoutErrorExample {\n  public static void main(String[] args) {\n    try (Playwright playwright = Playwright.create()) {\n      Browser browser = playwright.firefox().launch();\n      BrowserContext context = browser.newContext();\n      Page page = context.newPage();\n      try {\n        page.click(\"text=Example\", new Page.ClickOptions().setTimeout(100));\n      } catch (TimeoutError e) {\n        System.out.println(\"Timeout!\");\n      }\n    }\n  }\n}\n```\n\n```csharp\nusing System.Threading.Tasks;\nusing Microsoft.Playwright;\nusing System;\n\nclass Program\n{\n    public static async Task Main()\n    {\n        using var playwright = await Playwright.CreateAsync();\n        await using var browser = await playwright.Chromium.LaunchAsync();\n        var page = await browser.NewPageAsync();\n        try\n        {\n            await page.ClickAsync(\"text=Example\", new() { Timeout = 100 });\n        }\n        catch (TimeoutException)\n        {\n            Console.WriteLine(\"Timeout!\");\n        }\n    }\n}\n```\n",
     "members": []
   },
   {
