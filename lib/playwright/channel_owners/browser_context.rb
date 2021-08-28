@@ -270,7 +270,7 @@ module Playwright
     end
 
     def close
-      if @options.key?(:recordHar)
+      if @options && @options.key?(:recordHar)
         har = ChannelOwners::Artifact.from(@channel.send_message_to_server('harExport'))
         if @browser.send(:remote?)
           har.update_as_remote
