@@ -236,8 +236,8 @@ module Playwright
       expose_binding(name, ->(_source, *args) { callback.call(*args) }, )
     end
 
-    def route(url, handler)
-      entry = RouteHandlerEntry.new(url, base_url, handler)
+    def route(url, handler, times: nil)
+      entry = RouteHandler.new(url, base_url, handler, times)
       @routes.unshift(entry)
       if @routes.count >= 1
         @channel.send_message_to_server('setNetworkInterceptionEnabled', enabled: true)

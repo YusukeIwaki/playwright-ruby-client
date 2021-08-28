@@ -651,4 +651,23 @@ RSpec.describe 'Page#route', sinatra: true do
   #     expect(resp).toEqual(['DELETE', 'electric', 'gas']);
   #   }
   # });
+
+  it 'should support the times parameter with route matching' do
+    intercepted = []
+
+    with_page do |page|
+      page.route(
+        '**/empty.html',
+        ->(route, _) {
+          intercepted << 'intercepted'
+          route.continue
+        },
+        times: 2,
+      )
+
+      4.times { page.goto(server_empty_page) }
+    end
+
+    expect(intercepted).to eq(%w[intercepted intercepted])
+  end
 end

@@ -388,8 +388,8 @@ module Playwright
       nil
     end
 
-    def route(url, handler)
-      entry = RouteHandlerEntry.new(url, @browser_context.send(:base_url), handler)
+    def route(url, handler, times: nil)
+      entry = RouteHandler.new(url, @browser_context.send(:base_url), handler, times)
       @routes.unshift(entry)
       if @routes.count >= 1
         @channel.send_message_to_server('setNetworkInterceptionEnabled', enabled: true)
