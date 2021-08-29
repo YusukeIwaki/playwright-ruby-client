@@ -322,8 +322,8 @@ module Playwright
         nil
       end
 
-      def wait_for_selector(selector, state: nil, timeout: nil)
-        params = { selector: selector, state: state, timeout: timeout }.compact
+      def wait_for_selector(selector, state: nil, strict: nil, timeout: nil)
+        params = { selector: selector, state: state, strict: strict, timeout: timeout }.compact
         resp = @channel.send_message_to_server('waitForSelector', params)
 
         ChannelOwners::ElementHandle.from_nullable(resp)

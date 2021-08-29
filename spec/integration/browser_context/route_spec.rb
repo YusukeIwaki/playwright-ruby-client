@@ -95,4 +95,23 @@ RSpec.describe 'BrowserContext#route', sinatra: true do
       expect(response.text).to eq('context')
     end
   end
+
+  it 'should support the times parameter with route matching' do
+    intercepted = []
+
+    with_context do |context|
+      context.route(
+        '**/empty.html',
+        ->(route, _) {
+          intercepted << 'intercepted'
+          route.continue
+        },
+        times: 2,
+      )
+
+      4.times { context.new_page.goto(server_empty_page) }
+    end
+
+    expect(intercepted).to eq(%w[intercepted intercepted])
+  end
 end

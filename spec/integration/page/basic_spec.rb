@@ -6,7 +6,7 @@ RSpec.describe Playwright::Page do
       never_resolved_promise = Concurrent::Promises.future { page.evaluate('() => new Promise(r => {})') }
       sleep_a_bit_for_race_condition
       page.close
-      expect { never_resolved_promise.value! }.to raise_error(/Protocol error/)
+      expect { never_resolved_promise.value! }.to raise_error(/Target closed/)
     end
   end
 

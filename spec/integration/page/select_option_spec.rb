@@ -1,13 +1,6 @@
 require 'spec_helper'
 
 RSpec.describe 'Page#select_option' do
-  def give_it_a_chance_to_resolve(page)
-    5.times do
-      sleep 0.04 # wait a bit for avoiding `undefined:1` error.
-      page.evaluate('() => new Promise(f => requestAnimationFrame(() => requestAnimationFrame(f)))')
-    end
-  end
-
   it 'should select single option by value', sinatra: true do
     with_page do |page|
       page.goto("#{server_prefix}/input/select.html")

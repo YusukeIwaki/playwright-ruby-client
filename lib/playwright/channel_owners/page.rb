@@ -132,17 +132,24 @@ module Playwright
     end
 
     private def on_download(params)
+      artifact = ChannelOwners::Artifact.from(params['artifact'])
+      if @browser_context.browser.send(:remote?)
+        artifact.update_as_remote
+      end
       download = DownloadImpl.new(
         page: self,
         url: params['url'],
         suggested_filename: params['suggestedFilename'],
-        artifact: ChannelOwners::Artifact.from(params['artifact']),
+        artifact: artifact,
       )
       emit(Events::Page::Download, download)
     end
 
     private def on_video(params)
       artifact = ChannelOwners::Artifact.from(params['artifact'])
+      if @browser_context.browser.send(:remote?)
+        artifact.update_as_remote
+      end
       video.send(:set_artifact, artifact)
     end
 
@@ -381,8 +388,8 @@ module Playwright
       nil
     end
 
-    def route(url, handler)
-      entry = RouteHandlerEntry.new(url, @browser_context.send(:base_url), handler)
+    def route(url, handler, times: nil)
+      entry = RouteHandler.new(url, @browser_context.send(:base_url), handler, times)
       @routes.unshift(entry)
       if @routes.count >= 1
         @channel.send_message_to_server('setNetworkInterceptionEnabled', enabled: true)

@@ -1,13 +1,6 @@
 require 'spec_helper'
 
 RSpec.describe 'ElementHandle#wait_for_element_state' do
-  def give_it_a_chance_to_resolve(page)
-    5.times do
-      sleep 0.04 # wait a bit for avoiding `undefined:1` error.
-      page.evaluate('() => new Promise(f => requestAnimationFrame(() => requestAnimationFrame(f)))')
-    end
-  end
-
   it 'should wait for visible' do
     with_page do |page|
       page.content = "<div style='display:none'>content</div>"

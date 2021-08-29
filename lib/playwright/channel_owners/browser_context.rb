@@ -236,8 +236,8 @@ module Playwright
       expose_binding(name, ->(_source, *args) { callback.call(*args) }, )
     end
 
-    def route(url, handler)
-      entry = RouteHandlerEntry.new(url, base_url, handler)
+    def route(url, handler, times: nil)
+      entry = RouteHandler.new(url, base_url, handler, times)
       @routes.unshift(entry)
       if @routes.count >= 1
         @channel.send_message_to_server('setNetworkInterceptionEnabled', enabled: true)
@@ -270,6 +270,14 @@ module Playwright
     end
 
     def close
+      if @options && @options.key?(:recordHar)
+        har = ChannelOwners::Artifact.from(@channel.send_message_to_server('harExport'))
+        if @browser.send(:remote?)
+          har.update_as_remote
+        end
+        har.save_as(@options[:recordHar][:path])
+        har.delete
+      end
       @channel.send_message_to_server('close')
       @closed_promise.value!
       nil

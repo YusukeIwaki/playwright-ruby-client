@@ -23,8 +23,9 @@ module Playwright
     private def export(path:)
       resp = @channel.send_message_to_server('tracingExport')
       artifact = ChannelOwners::Artifact.from(resp)
-      # if self._context._browser:
-      #   artifact._is_remote = self._context._browser._is_remote
+      if @context.browser.send(:remote?)
+        artifact.update_as_remote
+      end
       artifact.save_as(path)
       artifact.delete
     end

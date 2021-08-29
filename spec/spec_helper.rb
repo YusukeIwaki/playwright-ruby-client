@@ -87,6 +87,13 @@ RSpec.configure do |config|
       @playwright_browser.new_page(**kwargs, &block)
     end
 
+    def give_it_a_chance_to_resolve(page)
+      5.times do
+        sleep 0.04 # wait a bit for avoiding `undefined:1` error.
+        page.evaluate('() => new Promise(f => requestAnimationFrame(() => requestAnimationFrame(f)))')
+      end
+    end
+
     def sleep_a_bit_for_race_condition
       sleep 0.5
     end
