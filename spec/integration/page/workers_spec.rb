@@ -26,7 +26,7 @@ RSpec.describe 'Page#workers' do
       worker.once('close', ->(w) { worker_destroyed_promise.fulfill(w) })
       page.evaluate('workerObj => workerObj.terminate()', arg: worker_obj)
       expect(worker_destroyed_promise.value!).to eq(worker)
-      expect { worker_this.get_property('self') }.to raise_error(/Most likely the worker has been closed./)
+      expect { worker_this.get_property('self') }.to raise_error(/Target closed/)
     end
   end
 
