@@ -10,6 +10,7 @@ module.exports = {
   organizationName: 'YusukeIwaki', // Usually your GitHub org/user name.
   projectName: 'playwright-ruby-client', // Usually your repo name.
   themeConfig: {
+    image: 'img/playwright-ruby-client.png',
     navbar: {
       title: 'playwright-ruby-client',
       logo: {
