@@ -39,7 +39,6 @@ export default function Home() {
   const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
-      title={siteConfig.title}
       description="Cross-browser end-to-end testing for modern web apps">
       <HomepageHeader />
       <main>
