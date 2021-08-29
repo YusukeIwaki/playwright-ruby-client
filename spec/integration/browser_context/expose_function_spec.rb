@@ -54,11 +54,13 @@ RSpec.describe 'expose function' do
 
       page = context.new_page
       page.evaluate('undefined')
+      give_it_a_chance_to_resolve(page)
       expect(args).to contain_exactly('context')
 
       args.clear
       page.add_init_script(script: 'window["woof"]("page")')
       page.reload
+      give_it_a_chance_to_resolve(page)
       expect(args).to contain_exactly('context', 'page')
     end
   end
