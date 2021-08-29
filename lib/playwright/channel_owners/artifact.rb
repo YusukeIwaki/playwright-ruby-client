@@ -34,9 +34,5 @@ module Playwright
     private def update_as_remote
       @remote = true
     end
-
-    private def remote?
-      @remote
-    end
   end
 end
