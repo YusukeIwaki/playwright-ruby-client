@@ -14,6 +14,7 @@
 * redirected_to
 * resource_type
 * response
+* ~~sizes~~
 * timing
 * url
 
@@ -108,6 +109,7 @@
 * scroll_into_view_if_needed
 * select_option
 * select_text
+* ~~set_checked~~
 * set_input_files
 * tap_point
 * text_content
@@ -166,6 +168,7 @@
 * query_selector
 * query_selector_all
 * select_option
+* ~~set_checked~~
 * set_content
 * set_input_files
 * tap_point
@@ -269,6 +272,7 @@
 * route
 * screenshot
 * select_option
+* ~~set_checked~~
 * set_content
 * set_default_navigation_timeout
 * set_default_timeout
@@ -414,6 +418,7 @@
 * scroll_into_view_if_needed
 * select_option
 * select_text
+* ~~set_checked~~
 * set_input_files
 * tap_point
 * text_content
