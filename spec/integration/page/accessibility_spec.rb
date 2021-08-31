@@ -72,7 +72,7 @@ RSpec.describe 'accessibility' do
 
   it 'roledescription' do
     with_page do |page|
-      page.content = '<div tabIndex=-1 aria-roledescription="foo">Hi</div>'
+      page.content = '<p tabIndex=-1 aria-roledescription="foo">Hi</p>'
       snapshot = page.accessibility.snapshot
       expect(snapshot['children'].first['roledescription']).to eq('foo')
     end
