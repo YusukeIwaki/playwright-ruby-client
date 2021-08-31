@@ -14,7 +14,7 @@
 * redirected_to
 * resource_type
 * response
-* ~~sizes~~
+* sizes
 * timing
 * url
 
