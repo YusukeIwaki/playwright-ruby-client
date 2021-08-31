@@ -268,6 +268,14 @@ module Playwright
         nil
       end
 
+      def set_checked(checked, **options)
+        if checked
+          check(**options)
+        else
+          uncheck(**options)
+        end
+      end
+
       def bounding_box
         @channel.send_message_to_server('boundingBox')
       end

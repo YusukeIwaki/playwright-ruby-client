@@ -584,6 +584,14 @@ module Playwright
       nil
     end
 
+    def set_checked(selector, checked, **options)
+      if checked
+        check(selector, **options)
+      else
+        uncheck(selector, **options)
+      end
+    end
+
     def wait_for_timeout(timeout)
       sleep(timeout / 1000.0)
     end

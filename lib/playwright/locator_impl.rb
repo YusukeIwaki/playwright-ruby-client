@@ -303,6 +303,14 @@ module Playwright
         trial: trial)
     end
 
+    def set_checked(checked, **options)
+      if checked
+        check(**options)
+      else
+        uncheck(**options)
+      end
+    end
+
     def all_inner_texts
       @frame.eval_on_selector_all(@selector, 'ee => ee.map(e => e.innerText)')
     end

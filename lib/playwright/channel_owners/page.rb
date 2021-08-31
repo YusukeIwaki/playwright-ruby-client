@@ -709,6 +709,14 @@ module Playwright
         trial: trial)
     end
 
+    def set_checked(selector, checked, **options)
+      if checked
+        check(selector, **options)
+      else
+        uncheck(selector, **options)
+      end
+    end
+
     def wait_for_timeout(timeout)
       @main_frame.wait_for_timeout(timeout)
     end
