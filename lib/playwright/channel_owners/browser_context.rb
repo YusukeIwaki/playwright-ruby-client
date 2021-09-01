@@ -30,7 +30,7 @@ module Playwright
       @channel.on('request', ->(params) {
         on_request(
           ChannelOwners::Request.from(params['request']),
-          ChannelOwners::Request.from_nullable(params['page']),
+          ChannelOwners::Page.from_nullable(params['page']),
         )
       })
       @channel.on('requestFailed', ->(params) {
@@ -38,20 +38,21 @@ module Playwright
           ChannelOwners::Request.from(params['request']),
           params['responseEndTiming'],
           params['failureText'],
-          ChannelOwners::Request.from_nullable(params['page']),
+          ChannelOwners::Page.from_nullable(params['page']),
         )
       })
       @channel.on('requestFinished', ->(params) {
         on_request_finished(
           ChannelOwners::Request.from(params['request']),
           params['responseEndTiming'],
-          ChannelOwners::Request.from_nullable(params['page']),
+          params['requestSizes'],
+          ChannelOwners::Page.from_nullable(params['page']),
         )
       })
       @channel.on('response', ->(params) {
         on_response(
           ChannelOwners::Response.from(params['response']),
-          ChannelOwners::Request.from_nullable(params['page']),
+          ChannelOwners::Page.from_nullable(params['page']),
         )
       })
 
@@ -95,8 +96,15 @@ module Playwright
       page&.emit(Events::Page::RequestFailed, request)
     end
 
-    private def on_request_finished(request, response_end_timing, page)
+    private def on_request_finished(request, response_end_timing, request_sizes, page)
       request.send(:update_response_end_timing, response_end_timing)
+      request.send(:update_sizes,
+        request_body_size: request_sizes['requestBodySize'],
+        request_headers_size: request_sizes['requestHeadersSize'],
+        response_body_size: request_sizes['responseBodySize'],
+        response_headers_size: request_sizes['responseHeadersSize'],
+        response_transfer_size: request_sizes['responseTransferSize'],
+      )
       emit(Events::BrowserContext::RequestFinished, request)
       page&.emit(Events::Page::RequestFinished, request)
     end

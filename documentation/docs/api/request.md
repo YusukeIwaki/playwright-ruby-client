@@ -156,6 +156,15 @@ def response
 
 Returns the matching [Response](./response) object, or `null` if the response was not received due to error.
 
+## sizes
+
+```
+def sizes
+```
+
+Returns resource size information for given request. Requires the response to be finished via
+[Response#finished](./response#finished) to ensure the info is available.
+
 ## timing
 
 ```

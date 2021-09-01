@@ -17,6 +17,23 @@ RSpec.describe 'Page#check' do
     end
   end
 
+  it 'should check the box with Page#set_checked' do
+    with_page do |page|
+      page.content = "<input id='checkbox' type='checkbox'></input>"
+      page.set_checked('input', true)
+      expect(page.evaluate("() => window['checkbox'].checked")).to eq(true)
+    end
+  end
+
+  it 'should check the box with ElementHandle#set_checked' do
+    pending 'fails by redundant keyword: strict'
+    with_page do |page|
+      page.content = "<input id='checkbox' type='checkbox'></input>"
+      page.query_selector('input').checked = true
+      expect(page.evaluate("() => window['checkbox'].checked")).to eq(true)
+    end
+  end
+
   it 'should not check the checked box' do
     with_page do |page|
       page.content = "<input id='checkbox' type='checkbox' checked></input>"
@@ -37,6 +54,23 @@ RSpec.describe 'Page#check' do
     with_page do |page|
       page.content = "<input id='checkbox' type='checkbox' checked></input>"
       page.query_selector('input').uncheck
+      expect(page.evaluate("() => window['checkbox'].checked")).to eq(false)
+    end
+  end
+
+  it 'should uncheck the box with Page#set_checked' do
+    with_page do |page|
+      page.content = "<input id='checkbox' type='checkbox' checked></input>"
+      page.set_checked('input', false)
+      expect(page.evaluate("() => window['checkbox'].checked")).to eq(false)
+    end
+  end
+
+  it 'should uncheck the box with ElementHandle#set_checked' do
+    pending 'fails by redundant keyword: strict'
+    with_page do |page|
+      page.content = "<input id='checkbox' type='checkbox' checked></input>"
+      page.query_selector('input').checked = false
       expect(page.evaluate("() => window['checkbox'].checked")).to eq(false)
     end
   end

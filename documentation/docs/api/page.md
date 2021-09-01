@@ -1033,6 +1033,36 @@ page.select_option("select#colors", value: ["red", "green", "blue"])
 
 Shortcut for main frame's [Frame#select_option](./frame#select_option).
 
+## set_checked
+
+```
+def set_checked(
+      selector,
+      checked,
+      force: nil,
+      noWaitAfter: nil,
+      position: nil,
+      strict: nil,
+      timeout: nil,
+      trial: nil)
+```
+
+This method checks or unchecks an element matching `selector` by performing the following steps:
+1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.
+1. Ensure that matched element is a checkbox or a radio input. If not, this method throws.
+1. If the element already has the right checked state, this method returns immediately.
+1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the
+   element is detached during the checks, the whole action is retried.
+1. Scroll the element into view if needed.
+1. Use [Page#mouse](./page#mouse) to click in the center of the element.
+1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
+1. Ensure that the element is now checked or unchecked. If not, this method throws.
+
+When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing
+zero timeout disables this.
+
+Shortcut for main frame's [Frame#set_checked](./frame#set_checked).
+
 ## set_content
 
 ```
