@@ -5,6 +5,7 @@ module Playwright
   # @ref https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_network.py
   define_channel_owner :Response do
     private def after_initialize
+      @headers = parse_headers(@initializer['headers'])
       @request = ChannelOwners::Request.from(@initializer['request'])
       timing = @initializer['timing']
       @request.send(:update_timings,
@@ -18,6 +19,7 @@ module Playwright
         response_start: timing["responseStart"],
       )
       @request.send(:update_headers, @initializer['requestHeaders'])
+      @finished_promise = Concurrent::Promises.resolvable_future
     end
     attr_reader :request
 
@@ -39,9 +41,7 @@ module Playwright
     end
 
     def headers
-      @initializer['headers'].map do |header|
-        [header['name'].downcase, header['value']]
-      end.to_h
+      @headers
     end
 
     def server_addr
@@ -53,7 +53,7 @@ module Playwright
     end
 
     def finished
-      @channel.send_message_to_server('finished')
+      @finished_promise.value!
     end
 
     def body
@@ -68,6 +68,23 @@ module Playwright
 
     def frame
       @request.frame
+    end
+
+    private def mark_as_finished
+      @finished_promise.fulfill(nil)
+    end
+
+    # @param headers [Array|nil]
+    private def update_headers(headers)
+      if headers.is_a?(Enumerable)
+        @headers = parse_headers(headers)
+      end
+    end
+
+    private def parse_headers(headers)
+      headers.map do |header|
+        [header['name'].downcase, header['value']]
+      end.to_h
     end
   end
 end
