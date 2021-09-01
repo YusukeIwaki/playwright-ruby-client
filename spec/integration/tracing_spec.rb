@@ -148,4 +148,43 @@ RSpec.describe 'tracing' do
       end
     end
   end
+
+  it 'should throw when stopping without start', tracing: true do
+    with_context do |context|
+      Dir.mktmpdir do |dir|
+        trace = File.join(dir, 'trace.zip')
+        expect { context.tracing.stop(path: trace) }.to raise_error(/Must start tracing before stopping/)
+      end
+    end
+  end
+
+  it 'should not throw when stopping without start but not exporting', tracing: true do
+    with_context do |context|
+      context.tracing.stop
+    end
+  end
+
+  it 'should work with multiple chunks', sinatra: true, tracing: true do
+    with_context do |context|
+      context.tracing.start(screenshots: true, snapshots: true)
+      page = context.new_page
+      page.goto("#{server_prefix}/frames/frame.html")
+
+      context.tracing.start_chunk
+      page.content = '<button>Click</button>'
+      page.click('"Click"')
+      page.click('"ClickNoButton"', timeout: 10) rescue nil
+      Dir.mktmpdir do |dir|
+        trace = File.join(dir, 'trace.zip')
+        context.tracing.stop_chunk(path: trace)
+      end
+
+      context.tracing.start_chunk
+      page.hover('"Click"')
+      Dir.mktmpdir do |dir|
+        trace = File.join(dir, 'trace2.zip')
+        context.tracing.stop_chunk(path: trace)
+      end
+    end
+  end
 end

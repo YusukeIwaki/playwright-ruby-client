@@ -379,9 +379,9 @@
 ## Tracing
 
 * start
-* ~~start_chunk~~
+* start_chunk
 * stop
-* ~~stop_chunk~~
+* stop_chunk
 
 ## Locator
 

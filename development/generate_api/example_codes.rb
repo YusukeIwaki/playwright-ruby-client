@@ -1139,6 +1139,23 @@ module ExampleCodes
     context.tracing.stop(path: 'trace.zip')
   end
 
+  # Tracing#start_chunk
+  def example_e1cd2de07d683c41d7d1b375aa821afaab49c5407ea48c77dfdc3262f597ff1a(context:)
+    context.tracing.start(name: "trace", screenshots: true, snapshots: true)
+    page = context.new_page
+    page.goto("https://playwright.dev")
+
+    context.tracing.start_chunk
+    page.click("text=Get Started")
+    # Everything between start_chunk and stop_chunk will be recorded in the trace.
+    context.tracing.stop_chunk(path: "trace1.zip")
+
+    context.tracing.start_chunk
+    page.goto("http://example.com")
+    # Save a second trace file with different actions.
+    context.tracing.stop_chunk(path: "trace2.zip")
+  end
+
   # Worker
   def example_29716fdd4471a97923a64eebeee96330ab508226a496ae8fd13f12eb07d55ee6(page:)
     def handle_worker(worker)

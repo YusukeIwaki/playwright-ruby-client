@@ -37,6 +37,34 @@ context.tracing.stop(path: 'trace.zip')
 
 
 
+## start_chunk
+
+```
+def start_chunk
+```
+
+Start a new trace chunk. If you'd like to record multiple traces on the same [BrowserContext](./browser_context), use
+[Tracing#start](./tracing#start) once, and then create multiple trace chunks with [Tracing#start_chunk](./tracing#start_chunk) and
+[Tracing#stop_chunk](./tracing#stop_chunk).
+
+```ruby
+context.tracing.start(name: "trace", screenshots: true, snapshots: true)
+page = context.new_page
+page.goto("https://playwright.dev")
+
+context.tracing.start_chunk
+page.click("text=Get Started")
+# Everything between start_chunk and stop_chunk will be recorded in the trace.
+context.tracing.stop_chunk(path: "trace1.zip")
+
+context.tracing.start_chunk
+page.goto("http://example.com")
+# Save a second trace file with different actions.
+context.tracing.stop_chunk(path: "trace2.zip")
+```
+
+
+
 ## stop
 
 ```
@@ -44,3 +72,11 @@ def stop(path: nil)
 ```
 
 Stop tracing.
+
+## stop_chunk
+
+```
+def stop_chunk(path: nil)
+```
+
+Stop the trace chunk. See [Tracing#start_chunk](./tracing#start_chunk) for more details about multiple trace chunks.

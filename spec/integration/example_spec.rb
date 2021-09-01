@@ -331,6 +331,12 @@ RSpec.describe 'example' do
       expect(example_79053fe985428755ac11bbb07990e18ca0c1367946f7162bc6d8b0030454bdab(playwright: playwright)).to eq(1)
     end
 
+    it 'should work with Tracing' do
+      with_context do |context|
+        example_e1cd2de07d683c41d7d1b375aa821afaab49c5407ea48c77dfdc3262f597ff1a(context: context)
+      end
+    end
+
     it 'should work with Worker', skip: ENV['CI'] do
       with_page do |page|
         worker_objs = []
