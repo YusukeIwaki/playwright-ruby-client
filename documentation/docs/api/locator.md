@@ -45,6 +45,9 @@ page.locator('button').click
 
 # Works because we explicitly tell locator to pick the first element:
 page.locator('button').first.click
+
+# Works because count knows what to do with multiple matches:
+page.locator('button').count
 ```
 
 

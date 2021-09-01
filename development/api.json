@@ -39043,7 +39043,10 @@
           "await page.locator('button').click();",
           "",
           "// Works because we explicitly tell locator to pick the first element:",
-          "await page.locator('button').first().click();"
+          "await page.locator('button').first().click();",
+          "",
+          "// Works because count knows what to do with multiple matches:",
+          "await page.locator('button').count();"
         ],
         "codeLang": "js"
       },
@@ -39054,7 +39057,10 @@
           "await page.locator('button').click()",
           "",
           "# Works because we explicitly tell locator to pick the first element:",
-          "await page.locator('button').first.click()"
+          "await page.locator('button').first.click()",
+          "",
+          "# Works because count knows what to do with multiple matches:",
+          "await page.locator('button').count()"
         ],
         "codeLang": "python async"
       },
@@ -39065,7 +39071,10 @@
           "page.locator('button').click()",
           "",
           "# Works because we explicitly tell locator to pick the first element:",
-          "page.locator('button').first.click()"
+          "page.locator('button').first.click()",
+          "",
+          "# Works because count knows what to do with multiple matches:",
+          "page.locator('button').count()"
         ],
         "codeLang": "python sync"
       },
@@ -39075,8 +39084,11 @@
           "// Throws if there are several buttons in DOM:",
           "page.locator(\"button\").click();",
           "",
-          "// Works because you explicitly tell locator to pick the first element:",
-          "page.locator(\"button\").first().click();"
+          "// Works because we explicitly tell locator to pick the first element:",
+          "page.locator(\"button\").first().click();",
+          "",
+          "// Works because count knows what to do with multiple matches:",
+          "page.locator(\"button\").count();"
         ],
         "codeLang": "java"
       },
@@ -39085,14 +39097,18 @@
         "lines": [
           "// Throws if there are several buttons in DOM:",
           "await page.Locator(\"button\").ClickAsync();",
-          "// Works because you explicitly tell locator to pick the first element:",
-          "await page.Locator(\"button\").First.ClickAsync();"
+          "",
+          "// Works because we explicitly tell locator to pick the first element:",
+          "await page.Locator(\"button\").First.ClickAsync();",
+          "",
+          "// Works because Count knows what to do with multiple matches:",
+          "await page.Locator(\"button\").CountAsync();"
         ],
         "codeLang": "csharp"
       }
     ],
     "langs": {},
-    "comment": "Locator represents a view to the element(s) on the page. It captures the logic sufficient to retrieve the element at any\ngiven moment. Locator can be created with the [`method: Page.locator`] method.\n\n```js\nconst locator = page.locator('text=Submit');\nawait locator.click();\n```\n\n```java\nLocator locator = page.locator(\"text=Submit\");\nlocator.click();\n```\n\n```python async\nlocator = page.locator(\"text=Submit\")\nawait locator.click()\n```\n\n```python sync\nlocator = page.locator(\"text=Submit\")\nlocator.click()\n```\n\n```csharp\nvar locator = page.Locator(\"text=Submit\");\nawait locator.ClickAsync();\n```\n\nThe difference between the Locator and `ElementHandle` is that the latter points to a particular element, while Locator\ncaptures the logic of how to retrieve that element.\n\nIn the example below, handle points to a particular DOM element on page. If that element changes text or is used by\nReact to render an entirely different component, handle is still pointing to that very DOM element. This can lead to\nunexpected behaviors.\n\n```js\nconst handle = await page.$('text=Submit');\n// ...\nawait handle.hover();\nawait handle.click();\n```\n\n```java\nElementHandle handle = page.querySelector(\"text=Submit\");\nhandle.hover();\nhandle.click();\n```\n\n```python async\nhandle = await page.query_selector(\"text=Submit\")\nawait handle.hover()\nawait handle.click()\n```\n\n```python sync\nhandle = page.query_selector(\"text=Submit\")\nhandle.hover()\nhandle.click()\n```\n\n```csharp\nvar handle = await page.QuerySelectorAsync(\"text=Submit\");\nawait handle.HoverAsync();\nawait handle.ClickAsync();\n```\n\nWith the locator, every time the `element` is used, up-to-date DOM element is located in the page using the selector. So\nin the snippet below, underlying DOM element is going to be located twice.\n\n```js\nconst locator = page.locator('text=Submit');\n// ...\nawait locator.hover();\nawait locator.click();\n```\n\n```java\nLocator locator = page.locator(\"text=Submit\");\nlocator.hover();\nlocator.click();\n```\n\n```python async\nlocator = page.locator(\"text=Submit\")\nawait locator.hover()\nawait locator.click()\n```\n\n```python sync\nlocator = page.locator(\"text=Submit\")\nlocator.hover()\nlocator.click()\n```\n\n```csharp\nvar locator = page.Locator(\"text=Submit\");\nawait locator.HoverAsync();\nawait locator.ClickAsync();\n```\n\n**Strictness**\n\nLocators are strict. This means that all operations on locators that imply some target DOM element will throw if more\nthan one element matches given selector.\n\n```js\n// Throws if there are several buttons in DOM:\nawait page.locator('button').click();\n\n// Works because we explicitly tell locator to pick the first element:\nawait page.locator('button').first().click();\n```\n\n```python async\n# Throws if there are several buttons in DOM:\nawait page.locator('button').click()\n\n# Works because we explicitly tell locator to pick the first element:\nawait page.locator('button').first.click()\n```\n\n```python sync\n# Throws if there are several buttons in DOM:\npage.locator('button').click()\n\n# Works because we explicitly tell locator to pick the first element:\npage.locator('button').first.click()\n```\n\n```java\n// Throws if there are several buttons in DOM:\npage.locator(\"button\").click();\n\n// Works because you explicitly tell locator to pick the first element:\npage.locator(\"button\").first().click();\n```\n\n```csharp\n// Throws if there are several buttons in DOM:\nawait page.Locator(\"button\").ClickAsync();\n// Works because you explicitly tell locator to pick the first element:\nawait page.Locator(\"button\").First.ClickAsync();\n```\n",
+    "comment": "Locator represents a view to the element(s) on the page. It captures the logic sufficient to retrieve the element at any\ngiven moment. Locator can be created with the [`method: Page.locator`] method.\n\n```js\nconst locator = page.locator('text=Submit');\nawait locator.click();\n```\n\n```java\nLocator locator = page.locator(\"text=Submit\");\nlocator.click();\n```\n\n```python async\nlocator = page.locator(\"text=Submit\")\nawait locator.click()\n```\n\n```python sync\nlocator = page.locator(\"text=Submit\")\nlocator.click()\n```\n\n```csharp\nvar locator = page.Locator(\"text=Submit\");\nawait locator.ClickAsync();\n```\n\nThe difference between the Locator and `ElementHandle` is that the latter points to a particular element, while Locator\ncaptures the logic of how to retrieve that element.\n\nIn the example below, handle points to a particular DOM element on page. If that element changes text or is used by\nReact to render an entirely different component, handle is still pointing to that very DOM element. This can lead to\nunexpected behaviors.\n\n```js\nconst handle = await page.$('text=Submit');\n// ...\nawait handle.hover();\nawait handle.click();\n```\n\n```java\nElementHandle handle = page.querySelector(\"text=Submit\");\nhandle.hover();\nhandle.click();\n```\n\n```python async\nhandle = await page.query_selector(\"text=Submit\")\nawait handle.hover()\nawait handle.click()\n```\n\n```python sync\nhandle = page.query_selector(\"text=Submit\")\nhandle.hover()\nhandle.click()\n```\n\n```csharp\nvar handle = await page.QuerySelectorAsync(\"text=Submit\");\nawait handle.HoverAsync();\nawait handle.ClickAsync();\n```\n\nWith the locator, every time the `element` is used, up-to-date DOM element is located in the page using the selector. So\nin the snippet below, underlying DOM element is going to be located twice.\n\n```js\nconst locator = page.locator('text=Submit');\n// ...\nawait locator.hover();\nawait locator.click();\n```\n\n```java\nLocator locator = page.locator(\"text=Submit\");\nlocator.hover();\nlocator.click();\n```\n\n```python async\nlocator = page.locator(\"text=Submit\")\nawait locator.hover()\nawait locator.click()\n```\n\n```python sync\nlocator = page.locator(\"text=Submit\")\nlocator.hover()\nlocator.click()\n```\n\n```csharp\nvar locator = page.Locator(\"text=Submit\");\nawait locator.HoverAsync();\nawait locator.ClickAsync();\n```\n\n**Strictness**\n\nLocators are strict. This means that all operations on locators that imply some target DOM element will throw if more\nthan one element matches given selector.\n\n```js\n// Throws if there are several buttons in DOM:\nawait page.locator('button').click();\n\n// Works because we explicitly tell locator to pick the first element:\nawait page.locator('button').first().click();\n\n// Works because count knows what to do with multiple matches:\nawait page.locator('button').count();\n```\n\n```python async\n# Throws if there are several buttons in DOM:\nawait page.locator('button').click()\n\n# Works because we explicitly tell locator to pick the first element:\nawait page.locator('button').first.click()\n\n# Works because count knows what to do with multiple matches:\nawait page.locator('button').count()\n```\n\n```python sync\n# Throws if there are several buttons in DOM:\npage.locator('button').click()\n\n# Works because we explicitly tell locator to pick the first element:\npage.locator('button').first.click()\n\n# Works because count knows what to do with multiple matches:\npage.locator('button').count()\n```\n\n```java\n// Throws if there are several buttons in DOM:\npage.locator(\"button\").click();\n\n// Works because we explicitly tell locator to pick the first element:\npage.locator(\"button\").first().click();\n\n// Works because count knows what to do with multiple matches:\npage.locator(\"button\").count();\n```\n\n```csharp\n// Throws if there are several buttons in DOM:\nawait page.Locator(\"button\").ClickAsync();\n\n// Works because we explicitly tell locator to pick the first element:\nawait page.Locator(\"button\").First.ClickAsync();\n\n// Works because Count knows what to do with multiple matches:\nawait page.Locator(\"button\").CountAsync();\n```\n",
     "members": [
       {
         "kind": "method",
@@ -66670,11 +66686,11 @@
     "spec": [
       {
         "type": "text",
-        "text": "API for collecting and saving Playwright traces. Playwright traces can be opened using the Playwright CLI after Playwright script runs."
+        "text": "API for collecting and saving Playwright traces. Playwright traces can be opened in [Trace Viewer](./trace-viewer.md) after Playwright script runs."
       },
       {
         "type": "text",
-        "text": "Start with specifying the folder traces will be stored in:"
+        "text": "Start recording a trace before performing actions. At the end, stop tracing and save it to a file."
       },
       {
         "type": "code",
@@ -66709,6 +66725,7 @@
           "browser = await chromium.launch()",
           "context = await browser.new_context()",
           "await context.tracing.start(screenshots=True, snapshots=True)",
+          "page = await context.new_page()",
           "await page.goto(\"https://playwright.dev\")",
           "await context.tracing.stop(path = \"trace.zip\")"
         ],
@@ -66720,6 +66737,7 @@
           "browser = chromium.launch()",
           "context = browser.new_context()",
           "context.tracing.start(screenshots=True, snapshots=True)",
+          "page = context.new_page()",
           "page.goto(\"https://playwright.dev\")",
           "context.tracing.stop(path = \"trace.zip\")"
         ],
@@ -66746,7 +66764,7 @@
       }
     ],
     "langs": {},
-    "comment": "API for collecting and saving Playwright traces. Playwright traces can be opened using the Playwright CLI after\nPlaywright script runs.\n\nStart with specifying the folder traces will be stored in:\n\n```js\nconst browser = await chromium.launch();\nconst context = await browser.newContext();\nawait context.tracing.start({ screenshots: true, snapshots: true });\nconst page = await context.newPage();\nawait page.goto('https://playwright.dev');\nawait context.tracing.stop({ path: 'trace.zip' });\n```\n\n```java\nBrowser browser = chromium.launch();\nBrowserContext context = browser.newContext();\ncontext.tracing().start(new Tracing.StartOptions()\n  .setScreenshots(true)\n  .setSnapshots(true));\nPage page = context.newPage();\npage.navigate(\"https://playwright.dev\");\ncontext.tracing().stop(new Tracing.StopOptions()\n  .setPath(Paths.get(\"trace.zip\")));\n```\n\n```python async\nbrowser = await chromium.launch()\ncontext = await browser.new_context()\nawait context.tracing.start(screenshots=True, snapshots=True)\nawait page.goto(\"https://playwright.dev\")\nawait context.tracing.stop(path = \"trace.zip\")\n```\n\n```python sync\nbrowser = chromium.launch()\ncontext = browser.new_context()\ncontext.tracing.start(screenshots=True, snapshots=True)\npage.goto(\"https://playwright.dev\")\ncontext.tracing.stop(path = \"trace.zip\")\n```\n\n```csharp\nawait using var browser = playwright.Chromium.LaunchAsync();\nawait using var context = await browser.NewContextAsync();\nawait context.Tracing.StartAsync(new TracingStartOptions\n{\n  Screenshots: true,\n  Snapshots: true\n});\nvar page = context.NewPageAsync();\nawait page.GotoAsync(\"https://playwright.dev\");\nawait context.Tracing.StopAsync(new TracingStopOptions\n{\n  Path: \"trace.zip\"\n});\n```\n",
+    "comment": "API for collecting and saving Playwright traces. Playwright traces can be opened in [Trace Viewer](./trace-viewer.md)\nafter Playwright script runs.\n\nStart recording a trace before performing actions. At the end, stop tracing and save it to a file.\n\n```js\nconst browser = await chromium.launch();\nconst context = await browser.newContext();\nawait context.tracing.start({ screenshots: true, snapshots: true });\nconst page = await context.newPage();\nawait page.goto('https://playwright.dev');\nawait context.tracing.stop({ path: 'trace.zip' });\n```\n\n```java\nBrowser browser = chromium.launch();\nBrowserContext context = browser.newContext();\ncontext.tracing().start(new Tracing.StartOptions()\n  .setScreenshots(true)\n  .setSnapshots(true));\nPage page = context.newPage();\npage.navigate(\"https://playwright.dev\");\ncontext.tracing().stop(new Tracing.StopOptions()\n  .setPath(Paths.get(\"trace.zip\")));\n```\n\n```python async\nbrowser = await chromium.launch()\ncontext = await browser.new_context()\nawait context.tracing.start(screenshots=True, snapshots=True)\npage = await context.new_page()\nawait page.goto(\"https://playwright.dev\")\nawait context.tracing.stop(path = \"trace.zip\")\n```\n\n```python sync\nbrowser = chromium.launch()\ncontext = browser.new_context()\ncontext.tracing.start(screenshots=True, snapshots=True)\npage = context.new_page()\npage.goto(\"https://playwright.dev\")\ncontext.tracing.stop(path = \"trace.zip\")\n```\n\n```csharp\nawait using var browser = playwright.Chromium.LaunchAsync();\nawait using var context = await browser.NewContextAsync();\nawait context.Tracing.StartAsync(new TracingStartOptions\n{\n  Screenshots: true,\n  Snapshots: true\n});\nvar page = context.NewPageAsync();\nawait page.GotoAsync(\"https://playwright.dev\");\nawait context.Tracing.StopAsync(new TracingStopOptions\n{\n  Path: \"trace.zip\"\n});\n```\n",
     "members": [
       {
         "kind": "method",
@@ -66787,8 +66805,8 @@
             "type": "code",
             "lines": [
               "await context.tracing.start(name=\"trace\", screenshots=True, snapshots=True)",
+              "page = await context.new_page()",
               "await page.goto(\"https://playwright.dev\")",
-              "await context.tracing.stop()",
               "await context.tracing.stop(path = \"trace.zip\")"
             ],
             "codeLang": "python async"
@@ -66797,8 +66815,8 @@
             "type": "code",
             "lines": [
               "context.tracing.start(name=\"trace\", screenshots=True, snapshots=True)",
+              "page = context.new_page()",
               "page.goto(\"https://playwright.dev\")",
-              "context.tracing.stop()",
               "context.tracing.stop(path = \"trace.zip\")"
             ],
             "codeLang": "python sync"
@@ -66824,7 +66842,7 @@
           }
         ],
         "required": true,
-        "comment": "Start tracing.\n\n```js\nawait context.tracing.start({ screenshots: true, snapshots: true });\nconst page = await context.newPage();\nawait page.goto('https://playwright.dev');\nawait context.tracing.stop({ path: 'trace.zip' });\n```\n\n```java\ncontext.tracing().start(new Tracing.StartOptions()\n  .setScreenshots(true)\n  .setSnapshots(true));\nPage page = context.newPage();\npage.navigate(\"https://playwright.dev\");\ncontext.tracing().stop(new Tracing.StopOptions()\n  .setPath(Paths.get(\"trace.zip\")));\n```\n\n```python async\nawait context.tracing.start(name=\"trace\", screenshots=True, snapshots=True)\nawait page.goto(\"https://playwright.dev\")\nawait context.tracing.stop()\nawait context.tracing.stop(path = \"trace.zip\")\n```\n\n```python sync\ncontext.tracing.start(name=\"trace\", screenshots=True, snapshots=True)\npage.goto(\"https://playwright.dev\")\ncontext.tracing.stop()\ncontext.tracing.stop(path = \"trace.zip\")\n```\n\n```csharp\nawait using var browser = playwright.Chromium.LaunchAsync();\nawait using var context = await browser.NewContextAsync();\nawait context.Tracing.StartAsync(new TracingStartOptions\n{\n  Screenshots: true,\n  Snapshots: true\n});\nvar page = context.NewPageAsync();\nawait page.GotoAsync(\"https://playwright.dev\");\nawait context.Tracing.StopAsync(new TracingStopOptions\n{\n  Path: \"trace.zip\"\n});\n```\n",
+        "comment": "Start tracing.\n\n```js\nawait context.tracing.start({ screenshots: true, snapshots: true });\nconst page = await context.newPage();\nawait page.goto('https://playwright.dev');\nawait context.tracing.stop({ path: 'trace.zip' });\n```\n\n```java\ncontext.tracing().start(new Tracing.StartOptions()\n  .setScreenshots(true)\n  .setSnapshots(true));\nPage page = context.newPage();\npage.navigate(\"https://playwright.dev\");\ncontext.tracing().stop(new Tracing.StopOptions()\n  .setPath(Paths.get(\"trace.zip\")));\n```\n\n```python async\nawait context.tracing.start(name=\"trace\", screenshots=True, snapshots=True)\npage = await context.new_page()\nawait page.goto(\"https://playwright.dev\")\nawait context.tracing.stop(path = \"trace.zip\")\n```\n\n```python sync\ncontext.tracing.start(name=\"trace\", screenshots=True, snapshots=True)\npage = context.new_page()\npage.goto(\"https://playwright.dev\")\ncontext.tracing.stop(path = \"trace.zip\")\n```\n\n```csharp\nawait using var browser = playwright.Chromium.LaunchAsync();\nawait using var context = await browser.NewContextAsync();\nawait context.Tracing.StartAsync(new TracingStartOptions\n{\n  Screenshots: true,\n  Snapshots: true\n});\nvar page = context.NewPageAsync();\nawait page.GotoAsync(\"https://playwright.dev\");\nawait context.Tracing.StopAsync(new TracingStopOptions\n{\n  Path: \"trace.zip\"\n});\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "start",
@@ -66919,6 +66937,139 @@
       {
         "kind": "method",
         "langs": {},
+        "name": "startChunk",
+        "type": {
+          "name": "void"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Start a new trace chunk. If you'd like to record multiple traces on the same `BrowserContext`, use [`method: Tracing.start`] once, and then create multiple trace chunks with [`method: Tracing.startChunk`] and [`method: Tracing.stopChunk`]."
+          },
+          {
+            "type": "code",
+            "lines": [
+              "await context.tracing.start({ screenshots: true, snapshots: true });",
+              "const page = await context.newPage();",
+              "await page.goto('https://playwright.dev');",
+              "",
+              "await context.tracing.startChunk();",
+              "await page.click('text=Get Started');",
+              "// Everything between startChunk and stopChunk will be recorded in the trace.",
+              "await context.tracing.stopChunk({ path: 'trace1.zip' });",
+              "",
+              "await context.tracing.startChunk();",
+              "await page.goto('http://example.com');",
+              "// Save a second trace file with different actions.",
+              "await context.tracing.stopChunk({ path: 'trace2.zip' });"
+            ],
+            "codeLang": "js"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "context.tracing().start(new Tracing.StartOptions()",
+              "  .setScreenshots(true)",
+              "  .setSnapshots(true));",
+              "Page page = context.newPage();",
+              "page.navigate(\"https://playwright.dev\");",
+              "",
+              "context.tracing().startChunk();",
+              "page.click(\"text=Get Started\");",
+              "// Everything between startChunk and stopChunk will be recorded in the trace.",
+              "context.tracing().stopChunk(new Tracing.StopChunkOptions()",
+              "  .setPath(Paths.get(\"trace1.zip\")));",
+              "",
+              "context.tracing().startChunk();",
+              "page.navigate(\"http://example.com\");",
+              "// Save a second trace file with different actions.",
+              "context.tracing().stopChunk(new Tracing.StopChunkOptions()",
+              "  .setPath(Paths.get(\"trace2.zip\")));"
+            ],
+            "codeLang": "java"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "await context.tracing.start(name=\"trace\", screenshots=True, snapshots=True)",
+              "page = await context.new_page()",
+              "await page.goto(\"https://playwright.dev\")",
+              "",
+              "await context.tracing.start_chunk()",
+              "await page.click(\"text=Get Started\")",
+              "# Everything between start_chunk and stop_chunk will be recorded in the trace.",
+              "await context.tracing.stop_chunk(path = \"trace1.zip\")",
+              "",
+              "await context.tracing.start_chunk()",
+              "await page.goto(\"http://example.com\")",
+              "# Save a second trace file with different actions.",
+              "await context.tracing.stop_chunk(path = \"trace2.zip\")"
+            ],
+            "codeLang": "python async"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "context.tracing.start(name=\"trace\", screenshots=True, snapshots=True)",
+              "page = context.new_page()",
+              "page.goto(\"https://playwright.dev\")",
+              "",
+              "context.tracing.start_chunk()",
+              "page.click(\"text=Get Started\")",
+              "# Everything between start_chunk and stop_chunk will be recorded in the trace.",
+              "context.tracing.stop_chunk(path = \"trace1.zip\")",
+              "",
+              "context.tracing.start_chunk()",
+              "page.goto(\"http://example.com\")",
+              "# Save a second trace file with different actions.",
+              "context.tracing.stop_chunk(path = \"trace2.zip\")"
+            ],
+            "codeLang": "python sync"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "await using var browser = playwright.Chromium.LaunchAsync();",
+              "await using var context = await browser.NewContextAsync();",
+              "await context.Tracing.StartAsync(new TracingStartOptions",
+              "{",
+              "  Screenshots: true,",
+              "  Snapshots: true",
+              "});",
+              "var page = context.NewPageAsync();",
+              "await page.GotoAsync(\"https://playwright.dev\");",
+              "",
+              "await context.Tracing.StartChunkAsync();",
+              "await page.ClickAsync(\"text=Get Started\");",
+              "// Everything between StartChunkAsync and StopChunkAsync will be recorded in the trace.",
+              "await context.Tracing.StopChunkAsync(new TracingStopChunkOptions",
+              "{",
+              "  Path: \"trace1.zip\"",
+              "});",
+              "",
+              "await context.Tracing.StartChunkAsync();",
+              "await page.GotoAsync(\"http://example.com\");",
+              "// Save a second trace file with different actions.",
+              "await context.Tracing.StopChunkAsync(new TracingStopChunkOptions",
+              "{",
+              "  Path: \"trace2.zip\"",
+              "});"
+            ],
+            "codeLang": "csharp"
+          }
+        ],
+        "required": true,
+        "comment": "Start a new trace chunk. If you'd like to record multiple traces on the same `BrowserContext`, use\n[`method: Tracing.start`] once, and then create multiple trace chunks with [`method: Tracing.startChunk`] and\n[`method: Tracing.stopChunk`].\n\n```js\nawait context.tracing.start({ screenshots: true, snapshots: true });\nconst page = await context.newPage();\nawait page.goto('https://playwright.dev');\n\nawait context.tracing.startChunk();\nawait page.click('text=Get Started');\n// Everything between startChunk and stopChunk will be recorded in the trace.\nawait context.tracing.stopChunk({ path: 'trace1.zip' });\n\nawait context.tracing.startChunk();\nawait page.goto('http://example.com');\n// Save a second trace file with different actions.\nawait context.tracing.stopChunk({ path: 'trace2.zip' });\n```\n\n```java\ncontext.tracing().start(new Tracing.StartOptions()\n  .setScreenshots(true)\n  .setSnapshots(true));\nPage page = context.newPage();\npage.navigate(\"https://playwright.dev\");\n\ncontext.tracing().startChunk();\npage.click(\"text=Get Started\");\n// Everything between startChunk and stopChunk will be recorded in the trace.\ncontext.tracing().stopChunk(new Tracing.StopChunkOptions()\n  .setPath(Paths.get(\"trace1.zip\")));\n\ncontext.tracing().startChunk();\npage.navigate(\"http://example.com\");\n// Save a second trace file with different actions.\ncontext.tracing().stopChunk(new Tracing.StopChunkOptions()\n  .setPath(Paths.get(\"trace2.zip\")));\n```\n\n```python async\nawait context.tracing.start(name=\"trace\", screenshots=True, snapshots=True)\npage = await context.new_page()\nawait page.goto(\"https://playwright.dev\")\n\nawait context.tracing.start_chunk()\nawait page.click(\"text=Get Started\")\n# Everything between start_chunk and stop_chunk will be recorded in the trace.\nawait context.tracing.stop_chunk(path = \"trace1.zip\")\n\nawait context.tracing.start_chunk()\nawait page.goto(\"http://example.com\")\n# Save a second trace file with different actions.\nawait context.tracing.stop_chunk(path = \"trace2.zip\")\n```\n\n```python sync\ncontext.tracing.start(name=\"trace\", screenshots=True, snapshots=True)\npage = context.new_page()\npage.goto(\"https://playwright.dev\")\n\ncontext.tracing.start_chunk()\npage.click(\"text=Get Started\")\n# Everything between start_chunk and stop_chunk will be recorded in the trace.\ncontext.tracing.stop_chunk(path = \"trace1.zip\")\n\ncontext.tracing.start_chunk()\npage.goto(\"http://example.com\")\n# Save a second trace file with different actions.\ncontext.tracing.stop_chunk(path = \"trace2.zip\")\n```\n\n```csharp\nawait using var browser = playwright.Chromium.LaunchAsync();\nawait using var context = await browser.NewContextAsync();\nawait context.Tracing.StartAsync(new TracingStartOptions\n{\n  Screenshots: true,\n  Snapshots: true\n});\nvar page = context.NewPageAsync();\nawait page.GotoAsync(\"https://playwright.dev\");\n\nawait context.Tracing.StartChunkAsync();\nawait page.ClickAsync(\"text=Get Started\");\n// Everything between StartChunkAsync and StopChunkAsync will be recorded in the trace.\nawait context.Tracing.StopChunkAsync(new TracingStopChunkOptions\n{\n  Path: \"trace1.zip\"\n});\n\nawait context.Tracing.StartChunkAsync();\nawait page.GotoAsync(\"http://example.com\");\n// Save a second trace file with different actions.\nawait context.Tracing.StopChunkAsync(new TracingStopChunkOptions\n{\n  Path: \"trace2.zip\"\n});\n```\n",
+        "deprecated": false,
+        "async": true,
+        "alias": "startChunk",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {},
         "name": "stop",
         "type": {
           "name": "void"
@@ -66955,11 +67106,73 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Export trace into the file with the given name."
+                      "text": "Export trace into the file with the given path."
                     }
                   ],
                   "required": false,
-                  "comment": "Export trace into the file with the given name.",
+                  "comment": "Export trace into the file with the given path.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "path",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "options",
+            "overloadIndex": 0,
+            "paramOrOption": null
+          }
+        ]
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "stopChunk",
+        "type": {
+          "name": "void"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Stop the trace chunk. See [`method: Tracing.startChunk`] for more details about multiple trace chunks."
+          }
+        ],
+        "required": true,
+        "comment": "Stop the trace chunk. See [`method: Tracing.startChunk`] for more details about multiple trace chunks.",
+        "deprecated": false,
+        "async": true,
+        "alias": "stopChunk",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "path",
+                  "type": {
+                    "name": "path",
+                    "expression": "[path]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Export trace collected since the last [`method: Tracing.startChunk`] call into the file with the given path."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Export trace collected since the last [`method: Tracing.startChunk`] call into the file with the given path.",
                   "deprecated": false,
                   "async": false,
                   "alias": "path",

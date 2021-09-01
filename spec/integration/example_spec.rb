@@ -223,13 +223,13 @@ RSpec.describe 'example' do
     it 'should work with Locator/strictness' do
       with_page do |page|
         page.content = "<button onclick=\"this.innerText='clicked!'\">Submit</button>"
-        example_3f41557af799b9052d1528388da041f15a0b8655d10d992e79cbac950b41d93c(page: page)
+        expect(example_5c129e11b91105b449e998fc2944c4591340eca625fe27a86eb555d5959dfc14(page: page)).to eq(1)
         expect(page.eval_on_selector('button', 'el => el.innerText')).to eq('clicked!')
       end
 
       with_page do |page|
         page.content = "<button>1</button><button>2</button>"
-        expect { example_3f41557af799b9052d1528388da041f15a0b8655d10d992e79cbac950b41d93c(page: page) }.to raise_error(/strict mode violation/)
+        expect { example_5c129e11b91105b449e998fc2944c4591340eca625fe27a86eb555d5959dfc14(page: page) }.to raise_error(/strict mode violation/)
       end
     end
 
@@ -328,7 +328,15 @@ RSpec.describe 'example' do
     end
 
     it 'should work with Selector' do
+      skip unless chromium?
+
       expect(example_79053fe985428755ac11bbb07990e18ca0c1367946f7162bc6d8b0030454bdab(playwright: playwright)).to eq(1)
+    end
+
+    it 'should work with Tracing' do
+      with_context do |context|
+        example_e1cd2de07d683c41d7d1b375aa821afaab49c5407ea48c77dfdc3262f597ff1a(context: context)
+      end
     end
 
     it 'should work with Worker', skip: ENV['CI'] do

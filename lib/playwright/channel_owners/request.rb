@@ -66,10 +66,6 @@ module Playwright
       end
     end
 
-    def headers
-      @headers
-    end
-
     def response
       resp = @channel.send_message_to_server('response')
       ChannelOwners::Response.from_nullable(resp)

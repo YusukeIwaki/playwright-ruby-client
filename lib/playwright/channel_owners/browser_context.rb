@@ -41,14 +41,7 @@ module Playwright
           ChannelOwners::Page.from_nullable(params['page']),
         )
       })
-      @channel.on('requestFinished', ->(params) {
-        on_request_finished(
-          ChannelOwners::Request.from(params['request']),
-          params['responseEndTiming'],
-          params['requestSizes'],
-          ChannelOwners::Page.from_nullable(params['page']),
-        )
-      })
+      @channel.on('requestFinished', method(:on_request_finished))
       @channel.on('response', ->(params) {
         on_response(
           ChannelOwners::Response.from(params['response']),
@@ -96,8 +89,15 @@ module Playwright
       page&.emit(Events::Page::RequestFailed, request)
     end
 
-    private def on_request_finished(request, response_end_timing, request_sizes, page)
-      request.send(:update_response_end_timing, response_end_timing)
+    private def on_request_finished(params)
+      request = ChannelOwners::Request.from(params['request'])
+      response = ChannelOwners::Response.from_nullable(params['response'])
+      page = ChannelOwners::Page.from_nullable(params['page'])
+
+      request_sizes = params['requestSizes']
+      response_headers = params['responseHeaders']
+
+      request.send(:update_response_end_timing, params['responseEndTiming'])
       request.send(:update_sizes,
         request_body_size: request_sizes['requestBodySize'],
         request_headers_size: request_sizes['requestHeadersSize'],
@@ -105,8 +105,10 @@ module Playwright
         response_headers_size: request_sizes['responseHeadersSize'],
         response_transfer_size: request_sizes['responseTransferSize'],
       )
+      response&.send(:update_headers, response_headers)
       emit(Events::BrowserContext::RequestFinished, request)
       page&.emit(Events::Page::RequestFinished, request)
+      response&.send(:mark_as_finished)
     end
 
     private def on_request(request, page)
