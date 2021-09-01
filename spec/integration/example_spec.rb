@@ -328,6 +328,8 @@ RSpec.describe 'example' do
     end
 
     it 'should work with Selector' do
+      skip unless chromium?
+
       expect(example_79053fe985428755ac11bbb07990e18ca0c1367946f7162bc6d8b0030454bdab(playwright: playwright)).to eq(1)
     end
 
