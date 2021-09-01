@@ -99,23 +99,17 @@ RSpec.describe 'WebSocket', web_socket: true do
 
   it 'should emit error', sinatra: true do
     with_page do |page|
-      callback = double('callback')
-      expect(callback).to receive(:on_error)
+      callback = Concurrent::Promises.resolvable_future
 
       page.on('websocket', ->(ws) {
-        ws.on('socketerror', ->(error) { callback.on_error(error) })
+        ws.on('socketerror', ->(error) { callback.fulfill(error) })
       })
       ws = page.expect_websocket do
         page.evaluate("new WebSocket('#{ws_url}-not-valid-url')")
       end
 
-      begin
-        ws.wait_for_event('close')
-      rescue => err
-        # SocketError don't always occurs because of race condition.
-        # Check it only when occured.
-        expect(err.message).to match(/Socket error/)
-      end
+      error_message = callback.value!
+      expect(error_message).to match(/: 404/)
     end
   end
 
