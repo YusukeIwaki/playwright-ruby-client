@@ -566,12 +566,15 @@ module ExampleCodes
   end
 
   # Locator
-  def example_3f41557af799b9052d1528388da041f15a0b8655d10d992e79cbac950b41d93c(page:)
+  def example_5c129e11b91105b449e998fc2944c4591340eca625fe27a86eb555d5959dfc14(page:)
     # Throws if there are several buttons in DOM:
     page.locator('button').click
 
     # Works because we explicitly tell locator to pick the first element:
     page.locator('button').first.click
+
+    # Works because count knows what to do with multiple matches:
+    page.locator('button').count
   end
 
   # Locator#bounding_box
@@ -1119,21 +1122,19 @@ module ExampleCodes
   end
 
   # Tracing
-  def example_a767dfb400d98aef50f2767b94171d23474ea1ac1cf9b4d75d412936208e652d(browser:)
-    browser.new_page do |page|
-      context = page.context
-
+  def example_4c3e7d3ff5866cd7fc56ca68dc38333760d280ebbcc3038295f985a9e8f47077(browser:)
+    browser.new_context do |context|
       context.tracing.start(screenshots: true, snapshots: true)
+      page = context.new_page
       page.goto('https://playwright.dev')
       context.tracing.stop(path: 'trace.zip')
     end
   end
 
   # Tracing#start
-  def example_e611abc8b1066118d0c87eae1bbbb08df655f36d50a94402fc56b8713150997b(page:)
-    context = page.context
-
+  def example_89f1898bef60f89ccf36656f6471cc0d2296bfd8cad633f1b8fd22ba4b4f65da(context:)
     context.tracing.start(name: 'trace', screenshots: true, snapshots: true)
+    page = context.new_page
     page.goto('https://playwright.dev')
     context.tracing.stop(path: 'trace.zip')
   end
