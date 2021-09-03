@@ -48,7 +48,7 @@ Returns the [Frame](./frame) that initiated this request.
 def headers
 ```
 
-An object with HTTP headers associated with the request. All header names are lower-case.
+**DEPRECATED** Incomplete list of headers as seen by the rendering engine. Use [Request#all_headers](./request#all_headers) instead.
 
 ## navigation_request?
 
