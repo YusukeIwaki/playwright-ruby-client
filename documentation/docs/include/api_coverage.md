@@ -10,6 +10,7 @@
 * post_data
 * post_data_buffer
 * post_data_json
+* ~~raw_headers~~
 * redirected_from
 * redirected_to
 * resource_type
@@ -26,6 +27,7 @@
 * headers
 * json
 * ok
+* ~~raw_headers~~
 * request
 * security_details
 * server_addr

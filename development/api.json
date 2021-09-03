@@ -26327,7 +26327,13 @@
         "args": [
           {
             "kind": "property",
-            "langs": {},
+            "langs": {
+              "aliases": {
+                "csharp": "checkedState"
+              },
+              "types": {},
+              "overrides": {}
+            },
             "name": "checked",
             "type": {
               "name": "boolean",
@@ -26463,28 +26469,6 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "position",
-                  "overloadIndex": 0,
-                  "paramOrOption": null
-                },
-                {
-                  "kind": "property",
-                  "langs": {},
-                  "name": "strict",
-                  "type": {
-                    "name": "boolean",
-                    "expression": "[boolean]"
-                  },
-                  "spec": [
-                    {
-                      "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
-                    }
-                  ],
-                  "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
-                  "deprecated": false,
-                  "async": false,
-                  "alias": "strict",
                   "overloadIndex": 0,
                   "paramOrOption": null
                 },
@@ -34612,7 +34596,13 @@
           },
           {
             "kind": "property",
-            "langs": {},
+            "langs": {
+              "aliases": {
+                "csharp": "checkedState"
+              },
+              "types": {},
+              "overrides": {}
+            },
             "name": "checked",
             "type": {
               "name": "boolean",
@@ -37582,6 +37572,168 @@
             "paramOrOption": null
           }
         ]
+      }
+    ]
+  },
+  {
+    "name": "Headers",
+    "spec": [
+      {
+        "type": "text",
+        "text": "HTTP request and response raw headers collection."
+      }
+    ],
+    "langs": {},
+    "comment": "HTTP request and response raw headers collection.",
+    "members": [
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "get",
+        "type": {
+          "name": "",
+          "union": [
+            {
+              "name": "string"
+            },
+            {
+              "name": "null"
+            }
+          ],
+          "expression": "[string|null]"
+        },
+        "spec": [],
+        "required": true,
+        "comment": "",
+        "deprecated": false,
+        "async": false,
+        "alias": "get",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "name",
+            "type": {
+              "name": "string",
+              "expression": "[string]"
+            },
+            "spec": [],
+            "required": true,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "name",
+            "overloadIndex": 0,
+            "paramOrOption": null
+          }
+        ]
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "getAll",
+        "type": {
+          "name": "Array",
+          "templates": [
+            {
+              "name": "string"
+            }
+          ],
+          "expression": "[Array]<[string]>"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Returns all header values for the given header name."
+          }
+        ],
+        "required": true,
+        "comment": "Returns all header values for the given header name.",
+        "deprecated": false,
+        "async": false,
+        "alias": "getAll",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "name",
+            "type": {
+              "name": "string",
+              "expression": "[string]"
+            },
+            "spec": [],
+            "required": true,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "name",
+            "overloadIndex": 0,
+            "paramOrOption": null
+          }
+        ]
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "headerNames",
+        "type": {
+          "name": "Array",
+          "templates": [
+            {
+              "name": "string"
+            }
+          ],
+          "expression": "[Array]<[string]>"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Returns all header names in this headers collection."
+          }
+        ],
+        "required": true,
+        "comment": "Returns all header names in this headers collection.",
+        "deprecated": false,
+        "async": false,
+        "alias": "headerNames",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "headers",
+        "type": {
+          "name": "Array",
+          "templates": [
+            {
+              "name": "{ name: string"
+            },
+            {
+              "name": "value: string }"
+            }
+          ],
+          "expression": "[Array]<{ name: string, value: string }>"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Returns all raw headers."
+          }
+        ],
+        "required": true,
+        "comment": "Returns all raw headers.",
+        "deprecated": false,
+        "async": false,
+        "alias": "headers",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
       }
     ]
   },
@@ -43499,7 +43651,13 @@
         "args": [
           {
             "kind": "property",
-            "langs": {},
+            "langs": {
+              "aliases": {
+                "csharp": "checkedState"
+              },
+              "types": {},
+              "overrides": {}
+            },
             "name": "checked",
             "type": {
               "name": "boolean",
@@ -56625,7 +56783,13 @@
           },
           {
             "kind": "property",
-            "langs": {},
+            "langs": {
+              "aliases": {
+                "csharp": "checkedState"
+              },
+              "types": {},
+              "overrides": {}
+            },
             "name": "checked",
             "type": {
               "name": "boolean",
@@ -63827,12 +63991,12 @@
         "spec": [
           {
             "type": "text",
-            "text": "An object with HTTP headers associated with the request. All header names are lower-case."
+            "text": "**DEPRECATED**  Use [`method: Request.rawHeaders`] instead."
           }
         ],
         "required": true,
-        "comment": "An object with HTTP headers associated with the request. All header names are lower-case.",
-        "deprecated": false,
+        "comment": "**DEPRECATED**  Use [`method: Request.rawHeaders`] instead.",
+        "deprecated": true,
         "async": false,
         "alias": "headers",
         "overloadIndex": 0,
@@ -63986,6 +64150,29 @@
         "deprecated": false,
         "async": false,
         "alias": "postDataJSON",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "rawHeaders",
+        "type": {
+          "name": "Headers",
+          "expression": "[Headers]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "An object with the raw request HTTP headers associated with the request. All headers are as seen in the network stack."
+          }
+        ],
+        "required": true,
+        "comment": "An object with the raw request HTTP headers associated with the request. All headers are as seen in the network stack.",
+        "deprecated": false,
+        "async": true,
+        "alias": "rawHeaders",
         "overloadIndex": 0,
         "paramOrOption": null,
         "args": []
@@ -64822,12 +65009,12 @@
         "spec": [
           {
             "type": "text",
-            "text": "Returns the object with HTTP headers associated with the response. All header names are lower-case."
+            "text": "**DEPRECATED**  Use [`method: Response.rawHeaders`] instead."
           }
         ],
         "required": true,
-        "comment": "Returns the object with HTTP headers associated with the response. All header names are lower-case.",
-        "deprecated": false,
+        "comment": "**DEPRECATED**  Use [`method: Response.rawHeaders`] instead.",
+        "deprecated": true,
         "async": false,
         "alias": "headers",
         "overloadIndex": 0,
@@ -64922,6 +65109,29 @@
         "deprecated": false,
         "async": false,
         "alias": "ok",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "rawHeaders",
+        "type": {
+          "name": "Headers",
+          "expression": "[Headers]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "An object with the raw response HTTP headers associated with the request. All headers are as seen in the network stack."
+          }
+        ],
+        "required": true,
+        "comment": "An object with the raw response HTTP headers associated with the request. All headers are as seen in the network stack.",
+        "deprecated": false,
+        "async": true,
+        "alias": "rawHeaders",
         "overloadIndex": 0,
         "paramOrOption": null,
         "args": []
