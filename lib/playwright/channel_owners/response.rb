@@ -18,7 +18,6 @@ module Playwright
         request_start: timing["requestStart"],
         response_start: timing["responseStart"],
       )
-      @request.send(:update_headers, @initializer['requestHeaders'])
       @finished_promise = Concurrent::Promises.resolvable_future
     end
     attr_reader :request
@@ -72,13 +71,6 @@ module Playwright
 
     private def mark_as_finished
       @finished_promise.fulfill(nil)
-    end
-
-    # @param headers [Array|nil]
-    private def update_headers(headers)
-      if headers.is_a?(Enumerable)
-        @headers = parse_headers(headers)
-      end
     end
 
     private def parse_headers(headers)

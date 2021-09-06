@@ -113,10 +113,6 @@ module Playwright
       @timing[:responseStart] = response_start
     end
 
-    private def update_headers(headers)
-      @headers = parse_headers(headers)
-    end
-
     private def update_response_end_timing(response_end_timing)
       @timing[:responseEnd] = response_end_timing
     end
