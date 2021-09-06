@@ -2,6 +2,7 @@
 
 ## Request
 
+* ~~all_headers~~
 * failure
 * frame
 * headers
@@ -20,6 +21,7 @@
 
 ## Response
 
+* ~~all_headers~~
 * body
 * finished
 * frame
