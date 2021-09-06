@@ -51,7 +51,6 @@ RSpec.describe 'locator' do
     end
 
     it 'should check the box using set_checked' do
-      pending 'fails by redundant keyword: strict'
       with_page do |page|
         page.content = "<input id='checkbox' type='checkbox'></input>"
         input = page.locator('input')
