@@ -26,7 +26,6 @@ RSpec.describe 'Page#check' do
   end
 
   it 'should check the box with ElementHandle#set_checked' do
-    pending 'fails by redundant keyword: strict'
     with_page do |page|
       page.content = "<input id='checkbox' type='checkbox'></input>"
       page.query_selector('input').checked = true
@@ -67,7 +66,6 @@ RSpec.describe 'Page#check' do
   end
 
   it 'should uncheck the box with ElementHandle#set_checked' do
-    pending 'fails by redundant keyword: strict'
     with_page do |page|
       page.content = "<input id='checkbox' type='checkbox' checked></input>"
       page.query_selector('input').checked = false
