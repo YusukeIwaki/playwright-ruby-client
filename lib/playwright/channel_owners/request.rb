@@ -17,13 +17,6 @@ module Playwright
         responseStart: -1,
         responseEnd: -1,
       }
-      @sizes = {
-        request_body_size: 0,
-        request_headers_size: 0,
-        response_body_size: 0,
-        response_headers_size: 0,
-        response_transfer_size: 0,
-      }
       @headers = parse_headers(@initializer['headers'])
     end
 
@@ -83,7 +76,16 @@ module Playwright
       @failure_text
     end
 
-    attr_reader :headers, :redirected_from, :redirected_to, :timing, :sizes
+    attr_reader :headers, :redirected_from, :redirected_to, :timing
+
+    def sizes
+      res = response
+      unless res
+        raise 'Unable to fetch sizes for failed request'
+      end
+
+      res.send(:sizes)
+    end
 
     private def update_redirected_to(request)
       @redirected_to = request
@@ -115,20 +117,6 @@ module Playwright
 
     private def update_response_end_timing(response_end_timing)
       @timing[:responseEnd] = response_end_timing
-    end
-
-    private def update_sizes(
-                  request_body_size:,
-                  request_headers_size:,
-                  response_body_size:,
-                  response_headers_size:,
-                  response_transfer_size:)
-
-      @sizes[:requestBodySize] = request_body_size
-      @sizes[:requestHeadersSize] = request_headers_size
-      @sizes[:responseBodySize] = response_body_size
-      @sizes[:responseHeadersSize] = response_headers_size
-      @sizes[:responseTransferSize] = response_transfer_size
     end
 
     private def parse_headers(headers)

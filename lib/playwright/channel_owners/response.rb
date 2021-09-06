@@ -69,6 +69,18 @@ module Playwright
       @request.frame
     end
 
+    private def sizes
+      resp = @channel.send_message_to_server('sizes')
+
+      {
+        requestBodySize: resp['requestBodySize'],
+        requestHeadersSize: resp['requestHeadersSize'],
+        responseBodySize: resp['responseBodySize'],
+        responseHeadersSize: resp['responseHeadersSize'],
+        responseTransferSize: resp['responseTransferSize'],
+      }
+    end
+
     private def mark_as_finished
       @finished_promise.fulfill(nil)
     end
