@@ -36,7 +36,7 @@ Returns the [Frame](./frame) that initiated this response.
 def headers
 ```
 
-Returns the object with HTTP headers associated with the response. All header names are lower-case.
+**DEPRECATED** Incomplete list of headers as seen by the rendering engine. Use [Response#all_headers](./response#all_headers) instead.
 
 ## json
 

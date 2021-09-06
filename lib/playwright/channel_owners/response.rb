@@ -18,7 +18,6 @@ module Playwright
         request_start: timing["requestStart"],
         response_start: timing["responseStart"],
       )
-      @request.send(:update_headers, @initializer['requestHeaders'])
       @finished_promise = Concurrent::Promises.resolvable_future
     end
     attr_reader :request
@@ -70,15 +69,20 @@ module Playwright
       @request.frame
     end
 
-    private def mark_as_finished
-      @finished_promise.fulfill(nil)
+    private def sizes
+      resp = @channel.send_message_to_server('sizes')
+
+      {
+        requestBodySize: resp['requestBodySize'],
+        requestHeadersSize: resp['requestHeadersSize'],
+        responseBodySize: resp['responseBodySize'],
+        responseHeadersSize: resp['responseHeadersSize'],
+        responseTransferSize: resp['responseTransferSize'],
+      }
     end
 
-    # @param headers [Array|nil]
-    private def update_headers(headers)
-      if headers.is_a?(Enumerable)
-        @headers = parse_headers(headers)
-      end
+    private def mark_as_finished
+      @finished_promise.fulfill(nil)
     end
 
     private def parse_headers(headers)

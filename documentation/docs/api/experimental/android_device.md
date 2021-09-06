@@ -34,6 +34,7 @@ def launch_browser(
       command: nil,
       deviceScaleFactor: nil,
       extraHTTPHeaders: nil,
+      forcedColors: nil,
       geolocation: nil,
       hasTouch: nil,
       httpCredentials: nil,

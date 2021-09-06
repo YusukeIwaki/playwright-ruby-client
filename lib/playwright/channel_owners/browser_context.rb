@@ -94,18 +94,7 @@ module Playwright
       response = ChannelOwners::Response.from_nullable(params['response'])
       page = ChannelOwners::Page.from_nullable(params['page'])
 
-      request_sizes = params['requestSizes']
-      response_headers = params['responseHeaders']
-
       request.send(:update_response_end_timing, params['responseEndTiming'])
-      request.send(:update_sizes,
-        request_body_size: request_sizes['requestBodySize'],
-        request_headers_size: request_sizes['requestHeadersSize'],
-        response_body_size: request_sizes['responseBodySize'],
-        response_headers_size: request_sizes['responseHeadersSize'],
-        response_transfer_size: request_sizes['responseTransferSize'],
-      )
-      response&.send(:update_headers, response_headers)
       emit(Events::BrowserContext::RequestFinished, request)
       page&.emit(Events::Page::RequestFinished, request)
       response&.send(:mark_as_finished)
