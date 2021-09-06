@@ -281,7 +281,7 @@ def drag_and_drop(
 ## emulate_media
 
 ```
-def emulate_media(colorScheme: nil, media: nil, reducedMotion: nil)
+def emulate_media(colorScheme: nil, forcedColors: nil, media: nil, reducedMotion: nil)
 ```
 
 This method changes the `CSS media type` through the `media` argument, and/or the `'prefers-colors-scheme'` media

@@ -564,7 +564,6 @@ def set_checked(
       force: nil,
       noWaitAfter: nil,
       position: nil,
-      strict: nil,
       timeout: nil,
       trial: nil)
 ```

@@ -114,6 +114,7 @@ def launch_persistent_context(
       env: nil,
       executablePath: nil,
       extraHTTPHeaders: nil,
+      forcedColors: nil,
       geolocation: nil,
       handleSIGHUP: nil,
       handleSIGINT: nil,

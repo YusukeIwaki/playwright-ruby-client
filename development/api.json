@@ -1963,6 +1963,41 @@
                 {
                   "kind": "property",
                   "langs": {},
+                  "name": "forcedColors",
+                  "type": {
+                    "name": "ForcedColors",
+                    "union": [
+                      {
+                        "name": "\"active\""
+                      },
+                      {
+                        "name": "\"none\""
+                      }
+                    ],
+                    "expression": "[ForcedColors]<\"active\"|\"none\">"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Emulates `'forced-colors'` media feature, supported values are `'active'`, `'none'`. See [`method: Page.emulateMedia`] for more details. Defaults to `'none'`."
+                    },
+                    {
+                      "type": "note",
+                      "noteType": "note",
+                      "text": "It's not supported in WebKit, see [here](https://bugs.webkit.org/show_bug.cgi?id=225281) in their issue tracker."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Emulates `'forced-colors'` media feature, supported values are `'active'`, `'none'`. See [`method: Page.emulateMedia`]\nfor more details. Defaults to `'none'`.\n\n> NOTE: It's not supported in WebKit, see [here](https://bugs.webkit.org/show_bug.cgi?id=225281) in their issue tracker.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "forcedColors",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
                   "name": "geolocation",
                   "type": {
                     "name": "Object",
@@ -6295,6 +6330,41 @@
                 {
                   "kind": "property",
                   "langs": {},
+                  "name": "forcedColors",
+                  "type": {
+                    "name": "ForcedColors",
+                    "union": [
+                      {
+                        "name": "\"active\""
+                      },
+                      {
+                        "name": "\"none\""
+                      }
+                    ],
+                    "expression": "[ForcedColors]<\"active\"|\"none\">"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Emulates `'forced-colors'` media feature, supported values are `'active'`, `'none'`. See [`method: Page.emulateMedia`] for more details. Defaults to `'none'`."
+                    },
+                    {
+                      "type": "note",
+                      "noteType": "note",
+                      "text": "It's not supported in WebKit, see [here](https://bugs.webkit.org/show_bug.cgi?id=225281) in their issue tracker."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Emulates `'forced-colors'` media feature, supported values are `'active'`, `'none'`. See [`method: Page.emulateMedia`]\nfor more details. Defaults to `'none'`.\n\n> NOTE: It's not supported in WebKit, see [here](https://bugs.webkit.org/show_bug.cgi?id=225281) in their issue tracker.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "forcedColors",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
                   "name": "geolocation",
                   "type": {
                     "name": "Object",
@@ -8347,6 +8417,41 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "extraHTTPHeaders",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "forcedColors",
+                  "type": {
+                    "name": "ForcedColors",
+                    "union": [
+                      {
+                        "name": "\"active\""
+                      },
+                      {
+                        "name": "\"none\""
+                      }
+                    ],
+                    "expression": "[ForcedColors]<\"active\"|\"none\">"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Emulates `'forced-colors'` media feature, supported values are `'active'`, `'none'`. See [`method: Page.emulateMedia`] for more details. Defaults to `'none'`."
+                    },
+                    {
+                      "type": "note",
+                      "noteType": "note",
+                      "text": "It's not supported in WebKit, see [here](https://bugs.webkit.org/show_bug.cgi?id=225281) in their issue tracker."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Emulates `'forced-colors'` media feature, supported values are `'active'`, `'none'`. See [`method: Page.emulateMedia`]\nfor more details. Defaults to `'none'`.\n\n> NOTE: It's not supported in WebKit, see [here](https://bugs.webkit.org/show_bug.cgi?id=225281) in their issue tracker.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "forcedColors",
                   "overloadIndex": 0,
                   "paramOrOption": null
                 },
@@ -16820,6 +16925,41 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "extraHTTPHeaders",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "forcedColors",
+                  "type": {
+                    "name": "ForcedColors",
+                    "union": [
+                      {
+                        "name": "\"active\""
+                      },
+                      {
+                        "name": "\"none\""
+                      }
+                    ],
+                    "expression": "[ForcedColors]<\"active\"|\"none\">"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Emulates `'forced-colors'` media feature, supported values are `'active'`, `'none'`. See [`method: Page.emulateMedia`] for more details. Defaults to `'none'`."
+                    },
+                    {
+                      "type": "note",
+                      "noteType": "note",
+                      "text": "It's not supported in WebKit, see [here](https://bugs.webkit.org/show_bug.cgi?id=225281) in their issue tracker."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Emulates `'forced-colors'` media feature, supported values are `'active'`, `'none'`. See [`method: Page.emulateMedia`]\nfor more details. Defaults to `'none'`.\n\n> NOTE: It's not supported in WebKit, see [here](https://bugs.webkit.org/show_bug.cgi?id=225281) in their issue tracker.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "forcedColors",
                   "overloadIndex": 0,
                   "paramOrOption": null
                 },
@@ -26327,7 +26467,13 @@
         "args": [
           {
             "kind": "property",
-            "langs": {},
+            "langs": {
+              "aliases": {
+                "csharp": "checkedState"
+              },
+              "types": {},
+              "overrides": {}
+            },
             "name": "checked",
             "type": {
               "name": "boolean",
@@ -26463,28 +26609,6 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "position",
-                  "overloadIndex": 0,
-                  "paramOrOption": null
-                },
-                {
-                  "kind": "property",
-                  "langs": {},
-                  "name": "strict",
-                  "type": {
-                    "name": "boolean",
-                    "expression": "[boolean]"
-                  },
-                  "spec": [
-                    {
-                      "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
-                    }
-                  ],
-                  "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
-                  "deprecated": false,
-                  "async": false,
-                  "alias": "strict",
                   "overloadIndex": 0,
                   "paramOrOption": null
                 },
@@ -34612,7 +34736,13 @@
           },
           {
             "kind": "property",
-            "langs": {},
+            "langs": {
+              "aliases": {
+                "csharp": "checkedState"
+              },
+              "types": {},
+              "overrides": {}
+            },
             "name": "checked",
             "type": {
               "name": "boolean",
@@ -37582,6 +37712,168 @@
             "paramOrOption": null
           }
         ]
+      }
+    ]
+  },
+  {
+    "name": "Headers",
+    "spec": [
+      {
+        "type": "text",
+        "text": "HTTP request and response all headers collection."
+      }
+    ],
+    "langs": {},
+    "comment": "HTTP request and response all headers collection.",
+    "members": [
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "get",
+        "type": {
+          "name": "",
+          "union": [
+            {
+              "name": "string"
+            },
+            {
+              "name": "null"
+            }
+          ],
+          "expression": "[string|null]"
+        },
+        "spec": [],
+        "required": true,
+        "comment": "",
+        "deprecated": false,
+        "async": false,
+        "alias": "get",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "name",
+            "type": {
+              "name": "string",
+              "expression": "[string]"
+            },
+            "spec": [],
+            "required": true,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "name",
+            "overloadIndex": 0,
+            "paramOrOption": null
+          }
+        ]
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "getAll",
+        "type": {
+          "name": "Array",
+          "templates": [
+            {
+              "name": "string"
+            }
+          ],
+          "expression": "[Array]<[string]>"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Returns all header values for the given header name."
+          }
+        ],
+        "required": true,
+        "comment": "Returns all header values for the given header name.",
+        "deprecated": false,
+        "async": false,
+        "alias": "getAll",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "name",
+            "type": {
+              "name": "string",
+              "expression": "[string]"
+            },
+            "spec": [],
+            "required": true,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "name",
+            "overloadIndex": 0,
+            "paramOrOption": null
+          }
+        ]
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "headerNames",
+        "type": {
+          "name": "Array",
+          "templates": [
+            {
+              "name": "string"
+            }
+          ],
+          "expression": "[Array]<[string]>"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Returns all header names in this headers collection."
+          }
+        ],
+        "required": true,
+        "comment": "Returns all header names in this headers collection.",
+        "deprecated": false,
+        "async": false,
+        "alias": "headerNames",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "headers",
+        "type": {
+          "name": "Object",
+          "templates": [
+            {
+              "name": "string"
+            },
+            {
+              "name": "string"
+            }
+          ],
+          "expression": "[Object]<[string], [string]>"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Returns all headers as a dictionary. Header names are normalized to lower case, multi-value headers are concatenated using comma."
+          }
+        ],
+        "required": true,
+        "comment": "Returns all headers as a dictionary. Header names are normalized to lower case, multi-value headers are concatenated\nusing comma.",
+        "deprecated": false,
+        "async": false,
+        "alias": "headers",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
       }
     ]
   },
@@ -43499,7 +43791,13 @@
         "args": [
           {
             "kind": "property",
-            "langs": {},
+            "langs": {
+              "aliases": {
+                "csharp": "checkedState"
+              },
+              "types": {},
+              "overrides": {}
+            },
             "name": "checked",
             "type": {
               "name": "boolean",
@@ -43635,28 +43933,6 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "position",
-                  "overloadIndex": 0,
-                  "paramOrOption": null
-                },
-                {
-                  "kind": "property",
-                  "langs": {},
-                  "name": "strict",
-                  "type": {
-                    "name": "boolean",
-                    "expression": "[boolean]"
-                  },
-                  "spec": [
-                    {
-                      "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
-                    }
-                  ],
-                  "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
-                  "deprecated": false,
-                  "async": false,
-                  "alias": "strict",
                   "overloadIndex": 0,
                   "paramOrOption": null
                 },
@@ -49324,6 +49600,49 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "colorScheme",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "forcedColors",
+                  "type": {
+                    "name": "",
+                    "union": [
+                      {
+                        "name": "null"
+                      },
+                      {
+                        "name": "ForcedColors",
+                        "union": [
+                          {
+                            "name": "\"active\""
+                          },
+                          {
+                            "name": "\"none\""
+                          }
+                        ]
+                      }
+                    ],
+                    "expression": "null|[ForcedColors]<\"active\"|\"none\">"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Emulates `'forced-colors'` media feature, supported values are `'active'` and `'none'`. Passing `null` disables forced colors emulation."
+                    },
+                    {
+                      "type": "note",
+                      "noteType": "note",
+                      "text": "It's not supported in WebKit, see [here](https://bugs.webkit.org/show_bug.cgi?id=225281) in their issue tracker."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Emulates `'forced-colors'` media feature, supported values are `'active'` and `'none'`. Passing `null` disables forced\ncolors emulation.\n\n> NOTE: It's not supported in WebKit, see [here](https://bugs.webkit.org/show_bug.cgi?id=225281) in their issue tracker.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "forcedColors",
                   "overloadIndex": 0,
                   "paramOrOption": null
                 },
@@ -56625,7 +56944,13 @@
           },
           {
             "kind": "property",
-            "langs": {},
+            "langs": {
+              "aliases": {
+                "csharp": "checkedState"
+              },
+              "types": {},
+              "overrides": {}
+            },
             "name": "checked",
             "type": {
               "name": "boolean",
@@ -63675,6 +64000,29 @@
     "members": [
       {
         "kind": "method",
+        "langs": {},
+        "name": "allHeaders",
+        "type": {
+          "name": "Headers",
+          "expression": "[Headers]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "An object with all the request HTTP headers associated with this request."
+          }
+        ],
+        "required": true,
+        "comment": "An object with all the request HTTP headers associated with this request.",
+        "deprecated": false,
+        "async": true,
+        "alias": "allHeaders",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
+      },
+      {
+        "kind": "method",
         "langs": {
           "types": {
             "js": {
@@ -63827,12 +64175,12 @@
         "spec": [
           {
             "type": "text",
-            "text": "An object with HTTP headers associated with the request. All header names are lower-case."
+            "text": "**DEPRECATED** Incomplete list of headers as seen by the rendering engine. Use [`method: Request.allHeaders`] instead."
           }
         ],
         "required": true,
-        "comment": "An object with HTTP headers associated with the request. All header names are lower-case.",
-        "deprecated": false,
+        "comment": "**DEPRECATED** Incomplete list of headers as seen by the rendering engine. Use [`method: Request.allHeaders`] instead.",
+        "deprecated": true,
         "async": false,
         "alias": "headers",
         "overloadIndex": 0,
@@ -64359,7 +64707,7 @@
         "required": true,
         "comment": "Returns resource size information for given request. Requires the response to be finished via\n[`method: Response.finished`] to ensure the info is available.",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "sizes",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -64714,6 +65062,29 @@
       {
         "kind": "method",
         "langs": {},
+        "name": "allHeaders",
+        "type": {
+          "name": "Headers",
+          "expression": "[Headers]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "An object with all the response HTTP headers associated with this response."
+          }
+        ],
+        "required": true,
+        "comment": "An object with all the response HTTP headers associated with this response.",
+        "deprecated": false,
+        "async": true,
+        "alias": "allHeaders",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {},
         "name": "body",
         "type": {
           "name": "Buffer",
@@ -64822,12 +65193,12 @@
         "spec": [
           {
             "type": "text",
-            "text": "Returns the object with HTTP headers associated with the response. All header names are lower-case."
+            "text": "**DEPRECATED** Incomplete list of headers as seen by the rendering engine. Use [`method: Response.allHeaders`] instead."
           }
         ],
         "required": true,
-        "comment": "Returns the object with HTTP headers associated with the response. All header names are lower-case.",
-        "deprecated": false,
+        "comment": "**DEPRECATED** Incomplete list of headers as seen by the rendering engine. Use [`method: Response.allHeaders`] instead.",
+        "deprecated": true,
         "async": false,
         "alias": "headers",
         "overloadIndex": 0,
