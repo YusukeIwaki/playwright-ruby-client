@@ -6,6 +6,7 @@
 * failure
 * frame
 * headers
+* ~~headers_array~~
 * navigation_request?
 * method
 * post_data
@@ -26,6 +27,7 @@
 * finished
 * frame
 * headers
+* ~~headers_array~~
 * json
 * ok
 * request

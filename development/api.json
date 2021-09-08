@@ -37716,168 +37716,6 @@
     ]
   },
   {
-    "name": "Headers",
-    "spec": [
-      {
-        "type": "text",
-        "text": "HTTP request and response all headers collection."
-      }
-    ],
-    "langs": {},
-    "comment": "HTTP request and response all headers collection.",
-    "members": [
-      {
-        "kind": "method",
-        "langs": {},
-        "name": "get",
-        "type": {
-          "name": "",
-          "union": [
-            {
-              "name": "string"
-            },
-            {
-              "name": "null"
-            }
-          ],
-          "expression": "[string|null]"
-        },
-        "spec": [],
-        "required": true,
-        "comment": "",
-        "deprecated": false,
-        "async": false,
-        "alias": "get",
-        "overloadIndex": 0,
-        "paramOrOption": null,
-        "args": [
-          {
-            "kind": "property",
-            "langs": {},
-            "name": "name",
-            "type": {
-              "name": "string",
-              "expression": "[string]"
-            },
-            "spec": [],
-            "required": true,
-            "comment": "",
-            "deprecated": false,
-            "async": false,
-            "alias": "name",
-            "overloadIndex": 0,
-            "paramOrOption": null
-          }
-        ]
-      },
-      {
-        "kind": "method",
-        "langs": {},
-        "name": "getAll",
-        "type": {
-          "name": "Array",
-          "templates": [
-            {
-              "name": "string"
-            }
-          ],
-          "expression": "[Array]<[string]>"
-        },
-        "spec": [
-          {
-            "type": "text",
-            "text": "Returns all header values for the given header name."
-          }
-        ],
-        "required": true,
-        "comment": "Returns all header values for the given header name.",
-        "deprecated": false,
-        "async": false,
-        "alias": "getAll",
-        "overloadIndex": 0,
-        "paramOrOption": null,
-        "args": [
-          {
-            "kind": "property",
-            "langs": {},
-            "name": "name",
-            "type": {
-              "name": "string",
-              "expression": "[string]"
-            },
-            "spec": [],
-            "required": true,
-            "comment": "",
-            "deprecated": false,
-            "async": false,
-            "alias": "name",
-            "overloadIndex": 0,
-            "paramOrOption": null
-          }
-        ]
-      },
-      {
-        "kind": "method",
-        "langs": {},
-        "name": "headerNames",
-        "type": {
-          "name": "Array",
-          "templates": [
-            {
-              "name": "string"
-            }
-          ],
-          "expression": "[Array]<[string]>"
-        },
-        "spec": [
-          {
-            "type": "text",
-            "text": "Returns all header names in this headers collection."
-          }
-        ],
-        "required": true,
-        "comment": "Returns all header names in this headers collection.",
-        "deprecated": false,
-        "async": false,
-        "alias": "headerNames",
-        "overloadIndex": 0,
-        "paramOrOption": null,
-        "args": []
-      },
-      {
-        "kind": "method",
-        "langs": {},
-        "name": "headers",
-        "type": {
-          "name": "Object",
-          "templates": [
-            {
-              "name": "string"
-            },
-            {
-              "name": "string"
-            }
-          ],
-          "expression": "[Object]<[string], [string]>"
-        },
-        "spec": [
-          {
-            "type": "text",
-            "text": "Returns all headers as a dictionary. Header names are normalized to lower case, multi-value headers are concatenated using comma."
-          }
-        ],
-        "required": true,
-        "comment": "Returns all headers as a dictionary. Header names are normalized to lower case, multi-value headers are concatenated\nusing comma.",
-        "deprecated": false,
-        "async": false,
-        "alias": "headers",
-        "overloadIndex": 0,
-        "paramOrOption": null,
-        "args": []
-      }
-    ]
-  },
-  {
     "name": "JSHandle",
     "spec": [
       {
@@ -64003,17 +63841,25 @@
         "langs": {},
         "name": "allHeaders",
         "type": {
-          "name": "Headers",
-          "expression": "[Headers]"
+          "name": "Object",
+          "templates": [
+            {
+              "name": "string"
+            },
+            {
+              "name": "string"
+            }
+          ],
+          "expression": "[Object]<[string], [string]>"
         },
         "spec": [
           {
             "type": "text",
-            "text": "An object with all the request HTTP headers associated with this request."
+            "text": "An object with all the request HTTP headers associated with this request. The header names are lower-cased."
           }
         ],
         "required": true,
-        "comment": "An object with all the request HTTP headers associated with this request.",
+        "comment": "An object with all the request HTTP headers associated with this request. The header names are lower-cased.",
         "deprecated": false,
         "async": true,
         "alias": "allHeaders",
@@ -64183,6 +64029,39 @@
         "deprecated": true,
         "async": false,
         "alias": "headers",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "headersArray",
+        "type": {
+          "name": "Array",
+          "templates": [
+            {
+              "name": "Array",
+              "templates": [
+                {
+                  "name": "string"
+                }
+              ]
+            }
+          ],
+          "expression": "[Array]<[Array]<[string]>>"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "An array with all the request HTTP headers associated with this request. Unlike [`method: Request.allHeaders`], header names are not lower-cased. Headers with multiple entries, such as `Set-Cookie`, appear in the array multiple times."
+          }
+        ],
+        "required": true,
+        "comment": "An array with all the request HTTP headers associated with this request. Unlike [`method: Request.allHeaders`], header\nnames are not lower-cased. Headers with multiple entries, such as `Set-Cookie`, appear in the array multiple times.",
+        "deprecated": false,
+        "async": true,
+        "alias": "headersArray",
         "overloadIndex": 0,
         "paramOrOption": null,
         "args": []
@@ -64640,11 +64519,11 @@
               "spec": [
                 {
                   "type": "text",
-                  "text": "Size of the received response body in bytes."
+                  "text": "Size of the received response body (encoded) in bytes."
                 }
               ],
               "required": true,
-              "comment": "Size of the received response body in bytes.",
+              "comment": "Size of the received response body (encoded) in bytes.",
               "deprecated": false,
               "async": false,
               "alias": "responseBodySize",
@@ -64670,28 +64549,6 @@
               "deprecated": false,
               "async": false,
               "alias": "responseHeadersSize",
-              "overloadIndex": 0,
-              "paramOrOption": null
-            },
-            {
-              "kind": "property",
-              "langs": {},
-              "name": "responseTransferSize",
-              "type": {
-                "name": "int",
-                "expression": "[int]"
-              },
-              "spec": [
-                {
-                  "type": "text",
-                  "text": "Total number of bytes received for the request."
-                }
-              ],
-              "required": true,
-              "comment": "Total number of bytes received for the request.",
-              "deprecated": false,
-              "async": false,
-              "alias": "responseTransferSize",
               "overloadIndex": 0,
               "paramOrOption": null
             }
@@ -65064,8 +64921,16 @@
         "langs": {},
         "name": "allHeaders",
         "type": {
-          "name": "Headers",
-          "expression": "[Headers]"
+          "name": "Object",
+          "templates": [
+            {
+              "name": "string"
+            },
+            {
+              "name": "string"
+            }
+          ],
+          "expression": "[Object]<[string], [string]>"
         },
         "spec": [
           {
@@ -65201,6 +65066,39 @@
         "deprecated": true,
         "async": false,
         "alias": "headers",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "headersArray",
+        "type": {
+          "name": "Array",
+          "templates": [
+            {
+              "name": "Array",
+              "templates": [
+                {
+                  "name": "string"
+                }
+              ]
+            }
+          ],
+          "expression": "[Array]<[Array]<[string]>>"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "An array with all the request HTTP headers associated with this response. Unlike [`method: Response.allHeaders`], header names are not lower-cased. Headers with multiple entries, such as `Set-Cookie`, appear in the array multiple times."
+          }
+        ],
+        "required": true,
+        "comment": "An array with all the request HTTP headers associated with this response. Unlike [`method: Response.allHeaders`], header\nnames are not lower-cased. Headers with multiple entries, such as `Set-Cookie`, appear in the array multiple times.",
+        "deprecated": false,
+        "async": true,
+        "alias": "headersArray",
         "overloadIndex": 0,
         "paramOrOption": null,
         "args": []
