@@ -1,8 +1,11 @@
 require 'base64'
+require_relative '../http_headers'
 
 module Playwright
   # @ref https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_network.py
   define_channel_owner :Request do
+    include HttpHeaders::Parser
+
     private def after_initialize
       @redirected_from = ChannelOwners::Request.from_nullable(@initializer['redirectedFrom'])
       @redirected_from&.send(:update_redirected_to, self)
@@ -17,7 +20,7 @@ module Playwright
         responseStart: -1,
         responseEnd: -1,
       }
-      @headers = parse_headers(@initializer['headers'])
+      @headers_array = parse_headers_as_array(@initializer['headers'])
     end
 
     def url
@@ -40,7 +43,7 @@ module Playwright
       data = post_data
       return unless data
 
-      content_type = @headers['content-type']
+      content_type = headers['content-type']
       return unless content_type
 
       if content_type == "application/x-www-form-urlencoded"
@@ -76,7 +79,23 @@ module Playwright
       @failure_text
     end
 
-    attr_reader :headers, :redirected_from, :redirected_to, :timing
+    attr_reader :redirected_from, :redirected_to, :timing
+
+    def headers
+      @headers_array.to_h
+    end
+
+    private def raw_headers
+      @raw_headers ||= response&.send(:raw_request_headers)
+    end
+
+    def headers_array
+      if raw_headers
+        parse_headers_as_array(raw_headers)
+      else
+        @headers_array
+      end
+    end
 
     def sizes
       res = response
@@ -117,12 +136,6 @@ module Playwright
 
     private def update_response_end_timing(response_end_timing)
       @timing[:responseEnd] = response_end_timing
-    end
-
-    private def parse_headers(headers)
-      headers.map do |header|
-        [header['name'].downcase, header['value']]
-      end.to_h
     end
   end
 end

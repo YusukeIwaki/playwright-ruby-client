@@ -50,6 +50,15 @@ def headers
 
 **DEPRECATED** Incomplete list of headers as seen by the rendering engine. Use [Request#all_headers](./request#all_headers) instead.
 
+## headers_array
+
+```
+def headers_array
+```
+
+An array with all the request HTTP headers associated with this request. Unlike [Request#all_headers](./request#all_headers), header
+names are not lower-cased. Headers with multiple entries, such as `Set-Cookie`, appear in the array multiple times.
+
 ## navigation_request?
 
 ```
