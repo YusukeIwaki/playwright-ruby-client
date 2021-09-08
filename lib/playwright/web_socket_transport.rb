@@ -94,8 +94,9 @@ module Playwright
     end
 
     def debug_send_message(message)
-      message.delete(:metadata)
+      metadata = message.delete(:metadata)
       puts "\x1b[33mSEND>\x1b[0m#{message}"
+      message[:metadata] = metadata
     end
 
     def debug_recv_message(message)

@@ -49,10 +49,8 @@ module Playwright
           guid: guid,
           method: method,
           params: replace_channels_with_guids(params),
+          metadata: metadata || {},
         }
-        if metadata
-          message[:metadata] = metadata
-        end
 
         begin
           @transport.send_message(message)
