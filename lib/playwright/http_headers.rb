@@ -10,11 +10,5 @@ module Playwright
         { name: key, value: value }
       end
     end
-
-    def self.parse_serialized(serialized_headers)
-      new(serialized_headers.map do |header|
-        [header['name'].downcase, header['value']]
-      end.to_h)
-    end
   end
 end

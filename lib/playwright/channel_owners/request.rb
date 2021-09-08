@@ -78,6 +78,22 @@ module Playwright
 
     attr_reader :headers, :redirected_from, :redirected_to, :timing
 
+    def all_headers
+      @all_headers ||= all_headers_promise.value!
+    end
+
+    private def all_headers_promise
+      @all_headers_promise ||= Concurrent::Promises.future do
+        res = response
+        if res
+          headers = res.send(:raw_request_headers)
+          HeadersImpl.new(headers)
+        else
+          HeadersImpl.new([])
+        end
+      end
+    end
+
     def sizes
       res = response
       unless res

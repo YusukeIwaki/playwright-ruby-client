@@ -81,6 +81,10 @@ module Playwright
       }
     end
 
+    private def raw_request_headers
+      @channel.send_message_to_server('rawRequestHeaders')
+    end
+
     private def mark_as_finished
       @finished_promise.fulfill(nil)
     end

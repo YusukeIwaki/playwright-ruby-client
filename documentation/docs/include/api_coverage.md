@@ -2,7 +2,7 @@
 
 ## Request
 
-* ~~all_headers~~
+* all_headers
 * failure
 * frame
 * headers
@@ -428,6 +428,13 @@
 * text_content
 * type
 * uncheck
+
+## Headers
+
+* get
+* get_all
+* header_names
+* headers
 
 ## Android
 

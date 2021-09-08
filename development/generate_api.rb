@@ -25,6 +25,7 @@ ALL_TYPES = %w[
     Playwright
     Tracing
     Locator
+    Headers
 ]
 EXPERIMENTAL = %w[
   Android
@@ -43,6 +44,7 @@ API_IMPLEMENTATIONS = %w[
   Tracing
   Download
   Locator
+  Headers
 ]
 
 require 'bundler/setup'

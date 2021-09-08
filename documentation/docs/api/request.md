@@ -18,6 +18,14 @@ complete with `'requestfinished'` event.
 If request gets a 'redirect' response, the request is successfully finished with the 'requestfinished' event, and a new
 request is  issued to a redirected url.
 
+## all_headers
+
+```
+def all_headers
+```
+
+An object with all the request HTTP headers associated with this request.
+
 ## failure
 
 ```
