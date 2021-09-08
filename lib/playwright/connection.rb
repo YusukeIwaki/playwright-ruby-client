@@ -36,7 +36,7 @@ module Playwright
       ChannelOwners::Playwright.from(result['playwright'])
     end
 
-    def async_send_message_to_server(guid, method, params)
+    def async_send_message_to_server(guid, method, params, metadata: nil)
       callback = Concurrent::Promises.resolvable_future
 
       with_generated_id do |id|
@@ -50,6 +50,10 @@ module Playwright
           method: method,
           params: replace_channels_with_guids(params),
         }
+        if metadata
+          message[:metadata] = metadata
+        end
+
         begin
           @transport.send_message(message)
         rescue => err
@@ -62,8 +66,8 @@ module Playwright
       callback
     end
 
-    def send_message_to_server(guid, method, params)
-      async_send_message_to_server(guid, method, params).value!
+    def send_message_to_server(guid, method, params, metadata: nil)
+      async_send_message_to_server(guid, method, params, metadata: metadata).value!
     end
 
     private
