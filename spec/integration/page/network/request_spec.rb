@@ -36,7 +36,7 @@ RSpec.describe 'Request' do
         JAVASCRIPT
       end
       headers = request.headers_array
-      expect(headers.select { |h| h.first == 'header-a' }.map(&:last)).to match_array(%w(value-a value-a-1 value-a-2))
+      expect(headers.select { |h| h.first == 'header-a' }.map(&:last)).to contain_exactly('value-a, value-a-1, value-a-2')
       expect(headers.select { |h| h.first == 'header-b' }.map(&:last)).to contain_exactly('value-b')
     end
   end
