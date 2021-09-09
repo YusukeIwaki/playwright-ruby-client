@@ -6,6 +6,14 @@ sidebar_position: 10
 
 [Response](./response) class represents responses which are received by page.
 
+## all_headers
+
+```
+def all_headers
+```
+
+An object with all the response HTTP headers associated with this response.
+
 ## body
 
 ```

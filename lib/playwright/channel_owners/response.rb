@@ -57,6 +57,10 @@ module Playwright
       @channel.send_message_to_server('rawResponseHeaders')
     end
 
+    def all_headers
+      parse_headers_as_array(raw_headers, true).to_h
+    end
+
     def headers_array
       parse_headers_as_array(raw_headers, false)
     end

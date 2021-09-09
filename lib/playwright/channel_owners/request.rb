@@ -88,6 +88,14 @@ module Playwright
       @raw_headers ||= response&.send(:raw_request_headers)
     end
 
+    def all_headers
+      if raw_headers
+        parse_headers_as_array(raw_headers, true).to_h
+      else
+        parse_headers_as_array(@initializer['headers'], true).to_h
+      end
+    end
+
     def headers_array
       if raw_headers
         parse_headers_as_array(raw_headers, false)

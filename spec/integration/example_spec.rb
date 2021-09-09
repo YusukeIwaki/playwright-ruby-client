@@ -308,13 +308,9 @@ RSpec.describe 'example' do
         url = "#{server_cross_process_prefix}/empty.html"
         page.content = "<a href=\"#{url}\">link</a>"
         response = page.expect_request(url) { page.click('a') }
-        headers = response.headers_array.to_h
+        headers = response.all_headers
         expect(headers['foo']).to eq('bar')
-        if chromium?
-          expect(headers['user-agent']).to eq('Unknown Browser')
-        else
-          expect(headers['User-Agent']).to eq('Unknown Browser')
-        end
+        expect(headers['user-agent']).to eq('Unknown Browser')
       end
     end
 
