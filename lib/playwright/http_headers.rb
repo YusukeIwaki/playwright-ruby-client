@@ -12,9 +12,12 @@ module Playwright
     end
 
     module Parser
-      def parse_headers_as_array(serialized_headers)
+      def parse_headers_as_array(serialized_headers, downcase)
         serialized_headers.map do |header|
-          [header['name'].downcase, header['value']]
+          name = downcase ? header['name'].downcase : header['name']
+          value = header['value']
+
+          [name, value]
         end
       end
     end

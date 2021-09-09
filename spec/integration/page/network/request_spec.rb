@@ -54,7 +54,7 @@ RSpec.describe 'Request' do
       JAVASCRIPT
       response = page.goto(server_empty_page)
       headers = response.request.headers_array.to_h
-      expect(headers['cookie']).to eq('myCookie=myValue; myOtherCookie=myOtherValue')
+      expect(headers['Cookie']).to eq('myCookie=myValue; myOtherCookie=myOtherValue')
     end
   end
 end

@@ -8,7 +8,6 @@ module Playwright
     include HttpHeaders::Parser
 
     private def after_initialize
-      @headers_array = parse_headers_as_array(@initializer['headers'])
       @request = ChannelOwners::Request.from(@initializer['request'])
       timing = @initializer['timing']
       @request.send(:update_timings,
@@ -43,7 +42,7 @@ module Playwright
     end
 
     def headers
-      @headers_array.to_h
+      parse_headers_as_array(@initializer['headers'], true).to_h
     end
 
     private def raw_headers
@@ -59,7 +58,7 @@ module Playwright
     end
 
     def headers_array
-      parse_headers_as_array(raw_headers)
+      parse_headers_as_array(raw_headers, false)
     end
 
     def server_addr

@@ -20,7 +20,6 @@ module Playwright
         responseStart: -1,
         responseEnd: -1,
       }
-      @headers_array = parse_headers_as_array(@initializer['headers'])
     end
 
     def url
@@ -82,7 +81,7 @@ module Playwright
     attr_reader :redirected_from, :redirected_to, :timing
 
     def headers
-      @headers_array.to_h
+      parse_headers_as_array(@initializer['headers'], true).to_h
     end
 
     private def raw_headers
@@ -91,9 +90,9 @@ module Playwright
 
     def headers_array
       if raw_headers
-        parse_headers_as_array(raw_headers)
+        parse_headers_as_array(raw_headers, false)
       else
-        @headers_array
+        parse_headers_as_array(@initializer['headers'], false)
       end
     end
 
