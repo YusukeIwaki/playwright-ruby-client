@@ -45,8 +45,8 @@ RSpec.configure do |config|
         @playwright_browser = browser
 
         if ENV['CI']
-          # Every integration test case should spend less than 15sec, in CI.
-          Timeout.timeout(15) { example.run }
+          # Every integration test case should spend less than 20sec, in CI.
+          Timeout.timeout(20) { example.run }
         else
           example.run
         end

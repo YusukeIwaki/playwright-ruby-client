@@ -6,6 +6,14 @@ sidebar_position: 10
 
 [Response](./response) class represents responses which are received by page.
 
+## all_headers
+
+```
+def all_headers
+```
+
+An object with all the response HTTP headers associated with this response.
+
 ## body
 
 ```
@@ -37,6 +45,15 @@ def headers
 ```
 
 **DEPRECATED** Incomplete list of headers as seen by the rendering engine. Use [Response#all_headers](./response#all_headers) instead.
+
+## headers_array
+
+```
+def headers_array
+```
+
+An array with all the request HTTP headers associated with this response. Unlike [Response#all_headers](./response#all_headers), header
+names are not lower-cased. Headers with multiple entries, such as `Set-Cookie`, appear in the array multiple times.
 
 ## json
 

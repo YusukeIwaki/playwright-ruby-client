@@ -304,14 +304,11 @@ RSpec.describe 'example' do
 
     it 'should work with Route#continue', sinatra: true do
       with_page do |page|
-        headers = []
-        page.once('response', ->(res) {
-          headers = res.request.headers
-        })
         example_1960aabd58c9553683368e29429d39c1209d35e6e3625bbef1280a1fa022a9ee(page: page)
-        page.content = "<a href=\"#{server_cross_process_prefix}/empty.html\">link</a>"
-        page.expect_navigation { page.click('a') }
-
+        url = "#{server_cross_process_prefix}/empty.html"
+        page.content = "<a href=\"#{url}\">link</a>"
+        response = page.expect_request(url) { page.click('a') }
+        headers = response.all_headers
         expect(headers['foo']).to eq('bar')
         expect(headers['user-agent']).to eq('Unknown Browser')
       end

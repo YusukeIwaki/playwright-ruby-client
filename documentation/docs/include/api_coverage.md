@@ -2,10 +2,11 @@
 
 ## Request
 
-* ~~all_headers~~
+* all_headers
 * failure
 * frame
 * headers
+* headers_array
 * navigation_request?
 * method
 * post_data
@@ -21,11 +22,12 @@
 
 ## Response
 
-* ~~all_headers~~
+* all_headers
 * body
 * finished
 * frame
 * headers
+* headers_array
 * json
 * ok
 * request
