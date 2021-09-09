@@ -37,7 +37,6 @@ RSpec.describe 'network/size' do
       sizes = response.request.sizes
       expect(sizes[:responseBodySize]).to eq(6)
       expect(sizes[:responseHeadersSize]).to be >= 70
-      expect(sizes[:responseTransferSize]).to be >= 80
     end
   end
 
@@ -53,7 +52,6 @@ RSpec.describe 'network/size' do
       sizes = response.request.sizes
       expect(sizes[:responseBodySize]).to eq(0)
       expect(sizes[:responseHeadersSize]).to be >= 70
-      expect(sizes[:responseTransferSize]).to be >= 70
     end
   end
 end

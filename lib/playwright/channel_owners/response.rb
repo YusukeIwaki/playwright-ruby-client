@@ -95,7 +95,6 @@ module Playwright
         requestHeadersSize: resp['requestHeadersSize'],
         responseBodySize: resp['responseBodySize'],
         responseHeadersSize: resp['responseHeadersSize'],
-        responseTransferSize: resp['responseTransferSize'],
       }
     end
 
