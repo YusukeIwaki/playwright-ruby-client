@@ -1,13 +1,11 @@
 require 'base64'
 require 'json'
-require_relative '../http_headers'
 
 module Playwright
   # @ref https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_network.py
   define_channel_owner :Response do
-    include HttpHeaders::Parser
-
     private def after_initialize
+      @provisional_headers = RawHeaders.new(@initializer['headers'])
       @request = ChannelOwners::Request.from(@initializer['request'])
       timing = @initializer['timing']
       @request.send(:update_timings,
@@ -42,27 +40,36 @@ module Playwright
     end
 
     def headers
-      parse_headers_as_array(@initializer['headers'], true).to_h
+      @provisional_headers.headers
     end
 
-    private def raw_headers
-      @raw_headers ||= raw_response_headers
+    # @return [RawHeaders]
+    private def actual_headers
+      @actual_headers ||= raw_response_headers
     end
 
     private def raw_request_headers
-      @channel.send_message_to_server('rawRequestHeaders')
+      RawHeaders.new(@channel.send_message_to_server('rawRequestHeaders'))
     end
 
     private def raw_response_headers
-      @channel.send_message_to_server('rawResponseHeaders')
+      RawHeaders.new(@channel.send_message_to_server('rawResponseHeaders'))
     end
 
     def all_headers
-      parse_headers_as_array(raw_headers, true).to_h
+      actual_headers.headers
     end
 
     def headers_array
-      parse_headers_as_array(raw_headers, false)
+      actual_headers.headers_array
+    end
+
+    def header_value(name)
+      actual_headers.get(name)
+    end
+
+    def header_values(name)
+      actual_headers.get_all(name)
     end
 
     def server_addr

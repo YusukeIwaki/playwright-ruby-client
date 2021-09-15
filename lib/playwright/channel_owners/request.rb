@@ -1,14 +1,12 @@
 require 'base64'
-require_relative '../http_headers'
 
 module Playwright
   # @ref https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_network.py
   define_channel_owner :Request do
-    include HttpHeaders::Parser
-
     private def after_initialize
       @redirected_from = ChannelOwners::Request.from_nullable(@initializer['redirectedFrom'])
       @redirected_from&.send(:update_redirected_to, self)
+      @provisional_headers = RawHeaders.new(@initializer['headers'])
       @timing = {
         startTime: 0,
         domainLookupStart: -1,
@@ -81,26 +79,43 @@ module Playwright
     attr_reader :redirected_from, :redirected_to, :timing
 
     def headers
-      parse_headers_as_array(@initializer['headers'], true).to_h
+      @provisional_headers.headers
     end
 
-    private def raw_headers
-      @raw_headers ||= response&.send(:raw_request_headers)
+    # @return [RawHeaders|nil]
+    private def actual_headers
+      @actual_headers ||= response&.send(:raw_request_headers)
     end
 
     def all_headers
-      if raw_headers
-        parse_headers_as_array(raw_headers, true).to_h
+      if actual_headers
+        actual_headers.headers
       else
-        parse_headers_as_array(@initializer['headers'], true).to_h
+        @provisional_headers.headers
       end
     end
 
     def headers_array
-      if raw_headers
-        parse_headers_as_array(raw_headers, false)
+      if actual_headers
+        actual_headers.headers_array
       else
-        parse_headers_as_array(@initializer['headers'], false)
+        @provisional_headers.headers_array
+      end
+    end
+
+    def header_value(name)
+      if actual_headers
+        actual_headers.get(name)
+      else
+        @provisional_headers.get(name)
+      end
+    end
+
+    def header_values(name)
+      if actual_headers
+        actual_headers.get_all(name)
+      else
+        @provisional_headers.get_all(name)
       end
     end
 

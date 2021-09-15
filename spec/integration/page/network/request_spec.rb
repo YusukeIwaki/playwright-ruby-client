@@ -36,8 +36,10 @@ RSpec.describe 'Request' do
         JAVASCRIPT
       end
       headers = request.headers_array
-      expect(headers.select { |h| h.first == 'header-a' }.map(&:last)).to contain_exactly('value-a, value-a-1, value-a-2')
-      expect(headers.select { |h| h.first == 'header-b' }.map(&:last)).to contain_exactly('value-b')
+      expect(request.header_value('header-a')).to eq('value-a, value-a-1, value-a-2')
+      expect(request.header_value('header-b')).to eq('value-b')
+      expect(request.header_value('not-there')).to be_nil
+      expect(request.header_values('not-there')).to eq([])
     end
   end
 
@@ -53,8 +55,8 @@ RSpec.describe 'Request' do
       }
       JAVASCRIPT
       response = page.goto(server_empty_page)
-      headers = response.request.headers_array.to_h
-      expect(headers['Cookie']).to eq('myCookie=myValue; myOtherCookie=myOtherValue')
+      headers = response.request.all_headers
+      expect(headers['cookie']).to eq('myCookie=myValue; myOtherCookie=myOtherValue')
     end
   end
 end

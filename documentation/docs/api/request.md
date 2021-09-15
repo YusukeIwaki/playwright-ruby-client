@@ -65,7 +65,15 @@ def headers_array
 ```
 
 An array with all the request HTTP headers associated with this request. Unlike [Request#all_headers](./request#all_headers), header
-names are not lower-cased. Headers with multiple entries, such as `Set-Cookie`, appear in the array multiple times.
+names are NOT lower-cased. Headers with multiple entries, such as `Set-Cookie`, appear in the array multiple times.
+
+## header_value
+
+```
+def header_value(name)
+```
+
+Returns the value of the header matching the name. The name is case insensitive.
 
 ## navigation_request?
 
@@ -179,8 +187,7 @@ Returns the matching [Response](./response) object, or `null` if the response wa
 def sizes
 ```
 
-Returns resource size information for given request. Requires the response to be finished via
-[Response#finished](./response#finished) to ensure the info is available.
+Returns resource size information for given request.
 
 ## timing
 

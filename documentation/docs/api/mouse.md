@@ -66,3 +66,14 @@ def up(button: nil, clickCount: nil)
 ```
 
 Dispatches a `mouseup` event.
+
+## wheel
+
+```
+def wheel(deltaX, deltaY)
+```
+
+Dispatches a `wheel` event.
+
+> NOTE: Wheel events may cause scrolling if they are not handled, and this method does not wait for the scrolling to
+finish before returning.

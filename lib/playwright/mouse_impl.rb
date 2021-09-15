@@ -44,5 +44,14 @@ module Playwright
     def dblclick(x, y, button: nil, delay: nil)
       click(x, y, button: button, clickCount: 2, delay: delay)
     end
+
+    def wheel(deltaX, deltaY)
+      params = {
+        deltaX: deltaX,
+        deltaY: deltaY,
+      }
+      @channel.send_message_to_server('mouseWheel', params)
+      nil
+    end
   end
 end

@@ -28,7 +28,7 @@ Returns the buffer with response body.
 def finished
 ```
 
-Waits for this response to finish, returns failure error if request failed.
+Waits for this response to finish, returns always `null`.
 
 ## frame
 
@@ -53,7 +53,25 @@ def headers_array
 ```
 
 An array with all the request HTTP headers associated with this response. Unlike [Response#all_headers](./response#all_headers), header
-names are not lower-cased. Headers with multiple entries, such as `Set-Cookie`, appear in the array multiple times.
+names are NOT lower-cased. Headers with multiple entries, such as `Set-Cookie`, appear in the array multiple times.
+
+## header_value
+
+```
+def header_value(name)
+```
+
+Returns the value of the header matching the name. The name is case insensitive. If multiple headers have the same name
+(except `set-cookie`), they are returned as a list separated by `, `. For `set-cookie`, the `\n` separator is used. If
+no headers are found, `null` is returned.
+
+## header_values
+
+```
+def header_values(name)
+```
+
+Returns all values of the headers matching the name, for example `set-cookie`. The name is case insensitive.
 
 ## json
 
