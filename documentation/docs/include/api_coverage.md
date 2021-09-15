@@ -70,7 +70,7 @@
 * down
 * move
 * up
-* ~~wheel~~
+* wheel
 
 ## Touchscreen
 
