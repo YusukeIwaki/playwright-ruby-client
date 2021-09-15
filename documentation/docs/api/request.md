@@ -67,6 +67,14 @@ def headers_array
 An array with all the request HTTP headers associated with this request. Unlike [Request#all_headers](./request#all_headers), header
 names are NOT lower-cased. Headers with multiple entries, such as `Set-Cookie`, appear in the array multiple times.
 
+## header_value
+
+```
+def header_value(name)
+```
+
+Returns the value of the header matching the name. The name is case insensitive.
+
 ## navigation_request?
 
 ```
