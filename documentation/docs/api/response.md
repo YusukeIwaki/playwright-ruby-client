@@ -28,7 +28,7 @@ Returns the buffer with response body.
 def finished
 ```
 
-Waits for this response to finish, returns failure error if request failed.
+Waits for this response to finish, returns always `null`.
 
 ## frame
 
@@ -53,7 +53,7 @@ def headers_array
 ```
 
 An array with all the request HTTP headers associated with this response. Unlike [Response#all_headers](./response#all_headers), header
-names are not lower-cased. Headers with multiple entries, such as `Set-Cookie`, appear in the array multiple times.
+names are NOT lower-cased. Headers with multiple entries, such as `Set-Cookie`, appear in the array multiple times.
 
 ## json
 

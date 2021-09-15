@@ -7,6 +7,7 @@
 * frame
 * headers
 * headers_array
+* ~~header_value~~
 * navigation_request?
 * method
 * post_data
@@ -28,6 +29,8 @@
 * frame
 * headers
 * headers_array
+* ~~header_value~~
+* ~~header_values~~
 * json
 * ok
 * request
@@ -67,6 +70,7 @@
 * down
 * move
 * up
+* ~~wheel~~
 
 ## Touchscreen
 

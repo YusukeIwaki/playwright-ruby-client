@@ -48,8 +48,16 @@
               "expression": "[null]|[string]"
             },
             "csharp": {
-              "name": "JsonElement?",
-              "expression": "[JsonElement?]"
+              "name": "",
+              "union": [
+                {
+                  "name": "null"
+                },
+                {
+                  "name": "JsonElement"
+                }
+              ],
+              "expression": "[null]|[JsonElement]"
             }
           }
         },
@@ -10974,6 +10982,36 @@
         "args": []
       },
       {
+        "kind": "property",
+        "langs": {
+          "only": [
+            "js"
+          ],
+          "aliases": {},
+          "types": {},
+          "overrides": {}
+        },
+        "name": "_request",
+        "type": {
+          "name": "FetchRequest",
+          "expression": "[FetchRequest]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "API testing helper associated with this context. Requests made with this API will use context cookies."
+          }
+        ],
+        "required": true,
+        "comment": "API testing helper associated with this context. Requests made with this API will use context cookies.",
+        "deprecated": false,
+        "async": false,
+        "alias": "_request",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
+      },
+      {
         "kind": "method",
         "langs": {},
         "name": "addCookies",
@@ -19444,7 +19482,7 @@
       {
         "type": "code",
         "lines": [
-          "client = await page.context().new_cdp_session(page)",
+          "client = await page.context.new_cdp_session(page)",
           "await client.send(\"Animation.enable\")",
           "client.on(\"Animation.animationCreated\", lambda: print(\"animation created!\"))",
           "response = await client.send(\"Animation.getPlaybackRate\")",
@@ -19458,7 +19496,7 @@
       {
         "type": "code",
         "lines": [
-          "client = page.context().new_cdp_session(page)",
+          "client = page.context.new_cdp_session(page)",
           "client.send(\"Animation.enable\")",
           "client.on(\"Animation.animationCreated\", lambda: print(\"animation created!\"))",
           "response = client.send(\"Animation.getPlaybackRate\")",
@@ -19480,7 +19518,7 @@
       "types": {},
       "overrides": {}
     },
-    "comment": "- extends: [EventEmitter]\n\nThe `CDPSession` instances are used to talk raw Chrome Devtools Protocol:\n- protocol methods can be called with `session.send` method.\n- protocol events can be subscribed to with `session.on` method.\n\nUseful links:\n- Documentation on DevTools Protocol can be found here:\n  [DevTools Protocol Viewer](https://chromedevtools.github.io/devtools-protocol/).\n- Getting Started with DevTools Protocol:\n  https://github.com/aslushnikov/getting-started-with-cdp/blob/master/README.md\n\n```js\nconst client = await page.context().newCDPSession(page);\nawait client.send('Animation.enable');\nclient.on('Animation.animationCreated', () => console.log('Animation created!'));\nconst response = await client.send('Animation.getPlaybackRate');\nconsole.log('playback rate is ' + response.playbackRate);\nawait client.send('Animation.setPlaybackRate', {\n  playbackRate: response.playbackRate / 2\n});\n```\n\n```python async\nclient = await page.context().new_cdp_session(page)\nawait client.send(\"Animation.enable\")\nclient.on(\"Animation.animationCreated\", lambda: print(\"animation created!\"))\nresponse = await client.send(\"Animation.getPlaybackRate\")\nprint(\"playback rate is \" + str(response[\"playbackRate\"]))\nawait client.send(\"Animation.setPlaybackRate\", {\n    playbackRate: response[\"playbackRate\"] / 2\n})\n```\n\n```python sync\nclient = page.context().new_cdp_session(page)\nclient.send(\"Animation.enable\")\nclient.on(\"Animation.animationCreated\", lambda: print(\"animation created!\"))\nresponse = client.send(\"Animation.getPlaybackRate\")\nprint(\"playback rate is \" + str(response[\"playbackRate\"]))\nclient.send(\"Animation.setPlaybackRate\", {\n    playbackRate: response[\"playbackRate\"] / 2\n})\n```\n",
+    "comment": "- extends: [EventEmitter]\n\nThe `CDPSession` instances are used to talk raw Chrome Devtools Protocol:\n- protocol methods can be called with `session.send` method.\n- protocol events can be subscribed to with `session.on` method.\n\nUseful links:\n- Documentation on DevTools Protocol can be found here:\n  [DevTools Protocol Viewer](https://chromedevtools.github.io/devtools-protocol/).\n- Getting Started with DevTools Protocol:\n  https://github.com/aslushnikov/getting-started-with-cdp/blob/master/README.md\n\n```js\nconst client = await page.context().newCDPSession(page);\nawait client.send('Animation.enable');\nclient.on('Animation.animationCreated', () => console.log('Animation created!'));\nconst response = await client.send('Animation.getPlaybackRate');\nconsole.log('playback rate is ' + response.playbackRate);\nawait client.send('Animation.setPlaybackRate', {\n  playbackRate: response.playbackRate / 2\n});\n```\n\n```python async\nclient = await page.context.new_cdp_session(page)\nawait client.send(\"Animation.enable\")\nclient.on(\"Animation.animationCreated\", lambda: print(\"animation created!\"))\nresponse = await client.send(\"Animation.getPlaybackRate\")\nprint(\"playback rate is \" + str(response[\"playbackRate\"]))\nawait client.send(\"Animation.setPlaybackRate\", {\n    playbackRate: response[\"playbackRate\"] / 2\n})\n```\n\n```python sync\nclient = page.context.new_cdp_session(page)\nclient.send(\"Animation.enable\")\nclient.on(\"Animation.animationCreated\", lambda: print(\"animation created!\"))\nresponse = client.send(\"Animation.getPlaybackRate\")\nprint(\"playback rate is \" + str(response[\"playbackRate\"]))\nclient.send(\"Animation.setPlaybackRate\", {\n    playbackRate: response[\"playbackRate\"] / 2\n})\n```\n",
     "members": [
       {
         "kind": "method",
@@ -28153,6 +28191,995 @@
         "deprecated": false,
         "async": false,
         "alias": "stack",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
+      }
+    ]
+  },
+  {
+    "name": "FetchRequest",
+    "spec": [
+      {
+        "type": "text",
+        "text": "This API is used for Web API testing. You can use it to trigger API endpoints, configure micro-services, prepare environment or the service to your e2e test. When used on `Page` or a `BrowserContext`, this API will automatically use the cookies from the corresponding `BrowserContext`. This means that if you log in using this API, your e2e test will be logged in and vice versa."
+      }
+    ],
+    "langs": {
+      "only": [
+        "js"
+      ],
+      "aliases": {},
+      "types": {},
+      "overrides": {}
+    },
+    "comment": "This API is used for Web API testing. You can use it to trigger API endpoints, configure micro-services, prepare\nenvironment or the service to your e2e test. When used on `Page` or a `BrowserContext`, this API will automatically use\nthe cookies from the corresponding `BrowserContext`. This means that if you log in using this API, your e2e test will be\nlogged in and vice versa.",
+    "members": [
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "fetch",
+        "type": {
+          "name": "FetchResponse",
+          "expression": "[FetchResponse]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Sends HTTP(S) fetch and returns its response. The method will populate fetch cookies from the context and update context cookies from the response. The method will automatically follow redirects."
+          }
+        ],
+        "required": true,
+        "comment": "Sends HTTP(S) fetch and returns its response. The method will populate fetch cookies from the context and update context\ncookies from the response. The method will automatically follow redirects.",
+        "deprecated": false,
+        "async": true,
+        "alias": "fetch",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "urlOrRequest",
+            "type": {
+              "name": "",
+              "union": [
+                {
+                  "name": "string"
+                },
+                {
+                  "name": "Request"
+                }
+              ],
+              "expression": "[string]|[Request]"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Target URL or Request to get all fetch parameters from."
+              }
+            ],
+            "required": true,
+            "comment": "Target URL or Request to get all fetch parameters from.",
+            "deprecated": false,
+            "async": false,
+            "alias": "urlOrRequest",
+            "overloadIndex": 0,
+            "paramOrOption": null
+          },
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "data",
+                  "type": {
+                    "name": "",
+                    "union": [
+                      {
+                        "name": "string"
+                      },
+                      {
+                        "name": "Buffer"
+                      }
+                    ],
+                    "expression": "[string]|[Buffer]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Allows to set post data of the fetch."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Allows to set post data of the fetch.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "data",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "failOnStatusCode",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Whether to throw on response codes other than 2xx and 3xx. By default response object is returned for all status codes."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Whether to throw on response codes other than 2xx and 3xx. By default response object is returned for all status codes.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "failOnStatusCode",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "headers",
+                  "type": {
+                    "name": "Object",
+                    "templates": [
+                      {
+                        "name": "string"
+                      },
+                      {
+                        "name": "string"
+                      }
+                    ],
+                    "expression": "[Object]<[string], [string]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Allows to set HTTP headers."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Allows to set HTTP headers.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "headers",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "method",
+                  "type": {
+                    "name": "string",
+                    "expression": "[string]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "If set changes the fetch method (e.g. PUT or POST). If not specified, GET method is used."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "If set changes the fetch method (e.g. PUT or POST). If not specified, GET method is used.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "method",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "params",
+                  "type": {
+                    "name": "Object",
+                    "templates": [
+                      {
+                        "name": "string"
+                      },
+                      {
+                        "name": "string"
+                      }
+                    ],
+                    "expression": "[Object]<[string], [string]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Query parameters to be send with the URL."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Query parameters to be send with the URL.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "params",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Request timeout in milliseconds."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Request timeout in milliseconds.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "options",
+            "overloadIndex": 0,
+            "paramOrOption": null
+          }
+        ]
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "get",
+        "type": {
+          "name": "FetchResponse",
+          "expression": "[FetchResponse]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Sends HTTP(S) GET request and returns its response. The method will populate fetch cookies from the context and update context cookies from the response. The method will automatically follow redirects."
+          }
+        ],
+        "required": true,
+        "comment": "Sends HTTP(S) GET request and returns its response. The method will populate fetch cookies from the context and update\ncontext cookies from the response. The method will automatically follow redirects.",
+        "deprecated": false,
+        "async": true,
+        "alias": "get",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "urlOrRequest",
+            "type": {
+              "name": "",
+              "union": [
+                {
+                  "name": "string"
+                },
+                {
+                  "name": "Request"
+                }
+              ],
+              "expression": "[string]|[Request]"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Target URL or Request to get all fetch parameters from."
+              }
+            ],
+            "required": true,
+            "comment": "Target URL or Request to get all fetch parameters from.",
+            "deprecated": false,
+            "async": false,
+            "alias": "urlOrRequest",
+            "overloadIndex": 0,
+            "paramOrOption": null
+          },
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "failOnStatusCode",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Whether to throw on response codes other than 2xx and 3xx. By default response object is returned for all status codes."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Whether to throw on response codes other than 2xx and 3xx. By default response object is returned for all status codes.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "failOnStatusCode",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "headers",
+                  "type": {
+                    "name": "Object",
+                    "templates": [
+                      {
+                        "name": "string"
+                      },
+                      {
+                        "name": "string"
+                      }
+                    ],
+                    "expression": "[Object]<[string], [string]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Allows to set HTTP headers."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Allows to set HTTP headers.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "headers",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "params",
+                  "type": {
+                    "name": "Object",
+                    "templates": [
+                      {
+                        "name": "string"
+                      },
+                      {
+                        "name": "string"
+                      }
+                    ],
+                    "expression": "[Object]<[string], [string]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Query parameters to be send with the URL."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Query parameters to be send with the URL.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "params",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Request timeout in milliseconds."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Request timeout in milliseconds.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "options",
+            "overloadIndex": 0,
+            "paramOrOption": null
+          }
+        ]
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "post",
+        "type": {
+          "name": "FetchResponse",
+          "expression": "[FetchResponse]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Sends HTTP(S) fetch and returns its response. The method will populate fetch cookies from the context and update context cookies from the response. The method will automatically follow redirects."
+          }
+        ],
+        "required": true,
+        "comment": "Sends HTTP(S) fetch and returns its response. The method will populate fetch cookies from the context and update context\ncookies from the response. The method will automatically follow redirects.",
+        "deprecated": false,
+        "async": true,
+        "alias": "post",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "urlOrRequest",
+            "type": {
+              "name": "",
+              "union": [
+                {
+                  "name": "string"
+                },
+                {
+                  "name": "Request"
+                }
+              ],
+              "expression": "[string]|[Request]"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Target URL or Request to get all fetch parameters from."
+              }
+            ],
+            "required": true,
+            "comment": "Target URL or Request to get all fetch parameters from.",
+            "deprecated": false,
+            "async": false,
+            "alias": "urlOrRequest",
+            "overloadIndex": 0,
+            "paramOrOption": null
+          },
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "data",
+                  "type": {
+                    "name": "",
+                    "union": [
+                      {
+                        "name": "string"
+                      },
+                      {
+                        "name": "Buffer"
+                      }
+                    ],
+                    "expression": "[string]|[Buffer]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Allows to set post data of the fetch."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Allows to set post data of the fetch.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "data",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "failOnStatusCode",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Whether to throw on response codes other than 2xx and 3xx. By default response object is returned for all status codes."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Whether to throw on response codes other than 2xx and 3xx. By default response object is returned for all status codes.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "failOnStatusCode",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "headers",
+                  "type": {
+                    "name": "Object",
+                    "templates": [
+                      {
+                        "name": "string"
+                      },
+                      {
+                        "name": "string"
+                      }
+                    ],
+                    "expression": "[Object]<[string], [string]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Allows to set HTTP headers."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Allows to set HTTP headers.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "headers",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "params",
+                  "type": {
+                    "name": "Object",
+                    "templates": [
+                      {
+                        "name": "string"
+                      },
+                      {
+                        "name": "string"
+                      }
+                    ],
+                    "expression": "[Object]<[string], [string]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Query parameters to be send with the URL."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Query parameters to be send with the URL.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "params",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Request timeout in milliseconds."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Request timeout in milliseconds.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "options",
+            "overloadIndex": 0,
+            "paramOrOption": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "FetchResponse",
+    "spec": [
+      {
+        "type": "text",
+        "text": "`FetchResponse` class represents responses received from [`method: FetchRequest.fetch`]."
+      }
+    ],
+    "langs": {
+      "only": [
+        "js"
+      ],
+      "aliases": {},
+      "types": {},
+      "overrides": {}
+    },
+    "comment": "`FetchResponse` class represents responses received from [`method: FetchRequest.fetch`].",
+    "members": [
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "body",
+        "type": {
+          "name": "Buffer",
+          "expression": "[Buffer]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Returns the buffer with response body."
+          }
+        ],
+        "required": true,
+        "comment": "Returns the buffer with response body.",
+        "deprecated": false,
+        "async": true,
+        "alias": "body",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "dispose",
+        "type": {
+          "name": "void"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Disposes the body of this response. If not called then the body will stay in memory until the context closes."
+          }
+        ],
+        "required": true,
+        "comment": "Disposes the body of this response. If not called then the body will stay in memory until the context closes.",
+        "deprecated": false,
+        "async": true,
+        "alias": "dispose",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "headers",
+        "type": {
+          "name": "Object",
+          "templates": [
+            {
+              "name": "string"
+            },
+            {
+              "name": "string"
+            }
+          ],
+          "expression": "[Object]<[string], [string]>"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "An object with all the response HTTP headers associated with this response."
+          }
+        ],
+        "required": true,
+        "comment": "An object with all the response HTTP headers associated with this response.",
+        "deprecated": false,
+        "async": false,
+        "alias": "headers",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "headersArray",
+        "type": {
+          "name": "Array",
+          "templates": [
+            {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "name",
+                  "type": {
+                    "name": "string",
+                    "expression": "[string]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Name of the header."
+                    }
+                  ],
+                  "required": true,
+                  "comment": "Name of the header.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "name",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "value",
+                  "type": {
+                    "name": "string",
+                    "expression": "[string]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Value of the header."
+                    }
+                  ],
+                  "required": true,
+                  "comment": "Value of the header.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "value",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                }
+              ]
+            }
+          ],
+          "expression": "[Array]<[Object]>"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "An array with all the request HTTP headers associated with this response. Header names are not lower-cased. Headers with multiple entries, such as `Set-Cookie`, appear in the array multiple times."
+          }
+        ],
+        "required": true,
+        "comment": "An array with all the request HTTP headers associated with this response. Header names are not lower-cased. Headers with\nmultiple entries, such as `Set-Cookie`, appear in the array multiple times.",
+        "deprecated": false,
+        "async": false,
+        "alias": "headersArray",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {
+          "only": [
+            "js",
+            "python"
+          ],
+          "aliases": {},
+          "types": {},
+          "overrides": {}
+        },
+        "name": "json",
+        "type": {
+          "name": "Serializable",
+          "expression": "[Serializable]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Returns the JSON representation of response body."
+          },
+          {
+            "type": "text",
+            "text": "This method will throw if the response body is not parsable via `JSON.parse`."
+          }
+        ],
+        "required": true,
+        "comment": "Returns the JSON representation of response body.\n\nThis method will throw if the response body is not parsable via `JSON.parse`.",
+        "deprecated": false,
+        "async": true,
+        "alias": "json",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {
+          "only": [
+            "csharp"
+          ],
+          "aliases": {},
+          "types": {},
+          "overrides": {}
+        },
+        "name": "json",
+        "type": {
+          "name": "",
+          "union": [
+            {
+              "name": "null"
+            },
+            {
+              "name": "JsonElement"
+            }
+          ],
+          "expression": "[null]|[JsonElement]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Returns the JSON representation of response body."
+          },
+          {
+            "type": "text",
+            "text": "This method will throw if the response body is not parsable via `JSON.parse`."
+          }
+        ],
+        "required": true,
+        "comment": "Returns the JSON representation of response body.\n\nThis method will throw if the response body is not parsable via `JSON.parse`.",
+        "deprecated": false,
+        "async": true,
+        "alias": "json",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "ok",
+        "type": {
+          "name": "boolean",
+          "expression": "[boolean]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Contains a boolean stating whether the response was successful (status in the range 200-299) or not."
+          }
+        ],
+        "required": true,
+        "comment": "Contains a boolean stating whether the response was successful (status in the range 200-299) or not.",
+        "deprecated": false,
+        "async": false,
+        "alias": "ok",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "status",
+        "type": {
+          "name": "int",
+          "expression": "[int]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Contains the status code of the response (e.g., 200 for a success)."
+          }
+        ],
+        "required": true,
+        "comment": "Contains the status code of the response (e.g., 200 for a success).",
+        "deprecated": false,
+        "async": false,
+        "alias": "status",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "statusText",
+        "type": {
+          "name": "string",
+          "expression": "[string]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Contains the status text of the response (e.g. usually an \"OK\" for a success)."
+          }
+        ],
+        "required": true,
+        "comment": "Contains the status text of the response (e.g. usually an \"OK\" for a success).",
+        "deprecated": false,
+        "async": false,
+        "alias": "statusText",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "text",
+        "type": {
+          "name": "string",
+          "expression": "[string]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Returns the text representation of response body."
+          }
+        ],
+        "required": true,
+        "comment": "Returns the text representation of response body.",
+        "deprecated": false,
+        "async": true,
+        "alias": "text",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "url",
+        "type": {
+          "name": "string",
+          "expression": "[string]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Contains the URL of the response."
+          }
+        ],
+        "required": true,
+        "comment": "Contains the URL of the response.",
+        "deprecated": false,
+        "async": false,
+        "alias": "url",
         "overloadIndex": 0,
         "paramOrOption": null,
         "args": []
@@ -45836,6 +46863,78 @@
             "paramOrOption": null
           }
         ]
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "wheel",
+        "type": {
+          "name": "void"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Dispatches a `wheel` event."
+          },
+          {
+            "type": "note",
+            "noteType": "note",
+            "text": "Wheel events may cause scrolling if they are not handled, and this method does not wait for the scrolling to finish before returning."
+          }
+        ],
+        "required": true,
+        "comment": "Dispatches a `wheel` event.\n\n> NOTE: Wheel events may cause scrolling if they are not handled, and this method does not wait for the scrolling to\nfinish before returning.",
+        "deprecated": false,
+        "async": true,
+        "alias": "wheel",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "deltaX",
+            "type": {
+              "name": "float",
+              "expression": "[float]"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Pixels to scroll horizontally."
+              }
+            ],
+            "required": true,
+            "comment": "Pixels to scroll horizontally.",
+            "deprecated": false,
+            "async": false,
+            "alias": "deltaX",
+            "overloadIndex": 0,
+            "paramOrOption": null
+          },
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "deltaY",
+            "type": {
+              "name": "float",
+              "expression": "[float]"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Pixels to scroll vertically."
+              }
+            ],
+            "required": true,
+            "comment": "Pixels to scroll vertically.",
+            "deprecated": false,
+            "async": false,
+            "alias": "deltaY",
+            "overloadIndex": 0,
+            "paramOrOption": null
+          }
+        ]
       }
     ]
   },
@@ -46746,6 +47845,36 @@
         "deprecated": false,
         "async": false,
         "alias": "worker",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
+      },
+      {
+        "kind": "property",
+        "langs": {
+          "only": [
+            "js"
+          ],
+          "aliases": {},
+          "types": {},
+          "overrides": {}
+        },
+        "name": "_request",
+        "type": {
+          "name": "FetchRequest",
+          "expression": "[FetchRequest]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "API testing helper associated with this page. Requests made with this API will use page cookies."
+          }
+        ],
+        "required": true,
+        "comment": "API testing helper associated with this page. Requests made with this API will use page cookies.",
+        "deprecated": false,
+        "async": false,
+        "alias": "_request",
         "overloadIndex": 0,
         "paramOrOption": null,
         "args": []
@@ -64041,30 +65170,125 @@
           "name": "Array",
           "templates": [
             {
-              "name": "Array",
-              "templates": [
+              "name": "Object",
+              "properties": [
                 {
-                  "name": "string"
+                  "kind": "property",
+                  "langs": {},
+                  "name": "name",
+                  "type": {
+                    "name": "string",
+                    "expression": "[string]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Name of the header."
+                    }
+                  ],
+                  "required": true,
+                  "comment": "Name of the header.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "name",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "value",
+                  "type": {
+                    "name": "string",
+                    "expression": "[string]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Value of the header."
+                    }
+                  ],
+                  "required": true,
+                  "comment": "Value of the header.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "value",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
                 }
               ]
             }
           ],
-          "expression": "[Array]<[Array]<[string]>>"
+          "expression": "[Array]<[Object]>"
         },
         "spec": [
           {
             "type": "text",
-            "text": "An array with all the request HTTP headers associated with this request. Unlike [`method: Request.allHeaders`], header names are not lower-cased. Headers with multiple entries, such as `Set-Cookie`, appear in the array multiple times."
+            "text": "An array with all the request HTTP headers associated with this request. Unlike [`method: Request.allHeaders`], header names are NOT lower-cased. Headers with multiple entries, such as `Set-Cookie`, appear in the array multiple times."
           }
         ],
         "required": true,
-        "comment": "An array with all the request HTTP headers associated with this request. Unlike [`method: Request.allHeaders`], header\nnames are not lower-cased. Headers with multiple entries, such as `Set-Cookie`, appear in the array multiple times.",
+        "comment": "An array with all the request HTTP headers associated with this request. Unlike [`method: Request.allHeaders`], header\nnames are NOT lower-cased. Headers with multiple entries, such as `Set-Cookie`, appear in the array multiple times.",
         "deprecated": false,
         "async": true,
         "alias": "headersArray",
         "overloadIndex": 0,
         "paramOrOption": null,
         "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "headerValue",
+        "type": {
+          "name": "",
+          "union": [
+            {
+              "name": "null"
+            },
+            {
+              "name": "string"
+            }
+          ],
+          "expression": "[null]|[string]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Returns the value of the header matching the name. The name is case insensitive."
+          }
+        ],
+        "required": true,
+        "comment": "Returns the value of the header matching the name. The name is case insensitive.",
+        "deprecated": false,
+        "async": true,
+        "alias": "headerValue",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "name",
+            "type": {
+              "name": "string",
+              "expression": "[string]"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Name of the header."
+              }
+            ],
+            "required": true,
+            "comment": "Name of the header.",
+            "deprecated": false,
+            "async": false,
+            "alias": "name",
+            "overloadIndex": 0,
+            "paramOrOption": null
+          }
+        ]
       },
       {
         "kind": "method",
@@ -64558,11 +65782,11 @@
         "spec": [
           {
             "type": "text",
-            "text": "Returns resource size information for given request. Requires the response to be finished via [`method: Response.finished`] to ensure the info is available."
+            "text": "Returns resource size information for given request."
           }
         ],
         "required": true,
-        "comment": "Returns resource size information for given request. Requires the response to be finished via\n[`method: Response.finished`] to ensure the info is available.",
+        "comment": "Returns resource size information for given request.",
         "deprecated": false,
         "async": true,
         "alias": "sizes",
@@ -64881,8 +66105,16 @@
         },
         "name": "PostDataJSON",
         "type": {
-          "name": "JsonElement?",
-          "expression": "[JsonElement?]"
+          "name": "",
+          "union": [
+            {
+              "name": "null"
+            },
+            {
+              "name": "JsonElement"
+            }
+          ],
+          "expression": "[null]|[JsonElement]"
         },
         "spec": [
           {
@@ -65004,11 +66236,11 @@
         "spec": [
           {
             "type": "text",
-            "text": "Waits for this response to finish, returns failure error if request failed."
+            "text": "Waits for this response to finish, returns always `null`."
           }
         ],
         "required": true,
-        "comment": "Waits for this response to finish, returns failure error if request failed.",
+        "comment": "Waits for this response to finish, returns always `null`.",
         "deprecated": false,
         "async": true,
         "alias": "finished",
@@ -65078,30 +66310,176 @@
           "name": "Array",
           "templates": [
             {
-              "name": "Array",
-              "templates": [
+              "name": "Object",
+              "properties": [
                 {
-                  "name": "string"
+                  "kind": "property",
+                  "langs": {},
+                  "name": "name",
+                  "type": {
+                    "name": "string",
+                    "expression": "[string]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Name of the header."
+                    }
+                  ],
+                  "required": true,
+                  "comment": "Name of the header.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "name",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "value",
+                  "type": {
+                    "name": "string",
+                    "expression": "[string]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Value of the header."
+                    }
+                  ],
+                  "required": true,
+                  "comment": "Value of the header.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "value",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
                 }
               ]
             }
           ],
-          "expression": "[Array]<[Array]<[string]>>"
+          "expression": "[Array]<[Object]>"
         },
         "spec": [
           {
             "type": "text",
-            "text": "An array with all the request HTTP headers associated with this response. Unlike [`method: Response.allHeaders`], header names are not lower-cased. Headers with multiple entries, such as `Set-Cookie`, appear in the array multiple times."
+            "text": "An array with all the request HTTP headers associated with this response. Unlike [`method: Response.allHeaders`], header names are NOT lower-cased. Headers with multiple entries, such as `Set-Cookie`, appear in the array multiple times."
           }
         ],
         "required": true,
-        "comment": "An array with all the request HTTP headers associated with this response. Unlike [`method: Response.allHeaders`], header\nnames are not lower-cased. Headers with multiple entries, such as `Set-Cookie`, appear in the array multiple times.",
+        "comment": "An array with all the request HTTP headers associated with this response. Unlike [`method: Response.allHeaders`], header\nnames are NOT lower-cased. Headers with multiple entries, such as `Set-Cookie`, appear in the array multiple times.",
         "deprecated": false,
         "async": true,
         "alias": "headersArray",
         "overloadIndex": 0,
         "paramOrOption": null,
         "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "headerValue",
+        "type": {
+          "name": "",
+          "union": [
+            {
+              "name": "null"
+            },
+            {
+              "name": "string"
+            }
+          ],
+          "expression": "[null]|[string]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Returns the value of the header matching the name. The name is case insensitive. If multiple headers have the same name (except `set-cookie`), they are returned as a list separated by `, `. For `set-cookie`, the `\\n` separator is used. If no headers are found, `null` is returned."
+          }
+        ],
+        "required": true,
+        "comment": "Returns the value of the header matching the name. The name is case insensitive. If multiple headers have the same name\n(except `set-cookie`), they are returned as a list separated by `, `. For `set-cookie`, the `\\n` separator is used. If\nno headers are found, `null` is returned.",
+        "deprecated": false,
+        "async": true,
+        "alias": "headerValue",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "name",
+            "type": {
+              "name": "string",
+              "expression": "[string]"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Name of the header."
+              }
+            ],
+            "required": true,
+            "comment": "Name of the header.",
+            "deprecated": false,
+            "async": false,
+            "alias": "name",
+            "overloadIndex": 0,
+            "paramOrOption": null
+          }
+        ]
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "headerValues",
+        "type": {
+          "name": "Array",
+          "templates": [
+            {
+              "name": "string"
+            }
+          ],
+          "expression": "[Array]<[string]>"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Returns all values of the headers matching the name, for example `set-cookie`. The name is case insensitive."
+          }
+        ],
+        "required": true,
+        "comment": "Returns all values of the headers matching the name, for example `set-cookie`. The name is case insensitive.",
+        "deprecated": false,
+        "async": true,
+        "alias": "headerValues",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "name",
+            "type": {
+              "name": "string",
+              "expression": "[string]"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Name of the header."
+              }
+            ],
+            "required": true,
+            "comment": "Name of the header.",
+            "deprecated": false,
+            "async": false,
+            "alias": "name",
+            "overloadIndex": 0,
+            "paramOrOption": null
+          }
+        ]
       },
       {
         "kind": "method",
@@ -65150,8 +66528,16 @@
         },
         "name": "json",
         "type": {
-          "name": "JsonElement?",
-          "expression": "[JsonElement?]"
+          "name": "",
+          "union": [
+            {
+              "name": "null"
+            },
+            {
+              "name": "JsonElement"
+            }
+          ],
+          "expression": "[null]|[JsonElement]"
         },
         "spec": [
           {
@@ -66177,6 +67563,35 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "path",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "response",
+                  "type": {
+                    "name": "FetchResponse",
+                    "expression": "[FetchResponse]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "`FetchResponse` to fulfill route's request with. Individual fields of the response (such as headers) can be overridden using fulfill options."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "`FetchResponse` to fulfill route's request with. Individual fields of the response (such as headers) can be overridden\nusing fulfill options.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "response",
                   "overloadIndex": 0,
                   "paramOrOption": null
                 },
