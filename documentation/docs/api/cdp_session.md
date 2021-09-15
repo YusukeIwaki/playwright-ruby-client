@@ -16,16 +16,16 @@ Useful links:
 - Getting Started with DevTools Protocol:
   https://github.com/aslushnikov/getting-started-with-cdp/blob/master/README.md
 
-```python sync title=example_3a8a10e66fc750bb0e176f66b2bd2eb305c4264e4146b9725dcff57e77811b3d.py
+```ruby
 client = page.context.new_cdp_session(page)
-client.send("Animation.enable")
-client.on("Animation.animationCreated", lambda: print("animation created!"))
-response = client.send("Animation.getPlaybackRate")
-print("playback rate is " + str(response["playbackRate"]))
-client.send("Animation.setPlaybackRate", {
-    playbackRate: response["playbackRate"] / 2
-})
-
+client.send_message('Animation.enable')
+client.on('Animation.animationCreated', -> (_) { puts 'Animation Created' })
+response = client.send_message('Animation.getPlaybackRate')
+puts "Playback rate is #{response['playbackRate']}"
+client.send_message(
+  'Animation.setPlaybackRate',
+  params: { playbackRate: response['playbackRate'] / 2.0 },
+)
 ```
 
 

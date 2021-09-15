@@ -224,7 +224,7 @@ module ExampleCodes
   end
 
   # CDPSession
-  def example_e94eb80b5c668430993fcded88c565d21f1d1a6d9064797e569a903fd3f65f95(page:)
+  def example_3a8a10e66fc750bb0e176f66b2bd2eb305c4264e4146b9725dcff57e77811b3d(page:)
     client = page.context.new_cdp_session(page)
     client.send_message('Animation.enable')
     client.on('Animation.animationCreated', -> (_) { puts 'Animation Created' })
