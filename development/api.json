@@ -28218,6 +28218,28 @@
       {
         "kind": "method",
         "langs": {},
+        "name": "dispose",
+        "type": {
+          "name": "void"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "All responses received through [`method: FetchRequest.fetch`], [`method: FetchRequest.get`], [`method: FetchRequest.post`] and other methods are stored in the memory, so that you can later call [`method: FetchResponse.body`]. This method discards all stored responses, and makes [`method: FetchResponse.body`] throw \"Response disposed\" error."
+          }
+        ],
+        "required": true,
+        "comment": "All responses received through [`method: FetchRequest.fetch`], [`method: FetchRequest.get`],\n[`method: FetchRequest.post`] and other methods are stored in the memory, so that you can later call\n[`method: FetchResponse.body`]. This method discards all stored responses, and makes [`method: FetchResponse.body`]\nthrow \"Response disposed\" error.",
+        "deprecated": false,
+        "async": true,
+        "alias": "dispose",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {},
         "name": "fetch",
         "type": {
           "name": "FetchResponse",

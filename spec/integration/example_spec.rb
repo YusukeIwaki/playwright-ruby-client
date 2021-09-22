@@ -5,6 +5,13 @@ require 'tmpdir'
 require './development/generate_api/example_codes'
 
 RSpec.describe 'example' do
+  it 'should browse playwright.dev' do
+    with_page do |page|
+      page.goto('https://playwright.dev/')
+      expect(page.evaluate('() => document.body.textContent')).to include('Playwright')
+    end
+  end
+
   it 'should take a screenshot' do
     with_page do |page|
       page.goto('https://github.com/YusukeIwaki')

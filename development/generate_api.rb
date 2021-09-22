@@ -3,6 +3,7 @@ ALL_TYPES = %w[
     Request
     Response
     Route
+    FetchRequest
     WebSocket
     Keyboard
     Mouse
