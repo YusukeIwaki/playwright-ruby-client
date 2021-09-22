@@ -249,6 +249,17 @@ RSpec.configure do |config|
       end
     end
 
+    if defined?(Puma::Launcher)
+      # Puma::Launcher consumes SIGINT.
+      # For stopping execution immidiately by Ctrl+C,
+      # raise SignalException manually here.
+      Signal.trap(:INT) do
+        raise SignalException.new('INT')
+      end
+    else
+      raise 'Consider removing this if puma is no longer used'
+    end
+
     begin
       @sinatra = sinatra_app
       example.run
