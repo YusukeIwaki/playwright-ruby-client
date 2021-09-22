@@ -48,6 +48,13 @@
 * fulfill
 * request
 
+## FetchRequest
+
+* ~~dispose~~
+* ~~fetch~~
+* ~~get~~
+* ~~post~~
+
 ## WebSocket
 
 * closed?
