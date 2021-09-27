@@ -593,7 +593,9 @@ module Playwright
     end
 
     def wait_for_timeout(timeout)
-      sleep(timeout / 1000.0)
+      @channel.send_message_to_server('waitForTimeout', timeout: timeout)
+
+      nil
     end
 
     def wait_for_function(pageFunction, arg: nil, polling: nil, timeout: nil)
