@@ -5,6 +5,8 @@ require 'tmpdir'
 require './development/generate_api/example_codes'
 
 RSpec.describe 'example' do
+  include ExampleCodes
+
   it 'should browse playwright.dev' do
     with_page do |page|
       page.goto('https://playwright.dev/')
@@ -14,7 +16,7 @@ RSpec.describe 'example' do
 
   it 'should take a screenshot' do
     with_page do |page|
-      page.goto('https://github.com/YusukeIwaki')
+      with_network_retry { page.goto('https://github.com/YusukeIwaki') }
       tmpdir = Dir.mktmpdir
       begin
         path = File.join(tmpdir, 'YusukeIwaki.png')
@@ -30,7 +32,7 @@ RSpec.describe 'example' do
     with_page do |page|
       page = browser.new_page
       page.viewport_size = { width: 1280, height: 800 }
-      page.goto('https://github.com/')
+      with_network_retry { page.goto('https://github.com/') }
 
       form = page.query_selector("form.js-site-search-form")
       search_input = form.query_selector("input.header-search-input")
@@ -93,9 +95,7 @@ RSpec.describe 'example' do
     end
   end
 
-  context 'with ExampleCodes' do
-    include ExampleCodes
-
+  context 'for ExampleCodes' do
     it 'should work with Accessibility' do
       skip unless chromium?
 
@@ -187,7 +187,9 @@ RSpec.describe 'example' do
 
     it 'should work with JSHandle#properties' do
       with_page do |page|
-        example_8292f0e8974d97d20be9bb303d55ccd2d50e42f954e0ada4958ddbef2c6c2977(page: page)
+        with_network_retry do
+          example_8292f0e8974d97d20be9bb303d55ccd2d50e42f954e0ada4958ddbef2c6c2977(page: page)
+        end
       end
     end
 
@@ -206,7 +208,9 @@ RSpec.describe 'example' do
 
     it 'should work with Keyboard#press' do
       with_page do |page|
-        example_88943eb85c1ac7c261601e6edbdead07a31c2784326c496e10667ede1a853bab(page: page)
+        with_network_retry do
+          example_88943eb85c1ac7c261601e6edbdead07a31c2784326c496e10667ede1a853bab(page: page)
+        end
       end
     end
 
@@ -267,45 +271,57 @@ RSpec.describe 'example' do
 
     it 'should work with Page#press' do
       with_page do |page|
-        example_aa4598bd7dbeb8d2f8f5c0aa3bdc84042eb396de37b49f8ff8c1ea39f080f709(page: page)
+        with_network_retry do
+          example_aa4598bd7dbeb8d2f8f5c0aa3bdc84042eb396de37b49f8ff8c1ea39f080f709(page: page)
+        end
       end
     end
 
     it 'should work with Page#expect_request' do
       with_page do |page|
-        example_9246912bc386c2f9310662279b12200ae131f724a1ec1ca99e511568767cb9c8(page: page)
+        with_network_retry do
+          example_9246912bc386c2f9310662279b12200ae131f724a1ec1ca99e511568767cb9c8(page: page)
+        end
       end
     end
 
     it 'should work with Page#expect_response' do
       with_page do |page|
-        example_d2a76790c0bb59bf5ae2f41d1a29b50954412136de3699ec79dc33cdfd56004b(page: page)
+        with_network_retry do
+          example_d2a76790c0bb59bf5ae2f41d1a29b50954412136de3699ec79dc33cdfd56004b(page: page)
+        end
       end
     end
 
     it 'should work with Page#wait_for_selector' do
       with_page do |page|
-        example_0a62ff34b0d31a64dd1597b9dff456e4139b36207d26efdec7109e278dc315a3(page: page)
+        with_network_retry do
+          example_0a62ff34b0d31a64dd1597b9dff456e4139b36207d26efdec7109e278dc315a3(page: page)
+        end
       end
     end
 
     it 'should work with Request#redirected_from' do
       with_page do |page|
-        example_89568fc86bf623eef37b68c6659b1a8524647c8365bb32a7a8af63bd86111075(page: page)
+        with_network_retry do
+          example_89568fc86bf623eef37b68c6659b1a8524647c8365bb32a7a8af63bd86111075(page: page)
+        end
       end
     end
 
     it 'should work with Request#redirected_to' do
       with_page do |page|
-        req = page.goto('http://github.com/').request
-        req2 = example_922623f4033e7ec2158787e54a8554655f7e1e20a024e4bf4f69337f781ab88a(request: req)
+        req = with_network_retry { page.goto('http://github.com/').request }
+        req2 = with_network_retry { example_922623f4033e7ec2158787e54a8554655f7e1e20a024e4bf4f69337f781ab88a(request: req) }
         expect(req2).to eq(req)
       end
     end
 
     it 'should work with Request#timing' do
       with_page do |page|
-        example_e2a297fe95fd0699b6a856c3be2f28106daa2615c0f4d6084f5012682a619d20(page: page)
+        with_network_retry do
+          example_e2a297fe95fd0699b6a856c3be2f28106daa2615c0f4d6084f5012682a619d20(page: page)
+        end
       end
     end
 
