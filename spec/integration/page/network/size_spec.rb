@@ -26,7 +26,10 @@ RSpec.describe 'network/size' do
   end
 
   it 'should should set bodySize, headersSize, and transferSize', sinatra: true do
-    sinatra.get('/__get') { 'abc134' }
+    sinatra.get('/__get') do
+      headers({ 'Content-Type' => 'text/plain; charset=utf-8' })
+      body('abc134')
+    end
 
     with_page do |page|
       page.goto(server_empty_page)
@@ -36,7 +39,7 @@ RSpec.describe 'network/size' do
       response.finished
       sizes = response.request.sizes
       expect(sizes[:responseBodySize]).to eq(6)
-      expect(sizes[:responseHeadersSize]).to be >= 70
+      expect(sizes[:responseHeadersSize]).to be >= 60
     end
   end
 
@@ -51,7 +54,7 @@ RSpec.describe 'network/size' do
       response.finished
       sizes = response.request.sizes
       expect(sizes[:responseBodySize]).to eq(0)
-      expect(sizes[:responseHeadersSize]).to be >= 70
+      expect(sizes[:responseHeadersSize]).to be >= 50
     end
   end
 end

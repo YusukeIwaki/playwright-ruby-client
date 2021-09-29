@@ -34,7 +34,7 @@ RSpec.describe 'Locator' do
       handle2 = page.locator('#inner')
       expect {
         handle2.input_value
-      }.to raise_error(/Node is not an HTMLInputElement or HTMLTextAreaElement/)
+      }.to raise_error(/Node is not an <input>, <textarea> or <select> element/)
     end
   end
 
@@ -58,7 +58,7 @@ RSpec.describe 'Locator' do
     with_page do |page|
       page.content = '<svg>text</svg>'
       locator = page.locator('svg')
-      expect { locator.inner_text }.to raise_error(/Not an HTMLElement/)
+      expect { locator.inner_text }.to raise_error(/Node is not an HTMLElement/)
     end
   end
 

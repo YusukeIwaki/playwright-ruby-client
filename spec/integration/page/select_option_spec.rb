@@ -144,7 +144,7 @@ RSpec.describe 'Page#select_option' do
       page.goto("#{server_prefix}/input/select.html")
       expect {
         page.select_option('body', value: '')
-      }.to raise_error(/Element is not a <select> element./)
+      }.to raise_error(/Element is not a <select> element/)
     end
   end
 

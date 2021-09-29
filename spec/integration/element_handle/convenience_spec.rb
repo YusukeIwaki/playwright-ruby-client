@@ -42,12 +42,12 @@ RSpec.describe 'ElementHandle' do
 
       expect {
         page.input_value('#inner')
-      }.to raise_error(/Node is not an HTMLInputElement or HTMLTextAreaElement/)
+      }.to raise_error(/Node is not an <input>, <textarea> or <select> element/)
 
       handle2 = page.query_selector('#inner')
       expect {
         handle2.input_value
-      }.to raise_error(/Node is not an HTMLInputElement or HTMLTextAreaElement/)
+      }.to raise_error(/Node is not an <input>, <textarea> or <select> element/)
     end
   end
 
@@ -73,8 +73,8 @@ RSpec.describe 'ElementHandle' do
     with_page do |page|
       page.content = '<svg>text</svg>'
       handle = page.query_selector('svg')
-      expect { handle.inner_text }.to raise_error(/Not an HTMLElement/)
-      expect { page.inner_text('svg') }.to raise_error(/Not an HTMLElement/)
+      expect { handle.inner_text }.to raise_error(/Node is not an HTMLElement/)
+      expect { page.inner_text('svg') }.to raise_error(/Node is not an HTMLElement/)
     end
   end
 

@@ -1957,11 +1957,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "An object containing additional HTTP headers to be sent with every request. All header values must be strings."
+                      "text": "An object containing additional HTTP headers to be sent with every request."
                     }
                   ],
                   "required": false,
-                  "comment": "An object containing additional HTTP headers to be sent with every request. All header values must be strings.",
+                  "comment": "An object containing additional HTTP headers to be sent with every request.",
                   "deprecated": false,
                   "async": false,
                   "alias": "extraHTTPHeaders",
@@ -2189,11 +2189,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Whether to ignore HTTPS errors during navigation. Defaults to `false`."
+                      "text": "Whether to ignore HTTPS errors when sending network requests. Defaults to `false`."
                     }
                   ],
                   "required": false,
-                  "comment": "Whether to ignore HTTPS errors during navigation. Defaults to `false`.",
+                  "comment": "Whether to ignore HTTPS errors when sending network requests. Defaults to `false`.",
                   "deprecated": false,
                   "async": false,
                   "alias": "ignoreHTTPSErrors",
@@ -6324,11 +6324,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "An object containing additional HTTP headers to be sent with every request. All header values must be strings."
+                      "text": "An object containing additional HTTP headers to be sent with every request."
                     }
                   ],
                   "required": false,
-                  "comment": "An object containing additional HTTP headers to be sent with every request. All header values must be strings.",
+                  "comment": "An object containing additional HTTP headers to be sent with every request.",
                   "deprecated": false,
                   "async": false,
                   "alias": "extraHTTPHeaders",
@@ -6556,11 +6556,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Whether to ignore HTTPS errors during navigation. Defaults to `false`."
+                      "text": "Whether to ignore HTTPS errors when sending network requests. Defaults to `false`."
                     }
                   ],
                   "required": false,
-                  "comment": "Whether to ignore HTTPS errors during navigation. Defaults to `false`.",
+                  "comment": "Whether to ignore HTTPS errors when sending network requests. Defaults to `false`.",
                   "deprecated": false,
                   "async": false,
                   "alias": "ignoreHTTPSErrors",
@@ -8417,11 +8417,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "An object containing additional HTTP headers to be sent with every request. All header values must be strings."
+                      "text": "An object containing additional HTTP headers to be sent with every request."
                     }
                   ],
                   "required": false,
-                  "comment": "An object containing additional HTTP headers to be sent with every request. All header values must be strings.",
+                  "comment": "An object containing additional HTTP headers to be sent with every request.",
                   "deprecated": false,
                   "async": false,
                   "alias": "extraHTTPHeaders",
@@ -8649,11 +8649,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Whether to ignore HTTPS errors during navigation. Defaults to `false`."
+                      "text": "Whether to ignore HTTPS errors when sending network requests. Defaults to `false`."
                     }
                   ],
                   "required": false,
-                  "comment": "Whether to ignore HTTPS errors during navigation. Defaults to `false`.",
+                  "comment": "Whether to ignore HTTPS errors when sending network requests. Defaults to `false`.",
                   "deprecated": false,
                   "async": false,
                   "alias": "ignoreHTTPSErrors",
@@ -16955,11 +16955,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "An object containing additional HTTP headers to be sent with every request. All header values must be strings."
+                      "text": "An object containing additional HTTP headers to be sent with every request."
                     }
                   ],
                   "required": false,
-                  "comment": "An object containing additional HTTP headers to be sent with every request. All header values must be strings.",
+                  "comment": "An object containing additional HTTP headers to be sent with every request.",
                   "deprecated": false,
                   "async": false,
                   "alias": "extraHTTPHeaders",
@@ -17383,11 +17383,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Whether to ignore HTTPS errors during navigation. Defaults to `false`."
+                      "text": "Whether to ignore HTTPS errors when sending network requests. Defaults to `false`."
                     }
                   ],
                   "required": false,
-                  "comment": "Whether to ignore HTTPS errors during navigation. Defaults to `false`.",
+                  "comment": "Whether to ignore HTTPS errors when sending network requests. Defaults to `false`.",
                   "deprecated": false,
                   "async": false,
                   "alias": "ignoreHTTPSErrors",
@@ -21371,11 +21371,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "An object containing additional HTTP headers to be sent with every request. All header values must be strings."
+                      "text": "An object containing additional HTTP headers to be sent with every request."
                     }
                   ],
                   "required": false,
-                  "comment": "An object containing additional HTTP headers to be sent with every request. All header values must be strings.",
+                  "comment": "An object containing additional HTTP headers to be sent with every request.",
                   "deprecated": false,
                   "async": false,
                   "alias": "extraHTTPHeaders",
@@ -21546,11 +21546,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Whether to ignore HTTPS errors during navigation. Defaults to `false`."
+                      "text": "Whether to ignore HTTPS errors when sending network requests. Defaults to `false`."
                     }
                   ],
                   "required": false,
-                  "comment": "Whether to ignore HTTPS errors during navigation. Defaults to `false`.",
+                  "comment": "Whether to ignore HTTPS errors when sending network requests. Defaults to `false`.",
                   "deprecated": false,
                   "async": false,
                   "alias": "ignoreHTTPSErrors",
@@ -28308,18 +28308,36 @@
                       },
                       {
                         "name": "Buffer"
+                      },
+                      {
+                        "name": "Serializable"
                       }
                     ],
-                    "expression": "[string]|[Buffer]"
+                    "expression": "[string]|[Buffer]|[Serializable]"
                   },
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Allows to set post data of the fetch."
+                      "text": "Allows to set post data of the fetch. If the data parameter is an object, it will be serialized the following way:"
+                    },
+                    {
+                      "type": "li",
+                      "text": "If `content-type` header is set to `application/x-www-form-urlencoded` the object will be serialized as html form using `application/x-www-form-urlencoded` encoding.",
+                      "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "If `content-type` header is set to `multipart/form-data` the object will be serialized as html form using `multipart/form-data` encoding.",
+                      "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "Otherwise the object will be serialized to json string and `content-type` header will be set to `application/json`.",
+                      "liType": "bullet"
                     }
                   ],
                   "required": false,
-                  "comment": "Allows to set post data of the fetch.",
+                  "comment": "Allows to set post data of the fetch. If the data parameter is an object, it will be serialized the following way:\n- If `content-type` header is set to `application/x-www-form-urlencoded` the object will be serialized as html form\n  using `application/x-www-form-urlencoded` encoding.\n- If `content-type` header is set to `multipart/form-data` the object will be serialized as html form using\n  `multipart/form-data` encoding.\n- Otherwise the object will be serialized to json string and `content-type` header will be set to `application/json`.",
                   "deprecated": false,
                   "async": false,
                   "alias": "data",
@@ -28710,18 +28728,36 @@
                       },
                       {
                         "name": "Buffer"
+                      },
+                      {
+                        "name": "Serializable"
                       }
                     ],
-                    "expression": "[string]|[Buffer]"
+                    "expression": "[string]|[Buffer]|[Serializable]"
                   },
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Allows to set post data of the fetch."
+                      "text": "Allows to set post data of the fetch. If the data parameter is an object, it will be serialized the following way:"
+                    },
+                    {
+                      "type": "li",
+                      "text": "If `content-type` header is set to `application/x-www-form-urlencoded` the object will be serialized as html form using `application/x-www-form-urlencoded` encoding.",
+                      "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "If `content-type` header is set to `multipart/form-data` the object will be serialized as html form using `multipart/form-data` encoding.",
+                      "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "Otherwise the object will be serialized to json string and `content-type` header will be set to `application/json`.",
+                      "liType": "bullet"
                     }
                   ],
                   "required": false,
-                  "comment": "Allows to set post data of the fetch.",
+                  "comment": "Allows to set post data of the fetch. If the data parameter is an object, it will be serialized the following way:\n- If `content-type` header is set to `application/x-www-form-urlencoded` the object will be serialized as html form\n  using `application/x-www-form-urlencoded` encoding.\n- If `content-type` header is set to `multipart/form-data` the object will be serialized as html form using\n  `multipart/form-data` encoding.\n- Otherwise the object will be serialized to json string and `content-type` header will be set to `application/json`.",
                   "deprecated": false,
                   "async": false,
                   "alias": "data",
@@ -38099,11 +38135,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation."
+                      "text": "A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation. Note that if the parameter is a string without wilcard characters, the method will wait for navigation to URL that is exactly equal to the string."
                     }
                   ],
                   "required": false,
-                  "comment": "A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation.",
+                  "comment": "A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation. Note that if the\nparameter is a string without wilcard characters, the method will wait for navigation to URL that is exactly equal to\nthe string.",
                   "deprecated": false,
                   "async": false,
                   "alias": "url",
@@ -38662,11 +38698,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation."
+                "text": "A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation. Note that if the parameter is a string without wilcard characters, the method will wait for navigation to URL that is exactly equal to the string."
               }
             ],
             "required": true,
-            "comment": "A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation.",
+            "comment": "A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation. Note that if the\nparameter is a string without wilcard characters, the method will wait for navigation to URL that is exactly equal to\nthe string.",
             "deprecated": false,
             "async": false,
             "alias": "url",
@@ -50594,7 +50630,16 @@
                 },
                 {
                   "kind": "property",
-                  "langs": {},
+                  "langs": {
+                    "only": [
+                      "js",
+                      "python",
+                      "java"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
                   "name": "forcedColors",
                   "type": {
                     "name": "",
@@ -50629,6 +50674,41 @@
                   ],
                   "required": false,
                   "comment": "Emulates `'forced-colors'` media feature, supported values are `'active'` and `'none'`. Passing `null` disables forced\ncolors emulation.\n\n> NOTE: It's not supported in WebKit, see [here](https://bugs.webkit.org/show_bug.cgi?id=225281) in their issue tracker.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "forcedColors",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "csharp"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "forcedColors",
+                  "type": {
+                    "name": "ForcedColors",
+                    "union": [
+                      {
+                        "name": "\"active\""
+                      },
+                      {
+                        "name": "\"none\""
+                      },
+                      {
+                        "name": "\"null\""
+                      }
+                    ],
+                    "expression": "[ForcedColors]<\"active\"|\"none\"|\"null\">"
+                  },
+                  "spec": [],
+                  "required": false,
+                  "comment": "",
                   "deprecated": false,
                   "async": false,
                   "alias": "forcedColors",
@@ -61898,11 +61978,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation."
+                      "text": "A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation. Note that if the parameter is a string without wilcard characters, the method will wait for navigation to URL that is exactly equal to the string."
                     }
                   ],
                   "required": false,
-                  "comment": "A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation.",
+                  "comment": "A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation. Note that if the\nparameter is a string without wilcard characters, the method will wait for navigation to URL that is exactly equal to\nthe string.",
                   "deprecated": false,
                   "async": false,
                   "alias": "url",
@@ -63559,11 +63639,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation."
+                "text": "A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation. Note that if the parameter is a string without wilcard characters, the method will wait for navigation to URL that is exactly equal to the string."
               }
             ],
             "required": true,
-            "comment": "A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation.",
+            "comment": "A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation. Note that if the\nparameter is a string without wilcard characters, the method will wait for navigation to URL that is exactly equal to\nthe string.",
             "deprecated": false,
             "async": false,
             "alias": "url",
@@ -64410,6 +64490,362 @@
     "langs": {},
     "comment": "Playwright module provides a method to launch a browser instance. The following is a typical example of using Playwright\nto drive automation:\n\n```js\nconst { chromium, firefox, webkit } = require('playwright');\n\n(async () => {\n  const browser = await chromium.launch();  // Or 'firefox' or 'webkit'.\n  const page = await browser.newPage();\n  await page.goto('http://example.com');\n  // other actions...\n  await browser.close();\n})();\n```\n\n```java\nimport com.microsoft.playwright.*;\n\npublic class Example {\n  public static void main(String[] args) {\n    try (Playwright playwright = Playwright.create()) {\n      BrowserType chromium = playwright.chromium();\n      Browser browser = chromium.launch();\n      Page page = browser.newPage();\n      page.navigate(\"http://example.com\");\n      // other actions...\n      browser.close();\n    }\n  }\n}\n```\n\n```python async\nimport asyncio\nfrom playwright.async_api import async_playwright\n\nasync def run(playwright):\n    chromium = playwright.chromium # or \"firefox\" or \"webkit\".\n    browser = await chromium.launch()\n    page = await browser.new_page()\n    await page.goto(\"http://example.com\")\n    # other actions...\n    await browser.close()\n\nasync def main():\n    async with async_playwright() as playwright:\n        await run(playwright)\nasyncio.run(main())\n```\n\n```python sync\nfrom playwright.sync_api import sync_playwright\n\ndef run(playwright):\n    chromium = playwright.chromium # or \"firefox\" or \"webkit\".\n    browser = chromium.launch()\n    page = browser.new_page()\n    page.goto(\"http://example.com\")\n    # other actions...\n    browser.close()\n\nwith sync_playwright() as playwright:\n    run(playwright)\n```\n\n```csharp\nusing Microsoft.Playwright;\nusing System.Threading.Tasks;\n\nclass PlaywrightExample\n{\n    public static async Task Main()\n    {\n        using var playwright = await Playwright.CreateAsync();\n        await using var browser = await playwright.Chromium.LaunchAsync();\n        var page = await browser.NewPageAsync();\n\n        await page.GotoAsync(\"https://www.microsoft.com\");\n        // other actions...\n    }\n}\n```\n",
     "members": [
+      {
+        "kind": "method",
+        "langs": {
+          "only": [
+            "js"
+          ],
+          "aliases": {},
+          "types": {},
+          "overrides": {}
+        },
+        "name": "_newRequest",
+        "type": {
+          "name": "FetchRequest",
+          "expression": "[FetchRequest]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "**experimental** Creates new instances of `FetchRequest`."
+          }
+        ],
+        "required": true,
+        "comment": "**experimental** Creates new instances of `FetchRequest`.",
+        "deprecated": false,
+        "async": true,
+        "alias": "_newRequest",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "baseURL",
+                  "type": {
+                    "name": "string",
+                    "expression": "[string]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "When using [`method: FetchRequest.get`], [`method: FetchRequest.post`], [`method: FetchRequest.fetch`] it takes the base URL in consideration by using the [`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor for building the corresponding URL. Examples:"
+                    },
+                    {
+                      "type": "li",
+                      "text": "baseURL: `http://localhost:3000` and sending rquest to `/bar.html` results in `http://localhost:3000/bar.html`",
+                      "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "baseURL: `http://localhost:3000/foo/` and sending rquest to `./bar.html` results in `http://localhost:3000/foo/bar.html`",
+                      "liType": "bullet"
+                    }
+                  ],
+                  "required": false,
+                  "comment": "When using [`method: FetchRequest.get`], [`method: FetchRequest.post`], [`method: FetchRequest.fetch`] it takes the base\nURL in consideration by using the [`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor for\nbuilding the corresponding URL. Examples:\n- baseURL: `http://localhost:3000` and sending rquest to `/bar.html` results in `http://localhost:3000/bar.html`\n- baseURL: `http://localhost:3000/foo/` and sending rquest to `./bar.html` results in\n  `http://localhost:3000/foo/bar.html`",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "baseURL",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "extraHTTPHeaders",
+                  "type": {
+                    "name": "Object",
+                    "templates": [
+                      {
+                        "name": "string"
+                      },
+                      {
+                        "name": "string"
+                      }
+                    ],
+                    "expression": "[Object]<[string], [string]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "An object containing additional HTTP headers to be sent with every request."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "An object containing additional HTTP headers to be sent with every request.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "extraHTTPHeaders",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "httpCredentials",
+                  "type": {
+                    "name": "Object",
+                    "properties": [
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "username",
+                        "type": {
+                          "name": "string",
+                          "expression": "[string]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": ""
+                          }
+                        ],
+                        "required": true,
+                        "comment": "",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "username",
+                        "overloadIndex": 0,
+                        "paramOrOption": null
+                      },
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "password",
+                        "type": {
+                          "name": "string",
+                          "expression": "[string]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": ""
+                          }
+                        ],
+                        "required": true,
+                        "comment": "",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "password",
+                        "overloadIndex": 0,
+                        "paramOrOption": null
+                      }
+                    ],
+                    "expression": "[Object]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Credentials for [HTTP authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication)."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Credentials for [HTTP authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication).",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "httpCredentials",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "ignoreHTTPSErrors",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Whether to ignore HTTPS errors when sending network requests. Defaults to `false`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Whether to ignore HTTPS errors when sending network requests. Defaults to `false`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "ignoreHTTPSErrors",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "proxy",
+                  "type": {
+                    "name": "Object",
+                    "properties": [
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "server",
+                        "type": {
+                          "name": "string",
+                          "expression": "[string]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": "Proxy to be used for all requests. HTTP and SOCKS proxies are supported, for example `http://myproxy.com:3128` or `socks5://myproxy.com:3128`. Short form `myproxy.com:3128` is considered an HTTP proxy."
+                          }
+                        ],
+                        "required": true,
+                        "comment": "Proxy to be used for all requests. HTTP and SOCKS proxies are supported, for example `http://myproxy.com:3128` or\n`socks5://myproxy.com:3128`. Short form `myproxy.com:3128` is considered an HTTP proxy.",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "server",
+                        "overloadIndex": 0,
+                        "paramOrOption": null
+                      },
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "bypass",
+                        "type": {
+                          "name": "string",
+                          "expression": "[string]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": "Optional coma-separated domains to bypass proxy, for example `\".com, chromium.org, .domain.com\"`."
+                          }
+                        ],
+                        "required": false,
+                        "comment": "Optional coma-separated domains to bypass proxy, for example `\".com, chromium.org, .domain.com\"`.",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "bypass",
+                        "overloadIndex": 0,
+                        "paramOrOption": null
+                      },
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "username",
+                        "type": {
+                          "name": "string",
+                          "expression": "[string]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": "Optional username to use if HTTP proxy requires authentication."
+                          }
+                        ],
+                        "required": false,
+                        "comment": "Optional username to use if HTTP proxy requires authentication.",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "username",
+                        "overloadIndex": 0,
+                        "paramOrOption": null
+                      },
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "password",
+                        "type": {
+                          "name": "string",
+                          "expression": "[string]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": "Optional password to use if HTTP proxy requires authentication."
+                          }
+                        ],
+                        "required": false,
+                        "comment": "Optional password to use if HTTP proxy requires authentication.",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "password",
+                        "overloadIndex": 0,
+                        "paramOrOption": null
+                      }
+                    ],
+                    "expression": "[Object]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Network proxy settings."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Network proxy settings.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "proxy",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Maximum time in milliseconds to wait for the response. Defaults to `30000` (30 seconds). Pass `0` to disable timeout."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Maximum time in milliseconds to wait for the response. Defaults to `30000` (30 seconds). Pass `0` to disable timeout.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "userAgent",
+                  "type": {
+                    "name": "string",
+                    "expression": "[string]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Specific user agent to use in this context."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Specific user agent to use in this context.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "userAgent",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "options",
+            "overloadIndex": 0,
+            "paramOrOption": null
+          }
+        ]
+      },
       {
         "kind": "property",
         "langs": {},
@@ -65439,10 +65875,10 @@
               "name": "null"
             },
             {
-              "name": "any"
+              "name": "Serializable"
             }
           ],
-          "expression": "[null]|[any]"
+          "expression": "[null]|[Serializable]"
         },
         "spec": [
           {
