@@ -1,4 +1,17 @@
 module ExampleCodes
+  def with_network_retry(max_retry: 2, timeout: 4, &block)
+    if max_retry <= 0
+      Timeout.timeout(timeout, &block)
+    else
+      begin
+        Timeout.timeout(timeout, &block)
+      rescue Timeout::Error
+        puts "Retry with { remaining: #{max_retry - 1}, timeout: #{timeout * 1.5} }"
+        with_network_retry(max_retry: max_retry - 1, timeout: timeout * 1.5, &block)
+      end
+    end
+  end
+
   # Accessibility
   def example_2e5019929403491cde0c78bed1e0e18e0c86ab423d7ac8715876c4de4814f483(page:)
     snapshot = page.accessibility.snapshot
