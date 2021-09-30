@@ -15266,7 +15266,16 @@
     "members": [
       {
         "kind": "method",
-        "langs": {},
+        "langs": {
+          "only": [
+            "js",
+            "python",
+            "java"
+          ],
+          "aliases": {},
+          "types": {},
+          "overrides": {}
+        },
         "name": "connect",
         "type": {
           "name": "Browser",
@@ -16563,11 +16572,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "Path to a User Data Directory, which stores browser session data like cookies and local storage. More details for [Chromium](https://chromium.googlesource.com/chromium/src/+/master/docs/user_data_dir.md#introduction) and [Firefox](https://developer.mozilla.org/en-US/docs/Mozilla/Command_Line_Options#User_Profile). Note that Chromium's user data directory is the **parent** directory of the \"Profile Path\" seen at `chrome://version`."
+                "text": "Path to a User Data Directory, which stores browser session data like cookies and local storage. More details for [Chromium](https://chromium.googlesource.com/chromium/src/+/master/docs/user_data_dir.md#introduction) and [Firefox](https://developer.mozilla.org/en-US/docs/Mozilla/Command_Line_Options#User_Profile). Note that Chromium's user data directory is the **parent** directory of the \"Profile Path\" seen at `chrome://version`. Pass an empty string to use a temporary directory instead."
               }
             ],
             "required": true,
-            "comment": "Path to a User Data Directory, which stores browser session data like cookies and local storage. More details for\n[Chromium](https://chromium.googlesource.com/chromium/src/+/master/docs/user_data_dir.md#introduction) and\n[Firefox](https://developer.mozilla.org/en-US/docs/Mozilla/Command_Line_Options#User_Profile). Note that Chromium's user\ndata directory is the **parent** directory of the \"Profile Path\" seen at `chrome://version`.",
+            "comment": "Path to a User Data Directory, which stores browser session data like cookies and local storage. More details for\n[Chromium](https://chromium.googlesource.com/chromium/src/+/master/docs/user_data_dir.md#introduction) and\n[Firefox](https://developer.mozilla.org/en-US/docs/Mozilla/Command_Line_Options#User_Profile). Note that Chromium's user\ndata directory is the **parent** directory of the \"Profile Path\" seen at `chrome://version`. Pass an empty string to use\na temporary directory instead.",
             "deprecated": false,
             "async": false,
             "alias": "userDataDir",
@@ -28399,6 +28408,28 @@
                 {
                   "kind": "property",
                   "langs": {},
+                  "name": "ignoreHTTPSErrors",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Whether to ignore HTTPS errors when sending network requests. Defaults to `false`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Whether to ignore HTTPS errors when sending network requests. Defaults to `false`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "ignoreHTTPSErrors",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
                   "name": "method",
                   "type": {
                     "name": "string",
@@ -28590,6 +28621,28 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "headers",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "ignoreHTTPSErrors",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Whether to ignore HTTPS errors when sending network requests. Defaults to `false`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Whether to ignore HTTPS errors when sending network requests. Defaults to `false`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "ignoreHTTPSErrors",
                   "overloadIndex": 0,
                   "paramOrOption": null
                 },
@@ -28813,6 +28866,28 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "headers",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "ignoreHTTPSErrors",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Whether to ignore HTTPS errors when sending network requests. Defaults to `false`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Whether to ignore HTTPS errors when sending network requests. Defaults to `false`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "ignoreHTTPSErrors",
                   "overloadIndex": 0,
                   "paramOrOption": null
                 },
@@ -45961,6 +46036,168 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "trial",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "options",
+            "overloadIndex": 0,
+            "paramOrOption": null
+          }
+        ]
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "waitFor",
+        "type": {
+          "name": "void"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Returns when element specified by locator satisfies the `state` option."
+          },
+          {
+            "type": "text",
+            "text": "If target element already satisfies the condition, the method returns immediately. Otherwise, waits for up to `timeout` milliseconds until the condition is met."
+          },
+          {
+            "type": "code",
+            "lines": [
+              "const orderSent = page.locator('#order-sent');",
+              "await orderSent.waitFor();"
+            ],
+            "codeLang": "js"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "Locator orderSent = page.locator(\"#order-sent\");",
+              "orderSent.waitFor();"
+            ],
+            "codeLang": "java"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "order_sent = page.locator(\"#order-sent\")",
+              "await order_sent.wait_for()"
+            ],
+            "codeLang": "python async"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "order_sent = page.locator(\"#order-sent\")",
+              "order_sent.wait_for()"
+            ],
+            "codeLang": "python sync"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "var orderSent = page.Locator(\"#order-sent\");",
+              "orderSent.WaitForAsync();"
+            ],
+            "codeLang": "csharp"
+          }
+        ],
+        "required": true,
+        "comment": "Returns when element specified by locator satisfies the `state` option.\n\nIf target element already satisfies the condition, the method returns immediately. Otherwise, waits for up to `timeout`\nmilliseconds until the condition is met.\n\n```js\nconst orderSent = page.locator('#order-sent');\nawait orderSent.waitFor();\n```\n\n```java\nLocator orderSent = page.locator(\"#order-sent\");\norderSent.waitFor();\n```\n\n```python async\norder_sent = page.locator(\"#order-sent\")\nawait order_sent.wait_for()\n```\n\n```python sync\norder_sent = page.locator(\"#order-sent\")\norder_sent.wait_for()\n```\n\n```csharp\nvar orderSent = page.Locator(\"#order-sent\");\norderSent.WaitForAsync();\n```\n",
+        "deprecated": false,
+        "async": true,
+        "alias": "waitFor",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "state",
+                  "type": {
+                    "name": "WaitForSelectorState",
+                    "union": [
+                      {
+                        "name": "\"attached\""
+                      },
+                      {
+                        "name": "\"detached\""
+                      },
+                      {
+                        "name": "\"visible\""
+                      },
+                      {
+                        "name": "\"hidden\""
+                      }
+                    ],
+                    "expression": "[WaitForSelectorState]<\"attached\"|\"detached\"|\"visible\"|\"hidden\">"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Defaults to `'visible'`. Can be either:"
+                    },
+                    {
+                      "type": "li",
+                      "text": "`'attached'` - wait for element to be present in DOM.",
+                      "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "`'detached'` - wait for element to not be present in DOM.",
+                      "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "`'visible'` - wait for element to have non-empty bounding box and no `visibility:hidden`. Note that element without any content or with `display:none` has an empty bounding box and is not considered visible.",
+                      "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "`'hidden'` - wait for element to be either detached from DOM, or have an empty bounding box or `visibility:hidden`. This is opposite to the `'visible'` option.",
+                      "liType": "bullet"
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Defaults to `'visible'`. Can be either:\n- `'attached'` - wait for element to be present in DOM.\n- `'detached'` - wait for element to not be present in DOM.\n- `'visible'` - wait for element to have non-empty bounding box and no `visibility:hidden`. Note that element without\n  any content or with `display:none` has an empty bounding box and is not considered visible.\n- `'hidden'` - wait for element to be either detached from DOM, or have an empty bounding box or `visibility:hidden`.\n  This is opposite to the `'visible'` option.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "state",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by using the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Maximum time in milliseconds, defaults to 30 seconds, pass `0` to disable timeout. The default value can be changed by\nusing the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
                   "overloadIndex": 0,
                   "paramOrOption": null
                 }
