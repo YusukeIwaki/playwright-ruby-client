@@ -677,3 +677,21 @@ If the element is detached from the DOM at any moment during the action, this me
 
 When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing
 zero timeout disables this.
+
+## wait_for
+
+```
+def wait_for(state: nil, timeout: nil)
+```
+
+Returns when element specified by locator satisfies the `state` option.
+
+If target element already satisfies the condition, the method returns immediately. Otherwise, waits for up to `timeout`
+milliseconds until the condition is met.
+
+```ruby
+order_sent = page.locator("#order-sent")
+order_sent.wait_for
+```
+
+

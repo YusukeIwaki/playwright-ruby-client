@@ -441,7 +441,7 @@
 * text_content
 * type
 * uncheck
-* ~~wait_for~~
+* wait_for
 
 ## Android
 

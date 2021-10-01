@@ -652,6 +652,12 @@ module ExampleCodes
     element.press("Enter")
   end
 
+  # Locator#wait_for
+  def example_fe6f0a646d9e680807072ce223c7fdf83033490839c9a04e94ac48c278cb5568(page:)
+    order_sent = page.locator("#order-sent")
+    order_sent.wait_for
+  end
+
   # Mouse
   def example_ba01da1f358cafb4c22b792488ff2f3de4dbd82d4ee1cc4050e3f0c24a2bd7dd(page:)
     # using ‘page.mouse’ to trace a 100x100 square.
