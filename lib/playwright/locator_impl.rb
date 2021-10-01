@@ -303,6 +303,10 @@ module Playwright
         trial: trial)
     end
 
+    def wait_for(state: nil, timeout: nil)
+      @frame.wait_for_selector(@selector, strict: true, state: state, timeout: timeout)
+    end
+
     def set_checked(checked, **options)
       if checked
         check(**options)

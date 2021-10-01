@@ -181,5 +181,26 @@ RSpec.describe 'locator' do
         expect(box['height']).to eq(50)
       end
     end
+
+    it 'should waitFor' do
+      with_page do |page|
+        page.content = '<div></div>'
+        locator = page.locator('span')
+        promise = Concurrent::Promises.future { locator.wait_for }
+        page.eval_on_selector('div', "div => div.innerHTML = '<span>target</span>'")
+        promise.value!
+        expect(locator.text_content).to eq('target')
+      end
+    end
+
+    it 'should waitFor hidden' do
+      with_page do |page|
+        page.content = '<div><span>target</span></div>'
+        locator = page.locator('span')
+        promise = Concurrent::Promises.future { locator.wait_for(state: :hidden) }
+        page.eval_on_selector('div', "div => div.innerHTML = ''")
+        promise.value!
+      end
+    end
   end
 end
