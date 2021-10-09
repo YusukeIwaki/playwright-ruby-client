@@ -26,9 +26,9 @@ class PlaywrightApiRenderer
       when UnimplementedClassWithDoc
         @implemented = false
       when ImplementedClassWithoutDoc
-        raise "Not supported -> #{target_class}"
+        raise "Not supported -> #{class_with_doc.class_name}"
       else
-        raise "What is this? -> #{target_class}"
+        raise "What is this? -> #{class_with_doc.class_name}"
       end
     end
 
