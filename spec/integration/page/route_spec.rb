@@ -654,18 +654,24 @@ RSpec.describe 'Page#route', sinatra: true do
 
   it 'should support the times parameter with route matching' do
     intercepted = []
+    handler = ->(route, _) {
+      intercepted << 'intercepted'
+      route.continue
+    }
 
     with_page do |page|
       page.route(
         '**/empty.html',
-        ->(route, _) {
-          intercepted << 'intercepted'
-          route.continue
-        },
+        handler,
         times: 2,
       )
 
       4.times { page.goto(server_empty_page) }
+
+      routes = page.instance_variable_get(:@impl).instance_variable_get(:@routes)
+      expect(routes).to be_empty
+
+      page.unroute('**/empty.html', handler: handler)
     end
 
     expect(intercepted).to eq(%w[intercepted intercepted])

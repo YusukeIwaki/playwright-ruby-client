@@ -6,16 +6,24 @@ module Playwright
       end
 
       def handle
-        return false if @count <= 0
+        return false if expired?
 
         @count = @count - 1
         true
+      end
+
+      def expired?
+        @count <= 0
       end
     end
 
     class StubCounter
       def handle
         true
+      end
+
+      def expired?
+        false
       end
     end
 
@@ -44,6 +52,10 @@ module Playwright
       else
         false
       end
+    end
+
+    def expired?
+      @counter.expired?
     end
 
     def same_value?(url:, handler: nil)
