@@ -1,4 +1,6 @@
 module Playwright
-  define_channel_owner :FetchRequest do
+  module ChannelOwners
+    class FetchRequest < ApiRequestContext
+    end
   end
 end

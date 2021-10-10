@@ -84,39 +84,27 @@ module Playwright
 
     # @return [RawHeaders|nil]
     private def actual_headers
-      @actual_headers ||= response&.send(:raw_request_headers)
+      @actual_headers ||= raw_request_headers
+    end
+
+    private def raw_request_headers
+      RawHeaders.new(@channel.send_message_to_server('rawRequestHeaders'))
     end
 
     def all_headers
-      if actual_headers
-        actual_headers.headers
-      else
-        @provisional_headers.headers
-      end
+      actual_headers.headers
     end
 
     def headers_array
-      if actual_headers
-        actual_headers.headers_array
-      else
-        @provisional_headers.headers_array
-      end
+      actual_headers.headers_array
     end
 
     def header_value(name)
-      if actual_headers
-        actual_headers.get(name)
-      else
-        @provisional_headers.get(name)
-      end
+      actual_headers.get(name)
     end
 
     def header_values(name)
-      if actual_headers
-        actual_headers.get_all(name)
-      else
-        @provisional_headers.get_all(name)
-      end
+      actual_headers.get_all(name)
     end
 
     def sizes

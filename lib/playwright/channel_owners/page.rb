@@ -100,6 +100,11 @@ module Playwright
 
       if @routes.none? { |handler_entry| handler_entry.handle(wrapped_route, wrapped_request) }
         @browser_context.send(:on_route, route, request)
+      else
+        @routes.reject!(&:expired?)
+        if @routes.count == 0
+          @channel.async_send_message_to_server('setNetworkInterceptionEnabled', enabled: false)
+        end
       end
     end
 

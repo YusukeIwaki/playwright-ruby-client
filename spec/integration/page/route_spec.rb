@@ -654,20 +654,83 @@ RSpec.describe 'Page#route', sinatra: true do
 
   it 'should support the times parameter with route matching' do
     intercepted = []
+    handler = ->(route, _) {
+      intercepted << 'intercepted'
+      route.continue
+    }
 
     with_page do |page|
       page.route(
         '**/empty.html',
-        ->(route, _) {
-          intercepted << 'intercepted'
-          route.continue
-        },
+        handler,
         times: 2,
       )
 
       4.times { page.goto(server_empty_page) }
+
+      routes = page.instance_variable_get(:@impl).instance_variable_get(:@routes)
+      expect(routes).to be_empty
+
+      page.unroute('**/empty.html', handler: handler)
     end
 
     expect(intercepted).to eq(%w[intercepted intercepted])
+  end
+
+  it 'should contain raw request header' do
+    with_page do |page|
+      headers_promise = Concurrent::Promises.resolvable_future
+      page.route(
+        '**/*',
+        ->(route, req) {
+          Concurrent::Promises.future(req) do |_req|
+            headers_promise.fulfill(_req.all_headers)
+          end
+          route.continue
+        },
+      )
+      page.goto(server_empty_page)
+      #expect(headers_promise.value!).to include()
+      puts headers_promise.value!
+    end
+  end
+
+  it 'should contain raw response header' do
+    with_page do |page|
+      headers_promise = Concurrent::Promises.resolvable_future
+      page.route(
+        '**/*',
+        ->(route, req) {
+          Concurrent::Promises.future(req) do |_req|
+            headers_promise.fulfill(_req.response.all_headers)
+          end
+          route.continue
+        },
+      )
+      page.goto(server_empty_page)
+      #expect(headers_promise.value!).to include()
+      puts headers_promise.value!
+    end
+  end
+
+  it 'should contain raw response header after fulfill' do
+    with_page do |page|
+      headers_promise = Concurrent::Promises.resolvable_future
+      page.route(
+        '**/*',
+        ->(route, req) {
+          Concurrent::Promises.future(req) do |_req|
+            headers_promise.fulfill(_req.response.all_headers)
+          end
+          route.fulfill(
+            status: 200,
+            body: 'Hello',
+            contentType: 'text/html',
+          )
+        },
+      )
+      page.goto(server_empty_page)
+      expect(headers_promise.value!['content-type']).to eq('text/html')
+    end
   end
 end

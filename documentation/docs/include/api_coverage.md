@@ -1,5 +1,17 @@
 # API coverages
 
+## ApiRequestContext
+
+* ~~delete~~
+* ~~dispose~~
+* ~~fetch~~
+* ~~get~~
+* ~~head~~
+* ~~patch~~
+* ~~post~~
+* ~~put~~
+* ~~storage_state~~
+
 ## Request
 
 * all_headers
@@ -47,13 +59,6 @@
 * continue
 * fulfill
 * request
-
-## FetchRequest
-
-* ~~dispose~~
-* ~~fetch~~
-* ~~get~~
-* ~~post~~
 
 ## WebSocket
 

@@ -1,9 +1,9 @@
 # https://github.com/microsoft/playwright-python/blob/0b4a980fed366c4c1dee9bfcdd72662d629fdc8d/scripts/generate_api.py#L191
 ALL_TYPES = %w[
+    ApiRequestContext
     Request
     Response
     Route
-    FetchRequest
     WebSocket
     Keyboard
     Mouse

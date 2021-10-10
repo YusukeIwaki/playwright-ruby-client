@@ -48,10 +48,6 @@ module Playwright
       @actual_headers ||= raw_response_headers
     end
 
-    private def raw_request_headers
-      RawHeaders.new(@channel.send_message_to_server('rawRequestHeaders'))
-    end
-
     private def raw_response_headers
       RawHeaders.new(@channel.send_message_to_server('rawResponseHeaders'))
     end
