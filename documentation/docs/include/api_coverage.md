@@ -1,6 +1,6 @@
 # API coverages
 
-## ApiRequestContext
+## APIRequestContext
 
 * ~~delete~~
 * ~~dispose~~

@@ -5773,7 +5773,7 @@
     ]
   },
   {
-    "name": "ApiRequest",
+    "name": "APIRequest",
     "spec": [
       {
         "type": "text",
@@ -5802,17 +5802,17 @@
         },
         "name": "newContext",
         "type": {
-          "name": "ApiRequestContext",
-          "expression": "[ApiRequestContext]"
+          "name": "APIRequestContext",
+          "expression": "[APIRequestContext]"
         },
         "spec": [
           {
             "type": "text",
-            "text": "**experimental** Creates new instances of `ApiRequestContext`."
+            "text": "Creates new instances of `APIRequestContext`."
           }
         ],
         "required": true,
-        "comment": "**experimental** Creates new instances of `ApiRequestContext`.",
+        "comment": "Creates new instances of `APIRequestContext`.",
         "deprecated": false,
         "async": true,
         "alias": "newContext",
@@ -5837,21 +5837,21 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When using [`method: ApiRequestContext.get`], [`method: ApiRequestContext.post`], [`method: ApiRequestContext.fetch`] it takes the base URL in consideration by using the [`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor for building the corresponding URL. Examples:"
+                      "text": "Methods like [`method: APIRequestContext.get`] take the base URL into consideration by using the [`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor for building the corresponding URL. Examples:"
                     },
                     {
                       "type": "li",
-                      "text": "baseURL: `http://localhost:3000` and sending rquest to `/bar.html` results in `http://localhost:3000/bar.html`",
+                      "text": "baseURL: `http://localhost:3000` and sending request to `/bar.html` results in `http://localhost:3000/bar.html`",
                       "liType": "bullet"
                     },
                     {
                       "type": "li",
-                      "text": "baseURL: `http://localhost:3000/foo/` and sending rquest to `./bar.html` results in `http://localhost:3000/foo/bar.html`",
+                      "text": "baseURL: `http://localhost:3000/foo/` and sending request to `./bar.html` results in `http://localhost:3000/foo/bar.html`",
                       "liType": "bullet"
                     }
                   ],
                   "required": false,
-                  "comment": "When using [`method: ApiRequestContext.get`], [`method: ApiRequestContext.post`], [`method: ApiRequestContext.fetch`] it\ntakes the base URL in consideration by using the [`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL)\nconstructor for building the corresponding URL. Examples:\n- baseURL: `http://localhost:3000` and sending rquest to `/bar.html` results in `http://localhost:3000/bar.html`\n- baseURL: `http://localhost:3000/foo/` and sending rquest to `./bar.html` results in\n  `http://localhost:3000/foo/bar.html`",
+                  "comment": "Methods like [`method: APIRequestContext.get`] take the base URL into consideration by using the\n[`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor for building the corresponding URL.\nExamples:\n- baseURL: `http://localhost:3000` and sending request to `/bar.html` results in `http://localhost:3000/bar.html`\n- baseURL: `http://localhost:3000/foo/` and sending request to `./bar.html` results in\n  `http://localhost:3000/foo/bar.html`",
                   "deprecated": false,
                   "async": false,
                   "alias": "baseURL",
@@ -6018,11 +6018,11 @@
                         "spec": [
                           {
                             "type": "text",
-                            "text": "Optional coma-separated domains to bypass proxy, for example `\".com, chromium.org, .domain.com\"`."
+                            "text": "Optional comma-separated domains to bypass proxy, for example `\".com, chromium.org, .domain.com\"`."
                           }
                         ],
                         "required": false,
-                        "comment": "Optional coma-separated domains to bypass proxy, for example `\".com, chromium.org, .domain.com\"`.",
+                        "comment": "Optional comma-separated domains to bypass proxy, for example `\".com, chromium.org, .domain.com\"`.",
                         "deprecated": false,
                         "async": false,
                         "alias": "bypass",
@@ -6451,11 +6451,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Populates context with given storage state. This option can be used to initialize context with logged-in information obtained via [`method: BrowserContext.storageState`] or [`method: ApiRequestContext.storageState`]. Either a path to the file with saved storage, or the value returned by one of [`method: BrowserContext.storageState`] or [`method: ApiRequestContext.storageState`] methods."
+                      "text": "Populates context with given storage state. This option can be used to initialize context with logged-in information obtained via [`method: BrowserContext.storageState`] or [`method: APIRequestContext.storageState`]. Either a path to the file with saved storage, or the value returned by one of [`method: BrowserContext.storageState`] or [`method: APIRequestContext.storageState`] methods."
                     }
                   ],
                   "required": false,
-                  "comment": "Populates context with given storage state. This option can be used to initialize context with logged-in information\nobtained via [`method: BrowserContext.storageState`] or [`method: ApiRequestContext.storageState`]. Either a path to the\nfile with saved storage, or the value returned by one of [`method: BrowserContext.storageState`] or\n[`method: ApiRequestContext.storageState`] methods.",
+                  "comment": "Populates context with given storage state. This option can be used to initialize context with logged-in information\nobtained via [`method: BrowserContext.storageState`] or [`method: APIRequestContext.storageState`]. Either a path to the\nfile with saved storage, or the value returned by one of [`method: BrowserContext.storageState`] or\n[`method: APIRequestContext.storageState`] methods.",
                   "deprecated": false,
                   "async": false,
                   "alias": "storageState",
@@ -6521,7 +6521,7 @@
     ]
   },
   {
-    "name": "ApiRequestContext",
+    "name": "APIRequestContext",
     "spec": [
       {
         "type": "text",
@@ -6543,8 +6543,8 @@
         "langs": {},
         "name": "delete",
         "type": {
-          "name": "ApiResponse",
-          "expression": "[ApiResponse]"
+          "name": "APIResponse",
+          "expression": "[APIResponse]"
         },
         "spec": [
           {
@@ -6748,11 +6748,11 @@
         "spec": [
           {
             "type": "text",
-            "text": "All responses received through [`method: ApiRequestContext.fetch`], [`method: ApiRequestContext.get`], [`method: ApiRequestContext.post`] and other methods are stored in the memory, so that you can later call [`method: ApiResponse.body`]. This method discards all stored responses, and makes [`method: ApiResponse.body`] throw \"Response disposed\" error."
+            "text": "All responses returned by [`method: APIRequestContext.get`] and similar methods are stored in the memory, so that you can later call [`method: APIResponse.body`]. This method discards all stored responses, and makes [`method: APIResponse.body`] throw \"Response disposed\" error."
           }
         ],
         "required": true,
-        "comment": "All responses received through [`method: ApiRequestContext.fetch`], [`method: ApiRequestContext.get`],\n[`method: ApiRequestContext.post`] and other methods are stored in the memory, so that you can later call\n[`method: ApiResponse.body`]. This method discards all stored responses, and makes [`method: ApiResponse.body`] throw\n\"Response disposed\" error.",
+        "comment": "All responses returned by [`method: APIRequestContext.get`] and similar methods are stored in the memory, so that you\ncan later call [`method: APIResponse.body`]. This method discards all stored responses, and makes\n[`method: APIResponse.body`] throw \"Response disposed\" error.",
         "deprecated": false,
         "async": true,
         "alias": "dispose",
@@ -6765,8 +6765,8 @@
         "langs": {},
         "name": "fetch",
         "type": {
-          "name": "ApiResponse",
-          "expression": "[ApiResponse]"
+          "name": "APIResponse",
+          "expression": "[APIResponse]"
         },
         "spec": [
           {
@@ -7252,8 +7252,8 @@
         "langs": {},
         "name": "get",
         "type": {
-          "name": "ApiResponse",
-          "expression": "[ApiResponse]"
+          "name": "APIResponse",
+          "expression": "[APIResponse]"
         },
         "spec": [
           {
@@ -7452,8 +7452,8 @@
         "langs": {},
         "name": "head",
         "type": {
-          "name": "ApiResponse",
-          "expression": "[ApiResponse]"
+          "name": "APIResponse",
+          "expression": "[APIResponse]"
         },
         "spec": [
           {
@@ -7652,8 +7652,8 @@
         "langs": {},
         "name": "patch",
         "type": {
-          "name": "ApiResponse",
-          "expression": "[ApiResponse]"
+          "name": "APIResponse",
+          "expression": "[APIResponse]"
         },
         "spec": [
           {
@@ -8109,8 +8109,8 @@
         "langs": {},
         "name": "post",
         "type": {
-          "name": "ApiResponse",
-          "expression": "[ApiResponse]"
+          "name": "APIResponse",
+          "expression": "[APIResponse]"
         },
         "spec": [
           {
@@ -8566,8 +8566,8 @@
         "langs": {},
         "name": "put",
         "type": {
-          "name": "ApiResponse",
-          "expression": "[ApiResponse]"
+          "name": "APIResponse",
+          "expression": "[APIResponse]"
         },
         "spec": [
           {
@@ -9426,11 +9426,11 @@
     ]
   },
   {
-    "name": "ApiResponse",
+    "name": "APIResponse",
     "spec": [
       {
         "type": "text",
-        "text": "`ApiResponse` class represents responses received from [`method: ApiRequestContext.fetch`]."
+        "text": "`APIResponse` class represents responses returned by [`method: APIRequestContext.get`] and similar methods."
       }
     ],
     "langs": {
@@ -9441,7 +9441,7 @@
       "types": {},
       "overrides": {}
     },
-    "comment": "`ApiResponse` class represents responses received from [`method: ApiRequestContext.fetch`].",
+    "comment": "`APIResponse` class represents responses returned by [`method: APIRequestContext.get`] and similar methods.",
     "members": [
       {
         "kind": "method",
@@ -10795,11 +10795,11 @@
                         "spec": [
                           {
                             "type": "text",
-                            "text": "Optional coma-separated domains to bypass proxy, for example `\".com, chromium.org, .domain.com\"`."
+                            "text": "Optional comma-separated domains to bypass proxy, for example `\".com, chromium.org, .domain.com\"`."
                           }
                         ],
                         "required": false,
-                        "comment": "Optional coma-separated domains to bypass proxy, for example `\".com, chromium.org, .domain.com\"`.",
+                        "comment": "Optional comma-separated domains to bypass proxy, for example `\".com, chromium.org, .domain.com\"`.",
                         "deprecated": false,
                         "async": false,
                         "alias": "bypass",
@@ -12866,11 +12866,11 @@
                         "spec": [
                           {
                             "type": "text",
-                            "text": "Optional coma-separated domains to bypass proxy, for example `\".com, chromium.org, .domain.com\"`."
+                            "text": "Optional comma-separated domains to bypass proxy, for example `\".com, chromium.org, .domain.com\"`."
                           }
                         ],
                         "required": false,
-                        "comment": "Optional coma-separated domains to bypass proxy, for example `\".com, chromium.org, .domain.com\"`.",
+                        "comment": "Optional comma-separated domains to bypass proxy, for example `\".com, chromium.org, .domain.com\"`.",
                         "deprecated": false,
                         "async": false,
                         "alias": "bypass",
@@ -16899,8 +16899,8 @@
         },
         "name": "request",
         "type": {
-          "name": "ApiRequestContext",
-          "expression": "[ApiRequestContext]"
+          "name": "APIRequestContext",
+          "expression": "[APIRequestContext]"
         },
         "spec": [
           {
@@ -20356,11 +20356,11 @@
                         "spec": [
                           {
                             "type": "text",
-                            "text": "Optional coma-separated domains to bypass proxy, for example `\".com, chromium.org, .domain.com\"`."
+                            "text": "Optional comma-separated domains to bypass proxy, for example `\".com, chromium.org, .domain.com\"`."
                           }
                         ],
                         "required": false,
-                        "comment": "Optional coma-separated domains to bypass proxy, for example `\".com, chromium.org, .domain.com\"`.",
+                        "comment": "Optional comma-separated domains to bypass proxy, for example `\".com, chromium.org, .domain.com\"`.",
                         "deprecated": false,
                         "async": false,
                         "alias": "bypass",
@@ -21587,11 +21587,11 @@
                         "spec": [
                           {
                             "type": "text",
-                            "text": "Optional coma-separated domains to bypass proxy, for example `\".com, chromium.org, .domain.com\"`."
+                            "text": "Optional comma-separated domains to bypass proxy, for example `\".com, chromium.org, .domain.com\"`."
                           }
                         ],
                         "required": false,
-                        "comment": "Optional coma-separated domains to bypass proxy, for example `\".com, chromium.org, .domain.com\"`.",
+                        "comment": "Optional comma-separated domains to bypass proxy, for example `\".com, chromium.org, .domain.com\"`.",
                         "deprecated": false,
                         "async": false,
                         "alias": "bypass",
@@ -23229,11 +23229,11 @@
                         "spec": [
                           {
                             "type": "text",
-                            "text": "Optional coma-separated domains to bypass proxy, for example `\".com, chromium.org, .domain.com\"`."
+                            "text": "Optional comma-separated domains to bypass proxy, for example `\".com, chromium.org, .domain.com\"`."
                           }
                         ],
                         "required": false,
-                        "comment": "Optional coma-separated domains to bypass proxy, for example `\".com, chromium.org, .domain.com\"`.",
+                        "comment": "Optional comma-separated domains to bypass proxy, for example `\".com, chromium.org, .domain.com\"`.",
                         "deprecated": false,
                         "async": false,
                         "alias": "bypass",
@@ -59720,8 +59720,8 @@
         },
         "name": "request",
         "type": {
-          "name": "ApiRequestContext",
-          "expression": "[ApiRequestContext]"
+          "name": "APIRequestContext",
+          "expression": "[APIRequestContext]"
         },
         "spec": [
           {
@@ -61974,7 +61974,7 @@
           },
           {
             "type": "text",
-            "text": "`page.setViewportSize` will resize the page. A lot of websites don't expect phones to change size, so you should set the viewport size before navigating to the page."
+            "text": "`page.setViewportSize` will resize the page. A lot of websites don't expect phones to change size, so you should set the viewport size before navigating to the page. [`method: Page.setViewportSize`] will also reset `screen` size, use [`method: Browser.newContext`] with `screen` and `viewport` parameters if you need better control of these properties."
           },
           {
             "type": "code",
@@ -62026,7 +62026,7 @@
           }
         ],
         "required": true,
-        "comment": "In the case of multiple pages in a single browser, each page can have its own viewport size. However,\n[`method: Browser.newContext`] allows to set viewport size (and more) for all pages in the context at once.\n\n`page.setViewportSize` will resize the page. A lot of websites don't expect phones to change size, so you should set the\nviewport size before navigating to the page.\n\n```js\nconst page = await browser.newPage();\nawait page.setViewportSize({\n  width: 640,\n  height: 480,\n});\nawait page.goto('https://example.com');\n```\n\n```java\nPage page = browser.newPage();\npage.setViewportSize(640, 480);\npage.navigate(\"https://example.com\");\n```\n\n```python async\npage = await browser.new_page()\nawait page.set_viewport_size({\"width\": 640, \"height\": 480})\nawait page.goto(\"https://example.com\")\n```\n\n```python sync\npage = browser.new_page()\npage.set_viewport_size({\"width\": 640, \"height\": 480})\npage.goto(\"https://example.com\")\n```\n\n```csharp\nvar page = await browser.NewPageAsync();\nawait page.SetViewportSizeAsync(640, 480);\nawait page.GotoAsync(\"https://www.microsoft.com\");\n```\n",
+        "comment": "In the case of multiple pages in a single browser, each page can have its own viewport size. However,\n[`method: Browser.newContext`] allows to set viewport size (and more) for all pages in the context at once.\n\n`page.setViewportSize` will resize the page. A lot of websites don't expect phones to change size, so you should set the\nviewport size before navigating to the page. [`method: Page.setViewportSize`] will also reset `screen` size, use\n[`method: Browser.newContext`] with `screen` and `viewport` parameters if you need better control of these properties.\n\n```js\nconst page = await browser.newPage();\nawait page.setViewportSize({\n  width: 640,\n  height: 480,\n});\nawait page.goto('https://example.com');\n```\n\n```java\nPage page = browser.newPage();\npage.setViewportSize(640, 480);\npage.navigate(\"https://example.com\");\n```\n\n```python async\npage = await browser.new_page()\nawait page.set_viewport_size({\"width\": 640, \"height\": 480})\nawait page.goto(\"https://example.com\")\n```\n\n```python sync\npage = browser.new_page()\npage.set_viewport_size({\"width\": 640, \"height\": 480})\npage.goto(\"https://example.com\")\n```\n\n```csharp\nvar page = await browser.NewPageAsync();\nawait page.SetViewportSizeAsync(640, 480);\nawait page.GotoAsync(\"https://www.microsoft.com\");\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "setViewportSize",
@@ -67741,7 +67741,7 @@
               "    {",
               "        using var playwright = await Playwright.CreateAsync();",
               "        await using var browser = await playwright.Webkit.LaunchAsync();",
-              "        await using var context = await browser.NewContextAsync(Playwright.Devices[\"iPhone 6\"]);",
+              "        await using var context = await browser.NewContextAsync(playwright.Devices[\"iPhone 6\"]);",
               "",
               "        var page = await context.NewPageAsync();",
               "        await page.GotoAsync(\"https://www.theverge.com\");",
@@ -67753,7 +67753,7 @@
           }
         ],
         "required": true,
-        "comment": "Returns a dictionary of devices to be used with [`method: Browser.newContext`] or [`method: Browser.newPage`].\n\n```csharp\nusing Microsoft.Playwright;\nusing System.Threading.Tasks;\n\nclass PlaywrightExample\n{\n    public static async Task Main()\n    {\n        using var playwright = await Playwright.CreateAsync();\n        await using var browser = await playwright.Webkit.LaunchAsync();\n        await using var context = await browser.NewContextAsync(Playwright.Devices[\"iPhone 6\"]);\n\n        var page = await context.NewPageAsync();\n        await page.GotoAsync(\"https://www.theverge.com\");\n        // other actions...\n    }\n}\n```\n",
+        "comment": "Returns a dictionary of devices to be used with [`method: Browser.newContext`] or [`method: Browser.newPage`].\n\n```csharp\nusing Microsoft.Playwright;\nusing System.Threading.Tasks;\n\nclass PlaywrightExample\n{\n    public static async Task Main()\n    {\n        using var playwright = await Playwright.CreateAsync();\n        await using var browser = await playwright.Webkit.LaunchAsync();\n        await using var context = await browser.NewContextAsync(playwright.Devices[\"iPhone 6\"]);\n\n        var page = await context.NewPageAsync();\n        await page.GotoAsync(\"https://www.theverge.com\");\n        // other actions...\n    }\n}\n```\n",
         "deprecated": false,
         "async": false,
         "alias": "devices",
@@ -67891,8 +67891,8 @@
         },
         "name": "request",
         "type": {
-          "name": "ApiRequest",
-          "expression": "[ApiRequest]"
+          "name": "APIRequest",
+          "expression": "[APIRequest]"
         },
         "spec": [
           {
@@ -70805,17 +70805,17 @@
                   },
                   "name": "response",
                   "type": {
-                    "name": "ApiResponse",
-                    "expression": "[ApiResponse]"
+                    "name": "APIResponse",
+                    "expression": "[APIResponse]"
                   },
                   "spec": [
                     {
                       "type": "text",
-                      "text": "`ApiResponse` to fulfill route's request with. Individual fields of the response (such as headers) can be overridden using fulfill options."
+                      "text": "`APIResponse` to fulfill route's request with. Individual fields of the response (such as headers) can be overridden using fulfill options."
                     }
                   ],
                   "required": false,
-                  "comment": "`ApiResponse` to fulfill route's request with. Individual fields of the response (such as headers) can be overridden\nusing fulfill options.",
+                  "comment": "`APIResponse` to fulfill route's request with. Individual fields of the response (such as headers) can be overridden\nusing fulfill options.",
                   "deprecated": false,
                   "async": false,
                   "alias": "response",
