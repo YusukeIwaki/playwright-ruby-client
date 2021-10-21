@@ -1,6 +1,6 @@
 module Playwright
   module ChannelOwners
-    class FetchRequest < ApiRequestContext
+    class FetchRequest < APIRequestContext
     end
   end
 end

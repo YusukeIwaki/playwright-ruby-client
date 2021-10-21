@@ -1,4 +1,4 @@
 module Playwright
-  define_channel_owner :ApiRequestContext do
+  define_channel_owner :APIRequestContext do
   end
 end
