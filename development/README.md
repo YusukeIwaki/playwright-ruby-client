@@ -15,7 +15,6 @@ Then, extract the driver zip file, and set `PLAYWRIGHT_CLI_EXECUTABLE_PATH`.
 
 ```
 $PLAYWRIGHT_CLI_EXECUTABLE_PATH print-api-json | jq > development/api.json
-$PLAYWRIGHT_CLI_EXECUTABLE_PATH --version | cut -d' ' -f2 > development/CLI_VERSION
 ```
 
 ## Generate API codes

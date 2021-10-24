@@ -31,7 +31,8 @@ direnv allow .
 echo "## Updating API docs"
 
 $DRIVER_PATH print-api-json | jq > development/api.json
-$DRIVER_PATH --version | cut -d' ' -f2 > development/CLI_VERSION
+# $DRIVER_PATH --version | cut -d' ' -f2 > development/CLI_VERSION
+echo $DRIVER_VERSION > development/CLI_VERSION
 
 echo "## Updating auto-gen codes"
 

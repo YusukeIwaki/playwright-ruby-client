@@ -30,8 +30,7 @@ jobs:
       - run:
           name: RSpec
           command: |
-            ./playwright.sh run-server 8888 & \
-            DEBUG=1 PLAYWRIGHT_WS_ENDPOINT=ws://127.0.0.1:8888/ws PLAYWRIGHT_CLI_EXECUTABLE_PATH=./playwright.sh \
+            DEBUG=1 PLAYWRIGHT_CLI_EXECUTABLE_PATH=./playwright.sh \
             xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- bundle exec rspec spec/integration \
             --format RspecJunitFormatter \
             --out test_results/rspec.xml \
