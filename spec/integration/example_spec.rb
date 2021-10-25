@@ -301,17 +301,13 @@ RSpec.describe 'example' do
       end
     end
 
-    it 'should work with Request#redirected_from' do
-      with_page do |page|
-        with_network_retry do
-          example_89568fc86bf623eef37b68c6659b1a8524647c8365bb32a7a8af63bd86111075(page: page)
-        end
+    it 'should work with Request#redirected_to', sinatra: true do
+      sinatra.get('/302') do
+        redirect to('/empty.html'), 302
       end
-    end
 
-    it 'should work with Request#redirected_to' do
       with_page do |page|
-        req = with_network_retry { page.goto('http://github.com/').request }
+        req = with_network_retry { page.goto("#{server_prefix}/302").request }
         req2 = with_network_retry { example_922623f4033e7ec2158787e54a8554655f7e1e20a024e4bf4f69337f781ab88a(request: req) }
         expect(req2).to eq(req)
       end
