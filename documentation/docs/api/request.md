@@ -127,10 +127,10 @@ def redirected_from
 Request that was redirected by the server to this one, if any.
 
 When the server responds with a redirect, Playwright creates a new [Request](./request) object. The two requests are connected by
-`redirectedFrom()` and `redirectedTo()` methods. When multiple server redirects has happened, it is possible to
-construct the whole redirect chain by repeatedly calling `redirectedFrom()`.
+[redirected_from](./request#redirected_from) and [redirected_to](./request#redirected_to) methods. When multiple server redirects has happened, it is possible to
+construct the whole redirect chain by repeatedly calling [redirected_from](./request#redirected_from).
 
-For example, if the website `http://example.com` redirects to `https://example.com`:
+For example, if the website `http://github.com` redirects to `https://github.com`:
 
 ```ruby
 response = page.goto("http://github.com")

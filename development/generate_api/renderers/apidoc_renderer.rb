@@ -273,6 +273,8 @@ class ApidocRenderer
         "[`method: Frame.waitForNavigation`]" => "[Frame#expect_navigation](./frame#expect_navigation)",
         '[Playwright Tracing](../trace-viewer)' => '[Playwright Tracing](https://playwright.dev/python/docs/trace-viewer)',
         '[here](./class-tracing)' => '[here](./tracing)',
+        '`redirectedTo()`' => '[redirected_to](./request#redirected_to)',
+        '`redirectedFrom()`' => '[redirected_from](./request#redirected_from)',
       }
       convertion.inject(content) do |current, entry|
         str_from, str_to = entry
@@ -302,6 +304,9 @@ class ApidocRenderer
 
         'protocol methods can be called with `session.send` method.' \
           => 'protocol methods can be called with `session.send_message` method.',
+
+        "if the website `http://example.com` redirects to `https://example.com`:" \
+          => "if the website `http://github.com` redirects to `https://github.com`:",
       }
       convertion.inject(content) do |current, entry|
         str_from, str_to = entry
