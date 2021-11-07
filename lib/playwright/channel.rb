@@ -71,7 +71,7 @@ module Playwright
       {
         apiName: api_name,
         stack: stacks.map do |loc|
-          { file: loc.absolute_path, line: loc.lineno, function: loc.label }
+          { file: loc.absolute_path || '', line: loc.lineno, function: loc.label }
         end,
       }
     end
