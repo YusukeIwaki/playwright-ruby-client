@@ -445,8 +445,7 @@ Returns locator to the last matching element.
 def locator(selector)
 ```
 
-The method finds an element matching the specified selector in the [Locator](./locator)'s subtree. See
-[Working with selectors](https://playwright.dev/python/docs/selectors) for more details.
+The method finds an element matching the specified selector in the [Locator](./locator)'s subtree.
 
 ## nth
 
