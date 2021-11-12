@@ -49,7 +49,7 @@ class ImplementedClassWithDoc
         method = @klass.public_instance_method(method_name.rubyish_name.to_sym)
         ImplementedPropertyWithDoc.new(property_doc, method, @inflector)
       else
-        UnimplementedMethodWithDoc.new(property_doc, @inflector)
+        UnimplementedPropertyWithDoc.new(property_doc, @inflector)
       end
     end
   end
