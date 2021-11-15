@@ -110,8 +110,8 @@ module Playwright
     def wait_for_load_state(state: nil, timeout: nil)
       option_state = state || 'load'
       option_timeout = timeout || @page.send(:timeout_settings).navigation_timeout
-      unless %w(load domcontentloaded networkidle).include?(option_state)
-        raise ArgumentError.new('state: expected one of (load|domcontentloaded|networkidle)')
+      unless %w(load domcontentloaded networkidle commit).include?(option_state)
+        raise ArgumentError.new('state: expected one of (load|domcontentloaded|networkidle|commit)')
       end
       if @load_states.include?(option_state)
         return

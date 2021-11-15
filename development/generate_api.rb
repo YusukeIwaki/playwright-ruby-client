@@ -26,6 +26,7 @@ ALL_TYPES = %w[
     Playwright
     Tracing
     Locator
+    FrameLocator
 ]
 EXPERIMENTAL = %w[
   Android
@@ -44,6 +45,7 @@ API_IMPLEMENTATIONS = %w[
   Tracing
   Download
   Locator
+  FrameLocator
 ]
 
 require 'bundler/setup'

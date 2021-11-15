@@ -11,17 +11,17 @@ module Playwright
     end
 
     private def with_element(timeout: nil, &block)
+      timeout_or_default = @timeout_settings.timeout(timeout)
       start_time = Time.now
 
-      handle = @frame.wait_for_selector(@selector, strict: true, state: 'attached', timeout: timeout)
+      handle = @frame.wait_for_selector(@selector, strict: true, state: 'attached', timeout: timeout_or_default)
       unless handle
         raise "Could not resolve #{@selector} to DOM Element"
       end
 
-      call_options = {}
-      if timeout
-        call_options[:timeout] = (timeout - (Time.now - start_time) * 1000).to_i
-      end
+      call_options = {
+        timeout: (timeout_or_default - (Time.now - start_time) * 1000).to_i,
+      }
 
       begin
         block.call(handle, call_options)

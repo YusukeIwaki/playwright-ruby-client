@@ -7,7 +7,7 @@ module Playwright
     private def after_initialize
       @connected = true
       @closed_or_closing = false
-      @remote = false
+      @should_close_connection_on_close = false
 
       @contexts = Set.new
       @channel.on('close', method(:on_close))
@@ -58,6 +58,9 @@ module Playwright
       return if @closed_or_closing
       @closed_or_closing = true
       @channel.send_message_to_server('close')
+      if @should_close_connection_on_close
+        @connection.stop
+      end
       nil
     rescue => err
       raise unless safe_close_error?(err)
@@ -99,13 +102,8 @@ module Playwright
       @contexts << context
     end
 
-    # called from BrowserType#connectOverCDP
-    private def update_as_remote
-      @remote = true
-    end
-
-    private def remote?
-      @remote
+    private def should_close_connection_on_close!
+      @should_close_connection_on_close = true
     end
 
     # called from BrowserContext#on_close with send(:remove_context), so keep private.

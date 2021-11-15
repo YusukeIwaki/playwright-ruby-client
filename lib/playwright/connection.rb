@@ -21,6 +21,15 @@ module Playwright
       @waiting_for_object = {} # Hash[ guid => Promise<ChannelOwner> ]
       @callbacks = {} # Hash [ guid => Promise<ChannelOwner> ]
       @root_object = RootChannelOwner.new(self)
+      @remote = false
+    end
+
+    def mark_as_remote
+      @remote = true
+    end
+
+    def remote?
+      @remote
     end
 
     def async_run

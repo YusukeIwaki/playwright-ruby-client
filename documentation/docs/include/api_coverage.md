@@ -453,6 +453,14 @@
 * uncheck
 * wait_for
 
+## FrameLocator
+
+* ~~first~~
+* ~~frame_locator~~
+* ~~last~~
+* ~~locator~~
+* ~~nth~~
+
 ## Android
 
 * devices

@@ -135,13 +135,14 @@ module Playwright
 
     transport = WebSocketTransport.new(ws_endpoint: ws_endpoint)
     connection = Connection.new(transport)
+    connection.mark_as_remote
     connection.async_run
 
     execution =
       begin
         playwright = connection.initialize_playwright
         browser = playwright.send(:pre_launched_browser)
-        browser.send(:update_as_remote)
+        browser.should_close_connection_on_close!
         Execution.new(connection, PlaywrightApi.wrap(playwright), PlaywrightApi.wrap(browser))
       rescue
         connection.stop

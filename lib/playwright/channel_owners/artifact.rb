@@ -1,14 +1,13 @@
 module Playwright
   define_channel_owner :Artifact do
     private def after_initialize
-      @remote = false
       @absolute_path = @initializer['absolutePath']
     end
 
     attr_reader :absolute_path
 
     def path_after_finished
-      if @remote
+      if @connection.remote?
         raise "Path is not available when using browser_type.connect(). Use save_as() to save a local copy."
       end
       @channel.send_message_to_server('pathAfterFinished')
@@ -29,10 +28,6 @@ module Playwright
 
     def cancel
       @channel.send_message_to_server('cancel')
-    end
-
-    private def update_as_remote
-      @remote = true
     end
   end
 end

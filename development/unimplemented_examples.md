@@ -42,3 +42,22 @@ with sync_playwright() as playwright:
     run(playwright)
 
 ```
+
+### example_532f18c59b0dfaae95be697748f0c1c035b46e4acfaf509542b9e23a65830dd1
+
+```
+locator = page.frame_locator("my-frame").locator("text=Submit")
+locator.click()
+
+```
+
+### example_9487c6c0f622a64723782638d6e962a9b5637df47ab693ed110f7202e6d67ee2
+
+```
+# Throws if there are several frames in DOM:
+page.frame_locator('.result-frame').locator('button').click()
+
+# Works because we explicitly tell locator to pick the first frame:
+page.frame_locator('.result-frame').first.locator('button').click()
+
+```
