@@ -293,11 +293,10 @@ puts frame.evaluate("1 + #{x}") # => "11"
 
 [ElementHandle](./element_handle) instances can be passed as an argument to the [Frame#evaluate](./frame#evaluate):
 
-```python sync title=example_6ebfd0a9a1f3cb61410f494ffc34a17f5c6d57280326d077fca3b0a18aef7834.py
-body_handle = frame.evaluate("document.body")
-html = frame.evaluate("([body, suffix]) => body.innerHTML + suffix", [body_handle, "hello"])
-body_handle.dispose()
-
+```ruby
+body_handle = frame.query_selector("body")
+html = frame.evaluate("([body, suffix]) => body.innerHTML + suffix", arg: [body_handle, "hello"])
+body_handle.dispose
 ```
 
 

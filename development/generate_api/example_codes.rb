@@ -427,7 +427,7 @@ module ExampleCodes
   end
 
   # Frame#evaluate
-  def example_05568c81173717fa6841099571d8a66e14fc0853e01684630d1622baedc25f67(frame:)
+  def example_6ebfd0a9a1f3cb61410f494ffc34a17f5c6d57280326d077fca3b0a18aef7834(frame:)
     body_handle = frame.query_selector("body")
     html = frame.evaluate("([body, suffix]) => body.innerHTML + suffix", arg: [body_handle, "hello"])
     body_handle.dispose
@@ -795,7 +795,7 @@ module ExampleCodes
   end
 
   # Page#evaluate
-  def example_54a27f89dda0a0a05fac76ffad76c4a1173dae259842d15dbaf7ea587e6e327d(page:)
+  def example_b49ac8565a94d1273fd47819ad9090736deb02feb0aea4a9eb35c68c66f22502(page:)
     body_handle = page.query_selector("body")
     html = page.evaluate("([body, suffix]) => body.innerHTML + suffix", arg: [body_handle, "hello"])
     body_handle.dispose

@@ -389,11 +389,10 @@ puts page.evaluate("1 + #{x}") # => "11"
 
 [ElementHandle](./element_handle) instances can be passed as an argument to the [Page#evaluate](./page#evaluate):
 
-```python sync title=example_b49ac8565a94d1273fd47819ad9090736deb02feb0aea4a9eb35c68c66f22502.py
-body_handle = page.evaluate("document.body")
-html = page.evaluate("([body, suffix]) => body.innerHTML + suffix", [body_handle, "hello"])
-body_handle.dispose()
-
+```ruby
+body_handle = page.query_selector("body")
+html = page.evaluate("([body, suffix]) => body.innerHTML + suffix", arg: [body_handle, "hello"])
+body_handle.dispose
 ```
 
 Shortcut for main frame's [Frame#evaluate](./frame#evaluate).
