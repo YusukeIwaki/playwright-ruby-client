@@ -5,6 +5,14 @@ Excample codes in API documentation is replaces with the methods defined in deve
 The examples listed below is not yet implemented, and documentation shows Python code.
 
 
+### example_98e54eb4301cf08d791c58051ebb49ec65a4edf618abe5329d0abeae3e23a9de
+
+```
+locator = frame.frame_locator("#my-iframe").locator("text=Submit")
+locator.click()
+
+```
+
 ### example_a3760c848fe1796fedc319aa8ea6c85d3cf5ed986eba8efbdab821cafab64b0d
 
 ```
@@ -40,6 +48,22 @@ def run(playwright):
 
 with sync_playwright() as playwright:
     run(playwright)
+
+```
+
+### example_eb0ce81d1bf099df22f979b0abd935fe1482f91609a6530c455951120396c50a
+
+```
+locator = page.frame_locator("#my-iframe").locator("text=Submit")
+locator.click()
+
+```
+
+### example_ff5c033a86e288f95311c19b82b141ca63fec833752f339963665657f0b4c18d
+
+```
+locator = page.frame_locator("text=Submit").locator("text=Submit")
+locator.click()
 
 ```
 

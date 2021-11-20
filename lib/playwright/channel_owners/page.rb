@@ -255,10 +255,6 @@ module Playwright
       @main_frame.visible?(selector, strict: strict, timeout: timeout)
     end
 
-    def locator(selector)
-      @main_frame.locator(selector)
-    end
-
     def dispatch_event(selector, type, eventInit: nil, strict: nil, timeout: nil)
       @main_frame.dispatch_event(selector, type, eventInit: eventInit, strict: strict, timeout: timeout)
     end
@@ -560,6 +556,14 @@ module Playwright
         noWaitAfter: noWaitAfter,
         strict: strict,
         timeout: timeout)
+    end
+
+    def locator(selector)
+      @main_frame.locator(selector)
+    end
+
+    def frame_locator(selector)
+      @main_frame.frame_locator(selector)
     end
 
     def focus(selector, strict: nil, timeout: nil)

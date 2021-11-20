@@ -329,6 +329,23 @@ def focus(timeout: nil)
 
 Calls [focus](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus) on the element.
 
+## frame_locator
+
+```
+def frame_locator(selector)
+```
+
+When working with iframes, you can create a frame locator that will enter the iframe and allow selecting elements in
+that iframe:
+
+```python sync title=example_ff5c033a86e288f95311c19b82b141ca63fec833752f339963665657f0b4c18d.py
+locator = page.frame_locator("text=Submit").locator("text=Submit")
+locator.click()
+
+```
+
+
+
 ## get_attribute
 
 ```

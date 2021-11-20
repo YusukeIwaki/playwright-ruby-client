@@ -130,6 +130,14 @@ module Playwright
       )
     end
 
+    def frame_locator(selector)
+      FrameLocatorImpl.new(
+        frame: @frame,
+        timeout_settings: @timeout_settings,
+        frame_selector: "#{@selector} >> #{selector}",
+      )
+    end
+
     def element_handle(timeout: nil)
       @frame.wait_for_selector(@selector, strict: true, state: 'attached', timeout: timeout)
     end

@@ -167,7 +167,7 @@
 * fill
 * focus
 * frame_element
-* ~~frame_locator~~
+* frame_locator
 * get_attribute
 * goto
 * hover
@@ -265,7 +265,7 @@
 * fill
 * focus
 * frame
-* ~~frame_locator~~
+* frame_locator
 * frames
 * get_attribute
 * go_back
@@ -425,7 +425,7 @@
 * fill
 * first
 * focus
-* ~~frame_locator~~
+* frame_locator
 * get_attribute
 * hover
 * inner_html
@@ -455,11 +455,11 @@
 
 ## FrameLocator
 
-* ~~first~~
-* ~~frame_locator~~
-* ~~last~~
-* ~~locator~~
-* ~~nth~~
+* first
+* frame_locator
+* last
+* locator
+* nth
 
 ## Android
 

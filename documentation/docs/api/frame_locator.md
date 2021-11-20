@@ -29,3 +29,44 @@ page.frame_locator('.result-frame').first.locator('button').click()
 ```
 
 
+
+## first
+
+```
+def first
+```
+
+Returns locator to the first matching frame.
+
+## frame_locator
+
+```
+def frame_locator(selector)
+```
+
+When working with iframes, you can create a frame locator that will enter the iframe and allow selecting elements in
+that iframe.
+
+## last
+
+```
+def last
+```
+
+Returns locator to the last matching frame.
+
+## locator
+
+```
+def locator(selector)
+```
+
+The method finds an element matching the specified selector in the FrameLocator's subtree.
+
+## nth
+
+```
+def nth(index)
+```
+
+Returns locator to the n-th matching frame.

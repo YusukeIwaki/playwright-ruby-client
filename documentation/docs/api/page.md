@@ -581,6 +581,24 @@ frame = page.frame(url: /.*domain.*/)
 
 
 
+## frame_locator
+
+```
+def frame_locator(selector)
+```
+
+When working with iframes, you can create a frame locator that will enter the iframe and allow selecting elements in
+that iframe. Following snippet locates element with text "Submit" in the iframe with id `my-frame`, like `<iframe
+id="my-frame">`:
+
+```python sync title=example_eb0ce81d1bf099df22f979b0abd935fe1482f91609a6530c455951120396c50a.py
+locator = page.frame_locator("#my-iframe").locator("text=Submit")
+locator.click()
+
+```
+
+
+
 ## frames
 
 ```
