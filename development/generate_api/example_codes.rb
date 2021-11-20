@@ -446,6 +446,12 @@ module ExampleCodes
     puts frame == content_frame # => true
   end
 
+  # Frame#frame_locator
+  def example_98e54eb4301cf08d791c58051ebb49ec65a4edf618abe5329d0abeae3e23a9de(frame:)
+    locator = frame.frame_locator("#my-iframe").locator("text=Submit")
+    locator.click
+  end
+
   # Frame#select_option
   def example_230c12044664b222bf35d6163b1e415c011d87d9911a4d39648c7f601b344a31(frame:)
     # single selection matching the value
@@ -501,6 +507,21 @@ module ExampleCodes
   def example_86a9a19ec4c41e1a5ac302fbca9a3d3d6dca3fe3314e065b8062ddf5f75abfbd(frame:)
     frame.click("a.delayed-navigation") # clicking the link will indirectly cause a navigation
     frame.wait_for_url("**/target.html")
+  end
+
+  # FrameLocator
+  def example_532f18c59b0dfaae95be697748f0c1c035b46e4acfaf509542b9e23a65830dd1(page:)
+    locator = page.frame_locator("my-frame").locator("text=Submit")
+    locator.click
+  end
+
+  # FrameLocator
+  def example_9487c6c0f622a64723782638d6e962a9b5637df47ab693ed110f7202e6d67ee2(page:)
+    # Throws if there are several frames in DOM:
+    page.frame_locator('.result-frame').locator('button').click
+
+    # Works because we explicitly tell locator to pick the first frame:
+    page.frame_locator('.result-frame').first.locator('button').click
   end
 
   # JSHandle
@@ -621,6 +642,12 @@ module ExampleCodes
   def example_32478e941514ed28b6ac221e6d54b55cf117038ecac6f4191db676480ab68d44(page:)
     elements = page.locator("div")
     elements.evaluate_all("(divs, min) => divs.length >= min", arg: 10)
+  end
+
+  # Locator#frame_locator
+  def example_ff5c033a86e288f95311c19b82b141ca63fec833752f339963665657f0b4c18d(page:)
+    locator = page.frame_locator("text=Submit").locator("text=Submit")
+    locator.click
   end
 
   # Locator#select_option
@@ -884,6 +911,12 @@ module ExampleCodes
   # Page#frame
   def example_a8a4717d8505a35662faafa9e6c2cfbbc0a44755c8e4d43252f882b7e4f1f04a(page:)
     frame = page.frame(url: /.*domain.*/)
+  end
+
+  # Page#frame_locator
+  def example_eb0ce81d1bf099df22f979b0abd935fe1482f91609a6530c455951120396c50a(page:)
+    locator = page.frame_locator("#my-iframe").locator("text=Submit")
+    locator.click
   end
 
   # Page#pdf
