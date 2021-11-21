@@ -22,7 +22,7 @@ module Playwright
     end
 
     def path
-      if @page.connection.remote?
+      if @page.send(:remote_connection?)
         raise 'Path is not available when using browserType.connect(). Use save_as() to save a local copy.'
       end
       wait_for_artifact_and do |artifact|

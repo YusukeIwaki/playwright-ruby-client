@@ -923,6 +923,11 @@ module Playwright
       @workers.delete(worker)
     end
 
+    # called from Video
+    private def remote_connection?
+      @connection.remote?
+    end
+
     # Expose guid for library developers.
     # Not intended to be used by users.
     def guid
