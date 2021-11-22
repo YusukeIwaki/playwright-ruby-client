@@ -110,8 +110,8 @@ module Playwright
     def wait_for_load_state(state: nil, timeout: nil)
       option_state = state || 'load'
       option_timeout = timeout || @page.send(:timeout_settings).navigation_timeout
-      unless %w(load domcontentloaded networkidle).include?(option_state)
-        raise ArgumentError.new('state: expected one of (load|domcontentloaded|networkidle)')
+      unless %w(load domcontentloaded networkidle commit).include?(option_state)
+        raise ArgumentError.new('state: expected one of (load|domcontentloaded|networkidle|commit)')
       end
       if @load_states.include?(option_state)
         return
@@ -189,10 +189,6 @@ module Playwright
     def visible?(selector, strict: nil, timeout: nil)
       params = { selector: selector, strict: strict, timeout: timeout }.compact
       @channel.send_message_to_server('isVisible', params)
-    end
-
-    def locator(selector)
-      LocatorImpl.new(frame: self, timeout_settings: @page.send(:timeout_settings), selector: selector)
     end
 
     def dispatch_event(selector, type, eventInit: nil, strict: nil, timeout: nil)
@@ -402,6 +398,14 @@ module Playwright
       @channel.send_message_to_server('fill', params)
 
       nil
+    end
+
+    def locator(selector)
+      LocatorImpl.new(frame: self, timeout_settings: @page.send(:timeout_settings), selector: selector)
+    end
+
+    def frame_locator(selector)
+      FrameLocatorImpl.new(frame: self, timeout_settings: @page.send(:timeout_settings), frame_selector: selector)
     end
 
     def focus(selector, strict: nil, timeout: nil)

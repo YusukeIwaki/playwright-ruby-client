@@ -427,7 +427,7 @@ module ExampleCodes
   end
 
   # Frame#evaluate
-  def example_05568c81173717fa6841099571d8a66e14fc0853e01684630d1622baedc25f67(frame:)
+  def example_6ebfd0a9a1f3cb61410f494ffc34a17f5c6d57280326d077fca3b0a18aef7834(frame:)
     body_handle = frame.query_selector("body")
     html = frame.evaluate("([body, suffix]) => body.innerHTML + suffix", arg: [body_handle, "hello"])
     body_handle.dispose
@@ -444,6 +444,12 @@ module ExampleCodes
     frame_element = frame.frame_element
     content_frame = frame_element.content_frame
     puts frame == content_frame # => true
+  end
+
+  # Frame#frame_locator
+  def example_98e54eb4301cf08d791c58051ebb49ec65a4edf618abe5329d0abeae3e23a9de(frame:)
+    locator = frame.frame_locator("#my-iframe").locator("text=Submit")
+    locator.click
   end
 
   # Frame#select_option
@@ -501,6 +507,21 @@ module ExampleCodes
   def example_86a9a19ec4c41e1a5ac302fbca9a3d3d6dca3fe3314e065b8062ddf5f75abfbd(frame:)
     frame.click("a.delayed-navigation") # clicking the link will indirectly cause a navigation
     frame.wait_for_url("**/target.html")
+  end
+
+  # FrameLocator
+  def example_532f18c59b0dfaae95be697748f0c1c035b46e4acfaf509542b9e23a65830dd1(page:)
+    locator = page.frame_locator("my-frame").locator("text=Submit")
+    locator.click
+  end
+
+  # FrameLocator
+  def example_9487c6c0f622a64723782638d6e962a9b5637df47ab693ed110f7202e6d67ee2(page:)
+    # Throws if there are several frames in DOM:
+    page.frame_locator('.result-frame').locator('button').click
+
+    # Works because we explicitly tell locator to pick the first frame:
+    page.frame_locator('.result-frame').first.locator('button').click
   end
 
   # JSHandle
@@ -621,6 +642,12 @@ module ExampleCodes
   def example_32478e941514ed28b6ac221e6d54b55cf117038ecac6f4191db676480ab68d44(page:)
     elements = page.locator("div")
     elements.evaluate_all("(divs, min) => divs.length >= min", arg: 10)
+  end
+
+  # Locator#frame_locator
+  def example_ff5c033a86e288f95311c19b82b141ca63fec833752f339963665657f0b4c18d(page:)
+    locator = page.frame_locator("text=Submit").locator("text=Submit")
+    locator.click
   end
 
   # Locator#select_option
@@ -795,7 +822,7 @@ module ExampleCodes
   end
 
   # Page#evaluate
-  def example_54a27f89dda0a0a05fac76ffad76c4a1173dae259842d15dbaf7ea587e6e327d(page:)
+  def example_b49ac8565a94d1273fd47819ad9090736deb02feb0aea4a9eb35c68c66f22502(page:)
     body_handle = page.query_selector("body")
     html = page.evaluate("([body, suffix]) => body.innerHTML + suffix", arg: [body_handle, "hello"])
     body_handle.dispose
@@ -884,6 +911,12 @@ module ExampleCodes
   # Page#frame
   def example_a8a4717d8505a35662faafa9e6c2cfbbc0a44755c8e4d43252f882b7e4f1f04a(page:)
     frame = page.frame(url: /.*domain.*/)
+  end
+
+  # Page#frame_locator
+  def example_eb0ce81d1bf099df22f979b0abd935fe1482f91609a6530c455951120396c50a(page:)
+    locator = page.frame_locator("#my-iframe").locator("text=Submit")
+    locator.click
   end
 
   # Page#pdf
@@ -1109,7 +1142,7 @@ module ExampleCodes
   end
 
   # Selectors
-  def example_79053fe985428755ac11bbb07990e18ca0c1367946f7162bc6d8b0030454bdab(playwright:)
+  def example_a3760c848fe1796fedc319aa8ea6c85d3cf5ed986eba8efbdab821cafab64b0d(playwright:)
     tag_selector = <<~JAVASCRIPT
     {
         // Returns the first element matching given selector in the root's subtree.
@@ -1135,7 +1168,7 @@ module ExampleCodes
       page.click('tag=div >> text="Click me"')
 
       # Can use it in any methods supporting selectors.
-      button_count = page.eval_on_selector_all('tag=button', 'buttons => buttons.length')
+      button_count = page.locator('tag=button').count
       button_count # => 1
     end
   end

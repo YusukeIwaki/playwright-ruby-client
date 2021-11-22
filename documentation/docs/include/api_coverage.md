@@ -167,6 +167,7 @@
 * fill
 * focus
 * frame_element
+* frame_locator
 * get_attribute
 * goto
 * hover
@@ -264,6 +265,7 @@
 * fill
 * focus
 * frame
+* frame_locator
 * frames
 * get_attribute
 * go_back
@@ -359,6 +361,7 @@
 * expect_event
 * expect_page
 * ~~wait_for_event~~
+* ~~request~~
 * tracing
 
 ## CDPSession
@@ -393,6 +396,7 @@
 * chromium
 * devices
 * firefox
+* ~~request~~
 * selectors
 * webkit
 
@@ -421,6 +425,7 @@
 * fill
 * first
 * focus
+* frame_locator
 * get_attribute
 * hover
 * inner_html
@@ -447,6 +452,14 @@
 * type
 * uncheck
 * wait_for
+
+## FrameLocator
+
+* first
+* frame_locator
+* last
+* locator
+* nth
 
 ## Android
 

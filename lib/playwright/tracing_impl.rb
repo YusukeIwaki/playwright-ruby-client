@@ -5,18 +5,18 @@ module Playwright
       @context = context
     end
 
-    def start(name: nil, screenshots: nil, snapshots: nil)
+    def start(name: nil, title: nil, screenshots: nil, snapshots: nil)
       params = {
         name: name,
         screenshots: screenshots,
         snapshots: snapshots,
       }.compact
       @channel.send_message_to_server('tracingStart', params)
-      @channel.send_message_to_server('tracingStartChunk')
+      @channel.send_message_to_server('tracingStartChunk', { title: title }.compact)
     end
 
-    def start_chunk
-      @channel.send_message_to_server('tracingStartChunk')
+    def start_chunk(title: nil)
+      @channel.send_message_to_server('tracingStartChunk', { title: title }.compact)
     end
 
     def stop_chunk(path: nil)
@@ -29,13 +29,10 @@ module Playwright
     end
 
     private def do_stop_chunk(path:)
-      resp = @channel.send_message_to_server('tracingStopChunk', save: !path.nil?)
-      artifact = ChannelOwners::Artifact.from_nullable(resp)
+      result = @channel.send_message_to_server_result('tracingStopChunk', save: !path.nil?, skipCompress: false)
+      artifact = ChannelOwners::Artifact.from_nullable(result['artifact'])
       return unless artifact
 
-      if @context.browser.send(:remote?)
-        artifact.update_as_remote
-      end
       artifact.save_as(path)
       artifact.delete
     end

@@ -41,7 +41,7 @@ playwright.chromium.launch do |browser|
   page.click('tag=div >> text="Click me"')
 
   # Can use it in any methods supporting selectors.
-  button_count = page.eval_on_selector_all('tag=button', 'buttons => buttons.length')
+  button_count = page.locator('tag=button').count
   button_count # => 1
 end
 ```

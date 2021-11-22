@@ -23,7 +23,7 @@ end
 ## start
 
 ```
-def start(name: nil, screenshots: nil, snapshots: nil)
+def start(name: nil, screenshots: nil, snapshots: nil, title: nil)
 ```
 
 Start tracing.
@@ -40,7 +40,7 @@ context.tracing.stop(path: 'trace.zip')
 ## start_chunk
 
 ```
-def start_chunk
+def start_chunk(title: nil)
 ```
 
 Start a new trace chunk. If you'd like to record multiple traces on the same [BrowserContext](./browser_context), use

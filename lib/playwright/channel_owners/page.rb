@@ -138,9 +138,6 @@ module Playwright
 
     private def on_download(params)
       artifact = ChannelOwners::Artifact.from(params['artifact'])
-      if @browser_context.browser.send(:remote?)
-        artifact.update_as_remote
-      end
       download = DownloadImpl.new(
         page: self,
         url: params['url'],
@@ -152,9 +149,6 @@ module Playwright
 
     private def on_video(params)
       artifact = ChannelOwners::Artifact.from(params['artifact'])
-      if @browser_context.browser.send(:remote?)
-        artifact.update_as_remote
-      end
       video.send(:set_artifact, artifact)
     end
 
@@ -259,10 +253,6 @@ module Playwright
 
     def visible?(selector, strict: nil, timeout: nil)
       @main_frame.visible?(selector, strict: strict, timeout: timeout)
-    end
-
-    def locator(selector)
-      @main_frame.locator(selector)
     end
 
     def dispatch_event(selector, type, eventInit: nil, strict: nil, timeout: nil)
@@ -566,6 +556,14 @@ module Playwright
         noWaitAfter: noWaitAfter,
         strict: strict,
         timeout: timeout)
+    end
+
+    def locator(selector)
+      @main_frame.locator(selector)
+    end
+
+    def frame_locator(selector)
+      @main_frame.frame_locator(selector)
     end
 
     def focus(selector, strict: nil, timeout: nil)
@@ -923,6 +921,11 @@ module Playwright
     # called from Worker#on_close
     private def remove_worker(worker)
       @workers.delete(worker)
+    end
+
+    # called from Video
+    private def remote_connection?
+      @connection.remote?
     end
 
     # Expose guid for library developers.

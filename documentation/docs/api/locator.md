@@ -329,6 +329,22 @@ def focus(timeout: nil)
 
 Calls [focus](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus) on the element.
 
+## frame_locator
+
+```
+def frame_locator(selector)
+```
+
+When working with iframes, you can create a frame locator that will enter the iframe and allow selecting elements in
+that iframe:
+
+```ruby
+locator = page.frame_locator("text=Submit").locator("text=Submit")
+locator.click
+```
+
+
+
 ## get_attribute
 
 ```
@@ -445,8 +461,7 @@ Returns locator to the last matching element.
 def locator(selector)
 ```
 
-The method finds an element matching the specified selector in the [Locator](./locator)'s subtree. See
-[Working with selectors](https://playwright.dev/python/docs/selectors) for more details.
+The method finds an element matching the specified selector in the [Locator](./locator)'s subtree.
 
 ## nth
 

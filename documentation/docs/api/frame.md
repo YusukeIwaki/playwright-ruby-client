@@ -218,6 +218,9 @@ def eval_on_selector(selector, expression, arg: nil, strict: nil)
 
 Returns the return value of `expression`.
 
+> NOTE: This method does not wait for the element to pass actionability checks and therefore can lead to the flaky
+tests. Use [Locator#evaluate](./locator#evaluate), other [Locator](./locator) helper methods or web-first assertions instead.
+
 The method finds an element matching the specified selector within the frame and passes it as a first argument to
 `expression`. See [Working with selectors](https://playwright.dev/python/docs/selectors) for more details. If no elements match the selector, the
 method throws an error.
@@ -242,6 +245,9 @@ def eval_on_selector_all(selector, expression, arg: nil)
 ```
 
 Returns the return value of `expression`.
+
+> NOTE: In most cases, [Locator#evaluate_all](./locator#evaluate_all), other [Locator](./locator) helper methods and web-first assertions do a
+better job.
 
 The method finds all elements matching the specified selector within the frame and passes an array of matched elements
 as a first argument to `expression`. See [Working with selectors](https://playwright.dev/python/docs/selectors) for more details.
@@ -380,6 +386,23 @@ This method throws an error if the frame has been detached before `frameElement(
 frame_element = frame.frame_element
 content_frame = frame_element.content_frame
 puts frame == content_frame # => true
+```
+
+
+
+## frame_locator
+
+```
+def frame_locator(selector)
+```
+
+When working with iframes, you can create a frame locator that will enter the iframe and allow selecting elements in
+that iframe. Following snippet locates element with text "Submit" in the iframe with id `my-frame`, like `<iframe
+id="my-frame">`:
+
+```ruby
+locator = frame.frame_locator("#my-iframe").locator("text=Submit")
+locator.click
 ```
 
 
@@ -598,6 +621,8 @@ def query_selector(selector, strict: nil)
 
 Returns the ElementHandle pointing to the frame element.
 
+> NOTE: The use of [ElementHandle](./element_handle) is discouraged, use [Locator](./locator) objects and web-first assertions instead.
+
 The method finds an element matching the specified selector within the frame. See
 [Working with selectors](https://playwright.dev/python/docs/selectors) for more details. If no elements match the selector, returns `null`.
 
@@ -608,6 +633,8 @@ def query_selector_all(selector)
 ```
 
 Returns the ElementHandles pointing to the frame elements.
+
+> NOTE: The use of [ElementHandle](./element_handle) is discouraged, use [Locator](./locator) objects instead.
 
 The method finds all elements matching the specified selector within the frame. See
 [Working with selectors](https://playwright.dev/python/docs/selectors) for more details. If no elements match the selector, returns empty array.
@@ -877,6 +904,9 @@ def wait_for_selector(selector, state: nil, strict: nil, timeout: nil)
 
 Returns when element specified by selector satisfies `state` option. Returns `null` if waiting for `hidden` or
 `detached`.
+
+> NOTE: Playwright automatically waits for element to be ready before performing an action. Using [Locator](./locator) objects and
+web-first assertions make the code wait-for-selector-free.
 
 Wait for the `selector` to satisfy `state` option (either appear/disappear from dom, or become visible/hidden). If at
 the moment of calling the method `selector` already satisfies the condition, the method will return immediately. If the

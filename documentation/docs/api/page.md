@@ -315,6 +315,9 @@ page.evaluate("matchMedia('(prefers-color-scheme: no-preference)').matches") # =
 def eval_on_selector(selector, expression, arg: nil, strict: nil)
 ```
 
+> NOTE: This method does not wait for the element to pass actionability checks and therefore can lead to the flaky
+tests. Use [Locator#evaluate](./locator#evaluate), other [Locator](./locator) helper methods or web-first assertions instead.
+
 The method finds an element matching the specified selector within the page and passes it as a first argument to
 `expression`. If no elements match the selector, the method throws an error. Returns the value of `expression`.
 
@@ -336,6 +339,9 @@ Shortcut for main frame's [Frame#eval_on_selector](./frame#eval_on_selector).
 ```
 def eval_on_selector_all(selector, expression, arg: nil)
 ```
+
+> NOTE: In most cases, [Locator#evaluate_all](./locator#evaluate_all), other [Locator](./locator) helper methods and web-first assertions do a
+better job.
 
 The method finds all elements matching the specified selector within the page and passes an array of matched elements as
 a first argument to `expression`. Returns the result of `expression` invocation.
@@ -571,6 +577,23 @@ frame = page.frame(name: "frame-name")
 
 ```ruby
 frame = page.frame(url: /.*domain.*/)
+```
+
+
+
+## frame_locator
+
+```
+def frame_locator(selector)
+```
+
+When working with iframes, you can create a frame locator that will enter the iframe and allow selecting elements in
+that iframe. Following snippet locates element with text "Submit" in the iframe with id `my-frame`, like `<iframe
+id="my-frame">`:
+
+```ruby
+locator = page.frame_locator("#my-iframe").locator("text=Submit")
+locator.click
 ```
 
 
@@ -905,8 +928,10 @@ page.screenshot(path: "o.png")
 def query_selector(selector, strict: nil)
 ```
 
+> NOTE: The use of [ElementHandle](./element_handle) is discouraged, use [Locator](./locator) objects and web-first assertions instead.
+
 The method finds an element matching the specified selector within the page. If no elements match the selector, the
-return value resolves to `null`. To wait for an element on the page, use [Page#wait_for_selector](./page#wait_for_selector).
+return value resolves to `null`. To wait for an element on the page, use [Locator#wait_for](./locator#wait_for).
 
 Shortcut for main frame's [Frame#query_selector](./frame#query_selector).
 
@@ -915,6 +940,8 @@ Shortcut for main frame's [Frame#query_selector](./frame#query_selector).
 ```
 def query_selector_all(selector)
 ```
+
+> NOTE: The use of [ElementHandle](./element_handle) is discouraged, use [Locator](./locator) objects and web-first assertions instead.
 
 The method finds all elements matching the specified selector within the page. If no elements match the selector, the
 return value resolves to `[]`.
@@ -927,8 +954,8 @@ Shortcut for main frame's [Frame#query_selector_all](./frame#query_selector_all)
 def reload(timeout: nil, waitUntil: nil)
 ```
 
-Returns the main resource response. In case of multiple redirects, the navigation will resolve with the response of the
-last redirect.
+This method reloads the current page, in the same way as if the user had triggered a browser refresh. Returns the main
+resource response. In case of multiple redirects, the navigation will resolve with the response of the last redirect.
 
 ## route
 
@@ -1483,6 +1510,9 @@ def wait_for_selector(selector, state: nil, strict: nil, timeout: nil)
 
 Returns when element specified by selector satisfies `state` option. Returns `null` if waiting for `hidden` or
 `detached`.
+
+> NOTE: Playwright automatically waits for element to be ready before performing an action. Using [Locator](./locator) objects and
+web-first assertions make the code wait-for-selector-free.
 
 Wait for the `selector` to satisfy `state` option (either appear/disappear from dom, or become visible/hidden). If at
 the moment of calling the method `selector` already satisfies the condition, the method will return immediately. If the
