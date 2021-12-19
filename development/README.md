@@ -2,7 +2,7 @@
 
 ## (opt) Download driver
 
-Edit `development/CLI_VERSION` and then download the specific version of driver. It can be found in https://github.com/microsoft/playwright/actions/workflows/publish_canary_driver.yml
+Edit `development/CLI_VERSION` and then download the specific version of driver. It can be found in https://github.com/microsoft/playwright/actions/workflows/publish_canary.yml
 
 ```
 wget https://playwright.azureedge.net/builds/driver/next/playwright-$(cat development/CLI_VERSION)-mac.zip

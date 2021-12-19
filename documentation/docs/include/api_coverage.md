@@ -331,6 +331,7 @@
 * accessibility
 * keyboard
 * mouse
+* ~~request~~
 * touchscreen
 
 ## BrowserContext
@@ -417,6 +418,7 @@
 * count
 * dblclick
 * dispatch_event
+* ~~drag_to~~
 * element_handle
 * element_handles
 * evaluate
