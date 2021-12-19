@@ -54,10 +54,3 @@ with sync_playwright() as p:
     assert await response.body() == '{"status": "ok"}'
 
 ```
-
-### example_8426bf9e29f61c04b0a4add1fa16d1eaac4d8564014710acba09027036643b8b
-
-```
-frameLocator = locator.frame_locator(":scope");
-
-```

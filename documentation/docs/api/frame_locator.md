@@ -31,9 +31,8 @@ page.frame_locator('.result-frame').first.locator('button').click
 If you have a [Locator](./locator) object pointing to an `iframe` it can be converted to [FrameLocator](./frame_locator) using
 [`:scope`](https://developer.mozilla.org/en-US/docs/Web/CSS/:scope) CSS selector:
 
-```python sync title=example_8426bf9e29f61c04b0a4add1fa16d1eaac4d8564014710acba09027036643b8b.py
-frameLocator = locator.frame_locator(":scope");
-
+```ruby
+frame_locator = locator.frame_locator(':scope')
 ```
 
 

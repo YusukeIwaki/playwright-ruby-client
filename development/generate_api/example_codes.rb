@@ -524,6 +524,11 @@ module ExampleCodes
     page.frame_locator('.result-frame').first.locator('button').click
   end
 
+  # FrameLocator
+  def example_8426bf9e29f61c04b0a4add1fa16d1eaac4d8564014710acba09027036643b8b
+    frame_locator = locator.frame_locator(':scope')
+  end
+
   # JSHandle
   def example_c408a96b8ac9c9bd54d915009c8b477eb75b7bf9e879fd76b32f3d4b6340a667(page:)
     window_handle = page.evaluate_handle("window")
