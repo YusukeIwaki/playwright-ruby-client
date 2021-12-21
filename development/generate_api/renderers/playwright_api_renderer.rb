@@ -6,12 +6,48 @@ class PlaywrightApiRenderer
 
   def render
     @target_classes.each do |target_class|
-      renderer = ClassWithDocRenderer.new(target_class)
+      renderer = case target_class
+      when ImplementedClassWithoutDoc
+        ClassWithoutDocRenderer.new(target_class)
+      else
+        ClassWithDocRenderer.new(target_class)
+      end
 
       File.open(File.join('.', 'lib', 'playwright_api', "#{target_class.filename}.rb"), 'w') do |f|
         renderer.render_lines.each do |line|
           f.write(line.rstrip)
           f.write("\n")
+        end
+      end
+    end
+  end
+
+  class ClassWithoutDocRenderer
+    # @param class_without_doc [ImplementedClassWithoutDoc]
+    def initialize(class_without_doc)
+      @class_without_doc = class_without_doc
+    end
+
+    # @returns [Enumerable<String>]
+    def render_lines
+      Enumerator.new do |data|
+        data << 'module Playwright'
+        data << "  class #{@class_without_doc.class_name} < PlaywrightApi"
+        method_lines.each do |line|
+          data << "  #{line}"
+        end
+        data << '  end'
+        data << 'end'
+      end
+    end
+
+    private def method_lines
+      Enumerator.new do |data|
+        @class_without_doc.methods_without_doc.each do |method_without_doc|
+          data << ''
+          MethodWithoutDocRenderer.new(method_without_doc).render_lines.each do |line|
+            data << "  #{line}"
+          end
         end
       end
     end
@@ -25,8 +61,6 @@ class PlaywrightApiRenderer
         @implemented = true
       when UnimplementedClassWithDoc
         @implemented = false
-      when ImplementedClassWithoutDoc
-        raise "Not supported -> #{class_with_doc.class_name}"
       else
         raise "What is this? -> #{class_with_doc.class_name}"
       end
@@ -86,7 +120,6 @@ class PlaywrightApiRenderer
         end
       end
     end
-
 
     private def method_lines
       Enumerator.new do |data|

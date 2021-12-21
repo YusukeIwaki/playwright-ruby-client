@@ -27,6 +27,7 @@ ALL_TYPES = %w[
     Tracing
     Locator
     FrameLocator
+    LocalUtils
 ]
 EXPERIMENTAL = %w[
   Android
