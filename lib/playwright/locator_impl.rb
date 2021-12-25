@@ -1,9 +1,46 @@
+require 'json'
+
 module Playwright
+  class EscapeWithQuotes
+    def initialize(text, char = "'")
+      stringified = text.to_json
+      escaped_text = stringified[1...-1].gsub(/\\"/, '"')
+
+      case char
+      when '"'
+        text = escaped_text.gsub(/["]/, '\\"')
+        @text = "\"#{text}\""
+      when "'"
+        text = escaped_text.gsub(/[']/, '\\\'')
+        @text = "'#{text}'"
+      else
+        raise ArgumentError.new('Invalid escape char')
+      end
+    end
+
+    def to_s
+      @text
+    end
+  end
+
   define_api_implementation :LocatorImpl do
-    def initialize(frame:, timeout_settings:, selector:)
+    def initialize(frame:, timeout_settings:, selector:, hasText: nil)
       @frame = frame
       @timeout_settings = timeout_settings
-      @selector = selector
+      @selector =
+        case hasText
+        when Regexp
+          source = EscapeWithQuotes.new(hasText.source, '"')
+          flags = []
+          flags << 'ms' if (hasText.options & Regexp::MULTILINE) != 0
+          flags << 'i' if (hasText.options & Regexp::IGNORECASE) != 0
+          "#{selector} >> :scope:text-matches(#{source}, \"#{flags.join('')}\")"
+        when String
+          text = EscapeWithQuotes.new(hasText, '"')
+          "#{selector} >> :scope:has-text(#{text})"
+        else
+          selector
+        end
     end
 
     def to_s
@@ -122,11 +159,12 @@ module Playwright
       @frame.fill(@selector, value, strict: true, force: force, noWaitAfter: noWaitAfter, timeout: timeout)
     end
 
-    def locator(selector)
+    def locator(selector, hasText: nil)
       LocatorImpl.new(
         frame: @frame,
         timeout_settings: @timeout_settings,
         selector: "#{@selector} >> #{selector}",
+        hasText: hasText,
       )
     end
 
