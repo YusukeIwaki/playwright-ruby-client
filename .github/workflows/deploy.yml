@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 3.0
+        ruby-version: 3.1
         bundler-cache: true
     - name: Check Playwright::version
       run: bundle exec ruby -e 'raise "invalid Playwright::VERSION" unless Playwright::VERSION == ENV["RELEASE_TAG"]'

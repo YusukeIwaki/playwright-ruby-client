@@ -16,7 +16,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 3.0
+        ruby-version: 3.1
         bundler-cache: true
     - run: |
         rm -rf spec/integration
@@ -27,7 +27,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby_version: [2.7, 3.0]
+        ruby_version: [2.7, 3.0, 3.1]
         browser: [chromium, webkit]
     name: (${{ matrix.browser }}/Ruby${{ matrix.ruby_version }}) Integration test
     runs-on: ubuntu-latest
