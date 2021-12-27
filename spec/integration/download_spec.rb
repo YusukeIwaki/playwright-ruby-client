@@ -30,7 +30,7 @@ RSpec.describe 'download', sinatra: true do
   }
 
   it 'should report downloads with acceptDownloads: false' do
-    with_page do |page|
+    with_page(acceptDownloads: false) do |page|
       page.content = "<a href=\"#{server_prefix}/downloadWithFilename\">download</a>"
       download = page.expect_download do
         page.click('a')

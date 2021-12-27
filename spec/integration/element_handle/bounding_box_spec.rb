@@ -19,7 +19,7 @@ RSpec.describe 'ElementHandle#bounding_box' do
 
   it 'should handle nested frames', sinatra: true do
     with_page do |page|
-      page.viewport_size = { width: 500, height: 500 }
+      page.viewport_size = { width: 616, height: 500 }
       page.goto("#{server_prefix}/frames/nested-frames.html")
       nested_frame = page.frames.find { |frame| frame.name === 'dos' }
       element_handle = nested_frame.query_selector('div')

@@ -54,4 +54,47 @@ RSpec.describe 'Locator' do
       expect { page.locator('option').evaluate('e => {}') }.to raise_error(/strict mode violation/)
     end
   end
+
+  it 'should filter by text' do
+    with_page do |page|
+      page.content = '<div>Foobar</div><div>Bar</div>'
+      expect(page.locator('div', hasText: 'Foo').text_content).to eq('Foobar')
+    end
+  end
+
+  it 'should filter by text' do
+    with_page do |page|
+      page.content = '<div>foo <span>hello world</span> bar</div>'
+      expect(page.locator('div', hasText: 'hello world').text_content).to eq('foo hello world bar')
+    end
+  end
+
+
+  it 'should filter by regex' do
+    with_page do |page|
+      page.content = '<div>Foobar</div><div>Bar</div>'
+      expect(page.locator('div', hasText: /Foo.*/).text_content).to eq('Foobar')
+    end
+  end
+
+  it 'should filter by text with quotes' do
+    with_page do |page|
+      page.content = '<div>Hello "world"</div><div>Hello world</div>'
+      expect(page.locator('div', hasText: 'Hello "world"').text_content).to eq('Hello "world"')
+    end
+  end
+
+  it 'should filter by regex with quotes' do
+    with_page do |page|
+      page.content = '<div>Hello "world"</div><div>Hello world</div>'
+      expect(page.locator('div', hasText: /Hello "world"/).text_content).to eq('Hello "world"')
+    end
+  end
+
+  it 'should filter by regex and regexp flags' do
+    with_page do |page|
+      page.content = '<div>Hello "world"</div><div>Hello world</div>'
+      expect(page.locator('div', hasText: /hElLo "world"/i).text_content).to eq('Hello "world"')
+    end
+  end
 end

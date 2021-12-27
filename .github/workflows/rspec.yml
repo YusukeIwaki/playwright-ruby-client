@@ -27,7 +27,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby_version: [2.7.3, 3.0.1]
+        ruby_version: [2.7, 3.0]
         browser: [chromium, webkit]
     name: (${{ matrix.browser }}/Ruby${{ matrix.ruby_version }}) Integration test
     runs-on: ubuntu-latest

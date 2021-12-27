@@ -4,53 +4,10 @@ sidebar_position: 10
 
 # Locator
 
-Locator represents a view to the element(s) on the page. It captures the logic sufficient to retrieve the element at any
-given moment. Locator can be created with the [Page#locator](./page#locator) method.
+Locators are the central piece of Playwright's auto-waiting and retry-ability. In a nutshell, locators represent a way
+to find element(s) on the page at any moment. Locator can be created with the [Page#locator](./page#locator) method.
 
-```ruby
-locator = page.locator("text=Submit")
-locator.click
-```
-
-The difference between the Locator and [ElementHandle](./element_handle) is that the latter points to a particular element, while Locator
-captures the logic of how to retrieve that element.
-
-In the example below, handle points to a particular DOM element on page. If that element changes text or is used by
-React to render an entirely different component, handle is still pointing to that very DOM element. This can lead to
-unexpected behaviors.
-
-```ruby
-handle = page.query_selector("text=Submit")
-handle.hover
-handle.click
-```
-
-With the locator, every time the `element` is used, up-to-date DOM element is located in the page using the selector. So
-in the snippet below, underlying DOM element is going to be located twice.
-
-```ruby
-locator = page.locator("text=Submit")
-locator.hover
-locator.click
-```
-
-**Strictness**
-
-Locators are strict. This means that all operations on locators that imply some target DOM element will throw if more
-than one element matches given selector.
-
-```ruby
-# Throws if there are several buttons in DOM:
-page.locator('button').click
-
-# Works because we explicitly tell locator to pick the first element:
-page.locator('button').first.click
-
-# Works because count knows what to do with multiple matches:
-page.locator('button').count
-```
-
-
+[Learn more about locators](https://playwright.dev/python/docs/locators).
 
 ## all_inner_texts
 
@@ -458,7 +415,7 @@ Returns locator to the last matching element.
 ## locator
 
 ```
-def locator(selector)
+def locator(selector, hasText: nil)
 ```
 
 The method finds an element matching the specified selector in the [Locator](./locator)'s subtree.

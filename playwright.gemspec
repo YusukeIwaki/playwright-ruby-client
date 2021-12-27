@@ -27,7 +27,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = '>= 2.4'
   spec.add_dependency 'concurrent-ruby', '>= 1.1.6'
   spec.add_dependency 'mime-types', '>= 3.0'
-  spec.add_development_dependency 'bundler', '~> 2.2.3'
+  spec.add_development_dependency 'bundler', '~> 2.3.0'
   spec.add_development_dependency 'chunky_png'
   spec.add_development_dependency 'dry-inflector'
   spec.add_development_dependency 'faye-websocket'

@@ -26,6 +26,15 @@ page.frame_locator('.result-frame').locator('button').click
 page.frame_locator('.result-frame').first.locator('button').click
 ```
 
+**Converting Locator to FrameLocator**
+
+If you have a [Locator](./locator) object pointing to an `iframe` it can be converted to [FrameLocator](./frame_locator) using
+[`:scope`](https://developer.mozilla.org/en-US/docs/Web/CSS/:scope) CSS selector:
+
+```ruby
+frame_locator = locator.frame_locator(':scope')
+```
+
 
 
 ## first
@@ -56,7 +65,7 @@ Returns locator to the last matching frame.
 ## locator
 
 ```
-def locator(selector)
+def locator(selector, hasText: nil)
 ```
 
 The method finds an element matching the specified selector in the FrameLocator's subtree.

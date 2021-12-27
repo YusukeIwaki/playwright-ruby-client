@@ -358,5 +358,10 @@ module Playwright
     private def base_url
       @options[:baseURL]
     end
+
+    # called from Tracing
+    private def remote_connection?
+      @connection.remote?
+    end
   end
 end

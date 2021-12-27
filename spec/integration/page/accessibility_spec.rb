@@ -238,9 +238,9 @@ RSpec.describe 'accessibility' do
           { 'role' => 'menuitem', 'name' => 'First Item' },
           { 'role' => 'menuitem', 'name' => 'Second Item' },
           { 'role' => 'menuitem', 'name' => 'Third Item' },
-        ]
+        ],
+        'orientation' => 'vertical',
       }
-      golden['orientation'] = 'vertical' if webkit?
       expect(page.accessibility.snapshot(root: menu)).to eq(golden)
     end
   end

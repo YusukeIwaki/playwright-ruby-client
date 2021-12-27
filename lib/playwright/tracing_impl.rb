@@ -20,21 +20,35 @@ module Playwright
     end
 
     def stop_chunk(path: nil)
-      do_stop_chunk(path: path)
+      do_stop_chunk(file_path: path)
     end
 
     def stop(path: nil)
-      do_stop_chunk(path: path)
+      do_stop_chunk(file_path: path)
       @channel.send_message_to_server('tracingStop')
     end
 
-    private def do_stop_chunk(path:)
-      result = @channel.send_message_to_server_result('tracingStopChunk', save: !path.nil?, skipCompress: false)
-      artifact = ChannelOwners::Artifact.from_nullable(result['artifact'])
-      return unless artifact
+    private def do_stop_chunk(file_path:)
+      mode = 'doNotSave'
+      if file_path
+        if @context.send(:remote_connection?)
+          mode = 'compressTrace'
+        else
+          mode = 'compressTraceAndSources'
+        end
+      end
 
-      artifact.save_as(path)
+      result = @channel.send_message_to_server_result('tracingStopChunk', mode: mode)
+      return unless file_path # Not interested in artifacts.
+      return unless result['artifact'] # The artifact may be missing if the browser closed while stopping tracing.
+
+      artifact = ChannelOwners::Artifact.from(result['artifact'])
+      artifact.save_as(file_path)
       artifact.delete
+
+      # // Add local sources to the remote trace if necessary.
+      # if (result.sourceEntries?.length)
+      #   await this._context._localUtils.zip(filePath, result.sourceEntries);
     end
   end
 end

@@ -16,7 +16,7 @@ jobs:
             rvm install 2.7.2
             rvm use 2.7.2
             echo . $(rvm 2.7.2 do rvm env --path) >> $BASH_ENV
-            gem install bundler:2.2.3 && bundle install
+            gem install bundler:2.3.0 && bundle install
       - run:
           name: Setup playwright driver
           command: |
@@ -52,7 +52,7 @@ jobs:
             rvm install 2.7.2
             rvm use 2.7.2
             echo . $(rvm 2.7.2 do rvm env --path) >> $BASH_ENV
-            gem install bundler:2.2.3 && bundle install
+            gem install bundler:2.3.0 && bundle install
       - run:
           name: Setup playwright driver
           command: |
