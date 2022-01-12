@@ -10898,7 +10898,7 @@
           "test('navigates to login', async ({ page }) => {",
           "  // ...",
           "  const response = await page.request.get('https://playwright.dev');",
-          "  expect(response).toBeOK();",
+          "  await expect(response).toBeOK();",
           "});"
         ],
         "codeLang": "js"
@@ -10930,7 +10930,7 @@
           "async def test_navigates_to_login_page(page: Page) -> None:",
           "    # ..",
           "    response = await page.request.get('https://playwright.dev')",
-          "    expect(response).to_be_ok()"
+          "    await expect(response).to_be_ok()"
         ],
         "codeLang": "python async"
       },
@@ -10950,13 +10950,14 @@
     ],
     "langs": {
       "only": [
-        "js"
+        "js",
+        "java"
       ],
       "aliases": {},
       "types": {},
       "overrides": {}
     },
-    "comment": "The `APIResponseAssertions` class provides assertion methods that can be used to make assertions about the `APIResponse`\nin the tests. A new instance of `APIResponseAssertions` is created by calling\n[`method: PlaywrightAssertions.expectAPIResponse`]:\n\n```js\nimport { test, expect } from '@playwright/test';\n\ntest('navigates to login', async ({ page }) => {\n  // ...\n  const response = await page.request.get('https://playwright.dev');\n  expect(response).toBeOK();\n});\n```\n\n```java\n...\nimport static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;\n\npublic class TestPage {\n  ...\n  @Test\n  void navigatesToLoginPage() {\n    ...\n    APIResponse response = page.request().get('https://playwright.dev');\n    assertThat(response).isOK();\n  }\n}\n```\n\n```python async\nimport re\nfrom playwright.async_api import Page, expect\n\nasync def test_navigates_to_login_page(page: Page) -> None:\n    # ..\n    response = await page.request.get('https://playwright.dev')\n    expect(response).to_be_ok()\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import Page, expect\n\ndef test_navigates_to_login_page(page: Page) -> None:\n    # ..\n    response = page.request.get('https://playwright.dev')\n    expect(response).to_be_ok()\n```\n",
+    "comment": "The `APIResponseAssertions` class provides assertion methods that can be used to make assertions about the `APIResponse`\nin the tests. A new instance of `APIResponseAssertions` is created by calling\n[`method: PlaywrightAssertions.expectAPIResponse`]:\n\n```js\nimport { test, expect } from '@playwright/test';\n\ntest('navigates to login', async ({ page }) => {\n  // ...\n  const response = await page.request.get('https://playwright.dev');\n  await expect(response).toBeOK();\n});\n```\n\n```java\n...\nimport static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;\n\npublic class TestPage {\n  ...\n  @Test\n  void navigatesToLoginPage() {\n    ...\n    APIResponse response = page.request().get('https://playwright.dev');\n    assertThat(response).isOK();\n  }\n}\n```\n\n```python async\nimport re\nfrom playwright.async_api import Page, expect\n\nasync def test_navigates_to_login_page(page: Page) -> None:\n    # ..\n    response = await page.request.get('https://playwright.dev')\n    await expect(response).to_be_ok()\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import Page, expect\n\ndef test_navigates_to_login_page(page: Page) -> None:\n    # ..\n    response = page.request.get('https://playwright.dev')\n    expect(response).to_be_ok()\n```\n",
     "members": [
       {
         "kind": "method",
@@ -10982,7 +10983,7 @@
           {
             "type": "code",
             "lines": [
-              "expect(response).not.toBeOK();"
+              "await expect(response).not.toBeOK();"
             ],
             "codeLang": "js"
           },
@@ -10995,7 +10996,7 @@
           }
         ],
         "required": true,
-        "comment": "Makes the assertion check for the opposite condition. For example, this code tests that the response status is not\nsuccessfull:\n\n```js\nexpect(response).not.toBeOK();\n```\n\n```java\nassertThat(response).not().isOK();\n```\n",
+        "comment": "Makes the assertion check for the opposite condition. For example, this code tests that the response status is not\nsuccessfull:\n\n```js\nawait expect(response).not.toBeOK();\n```\n\n```java\nassertThat(response).not().isOK();\n```\n",
         "deprecated": false,
         "async": false,
         "alias": "not",
@@ -11019,12 +11020,12 @@
         "spec": [
           {
             "type": "text",
-            "text": "Ensures the response status code is within [200..299) range."
+            "text": "Ensures the response status code is within [200..299] range."
           },
           {
             "type": "code",
             "lines": [
-              "expect(response).toBeOK();"
+              "await expect(response).toBeOK();"
             ],
             "codeLang": "js"
           },
@@ -11042,7 +11043,7 @@
               "from playwright.async_api import expect",
               "",
               "# ...",
-              "expect(response).to_be_ok()"
+              "await expect(response).to_be_ok()"
             ],
             "codeLang": "python async"
           },
@@ -11059,9 +11060,9 @@
           }
         ],
         "required": true,
-        "comment": "Ensures the response status code is within [200..299) range.\n\n```js\nexpect(response).toBeOK();\n```\n\n```java\nassertThat(response).isOK();\n```\n\n```python async\nimport re\nfrom playwright.async_api import expect\n\n# ...\nexpect(response).to_be_ok()\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\n# ...\nexpect(response).to_be_ok()\n```\n",
+        "comment": "Ensures the response status code is within [200..299] range.\n\n```js\nawait expect(response).toBeOK();\n```\n\n```java\nassertThat(response).isOK();\n```\n\n```python async\nimport re\nfrom playwright.async_api import expect\n\n# ...\nawait expect(response).to_be_ok()\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\n# ...\nexpect(response).to_be_ok()\n```\n",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "toBeOK",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -20521,16 +20522,7 @@
     "members": [
       {
         "kind": "method",
-        "langs": {
-          "only": [
-            "js",
-            "python",
-            "java"
-          ],
-          "aliases": {},
-          "types": {},
-          "overrides": {}
-        },
+        "langs": {},
         "name": "connect",
         "type": {
           "name": "Browser",
@@ -54093,7 +54085,7 @@
           },
           {
             "type": "text",
-            "text": "Note that if array is passed as an expected value, entire lists can be asserted:"
+            "text": "Note that if array is passed as an expected value, entire lists of elements can be asserted:"
           },
           {
             "type": "code",
@@ -54134,7 +54126,7 @@
           }
         ],
         "required": true,
-        "comment": "Ensures the `Locator` points to an element that contains the given text. You can use regular expressions for the value\nas well.\n\n```js\nconst locator = page.locator('.title');\nawait expect(locator).toContainText('substring');\nawait expect(locator).toContainText(/\\d messages/);\n```\n\n```java\nassertThat(page.locator(\".title\")).containsText(\"substring\");\n```\n\n```python async\nimport re\nfrom playwright.async_api import expect\n\nlocator = page.locator('.title')\nawait expect(locator).to_contain_text(\"substring\")\nawait expect(locator).to_contain_text(re.compile(r\"\\d messages\"))\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\nlocator = page.locator('.title')\nexpect(locator).to_contain_text(\"substring\")\nexpect(locator).to_contain_text(re.compile(r\"\\d messages\"))\n```\n\nNote that if array is passed as an expected value, entire lists can be asserted:\n\n```js\nconst locator = page.locator('list > .list-item');\nawait expect(locator).toContainText(['Text 1', 'Text 4', 'Text 5']);\n```\n\n```java\nassertThat(page.locator(\"list > .list-item\")).containsText(new String[] {\"Text 1\", \"Text 4\", \"Text 5\"});\n```\n\n```python async\nimport re\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"list > .list-item\")\nawait expect(locator).to_contain_text([\"Text 1\", \"Text 4\", \"Text 5\"])\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"list > .list-item\")\nexpect(locator).to_contain_text([\"Text 1\", \"Text 4\", \"Text 5\"])\n```\n",
+        "comment": "Ensures the `Locator` points to an element that contains the given text. You can use regular expressions for the value\nas well.\n\n```js\nconst locator = page.locator('.title');\nawait expect(locator).toContainText('substring');\nawait expect(locator).toContainText(/\\d messages/);\n```\n\n```java\nassertThat(page.locator(\".title\")).containsText(\"substring\");\n```\n\n```python async\nimport re\nfrom playwright.async_api import expect\n\nlocator = page.locator('.title')\nawait expect(locator).to_contain_text(\"substring\")\nawait expect(locator).to_contain_text(re.compile(r\"\\d messages\"))\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\nlocator = page.locator('.title')\nexpect(locator).to_contain_text(\"substring\")\nexpect(locator).to_contain_text(re.compile(r\"\\d messages\"))\n```\n\nNote that if array is passed as an expected value, entire lists of elements can be asserted:\n\n```js\nconst locator = page.locator('list > .list-item');\nawait expect(locator).toContainText(['Text 1', 'Text 4', 'Text 5']);\n```\n\n```java\nassertThat(page.locator(\"list > .list-item\")).containsText(new String[] {\"Text 1\", \"Text 4\", \"Text 5\"});\n```\n\n```python async\nimport re\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"list > .list-item\")\nawait expect(locator).to_contain_text([\"Text 1\", \"Text 4\", \"Text 5\"])\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"list > .list-item\")\nexpect(locator).to_contain_text([\"Text 1\", \"Text 4\", \"Text 5\"])\n```\n",
         "deprecated": false,
         "async": false,
         "alias": "toContainText",
@@ -54537,7 +54529,7 @@
           },
           {
             "type": "text",
-            "text": "Note that if array is passed as an expected value, entire lists can be asserted:"
+            "text": "Note that if array is passed as an expected value, entire lists of elements can be asserted:"
           },
           {
             "type": "code",
@@ -54576,7 +54568,7 @@
           }
         ],
         "required": true,
-        "comment": "Ensures the `Locator` points to an element with given CSS class.\n\n```js\nconst locator = page.locator('#component');\nawait expect(locator).toHaveClass(/selected/);\n```\n\n```java\nassertThat(page.locator(\"#component\")).hasClass(Pattern.compile(\"selected\"));\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"#component\")\nawait expect(locator).to_have_class(re.compile(r\"selected\"))\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"#component\")\nexpect(locator).to_have_class(re.compile(r\"selected\"))\n```\n\nNote that if array is passed as an expected value, entire lists can be asserted:\n\n```js\nconst locator = page.locator('list > .component');\nawait expect(locator).toHaveClass(['component', 'component selected', 'component']);\n```\n\n```java\nassertThat(page.locator(\"list > .component\")).hasClass(new String[] {\"component\", \"component selected\", \"component\"});\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"list > .component\")\nawait expect(locator).to_have_class([\"component\", \"component selected\", \"component\"])\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"list > .component\")\nexpect(locator).to_have_class([\"component\", \"component selected\", \"component\"])\n```\n",
+        "comment": "Ensures the `Locator` points to an element with given CSS class.\n\n```js\nconst locator = page.locator('#component');\nawait expect(locator).toHaveClass(/selected/);\n```\n\n```java\nassertThat(page.locator(\"#component\")).hasClass(Pattern.compile(\"selected\"));\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"#component\")\nawait expect(locator).to_have_class(re.compile(r\"selected\"))\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"#component\")\nexpect(locator).to_have_class(re.compile(r\"selected\"))\n```\n\nNote that if array is passed as an expected value, entire lists of elements can be asserted:\n\n```js\nconst locator = page.locator('list > .component');\nawait expect(locator).toHaveClass(['component', 'component selected', 'component']);\n```\n\n```java\nassertThat(page.locator(\"list > .component\")).hasClass(new String[] {\"component\", \"component selected\", \"component\"});\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"list > .component\")\nawait expect(locator).to_have_class([\"component\", \"component selected\", \"component\"])\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"list > .component\")\nexpect(locator).to_have_class([\"component\", \"component selected\", \"component\"])\n```\n",
         "deprecated": false,
         "async": false,
         "alias": "toHaveClass",
@@ -55392,7 +55384,7 @@
           },
           {
             "type": "text",
-            "text": "Note that if array is passed as an expected value, entire lists can be asserted:"
+            "text": "Note that if array is passed as an expected value, entire lists of elements can be asserted:"
           },
           {
             "type": "code",
@@ -55431,7 +55423,7 @@
           }
         ],
         "required": true,
-        "comment": "Ensures the `Locator` points to an element with the given text. You can use regular expressions for the value as well.\n\n```js\nconst locator = page.locator('.title');\nawait expect(locator).toHaveText(/Welcome, Test User/);\nawait expect(locator).toHaveText(/Welcome, .*/);\n```\n\n```java\nassertThat(page.locator(\".title\")).hasText(\"Welcome, Test User\");\nassertThat(page.locator(\".title\")).hasText(Pattern.compile(\"Welcome, .*\"));\n```\n\n```python async\nimport re\nfrom playwright.async_api import expect\n\nlocator = page.locator(\".title\")\nawait expect(locator).to_have_text(re.compile(r\"Welcome, Test User\"))\nawait expect(locator).to_have_text(re.compile(r\"Welcome, .*\"))\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\".title\")\nexpect(locator).to_have_text(re.compile(r\"Welcome, Test User\"))\nexpect(locator).to_have_text(re.compile(r\"Welcome, .*\"))\n```\n\nNote that if array is passed as an expected value, entire lists can be asserted:\n\n```js\nconst locator = page.locator('list > .component');\nawait expect(locator).toHaveText(['Text 1', 'Text 2', 'Text 3']);\n```\n\n```java\nassertThat(page.locator(\"list > .component\")).hasText(new String[] {\"Text 1\", \"Text 2\", \"Text 3\"});\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"list > .component\")\nawait expect(locator).to_have_text([\"Text 1\", \"Text 2\", \"Text 3\"])\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"list > .component\")\nexpect(locator).to_have_text([\"Text 1\", \"Text 2\", \"Text 3\"])\n```\n",
+        "comment": "Ensures the `Locator` points to an element with the given text. You can use regular expressions for the value as well.\n\n```js\nconst locator = page.locator('.title');\nawait expect(locator).toHaveText(/Welcome, Test User/);\nawait expect(locator).toHaveText(/Welcome, .*/);\n```\n\n```java\nassertThat(page.locator(\".title\")).hasText(\"Welcome, Test User\");\nassertThat(page.locator(\".title\")).hasText(Pattern.compile(\"Welcome, .*\"));\n```\n\n```python async\nimport re\nfrom playwright.async_api import expect\n\nlocator = page.locator(\".title\")\nawait expect(locator).to_have_text(re.compile(r\"Welcome, Test User\"))\nawait expect(locator).to_have_text(re.compile(r\"Welcome, .*\"))\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\".title\")\nexpect(locator).to_have_text(re.compile(r\"Welcome, Test User\"))\nexpect(locator).to_have_text(re.compile(r\"Welcome, .*\"))\n```\n\nNote that if array is passed as an expected value, entire lists of elements can be asserted:\n\n```js\nconst locator = page.locator('list > .component');\nawait expect(locator).toHaveText(['Text 1', 'Text 2', 'Text 3']);\n```\n\n```java\nassertThat(page.locator(\"list > .component\")).hasText(new String[] {\"Text 1\", \"Text 2\", \"Text 3\"});\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"list > .component\")\nawait expect(locator).to_have_text([\"Text 1\", \"Text 2\", \"Text 3\"])\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"list > .component\")\nexpect(locator).to_have_text([\"Text 1\", \"Text 2\", \"Text 3\"])\n```\n",
         "deprecated": false,
         "async": false,
         "alias": "toHaveText",
@@ -75764,7 +75756,8 @@
         "kind": "method",
         "langs": {
           "only": [
-            "js"
+            "js",
+            "java"
           ],
           "aliases": {
             "java": "assertThat",
