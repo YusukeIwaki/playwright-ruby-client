@@ -177,6 +177,21 @@ element.dispatch_event("dragstart", eventInit: { dataTransfer: data_transfer })
 
 
 
+## drag_to
+
+```
+def drag_to(
+      target,
+      force: nil,
+      noWaitAfter: nil,
+      sourcePosition: nil,
+      targetPosition: nil,
+      timeout: nil,
+      trial: nil)
+```
+
+
+
 ## element_handle
 
 ```
