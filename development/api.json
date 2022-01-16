@@ -1829,10 +1829,15 @@
                       "type": "li",
                       "text": "baseURL: `http://localhost:3000/foo/` and navigating to `./bar.html` results in `http://localhost:3000/foo/bar.html`",
                       "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "baseURL: `http://localhost:3000/foo` (without trailing slash) and navigating to `./bar.html` results in `http://localhost:3000/bar.html`",
+                      "liType": "bullet"
                     }
                   ],
                   "required": false,
-                  "comment": "When using [`method: Page.goto`], [`method: Page.route`], [`method: Page.waitForURL`], [`method: Page.waitForRequest`],\nor [`method: Page.waitForResponse`] it takes the base URL in consideration by using the\n[`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor for building the corresponding URL.\nExamples:\n- baseURL: `http://localhost:3000` and navigating to `/bar.html` results in `http://localhost:3000/bar.html`\n- baseURL: `http://localhost:3000/foo/` and navigating to `./bar.html` results in `http://localhost:3000/foo/bar.html`",
+                  "comment": "When using [`method: Page.goto`], [`method: Page.route`], [`method: Page.waitForURL`], [`method: Page.waitForRequest`],\nor [`method: Page.waitForResponse`] it takes the base URL in consideration by using the\n[`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor for building the corresponding URL.\nExamples:\n- baseURL: `http://localhost:3000` and navigating to `/bar.html` results in `http://localhost:3000/bar.html`\n- baseURL: `http://localhost:3000/foo/` and navigating to `./bar.html` results in `http://localhost:3000/foo/bar.html`\n- baseURL: `http://localhost:3000/foo` (without trailing slash) and navigating to `./bar.html` results in\n  `http://localhost:3000/bar.html`",
                   "deprecated": false,
                   "async": false,
                   "alias": "baseURL",
@@ -5852,10 +5857,15 @@
                       "type": "li",
                       "text": "baseURL: `http://localhost:3000/foo/` and sending request to `./bar.html` results in `http://localhost:3000/foo/bar.html`",
                       "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "baseURL: `http://localhost:3000/foo` (without trailing slash) and navigating to `./bar.html` results in `http://localhost:3000/bar.html`",
+                      "liType": "bullet"
                     }
                   ],
                   "required": false,
-                  "comment": "Methods like [`method: APIRequestContext.get`] take the base URL into consideration by using the\n[`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor for building the corresponding URL.\nExamples:\n- baseURL: `http://localhost:3000` and sending request to `/bar.html` results in `http://localhost:3000/bar.html`\n- baseURL: `http://localhost:3000/foo/` and sending request to `./bar.html` results in\n  `http://localhost:3000/foo/bar.html`",
+                  "comment": "Methods like [`method: APIRequestContext.get`] take the base URL into consideration by using the\n[`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor for building the corresponding URL.\nExamples:\n- baseURL: `http://localhost:3000` and sending request to `/bar.html` results in `http://localhost:3000/bar.html`\n- baseURL: `http://localhost:3000/foo/` and sending request to `./bar.html` results in\n  `http://localhost:3000/foo/bar.html`\n- baseURL: `http://localhost:3000/foo` (without trailing slash) and navigating to `./bar.html` results in\n  `http://localhost:3000/bar.html`",
                   "deprecated": false,
                   "async": false,
                   "alias": "baseURL",
@@ -11516,10 +11526,15 @@
                       "type": "li",
                       "text": "baseURL: `http://localhost:3000/foo/` and navigating to `./bar.html` results in `http://localhost:3000/foo/bar.html`",
                       "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "baseURL: `http://localhost:3000/foo` (without trailing slash) and navigating to `./bar.html` results in `http://localhost:3000/bar.html`",
+                      "liType": "bullet"
                     }
                   ],
                   "required": false,
-                  "comment": "When using [`method: Page.goto`], [`method: Page.route`], [`method: Page.waitForURL`], [`method: Page.waitForRequest`],\nor [`method: Page.waitForResponse`] it takes the base URL in consideration by using the\n[`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor for building the corresponding URL.\nExamples:\n- baseURL: `http://localhost:3000` and navigating to `/bar.html` results in `http://localhost:3000/bar.html`\n- baseURL: `http://localhost:3000/foo/` and navigating to `./bar.html` results in `http://localhost:3000/foo/bar.html`",
+                  "comment": "When using [`method: Page.goto`], [`method: Page.route`], [`method: Page.waitForURL`], [`method: Page.waitForRequest`],\nor [`method: Page.waitForResponse`] it takes the base URL in consideration by using the\n[`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor for building the corresponding URL.\nExamples:\n- baseURL: `http://localhost:3000` and navigating to `/bar.html` results in `http://localhost:3000/bar.html`\n- baseURL: `http://localhost:3000/foo/` and navigating to `./bar.html` results in `http://localhost:3000/foo/bar.html`\n- baseURL: `http://localhost:3000/foo` (without trailing slash) and navigating to `./bar.html` results in\n  `http://localhost:3000/bar.html`",
                   "deprecated": false,
                   "async": false,
                   "alias": "baseURL",
@@ -13587,10 +13602,15 @@
                       "type": "li",
                       "text": "baseURL: `http://localhost:3000/foo/` and navigating to `./bar.html` results in `http://localhost:3000/foo/bar.html`",
                       "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "baseURL: `http://localhost:3000/foo` (without trailing slash) and navigating to `./bar.html` results in `http://localhost:3000/bar.html`",
+                      "liType": "bullet"
                     }
                   ],
                   "required": false,
-                  "comment": "When using [`method: Page.goto`], [`method: Page.route`], [`method: Page.waitForURL`], [`method: Page.waitForRequest`],\nor [`method: Page.waitForResponse`] it takes the base URL in consideration by using the\n[`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor for building the corresponding URL.\nExamples:\n- baseURL: `http://localhost:3000` and navigating to `/bar.html` results in `http://localhost:3000/bar.html`\n- baseURL: `http://localhost:3000/foo/` and navigating to `./bar.html` results in `http://localhost:3000/foo/bar.html`",
+                  "comment": "When using [`method: Page.goto`], [`method: Page.route`], [`method: Page.waitForURL`], [`method: Page.waitForRequest`],\nor [`method: Page.waitForResponse`] it takes the base URL in consideration by using the\n[`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor for building the corresponding URL.\nExamples:\n- baseURL: `http://localhost:3000` and navigating to `/bar.html` results in `http://localhost:3000/bar.html`\n- baseURL: `http://localhost:3000/foo/` and navigating to `./bar.html` results in `http://localhost:3000/foo/bar.html`\n- baseURL: `http://localhost:3000/foo` (without trailing slash) and navigating to `./bar.html` results in\n  `http://localhost:3000/bar.html`",
                   "deprecated": false,
                   "async": false,
                   "alias": "baseURL",
@@ -21863,10 +21883,15 @@
                       "type": "li",
                       "text": "baseURL: `http://localhost:3000/foo/` and navigating to `./bar.html` results in `http://localhost:3000/foo/bar.html`",
                       "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "baseURL: `http://localhost:3000/foo` (without trailing slash) and navigating to `./bar.html` results in `http://localhost:3000/bar.html`",
+                      "liType": "bullet"
                     }
                   ],
                   "required": false,
-                  "comment": "When using [`method: Page.goto`], [`method: Page.route`], [`method: Page.waitForURL`], [`method: Page.waitForRequest`],\nor [`method: Page.waitForResponse`] it takes the base URL in consideration by using the\n[`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor for building the corresponding URL.\nExamples:\n- baseURL: `http://localhost:3000` and navigating to `/bar.html` results in `http://localhost:3000/bar.html`\n- baseURL: `http://localhost:3000/foo/` and navigating to `./bar.html` results in `http://localhost:3000/foo/bar.html`",
+                  "comment": "When using [`method: Page.goto`], [`method: Page.route`], [`method: Page.waitForURL`], [`method: Page.waitForRequest`],\nor [`method: Page.waitForResponse`] it takes the base URL in consideration by using the\n[`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor for building the corresponding URL.\nExamples:\n- baseURL: `http://localhost:3000` and navigating to `/bar.html` results in `http://localhost:3000/bar.html`\n- baseURL: `http://localhost:3000/foo/` and navigating to `./bar.html` results in `http://localhost:3000/foo/bar.html`\n- baseURL: `http://localhost:3000/foo` (without trailing slash) and navigating to `./bar.html` results in\n  `http://localhost:3000/bar.html`",
                   "deprecated": false,
                   "async": false,
                   "alias": "baseURL",
