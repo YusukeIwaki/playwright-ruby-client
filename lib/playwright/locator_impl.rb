@@ -139,6 +139,27 @@ module Playwright
       @frame.dispatch_event(@selector, type, strict: true, eventInit: eventInit, timeout: timeout)
     end
 
+    def drag_to(target,
+          force: nil,
+          noWaitAfter: nil,
+          sourcePosition: nil,
+          targetPosition: nil,
+          timeout: nil,
+          trial: nil)
+
+      @frame.drag_and_drop(
+        @selector,
+        target.instance_variable_get(:@selector),
+        force: force,
+        noWaitAfter: noWaitAfter,
+        sourcePosition: sourcePosition,
+        targetPosition: targetPosition,
+        timeout: timeout,
+        trial: trial,
+        strict: true,
+      )
+    end
+
     def evaluate(expression, arg: nil, timeout: nil)
       with_element(timeout: timeout) do |handle|
         handle.evaluate(expression, arg: arg)

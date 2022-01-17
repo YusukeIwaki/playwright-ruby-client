@@ -51,4 +51,12 @@ RSpec.describe 'drag' do
       ])
     end
   end
+
+  it 'should work with locators', sinatra: true do
+    with_page do |page|
+      page.goto("#{server_prefix}/drag-n-drop.html")
+      page.locator('#source').drag_to(page.locator('#target'))
+      expect(page.eval_on_selector('#target', "target => target.contains(document.querySelector('#source'))")).to eq(true)
+    end
+  end
 end

@@ -418,7 +418,7 @@
 * count
 * dblclick
 * dispatch_event
-* ~~drag_to~~
+* drag_to
 * element_handle
 * element_handles
 * evaluate
