@@ -5,6 +5,22 @@ Excample codes in API documentation is replaces with the methods defined in deve
 The examples listed below is not yet implemented, and documentation shows Python code.
 
 
+### example_a719a9b85189fe45a431d283eeae787323cce9a2a09aeadb86555240ef21417c
+
+```
+from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    context = playwright.request.new_context()
+    response = context.get("https://example.com/user/repos")
+    assert response.ok
+    assert response.status == 200
+    assert response.headers["content-type"] == "application/json; charset=utf-8"
+    assert response.json()["name"] == "foobar"
+    assert response.body() == '{"status": "ok"}'
+
+```
+
 ### example_6db210740dd2dcb4551c2207b3204fde7127b24c7850226b273d15c0d6624ba5
 
 ```

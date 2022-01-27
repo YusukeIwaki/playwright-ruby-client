@@ -57,3 +57,140 @@ with sync_playwright() as p:
 
 ```
 
+
+## delete
+
+```
+def delete(
+      url,
+      data: nil,
+      failOnStatusCode: nil,
+      form: nil,
+      headers: nil,
+      ignoreHTTPSErrors: nil,
+      multipart: nil,
+      params: nil,
+      timeout: nil)
+```
+
+Sends HTTP(S) [DELETE](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/DELETE) request and returns its
+response. The method will populate request cookies from the context and update context cookies from the response. The
+method will automatically follow redirects.
+
+## dispose
+
+```
+def dispose
+```
+
+All responses returned by [APIRequestContext#get](./api_request_context#get) and similar methods are stored in the memory, so that you
+can later call [APIResponse#body](./api_response#body). This method discards all stored responses, and makes
+[APIResponse#body](./api_response#body) throw "Response disposed" error.
+
+## fetch
+
+```
+def fetch(
+      urlOrRequest,
+      data: nil,
+      failOnStatusCode: nil,
+      form: nil,
+      headers: nil,
+      ignoreHTTPSErrors: nil,
+      method: nil,
+      multipart: nil,
+      params: nil,
+      timeout: nil)
+```
+
+Sends HTTP(S) request and returns its response. The method will populate request cookies from the context and update
+context cookies from the response. The method will automatically follow redirects.
+
+## get
+
+```
+def get(
+      url,
+      failOnStatusCode: nil,
+      headers: nil,
+      ignoreHTTPSErrors: nil,
+      params: nil,
+      timeout: nil)
+```
+
+Sends HTTP(S) [GET](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET) request and returns its response. The
+method will populate request cookies from the context and update context cookies from the response. The method will
+automatically follow redirects.
+
+## head
+
+```
+def head(
+      url,
+      failOnStatusCode: nil,
+      headers: nil,
+      ignoreHTTPSErrors: nil,
+      params: nil,
+      timeout: nil)
+```
+
+Sends HTTP(S) [HEAD](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/HEAD) request and returns its response.
+The method will populate request cookies from the context and update context cookies from the response. The method will
+automatically follow redirects.
+
+## patch
+
+```
+def patch(
+      url,
+      data: nil,
+      failOnStatusCode: nil,
+      form: nil,
+      headers: nil,
+      ignoreHTTPSErrors: nil,
+      multipart: nil,
+      params: nil,
+      timeout: nil)
+```
+
+Sends HTTP(S) [PATCH](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PATCH) request and returns its response.
+The method will populate request cookies from the context and update context cookies from the response. The method will
+automatically follow redirects.
+
+## post
+
+```
+def post(
+      url,
+      data: nil,
+      failOnStatusCode: nil,
+      form: nil,
+      headers: nil,
+      ignoreHTTPSErrors: nil,
+      multipart: nil,
+      params: nil,
+      timeout: nil)
+```
+
+Sends HTTP(S) [POST](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST) request and returns its response.
+The method will populate request cookies from the context and update context cookies from the response. The method will
+automatically follow redirects.
+
+## put
+
+```
+def put(
+      url,
+      data: nil,
+      failOnStatusCode: nil,
+      form: nil,
+      headers: nil,
+      ignoreHTTPSErrors: nil,
+      multipart: nil,
+      params: nil,
+      timeout: nil)
+```
+
+Sends HTTP(S) [PUT](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PUT) request and returns its response. The
+method will populate request cookies from the context and update context cookies from the response. The method will
+automatically follow redirects.
