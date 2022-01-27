@@ -733,6 +733,10 @@ module Playwright
       @workers.to_a
     end
 
+    def request
+      @browser_context.request
+    end
+
     def pause
       @browser_context.send(:pause)
     end

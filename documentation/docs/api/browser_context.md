@@ -436,4 +436,8 @@ def expect_page(predicate: nil, timeout: nil)
 Performs action and waits for a new [Page](./page) to be created in the context. If predicate is provided, it passes [Page](./page) value into the `predicate` and waits for `predicate.call(page)` to return a truthy value. Will throw an error if
 the context closes before new [Page](./page) is created.
 
+## request
+
+API testing helper associated with this context. Requests made with this API will use context cookies.
+
 ## tracing
