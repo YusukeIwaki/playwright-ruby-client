@@ -1,6 +1,5 @@
-# https://github.com/microsoft/playwright-python/blob/0b4a980fed366c4c1dee9bfcdd72662d629fdc8d/scripts/generate_api.py#L191
+# https://github.com/microsoft/playwright-python/blob/ab954acef18fba57bb1c114fe2399d3d02a9ecb9/scripts/generate_api.py#L252
 ALL_TYPES = %w[
-    APIRequestContext
     Request
     Response
     Route
@@ -26,6 +25,9 @@ ALL_TYPES = %w[
     Playwright
     Tracing
     Locator
+    APIResponse
+    APIRequestContext
+    APIRequest
 ]
 EXPERIMENTAL = %w[
   Android
@@ -44,6 +46,8 @@ API_IMPLEMENTATIONS = %w[
   Tracing
   Download
   Locator
+  APIRequest
+  APIResponse
 ]
 
 require 'bundler/setup'

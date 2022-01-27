@@ -1,17 +1,5 @@
 # API coverages
 
-## APIRequestContext
-
-* ~~delete~~
-* ~~dispose~~
-* ~~fetch~~
-* ~~get~~
-* ~~head~~
-* ~~patch~~
-* ~~post~~
-* ~~put~~
-* ~~storage_state~~
-
 ## Request
 
 * all_headers
@@ -447,6 +435,34 @@
 * type
 * uncheck
 * wait_for
+
+## APIResponse
+
+* body
+* dispose
+* headers
+* headers_array
+* json
+* ok
+* status
+* status_text
+* text
+* url
+
+## APIRequestContext
+
+* delete
+* dispose
+* fetch
+* get
+* head
+* patch
+* post
+* put
+* ~~storage_state~~
+
+## ~~APIRequest~~
+
 
 ## Android
 

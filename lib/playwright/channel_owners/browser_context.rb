@@ -4,7 +4,7 @@ module Playwright
     include Utils::Errors::SafeCloseError
     attr_accessor :browser
     attr_writer :owner_page, :options
-    attr_reader :tracing
+    attr_reader :tracing, :request
 
     private def after_initialize
       @pages = Set.new
@@ -15,6 +15,8 @@ module Playwright
       @background_pages = Set.new
 
       @tracing = TracingImpl.new(@channel, self)
+      @request = ChannelOwners::APIRequestContext.from(@initializer['APIRequestContext'])
+
       @channel.on('bindingCall', ->(params) { on_binding(ChannelOwners::BindingCall.from(params['binding'])) })
       @channel.once('close', ->(_) { on_close })
       @channel.on('page', ->(params) { on_page(ChannelOwners::Page.from(params['page']) )})
