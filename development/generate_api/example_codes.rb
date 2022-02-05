@@ -35,6 +35,44 @@ module ExampleCodes
     puts node['name']
   end
 
+  # APIRequestContext
+  def example_6db210740dd2dcb4551c2207b3204fde7127b24c7850226b273d15c0d6624ba5(playwright:)
+    playwright.chromium.launch do |browser|
+      # This will launch a new browser, create a context and page. When making HTTP
+      # requests with the internal APIRequestContext (e.g. `context.request` or `page.request`)
+      # it will automatically set the cookies to the browser page and vise versa.
+      context = browser.new_context(base_url: 'https://api.github,com')
+      api_request_context = context.request
+
+
+      # Create a repository.
+      response = api_request_context.post(
+        "/user/repos",
+        headers: {
+          "Accept": "application/vnd.github.v3+json",
+          "Authorization": "Bearer #{API_TOKEN}",
+        },
+        data: { name: 'test-repo-1' },
+      )
+      response.ok? # => true
+      response.json['name'] # => "tes≈-repo-1"
+    end
+  end
+
+  # APIResponse
+  def example_a719a9b85189fe45a431d283eeae787323cce9a2a09aeadb86555240ef21417c(playwright:)
+    playwright.chromium.launch do |browser|
+      context = browser.new_context
+      response = context.request.get("https://example.com/user/repos")
+
+      response.ok? # => true
+      response.status # => 200
+      response.headers["content-type"] # => "application/json; charset=utf-8"
+      response.json # => { "name" => "Foo" }
+      response.body # => "{ \"name\" => \"Foo\" }"
+    end
+  end
+
   # Browser
   def example_b8acc529feb6c35ab828780a127d7bf2c079dc7f2847ef251c4c1a33b4197bf9(playwright:)
     firefox = playwright.firefox

@@ -6,18 +6,17 @@ sidebar_position: 10
 
 [APIResponse](./api_response) class represents responses returned by [APIRequestContext#get](./api_request_context#get) and similar methods.
 
-```python sync title=example_a719a9b85189fe45a431d283eeae787323cce9a2a09aeadb86555240ef21417c.py
-from playwright.sync_api import sync_playwright
+```ruby
+playwright.chromium.launch do |browser|
+  context = browser.new_context
+  response = context.request.get("https://example.com/user/repos")
 
-with sync_playwright() as p:
-    context = playwright.request.new_context()
-    response = context.get("https://example.com/user/repos")
-    assert response.ok
-    assert response.status == 200
-    assert response.headers["content-type"] == "application/json; charset=utf-8"
-    assert response.json()["name"] == "foobar"
-    assert response.body() == '{"status": "ok"}'
-
+  response.ok? # => true
+  response.status # => 200
+  response.headers["content-type"] # => "application/json; charset=utf-8"
+  response.json # => { "name" => "Foo" }
+  response.body # => "{ \"name\" => \"Foo\" }"
+end
 ```
 
 
