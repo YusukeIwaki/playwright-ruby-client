@@ -46,7 +46,7 @@ module Playwright
     #
     # @note This method blocks until playwright-cli exited. Consider using Thread or Future.
     def async_run
-      @stdin, @stdout, @stderr, @thread = Open3.popen3("#{@driver_executable_path} run-driver")
+      @stdin, @stdout, @stderr, @thread = Open3.popen3("#{@driver_executable_path} run-driver", { pgroup: true })
       @stdin.binmode  # Ensure Strings are written 1:1 without encoding conversion, necessary for integer values
 
       Thread.new { handle_stdout }
