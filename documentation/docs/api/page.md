@@ -774,7 +774,7 @@ considered not visible.
 ## locator
 
 ```
-def locator(selector, hasText: nil)
+def locator(selector, has: nil, hasText: nil)
 ```
 
 The method returns an element locator that can be used to perform actions on the page. Locator is resolved to the
@@ -1485,19 +1485,18 @@ def expect_response(urlOrPredicate, timeout: nil, &block)
 
 Returns the matched response. See [waiting for event](https://playwright.dev/python/docs/events) for more details about events.
 
-```ruby
-page.content = '<form action="https://example.com/resource"><input type="submit" /></form>'
-response = page.expect_response(/example.com\/resource/) do
-  page.click("input")
-end
-puts response.body
+```python sync title=example_8640a109091eac678c17600c4918b2b0010771a4d76054580bb879719eb3e05e.py
+with page.expect_response("https://example.com/resource") as response_info:
+    page.click("input")
+response = response_info.value
+return response.ok
 
-# or with a predicate
-page.content = '<form action="https://example.com/resource"><input type="submit" /></form>'
-response = page.expect_response(->(res) { res.url.start_with? 'https://example.com/resource' }) do
-  page.click("input")
-end
-puts response.body
+# or with a lambda
+with page.expect_response(lambda response: response.url == "https://example.com" and response.status == 200) as response_info:
+    page.click("input")
+response = response_info.value
+return response.ok
+
 ```
 
 

@@ -310,9 +310,10 @@ def frame_locator(selector)
 When working with iframes, you can create a frame locator that will enter the iframe and allow selecting elements in
 that iframe:
 
-```ruby
-locator = page.frame_locator("text=Submit").locator("text=Submit")
-locator.click
+```python sync title=example_18679ec4d71712b9c205ae9896778924011d154c4529df7b44d33d6d6ece55cb.py
+locator = page.frame_locator("iframe").locator("text=Submit")
+locator.click()
+
 ```
 
 
@@ -430,7 +431,7 @@ Returns locator to the last matching element.
 ## locator
 
 ```
-def locator(selector, hasText: nil)
+def locator(selector, has: nil, hasText: nil)
 ```
 
 The method finds an element matching the specified selector in the [Locator](./locator)'s subtree.

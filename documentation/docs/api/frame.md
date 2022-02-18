@@ -549,7 +549,7 @@ considered not visible.
 ## locator
 
 ```
-def locator(selector, hasText: nil)
+def locator(selector, has: nil, hasText: nil)
 ```
 
 The method returns an element locator that can be used to perform actions in the frame. Locator is resolved to the
