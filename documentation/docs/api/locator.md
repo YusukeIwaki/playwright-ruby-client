@@ -444,6 +444,14 @@ def nth(index)
 
 Returns locator to the n-th matching element.
 
+## page
+
+```
+def page
+```
+
+A page this locator belongs to.
+
 ## press
 
 ```
