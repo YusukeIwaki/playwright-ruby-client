@@ -2,6 +2,10 @@ require 'base64'
 
 module Playwright
   define_channel_owner :APIRequestContext do
+    private def after_initialize
+      @tracing = ChannelOwners::Tracing.from(@initializer['tracing'])
+    end
+
     def dispose
       @channel.send_message_to_server('dispose')
     end

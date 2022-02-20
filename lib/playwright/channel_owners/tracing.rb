@@ -1,15 +1,11 @@
 module Playwright
-  define_api_implementation :TracingImpl do
-    def initialize(channel, context)
-      @channel = channel
-      @context = context
-    end
-
-    def start(name: nil, title: nil, screenshots: nil, snapshots: nil)
+  define_channel_owner :Tracing do
+    def start(name: nil, title: nil, screenshots: nil, snapshots: nil, sources: nil)
       params = {
         name: name,
         screenshots: screenshots,
         snapshots: snapshots,
+        sources: sources,
       }.compact
       @channel.send_message_to_server('tracingStart', params)
       @channel.send_message_to_server('tracingStartChunk', { title: title }.compact)
@@ -31,7 +27,7 @@ module Playwright
     private def do_stop_chunk(file_path:)
       mode = 'doNotSave'
       if file_path
-        if @context.send(:remote_connection?)
+        if @connection.remote?
           mode = 'compressTrace'
         else
           mode = 'compressTraceAndSources'

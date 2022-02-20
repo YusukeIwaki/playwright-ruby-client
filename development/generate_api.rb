@@ -45,7 +45,6 @@ API_IMPLEMENTATIONS = %w[
   Keyboard
   Mouse
   Touchscreen
-  Tracing
   Download
   Locator
   FrameLocator

@@ -72,6 +72,10 @@ module Playwright
     private def delete_object_from_child(guid)
       @objects.delete(guid)
     end
+
+    private def same_connection?(other)
+      @connection == other.instance_variable_get(:@connection)
+    end
   end
 
   class RootChannelOwner < ChannelOwner

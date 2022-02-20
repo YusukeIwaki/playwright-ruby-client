@@ -98,12 +98,18 @@ module Playwright
       wrapped_route = PlaywrightApi.wrap(route)
       wrapped_request = PlaywrightApi.wrap(request)
 
-      if @routes.none? { |handler_entry| handler_entry.handle(wrapped_route, wrapped_request) }
-        @browser_context.send(:on_route, route, request)
-      else
-        @routes.reject!(&:expired?)
-        if @routes.count == 0
-          @channel.async_send_message_to_server('setNetworkInterceptionEnabled', enabled: false)
+      begin
+        handled = @routes.any? { |handler_entry| handler_entry.handle(wrapped_route, wrapped_request) }
+      ensure
+        # handled = nil when handler_entry#handle raise error.
+        # In this case, the route is actually handled.
+        if handled.nil? || handled
+          @browser_context.send(:on_route, route, request)
+        else
+          @routes.reject!(&:expired?)
+          if @routes.count == 0
+            @channel.async_send_message_to_server('setNetworkInterceptionEnabled', enabled: false)
+          end
         end
       end
     end
