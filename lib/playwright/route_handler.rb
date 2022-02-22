@@ -5,7 +5,7 @@ module Playwright
         @count = count
       end
 
-      def handle
+      def increment
         return false if expired?
 
         @count = @count - 1
@@ -18,7 +18,7 @@ module Playwright
     end
 
     class StubCounter
-      def handle
+      def increment
         true
       end
 
@@ -43,14 +43,17 @@ module Playwright
         end
     end
 
-    def handle(route, request)
-      return false unless @counter.handle
+    def match?(url)
+      @url_matcher.match?(url)
+    end
 
-      if @url_matcher.match?(request.url)
+    def async_handle(route, request)
+      @counter.increment
+
+      Concurrent::Promises.future do
         @handler.call(route, request)
-        true
-      else
-        false
+      rescue => err
+        puts err, err.backtrace
       end
     end
 
