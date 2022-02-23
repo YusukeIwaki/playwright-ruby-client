@@ -65,7 +65,7 @@ Returns locator to the last matching frame.
 ## locator
 
 ```
-def locator(selector, hasText: nil)
+def locator(selector, has: nil, hasText: nil)
 ```
 
 The method finds an element matching the specified selector in the FrameLocator's subtree.

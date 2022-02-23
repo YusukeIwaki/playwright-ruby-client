@@ -66,6 +66,10 @@ module Playwright
       @request.channel.send_message_to_server("disposeAPIResponse", fetchUid: fetch_uid)
     end
 
+    private def _request
+      @request
+    end
+
     private def fetch_uid
       @initializer['fetchUid']
     end

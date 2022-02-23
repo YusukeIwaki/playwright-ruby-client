@@ -28,7 +28,17 @@ playwright.chromium.launch do |browser|
     data: { name: 'test-repo-1' },
   )
   response.ok? # => true
-  response.json['name'] # => "tes≈-repo-1"
+  response.json['name'] # => "test-repo-1"
+
+  # Delete a repository.
+  response = api_request_context.delete(
+    "/repos/YourName/test-repo-1",
+    headers: {
+      "Accept": "application/vnd.github.v3+json",
+      "Authorization": "Bearer #{API_TOKEN}",
+    },
+  )
+  response.ok? # => true
 end
 ```
 

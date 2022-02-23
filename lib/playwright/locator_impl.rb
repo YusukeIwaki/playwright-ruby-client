@@ -24,27 +24,49 @@ module Playwright
   end
 
   define_api_implementation :LocatorImpl do
-    def initialize(frame:, timeout_settings:, selector:, hasText: nil)
+    def initialize(frame:, timeout_settings:, selector:, hasText: nil, has: nil)
       @frame = frame
       @timeout_settings = timeout_settings
-      @selector =
-        case hasText
-        when Regexp
-          source = EscapeWithQuotes.new(hasText.source, '"')
-          flags = []
-          flags << 'ms' if (hasText.options & Regexp::MULTILINE) != 0
-          flags << 'i' if (hasText.options & Regexp::IGNORECASE) != 0
-          "#{selector} >> :scope:text-matches(#{source}, \"#{flags.join('')}\")"
-        when String
-          text = EscapeWithQuotes.new(hasText, '"')
-          "#{selector} >> :scope:has-text(#{text})"
-        else
-          selector
+      selector_scopes = [selector]
+
+      case hasText
+      when Regexp
+        source = EscapeWithQuotes.new(hasText.source, '"')
+        flags = []
+        flags << 'ms' if (hasText.options & Regexp::MULTILINE) != 0
+        flags << 'i' if (hasText.options & Regexp::IGNORECASE) != 0
+        selector_scopes << ":scope:text-matches(#{source}, \"#{flags.join('')}\")"
+      when String
+        text = EscapeWithQuotes.new(hasText, '"')
+        selector_scopes << ":scope:has-text(#{text})"
+      end
+
+      if has
+        unless same_frame?(has)
+          raise DifferentFrameError.new
         end
+        selector_scopes << "has=#{has.send(:selector_json)}"
+      end
+
+      @selector = selector_scopes.join(' >> ')
     end
 
     def to_s
       "Locator@#{@selector}"
+    end
+
+    class DifferentFrameError < StandardError
+      def initialize
+        super('Inner "has" locator must belong to the same frame.')
+      end
+    end
+
+    private def same_frame?(other)
+      @frame == other.instance_variable_get(:@frame)
+    end
+
+    private def selector_json
+      @selector.to_json
     end
 
     private def with_element(timeout: nil, &block)
@@ -65,6 +87,10 @@ module Playwright
       ensure
         handle.dispose
       end
+    end
+
+    def page
+      @frame.page
     end
 
     def bounding_box(timeout: nil)
@@ -180,12 +206,13 @@ module Playwright
       @frame.fill(@selector, value, strict: true, force: force, noWaitAfter: noWaitAfter, timeout: timeout)
     end
 
-    def locator(selector, hasText: nil)
+    def locator(selector, hasText: nil, has: nil)
       LocatorImpl.new(
         frame: @frame,
         timeout_settings: @timeout_settings,
         selector: "#{@selector} >> #{selector}",
         hasText: hasText,
+        has: has,
       )
     end
 

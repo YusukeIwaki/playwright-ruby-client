@@ -774,7 +774,7 @@ considered not visible.
 ## locator
 
 ```
-def locator(selector, hasText: nil)
+def locator(selector, has: nil, hasText: nil)
 ```
 
 The method returns an element locator that can be used to perform actions on the page. Locator is resolved to the
@@ -1491,6 +1491,9 @@ response = page.expect_response(/example.com\/resource/) do
   page.click("input")
 end
 puts response.body
+puts response.ok?
+
+page.wait_for_load_state # wait for request finished.
 
 # or with a predicate
 page.content = '<form action="https://example.com/resource"><input type="submit" /></form>'
@@ -1498,6 +1501,7 @@ response = page.expect_response(->(res) { res.url.start_with? 'https://example.c
   page.click("input")
 end
 puts response.body
+puts response.ok?
 ```
 
 

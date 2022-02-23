@@ -23,7 +23,12 @@ end
 ## start
 
 ```
-def start(name: nil, screenshots: nil, snapshots: nil, title: nil)
+def start(
+      name: nil,
+      screenshots: nil,
+      snapshots: nil,
+      sources: nil,
+      title: nil)
 ```
 
 Start tracing.

@@ -120,4 +120,21 @@ RSpec.describe 'BrowserContext#route', sinatra: true do
 
     expect(intercepted).to eq(%w[intercepted intercepted])
   end
+
+  xit 'should handle even if raise error' do
+    with_context do |context|
+      context.route('**/empty.html', ->(route, _) {
+        route.fulfill(status: 200, body: 'context')
+      })
+      page = context.new_page
+      page.route('**/empty.html', ->(route, _) {
+        raise "Boom"
+      }, times: 1)
+
+      page.goto(server_empty_page)
+      response = page.goto(server_empty_page)
+      expect(response).to be_ok
+      expect(response.text).to eq('context')
+    end
+  end
 end

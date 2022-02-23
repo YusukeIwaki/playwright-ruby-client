@@ -14,7 +14,7 @@ module Playwright
       @service_workers = Set.new
       @background_pages = Set.new
 
-      @tracing = TracingImpl.new(@channel, self)
+      @tracing = ChannelOwners::Tracing.from(@initializer['tracing'])
       @request = ChannelOwners::APIRequestContext.from(@initializer['APIRequestContext'])
 
       @channel.on('bindingCall', ->(params) { on_binding(ChannelOwners::BindingCall.from(params['binding'])) })
@@ -72,13 +72,19 @@ module Playwright
       wrapped_route = PlaywrightApi.wrap(route)
       wrapped_request = PlaywrightApi.wrap(request)
 
-      if @routes.none? { |handler_entry| handler_entry.handle(wrapped_route, wrapped_request) }
-        route.continue
-      else
+      handler_entry = @routes.find do |entry|
+        entry.match?(request.url)
+      end
+
+      if handler_entry
+        handler_entry.async_handle(wrapped_route, wrapped_request)
+
         @routes.reject!(&:expired?)
         if @routes.count == 0
           @channel.async_send_message_to_server('setNetworkInterceptionEnabled', enabled: false)
         end
+      else
+        route.continue
       end
     end
 
@@ -359,11 +365,6 @@ module Playwright
 
     private def base_url
       @options[:baseURL]
-    end
-
-    # called from Tracing
-    private def remote_connection?
-      @connection.remote?
     end
   end
 end

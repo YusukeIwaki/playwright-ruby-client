@@ -17,16 +17,30 @@ module Playwright
           contentType: nil,
           headers: nil,
           path: nil,
-          status: nil)
+          status: nil,
+          response: nil)
       params = {
         contentType: contentType,
         status: status,
       }.compact
+      option_body = body
 
-      length = 0
+      if response
+        params[:status] ||= response.status
+        params[:headers] ||= response.headers
+
+        if !body && !path && response.is_a?(APIResponse)
+          if response.send(:_request).send(:same_connection?, self)
+            params[:fetchResponseUid] = response.send(:fetch_uid)
+          else
+            option_body = response.body
+          end
+        end
+      end
+
       content =
-        if body
-          body
+        if option_body
+          option_body
         elsif path
           File.read(path)
         else

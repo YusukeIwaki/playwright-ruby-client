@@ -97,4 +97,31 @@ RSpec.describe 'Locator' do
       expect(page.locator('div', hasText: /hElLo "world"/i).text_content).to eq('Hello "world"')
     end
   end
+
+  it 'should support has:locator' do
+    with_page do |page|
+      page.content = '<div><span>hello</span></div><div><span>world</span></div>'
+      expect(page.locator('div', has: page.locator('text=world')).count).to eq(1)
+      expect(page.locator('div', has: page.locator('text=world')).evaluate('e => e.outerHTML')).to eq('<div><span>world</span></div>')
+
+      expect(page.locator('div', has: page.locator('text=hello')).count).to eq(1)
+      expect(page.locator('div', has: page.locator('text=hello')).evaluate('e => e.outerHTML')).to eq('<div><span>hello</span></div>')
+
+      expect(page.locator('div', has: page.locator('xpath=./span')).count).to eq(2)
+      expect(page.locator('div', has: page.locator('span')).count).to eq(2)
+      expect(page.locator('div', has: page.locator('span', hasText: 'wor')).count).to eq(1)
+      expect(page.locator('div', has: page.locator('span', hasText: 'wor')).evaluate('e => e.outerHTML')).to eq('<div><span>world</span></div>')
+      expect(page.locator('div', has: page.locator('span'), hasText: 'wor').count).to eq(1)
+    end
+  end
+
+  it 'should enforce same frame for has:locator', sinatra: true do
+    with_page do |page|
+      page.goto("#{server_prefix}/frames/two-frames.html")
+      child = page.frames[1]
+      expect {
+        page.locator('div', has: child.locator('span'))
+      }.to raise_error(/Inner "has" locator must belong to the same frame./)
+    end
+  end
 end

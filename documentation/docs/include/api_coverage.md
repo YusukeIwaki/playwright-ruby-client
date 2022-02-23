@@ -430,6 +430,7 @@
 * last
 * locator
 * nth
+* page
 * press
 * screenshot
 * scroll_into_view_if_needed

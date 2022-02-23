@@ -6678,13 +6678,13 @@
           "    # This will launch a new browser, create a context and page. When making HTTP",
           "    # requests with the internal APIRequestContext (e.g. `context.request` or `page.request`)",
           "    # it will automatically set the cookies to the browser page and vise versa.",
-          "    browser = playwright.chromium.launch()",
+          "    browser = p.chromium.launch()",
           "    context = browser.new_context(base_url=\"https://api.github.com\")",
           "    api_request_context = context.request",
           "    page = context.new_page()",
           "",
           "    # Alternatively you can create a APIRequestContext manually without having a browser context attached:",
-          "    # api_request_context = playwright.request.new_context(base_url=\"https://api.github.com\")",
+          "    # api_request_context = p.request.new_context(base_url=\"https://api.github.com\")",
           "",
           "",
           "    # Create a repository.",
@@ -6725,7 +6725,7 @@
       "types": {},
       "overrides": {}
     },
-    "comment": "This API is used for the Web API testing. You can use it to trigger API endpoints, configure micro-services, prepare\nenvironment or the service to your e2e test. When used on `Page` or a `BrowserContext`, this API will automatically use\nthe cookies from the corresponding `BrowserContext`. This means that if you log in using this API, your e2e test will be\nlogged in and vice versa.\n\n```python async\nimport os\nimport asyncio\nfrom playwright.async_api import async_playwright, Playwright\n\nREPO = \"test-repo-1\"\nUSER = \"github-username\"\nAPI_TOKEN = os.getenv(\"GITHUB_API_TOKEN\")\n\nasync def run(playwright: Playwright):\n    # This will launch a new browser, create a context and page. When making HTTP\n    # requests with the internal APIRequestContext (e.g. `context.request` or `page.request`)\n    # it will automatically set the cookies to the browser page and vise versa.\n    browser = await playwright.chromium.launch()\n    context = await browser.new_context(base_url=\"https://api.github.com\")\n    api_request_context = context.request\n    page = await context.new_page()\n\n    # Alternatively you can create a APIRequestContext manually without having a browser context attached:\n    # api_request_context = await playwright.request.new_context(base_url=\"https://api.github.com\")\n\n    # Create a repository.\n    response = await api_request_context.post(\n        \"/user/repos\",\n        headers={\n            \"Accept\": \"application/vnd.github.v3+json\",\n            # Add GitHub personal access token.\n            \"Authorization\": f\"token {API_TOKEN}\",\n        },\n        data={\"name\": REPO},\n    )\n    assert response.ok\n    assert response.json()[\"name\"] == REPO\n\n    # Delete a repository.\n    response = await api_request_context.delete(\n        f\"/repos/{USER}/{REPO}\",\n        headers={\n            \"Accept\": \"application/vnd.github.v3+json\",\n            # Add GitHub personal access token.\n            \"Authorization\": f\"token {API_TOKEN}\",\n        },\n    )\n    assert response.ok\n    assert await response.body() == '{\"status\": \"ok\"}'\n\nasync def main():\n    async with async_playwright() as playwright:\n        await run(playwright)\n\nasyncio.run(main())\n```\n\n```python sync\nimport os\nfrom playwright.sync_api import sync_playwright\n\nREPO = \"test-repo-1\"\nUSER = \"github-username\"\nAPI_TOKEN = os.getenv(\"GITHUB_API_TOKEN\")\n\nwith sync_playwright() as p:\n    # This will launch a new browser, create a context and page. When making HTTP\n    # requests with the internal APIRequestContext (e.g. `context.request` or `page.request`)\n    # it will automatically set the cookies to the browser page and vise versa.\n    browser = playwright.chromium.launch()\n    context = browser.new_context(base_url=\"https://api.github.com\")\n    api_request_context = context.request\n    page = context.new_page()\n\n    # Alternatively you can create a APIRequestContext manually without having a browser context attached:\n    # api_request_context = playwright.request.new_context(base_url=\"https://api.github.com\")\n\n\n    # Create a repository.\n    response = api_request_context.post(\n        \"/user/repos\",\n        headers={\n            \"Accept\": \"application/vnd.github.v3+json\",\n            # Add GitHub personal access token.\n            \"Authorization\": f\"token {API_TOKEN}\",\n        },\n        data={\"name\": REPO},\n    )\n    assert response.ok\n    assert response.json()[\"name\"] == REPO\n\n    # Delete a repository.\n    response = api_request_context.delete(\n        f\"/repos/{USER}/{REPO}\",\n        headers={\n            \"Accept\": \"application/vnd.github.v3+json\",\n            # Add GitHub personal access token.\n            \"Authorization\": f\"token {API_TOKEN}\",\n        },\n    )\n    assert response.ok\n    assert await response.body() == '{\"status\": \"ok\"}'\n```\n",
+    "comment": "This API is used for the Web API testing. You can use it to trigger API endpoints, configure micro-services, prepare\nenvironment or the service to your e2e test. When used on `Page` or a `BrowserContext`, this API will automatically use\nthe cookies from the corresponding `BrowserContext`. This means that if you log in using this API, your e2e test will be\nlogged in and vice versa.\n\n```python async\nimport os\nimport asyncio\nfrom playwright.async_api import async_playwright, Playwright\n\nREPO = \"test-repo-1\"\nUSER = \"github-username\"\nAPI_TOKEN = os.getenv(\"GITHUB_API_TOKEN\")\n\nasync def run(playwright: Playwright):\n    # This will launch a new browser, create a context and page. When making HTTP\n    # requests with the internal APIRequestContext (e.g. `context.request` or `page.request`)\n    # it will automatically set the cookies to the browser page and vise versa.\n    browser = await playwright.chromium.launch()\n    context = await browser.new_context(base_url=\"https://api.github.com\")\n    api_request_context = context.request\n    page = await context.new_page()\n\n    # Alternatively you can create a APIRequestContext manually without having a browser context attached:\n    # api_request_context = await playwright.request.new_context(base_url=\"https://api.github.com\")\n\n    # Create a repository.\n    response = await api_request_context.post(\n        \"/user/repos\",\n        headers={\n            \"Accept\": \"application/vnd.github.v3+json\",\n            # Add GitHub personal access token.\n            \"Authorization\": f\"token {API_TOKEN}\",\n        },\n        data={\"name\": REPO},\n    )\n    assert response.ok\n    assert response.json()[\"name\"] == REPO\n\n    # Delete a repository.\n    response = await api_request_context.delete(\n        f\"/repos/{USER}/{REPO}\",\n        headers={\n            \"Accept\": \"application/vnd.github.v3+json\",\n            # Add GitHub personal access token.\n            \"Authorization\": f\"token {API_TOKEN}\",\n        },\n    )\n    assert response.ok\n    assert await response.body() == '{\"status\": \"ok\"}'\n\nasync def main():\n    async with async_playwright() as playwright:\n        await run(playwright)\n\nasyncio.run(main())\n```\n\n```python sync\nimport os\nfrom playwright.sync_api import sync_playwright\n\nREPO = \"test-repo-1\"\nUSER = \"github-username\"\nAPI_TOKEN = os.getenv(\"GITHUB_API_TOKEN\")\n\nwith sync_playwright() as p:\n    # This will launch a new browser, create a context and page. When making HTTP\n    # requests with the internal APIRequestContext (e.g. `context.request` or `page.request`)\n    # it will automatically set the cookies to the browser page and vise versa.\n    browser = p.chromium.launch()\n    context = browser.new_context(base_url=\"https://api.github.com\")\n    api_request_context = context.request\n    page = context.new_page()\n\n    # Alternatively you can create a APIRequestContext manually without having a browser context attached:\n    # api_request_context = p.request.new_context(base_url=\"https://api.github.com\")\n\n\n    # Create a repository.\n    response = api_request_context.post(\n        \"/user/repos\",\n        headers={\n            \"Accept\": \"application/vnd.github.v3+json\",\n            # Add GitHub personal access token.\n            \"Authorization\": f\"token {API_TOKEN}\",\n        },\n        data={\"name\": REPO},\n    )\n    assert response.ok\n    assert response.json()[\"name\"] == REPO\n\n    # Delete a repository.\n    response = api_request_context.delete(\n        f\"/repos/{USER}/{REPO}\",\n        headers={\n            \"Accept\": \"application/vnd.github.v3+json\",\n            # Add GitHub personal access token.\n            \"Authorization\": f\"token {API_TOKEN}\",\n        },\n    )\n    assert response.ok\n    assert await response.body() == '{\"status\": \"ok\"}'\n```\n",
     "members": [
       {
         "kind": "method",
@@ -10934,7 +10934,6 @@
       {
         "type": "code",
         "lines": [
-          "import re",
           "from playwright.async_api import Page, expect",
           "",
           "async def test_navigates_to_login_page(page: Page) -> None:",
@@ -10947,7 +10946,6 @@
       {
         "type": "code",
         "lines": [
-          "import re",
           "from playwright.sync_api import Page, expect",
           "",
           "def test_navigates_to_login_page(page: Page) -> None:",
@@ -10961,13 +10959,14 @@
     "langs": {
       "only": [
         "js",
-        "java"
+        "java",
+        "python"
       ],
       "aliases": {},
       "types": {},
       "overrides": {}
     },
-    "comment": "The `APIResponseAssertions` class provides assertion methods that can be used to make assertions about the `APIResponse`\nin the tests. A new instance of `APIResponseAssertions` is created by calling\n[`method: PlaywrightAssertions.expectAPIResponse`]:\n\n```js\nimport { test, expect } from '@playwright/test';\n\ntest('navigates to login', async ({ page }) => {\n  // ...\n  const response = await page.request.get('https://playwright.dev');\n  await expect(response).toBeOK();\n});\n```\n\n```java\n...\nimport static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;\n\npublic class TestPage {\n  ...\n  @Test\n  void navigatesToLoginPage() {\n    ...\n    APIResponse response = page.request().get('https://playwright.dev');\n    assertThat(response).isOK();\n  }\n}\n```\n\n```python async\nimport re\nfrom playwright.async_api import Page, expect\n\nasync def test_navigates_to_login_page(page: Page) -> None:\n    # ..\n    response = await page.request.get('https://playwright.dev')\n    await expect(response).to_be_ok()\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import Page, expect\n\ndef test_navigates_to_login_page(page: Page) -> None:\n    # ..\n    response = page.request.get('https://playwright.dev')\n    expect(response).to_be_ok()\n```\n",
+    "comment": "The `APIResponseAssertions` class provides assertion methods that can be used to make assertions about the `APIResponse`\nin the tests. A new instance of `APIResponseAssertions` is created by calling\n[`method: PlaywrightAssertions.expectAPIResponse`]:\n\n```js\nimport { test, expect } from '@playwright/test';\n\ntest('navigates to login', async ({ page }) => {\n  // ...\n  const response = await page.request.get('https://playwright.dev');\n  await expect(response).toBeOK();\n});\n```\n\n```java\n...\nimport static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;\n\npublic class TestPage {\n  ...\n  @Test\n  void navigatesToLoginPage() {\n    ...\n    APIResponse response = page.request().get('https://playwright.dev');\n    assertThat(response).isOK();\n  }\n}\n```\n\n```python async\nfrom playwright.async_api import Page, expect\n\nasync def test_navigates_to_login_page(page: Page) -> None:\n    # ..\n    response = await page.request.get('https://playwright.dev')\n    await expect(response).to_be_ok()\n```\n\n```python sync\nfrom playwright.sync_api import Page, expect\n\ndef test_navigates_to_login_page(page: Page) -> None:\n    # ..\n    response = page.request.get('https://playwright.dev')\n    expect(response).to_be_ok()\n```\n",
     "members": [
       {
         "kind": "method",
@@ -10988,7 +10987,7 @@
         "spec": [
           {
             "type": "text",
-            "text": "Makes the assertion check for the opposite condition. For example, this code tests that the response status is not successfull:"
+            "text": "Makes the assertion check for the opposite condition. For example, this code tests that the response status is not successful:"
           },
           {
             "type": "code",
@@ -11006,10 +11005,39 @@
           }
         ],
         "required": true,
-        "comment": "Makes the assertion check for the opposite condition. For example, this code tests that the response status is not\nsuccessfull:\n\n```js\nawait expect(response).not.toBeOK();\n```\n\n```java\nassertThat(response).not().isOK();\n```\n",
+        "comment": "Makes the assertion check for the opposite condition. For example, this code tests that the response status is not\nsuccessful:\n\n```js\nawait expect(response).not.toBeOK();\n```\n\n```java\nassertThat(response).not().isOK();\n```\n",
         "deprecated": false,
         "async": false,
         "alias": "not",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {
+          "only": [
+            "python"
+          ],
+          "aliases": {},
+          "types": {},
+          "overrides": {}
+        },
+        "name": "NotToBeOK",
+        "type": {
+          "name": "void"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "The opposite of [`method: APIResponseAssertions.toBeOK`]."
+          }
+        ],
+        "required": true,
+        "comment": "The opposite of [`method: APIResponseAssertions.toBeOK`].",
+        "deprecated": false,
+        "async": true,
+        "alias": "NotToBeOK",
         "overloadIndex": 0,
         "paramOrOption": null,
         "args": []
@@ -11049,7 +11077,6 @@
           {
             "type": "code",
             "lines": [
-              "import re",
               "from playwright.async_api import expect",
               "",
               "# ...",
@@ -11070,7 +11097,7 @@
           }
         ],
         "required": true,
-        "comment": "Ensures the response status code is within [200..299] range.\n\n```js\nawait expect(response).toBeOK();\n```\n\n```java\nassertThat(response).isOK();\n```\n\n```python async\nimport re\nfrom playwright.async_api import expect\n\n# ...\nawait expect(response).to_be_ok()\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\n# ...\nexpect(response).to_be_ok()\n```\n",
+        "comment": "Ensures the response status code is within [200..299] range.\n\n```js\nawait expect(response).toBeOK();\n```\n\n```java\nassertThat(response).isOK();\n```\n\n```python async\nfrom playwright.async_api import expect\n\n# ...\nawait expect(response).to_be_ok()\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\n# ...\nexpect(response).to_be_ok()\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "toBeOK",
@@ -25969,9 +25996,13 @@
       {
         "type": "code",
         "lines": [
+          "// Note that Promise.all prevents a race condition",
+          "// between clicking and waiting for the download.",
           "const [ download ] = await Promise.all([",
-          "  page.waitForEvent('download'), // wait for download to start",
-          "  page.click('a')",
+          "  // It is important to call waitForEvent before click to set up waiting.",
+          "  page.waitForEvent('download'),",
+          "  // Triggers the download.",
+          "  page.locator('text=Download file').click(),",
           "]);",
           "// wait for download to complete",
           "const path = await download.path();"
@@ -26035,7 +26066,7 @@
       }
     ],
     "langs": {},
-    "comment": "`Download` objects are dispatched by page via the [`event: Page.download`] event.\n\nAll the downloaded files belonging to the browser context are deleted when the browser context is closed.\n\nDownload event is emitted once the download starts. Download path becomes available once download completes:\n\n```js\nconst [ download ] = await Promise.all([\n  page.waitForEvent('download'), // wait for download to start\n  page.click('a')\n]);\n// wait for download to complete\nconst path = await download.path();\n```\n\n```java\n// wait for download to start\nDownload download  = page.waitForDownload(() -> page.click(\"a\"));\n// wait for download to complete\nPath path = download.path();\n```\n\n```java\n// wait for download to start\nDownload download = page.waitForDownload(() -> {\n  page.click(\"a\");\n});\n// wait for download to complete\nPath path = download.path();\n```\n\n```python async\nasync with page.expect_download() as download_info:\n    await page.click(\"a\")\ndownload = await download_info.value\n# waits for download to complete\npath = await download.path()\n```\n\n```python sync\nwith page.expect_download() as download_info:\n    page.click(\"a\")\ndownload = download_info.value\n# wait for download to complete\npath = download.path()\n```\n\n```csharp\nvar download = await page.RunAndWaitForDownloadAsync(async () =>\n{\n    await page.ClickAsync(\"#downloadButton\");\n});\nConsole.WriteLine(await download.PathAsync());\n```\n",
+    "comment": "`Download` objects are dispatched by page via the [`event: Page.download`] event.\n\nAll the downloaded files belonging to the browser context are deleted when the browser context is closed.\n\nDownload event is emitted once the download starts. Download path becomes available once download completes:\n\n```js\n// Note that Promise.all prevents a race condition\n// between clicking and waiting for the download.\nconst [ download ] = await Promise.all([\n  // It is important to call waitForEvent before click to set up waiting.\n  page.waitForEvent('download'),\n  // Triggers the download.\n  page.locator('text=Download file').click(),\n]);\n// wait for download to complete\nconst path = await download.path();\n```\n\n```java\n// wait for download to start\nDownload download  = page.waitForDownload(() -> page.click(\"a\"));\n// wait for download to complete\nPath path = download.path();\n```\n\n```java\n// wait for download to start\nDownload download = page.waitForDownload(() -> {\n  page.click(\"a\");\n});\n// wait for download to complete\nPath path = download.path();\n```\n\n```python async\nasync with page.expect_download() as download_info:\n    await page.click(\"a\")\ndownload = await download_info.value\n# waits for download to complete\npath = await download.path()\n```\n\n```python sync\nwith page.expect_download() as download_info:\n    page.click(\"a\")\ndownload = download_info.value\n# wait for download to complete\npath = download.path()\n```\n\n```csharp\nvar download = await page.RunAndWaitForDownloadAsync(async () =>\n{\n    await page.ClickAsync(\"#downloadButton\");\n});\nConsole.WriteLine(await download.PathAsync());\n```\n",
     "members": [
       {
         "kind": "method",
@@ -26364,6 +26395,25 @@
           "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm i -D playwright"
         ],
         "codeLang": "bash js"
+      },
+      {
+        "type": "text",
+        "text": "**Supported Electron versions are:**"
+      },
+      {
+        "type": "li",
+        "text": "v12.2.0+",
+        "liType": "bullet"
+      },
+      {
+        "type": "li",
+        "text": "v13.4.0+",
+        "liType": "bullet"
+      },
+      {
+        "type": "li",
+        "text": "v14+",
+        "liType": "bullet"
       }
     ],
     "langs": {
@@ -26374,7 +26424,7 @@
       "types": {},
       "overrides": {}
     },
-    "comment": "Playwright has **experimental** support for Electron automation. You can access electron namespace via:\n\n```js\nconst { _electron } = require('playwright');\n```\n\nAn example of the Electron automation script would be:\n\n```js\nconst { _electron: electron } = require('playwright');\n\n(async () => {\n  // Launch Electron app.\n  const electronApp = await electron.launch({ args: ['main.js'] });\n\n  // Evaluation expression in the Electron context.\n  const appPath = await electronApp.evaluate(async ({ app }) => {\n    // This runs in the main Electron process, parameter here is always\n    // the result of the require('electron') in the main app script.\n    return app.getAppPath();\n  });\n  console.log(appPath);\n\n  // Get the first window that the app opens, wait if necessary.\n  const window = await electronApp.firstWindow();\n  // Print the title.\n  console.log(await window.title());\n  // Capture a screenshot.\n  await window.screenshot({ path: 'intro.png' });\n  // Direct Electron console to Node terminal.\n  window.on('console', console.log);\n  // Click button.\n  await window.click('text=Click me');\n  // Exit app.\n  await electronApp.close();\n})();\n```\n\nNote that since you don't need Playwright to install web browsers when testing Electron, you can omit browser download\nvia setting the following environment variable when installing Playwright:\n\n```bash js\nPLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm i -D playwright\n```\n",
+    "comment": "Playwright has **experimental** support for Electron automation. You can access electron namespace via:\n\n```js\nconst { _electron } = require('playwright');\n```\n\nAn example of the Electron automation script would be:\n\n```js\nconst { _electron: electron } = require('playwright');\n\n(async () => {\n  // Launch Electron app.\n  const electronApp = await electron.launch({ args: ['main.js'] });\n\n  // Evaluation expression in the Electron context.\n  const appPath = await electronApp.evaluate(async ({ app }) => {\n    // This runs in the main Electron process, parameter here is always\n    // the result of the require('electron') in the main app script.\n    return app.getAppPath();\n  });\n  console.log(appPath);\n\n  // Get the first window that the app opens, wait if necessary.\n  const window = await electronApp.firstWindow();\n  // Print the title.\n  console.log(await window.title());\n  // Capture a screenshot.\n  await window.screenshot({ path: 'intro.png' });\n  // Direct Electron console to Node terminal.\n  window.on('console', console.log);\n  // Click button.\n  await window.click('text=Click me');\n  // Exit app.\n  await electronApp.close();\n})();\n```\n\nNote that since you don't need Playwright to install web browsers when testing Electron, you can omit browser download\nvia setting the following environment variable when installing Playwright:\n\n```bash js\nPLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm i -D playwright\n```\n\n**Supported Electron versions are:**\n- v12.2.0+\n- v13.4.0+\n- v14+",
     "members": [
       {
         "kind": "method",
@@ -33438,9 +33488,13 @@
       {
         "type": "code",
         "lines": [
+          "// Note that Promise.all prevents a race condition",
+          "// between clicking and waiting for the file chooser.",
           "const [fileChooser] = await Promise.all([",
+          "  // It is important to call waitForEvent before click to set up waiting.",
           "  page.waitForEvent('filechooser'),",
-          "  page.click('upload')",
+          "  // Opens the file chooser.",
+          "  page.locator('text=Upload').click(),",
           "]);",
           "await fileChooser.setFiles('myfile.pdf');"
         ],
@@ -33487,7 +33541,7 @@
       }
     ],
     "langs": {},
-    "comment": "`FileChooser` objects are dispatched by the page in the [`event: Page.fileChooser`] event.\n\n```js\nconst [fileChooser] = await Promise.all([\n  page.waitForEvent('filechooser'),\n  page.click('upload')\n]);\nawait fileChooser.setFiles('myfile.pdf');\n```\n\n```java\nFileChooser fileChooser = page.waitForFileChooser(() -> page.click(\"upload\"));\nfileChooser.setFiles(Paths.get(\"myfile.pdf\"));\n```\n\n```python async\nasync with page.expect_file_chooser() as fc_info:\n    await page.click(\"upload\")\nfile_chooser = await fc_info.value\nawait file_chooser.set_files(\"myfile.pdf\")\n```\n\n```python sync\nwith page.expect_file_chooser() as fc_info:\n    page.click(\"upload\")\nfile_chooser = fc_info.value\nfile_chooser.set_files(\"myfile.pdf\")\n```\n\n```csharp\nvar fileChooser = await page.RunAndWaitForFileChooserAsync(async () =>\n{\n    await page.ClickAsync(\"upload\");\n});\nawait fileChooser.SetFilesAsync(\"temp.txt\");\n```\n",
+    "comment": "`FileChooser` objects are dispatched by the page in the [`event: Page.fileChooser`] event.\n\n```js\n// Note that Promise.all prevents a race condition\n// between clicking and waiting for the file chooser.\nconst [fileChooser] = await Promise.all([\n  // It is important to call waitForEvent before click to set up waiting.\n  page.waitForEvent('filechooser'),\n  // Opens the file chooser.\n  page.locator('text=Upload').click(),\n]);\nawait fileChooser.setFiles('myfile.pdf');\n```\n\n```java\nFileChooser fileChooser = page.waitForFileChooser(() -> page.click(\"upload\"));\nfileChooser.setFiles(Paths.get(\"myfile.pdf\"));\n```\n\n```python async\nasync with page.expect_file_chooser() as fc_info:\n    await page.click(\"upload\")\nfile_chooser = await fc_info.value\nawait file_chooser.set_files(\"myfile.pdf\")\n```\n\n```python sync\nwith page.expect_file_chooser() as fc_info:\n    page.click(\"upload\")\nfile_chooser = fc_info.value\nfile_chooser.set_files(\"myfile.pdf\")\n```\n\n```csharp\nvar fileChooser = await page.RunAndWaitForFileChooserAsync(async () =>\n{\n    await page.ClickAsync(\"upload\");\n});\nawait fileChooser.SetFilesAsync(\"temp.txt\");\n```\n",
     "members": [
       {
         "kind": "method",
@@ -39190,6 +39244,32 @@
                 {
                   "kind": "property",
                   "langs": {},
+                  "name": "has",
+                  "type": {
+                    "name": "Locator",
+                    "expression": "[Locator]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Matches elements containing an element that matches an inner locator. Inner locator is queried against the outer one. For example, `article` that has `text=Playwright` matches `<article><div>Playwright</div></article>`."
+                    },
+                    {
+                      "type": "text",
+                      "text": "Note that outer and inner locators must belong to the same frame. Inner locator must not contain `FrameLocator`s."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Matches elements containing an element that matches an inner locator. Inner locator is queried against the outer one.\nFor example, `article` that has `text=Playwright` matches `<article><div>Playwright</div></article>`.\n\nNote that outer and inner locators must belong to the same frame. Inner locator must not contain `FrameLocator`s.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "has",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
                   "name": "hasText",
                   "type": {
                     "name": "",
@@ -43686,6 +43766,32 @@
                 {
                   "kind": "property",
                   "langs": {},
+                  "name": "has",
+                  "type": {
+                    "name": "Locator",
+                    "expression": "[Locator]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Matches elements containing an element that matches an inner locator. Inner locator is queried against the outer one. For example, `article` that has `text=Playwright` matches `<article><div>Playwright</div></article>`."
+                    },
+                    {
+                      "type": "text",
+                      "text": "Note that outer and inner locators must belong to the same frame. Inner locator must not contain `FrameLocator`s."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Matches elements containing an element that matches an inner locator. Inner locator is queried against the outer one.\nFor example, `article` that has `text=Playwright` matches `<article><div>Playwright</div></article>`.\n\nNote that outer and inner locators must belong to the same frame. Inner locator must not contain `FrameLocator`s.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "has",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
                   "name": "hasText",
                   "type": {
                     "name": "",
@@ -47671,7 +47777,7 @@
           {
             "type": "code",
             "lines": [
-              "locator = page.frame_locator(\"text=Submit\").locator(\"text=Submit\")",
+              "locator = page.frame_locator(\"iframe\").locator(\"text=Submit\")",
               "locator.click()"
             ],
             "codeLang": "python sync"
@@ -47686,7 +47792,7 @@
           }
         ],
         "required": true,
-        "comment": "When working with iframes, you can create a frame locator that will enter the iframe and allow selecting elements in\nthat iframe:\n\n```js\nconst locator = page.frameLocator('iframe').locator('text=Submit');\nawait locator.click();\n```\n\n```java\nLocator locator = page.frameLocator(\"iframe\").locator(\"text=Submit\");\nlocator.click();\n```\n\n```python async\nlocator = page.frame_locator(\"iframe\").locator(\"text=Submit\")\nawait locator.click()\n```\n\n```python sync\nlocator = page.frame_locator(\"text=Submit\").locator(\"text=Submit\")\nlocator.click()\n```\n\n```csharp\nvar locator = page.FrameLocator(\"iframe\").Locator(\"text=Submit\");\nawait locator.ClickAsync();\n```\n",
+        "comment": "When working with iframes, you can create a frame locator that will enter the iframe and allow selecting elements in\nthat iframe:\n\n```js\nconst locator = page.frameLocator('iframe').locator('text=Submit');\nawait locator.click();\n```\n\n```java\nLocator locator = page.frameLocator(\"iframe\").locator(\"text=Submit\");\nlocator.click();\n```\n\n```python async\nlocator = page.frame_locator(\"iframe\").locator(\"text=Submit\")\nawait locator.click()\n```\n\n```python sync\nlocator = page.frame_locator(\"iframe\").locator(\"text=Submit\")\nlocator.click()\n```\n\n```csharp\nvar locator = page.FrameLocator(\"iframe\").Locator(\"text=Submit\");\nawait locator.ClickAsync();\n```\n",
         "deprecated": false,
         "async": false,
         "alias": "frameLocator",
@@ -48697,6 +48803,32 @@
                 {
                   "kind": "property",
                   "langs": {},
+                  "name": "has",
+                  "type": {
+                    "name": "Locator",
+                    "expression": "[Locator]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Matches elements containing an element that matches an inner locator. Inner locator is queried against the outer one. For example, `article` that has `text=Playwright` matches `<article><div>Playwright</div></article>`."
+                    },
+                    {
+                      "type": "text",
+                      "text": "Note that outer and inner locators must belong to the same frame. Inner locator must not contain `FrameLocator`s."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Matches elements containing an element that matches an inner locator. Inner locator is queried against the outer one.\nFor example, `article` that has `text=Playwright` matches `<article><div>Playwright</div></article>`.\n\nNote that outer and inner locators must belong to the same frame. Inner locator must not contain `FrameLocator`s.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "has",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
                   "name": "hasText",
                   "type": {
                     "name": "",
@@ -48776,6 +48908,29 @@
             "paramOrOption": null
           }
         ]
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "page",
+        "type": {
+          "name": "Page",
+          "expression": "[Page]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "A page this locator belongs to."
+          }
+        ],
+        "required": true,
+        "comment": "A page this locator belongs to.",
+        "deprecated": false,
+        "async": false,
+        "alias": "page",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
       },
       {
         "kind": "method",
@@ -57499,8 +57654,12 @@
           {
             "type": "code",
             "lines": [
+              "// Note that Promise.all prevents a race condition",
+              "// between evaluating and waiting for the popup.",
               "const [popup] = await Promise.all([",
+              "  // It is important to call waitForEvent first.",
               "  page.waitForEvent('popup'),",
+              "  // Opens the popup.",
               "  page.evaluate(() => window.open('https://example.com')),",
               "]);",
               "console.log(await popup.evaluate('location.href'));"
@@ -57555,7 +57714,7 @@
           }
         ],
         "required": true,
-        "comment": "Emitted when the page opens a new tab or window. This event is emitted in addition to the\n[`event: BrowserContext.page`], but only for popups relevant to this page.\n\nThe earliest moment that page is available is when it has navigated to the initial url. For example, when opening a\npopup with `window.open('http://example.com')`, this event will fire when the network request to \"http://example.com\" is\ndone and its response has started loading in the popup.\n\n```js\nconst [popup] = await Promise.all([\n  page.waitForEvent('popup'),\n  page.evaluate(() => window.open('https://example.com')),\n]);\nconsole.log(await popup.evaluate('location.href'));\n```\n\n```java\nPage popup = page.waitForPopup(() -> {\n  page.evaluate(\"() => window.open('https://example.com')\");\n});\nSystem.out.println(popup.evaluate(\"location.href\"));\n```\n\n```python async\nasync with page.expect_event(\"popup\") as page_info:\n    page.evaluate(\"window.open('https://example.com')\")\npopup = await page_info.value\nprint(await popup.evaluate(\"location.href\"))\n```\n\n```python sync\nwith page.expect_event(\"popup\") as page_info:\n    page.evaluate(\"window.open('https://example.com')\")\npopup = page_info.value\nprint(popup.evaluate(\"location.href\"))\n```\n\n```csharp\nvar popup = await page.RunAndWaitForPopupAsync(async () =>\n{\n    await page.EvaluateAsync(\"() => window.open('https://microsoft.com')\");\n});\nConsole.WriteLine(await popup.EvaluateAsync<string>(\"location.href\"));\n```\n\n> NOTE: Use [`method: Page.waitForLoadState`] to wait until the page gets to a particular state (you should not need it\nin most cases).",
+        "comment": "Emitted when the page opens a new tab or window. This event is emitted in addition to the\n[`event: BrowserContext.page`], but only for popups relevant to this page.\n\nThe earliest moment that page is available is when it has navigated to the initial url. For example, when opening a\npopup with `window.open('http://example.com')`, this event will fire when the network request to \"http://example.com\" is\ndone and its response has started loading in the popup.\n\n```js\n// Note that Promise.all prevents a race condition\n// between evaluating and waiting for the popup.\nconst [popup] = await Promise.all([\n  // It is important to call waitForEvent first.\n  page.waitForEvent('popup'),\n  // Opens the popup.\n  page.evaluate(() => window.open('https://example.com')),\n]);\nconsole.log(await popup.evaluate('location.href'));\n```\n\n```java\nPage popup = page.waitForPopup(() -> {\n  page.evaluate(\"() => window.open('https://example.com')\");\n});\nSystem.out.println(popup.evaluate(\"location.href\"));\n```\n\n```python async\nasync with page.expect_event(\"popup\") as page_info:\n    page.evaluate(\"window.open('https://example.com')\")\npopup = await page_info.value\nprint(await popup.evaluate(\"location.href\"))\n```\n\n```python sync\nwith page.expect_event(\"popup\") as page_info:\n    page.evaluate(\"window.open('https://example.com')\")\npopup = page_info.value\nprint(popup.evaluate(\"location.href\"))\n```\n\n```csharp\nvar popup = await page.RunAndWaitForPopupAsync(async () =>\n{\n    await page.EvaluateAsync(\"() => window.open('https://microsoft.com')\");\n});\nConsole.WriteLine(await popup.EvaluateAsync<string>(\"location.href\"));\n```\n\n> NOTE: Use [`method: Page.waitForLoadState`] to wait until the page gets to a particular state (you should not need it\nin most cases).",
         "deprecated": false,
         "async": false,
         "alias": "popup",
@@ -65019,6 +65178,32 @@
                 {
                   "kind": "property",
                   "langs": {},
+                  "name": "has",
+                  "type": {
+                    "name": "Locator",
+                    "expression": "[Locator]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Matches elements containing an element that matches an inner locator. Inner locator is queried against the outer one. For example, `article` that has `text=Playwright` matches `<article><div>Playwright</div></article>`."
+                    },
+                    {
+                      "type": "text",
+                      "text": "Note that outer and inner locators must belong to the same frame. Inner locator must not contain `FrameLocator`s."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Matches elements containing an element that matches an inner locator. Inner locator is queried against the outer one.\nFor example, `article` that has `text=Playwright` matches `<article><div>Playwright</div></article>`.\n\nNote that outer and inner locators must belong to the same frame. Inner locator must not contain `FrameLocator`s.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "has",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
                   "name": "hasText",
                   "type": {
                     "name": "",
@@ -70813,9 +70998,13 @@
           {
             "type": "code",
             "lines": [
+              "// Note that Promise.all prevents a race condition",
+              "// between clicking and waiting for the event.",
               "const [frame, _] = await Promise.all([",
+              "  // It is important to call waitForEvent before click to set up waiting.",
               "  page.waitForEvent('framenavigated'),",
-              "  page.click('button')",
+              "  // Triggers the navigation.",
+              "  page.locator('button').click(),",
               "]);"
             ],
             "codeLang": "js"
@@ -70840,7 +71029,7 @@
           }
         ],
         "required": true,
-        "comment": "Waits for event to fire and passes its value into the predicate function. Returns when the predicate returns truthy\nvalue. Will throw an error if the page is closed before the event is fired. Returns the event data value.\n\n```js\nconst [frame, _] = await Promise.all([\n  page.waitForEvent('framenavigated'),\n  page.click('button')\n]);\n```\n\n```python async\nasync with page.expect_event(\"framenavigated\") as event_info:\n    await page.click(\"button\")\nframe = await event_info.value\n```\n\n```python sync\nwith page.expect_event(\"framenavigated\") as event_info:\n    page.click(\"button\")\nframe = event_info.value\n```\n",
+        "comment": "Waits for event to fire and passes its value into the predicate function. Returns when the predicate returns truthy\nvalue. Will throw an error if the page is closed before the event is fired. Returns the event data value.\n\n```js\n// Note that Promise.all prevents a race condition\n// between clicking and waiting for the event.\nconst [frame, _] = await Promise.all([\n  // It is important to call waitForEvent before click to set up waiting.\n  page.waitForEvent('framenavigated'),\n  // Triggers the navigation.\n  page.locator('button').click(),\n]);\n```\n\n```python async\nasync with page.expect_event(\"framenavigated\") as event_info:\n    await page.click(\"button\")\nframe = await event_info.value\n```\n\n```python sync\nwith page.expect_event(\"framenavigated\") as event_info:\n    page.click(\"button\")\nframe = event_info.value\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "waitForEvent",
@@ -71645,8 +71834,10 @@
             "type": "code",
             "lines": [
               "const [popup] = await Promise.all([",
+              "  // It is important to call waitForEvent before click to set up waiting.",
               "  page.waitForEvent('popup'),",
-              "  page.click('button'), // Click triggers a popup.",
+              "  // Click triggers a popup.",
+              "  page.locator('button').click(),",
               "])",
               "await popup.waitForLoadState('domcontentloaded'); // The promise resolves after 'domcontentloaded' event.",
               "console.log(await popup.title()); // Popup is ready to use."
@@ -71706,7 +71897,7 @@
           }
         ],
         "required": true,
-        "comment": "Returns when the required load state has been reached.\n\nThis resolves when the page reaches a required load state, `load` by default. The navigation must have been committed\nwhen this method is called. If current document has already reached the required state, resolves immediately.\n\n```js\nawait page.click('button'); // Click triggers navigation.\nawait page.waitForLoadState(); // The promise resolves after 'load' event.\n```\n\n```java\npage.click(\"button\"); // Click triggers navigation.\npage.waitForLoadState(); // The promise resolves after \"load\" event.\n```\n\n```python async\nawait page.click(\"button\") # click triggers navigation.\nawait page.wait_for_load_state() # the promise resolves after \"load\" event.\n```\n\n```python sync\npage.click(\"button\") # click triggers navigation.\npage.wait_for_load_state() # the promise resolves after \"load\" event.\n```\n\n```csharp\nawait page.ClickAsync(\"button\"); // Click triggers navigation.\nawait page.WaitForLoadStateAsync(); // The promise resolves after 'load' event.\n```\n\n```js\nconst [popup] = await Promise.all([\n  page.waitForEvent('popup'),\n  page.click('button'), // Click triggers a popup.\n])\nawait popup.waitForLoadState('domcontentloaded'); // The promise resolves after 'domcontentloaded' event.\nconsole.log(await popup.title()); // Popup is ready to use.\n```\n\n```java\nPage popup = page.waitForPopup(() -> {\n  page.click(\"button\"); // Click triggers a popup.\n});\npopup.waitForLoadState(LoadState.DOMCONTENTLOADED);\nSystem.out.println(popup.title()); // Popup is ready to use.\n```\n\n```python async\nasync with page.expect_popup() as page_info:\n    await page.click(\"button\") # click triggers a popup.\npopup = await page_info.value\n # Following resolves after \"domcontentloaded\" event.\nawait popup.wait_for_load_state(\"domcontentloaded\")\nprint(await popup.title()) # popup is ready to use.\n```\n\n```python sync\nwith page.expect_popup() as page_info:\n    page.click(\"button\") # click triggers a popup.\npopup = page_info.value\n # Following resolves after \"domcontentloaded\" event.\npopup.wait_for_load_state(\"domcontentloaded\")\nprint(popup.title()) # popup is ready to use.\n```\n\n```csharp\nvar popup = await page.RunAndWaitForPopupAsync(async () =>\n{\n    await page.ClickAsync(\"button\"); // click triggers the popup/\n});\nawait popup.WaitForLoadStateAsync(LoadState.DOMContentLoaded);\nConsole.WriteLine(await popup.TitleAsync()); // popup is ready to use.\n```\n\nShortcut for main frame's [`method: Frame.waitForLoadState`].",
+        "comment": "Returns when the required load state has been reached.\n\nThis resolves when the page reaches a required load state, `load` by default. The navigation must have been committed\nwhen this method is called. If current document has already reached the required state, resolves immediately.\n\n```js\nawait page.click('button'); // Click triggers navigation.\nawait page.waitForLoadState(); // The promise resolves after 'load' event.\n```\n\n```java\npage.click(\"button\"); // Click triggers navigation.\npage.waitForLoadState(); // The promise resolves after \"load\" event.\n```\n\n```python async\nawait page.click(\"button\") # click triggers navigation.\nawait page.wait_for_load_state() # the promise resolves after \"load\" event.\n```\n\n```python sync\npage.click(\"button\") # click triggers navigation.\npage.wait_for_load_state() # the promise resolves after \"load\" event.\n```\n\n```csharp\nawait page.ClickAsync(\"button\"); // Click triggers navigation.\nawait page.WaitForLoadStateAsync(); // The promise resolves after 'load' event.\n```\n\n```js\nconst [popup] = await Promise.all([\n  // It is important to call waitForEvent before click to set up waiting.\n  page.waitForEvent('popup'),\n  // Click triggers a popup.\n  page.locator('button').click(),\n])\nawait popup.waitForLoadState('domcontentloaded'); // The promise resolves after 'domcontentloaded' event.\nconsole.log(await popup.title()); // Popup is ready to use.\n```\n\n```java\nPage popup = page.waitForPopup(() -> {\n  page.click(\"button\"); // Click triggers a popup.\n});\npopup.waitForLoadState(LoadState.DOMCONTENTLOADED);\nSystem.out.println(popup.title()); // Popup is ready to use.\n```\n\n```python async\nasync with page.expect_popup() as page_info:\n    await page.click(\"button\") # click triggers a popup.\npopup = await page_info.value\n # Following resolves after \"domcontentloaded\" event.\nawait popup.wait_for_load_state(\"domcontentloaded\")\nprint(await popup.title()) # popup is ready to use.\n```\n\n```python sync\nwith page.expect_popup() as page_info:\n    page.click(\"button\") # click triggers a popup.\npopup = page_info.value\n # Following resolves after \"domcontentloaded\" event.\npopup.wait_for_load_state(\"domcontentloaded\")\nprint(popup.title()) # popup is ready to use.\n```\n\n```csharp\nvar popup = await page.RunAndWaitForPopupAsync(async () =>\n{\n    await page.ClickAsync(\"button\"); // click triggers the popup/\n});\nawait popup.WaitForLoadStateAsync(LoadState.DOMContentLoaded);\nConsole.WriteLine(await popup.TitleAsync()); // popup is ready to use.\n```\n\nShortcut for main frame's [`method: Frame.waitForLoadState`].",
         "deprecated": false,
         "async": true,
         "alias": "waitForLoadState",
@@ -71847,9 +72038,13 @@
           {
             "type": "code",
             "lines": [
+              "// Note that Promise.all prevents a race condition",
+              "// between clicking and waiting for the navigation.",
               "const [response] = await Promise.all([",
-              "  page.waitForNavigation(), // The promise resolves after navigation has finished",
-              "  page.click('a.delayed-navigation'), // Clicking the link will indirectly cause a navigation",
+              "  // It is important to call waitForNavigation before click to set up waiting.",
+              "  page.waitForNavigation(),",
+              "  // Clicking the link will indirectly cause a navigation.",
+              "  page.locator('a.delayed-navigation').click(),",
               "]);"
             ],
             "codeLang": "js"
@@ -71906,7 +72101,7 @@
           }
         ],
         "required": true,
-        "comment": "Waits for the main frame navigation and returns the main resource response. In case of multiple redirects, the\nnavigation will resolve with the response of the last redirect. In case of navigation to a different anchor or\nnavigation due to History API usage, the navigation will resolve with `null`.\n\nThis resolves when the page navigates to a new URL or reloads. It is useful for when you run code which will indirectly\ncause the page to navigate. e.g. The click target has an `onclick` handler that triggers navigation from a `setTimeout`.\nConsider this example:\n\n```js\nconst [response] = await Promise.all([\n  page.waitForNavigation(), // The promise resolves after navigation has finished\n  page.click('a.delayed-navigation'), // Clicking the link will indirectly cause a navigation\n]);\n```\n\n```java\n// The method returns after navigation has finished\nResponse response = page.waitForNavigation(() -> {\n  page.click(\"a.delayed-navigation\"); // Clicking the link will indirectly cause a navigation\n});\n```\n\n```python async\nasync with page.expect_navigation():\n    await page.click(\"a.delayed-navigation\") # clicking the link will indirectly cause a navigation\n# Resolves after navigation has finished\n```\n\n```python sync\nwith page.expect_navigation():\n    page.click(\"a.delayed-navigation\") # clicking the link will indirectly cause a navigation\n# Resolves after navigation has finished\n```\n\n```csharp\nawait page.RunAndWaitForNavigationAsync(async () =>\n{\n    // Clicking the link will indirectly cause a navigation.\n    await page.ClickAsync(\"a.delayed-navigation\");\n});\n\n// The method continues after navigation has finished\n```\n\n> NOTE: Usage of the [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API) to change the URL is\nconsidered a navigation.\n\nShortcut for main frame's [`method: Frame.waitForNavigation`].",
+        "comment": "Waits for the main frame navigation and returns the main resource response. In case of multiple redirects, the\nnavigation will resolve with the response of the last redirect. In case of navigation to a different anchor or\nnavigation due to History API usage, the navigation will resolve with `null`.\n\nThis resolves when the page navigates to a new URL or reloads. It is useful for when you run code which will indirectly\ncause the page to navigate. e.g. The click target has an `onclick` handler that triggers navigation from a `setTimeout`.\nConsider this example:\n\n```js\n// Note that Promise.all prevents a race condition\n// between clicking and waiting for the navigation.\nconst [response] = await Promise.all([\n  // It is important to call waitForNavigation before click to set up waiting.\n  page.waitForNavigation(),\n  // Clicking the link will indirectly cause a navigation.\n  page.locator('a.delayed-navigation').click(),\n]);\n```\n\n```java\n// The method returns after navigation has finished\nResponse response = page.waitForNavigation(() -> {\n  page.click(\"a.delayed-navigation\"); // Clicking the link will indirectly cause a navigation\n});\n```\n\n```python async\nasync with page.expect_navigation():\n    await page.click(\"a.delayed-navigation\") # clicking the link will indirectly cause a navigation\n# Resolves after navigation has finished\n```\n\n```python sync\nwith page.expect_navigation():\n    page.click(\"a.delayed-navigation\") # clicking the link will indirectly cause a navigation\n# Resolves after navigation has finished\n```\n\n```csharp\nawait page.RunAndWaitForNavigationAsync(async () =>\n{\n    // Clicking the link will indirectly cause a navigation.\n    await page.ClickAsync(\"a.delayed-navigation\");\n});\n\n// The method continues after navigation has finished\n```\n\n> NOTE: Usage of the [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API) to change the URL is\nconsidered a navigation.\n\nShortcut for main frame's [`method: Frame.waitForNavigation`].",
         "deprecated": false,
         "async": true,
         "alias": "waitForNavigation",
@@ -72897,13 +73092,13 @@
             "lines": [
               "async with page.expect_response(\"https://example.com/resource\") as response_info:",
               "    await page.click(\"input\")",
-              "response = response_info.value",
+              "response = await response_info.value",
               "return response.ok",
               "",
               "# or with a lambda",
               "async with page.expect_response(lambda response: response.url == \"https://example.com\" and response.status == 200) as response_info:",
               "    await page.click(\"input\")",
-              "response = response_info.value",
+              "response = await response_info.value",
               "return response.ok"
             ],
             "codeLang": "python async"
@@ -72917,7 +73112,7 @@
               "return response.ok",
               "",
               "# or with a lambda",
-              "with page.expect_response(lambda response: response.url == \"https://example.com\" and response.status === 200) as response_info:",
+              "with page.expect_response(lambda response: response.url == \"https://example.com\" and response.status == 200) as response_info:",
               "    page.click(\"input\")",
               "response = response_info.value",
               "return response.ok"
@@ -72943,7 +73138,7 @@
           }
         ],
         "required": true,
-        "comment": "Returns the matched response. See [waiting for event](./events.md#waiting-for-event) for more details about events.\n\n```js\n// Note that Promise.all prevents a race condition\n// between clicking and waiting for the response.\nconst [response] = await Promise.all([\n  // Waits for the next response with the specified url\n  page.waitForResponse('https://example.com/resource'),\n  // Triggers the response\n  page.click('button.triggers-response'),\n]);\n\n// Alternative way with a predicate.\nconst [response] = await Promise.all([\n  // Waits for the next response matching some conditions\n  page.waitForResponse(response => response.url() === 'https://example.com' && response.status() === 200),\n  // Triggers the response\n  page.click('button.triggers-response'),\n]);\n```\n\n```java\n// Waits for the next response with the specified url\nResponse response = page.waitForResponse(\"https://example.com/resource\", () -> {\n  // Triggers the response\n  page.click(\"button.triggers-response\");\n});\n\n// Waits for the next response matching some conditions\nResponse response = page.waitForResponse(response -> \"https://example.com\".equals(response.url()) && response.status() == 200, () -> {\n  // Triggers the response\n  page.click(\"button.triggers-response\");\n});\n```\n\n```python async\nasync with page.expect_response(\"https://example.com/resource\") as response_info:\n    await page.click(\"input\")\nresponse = response_info.value\nreturn response.ok\n\n# or with a lambda\nasync with page.expect_response(lambda response: response.url == \"https://example.com\" and response.status == 200) as response_info:\n    await page.click(\"input\")\nresponse = response_info.value\nreturn response.ok\n```\n\n```python sync\nwith page.expect_response(\"https://example.com/resource\") as response_info:\n    page.click(\"input\")\nresponse = response_info.value\nreturn response.ok\n\n# or with a lambda\nwith page.expect_response(lambda response: response.url == \"https://example.com\" and response.status === 200) as response_info:\n    page.click(\"input\")\nresponse = response_info.value\nreturn response.ok\n```\n\n```csharp\n// Waits for the next response with the specified url.\nawait page.RunAndWaitForResponseAsync(async () =>\n{\n    await page.ClickAsync(\"button.triggers-response\");\n}, \"http://example.com/resource\");\n\n// Alternative way with a predicate.\nawait page.RunAndWaitForResponseAsync(async () =>\n{\n    await page.ClickAsync(\"button\");\n}, response => response.Url == \"https://example.com\" && response.Status == 200);\n```\n",
+        "comment": "Returns the matched response. See [waiting for event](./events.md#waiting-for-event) for more details about events.\n\n```js\n// Note that Promise.all prevents a race condition\n// between clicking and waiting for the response.\nconst [response] = await Promise.all([\n  // Waits for the next response with the specified url\n  page.waitForResponse('https://example.com/resource'),\n  // Triggers the response\n  page.click('button.triggers-response'),\n]);\n\n// Alternative way with a predicate.\nconst [response] = await Promise.all([\n  // Waits for the next response matching some conditions\n  page.waitForResponse(response => response.url() === 'https://example.com' && response.status() === 200),\n  // Triggers the response\n  page.click('button.triggers-response'),\n]);\n```\n\n```java\n// Waits for the next response with the specified url\nResponse response = page.waitForResponse(\"https://example.com/resource\", () -> {\n  // Triggers the response\n  page.click(\"button.triggers-response\");\n});\n\n// Waits for the next response matching some conditions\nResponse response = page.waitForResponse(response -> \"https://example.com\".equals(response.url()) && response.status() == 200, () -> {\n  // Triggers the response\n  page.click(\"button.triggers-response\");\n});\n```\n\n```python async\nasync with page.expect_response(\"https://example.com/resource\") as response_info:\n    await page.click(\"input\")\nresponse = await response_info.value\nreturn response.ok\n\n# or with a lambda\nasync with page.expect_response(lambda response: response.url == \"https://example.com\" and response.status == 200) as response_info:\n    await page.click(\"input\")\nresponse = await response_info.value\nreturn response.ok\n```\n\n```python sync\nwith page.expect_response(\"https://example.com/resource\") as response_info:\n    page.click(\"input\")\nresponse = response_info.value\nreturn response.ok\n\n# or with a lambda\nwith page.expect_response(lambda response: response.url == \"https://example.com\" and response.status == 200) as response_info:\n    page.click(\"input\")\nresponse = response_info.value\nreturn response.ok\n```\n\n```csharp\n// Waits for the next response with the specified url.\nawait page.RunAndWaitForResponseAsync(async () =>\n{\n    await page.ClickAsync(\"button.triggers-response\");\n}, \"http://example.com/resource\");\n\n// Alternative way with a predicate.\nawait page.RunAndWaitForResponseAsync(async () =>\n{\n    await page.ClickAsync(\"button\");\n}, response => response.Url == \"https://example.com\" && response.Status == 200);\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "waitForResponse",
@@ -75747,22 +75942,6 @@
       {
         "type": "text",
         "text": "By default, the timeout for assertions is set to 5 seconds."
-      },
-      {
-        "type": "text",
-        "text": "To use Playwright assertions add the following dependency into the `pom.xml` of your Maven project:",
-        "codeLang": "java"
-      },
-      {
-        "type": "code",
-        "lines": [
-          "<dependency>",
-          "  <groupId>com.microsoft.playwright</groupId>",
-          "  <artifactId>assertions</artifactId>",
-          "  <version>1.17.0</version>",
-          "</dependency>"
-        ],
-        "codeLang": "xml java"
       }
     ],
     "langs": {
@@ -75775,14 +75954,15 @@
       "types": {},
       "overrides": {}
     },
-    "comment": "The `PlaywrightAssertions` class provides convenience methods for creating assertions that will wait until the expected\ncondition is met.\n\nConsider the following example:\n\n```js\nimport { test, expect } from '@playwright/test';\n\ntest('status becomes submitted', async ({ page }) => {\n  // ...\n  await page.click('#submit-button')\n  await expect(page.locator('.status')).toHaveText('Submitted');\n});\n```\n\n```python async\nfrom playwright.async_api import Page, expect\n\nasync def test_status_becomes_submitted(page: Page) -> None:\n    # ..\n    await page.click(\"#submit-button\")\n    await expect(page.locator(\".status\")).to_have_text(\"Submitted\")\n```\n\n```python sync\nfrom playwright.sync_api import Page, expect\n\ndef test_status_becomes_submitted(page: Page) -> None:\n    # ..\n    page.click(\"#submit-button\")\n    expect(page.locator(\".status\")).to_have_text(\"Submitted\")\n```\n\n```java\n...\nimport static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;\n\npublic class TestExample {\n  ...\n  @Test\n  void statusBecomesSubmitted() {\n    ...\n    page.click(\"#submit-button\");\n    assertThat(page.locator(\".status\")).hasText(\"Submitted\");\n  }\n}\n```\n\nPlaywright will be re-testing the node with the selector `.status` until fetched Node has the `\"Submitted\"` text. It\nwill be re-fetching the node and checking it over and over, until the condition is met or until the timeout is reached.\nYou can pass this timeout as an option.\n\nBy default, the timeout for assertions is set to 5 seconds.\n\nTo use Playwright assertions add the following dependency into the `pom.xml` of your Maven project:\n\n```xml java\n<dependency>\n  <groupId>com.microsoft.playwright</groupId>\n  <artifactId>assertions</artifactId>\n  <version>1.17.0</version>\n</dependency>\n```\n",
+    "comment": "The `PlaywrightAssertions` class provides convenience methods for creating assertions that will wait until the expected\ncondition is met.\n\nConsider the following example:\n\n```js\nimport { test, expect } from '@playwright/test';\n\ntest('status becomes submitted', async ({ page }) => {\n  // ...\n  await page.click('#submit-button')\n  await expect(page.locator('.status')).toHaveText('Submitted');\n});\n```\n\n```python async\nfrom playwright.async_api import Page, expect\n\nasync def test_status_becomes_submitted(page: Page) -> None:\n    # ..\n    await page.click(\"#submit-button\")\n    await expect(page.locator(\".status\")).to_have_text(\"Submitted\")\n```\n\n```python sync\nfrom playwright.sync_api import Page, expect\n\ndef test_status_becomes_submitted(page: Page) -> None:\n    # ..\n    page.click(\"#submit-button\")\n    expect(page.locator(\".status\")).to_have_text(\"Submitted\")\n```\n\n```java\n...\nimport static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;\n\npublic class TestExample {\n  ...\n  @Test\n  void statusBecomesSubmitted() {\n    ...\n    page.click(\"#submit-button\");\n    assertThat(page.locator(\".status\")).hasText(\"Submitted\");\n  }\n}\n```\n\nPlaywright will be re-testing the node with the selector `.status` until fetched Node has the `\"Submitted\"` text. It\nwill be re-fetching the node and checking it over and over, until the condition is met or until the timeout is reached.\nYou can pass this timeout as an option.\n\nBy default, the timeout for assertions is set to 5 seconds.",
     "members": [
       {
         "kind": "method",
         "langs": {
           "only": [
             "js",
-            "java"
+            "java",
+            "python"
           ],
           "aliases": {
             "java": "assertThat",
@@ -79169,7 +79349,9 @@
                   "kind": "property",
                   "langs": {
                     "only": [
-                      "js"
+                      "js",
+                      "java",
+                      "python"
                     ],
                     "aliases": {},
                     "types": {},
@@ -80194,11 +80376,21 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Whether to capture DOM snapshot on every action."
+                      "text": "If this option is true tracing will"
+                    },
+                    {
+                      "type": "li",
+                      "text": "capture DOM snapshot on every action",
+                      "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "record network activity",
+                      "liType": "bullet"
                     }
                   ],
                   "required": false,
-                  "comment": "Whether to capture DOM snapshot on every action.",
+                  "comment": "If this option is true tracing will\n- capture DOM snapshot on every action\n- record network activity",
                   "deprecated": false,
                   "async": false,
                   "alias": "snapshots",
@@ -80209,7 +80401,9 @@
                   "kind": "property",
                   "langs": {
                     "only": [
-                      "js"
+                      "js",
+                      "csharp",
+                      "python"
                     ],
                     "aliases": {},
                     "types": {},

@@ -400,8 +400,8 @@ module Playwright
       nil
     end
 
-    def locator(selector, hasText: nil)
-      LocatorImpl.new(frame: self, timeout_settings: @page.send(:timeout_settings), selector: selector, hasText: hasText)
+    def locator(selector, hasText: nil, has: nil)
+      LocatorImpl.new(frame: self, timeout_settings: @page.send(:timeout_settings), selector: selector, hasText: hasText, has: has)
     end
 
     def frame_locator(selector)

@@ -288,7 +288,7 @@ RSpec.describe 'example' do
     it 'should work with Page#expect_response' do
       with_page do |page|
         with_network_retry do
-          example_d2a76790c0bb59bf5ae2f41d1a29b50954412136de3699ec79dc33cdfd56004b(page: page)
+          example_8640a109091eac678c17600c4918b2b0010771a4d76054580bb879719eb3e05e(page: page)
         end
       end
     end

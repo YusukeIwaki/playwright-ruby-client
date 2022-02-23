@@ -98,13 +98,19 @@ module Playwright
       wrapped_route = PlaywrightApi.wrap(route)
       wrapped_request = PlaywrightApi.wrap(request)
 
-      if @routes.none? { |handler_entry| handler_entry.handle(wrapped_route, wrapped_request) }
-        @browser_context.send(:on_route, route, request)
-      else
+      handler_entry = @routes.find do |entry|
+        entry.match?(request.url)
+      end
+
+      if handler_entry
+        handler_entry.async_handle(wrapped_route, wrapped_request)
+
         @routes.reject!(&:expired?)
         if @routes.count == 0
           @channel.async_send_message_to_server('setNetworkInterceptionEnabled', enabled: false)
         end
+      else
+        @browser_context.send(:on_route, route, request)
       end
     end
 
@@ -558,8 +564,8 @@ module Playwright
         timeout: timeout)
     end
 
-    def locator(selector, hasText: nil)
-      @main_frame.locator(selector, hasText: hasText)
+    def locator(selector, hasText: nil, has: nil)
+      @main_frame.locator(selector, hasText: hasText, has: has)
     end
 
     def frame_locator(selector)

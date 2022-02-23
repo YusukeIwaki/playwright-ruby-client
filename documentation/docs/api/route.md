@@ -45,6 +45,7 @@ def fulfill(
       contentType: nil,
       headers: nil,
       path: nil,
+      response: nil,
       status: nil)
 ```
 

@@ -311,7 +311,7 @@ When working with iframes, you can create a frame locator that will enter the if
 that iframe:
 
 ```ruby
-locator = page.frame_locator("text=Submit").locator("text=Submit")
+locator = page.frame_locator("iframe").locator("text=Submit")
 locator.click
 ```
 
@@ -430,7 +430,7 @@ Returns locator to the last matching element.
 ## locator
 
 ```
-def locator(selector, hasText: nil)
+def locator(selector, has: nil, hasText: nil)
 ```
 
 The method finds an element matching the specified selector in the [Locator](./locator)'s subtree.
@@ -442,6 +442,14 @@ def nth(index)
 ```
 
 Returns locator to the n-th matching element.
+
+## page
+
+```
+def page
+```
+
+A page this locator belongs to.
 
 ## press
 
