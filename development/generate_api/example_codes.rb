@@ -1112,6 +1112,8 @@ module ExampleCodes
     puts response.body
     puts response.ok?
 
+    page.wait_for_load_state # wait for request finished.
+
     # or with a predicate
     page.content = '<form action="https://example.com/resource"><input type="submit" /></form>'
     response = page.expect_response(->(res) { res.url.start_with? 'https://example.com/resource' }) do
