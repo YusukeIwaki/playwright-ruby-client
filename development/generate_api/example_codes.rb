@@ -36,7 +36,7 @@ module ExampleCodes
   end
 
   # APIRequestContext
-  def example_6db210740dd2dcb4551c2207b3204fde7127b24c7850226b273d15c0d6624ba5(playwright:)
+  def example_0c5f51141df669382ab234ed7a2f8b4b5dbbd629f4bc6354860f0a8288dddb8d(playwright:)
     playwright.chromium.launch do |browser|
       # This will launch a new browser, create a context and page. When making HTTP
       # requests with the internal APIRequestContext (e.g. `context.request` or `page.request`)
@@ -55,7 +55,17 @@ module ExampleCodes
         data: { name: 'test-repo-1' },
       )
       response.ok? # => true
-      response.json['name'] # => "tes≈-repo-1"
+      response.json['name'] # => "test-repo-1"
+
+      # Delete a repository.
+      response = api_request_context.delete(
+        "/repos/YourName/test-repo-1",
+        headers: {
+          "Accept": "application/vnd.github.v3+json",
+          "Authorization": "Bearer #{API_TOKEN}",
+        },
+      )
+      response.ok? # => true
     end
   end
 
@@ -688,8 +698,8 @@ module ExampleCodes
   end
 
   # Locator#frame_locator
-  def example_ff5c033a86e288f95311c19b82b141ca63fec833752f339963665657f0b4c18d(page:)
-    locator = page.frame_locator("text=Submit").locator("text=Submit")
+  def example_18679ec4d71712b9c205ae9896778924011d154c4529df7b44d33d6d6ece55cb(page:)
+    locator = page.frame_locator("iframe").locator("text=Submit")
     locator.click
   end
 
@@ -1094,12 +1104,13 @@ module ExampleCodes
   end
 
   # Page#expect_response
-  def example_d2a76790c0bb59bf5ae2f41d1a29b50954412136de3699ec79dc33cdfd56004b(page:)
+  def example_8640a109091eac678c17600c4918b2b0010771a4d76054580bb879719eb3e05e(page:)
     page.content = '<form action="https://example.com/resource"><input type="submit" /></form>'
     response = page.expect_response(/example.com\/resource/) do
       page.click("input")
     end
     puts response.body
+    puts response.ok?
 
     # or with a predicate
     page.content = '<form action="https://example.com/resource"><input type="submit" /></form>'
@@ -1107,6 +1118,7 @@ module ExampleCodes
       page.click("input")
     end
     puts response.body
+    puts response.ok?
   end
 
   # Page#wait_for_selector

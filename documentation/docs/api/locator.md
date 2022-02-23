@@ -310,10 +310,9 @@ def frame_locator(selector)
 When working with iframes, you can create a frame locator that will enter the iframe and allow selecting elements in
 that iframe:
 
-```python sync title=example_18679ec4d71712b9c205ae9896778924011d154c4529df7b44d33d6d6ece55cb.py
+```ruby
 locator = page.frame_locator("iframe").locator("text=Submit")
-locator.click()
-
+locator.click
 ```
 
 
