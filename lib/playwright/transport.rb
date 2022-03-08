@@ -46,7 +46,8 @@ module Playwright
     #
     # @note This method blocks until playwright-cli exited. Consider using Thread or Future.
     def async_run
-      @stdin, @stdout, @stderr, @thread = Open3.popen3("#{@driver_executable_path} run-driver", { pgroup: true })
+      popen3_args = {}
+      @stdin, @stdout, @stderr, @thread = run_driver_with_open3
       @stdin.binmode  # Ensure Strings are written 1:1 without encoding conversion, necessary for integer values
 
       Thread.new { handle_stdout }
@@ -54,6 +55,18 @@ module Playwright
     end
 
     private
+
+    def run_driver_with_open3
+      Open3.popen3("#{@driver_executable_path} run-driver", { pgroup: true })
+    rescue ArgumentError => err
+      # Windows doesn't accept pgroup parameter.
+      # ArgumentError: wrong exec option symbol: pgroup
+      if err.message =~ /pgroup/
+        Open3.popen3("#{@driver_executable_path} run-driver")
+      else
+        raise
+      end
+    end
 
     def handle_stdout(packet_size: 32_768)
       while chunk = @stdout.read(4)
