@@ -69,7 +69,7 @@ end
 
 ### Server code
 
-With the [official Docker image](https://hub.docker.com/_/microsoft-playwright) or in the local development environment with Node.js, just execute `npx playwright install && npx playwright run-server $PORT`. (`$PORT` is a port number of the server)
+With the [official Docker image](https://hub.docker.com/_/microsoft-playwright) or in the local development environment with Node.js, just execute `npx playwright install && npx playwright run-server --port $PORT --path /ws`. (`$PORT` is a port number of the server)
 
 If custom Docker image is preferred, build it as follows:
 
@@ -80,7 +80,7 @@ WORKDIR /root
 RUN npm install playwright@1.12.3 && ./node_modules/.bin/playwright install
 
 ENV PORT 8888
-CMD ["./node_modules/.bin/playwright", "run-server", "$PORT"]
+CMD ["./node_modules/.bin/playwright", "run-server", "--port", "$PORT", "--path", "/ws"]
 ```
 
 ## Browser server/client
@@ -100,7 +100,7 @@ end
 
 ### Server code
 
-For instant use, `npx playwright launch-server chromium` generates a WebSocket endpoint URL with a random path.
+For instant use, `npx playwright launch-server --browser chromium` generates a WebSocket endpoint URL with a random path.
 
 More customization can be done by implementing JavaScript server like below:
 
@@ -138,7 +138,7 @@ DEBUG=1 bundle exec ruby some-automation-with-playwright.rb
 Just set an environment variable `DEBUG=pw:*` or `DEBUG=pw:server`
 
 ```
-DEBUG=pw:* npx playwright run-server 8888
+DEBUG=pw:* npx playwright run-server --port 8888 --path /ws
 ```
 
 See [the official documentation](https://playwright.dev/docs/debug/#verbose-api-logs) for details.
