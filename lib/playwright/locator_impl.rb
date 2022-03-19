@@ -420,5 +420,9 @@ module Playwright
     def all_text_contents
       @frame.eval_on_selector_all(@selector, "ee => ee.map(e => e.textContent || '')")
     end
+
+    def highlight
+      @frame.highlight(@selector)
+    end
   end
 end
