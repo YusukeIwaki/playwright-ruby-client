@@ -55,6 +55,13 @@ module Playwright
       "Locator@#{@selector}"
     end
 
+    private def to_protocol
+      {
+        frame: @frame.channel,
+        selector: @selector,
+      }
+    end
+
     class DifferentFrameError < StandardError
       def initialize
         super('Inner "has" locator must belong to the same frame.')

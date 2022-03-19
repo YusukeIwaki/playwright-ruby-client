@@ -1,7 +1,44 @@
 require 'spec_helper'
 
 RSpec.describe 'screenshot' do
-  describe 'page screenshot animations' do
+  describe 'mask option', sinatra: true do
+    it 'should work' do
+      with_page do |page|
+        page.viewport_size = { width: 500, height: 500 }
+        page.goto("#{server_prefix}/grid.html")
+
+        masked = page.screenshot(mask: [page.locator('div').nth(5)])
+        original = page.screenshot
+        expect(masked).not_to eq(original)
+      end
+    end
+
+    it 'should work with locator' do
+      with_page do |page|
+        page.viewport_size = { width: 500, height: 500 }
+        page.goto("#{server_prefix}/grid.html")
+
+        body = page.locator('body')
+        masked = body.screenshot(mask: [page.locator('div').nth(5)])
+        original = body.screenshot
+        expect(masked).not_to eq(original)
+      end
+    end
+
+    it 'should work with elementhandle' do
+      with_page do |page|
+        page.viewport_size = { width: 500, height: 500 }
+        page.goto("#{server_prefix}/grid.html")
+
+        body = page.query_selector('body')
+        masked = body.screenshot(mask: [page.locator('div').nth(5)])
+        original = body.screenshot
+        expect(masked).not_to eq(original)
+      end
+    end
+  end
+
+  describe 'page screenshot animations', sinatra: true do
     def rafraf(page)
       # Do a double raf since single raf does not
       # actually guarantee a new animation frame.
@@ -12,7 +49,7 @@ RSpec.describe 'screenshot' do
       JAVASCRIPT
     end
 
-    it 'should not capture infinite css animation', sinatra: true do
+    it 'should not capture infinite css animation' do
       with_page do |page|
         page.goto("#{server_prefix}/rotate-z.html")
         div = page.locator('div')
@@ -27,7 +64,7 @@ RSpec.describe 'screenshot' do
       end
     end
 
-    it 'should resume infinite animations', sinatra: true do
+    it 'should resume infinite animations' do
       with_page do |page|
         page.goto("#{server_prefix}/rotate-z.html")
         page.screenshot(animations: 'disabled')
@@ -39,7 +76,7 @@ RSpec.describe 'screenshot' do
       end
     end
 
-    it 'should fire transitionend for finite transitions', sinatra: true do
+    it 'should fire transitionend for finite transitions' do
       with_page do |page|
         page.goto("#{server_prefix}/css-transition.html")
         div = page.locator('div')
