@@ -33,7 +33,7 @@ PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm i -D playwright
 ## devices
 
 ```
-def devices
+def devices(port: nil)
 ```
 
 Returns the list of detected Android devices.

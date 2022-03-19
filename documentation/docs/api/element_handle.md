@@ -435,6 +435,8 @@ The method finds all elements matching the specified selector in the [ElementHan
 
 ```
 def screenshot(
+      animations: nil,
+      mask: nil,
       omitBackground: nil,
       path: nil,
       quality: nil,

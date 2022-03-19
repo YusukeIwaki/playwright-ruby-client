@@ -480,6 +480,8 @@ modifier, modifier is pressed and being held while the subsequent key is being p
 
 ```
 def screenshot(
+      animations: nil,
+      mask: nil,
       omitBackground: nil,
       path: nil,
       quality: nil,
