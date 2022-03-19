@@ -27,7 +27,7 @@ This article introduces a way to separate environments into client (for executin
 
 ## Overview
 
-Playwrignt Ruby client is running on Alpine Linux. It just sends/receives JSON messages of Playwright-protocol via WebSocket.
+Playwright Ruby client is running on Alpine Linux. It just sends/receives JSON messages of Playwright-protocol via WebSocket.
 
 Playwright server is running on a container of [official Docker image](https://hub.docker.com/_/microsoft-playwright). It just operates browsers in response to the JSON messages from WebSocket.
 
