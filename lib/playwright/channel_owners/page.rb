@@ -414,6 +414,8 @@ module Playwright
       fullPage: nil,
       clip: nil,
       omitBackground: nil,
+      animations: nil,
+      mask: nil,
       timeout: nil)
 
       params = {
@@ -422,6 +424,8 @@ module Playwright
         fullPage: fullPage,
         clip: clip,
         omitBackground: omitBackground,
+        animations: animations,
+        mask: mask,
         timeout: timeout,
       }.compact
       encoded_binary = @channel.send_message_to_server('screenshot', params)

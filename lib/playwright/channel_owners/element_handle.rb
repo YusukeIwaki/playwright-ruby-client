@@ -281,6 +281,8 @@ module Playwright
       end
 
       def screenshot(
+        animations: nil,
+        mask: nil,
         omitBackground: nil,
         path: nil,
         quality: nil,
@@ -288,6 +290,8 @@ module Playwright
         type: nil)
 
         params = {
+          animations: animations,
+          mask: mask,
           omitBackground: omitBackground,
           path: path,
           quality: quality,
