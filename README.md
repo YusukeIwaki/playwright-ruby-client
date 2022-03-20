@@ -162,7 +162,7 @@ If your environment doesn't accept installing browser or creating browser proces
 For launching Playwright server, just execute:
 
 ```
-npx playwright install && npx playwright run-server 8080
+npx playwright install && npx playwright run-server --port 8080
 ```
 
 and we can connect to the server with the code like this:

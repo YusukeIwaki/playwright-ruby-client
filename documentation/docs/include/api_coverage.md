@@ -417,6 +417,7 @@
 * focus
 * frame_locator
 * get_attribute
+* highlight
 * hover
 * inner_html
 * inner_text

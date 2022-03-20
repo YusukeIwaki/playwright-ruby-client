@@ -414,6 +414,8 @@ module Playwright
       fullPage: nil,
       clip: nil,
       omitBackground: nil,
+      animations: nil,
+      mask: nil,
       timeout: nil)
 
       params = {
@@ -422,8 +424,14 @@ module Playwright
         fullPage: fullPage,
         clip: clip,
         omitBackground: omitBackground,
+        animations: animations,
         timeout: timeout,
       }.compact
+      if mask.is_a?(Enumerable)
+        params[:mask] = mask.map do |locator|
+          locator.send(:to_protocol)
+        end
+      end
       encoded_binary = @channel.send_message_to_server('screenshot', params)
       decoded_binary = Base64.strict_decode64(encoded_binary)
       if path

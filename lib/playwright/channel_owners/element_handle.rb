@@ -281,6 +281,8 @@ module Playwright
       end
 
       def screenshot(
+        animations: nil,
+        mask: nil,
         omitBackground: nil,
         path: nil,
         quality: nil,
@@ -288,12 +290,18 @@ module Playwright
         type: nil)
 
         params = {
+          animations: animations,
           omitBackground: omitBackground,
           path: path,
           quality: quality,
           timeout: timeout,
           type: type,
         }.compact
+        if mask.is_a?(Enumerable)
+          params[:mask] = mask.map do |locator|
+            locator.send(:to_protocol)
+          end
+        end
         encoded_binary = @channel.send_message_to_server('screenshot', params)
         decoded_binary = Base64.strict_decode64(encoded_binary)
         if path

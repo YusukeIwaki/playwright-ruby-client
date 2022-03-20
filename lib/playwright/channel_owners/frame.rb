@@ -615,6 +615,10 @@ module Playwright
       @channel.send_message_to_server('title')
     end
 
+    def highlight(selector)
+      @channel.send_message_to_server('highlight', selector: selector)
+    end
+
     # @param page [Page]
     # @note This method should be used internally. Accessed via .send method, so keep private!
     private def update_page_from_page(page)

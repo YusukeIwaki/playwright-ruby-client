@@ -325,6 +325,15 @@ def get_attribute(name, timeout: nil)
 
 Returns element attribute value.
 
+## highlight
+
+```
+def highlight
+```
+
+Highlight the corresponding element(s) on the screen. Useful for debugging, don't commit the code that uses
+[Locator#highlight](./locator#highlight).
+
 ## hover
 
 ```
@@ -480,6 +489,8 @@ modifier, modifier is pressed and being held while the subsequent key is being p
 
 ```
 def screenshot(
+      animations: nil,
+      mask: nil,
       omitBackground: nil,
       path: nil,
       quality: nil,

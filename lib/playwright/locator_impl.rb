@@ -55,6 +55,13 @@ module Playwright
       "Locator@#{@selector}"
     end
 
+    private def to_protocol
+      {
+        frame: @frame.channel,
+        selector: @selector,
+      }
+    end
+
     class DifferentFrameError < StandardError
       def initialize
         super('Inner "has" locator must belong to the same frame.')
@@ -306,6 +313,8 @@ module Playwright
     end
 
     def screenshot(
+          animations: nil,
+          mask: nil,
           omitBackground: nil,
           path: nil,
           quality: nil,
@@ -313,6 +322,8 @@ module Playwright
           type: nil)
       with_element(timeout: timeout) do |handle, options|
         handle.screenshot(
+          animations: animations,
+          mask: mask,
           omitBackground: omitBackground,
           path: path,
           quality: quality,
@@ -415,6 +426,10 @@ module Playwright
 
     def all_text_contents
       @frame.eval_on_selector_all(@selector, "ee => ee.map(e => e.textContent || '')")
+    end
+
+    def highlight
+      @frame.highlight(@selector)
     end
   end
 end

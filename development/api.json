@@ -1040,7 +1040,47 @@
         "alias": "devices",
         "overloadIndex": 0,
         "paramOrOption": null,
-        "args": []
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "port",
+                  "type": {
+                    "name": "int",
+                    "expression": "[int]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Optional port to establish ADB server connection."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Optional port to establish ADB server connection.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "port",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "options",
+            "overloadIndex": 0,
+            "paramOrOption": null
+          }
+        ]
       },
       {
         "kind": "method",
@@ -4632,8 +4672,13 @@
                   "langs": {},
                   "name": "state",
                   "type": {
-                    "name": "\"gone\"",
-                    "expression": "\"gone\""
+                    "name": "AndroidDeviceState",
+                    "union": [
+                      {
+                        "name": "\"gone\""
+                      }
+                    ],
+                    "expression": "[AndroidDeviceState]<\"gone\">"
                   },
                   "spec": [
                     {
@@ -10969,7 +11014,7 @@
     "comment": "The `APIResponseAssertions` class provides assertion methods that can be used to make assertions about the `APIResponse`\nin the tests. A new instance of `APIResponseAssertions` is created by calling\n[`method: PlaywrightAssertions.expectAPIResponse`]:\n\n```js\nimport { test, expect } from '@playwright/test';\n\ntest('navigates to login', async ({ page }) => {\n  // ...\n  const response = await page.request.get('https://playwright.dev');\n  await expect(response).toBeOK();\n});\n```\n\n```java\n...\nimport static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;\n\npublic class TestPage {\n  ...\n  @Test\n  void navigatesToLoginPage() {\n    ...\n    APIResponse response = page.request().get('https://playwright.dev');\n    assertThat(response).isOK();\n  }\n}\n```\n\n```python async\nfrom playwright.async_api import Page, expect\n\nasync def test_navigates_to_login_page(page: Page) -> None:\n    # ..\n    response = await page.request.get('https://playwright.dev')\n    await expect(response).to_be_ok()\n```\n\n```python sync\nfrom playwright.sync_api import Page, expect\n\ndef test_navigates_to_login_page(page: Page) -> None:\n    # ..\n    response = page.request.get('https://playwright.dev')\n    expect(response).to_be_ok()\n```\n",
     "members": [
       {
-        "kind": "method",
+        "kind": "property",
         "langs": {
           "only": [
             "java",
@@ -30869,6 +30914,70 @@
                 {
                   "kind": "property",
                   "langs": {},
+                  "name": "animations",
+                  "type": {
+                    "name": "ScreenshotAnimations",
+                    "union": [
+                      {
+                        "name": "\"disabled\""
+                      }
+                    ],
+                    "expression": "[ScreenshotAnimations]<\"disabled\">"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "When set to `\"disabled\"`, stops CSS animations, CSS transitions and Web Animations. Animations get different treatment depending on their duration:"
+                    },
+                    {
+                      "type": "li",
+                      "text": "finite animations are fast-forwarded to completion, so they'll fire `transitionend` event.",
+                      "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "infinite animations are canceled to initial state, and then played over after the screenshot.",
+                      "liType": "bullet"
+                    }
+                  ],
+                  "required": false,
+                  "comment": "When set to `\"disabled\"`, stops CSS animations, CSS transitions and Web Animations. Animations get different treatment\ndepending on their duration:\n- finite animations are fast-forwarded to completion, so they'll fire `transitionend` event.\n- infinite animations are canceled to initial state, and then played over after the screenshot.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "animations",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "mask",
+                  "type": {
+                    "name": "Array",
+                    "templates": [
+                      {
+                        "name": "Locator"
+                      }
+                    ],
+                    "expression": "[Array]<[Locator]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box `#FF00FF` that completely covers its bounding box."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box\n`#FF00FF` that completely covers its bounding box.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "mask",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
                   "name": "omitBackground",
                   "type": {
                     "name": "boolean",
@@ -47919,6 +48028,28 @@
       {
         "kind": "method",
         "langs": {},
+        "name": "highlight",
+        "type": {
+          "name": "void"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Highlight the corresponding element(s) on the screen. Useful for debugging, don't commit the code that uses [`method: Locator.highlight`]."
+          }
+        ],
+        "required": true,
+        "comment": "Highlight the corresponding element(s) on the screen. Useful for debugging, don't commit the code that uses\n[`method: Locator.highlight`].",
+        "deprecated": false,
+        "async": true,
+        "alias": "highlight",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {},
         "name": "hover",
         "type": {
           "name": "void"
@@ -49117,6 +49248,70 @@
             "type": {
               "name": "Object",
               "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "animations",
+                  "type": {
+                    "name": "ScreenshotAnimations",
+                    "union": [
+                      {
+                        "name": "\"disabled\""
+                      }
+                    ],
+                    "expression": "[ScreenshotAnimations]<\"disabled\">"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "When set to `\"disabled\"`, stops CSS animations, CSS transitions and Web Animations. Animations get different treatment depending on their duration:"
+                    },
+                    {
+                      "type": "li",
+                      "text": "finite animations are fast-forwarded to completion, so they'll fire `transitionend` event.",
+                      "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "infinite animations are canceled to initial state, and then played over after the screenshot.",
+                      "liType": "bullet"
+                    }
+                  ],
+                  "required": false,
+                  "comment": "When set to `\"disabled\"`, stops CSS animations, CSS transitions and Web Animations. Animations get different treatment\ndepending on their duration:\n- finite animations are fast-forwarded to completion, so they'll fire `transitionend` event.\n- infinite animations are canceled to initial state, and then played over after the screenshot.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "animations",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "mask",
+                  "type": {
+                    "name": "Array",
+                    "templates": [
+                      {
+                        "name": "Locator"
+                      }
+                    ],
+                    "expression": "[Array]<[Locator]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box `#FF00FF` that completely covers its bounding box."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box\n`#FF00FF` that completely covers its bounding box.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "mask",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
                 {
                   "kind": "property",
                   "langs": {},
@@ -51520,26 +51715,42 @@
           "    expect(page.locator(\".status\")).to_have_text(\"Submitted\")"
         ],
         "codeLang": "python sync"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "using System.Text.RegularExpressions;",
+          "using System.Threading.Tasks;",
+          "using Microsoft.Playwright.NUnit;",
+          "using NUnit.Framework;",
+          "",
+          "namespace PlaywrightTests",
+          "{",
+          "    public class ExampleTests : PageTest",
+          "    {",
+          "        [Test]",
+          "        public async Task StatusBecomesSubmitted()",
+          "        {",
+          "            // ..",
+          "            await Page.ClickAsync(\"#submit-button\");",
+          "            await Expect(Page.Locator(\".status\")).ToHaveTextAsync(\"Submitted\");",
+          "        }",
+          "    }",
+          "}"
+        ],
+        "codeLang": "csharp"
       }
     ],
-    "langs": {
-      "only": [
-        "java",
-        "python",
-        "js"
-      ],
-      "aliases": {},
-      "types": {},
-      "overrides": {}
-    },
-    "comment": "The `LocatorAssertions` class provides assertion methods that can be used to make assertions about the `Locator` state\nin the tests. A new instance of `LocatorAssertions` is created by calling\n[`method: PlaywrightAssertions.expectLocator`]:\n\n```js\nimport { test, expect } from '@playwright/test';\n\ntest('status becomes submitted', async ({ page }) => {\n  // ...\n  await page.click('#submit-button');\n  await expect(page.locator('.status')).toHaveText('Submitted');\n});\n```\n\n```java\n...\nimport static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;\n\npublic class TestLocator {\n  ...\n  @Test\n  void statusBecomesSubmitted() {\n    ...\n    page.click(\"#submit-button\");\n    assertThat(page.locator(\".status\")).hasText(\"Submitted\");\n  }\n}\n```\n\n```python async\nfrom playwright.async_api import Page, expect\n\nasync def test_status_becomes_submitted(page: Page) -> None:\n    # ..\n    await page.click(\"#submit-button\")\n    await expect(page.locator(\".status\")).to_have_text(\"Submitted\")\n```\n\n```python sync\nfrom playwright.sync_api import Page, expect\n\ndef test_status_becomes_submitted(page: Page) -> None:\n    # ..\n    page.click(\"#submit-button\")\n    expect(page.locator(\".status\")).to_have_text(\"Submitted\")\n```\n",
+    "langs": {},
+    "comment": "The `LocatorAssertions` class provides assertion methods that can be used to make assertions about the `Locator` state\nin the tests. A new instance of `LocatorAssertions` is created by calling\n[`method: PlaywrightAssertions.expectLocator`]:\n\n```js\nimport { test, expect } from '@playwright/test';\n\ntest('status becomes submitted', async ({ page }) => {\n  // ...\n  await page.click('#submit-button');\n  await expect(page.locator('.status')).toHaveText('Submitted');\n});\n```\n\n```java\n...\nimport static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;\n\npublic class TestLocator {\n  ...\n  @Test\n  void statusBecomesSubmitted() {\n    ...\n    page.click(\"#submit-button\");\n    assertThat(page.locator(\".status\")).hasText(\"Submitted\");\n  }\n}\n```\n\n```python async\nfrom playwright.async_api import Page, expect\n\nasync def test_status_becomes_submitted(page: Page) -> None:\n    # ..\n    await page.click(\"#submit-button\")\n    await expect(page.locator(\".status\")).to_have_text(\"Submitted\")\n```\n\n```python sync\nfrom playwright.sync_api import Page, expect\n\ndef test_status_becomes_submitted(page: Page) -> None:\n    # ..\n    page.click(\"#submit-button\")\n    expect(page.locator(\".status\")).to_have_text(\"Submitted\")\n```\n\n```csharp\nusing System.Text.RegularExpressions;\nusing System.Threading.Tasks;\nusing Microsoft.Playwright.NUnit;\nusing NUnit.Framework;\n\nnamespace PlaywrightTests\n{\n    public class ExampleTests : PageTest\n    {\n        [Test]\n        public async Task StatusBecomesSubmitted()\n        {\n            // ..\n            await Page.ClickAsync(\"#submit-button\");\n            await Expect(Page.Locator(\".status\")).ToHaveTextAsync(\"Submitted\");\n        }\n    }\n}\n```\n",
     "members": [
       {
-        "kind": "method",
+        "kind": "property",
         "langs": {
           "only": [
             "java",
-            "js"
+            "js",
+            "csharp"
           ],
           "aliases": {},
           "types": {},
@@ -51568,10 +51779,17 @@
               "assertThat(locator).not().containsText(\"error\");"
             ],
             "codeLang": "java"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "await Expect(locator).Not.ToContainTextAsync(\"error\");"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Makes the assertion check for the opposite condition. For example, this code tests that the Locator doesn't contain text\n`\"error\"`:\n\n```js\nawait expect(locator).not.toContainText('error');\n```\n\n```java\nassertThat(locator).not().containsText(\"error\");\n```\n",
+        "comment": "Makes the assertion check for the opposite condition. For example, this code tests that the Locator doesn't contain text\n`\"error\"`:\n\n```js\nawait expect(locator).not.toContainText('error');\n```\n\n```java\nassertThat(locator).not().containsText(\"error\");\n```\n\n```csharp\nawait Expect(locator).Not.ToContainTextAsync(\"error\");\n```\n",
         "deprecated": false,
         "async": false,
         "alias": "not",
@@ -51602,7 +51820,7 @@
         "required": true,
         "comment": "The opposite of [`method: LocatorAssertions.toBeChecked`].",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "NotToBeChecked",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -51618,8 +51836,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -51679,7 +51927,7 @@
         "required": true,
         "comment": "The opposite of [`method: LocatorAssertions.toBeDisabled`].",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "NotToBeDisabled",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -51695,8 +51943,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -51756,7 +52034,7 @@
         "required": true,
         "comment": "The opposite of [`method: LocatorAssertions.toBeEditable`].",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "NotToBeEditable",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -51772,8 +52050,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -51833,7 +52141,7 @@
         "required": true,
         "comment": "The opposite of [`method: LocatorAssertions.toBeEmpty`].",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "NotToBeEmpty",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -51849,8 +52157,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -51910,7 +52248,7 @@
         "required": true,
         "comment": "The opposite of [`method: LocatorAssertions.toBeEnabled`].",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "NotToBeEnabled",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -51926,8 +52264,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -51987,7 +52355,7 @@
         "required": true,
         "comment": "The opposite of [`method: LocatorAssertions.toBeFocused`].",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "NotToBeFocused",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -52003,8 +52371,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -52064,7 +52462,7 @@
         "required": true,
         "comment": "The opposite of [`method: LocatorAssertions.toBeHidden`].",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "NotToBeHidden",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -52080,8 +52478,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -52141,7 +52569,7 @@
         "required": true,
         "comment": "The opposite of [`method: LocatorAssertions.toBeVisible`].",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "NotToBeVisible",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -52157,8 +52585,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -52218,7 +52676,7 @@
         "required": true,
         "comment": "The opposite of [`method: LocatorAssertions.toContainText`].",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "NotToContainText",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -52280,8 +52738,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -52363,7 +52851,7 @@
         "required": true,
         "comment": "The opposite of [`method: LocatorAssertions.toHaveAttribute`].",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "NotToHaveAttribute",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -52431,8 +52919,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -52492,7 +53010,7 @@
         "required": true,
         "comment": "The opposite of [`method: LocatorAssertions.toHaveClass`].",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "NotToHaveClass",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -52554,8 +53072,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -52615,7 +53163,7 @@
         "required": true,
         "comment": "The opposite of [`method: LocatorAssertions.toHaveCount`].",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "NotToHaveCount",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -52653,8 +53201,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -52714,7 +53292,7 @@
         "required": true,
         "comment": "The opposite of [`method: LocatorAssertions.toHaveCSS`].",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "NotToHaveCSS",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -52782,8 +53360,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -52843,7 +53451,7 @@
         "required": true,
         "comment": "The opposite of [`method: LocatorAssertions.toHaveId`].",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "NotToHaveId",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -52889,8 +53497,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -52950,7 +53588,7 @@
         "required": true,
         "comment": "The opposite of [`method: LocatorAssertions.toHaveJSProperty`].",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "NotToHaveJSProperty",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -52982,8 +53620,8 @@
             "langs": {},
             "name": "value",
             "type": {
-              "name": "Serializable",
-              "expression": "[Serializable]"
+              "name": "any",
+              "expression": "[any]"
             },
             "spec": [
               {
@@ -53010,8 +53648,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -53071,7 +53739,7 @@
         "required": true,
         "comment": "The opposite of [`method: LocatorAssertions.toHaveText`].",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "NotToHaveText",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -53133,8 +53801,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -53216,7 +53914,7 @@
         "required": true,
         "comment": "The opposite of [`method: LocatorAssertions.toHaveValue`].",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "NotToHaveValue",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -53262,8 +53960,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -53352,12 +54080,20 @@
               "expect(locator).to_be_checked()"
             ],
             "codeLang": "python sync"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "var locator = Page.Locator(\".subscribe\");",
+              "await Expect(locator).ToBeCheckedAsync();"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Ensures the `Locator` points to a checked input.\n\n```js\nconst locator = page.locator('.subscribe');\nawait expect(locator).toBeChecked();\n```\n\n```java\nassertThat(page.locator(\".subscribe\")).isChecked();\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\".subscribe\")\nawait expect(locator).to_be_checked()\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\".subscribe\")\nexpect(locator).to_be_checked()\n```\n",
+        "comment": "Ensures the `Locator` points to a checked input.\n\n```js\nconst locator = page.locator('.subscribe');\nawait expect(locator).toBeChecked();\n```\n\n```java\nassertThat(page.locator(\".subscribe\")).isChecked();\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\".subscribe\")\nawait expect(locator).to_be_checked()\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\".subscribe\")\nexpect(locator).to_be_checked()\n```\n\n```csharp\nvar locator = Page.Locator(\".subscribe\");\nawait Expect(locator).ToBeCheckedAsync();\n```\n",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "toBeChecked",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -53390,8 +54126,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -53480,12 +54246,20 @@
               "expect(locator).to_be_disabled()"
             ],
             "codeLang": "python sync"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "var locator = Page.Locator(\"button.submit\");",
+              "await Expect(locator).ToBeDisabledAsync();"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Ensures the `Locator` points to a disabled element.\n\n```js\nconst locator = page.locator('button.submit');\nawait expect(locator).toBeDisabled();\n```\n\n```java\nassertThat(page.locator(\"button.submit\")).isDisabled();\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"button.submit\")\nawait expect(locator).to_be_disabled()\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"button.submit\")\nexpect(locator).to_be_disabled()\n```\n",
+        "comment": "Ensures the `Locator` points to a disabled element.\n\n```js\nconst locator = page.locator('button.submit');\nawait expect(locator).toBeDisabled();\n```\n\n```java\nassertThat(page.locator(\"button.submit\")).isDisabled();\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"button.submit\")\nawait expect(locator).to_be_disabled()\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"button.submit\")\nexpect(locator).to_be_disabled()\n```\n\n```csharp\nvar locator = Page.Locator(\"button.submit\");\nawait Expect(locator).ToBeDisabledAsync();\n```\n",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "toBeDisabled",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -53501,8 +54275,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -53591,12 +54395,20 @@
               "expect(locator).to_be_editable()"
             ],
             "codeLang": "python sync"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "var locator = Page.Locator(\"input\");",
+              "await Expect(locator).ToBeEditableAsync();"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Ensures the `Locator` points to an editable element.\n\n```js\nconst locator = page.locator('input');\nawait expect(locator).toBeEditable();\n```\n\n```java\nassertThat(page.locator(\"input\")).isEditable();\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\".input\")\nawait expect(locator).to_be_editable()\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\".input\")\nexpect(locator).to_be_editable()\n```\n",
+        "comment": "Ensures the `Locator` points to an editable element.\n\n```js\nconst locator = page.locator('input');\nawait expect(locator).toBeEditable();\n```\n\n```java\nassertThat(page.locator(\"input\")).isEditable();\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\".input\")\nawait expect(locator).to_be_editable()\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\".input\")\nexpect(locator).to_be_editable()\n```\n\n```csharp\nvar locator = Page.Locator(\"input\");\nawait Expect(locator).ToBeEditableAsync();\n```\n",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "toBeEditable",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -53612,8 +54424,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -53702,12 +54544,20 @@
               "expect(locator).to_be_empty()"
             ],
             "codeLang": "python sync"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "var locator = Page.Locator(\"div.warning\");",
+              "await Expect(locator).ToBeEmptyAsync();"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Ensures the `Locator` points to an empty editable element or to a DOM node that has no text.\n\n```js\nconst locator = page.locator('div.warning');\nawait expect(locator).toBeEmpty();\n```\n\n```java\nassertThat(page.locator(\"div.warning\")).isEmpty();\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"div.warning\")\nawait expect(locator).to_be_empty()\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"div.warning\")\nexpect(locator).to_be_empty()\n```\n",
+        "comment": "Ensures the `Locator` points to an empty editable element or to a DOM node that has no text.\n\n```js\nconst locator = page.locator('div.warning');\nawait expect(locator).toBeEmpty();\n```\n\n```java\nassertThat(page.locator(\"div.warning\")).isEmpty();\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"div.warning\")\nawait expect(locator).to_be_empty()\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"div.warning\")\nexpect(locator).to_be_empty()\n```\n\n```csharp\nvar locator = Page.Locator(\"div.warning\");\nawait Expect(locator).ToBeEmptyAsync();\n```\n",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "toBeEmpty",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -53723,8 +54573,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -53813,12 +54693,20 @@
               "expect(locator).to_be_enabled()"
             ],
             "codeLang": "python sync"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "var locator = Page.Locator(\"button.submit\");",
+              "await Expect(locator).toBeEnabledAsync();"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Ensures the `Locator` points to an enabled element.\n\n```js\nconst locator = page.locator('button.submit');\nawait expect(locator).toBeEnabled();\n```\n\n```java\nassertThat(page.locator(\"button.submit\")).isEnabled();\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"button.submit\")\nawait expect(locator).to_be_enabled()\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"button.submit\")\nexpect(locator).to_be_enabled()\n```\n",
+        "comment": "Ensures the `Locator` points to an enabled element.\n\n```js\nconst locator = page.locator('button.submit');\nawait expect(locator).toBeEnabled();\n```\n\n```java\nassertThat(page.locator(\"button.submit\")).isEnabled();\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"button.submit\")\nawait expect(locator).to_be_enabled()\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"button.submit\")\nexpect(locator).to_be_enabled()\n```\n\n```csharp\nvar locator = Page.Locator(\"button.submit\");\nawait Expect(locator).toBeEnabledAsync();\n```\n",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "toBeEnabled",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -53834,8 +54722,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -53924,12 +54842,20 @@
               "expect(locator).to_be_focused()"
             ],
             "codeLang": "python sync"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "var locator = Page.Locator(\"input\");",
+              "await Expect(locator).ToBeFocusedAsync();"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Ensures the `Locator` points to a focused DOM node.\n\n```js\nconst locator = page.locator('input');\nawait expect(locator).toBeFocused();\n```\n\n```java\nassertThat(page.locator(\"input\")).isFocused();\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator('input')\nawait expect(locator).to_be_focused()\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator('input')\nexpect(locator).to_be_focused()\n```\n",
+        "comment": "Ensures the `Locator` points to a focused DOM node.\n\n```js\nconst locator = page.locator('input');\nawait expect(locator).toBeFocused();\n```\n\n```java\nassertThat(page.locator(\"input\")).isFocused();\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator('input')\nawait expect(locator).to_be_focused()\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator('input')\nexpect(locator).to_be_focused()\n```\n\n```csharp\nvar locator = Page.Locator(\"input\");\nawait Expect(locator).ToBeFocusedAsync();\n```\n",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "toBeFocused",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -53945,8 +54871,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -54035,12 +54991,20 @@
               "expect(locator).to_be_hidden()"
             ],
             "codeLang": "python sync"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "var locator = Page.Locator(\".my-element\");",
+              "await Expect(locator).ToBeHiddenAsync();"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Ensures the `Locator` points to a hidden DOM node, which is the opposite of [visible](./actionability.md#visible).\n\n```js\nconst locator = page.locator('.my-element');\nawait expect(locator).toBeHidden();\n```\n\n```java\nassertThat(page.locator(\".my-element\")).isHidden();\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator('.my-element')\nawait expect(locator).to_be_hidden()\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator('.my-element')\nexpect(locator).to_be_hidden()\n```\n",
+        "comment": "Ensures the `Locator` points to a hidden DOM node, which is the opposite of [visible](./actionability.md#visible).\n\n```js\nconst locator = page.locator('.my-element');\nawait expect(locator).toBeHidden();\n```\n\n```java\nassertThat(page.locator(\".my-element\")).isHidden();\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator('.my-element')\nawait expect(locator).to_be_hidden()\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator('.my-element')\nexpect(locator).to_be_hidden()\n```\n\n```csharp\nvar locator = Page.Locator(\".my-element\");\nawait Expect(locator).ToBeHiddenAsync();\n```\n",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "toBeHidden",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -54056,8 +55020,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -54146,12 +55140,20 @@
               "expect(locator).to_be_visible()"
             ],
             "codeLang": "python sync"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "var locator = Page.Locator(\".my-element\");",
+              "await Expect(locator).ToBeVisibleAsync();"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Ensures the `Locator` points to a [visible](./actionability.md#visible) DOM node.\n\n```js\nconst locator = page.locator('.my-element');\nawait expect(locator).toBeVisible();\n```\n\n```java\nassertThat(page.locator(\".my-element\")).toBeVisible();\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator('.my-element')\nawait expect(locator).to_be_visible()\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator('.my-element')\nexpect(locator).to_be_visible()\n```\n",
+        "comment": "Ensures the `Locator` points to a [visible](./actionability.md#visible) DOM node.\n\n```js\nconst locator = page.locator('.my-element');\nawait expect(locator).toBeVisible();\n```\n\n```java\nassertThat(page.locator(\".my-element\")).toBeVisible();\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator('.my-element')\nawait expect(locator).to_be_visible()\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator('.my-element')\nexpect(locator).to_be_visible()\n```\n\n```csharp\nvar locator = Page.Locator(\".my-element\");\nawait Expect(locator).ToBeVisibleAsync();\n```\n",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "toBeVisible",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -54167,8 +55169,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -54264,6 +55296,15 @@
             "codeLang": "python sync"
           },
           {
+            "type": "code",
+            "lines": [
+              "var locator = Page.Locator(\".title\");",
+              "await Expect(locator).ToContainTextAsync(\"substring\");",
+              "await Expect(locator).ToContainTextAsync(new Regex(\"\\\\d messages\"));"
+            ],
+            "codeLang": "csharp"
+          },
+          {
             "type": "text",
             "text": "Note that if array is passed as an expected value, entire lists of elements can be asserted:"
           },
@@ -54303,12 +55344,20 @@
               "expect(locator).to_contain_text([\"Text 1\", \"Text 4\", \"Text 5\"])"
             ],
             "codeLang": "python sync"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "var locator = Page.Locator(\"list > .list-item\");",
+              "await Expect(locator).ToContainTextAsync(new string[] { \"Text 1\", \"Text 4\", \"Text 5\" });"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Ensures the `Locator` points to an element that contains the given text. You can use regular expressions for the value\nas well.\n\n```js\nconst locator = page.locator('.title');\nawait expect(locator).toContainText('substring');\nawait expect(locator).toContainText(/\\d messages/);\n```\n\n```java\nassertThat(page.locator(\".title\")).containsText(\"substring\");\n```\n\n```python async\nimport re\nfrom playwright.async_api import expect\n\nlocator = page.locator('.title')\nawait expect(locator).to_contain_text(\"substring\")\nawait expect(locator).to_contain_text(re.compile(r\"\\d messages\"))\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\nlocator = page.locator('.title')\nexpect(locator).to_contain_text(\"substring\")\nexpect(locator).to_contain_text(re.compile(r\"\\d messages\"))\n```\n\nNote that if array is passed as an expected value, entire lists of elements can be asserted:\n\n```js\nconst locator = page.locator('list > .list-item');\nawait expect(locator).toContainText(['Text 1', 'Text 4', 'Text 5']);\n```\n\n```java\nassertThat(page.locator(\"list > .list-item\")).containsText(new String[] {\"Text 1\", \"Text 4\", \"Text 5\"});\n```\n\n```python async\nimport re\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"list > .list-item\")\nawait expect(locator).to_contain_text([\"Text 1\", \"Text 4\", \"Text 5\"])\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"list > .list-item\")\nexpect(locator).to_contain_text([\"Text 1\", \"Text 4\", \"Text 5\"])\n```\n",
+        "comment": "Ensures the `Locator` points to an element that contains the given text. You can use regular expressions for the value\nas well.\n\n```js\nconst locator = page.locator('.title');\nawait expect(locator).toContainText('substring');\nawait expect(locator).toContainText(/\\d messages/);\n```\n\n```java\nassertThat(page.locator(\".title\")).containsText(\"substring\");\n```\n\n```python async\nimport re\nfrom playwright.async_api import expect\n\nlocator = page.locator('.title')\nawait expect(locator).to_contain_text(\"substring\")\nawait expect(locator).to_contain_text(re.compile(r\"\\d messages\"))\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\nlocator = page.locator('.title')\nexpect(locator).to_contain_text(\"substring\")\nexpect(locator).to_contain_text(re.compile(r\"\\d messages\"))\n```\n\n```csharp\nvar locator = Page.Locator(\".title\");\nawait Expect(locator).ToContainTextAsync(\"substring\");\nawait Expect(locator).ToContainTextAsync(new Regex(\"\\\\d messages\"));\n```\n\nNote that if array is passed as an expected value, entire lists of elements can be asserted:\n\n```js\nconst locator = page.locator('list > .list-item');\nawait expect(locator).toContainText(['Text 1', 'Text 4', 'Text 5']);\n```\n\n```java\nassertThat(page.locator(\"list > .list-item\")).containsText(new String[] {\"Text 1\", \"Text 4\", \"Text 5\"});\n```\n\n```python async\nimport re\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"list > .list-item\")\nawait expect(locator).to_contain_text([\"Text 1\", \"Text 4\", \"Text 5\"])\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"list > .list-item\")\nexpect(locator).to_contain_text([\"Text 1\", \"Text 4\", \"Text 5\"])\n```\n\n```csharp\nvar locator = Page.Locator(\"list > .list-item\");\nawait Expect(locator).ToContainTextAsync(new string[] { \"Text 1\", \"Text 4\", \"Text 5\" });\n```\n",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "toContainText",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -54371,7 +55420,8 @@
             "kind": "property",
             "langs": {
               "only": [
-                "java"
+                "java",
+                "csharp"
               ],
               "aliases": {},
               "types": {},
@@ -54431,8 +55481,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -54543,12 +55623,20 @@
               "expect(locator).to_have_attribute(\"type\", \"text\")"
             ],
             "codeLang": "python sync"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "var locator = Page.Locator(\"input\");",
+              "await Expect(locator).ToHaveAttributeAsync(\"type\", \"text\");"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Ensures the `Locator` points to an element with given attribute.\n\n```js\nconst locator = page.locator('input');\nawait expect(locator).toHaveAttribute('type', 'text');\n```\n\n```java\nassertThat(page.locator(\"input\")).hasAttribute(\"type\", \"text\");\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"input\")\nawait expect(locator).to_have_attribute(\"type\", \"text\")\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"input\")\nexpect(locator).to_have_attribute(\"type\", \"text\")\n```\n",
+        "comment": "Ensures the `Locator` points to an element with given attribute.\n\n```js\nconst locator = page.locator('input');\nawait expect(locator).toHaveAttribute('type', 'text');\n```\n\n```java\nassertThat(page.locator(\"input\")).hasAttribute(\"type\", \"text\");\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"input\")\nawait expect(locator).to_have_attribute(\"type\", \"text\")\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"input\")\nexpect(locator).to_have_attribute(\"type\", \"text\")\n```\n\n```csharp\nvar locator = Page.Locator(\"input\");\nawait Expect(locator).ToHaveAttributeAsync(\"type\", \"text\");\n```\n",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "toHaveAttribute",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -54616,8 +55704,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -54708,6 +55826,14 @@
             "codeLang": "python sync"
           },
           {
+            "type": "code",
+            "lines": [
+              "var locator = Page.Locator(\"#component\");",
+              "await Expect(locator).ToHaveClassAsync(new Regex(\"selected\"));"
+            ],
+            "codeLang": "csharp"
+          },
+          {
             "type": "text",
             "text": "Note that if array is passed as an expected value, entire lists of elements can be asserted:"
           },
@@ -54745,12 +55871,20 @@
               "expect(locator).to_have_class([\"component\", \"component selected\", \"component\"])"
             ],
             "codeLang": "python sync"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "var locator = Page.Locator(\"list > .component\");",
+              "await Expect(locator).ToHaveClassAsync(new string[]{\"component\", \"component selected\", \"component\"});"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Ensures the `Locator` points to an element with given CSS class.\n\n```js\nconst locator = page.locator('#component');\nawait expect(locator).toHaveClass(/selected/);\n```\n\n```java\nassertThat(page.locator(\"#component\")).hasClass(Pattern.compile(\"selected\"));\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"#component\")\nawait expect(locator).to_have_class(re.compile(r\"selected\"))\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"#component\")\nexpect(locator).to_have_class(re.compile(r\"selected\"))\n```\n\nNote that if array is passed as an expected value, entire lists of elements can be asserted:\n\n```js\nconst locator = page.locator('list > .component');\nawait expect(locator).toHaveClass(['component', 'component selected', 'component']);\n```\n\n```java\nassertThat(page.locator(\"list > .component\")).hasClass(new String[] {\"component\", \"component selected\", \"component\"});\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"list > .component\")\nawait expect(locator).to_have_class([\"component\", \"component selected\", \"component\"])\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"list > .component\")\nexpect(locator).to_have_class([\"component\", \"component selected\", \"component\"])\n```\n",
+        "comment": "Ensures the `Locator` points to an element with given CSS class.\n\n```js\nconst locator = page.locator('#component');\nawait expect(locator).toHaveClass(/selected/);\n```\n\n```java\nassertThat(page.locator(\"#component\")).hasClass(Pattern.compile(\"selected\"));\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"#component\")\nawait expect(locator).to_have_class(re.compile(r\"selected\"))\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"#component\")\nexpect(locator).to_have_class(re.compile(r\"selected\"))\n```\n\n```csharp\nvar locator = Page.Locator(\"#component\");\nawait Expect(locator).ToHaveClassAsync(new Regex(\"selected\"));\n```\n\nNote that if array is passed as an expected value, entire lists of elements can be asserted:\n\n```js\nconst locator = page.locator('list > .component');\nawait expect(locator).toHaveClass(['component', 'component selected', 'component']);\n```\n\n```java\nassertThat(page.locator(\"list > .component\")).hasClass(new String[] {\"component\", \"component selected\", \"component\"});\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"list > .component\")\nawait expect(locator).to_have_class([\"component\", \"component selected\", \"component\"])\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"list > .component\")\nexpect(locator).to_have_class([\"component\", \"component selected\", \"component\"])\n```\n\n```csharp\nvar locator = Page.Locator(\"list > .component\");\nawait Expect(locator).ToHaveClassAsync(new string[]{\"component\", \"component selected\", \"component\"});\n```\n",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "toHaveClass",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -54813,7 +55947,8 @@
             "kind": "property",
             "langs": {
               "only": [
-                "java"
+                "java",
+                "csharp"
               ],
               "aliases": {},
               "types": {},
@@ -54873,8 +56008,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -54963,12 +56128,20 @@
               "expect(locator).to_have_count(3)"
             ],
             "codeLang": "python sync"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "var locator = Page.Locator(\"list > .component\");",
+              "await Expect(locator).ToHaveCountAsync(3);"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Ensures the `Locator` resolves to an exact number of DOM nodes.\n\n```js\nconst list = page.locator('list > .component');\nawait expect(list).toHaveCount(3);\n```\n\n```java\nassertThat(page.locator(\"list > .component\")).hasCount(3);\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"list > .component\")\nawait expect(locator).to_have_count(3)\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"list > .component\")\nexpect(locator).to_have_count(3)\n```\n",
+        "comment": "Ensures the `Locator` resolves to an exact number of DOM nodes.\n\n```js\nconst list = page.locator('list > .component');\nawait expect(list).toHaveCount(3);\n```\n\n```java\nassertThat(page.locator(\"list > .component\")).hasCount(3);\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"list > .component\")\nawait expect(locator).to_have_count(3)\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"list > .component\")\nexpect(locator).to_have_count(3)\n```\n\n```csharp\nvar locator = Page.Locator(\"list > .component\");\nawait Expect(locator).ToHaveCountAsync(3);\n```\n",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "toHaveCount",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -55006,8 +56179,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -55096,12 +56299,20 @@
               "expect(locator).to_have_css(\"display\", \"flex\")"
             ],
             "codeLang": "python sync"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "var locator = Page.Locator(\"button\");",
+              "await Expect(locator).ToHaveCSSAsync(\"display\", \"flex\");"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Ensures the `Locator` resolves to an element with the given computed CSS style.\n\n```js\nconst locator = page.locator('button');\nawait expect(locator).toHaveCSS('display', 'flex');\n```\n\n```java\nassertThat(page.locator(\"button\")).hasCSS(\"display\", \"flex\");\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"button\")\nawait expect(locator).to_have_css(\"display\", \"flex\")\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"button\")\nexpect(locator).to_have_css(\"display\", \"flex\")\n```\n",
+        "comment": "Ensures the `Locator` resolves to an element with the given computed CSS style.\n\n```js\nconst locator = page.locator('button');\nawait expect(locator).toHaveCSS('display', 'flex');\n```\n\n```java\nassertThat(page.locator(\"button\")).hasCSS(\"display\", \"flex\");\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"button\")\nawait expect(locator).to_have_css(\"display\", \"flex\")\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"button\")\nexpect(locator).to_have_css(\"display\", \"flex\")\n```\n\n```csharp\nvar locator = Page.Locator(\"button\");\nawait Expect(locator).ToHaveCSSAsync(\"display\", \"flex\");\n```\n",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "toHaveCSS",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -55169,8 +56380,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -55259,12 +56500,20 @@
               "expect(locator).to_have_id(\"lastname\")"
             ],
             "codeLang": "python sync"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "var locator = Page.Locator(\"input\");",
+              "await Expect(locator).ToHaveIdAsync(\"lastname\");"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Ensures the `Locator` points to an element with the given DOM Node ID.\n\n```js\nconst locator = page.locator('input');\nawait expect(locator).toHaveId('lastname');\n```\n\n```java\nassertThat(page.locator(\"input\")).hasId(\"lastname\");\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"input\")\nawait expect(locator).to_have_id(\"lastname\")\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"input\")\nexpect(locator).to_have_id(\"lastname\")\n```\n",
+        "comment": "Ensures the `Locator` points to an element with the given DOM Node ID.\n\n```js\nconst locator = page.locator('input');\nawait expect(locator).toHaveId('lastname');\n```\n\n```java\nassertThat(page.locator(\"input\")).hasId(\"lastname\");\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"input\")\nawait expect(locator).to_have_id(\"lastname\")\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"input\")\nexpect(locator).to_have_id(\"lastname\")\n```\n\n```csharp\nvar locator = Page.Locator(\"input\");\nawait Expect(locator).ToHaveIdAsync(\"lastname\");\n```\n",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "toHaveId",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -55310,8 +56559,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -55400,12 +56679,20 @@
               "expect(locator).to_have_js_property(\"loaded\", True)"
             ],
             "codeLang": "python sync"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "var locator = Page.Locator(\".component\");",
+              "await Expect(locator).ToHaveJSPropertyAsync(\"loaded\", true);"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Ensures the `Locator` points to an element with given JavaScript property. Note that this property can be of a primitive\ntype as well as a plain serializable JavaScript object.\n\n```js\nconst locator = page.locator('.component');\nawait expect(locator).toHaveJSProperty('loaded', true);\n```\n\n```java\nassertThat(page.locator(\"input\")).hasJSProperty(\"loaded\", true);\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\".component\")\nawait expect(locator).to_have_js_property(\"loaded\", True)\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\".component\")\nexpect(locator).to_have_js_property(\"loaded\", True)\n```\n",
+        "comment": "Ensures the `Locator` points to an element with given JavaScript property. Note that this property can be of a primitive\ntype as well as a plain serializable JavaScript object.\n\n```js\nconst locator = page.locator('.component');\nawait expect(locator).toHaveJSProperty('loaded', true);\n```\n\n```java\nassertThat(page.locator(\"input\")).hasJSProperty(\"loaded\", true);\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\".component\")\nawait expect(locator).to_have_js_property(\"loaded\", True)\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\".component\")\nexpect(locator).to_have_js_property(\"loaded\", True)\n```\n\n```csharp\nvar locator = Page.Locator(\".component\");\nawait Expect(locator).ToHaveJSPropertyAsync(\"loaded\", true);\n```\n",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "toHaveJSProperty",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -55437,8 +56724,8 @@
             "langs": {},
             "name": "value",
             "type": {
-              "name": "Serializable",
-              "expression": "[Serializable]"
+              "name": "any",
+              "expression": "[any]"
             },
             "spec": [
               {
@@ -55465,8 +56752,330 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "options",
+            "overloadIndex": 0,
+            "paramOrOption": null
+          }
+        ]
+      },
+      {
+        "kind": "method",
+        "langs": {
+          "only": [
+            "js"
+          ],
+          "aliases": {},
+          "types": {},
+          "overrides": {}
+        },
+        "name": "toHaveScreenshot",
+        "type": {
+          "name": "void"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Ensures that `Locator` resolves to a given screenshot. This function will re-take screenshots until it matches with the saved expectation."
+          },
+          {
+            "type": "text",
+            "text": "If there's no expectation yet, it will wait until two consecutive screenshots yield the same result, and save the last one as an expectation."
+          },
+          {
+            "type": "code",
+            "lines": [
+              "const locator = page.locator('button');",
+              "await expect(locator).toHaveScreenshot();"
+            ],
+            "codeLang": "js"
+          }
+        ],
+        "required": true,
+        "comment": "Ensures that `Locator` resolves to a given screenshot. This function will re-take screenshots until it matches with the\nsaved expectation.\n\nIf there's no expectation yet, it will wait until two consecutive screenshots yield the same result, and save the last\none as an expectation.\n\n```js\nconst locator = page.locator('button');\nawait expect(locator).toHaveScreenshot();\n```\n",
+        "deprecated": false,
+        "async": true,
+        "alias": "toHaveScreenshot",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "animations",
+                  "type": {
+                    "name": "ScreenshotAnimations",
+                    "union": [
+                      {
+                        "name": "\"disabled\""
+                      }
+                    ],
+                    "expression": "[ScreenshotAnimations]<\"disabled\">"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "When set to `\"disabled\"`, stops CSS animations, CSS transitions and Web Animations. Animations get different treatment depending on their duration:"
+                    },
+                    {
+                      "type": "li",
+                      "text": "finite animations are fast-forwarded to completion, so they'll fire `transitionend` event.",
+                      "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "infinite animations are canceled to initial state, and then played over after the screenshot.",
+                      "liType": "bullet"
+                    }
+                  ],
+                  "required": false,
+                  "comment": "When set to `\"disabled\"`, stops CSS animations, CSS transitions and Web Animations. Animations get different treatment\ndepending on their duration:\n- finite animations are fast-forwarded to completion, so they'll fire `transitionend` event.\n- infinite animations are canceled to initial state, and then played over after the screenshot.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "animations",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "mask",
+                  "type": {
+                    "name": "Array",
+                    "templates": [
+                      {
+                        "name": "Locator"
+                      }
+                    ],
+                    "expression": "[Array]<[Locator]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box `#FF00FF` that completely covers its bounding box."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box\n`#FF00FF` that completely covers its bounding box.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "mask",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "maxDiffPixelRatio",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "An acceptable ratio of pixels that are different to the total amount of pixels, between `0` and `1`. Default is configurable with `TestConfig.expect`. Unset by default."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "An acceptable ratio of pixels that are different to the total amount of pixels, between `0` and `1`. Default is\nconfigurable with `TestConfig.expect`. Unset by default.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "maxDiffPixelRatio",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "maxDiffPixels",
+                  "type": {
+                    "name": "int",
+                    "expression": "[int]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "An acceptable amount of pixels that could be different, default is configurable with `TestConfig.expect`. Default is configurable with `TestConfig.expect`. Unset by default."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "An acceptable amount of pixels that could be different, default is configurable with `TestConfig.expect`. Default is\nconfigurable with `TestConfig.expect`. Unset by default.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "maxDiffPixels",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "omitBackground",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Hides default white background and allows capturing screenshots with transparency. Not applicable to `jpeg` images. Defaults to `false`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Hides default white background and allows capturing screenshots with transparency. Not applicable to `jpeg` images.\nDefaults to `false`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "omitBackground",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "threshold",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "An acceptable perceived color difference in the [YIQ color space](https://en.wikipedia.org/wiki/YIQ) between the same pixel in compared images, between zero (strict) and one (lax), default is configurable with `TestConfig.expect`. Defaults to `0.2`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "An acceptable perceived color difference in the [YIQ color space](https://en.wikipedia.org/wiki/YIQ) between the same\npixel in compared images, between zero (strict) and one (lax), default is configurable with `TestConfig.expect`.\nDefaults to `0.2`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "threshold",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "java",
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -55563,6 +57172,15 @@
             "codeLang": "python sync"
           },
           {
+            "type": "code",
+            "lines": [
+              "var locator = Page.Locator(\".title\");",
+              "await Expect(locator).ToHaveTextAsync(new Regex(\"Welcome, Test User\"));",
+              "await Expect(locator).ToHaveTextAsync(new Regex(\"Welcome, .*\"));"
+            ],
+            "codeLang": "csharp"
+          },
+          {
             "type": "text",
             "text": "Note that if array is passed as an expected value, entire lists of elements can be asserted:"
           },
@@ -55600,12 +57218,20 @@
               "expect(locator).to_have_text([\"Text 1\", \"Text 2\", \"Text 3\"])"
             ],
             "codeLang": "python sync"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "var locator = Page.Locator(\"list > .component\");",
+              "await Expect(locator).toHaveTextAsync(new string[]{ \"Text 1\", \"Text 2\", \"Text 3\" });"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Ensures the `Locator` points to an element with the given text. You can use regular expressions for the value as well.\n\n```js\nconst locator = page.locator('.title');\nawait expect(locator).toHaveText(/Welcome, Test User/);\nawait expect(locator).toHaveText(/Welcome, .*/);\n```\n\n```java\nassertThat(page.locator(\".title\")).hasText(\"Welcome, Test User\");\nassertThat(page.locator(\".title\")).hasText(Pattern.compile(\"Welcome, .*\"));\n```\n\n```python async\nimport re\nfrom playwright.async_api import expect\n\nlocator = page.locator(\".title\")\nawait expect(locator).to_have_text(re.compile(r\"Welcome, Test User\"))\nawait expect(locator).to_have_text(re.compile(r\"Welcome, .*\"))\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\".title\")\nexpect(locator).to_have_text(re.compile(r\"Welcome, Test User\"))\nexpect(locator).to_have_text(re.compile(r\"Welcome, .*\"))\n```\n\nNote that if array is passed as an expected value, entire lists of elements can be asserted:\n\n```js\nconst locator = page.locator('list > .component');\nawait expect(locator).toHaveText(['Text 1', 'Text 2', 'Text 3']);\n```\n\n```java\nassertThat(page.locator(\"list > .component\")).hasText(new String[] {\"Text 1\", \"Text 2\", \"Text 3\"});\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"list > .component\")\nawait expect(locator).to_have_text([\"Text 1\", \"Text 2\", \"Text 3\"])\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"list > .component\")\nexpect(locator).to_have_text([\"Text 1\", \"Text 2\", \"Text 3\"])\n```\n",
+        "comment": "Ensures the `Locator` points to an element with the given text. You can use regular expressions for the value as well.\n\n```js\nconst locator = page.locator('.title');\nawait expect(locator).toHaveText(/Welcome, Test User/);\nawait expect(locator).toHaveText(/Welcome, .*/);\n```\n\n```java\nassertThat(page.locator(\".title\")).hasText(\"Welcome, Test User\");\nassertThat(page.locator(\".title\")).hasText(Pattern.compile(\"Welcome, .*\"));\n```\n\n```python async\nimport re\nfrom playwright.async_api import expect\n\nlocator = page.locator(\".title\")\nawait expect(locator).to_have_text(re.compile(r\"Welcome, Test User\"))\nawait expect(locator).to_have_text(re.compile(r\"Welcome, .*\"))\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\".title\")\nexpect(locator).to_have_text(re.compile(r\"Welcome, Test User\"))\nexpect(locator).to_have_text(re.compile(r\"Welcome, .*\"))\n```\n\n```csharp\nvar locator = Page.Locator(\".title\");\nawait Expect(locator).ToHaveTextAsync(new Regex(\"Welcome, Test User\"));\nawait Expect(locator).ToHaveTextAsync(new Regex(\"Welcome, .*\"));\n```\n\nNote that if array is passed as an expected value, entire lists of elements can be asserted:\n\n```js\nconst locator = page.locator('list > .component');\nawait expect(locator).toHaveText(['Text 1', 'Text 2', 'Text 3']);\n```\n\n```java\nassertThat(page.locator(\"list > .component\")).hasText(new String[] {\"Text 1\", \"Text 2\", \"Text 3\"});\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"list > .component\")\nawait expect(locator).to_have_text([\"Text 1\", \"Text 2\", \"Text 3\"])\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"list > .component\")\nexpect(locator).to_have_text([\"Text 1\", \"Text 2\", \"Text 3\"])\n```\n\n```csharp\nvar locator = Page.Locator(\"list > .component\");\nawait Expect(locator).toHaveTextAsync(new string[]{ \"Text 1\", \"Text 2\", \"Text 3\" });\n```\n",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "toHaveText",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -55668,7 +57294,8 @@
             "kind": "property",
             "langs": {
               "only": [
-                "java"
+                "java",
+                "csharp"
               ],
               "aliases": {},
               "types": {},
@@ -55728,8 +57355,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -55842,12 +57499,20 @@
               "expect(locator).to_have_value(re.compile(r\"[0-9]\"))"
             ],
             "codeLang": "python sync"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "var locator = Page.Locator(\"input[type=number]\");",
+              "await Expect(locator).ToHaveValueAsync(new Regex(\"[0-9]\"));"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Ensures the `Locator` points to an element with the given input value. You can use regular expressions for the value as\nwell.\n\n```js\nconst locator = page.locator('input[type=number]');\nawait expect(locator).toHaveValue(/[0-9]/);\n```\n\n```java\nassertThat(page.locator(\"input[type=number]\")).hasValue(Pattern.compile(\"[0-9]\"));\n```\n\n```python async\nimport re\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"input[type=number]\")\nawait expect(locator).to_have_value(re.compile(r\"[0-9]\"))\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"input[type=number]\")\nexpect(locator).to_have_value(re.compile(r\"[0-9]\"))\n```\n",
+        "comment": "Ensures the `Locator` points to an element with the given input value. You can use regular expressions for the value as\nwell.\n\n```js\nconst locator = page.locator('input[type=number]');\nawait expect(locator).toHaveValue(/[0-9]/);\n```\n\n```java\nassertThat(page.locator(\"input[type=number]\")).hasValue(Pattern.compile(\"[0-9]\"));\n```\n\n```python async\nimport re\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"input[type=number]\")\nawait expect(locator).to_have_value(re.compile(r\"[0-9]\"))\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"input[type=number]\")\nexpect(locator).to_have_value(re.compile(r\"[0-9]\"))\n```\n\n```csharp\nvar locator = Page.Locator(\"input[type=number]\");\nawait Expect(locator).ToHaveValueAsync(new Regex(\"[0-9]\"));\n```\n",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "toHaveValue",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -55893,8 +57558,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -56017,7 +57712,7 @@
             "langs": {},
             "name": "severity",
             "type": {
-              "name": "",
+              "name": "LogSeverity",
               "union": [
                 {
                   "name": "\"verbose\""
@@ -56032,7 +57727,7 @@
                   "name": "\"error\""
                 }
               ],
-              "expression": "\"verbose\"|\"info\"|\"warning\"|\"error\""
+              "expression": "[LogSeverity]<\"verbose\"|\"info\"|\"warning\"|\"error\">"
             },
             "spec": [],
             "required": true,
@@ -56088,7 +57783,7 @@
             "langs": {},
             "name": "severity",
             "type": {
-              "name": "",
+              "name": "LogSeverity",
               "union": [
                 {
                   "name": "\"verbose\""
@@ -56103,7 +57798,7 @@
                   "name": "\"error\""
                 }
               ],
-              "expression": "\"verbose\"|\"info\"|\"warning\"|\"error\""
+              "expression": "[LogSeverity]<\"verbose\"|\"info\"|\"warning\"|\"error\">"
             },
             "spec": [],
             "required": true,
@@ -67222,6 +68917,43 @@
                 {
                   "kind": "property",
                   "langs": {},
+                  "name": "animations",
+                  "type": {
+                    "name": "ScreenshotAnimations",
+                    "union": [
+                      {
+                        "name": "\"disabled\""
+                      }
+                    ],
+                    "expression": "[ScreenshotAnimations]<\"disabled\">"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "When set to `\"disabled\"`, stops CSS animations, CSS transitions and Web Animations. Animations get different treatment depending on their duration:"
+                    },
+                    {
+                      "type": "li",
+                      "text": "finite animations are fast-forwarded to completion, so they'll fire `transitionend` event.",
+                      "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "infinite animations are canceled to initial state, and then played over after the screenshot.",
+                      "liType": "bullet"
+                    }
+                  ],
+                  "required": false,
+                  "comment": "When set to `\"disabled\"`, stops CSS animations, CSS transitions and Web Animations. Animations get different treatment\ndepending on their duration:\n- finite animations are fast-forwarded to completion, so they'll fire `transitionend` event.\n- infinite animations are canceled to initial state, and then played over after the screenshot.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "animations",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
                   "name": "clip",
                   "type": {
                     "name": "Object",
@@ -67350,6 +69082,33 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "fullPage",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "mask",
+                  "type": {
+                    "name": "Array",
+                    "templates": [
+                      {
+                        "name": "Locator"
+                      }
+                    ],
+                    "expression": "[Array]<[Locator]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box `#FF00FF` that completely covers its bounding box."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box\n`#FF00FF` that completely covers its bounding box.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "mask",
                   "overloadIndex": 0,
                   "paramOrOption": null
                 },
@@ -69058,7 +70817,7 @@
           },
           {
             "type": "text",
-            "text": "`page.setViewportSize` will resize the page. A lot of websites don't expect phones to change size, so you should set the viewport size before navigating to the page. [`method: Page.setViewportSize`] will also reset `screen` size, use [`method: Browser.newContext`] with `screen` and `viewport` parameters if you need better control of these properties."
+            "text": "[`method: Page.setViewportSize`] will resize the page. A lot of websites don't expect phones to change size, so you should set the viewport size before navigating to the page. [`method: Page.setViewportSize`] will also reset `screen` size, use [`method: Browser.newContext`] with `screen` and `viewport` parameters if you need better control of these properties."
           },
           {
             "type": "code",
@@ -69110,7 +70869,7 @@
           }
         ],
         "required": true,
-        "comment": "In the case of multiple pages in a single browser, each page can have its own viewport size. However,\n[`method: Browser.newContext`] allows to set viewport size (and more) for all pages in the context at once.\n\n`page.setViewportSize` will resize the page. A lot of websites don't expect phones to change size, so you should set the\nviewport size before navigating to the page. [`method: Page.setViewportSize`] will also reset `screen` size, use\n[`method: Browser.newContext`] with `screen` and `viewport` parameters if you need better control of these properties.\n\n```js\nconst page = await browser.newPage();\nawait page.setViewportSize({\n  width: 640,\n  height: 480,\n});\nawait page.goto('https://example.com');\n```\n\n```java\nPage page = browser.newPage();\npage.setViewportSize(640, 480);\npage.navigate(\"https://example.com\");\n```\n\n```python async\npage = await browser.new_page()\nawait page.set_viewport_size({\"width\": 640, \"height\": 480})\nawait page.goto(\"https://example.com\")\n```\n\n```python sync\npage = browser.new_page()\npage.set_viewport_size({\"width\": 640, \"height\": 480})\npage.goto(\"https://example.com\")\n```\n\n```csharp\nvar page = await browser.NewPageAsync();\nawait page.SetViewportSizeAsync(640, 480);\nawait page.GotoAsync(\"https://www.microsoft.com\");\n```\n",
+        "comment": "In the case of multiple pages in a single browser, each page can have its own viewport size. However,\n[`method: Browser.newContext`] allows to set viewport size (and more) for all pages in the context at once.\n\n[`method: Page.setViewportSize`] will resize the page. A lot of websites don't expect phones to change size, so you\nshould set the viewport size before navigating to the page. [`method: Page.setViewportSize`] will also reset `screen`\nsize, use [`method: Browser.newContext`] with `screen` and `viewport` parameters if you need better control of these\nproperties.\n\n```js\nconst page = await browser.newPage();\nawait page.setViewportSize({\n  width: 640,\n  height: 480,\n});\nawait page.goto('https://example.com');\n```\n\n```java\nPage page = browser.newPage();\npage.setViewportSize(640, 480);\npage.navigate(\"https://example.com\");\n```\n\n```python async\npage = await browser.new_page()\nawait page.set_viewport_size({\"width\": 640, \"height\": 480})\nawait page.goto(\"https://example.com\")\n```\n\n```python sync\npage = browser.new_page()\npage.set_viewport_size({\"width\": 640, \"height\": 480})\npage.goto(\"https://example.com\")\n```\n\n```csharp\nvar page = await browser.NewPageAsync();\nawait page.SetViewportSizeAsync(640, 480);\nawait page.GotoAsync(\"https://www.microsoft.com\");\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "setViewportSize",
@@ -74657,26 +76416,42 @@
           "    expect(page).to_have_url(re.compile(r\".*/login\"))"
         ],
         "codeLang": "python sync"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "using System.Text.RegularExpressions;",
+          "using System.Threading.Tasks;",
+          "using Microsoft.Playwright.NUnit;",
+          "using NUnit.Framework;",
+          "",
+          "namespace PlaywrightTests",
+          "{",
+          "    public class ExampleTests : PageTest",
+          "    {",
+          "        [Test]",
+          "        public async Task NavigatetoLoginPage()",
+          "        {",
+          "            // ..",
+          "            await Page.ClickAsync(\"#login\");",
+          "            await Expect(Page.Locator(\"div#foobar\")).ToHaveURL(new Regex(\".*/login\"));",
+          "        }",
+          "    }",
+          "}"
+        ],
+        "codeLang": "csharp"
       }
     ],
-    "langs": {
-      "only": [
-        "java",
-        "python",
-        "js"
-      ],
-      "aliases": {},
-      "types": {},
-      "overrides": {}
-    },
-    "comment": "The `PageAssertions` class provides assertion methods that can be used to make assertions about the `Page` state in the\ntests. A new instance of `PageAssertions` is created by calling [`method: PlaywrightAssertions.expectPage`]:\n\n```js\nimport { test, expect } from '@playwright/test';\n\ntest('navigates to login', async ({ page }) => {\n  // ...\n  await page.click('#login');\n  await expect(page).toHaveURL(/.*\\/login/);\n});\n```\n\n```java\n...\nimport static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;\n\npublic class TestPage {\n  ...\n  @Test\n  void navigatesToLoginPage() {\n    ...\n    page.click(\"#login\");\n    assertThat(page).hasURL(Pattern.compile(\".*/login\"));\n  }\n}\n```\n\n```python async\nimport re\nfrom playwright.async_api import Page, expect\n\nasync def test_navigates_to_login_page(page: Page) -> None:\n    # ..\n    await page.click(\"#login\")\n    await expect(page).to_have_url(re.compile(r\".*/login\"))\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import Page, expect\n\ndef test_navigates_to_login_page(page: Page) -> None:\n    # ..\n    page.click(\"#login\")\n    expect(page).to_have_url(re.compile(r\".*/login\"))\n```\n",
+    "langs": {},
+    "comment": "The `PageAssertions` class provides assertion methods that can be used to make assertions about the `Page` state in the\ntests. A new instance of `PageAssertions` is created by calling [`method: PlaywrightAssertions.expectPage`]:\n\n```js\nimport { test, expect } from '@playwright/test';\n\ntest('navigates to login', async ({ page }) => {\n  // ...\n  await page.click('#login');\n  await expect(page).toHaveURL(/.*\\/login/);\n});\n```\n\n```java\n...\nimport static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;\n\npublic class TestPage {\n  ...\n  @Test\n  void navigatesToLoginPage() {\n    ...\n    page.click(\"#login\");\n    assertThat(page).hasURL(Pattern.compile(\".*/login\"));\n  }\n}\n```\n\n```python async\nimport re\nfrom playwright.async_api import Page, expect\n\nasync def test_navigates_to_login_page(page: Page) -> None:\n    # ..\n    await page.click(\"#login\")\n    await expect(page).to_have_url(re.compile(r\".*/login\"))\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import Page, expect\n\ndef test_navigates_to_login_page(page: Page) -> None:\n    # ..\n    page.click(\"#login\")\n    expect(page).to_have_url(re.compile(r\".*/login\"))\n```\n\n```csharp\nusing System.Text.RegularExpressions;\nusing System.Threading.Tasks;\nusing Microsoft.Playwright.NUnit;\nusing NUnit.Framework;\n\nnamespace PlaywrightTests\n{\n    public class ExampleTests : PageTest\n    {\n        [Test]\n        public async Task NavigatetoLoginPage()\n        {\n            // ..\n            await Page.ClickAsync(\"#login\");\n            await Expect(Page.Locator(\"div#foobar\")).ToHaveURL(new Regex(\".*/login\"));\n        }\n    }\n}\n```\n",
     "members": [
       {
-        "kind": "method",
+        "kind": "property",
         "langs": {
           "only": [
             "java",
-            "js"
+            "js",
+            "csharp"
           ],
           "aliases": {},
           "types": {},
@@ -74705,10 +76480,17 @@
               "assertThat(page).not().hasURL(\"error\");"
             ],
             "codeLang": "java"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "await Expect(page).Not.ToHaveURL(\"error\");"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Makes the assertion check for the opposite condition. For example, this code tests that the page URL doesn't contain\n`\"error\"`:\n\n```js\nawait expect(page).not.toHaveURL('error');\n```\n\n```java\nassertThat(page).not().hasURL(\"error\");\n```\n",
+        "comment": "Makes the assertion check for the opposite condition. For example, this code tests that the page URL doesn't contain\n`\"error\"`:\n\n```js\nawait expect(page).not.toHaveURL('error');\n```\n\n```java\nassertThat(page).not().hasURL(\"error\");\n```\n\n```csharp\nawait Expect(page).Not.ToHaveURL(\"error\");\n```\n",
         "deprecated": false,
         "async": false,
         "alias": "not",
@@ -74739,7 +76521,7 @@
         "required": true,
         "comment": "The opposite of [`method: PageAssertions.toHaveTitle`].",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "NotToHaveTitle",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -74785,8 +76567,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -74848,7 +76660,7 @@
         "required": true,
         "comment": "The opposite of [`method: PageAssertions.toHaveURL`].",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "NotToHaveURL",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -74894,8 +76706,463 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "options",
+            "overloadIndex": 0,
+            "paramOrOption": null
+          }
+        ]
+      },
+      {
+        "kind": "method",
+        "langs": {
+          "only": [
+            "js"
+          ],
+          "aliases": {},
+          "types": {},
+          "overrides": {}
+        },
+        "name": "toHaveScreenshot",
+        "type": {
+          "name": "void"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Ensures that the page resolves to a given screenshot. This function will re-take screenshots until it matches with the saved expectation."
+          },
+          {
+            "type": "text",
+            "text": "If there's no expectation yet, it will wait until two consecutive screenshots yield the same result, and save the last one as an expectation."
+          },
+          {
+            "type": "code",
+            "lines": [
+              "await expect(page).toHaveScreenshot();"
+            ],
+            "codeLang": "js"
+          }
+        ],
+        "required": true,
+        "comment": "Ensures that the page resolves to a given screenshot. This function will re-take screenshots until it matches with the\nsaved expectation.\n\nIf there's no expectation yet, it will wait until two consecutive screenshots yield the same result, and save the last\none as an expectation.\n\n```js\nawait expect(page).toHaveScreenshot();\n```\n",
+        "deprecated": false,
+        "async": true,
+        "alias": "toHaveScreenshot",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "animations",
+                  "type": {
+                    "name": "ScreenshotAnimations",
+                    "union": [
+                      {
+                        "name": "\"disabled\""
+                      }
+                    ],
+                    "expression": "[ScreenshotAnimations]<\"disabled\">"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "When set to `\"disabled\"`, stops CSS animations, CSS transitions and Web Animations. Animations get different treatment depending on their duration:"
+                    },
+                    {
+                      "type": "li",
+                      "text": "finite animations are fast-forwarded to completion, so they'll fire `transitionend` event.",
+                      "liType": "bullet"
+                    },
+                    {
+                      "type": "li",
+                      "text": "infinite animations are canceled to initial state, and then played over after the screenshot.",
+                      "liType": "bullet"
+                    }
+                  ],
+                  "required": false,
+                  "comment": "When set to `\"disabled\"`, stops CSS animations, CSS transitions and Web Animations. Animations get different treatment\ndepending on their duration:\n- finite animations are fast-forwarded to completion, so they'll fire `transitionend` event.\n- infinite animations are canceled to initial state, and then played over after the screenshot.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "animations",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "clip",
+                  "type": {
+                    "name": "Object",
+                    "properties": [
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "x",
+                        "type": {
+                          "name": "float",
+                          "expression": "[float]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": "x-coordinate of top-left corner of clip area"
+                          }
+                        ],
+                        "required": true,
+                        "comment": "x-coordinate of top-left corner of clip area",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "x",
+                        "overloadIndex": 0,
+                        "paramOrOption": null
+                      },
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "y",
+                        "type": {
+                          "name": "float",
+                          "expression": "[float]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": "y-coordinate of top-left corner of clip area"
+                          }
+                        ],
+                        "required": true,
+                        "comment": "y-coordinate of top-left corner of clip area",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "y",
+                        "overloadIndex": 0,
+                        "paramOrOption": null
+                      },
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "width",
+                        "type": {
+                          "name": "float",
+                          "expression": "[float]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": "width of clipping area"
+                          }
+                        ],
+                        "required": true,
+                        "comment": "width of clipping area",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "width",
+                        "overloadIndex": 0,
+                        "paramOrOption": null
+                      },
+                      {
+                        "kind": "property",
+                        "langs": {},
+                        "name": "height",
+                        "type": {
+                          "name": "float",
+                          "expression": "[float]"
+                        },
+                        "spec": [
+                          {
+                            "type": "text",
+                            "text": "height of clipping area"
+                          }
+                        ],
+                        "required": true,
+                        "comment": "height of clipping area",
+                        "deprecated": false,
+                        "async": false,
+                        "alias": "height",
+                        "overloadIndex": 0,
+                        "paramOrOption": null
+                      }
+                    ],
+                    "expression": "[Object]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "An object which specifies clipping of the resulting image. Should have the following fields:"
+                    }
+                  ],
+                  "required": false,
+                  "comment": "An object which specifies clipping of the resulting image. Should have the following fields:",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "clip",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "fullPage",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "When true, takes a screenshot of the full scrollable page, instead of the currently visible viewport. Defaults to `false`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "When true, takes a screenshot of the full scrollable page, instead of the currently visible viewport. Defaults to\n`false`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "fullPage",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "mask",
+                  "type": {
+                    "name": "Array",
+                    "templates": [
+                      {
+                        "name": "Locator"
+                      }
+                    ],
+                    "expression": "[Array]<[Locator]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box `#FF00FF` that completely covers its bounding box."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box\n`#FF00FF` that completely covers its bounding box.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "mask",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "maxDiffPixelRatio",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "An acceptable ratio of pixels that are different to the total amount of pixels, between `0` and `1`. Default is configurable with `TestConfig.expect`. Unset by default."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "An acceptable ratio of pixels that are different to the total amount of pixels, between `0` and `1`. Default is\nconfigurable with `TestConfig.expect`. Unset by default.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "maxDiffPixelRatio",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "maxDiffPixels",
+                  "type": {
+                    "name": "int",
+                    "expression": "[int]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "An acceptable amount of pixels that could be different, default is configurable with `TestConfig.expect`. Default is configurable with `TestConfig.expect`. Unset by default."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "An acceptable amount of pixels that could be different, default is configurable with `TestConfig.expect`. Default is\nconfigurable with `TestConfig.expect`. Unset by default.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "maxDiffPixels",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "name": "omitBackground",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Hides default white background and allows capturing screenshots with transparency. Not applicable to `jpeg` images. Defaults to `false`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Hides default white background and allows capturing screenshots with transparency. Not applicable to `jpeg` images.\nDefaults to `false`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "omitBackground",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "threshold",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "An acceptable perceived color difference in the [YIQ color space](https://en.wikipedia.org/wiki/YIQ) between the same pixel in compared images, between zero (strict) and one (lax), default is configurable with `TestConfig.expect`. Defaults to `0.2`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "An acceptable perceived color difference in the [YIQ color space](https://en.wikipedia.org/wiki/YIQ) between the same\npixel in compared images, between zero (strict) and one (lax), default is configurable with `TestConfig.expect`.\nDefaults to `0.2`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "threshold",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "java",
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -74985,12 +77252,19 @@
               "expect(page).to_have_title(re.compile(r\".*checkout\"))"
             ],
             "codeLang": "python sync"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "await Expect(page).ToHaveTitle(\"Playwright\");"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Ensures the page has the given title.\n\n```js\nawait expect(page).toHaveTitle(/.*checkout/);\n```\n\n```java\nassertThat(page).hasTitle(\"Playwright\");\n```\n\n```python async\nimport re\nfrom playwright.async_api import expect\n\n# ...\nawait expect(page).to_have_title(re.compile(r\".*checkout\"))\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\n# ...\nexpect(page).to_have_title(re.compile(r\".*checkout\"))\n```\n",
+        "comment": "Ensures the page has the given title.\n\n```js\nawait expect(page).toHaveTitle(/.*checkout/);\n```\n\n```java\nassertThat(page).hasTitle(\"Playwright\");\n```\n\n```python async\nimport re\nfrom playwright.async_api import expect\n\n# ...\nawait expect(page).to_have_title(re.compile(r\".*checkout\"))\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\n# ...\nexpect(page).to_have_title(re.compile(r\".*checkout\"))\n```\n\n```csharp\nawait Expect(page).ToHaveTitle(\"Playwright\");\n```\n",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "toHaveTitle",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -75036,8 +77310,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -75127,12 +77431,19 @@
               "expect(page).to_have_url(re.compile(\".*checkout\"))"
             ],
             "codeLang": "python sync"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "await Expect(page).ToHaveURL(new Regex(\".*checkout\"));"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Ensures the page is navigated to the given URL.\n\n```js\nawait expect(page).toHaveURL(/.*checkout/);\n```\n\n```java\nassertThat(page).hasURL(\".com\");\n```\n\n```python async\nimport re\nfrom playwright.async_api import expect\n\n# ...\nawait expect(page).to_have_url(re.compile(\".*checkout\"))\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\n# ...\nexpect(page).to_have_url(re.compile(\".*checkout\"))\n```\n",
+        "comment": "Ensures the page is navigated to the given URL.\n\n```js\nawait expect(page).toHaveURL(/.*checkout/);\n```\n\n```java\nassertThat(page).hasURL(\".com\");\n```\n\n```python async\nimport re\nfrom playwright.async_api import expect\n\n# ...\nawait expect(page).to_have_url(re.compile(\".*checkout\"))\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\n# ...\nexpect(page).to_have_url(re.compile(\".*checkout\"))\n```\n\n```csharp\nawait Expect(page).ToHaveURL(new Regex(\".*checkout\"));\n```\n",
         "deprecated": false,
-        "async": false,
+        "async": true,
         "alias": "toHaveURL",
         "overloadIndex": 0,
         "paramOrOption": null,
@@ -75178,8 +77489,38 @@
                   "kind": "property",
                   "langs": {
                     "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Time to retry the assertion for. Defaults to `timeout` in `TestConfig.expect`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
                       "java",
-                      "python"
+                      "python",
+                      "csharp"
                     ],
                     "aliases": {},
                     "types": {},
@@ -75874,7 +78215,7 @@
     "spec": [
       {
         "type": "text",
-        "text": "The `PlaywrightAssertions` class provides convenience methods for creating assertions that will wait until the expected condition is met."
+        "text": "Playwright gives you Web-First Assertions with convenience methods for creating assertions that will wait and retry until the expected condition is met."
       },
       {
         "type": "text",
@@ -75936,6 +78277,27 @@
         "codeLang": "java"
       },
       {
+        "type": "code",
+        "lines": [
+          "using System.Threading.Tasks;",
+          "using Microsoft.Playwright.NUnit;",
+          "using NUnit.Framework;",
+          "",
+          "namespace Playwright.TestingHarnessTest.NUnit",
+          "{",
+          "    public class ExampleTests : PageTest",
+          "    {",
+          "        [Test]",
+          "        public async Task StatusBecomesSubmitted()",
+          "        {",
+          "            await Expect(Page.Locator(\".status\")).ToHaveTextAsync(\"Submitted\");",
+          "        }",
+          "    }",
+          "}"
+        ],
+        "codeLang": "csharp"
+      },
+      {
         "type": "text",
         "text": "Playwright will be re-testing the node with the selector `.status` until fetched Node has the `\"Submitted\"` text. It will be re-fetching the node and checking it over and over, until the condition is met or until the timeout is reached. You can pass this timeout as an option."
       },
@@ -75944,17 +78306,8 @@
         "text": "By default, the timeout for assertions is set to 5 seconds."
       }
     ],
-    "langs": {
-      "only": [
-        "java",
-        "python",
-        "js"
-      ],
-      "aliases": {},
-      "types": {},
-      "overrides": {}
-    },
-    "comment": "The `PlaywrightAssertions` class provides convenience methods for creating assertions that will wait until the expected\ncondition is met.\n\nConsider the following example:\n\n```js\nimport { test, expect } from '@playwright/test';\n\ntest('status becomes submitted', async ({ page }) => {\n  // ...\n  await page.click('#submit-button')\n  await expect(page.locator('.status')).toHaveText('Submitted');\n});\n```\n\n```python async\nfrom playwright.async_api import Page, expect\n\nasync def test_status_becomes_submitted(page: Page) -> None:\n    # ..\n    await page.click(\"#submit-button\")\n    await expect(page.locator(\".status\")).to_have_text(\"Submitted\")\n```\n\n```python sync\nfrom playwright.sync_api import Page, expect\n\ndef test_status_becomes_submitted(page: Page) -> None:\n    # ..\n    page.click(\"#submit-button\")\n    expect(page.locator(\".status\")).to_have_text(\"Submitted\")\n```\n\n```java\n...\nimport static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;\n\npublic class TestExample {\n  ...\n  @Test\n  void statusBecomesSubmitted() {\n    ...\n    page.click(\"#submit-button\");\n    assertThat(page.locator(\".status\")).hasText(\"Submitted\");\n  }\n}\n```\n\nPlaywright will be re-testing the node with the selector `.status` until fetched Node has the `\"Submitted\"` text. It\nwill be re-fetching the node and checking it over and over, until the condition is met or until the timeout is reached.\nYou can pass this timeout as an option.\n\nBy default, the timeout for assertions is set to 5 seconds.",
+    "langs": {},
+    "comment": "Playwright gives you Web-First Assertions with convenience methods for creating assertions that will wait and retry\nuntil the expected condition is met.\n\nConsider the following example:\n\n```js\nimport { test, expect } from '@playwright/test';\n\ntest('status becomes submitted', async ({ page }) => {\n  // ...\n  await page.click('#submit-button')\n  await expect(page.locator('.status')).toHaveText('Submitted');\n});\n```\n\n```python async\nfrom playwright.async_api import Page, expect\n\nasync def test_status_becomes_submitted(page: Page) -> None:\n    # ..\n    await page.click(\"#submit-button\")\n    await expect(page.locator(\".status\")).to_have_text(\"Submitted\")\n```\n\n```python sync\nfrom playwright.sync_api import Page, expect\n\ndef test_status_becomes_submitted(page: Page) -> None:\n    # ..\n    page.click(\"#submit-button\")\n    expect(page.locator(\".status\")).to_have_text(\"Submitted\")\n```\n\n```java\n...\nimport static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;\n\npublic class TestExample {\n  ...\n  @Test\n  void statusBecomesSubmitted() {\n    ...\n    page.click(\"#submit-button\");\n    assertThat(page.locator(\".status\")).hasText(\"Submitted\");\n  }\n}\n```\n\n```csharp\nusing System.Threading.Tasks;\nusing Microsoft.Playwright.NUnit;\nusing NUnit.Framework;\n\nnamespace Playwright.TestingHarnessTest.NUnit\n{\n    public class ExampleTests : PageTest\n    {\n        [Test]\n        public async Task StatusBecomesSubmitted()\n        {\n            await Expect(Page.Locator(\".status\")).ToHaveTextAsync(\"Submitted\");\n        }\n    }\n}\n```\n\nPlaywright will be re-testing the node with the selector `.status` until fetched Node has the `\"Submitted\"` text. It\nwill be re-fetching the node and checking it over and over, until the condition is met or until the timeout is reached.\nYou can pass this timeout as an option.\n\nBy default, the timeout for assertions is set to 5 seconds.",
     "members": [
       {
         "kind": "method",
@@ -75967,7 +78320,8 @@
           "aliases": {
             "java": "assertThat",
             "python": "expect",
-            "js": "expect"
+            "js": "expect",
+            "csharp": "Expect"
           },
           "types": {},
           "overrides": {}
@@ -76025,15 +78379,11 @@
       {
         "kind": "method",
         "langs": {
-          "only": [
-            "java",
-            "python",
-            "js"
-          ],
           "aliases": {
             "java": "assertThat",
             "python": "expect",
-            "js": "expect"
+            "js": "expect",
+            "csharp": "Expect"
           },
           "types": {},
           "overrides": {}
@@ -76054,10 +78404,17 @@
               "PlaywrightAssertions.assertThat(locator).isVisible();"
             ],
             "codeLang": "java"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "await Expect(locator).ToBeVisibleAsync();"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Creates a `LocatorAssertions` object for the given `Locator`.\n\n```java\nPlaywrightAssertions.assertThat(locator).isVisible();\n```\n",
+        "comment": "Creates a `LocatorAssertions` object for the given `Locator`.\n\n```java\nPlaywrightAssertions.assertThat(locator).isVisible();\n```\n\n```csharp\nawait Expect(locator).ToBeVisibleAsync();\n```\n",
         "deprecated": false,
         "async": false,
         "alias": "expectLocator",
@@ -76091,15 +78448,11 @@
       {
         "kind": "method",
         "langs": {
-          "only": [
-            "java",
-            "python",
-            "js"
-          ],
           "aliases": {
             "java": "assertThat",
             "python": "expect",
-            "js": "expect"
+            "js": "expect",
+            "csharp": "Expect"
           },
           "types": {},
           "overrides": {}
@@ -76120,10 +78473,17 @@
               "PlaywrightAssertions.assertThat(page).hasTitle(\"News\");"
             ],
             "codeLang": "java"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "await Expect(page).ToHaveTitleAsync(\"News\");"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Creates a `PageAssertions` object for the given `Page`.\n\n```java\nPlaywrightAssertions.assertThat(page).hasTitle(\"News\");\n```\n",
+        "comment": "Creates a `PageAssertions` object for the given `Page`.\n\n```java\nPlaywrightAssertions.assertThat(page).hasTitle(\"News\");\n```\n\n```csharp\nawait Expect(page).ToHaveTitleAsync(\"News\");\n```\n",
         "deprecated": false,
         "async": false,
         "alias": "expectPage",
@@ -79432,6 +81792,160 @@
         "overloadIndex": 0,
         "paramOrOption": null,
         "args": []
+      }
+    ]
+  },
+  {
+    "name": "ScreenshotAssertions",
+    "spec": [
+      {
+        "type": "text",
+        "text": "Playwright provides methods for comparing page and element screenshots with expected values stored in files. See also [`method: PageAssertions.toHaveScreenshot`] and [`LocatorAssertions.toHaveScreenshot`]."
+      },
+      {
+        "type": "code",
+        "lines": [
+          "expect(screenshot).toMatchSnapshot('landing-page.png');"
+        ],
+        "codeLang": "js"
+      },
+      {
+        "type": "text",
+        "text": "<!-- TOC -->"
+      }
+    ],
+    "langs": {
+      "only": [
+        "js"
+      ],
+      "aliases": {},
+      "types": {},
+      "overrides": {}
+    },
+    "comment": "Playwright provides methods for comparing page and element screenshots with expected values stored in files. See also\n[`method: PageAssertions.toHaveScreenshot`] and [`LocatorAssertions.toHaveScreenshot`].\n\n```js\nexpect(screenshot).toMatchSnapshot('landing-page.png');\n```\n\n<!-- TOC -->",
+    "members": [
+      {
+        "kind": "method",
+        "langs": {},
+        "name": "toMatchSnapshot",
+        "type": {
+          "name": "void"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Ensures that passed value, either a [string] or a [Buffer], matches the expected snapshot stored in the test snapshots directory."
+          },
+          {
+            "type": "code",
+            "lines": [
+              "// Basic usage.",
+              "expect(await page.screenshot()).toMatchSnapshot('landing-page.png');",
+              "",
+              "// Configure image matching threshold.",
+              "expect(await page.screenshot()).toMatchSnapshot('landing-page.png', { threshold: 0.3 });",
+              "",
+              "// Bring some structure to your snapshot files by passing file path segments.",
+              "expect(await page.screenshot()).toMatchSnapshot(['landing', 'step2.png']);",
+              "expect(await page.screenshot()).toMatchSnapshot(['landing', 'step3.png']);"
+            ],
+            "codeLang": "js"
+          },
+          {
+            "type": "text",
+            "text": "Learn more about [visual comparisons](./test-snapshots.md)."
+          }
+        ],
+        "required": true,
+        "comment": "Ensures that passed value, either a [string] or a [Buffer], matches the expected snapshot stored in the test snapshots\ndirectory.\n\n```js\n// Basic usage.\nexpect(await page.screenshot()).toMatchSnapshot('landing-page.png');\n\n// Configure image matching threshold.\nexpect(await page.screenshot()).toMatchSnapshot('landing-page.png', { threshold: 0.3 });\n\n// Bring some structure to your snapshot files by passing file path segments.\nexpect(await page.screenshot()).toMatchSnapshot(['landing', 'step2.png']);\nexpect(await page.screenshot()).toMatchSnapshot(['landing', 'step3.png']);\n```\n\nLearn more about [visual comparisons](./test-snapshots.md).",
+        "deprecated": false,
+        "async": false,
+        "alias": "toMatchSnapshot",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "name",
+            "type": {
+              "name": "",
+              "union": [
+                {
+                  "name": "string"
+                },
+                {
+                  "name": "Array",
+                  "templates": [
+                    {
+                      "name": "string"
+                    }
+                  ]
+                }
+              ],
+              "expression": "[string]|[Array]<[string]>"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Snapshot name."
+              }
+            ],
+            "required": true,
+            "comment": "Snapshot name.",
+            "deprecated": false,
+            "async": false,
+            "alias": "name",
+            "overloadIndex": 0,
+            "paramOrOption": null
+          },
+          {
+            "kind": "property",
+            "langs": {},
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "name": "threshold",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "An acceptable perceived color difference in the [YIQ color space](https://en.wikipedia.org/wiki/YIQ) between the same pixel in compared images, between zero (strict) and one (lax), default is configurable with `TestConfig.expect`. Defaults to `0.2`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "An acceptable perceived color difference in the [YIQ color space](https://en.wikipedia.org/wiki/YIQ) between the same\npixel in compared images, between zero (strict) and one (lax), default is configurable with `TestConfig.expect`.\nDefaults to `0.2`.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "threshold",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "deprecated": false,
+            "async": false,
+            "alias": "options",
+            "overloadIndex": 0,
+            "paramOrOption": null
+          }
+        ]
       }
     ]
   },
