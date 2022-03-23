@@ -158,7 +158,7 @@ module Playwright
 
     # @returns [Playwright::Page]
     def new_page(&block)
-      raise 'Please use browser.new_context' if @owner_page
+      raise 'Please use browser.new_context' if defined?(@owner_page) && @owner_page
       resp = @channel.send_message_to_server('newPage')
       page = ChannelOwners::Page.from(resp)
       return page unless block
