@@ -13,6 +13,7 @@ module Playwright
       @timeout_settings = TimeoutSettings.new
       @service_workers = Set.new
       @background_pages = Set.new
+      @owner_page = nil
 
       @tracing = ChannelOwners::Tracing.from(@initializer['tracing'])
       @request = ChannelOwners::APIRequestContext.from(@initializer['APIRequestContext'])
