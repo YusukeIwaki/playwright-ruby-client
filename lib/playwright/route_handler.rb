@@ -51,9 +51,11 @@ module Playwright
       @counter.increment
 
       Concurrent::Promises.future do
-        @handler.call(route, request)
-      rescue => err
-        puts err, err.backtrace
+        begin
+          @handler.call(route, request)
+        rescue => err
+          puts err, err.backtrace
+        end
       end
     end
 

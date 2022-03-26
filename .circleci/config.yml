@@ -7,15 +7,15 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install Ruby 2.7.2 via RVM
+          name: Install Ruby 2.7.5 via RVM
           command: |
             curl -sSL https://rvm.io/mpapis.asc | gpg --import -
             curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -
             curl -sSL https://get.rvm.io | bash -s stable --ruby
             source /usr/local/rvm/scripts/rvm
-            rvm install 2.7.2
-            rvm use 2.7.2
-            echo . $(rvm 2.7.2 do rvm env --path) >> $BASH_ENV
+            rvm install 2.7.5
+            rvm use 2.7.5
+            echo . $(rvm 2.7.5 do rvm env --path) >> $BASH_ENV
             gem install bundler:2.3.0 && bundle install
       - run:
           name: Setup playwright driver
@@ -43,15 +43,15 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install Ruby 2.7.2 via RVM
+          name: Install Ruby 2.7.5 via RVM
           command: |
             curl -sSL https://rvm.io/mpapis.asc | gpg --import -
             curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -
             curl -sSL https://get.rvm.io | bash -s stable --ruby
             source /usr/local/rvm/scripts/rvm
-            rvm install 2.7.2
-            rvm use 2.7.2
-            echo . $(rvm 2.7.2 do rvm env --path) >> $BASH_ENV
+            rvm install 2.7.5
+            rvm use 2.7.5
+            echo . $(rvm 2.7.5 do rvm env --path) >> $BASH_ENV
             gem install bundler:2.3.0 && bundle install
       - run:
           name: Setup playwright driver
