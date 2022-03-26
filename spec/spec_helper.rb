@@ -99,7 +99,7 @@ RSpec.configure do |config|
     end
   end
   BROWSER_TYPES.each do |type|
-    IntegrationTestCaseMethods.define_method("#{type}?") { @playwright_browser_type_param == type }
+    IntegrationTestCaseMethods.send(:define_method, "#{type}?") { @playwright_browser_type_param == type }
   end
   config.include IntegrationTestCaseMethods, type: :integration
 
@@ -240,12 +240,14 @@ RSpec.configure do |config|
     Thread.new(@server_port) { |port| sinatra_app.run!(port: port) }
     Timeout.timeout(3) do
       loop do
-        Net::HTTP.get(URI("#{server_prefix}/_ping"))
-        break
-      rescue Errno::EADDRNOTAVAIL
-        sleep 1
-      rescue Errno::ECONNREFUSED
-        sleep 0.1
+        begin
+          Net::HTTP.get(URI("#{server_prefix}/_ping"))
+          break
+        rescue Errno::EADDRNOTAVAIL
+          sleep 1
+        rescue Errno::ECONNREFUSED
+          sleep 0.1
+        end
       end
     end
 
