@@ -22,8 +22,23 @@ jobs:
         rm -rf spec/integration
         bundle exec rspec
 
+  generate_playwright_api:
+    name: Generate Playwright API codes
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.1
+        bundler-cache: true
+    - run: bundle exec ruby development/generate_api.rb
+    - uses: actions/upload-artifact@v2
+      with:
+        name: playwright_api
+        path: lib/playwright_api
+
   integration_test_with_npm_playwright_driver:
-    needs: unit_test
+    needs: [unit_test, generate_playwright_api]
     strategy:
       fail-fast: false
       matrix:
@@ -39,16 +54,54 @@ jobs:
         bundler-cache: true
     - uses: actions/setup-node@v1
       with:
-        node-version: 14
+        node-version: 16
     - name: setup ${{ matrix.version }} playwright via npm install
       run: |
         export PLAYWRIGHT_CLI_VERSION=$(bundle exec ruby -e 'puts Playwright::COMPATIBLE_PLAYWRIGHT_VERSION.strip')
         npm install playwright@${PLAYWRIGHT_CLI_VERSION} || npm install playwright@next
         ./node_modules/.bin/playwright install ${{ matrix.browser }}
         ./node_modules/.bin/playwright install-deps
-    - run: bundle exec ruby development/generate_api.rb
+    - name: Download playwright_api codes
+      uses: actions/download-artifact@v2
+      with:
+        name: playwright_api
+        path: lib/playwright_api
     - run: bundle exec rspec spec/integration --profile 10
       env:
         BROWSER: ${{ matrix.browser }}
+        PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./node_modules/.bin/playwright
+      timeout-minutes: 10
+
+  integration_test_with_npm_playwright_driver_and_old_ruby:
+    needs: [unit_test, generate_playwright_api]
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby_version: [2.4, 2.5, 2.6]
+    name: (chromium/Ruby${{ matrix.ruby_version }}) example_spec
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby_version }}
+        bundler-cache: true
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 16
+    - name: setup ${{ matrix.version }} playwright via npm install
+      run: |
+        export PLAYWRIGHT_CLI_VERSION=$(bundle exec ruby -e 'puts Playwright::COMPATIBLE_PLAYWRIGHT_VERSION.strip')
+        npm install playwright@${PLAYWRIGHT_CLI_VERSION} || npm install playwright@next
+        ./node_modules/.bin/playwright install chromium
+        ./node_modules/.bin/playwright install-deps
+    - name: Download playwright_api codes
+      uses: actions/download-artifact@v2
+      with:
+        name: playwright_api
+        path: lib/playwright_api
+    - run: bundle exec rspec spec/integration/example_spec.rb
+      env:
+        BROWSER: chromium
         PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./node_modules/.bin/playwright
       timeout-minutes: 10

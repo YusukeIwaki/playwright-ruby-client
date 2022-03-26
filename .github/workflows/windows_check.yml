@@ -13,7 +13,7 @@ jobs:
           bundler-cache: true
       - uses: actions/setup-node@v1
         with:
-          node-version: 14
+          node-version: 16
       - name: Install playwright driver via npx
         run: |
           npx playwright@next install chromium
