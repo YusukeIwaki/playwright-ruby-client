@@ -180,7 +180,7 @@ module Playwright
         else
           [urls]
         end
-      @channel.send_message_to_server('cookies', urls: urls)
+      @channel.send_message_to_server('cookies', urls: target_urls)
     end
 
     def add_cookies(cookies)
