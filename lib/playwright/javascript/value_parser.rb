@@ -24,21 +24,19 @@ module Playwright
         end
 
         if hash.key?('v')
-          return
-            case hash['v']
-            when 'undefined'
-              nil
-            when 'null'
-              nil
-            when 'NaN'
-              Float::NAN
-            when 'Infinity'
-              Float::INFINITY
-            when '-Infinity'
-              -Float::INFINITY
-            when '-0'
-              -0
-            end
+          return case hash['v']
+                 when 'undefined'
+                  nil
+                 when 'null'
+                  nil
+                 when 'NaN'
+                  Float::NAN
+                 when 'Infinity'
+                  Float::INFINITY
+                 when '-Infinity'
+                  -Float::INFINITY when '-0'
+                  -0
+                 end
         end
 
         if hash.key?('d')

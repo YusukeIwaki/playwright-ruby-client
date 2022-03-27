@@ -377,15 +377,6 @@ module Playwright
     end
 
     def add_init_script(path: nil, script: nil)
-      source =
-        if path
-          File.read(path)
-        elsif script
-          script
-        else
-          raise ArgumentError.new('Either path or script parameter must be specified')
-        end
-
       @channel.send_message_to_server('addInitScript', source: script)
       nil
     end

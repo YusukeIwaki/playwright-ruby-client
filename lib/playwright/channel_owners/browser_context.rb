@@ -171,14 +171,6 @@ module Playwright
     end
 
     def cookies(urls: nil)
-      target_urls =
-        if urls.nil?
-          []
-        elsif urls.is_a?(Enumerable)
-          urls
-        else
-          [urls]
-        end
       @channel.send_message_to_server('cookies', urls: urls)
     end
 
@@ -216,15 +208,6 @@ module Playwright
     end
 
     def add_init_script(path: nil, script: nil)
-      source =
-        if path
-          File.read(path)
-        elsif script
-          script
-        else
-          raise ArgumentError.new('Either path or script parameter must be specified')
-        end
-
       @channel.send_message_to_server('addInitScript', source: script)
       nil
     end
