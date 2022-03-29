@@ -226,7 +226,7 @@ module Playwright
           raise ArgumentError.new('Either path or script parameter must be specified')
         end
 
-      @channel.send_message_to_server('addInitScript', source: script)
+      @channel.send_message_to_server('addInitScript', source: source)
       nil
     end
 
