@@ -65,10 +65,6 @@ module Playwright
       @channel.send_message_to_server('info', selector: to_selector_channel(selector))
     end
 
-    def tree
-      @channel.send_message_to_server('tree')
-    end
-
     def screenshot(path: nil)
       encoded_binary = @channel.send_message_to_server('screenshot')
       decoded_binary = Base64.strict_decode64(encoded_binary)
