@@ -5,7 +5,8 @@ module Playwright
     end
 
     def devices(port: nil)
-      resp = @channel.send_message_to_server('devices', port: port)
+      params = { port: port }.compact
+      resp = @channel.send_message_to_server('devices', params)
       resp.map { |device| ChannelOwners::AndroidDevice.from(device) }
     end
   end
