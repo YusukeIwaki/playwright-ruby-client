@@ -113,7 +113,7 @@ This method checks an element matching `selector` by performing the following st
 1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.
 1. Ensure that matched element is a checkbox or a radio input. If not, this method throws. If the element is already
    checked, this method returns immediately.
-1. Wait for [actionability](../actionability.md) checks on the matched element, unless `force` option is set. If the
+1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the
    element is detached during the checks, the whole action is retried.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to click in the center of the element.
@@ -144,7 +144,7 @@ def click(
 
 This method clicks an element matching `selector` by performing the following steps:
 1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.
-1. Wait for [actionability](../actionability.md) checks on the matched element, unless `force` option is set. If the
+1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the
    element is detached during the checks, the whole action is retried.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to click in the center of the element, or the specified `position`.
@@ -203,7 +203,7 @@ def dblclick(
 
 This method double clicks an element matching `selector` by performing the following steps:
 1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.
-1. Wait for [actionability](../actionability.md) checks on the matched element, unless `force` option is set. If the
+1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the
    element is detached during the checks, the whole action is retried.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to double click in the center of the element, or the specified `position`.
@@ -539,7 +539,7 @@ def fill(
       timeout: nil)
 ```
 
-This method waits for an element matching `selector`, waits for [actionability](../actionability.md) checks, focuses the
+This method waits for an element matching `selector`, waits for [actionability](https://playwright.dev/python/docs/actionability) checks, focuses the
 element, fills it and triggers an `input` event after filling. Note that you can pass an empty string to clear the input
 field.
 
@@ -678,7 +678,7 @@ def hover(
 
 This method hovers over an element matching `selector` by performing the following steps:
 1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.
-1. Wait for [actionability](../actionability.md) checks on the matched element, unless `force` option is set. If the
+1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the
    element is detached during the checks, the whole action is retried.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to hover over the center of the element, or the specified `position`.
@@ -735,7 +735,7 @@ Indicates that the page has been closed.
 def disabled?(selector, strict: nil, timeout: nil)
 ```
 
-Returns whether the element is disabled, the opposite of [enabled](../actionability.md#enabled).
+Returns whether the element is disabled, the opposite of [enabled](https://playwright.dev/python/docs/actionability).
 
 ## editable?
 
@@ -743,7 +743,7 @@ Returns whether the element is disabled, the opposite of [enabled](../actionabil
 def editable?(selector, strict: nil, timeout: nil)
 ```
 
-Returns whether the element is [editable](../actionability.md#editable).
+Returns whether the element is [editable](https://playwright.dev/python/docs/actionability).
 
 ## enabled?
 
@@ -751,7 +751,7 @@ Returns whether the element is [editable](../actionability.md#editable).
 def enabled?(selector, strict: nil, timeout: nil)
 ```
 
-Returns whether the element is [enabled](../actionability.md#enabled).
+Returns whether the element is [enabled](https://playwright.dev/python/docs/actionability).
 
 ## hidden?
 
@@ -759,7 +759,7 @@ Returns whether the element is [enabled](../actionability.md#enabled).
 def hidden?(selector, strict: nil, timeout: nil)
 ```
 
-Returns whether the element is hidden, the opposite of [visible](../actionability.md#visible).  `selector` that does not
+Returns whether the element is hidden, the opposite of [visible](https://playwright.dev/python/docs/actionability).  `selector` that does not
 match any elements is considered hidden.
 
 ## visible?
@@ -768,7 +768,7 @@ match any elements is considered hidden.
 def visible?(selector, strict: nil, timeout: nil)
 ```
 
-Returns whether the element is [visible](../actionability.md#visible). `selector` that does not match any elements is
+Returns whether the element is [visible](https://playwright.dev/python/docs/actionability). `selector` that does not match any elements is
 considered not visible.
 
 ## locator
@@ -1042,7 +1042,7 @@ def select_option(
       timeout: nil)
 ```
 
-This method waits for an element matching `selector`, waits for [actionability](../actionability.md) checks, waits until
+This method waits for an element matching `selector`, waits for [actionability](https://playwright.dev/python/docs/actionability) checks, waits until
 all specified options are present in the `<select>` element and selects these options.
 
 If the target element is not a `<select>` element, this method throws an error. However, if the element is inside the
@@ -1082,7 +1082,7 @@ This method checks or unchecks an element matching `selector` by performing the 
 1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.
 1. Ensure that matched element is a checkbox or a radio input. If not, this method throws.
 1. If the element already has the right checked state, this method returns immediately.
-1. Wait for [actionability](../actionability.md) checks on the matched element, unless `force` option is set. If the
+1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the
    element is detached during the checks, the whole action is retried.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to click in the center of the element.
@@ -1199,7 +1199,7 @@ def tap_point(
 
 This method taps an element matching `selector` by performing the following steps:
 1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.
-1. Wait for [actionability](../actionability.md) checks on the matched element, unless `force` option is set. If the
+1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the
    element is detached during the checks, the whole action is retried.
 1. Scroll the element into view if needed.
 1. Use [Page#touchscreen](./page#touchscreen) to tap the center of the element, or the specified `position`.
@@ -1269,7 +1269,7 @@ This method unchecks an element matching `selector` by performing the following 
 1. Find an element matching `selector`. If there is none, wait until a matching element is attached to the DOM.
 1. Ensure that matched element is a checkbox or a radio input. If not, this method throws. If the element is already
    unchecked, this method returns immediately.
-1. Wait for [actionability](../actionability.md) checks on the matched element, unless `force` option is set. If the
+1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the
    element is detached during the checks, the whole action is retried.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to click in the center of the element.
@@ -1450,7 +1450,7 @@ Performs action and waits for a popup [Page](./page). If predicate is provided, 
 def expect_request(urlOrPredicate, timeout: nil, &block)
 ```
 
-Waits for the matching request and returns it. See [waiting for event](../events.md#waiting-for-event) for more details
+Waits for the matching request and returns it. See [waiting for event](https://playwright.dev/python/docs/events) for more details
 about events.
 
 ```ruby
@@ -1488,7 +1488,7 @@ closed before the [`event: Page.requestFinished`] event is fired.
 def expect_response(urlOrPredicate, timeout: nil, &block)
 ```
 
-Returns the matched response. See [waiting for event](../events.md#waiting-for-event) for more details about events.
+Returns the matched response. See [waiting for event](https://playwright.dev/python/docs/events) for more details about events.
 
 ```ruby
 page.content = '<form action="https://example.com/resource"><input type="submit" /></form>'

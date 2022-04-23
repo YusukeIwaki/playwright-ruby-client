@@ -4,7 +4,7 @@ sidebar_position: 10
 
 # Tracing
 
-API for collecting and saving Playwright traces. Playwright traces can be opened in [Trace Viewer](../trace-viewer.md)
+API for collecting and saving Playwright traces. Playwright traces can be opened in [Trace Viewer](https://playwright.dev/python/docs/trace-viewer)
 after Playwright script runs.
 
 Start recording a trace before performing actions. At the end, stop tracing and save it to a file.

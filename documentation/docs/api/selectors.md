@@ -4,7 +4,7 @@ sidebar_position: 10
 
 # Selectors
 
-Selectors can be used to install custom selector engines. See [Working with selectors](../selectors.md) for more
+Selectors can be used to install custom selector engines. See [Working with selectors](https://playwright.dev/python/docs/selectors) for more
 information.
 
 ## register
