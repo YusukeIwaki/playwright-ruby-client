@@ -408,15 +408,17 @@ module Playwright
     end
 
     def screenshot(
-      path: nil,
-      type: nil,
-      quality: nil,
-      fullPage: nil,
-      clip: nil,
-      omitBackground: nil,
       animations: nil,
+      caret: nil,
+      clip: nil,
+      fullPage: nil,
       mask: nil,
-      timeout: nil)
+      omitBackground: nil,
+      path: nil,
+      quality: nil,
+      scale: nil,
+      timeout: nil,
+      type: nil)
 
       params = {
         type: type,
@@ -425,6 +427,8 @@ module Playwright
         clip: clip,
         omitBackground: omitBackground,
         animations: animations,
+        caret: caret,
+        scale: scale,
         timeout: timeout,
       }.compact
       if mask.is_a?(Enumerable)

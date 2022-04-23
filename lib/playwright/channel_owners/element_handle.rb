@@ -282,18 +282,22 @@ module Playwright
 
       def screenshot(
         animations: nil,
+        caret: nil,
         mask: nil,
         omitBackground: nil,
         path: nil,
         quality: nil,
+        scale: nil,
         timeout: nil,
         type: nil)
 
         params = {
           animations: animations,
+          caret: caret,
           omitBackground: omitBackground,
           path: path,
           quality: quality,
+          scale: scale,
           timeout: timeout,
           type: type,
         }.compact

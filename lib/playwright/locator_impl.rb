@@ -314,19 +314,24 @@ module Playwright
 
     def screenshot(
           animations: nil,
+          caret: nil,
           mask: nil,
           omitBackground: nil,
           path: nil,
           quality: nil,
+          scale: nil,
           timeout: nil,
           type: nil)
+
       with_element(timeout: timeout) do |handle, options|
         handle.screenshot(
           animations: animations,
+          caret: caret,
           mask: mask,
           omitBackground: omitBackground,
           path: path,
           quality: quality,
+          scale: scale,
           timeout: options[:timeout],
           type: type)
       end
