@@ -55,7 +55,7 @@ This object can be used to launch or connect to Firefox, returning instances of 
 
 ## selectors
 
-Selectors can be used to install custom selector engines. See [Working with selectors](https://playwright.dev/python/docs/selectors) for more
+Selectors can be used to install custom selector engines. See [Working with selectors](../selectors.md) for more
 information.
 
 ## webkit

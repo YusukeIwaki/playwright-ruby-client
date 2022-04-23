@@ -7,7 +7,7 @@ sidebar_position: 10
 Locators are the central piece of Playwright's auto-waiting and retry-ability. In a nutshell, locators represent a way
 to find element(s) on the page at any moment. Locator can be created with the [Page#locator](./page#locator) method.
 
-[Learn more about locators](https://playwright.dev/python/docs/locators).
+[Learn more about locators](../locators.md).
 
 ## all_inner_texts
 
@@ -68,7 +68,7 @@ def check(
 This method checks the element by performing the following steps:
 1. Ensure that element is a checkbox or a radio input. If not, this method throws. If the element is already checked,
    this method returns immediately.
-1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
+1. Wait for [actionability](../actionability.md) checks on the element, unless `force` option is set.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to click in the center of the element.
 1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
@@ -95,7 +95,7 @@ def click(
 ```
 
 This method clicks the element by performing the following steps:
-1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
+1. Wait for [actionability](../actionability.md) checks on the element, unless `force` option is set.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to click in the center of the element, or the specified `position`.
 1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
@@ -128,7 +128,7 @@ def dblclick(
 ```
 
 This method double clicks the element by performing the following steps:
-1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
+1. Wait for [actionability](../actionability.md) checks on the element, unless `force` option is set.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to double click in the center of the element, or the specified `position`.
 1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set. Note that if the
@@ -275,7 +275,7 @@ See [Page#evaluate_handle](./page#evaluate_handle) for more details.
 def fill(value, force: nil, noWaitAfter: nil, timeout: nil)
 ```
 
-This method waits for [actionability](https://playwright.dev/python/docs/actionability) checks, focuses the element, fills it and triggers an `input`
+This method waits for [actionability](../actionability.md) checks, focuses the element, fills it and triggers an `input`
 event after filling. Note that you can pass an empty string to clear the input field.
 
 If the target element is not an `<input>`, `<textarea>` or `[contenteditable]` element, this method throws an error.
@@ -346,7 +346,7 @@ def hover(
 ```
 
 This method hovers over the element by performing the following steps:
-1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
+1. Wait for [actionability](../actionability.md) checks on the element, unless `force` option is set.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to hover over the center of the element, or the specified `position`.
 1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
@@ -394,7 +394,7 @@ Returns whether the element is checked. Throws if the element is not a checkbox 
 def disabled?(timeout: nil)
 ```
 
-Returns whether the element is disabled, the opposite of [enabled](https://playwright.dev/python/docs/actionability).
+Returns whether the element is disabled, the opposite of [enabled](../actionability.md#enabled).
 
 ## editable?
 
@@ -402,7 +402,7 @@ Returns whether the element is disabled, the opposite of [enabled](https://playw
 def editable?(timeout: nil)
 ```
 
-Returns whether the element is [editable](https://playwright.dev/python/docs/actionability).
+Returns whether the element is [editable](../actionability.md#editable).
 
 ## enabled?
 
@@ -410,7 +410,7 @@ Returns whether the element is [editable](https://playwright.dev/python/docs/act
 def enabled?(timeout: nil)
 ```
 
-Returns whether the element is [enabled](https://playwright.dev/python/docs/actionability).
+Returns whether the element is [enabled](../actionability.md#enabled).
 
 ## hidden?
 
@@ -418,7 +418,7 @@ Returns whether the element is [enabled](https://playwright.dev/python/docs/acti
 def hidden?(timeout: nil)
 ```
 
-Returns whether the element is hidden, the opposite of [visible](https://playwright.dev/python/docs/actionability).
+Returns whether the element is hidden, the opposite of [visible](../actionability.md#visible).
 
 ## visible?
 
@@ -426,7 +426,7 @@ Returns whether the element is hidden, the opposite of [visible](https://playwri
 def visible?(timeout: nil)
 ```
 
-Returns whether the element is [visible](https://playwright.dev/python/docs/actionability).
+Returns whether the element is [visible](../actionability.md#visible).
 
 ## last
 
@@ -450,7 +450,7 @@ The method finds an element matching the specified selector in the [Locator](./l
 def nth(index)
 ```
 
-Returns locator to the n-th matching element.
+Returns locator to the n-th matching element. It's zero based, `nth(0)` selects the first element.
 
 ## page
 
@@ -490,17 +490,19 @@ modifier, modifier is pressed and being held while the subsequent key is being p
 ```
 def screenshot(
       animations: nil,
+      caret: nil,
       mask: nil,
       omitBackground: nil,
       path: nil,
       quality: nil,
+      scale: nil,
       timeout: nil,
       type: nil)
 ```
 
 Returns the buffer with the captured screenshot.
 
-This method waits for the [actionability](https://playwright.dev/python/docs/actionability) checks, then scrolls element into view before taking a
+This method waits for the [actionability](../actionability.md) checks, then scrolls element into view before taking a
 screenshot. If the element is detached from DOM, the method throws an error.
 
 ## scroll_into_view_if_needed
@@ -509,7 +511,7 @@ screenshot. If the element is detached from DOM, the method throws an error.
 def scroll_into_view_if_needed(timeout: nil)
 ```
 
-This method waits for [actionability](https://playwright.dev/python/docs/actionability) checks, then tries to scroll element into view, unless it is
+This method waits for [actionability](../actionability.md) checks, then tries to scroll element into view, unless it is
 completely visible as defined by
 [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)'s `ratio`.
 
@@ -526,7 +528,7 @@ def select_option(
       timeout: nil)
 ```
 
-This method waits for [actionability](https://playwright.dev/python/docs/actionability) checks, waits until all specified options are present in the
+This method waits for [actionability](../actionability.md) checks, waits until all specified options are present in the
 `<select>` element and selects these options.
 
 If the target element is not a `<select>` element, this method throws an error. However, if the element is inside the
@@ -559,7 +561,7 @@ element.select_option(value: "blue", index: 2, label: "red")
 def select_text(force: nil, timeout: nil)
 ```
 
-This method waits for [actionability](https://playwright.dev/python/docs/actionability) checks, then focuses the element and selects all its text
+This method waits for [actionability](../actionability.md) checks, then focuses the element and selects all its text
 content.
 
 ## set_checked
@@ -578,7 +580,7 @@ alias: `checked=`
 This method checks or unchecks an element by performing the following steps:
 1. Ensure that matched element is a checkbox or a radio input. If not, this method throws.
 1. If the element already has the right checked state, this method returns immediately.
-1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the
+1. Wait for [actionability](../actionability.md) checks on the matched element, unless `force` option is set. If the
    element is detached during the checks, the whole action is retried.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to click in the center of the element.
@@ -614,7 +616,7 @@ def tap_point(
 ```
 
 This method taps the element by performing the following steps:
-1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
+1. Wait for [actionability](../actionability.md) checks on the element, unless `force` option is set.
 1. Scroll the element into view if needed.
 1. Use [Page#touchscreen](./page#touchscreen) to tap the center of the element, or the specified `position`.
 1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
@@ -673,7 +675,7 @@ def uncheck(
 This method checks the element by performing the following steps:
 1. Ensure that element is a checkbox or a radio input. If not, this method throws. If the element is already
    unchecked, this method returns immediately.
-1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
+1. Wait for [actionability](../actionability.md) checks on the element, unless `force` option is set.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to click in the center of the element.
 1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.

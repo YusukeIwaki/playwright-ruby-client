@@ -31,7 +31,7 @@ def connect_over_cdp(
       &block)
 ```
 
-This methods attaches Playwright to an existing browser instance using the Chrome DevTools Protocol.
+This method attaches Playwright to an existing browser instance using the Chrome DevTools Protocol.
 
 The default browser context is accessible via [Browser#contexts](./browser#contexts).
 

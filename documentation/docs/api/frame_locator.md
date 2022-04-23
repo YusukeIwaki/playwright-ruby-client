@@ -76,4 +76,4 @@ The method finds an element matching the specified selector in the FrameLocator'
 def nth(index)
 ```
 
-Returns locator to the n-th matching frame.
+Returns locator to the n-th matching frame. It's zero based, `nth(0)` selects the first frame.
