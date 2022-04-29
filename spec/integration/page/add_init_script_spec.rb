@@ -27,6 +27,15 @@ RSpec.describe 'Page#add_init_script',  sinatra: true do
     end
   end
 
+  it 'should work with trailing comments' do
+    with_page do |page|
+      page.add_init_script(script: '// comment')
+      page.add_init_script(script: 'window.secret = 42;')
+      page.goto('data:text/html,<html></html>')
+      expect(page.evaluate('() => window.secret')).to eq(42)
+    end
+  end
+
   it 'should support multiple scripts' do
     with_page do |page|
       page.add_init_script(script: "window['script1'] = 1")

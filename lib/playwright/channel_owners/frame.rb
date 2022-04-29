@@ -487,15 +487,14 @@ module Playwright
     end
 
     def set_input_files(selector, files, noWaitAfter: nil, strict: nil, timeout: nil)
-      file_payloads = InputFiles.new(files).as_params
-      params = {
-        files: file_payloads,
+      method_name, params = InputFiles.new(page.context, files).as_method_and_params
+      params.merge!({
         selector: selector,
         noWaitAfter: noWaitAfter,
         strict: strict,
         timeout: timeout,
-      }.compact
-      @channel.send_message_to_server('setInputFiles', params)
+      }.compact)
+      @channel.send_message_to_server(method_name, params)
 
       nil
     end

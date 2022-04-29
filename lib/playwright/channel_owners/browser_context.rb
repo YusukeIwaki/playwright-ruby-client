@@ -367,5 +367,13 @@ module Playwright
     private def base_url
       @options[:baseURL]
     end
+
+    # called from InputFiles
+    # @param name [string]
+    # @return [WritableStream]
+    private def create_temp_file(name)
+      result = @channel.send_message_to_server('createTempFile', name: name)
+      ChannelOwners::WritableStream.from(result)
+    end
   end
 end
