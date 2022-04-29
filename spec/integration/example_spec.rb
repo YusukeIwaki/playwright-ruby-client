@@ -118,7 +118,7 @@ RSpec.describe 'example' do
         HTML
 
         example_2e5019929403491cde0c78bed1e0e18e0c86ab423d7ac8715876c4de4814f483(page: page)
-        example_df2acadf9e261a7624d83399f0d8b0910293a6a7081c812474715f22f8af7a4a(page: page)
+        example_388652162f4e169aab346af9ea657dd96de9217cd390a4cae2090af952b7aebe(page: page)
       end
     end
 
@@ -146,6 +146,14 @@ RSpec.describe 'example' do
 
       with_page do |page|
         example_3a8a10e66fc750bb0e176f66b2bd2eb305c4264e4146b9725dcff57e77811b3d(page: page)
+      end
+    end
+
+    it 'should work with ConsoleMessage' do
+      skip unless chromium?
+
+      with_page do |page|
+        example_585cbbd055f47a5d0d7a6197d90874436cd4a2d50a92956723fc69336f8ccee9(page: page)
       end
     end
 
