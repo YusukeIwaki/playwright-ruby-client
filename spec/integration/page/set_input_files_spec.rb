@@ -24,6 +24,10 @@ RSpec.describe 'Page#set_input_files' do
 
   it 'should upload large file', sinatra: true do
     skip if webkit?
+    if ENV['CI']
+      # suppress logging for avoiding timeout exceeded.
+      allow_any_instance_of(Playwright::Transport).to receive(:debug_send_message)
+    end
 
     with_page do |page|
       page.goto("#{server_prefix}/input/fileupload.html")
@@ -45,7 +49,7 @@ RSpec.describe 'Page#set_input_files' do
             return events;
           }
         JAVASCRIPT
-        Timeout.timeout(10) { input.set_input_files(upload_file) }
+        Timeout.timeout(30) { input.set_input_files(upload_file) }
         expect(input.evaluate('e => e.files[0].name')).to eq('200MB.not.zip')
         expect(events.evaluate('e => e')).to contain_exactly('input', 'change')
 
