@@ -1,6 +1,81 @@
 require 'spec_helper'
 
 RSpec.describe 'screenshot' do
+  describe 'scale option', sinatra: true do
+    it 'should work with device scale factor and scale:css' do
+      with_context(viewport: { width: 320, height: 480 }, deviceScaleFactor: 2) do |context|
+        page = context.new_page
+        page.goto("#{server_prefix}/grid.html")
+        expect(page.screenshot(scale: :css, path: 'a.png')).not_to be_nil
+        # TODO toHaveScreenshot https://github.com/microsoft/playwright/blob/main/tests/library/screenshot.spec.ts-snapshots/screenshot-device-scale-factor-css-size-chromium.png
+      end
+    end
+  end
+
+  it 'should not capture blinking caret by default' do
+    with_page do |page|
+      page.content = <<~HTML
+      <!-- Refer to stylesheet from other origin. Accessing this
+           stylesheet rules will throw.
+      -->
+      <link rel=stylesheet href="${server.CROSS_PROCESS_PREFIX + '/injectedstyle.css'}">
+      <!-- make life harder: define caret color in stylesheet -->
+      <style>
+        div {
+          caret-color: #000 !important;
+        }
+      </style>
+      <div contenteditable="true"></div>
+      HTML
+
+      div = page.locator('div')
+      div.type('foo bar')
+      screenshot = div.screenshot
+
+      10.times do
+        # Caret blinking time is set to 500ms.
+        # Try to capture variety of screenshots to make
+        # sure we don't capture blinking caret.
+        sleep 0.15
+        new_screenshot = div.screenshot
+        expect(new_screenshot).to eq(screenshot)
+      end
+    end
+  end
+
+  it 'should capture blinking caret if explicitly asked for' do
+    with_page do |page|
+      page.content = <<~HTML
+      <!-- Refer to stylesheet from other origin. Accessing this
+           stylesheet rules will throw.
+      -->
+      <link rel=stylesheet href="${server.CROSS_PROCESS_PREFIX + '/injectedstyle.css'}">
+      <!-- make life harder: define caret color in stylesheet -->
+      <style>
+        div {
+          caret-color: #000 !important;
+        }
+      </style>
+      <div contenteditable="true"></div>
+      HTML
+
+      div = page.locator('div')
+      div.type('foo bar')
+      screenshot = div.screenshot
+
+      has_different_screenshots = false
+      10.times do
+        # Caret blinking time is set to 500ms.
+        # Try to capture variety of screenshots to make
+        # sure we capture blinking caret.
+        sleep 0.15
+        has_different_screenshots = div.screenshot(caret: :initial) != screenshot
+        break if has_different_screenshots
+      end
+      expect(has_different_screenshots).to eq(true)
+    end
+  end
+
   describe 'mask option', sinatra: true do
     it 'should work' do
       with_page do |page|

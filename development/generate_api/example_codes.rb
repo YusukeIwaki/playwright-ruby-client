@@ -19,7 +19,7 @@ module ExampleCodes
   end
 
   # Accessibility
-  def example_df2acadf9e261a7624d83399f0d8b0910293a6a7081c812474715f22f8af7a4a(page:)
+  def example_388652162f4e169aab346af9ea657dd96de9217cd390a4cae2090af952b7aebe(page:)
     def find_focused_node(node)
       if node['focused']
         node
@@ -295,6 +295,30 @@ module ExampleCodes
       'Animation.setPlaybackRate',
       params: { playbackRate: response['playbackRate'] / 2.0 },
     )
+  end
+
+  # ConsoleMessage
+  def example_585cbbd055f47a5d0d7a6197d90874436cd4a2d50a92956723fc69336f8ccee9(page:)
+    # Listen for all console logs
+    page.on("console", ->(msg) { puts msg.text })
+
+    # Listen for all console events and handle errors
+    page.on("console", ->(msg) {
+      if msg.type == 'error'
+        puts "error: #{msg.text}"
+      end
+    })
+
+    # Get the next console log
+    msg = page.expect_console_message do
+      # Issue console.log inside the page
+      page.evaluate("console.error('hello', 42, { foo: 'bar' })")
+    end
+
+    # Deconstruct print arguments
+    msg.args[0].json_value # => 'hello'
+    msg.args[1].json_value # => 42
+    msg.args[2].json_value # => { 'foo' => 'bar' }
   end
 
   # Dialog

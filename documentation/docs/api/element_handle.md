@@ -436,10 +436,12 @@ The method finds all elements matching the specified selector in the [ElementHan
 ```
 def screenshot(
       animations: nil,
+      caret: nil,
       mask: nil,
       omitBackground: nil,
       path: nil,
       quality: nil,
+      scale: nil,
       timeout: nil,
       type: nil)
 ```
@@ -641,8 +643,8 @@ def wait_for_element_state(state, timeout: nil)
 
 Returns when the element satisfies the `state`.
 
-Depending on the `state` parameter, this method waits for one of the [actionability](https://playwright.dev/python/docs/actionability) checks to pass.
-This method throws when the element is detached while waiting, unless waiting for the `"hidden"` state.
+Depending on the `state` parameter, this method waits for one of the [actionability](https://playwright.dev/python/docs/actionability) checks to
+pass. This method throws when the element is detached while waiting, unless waiting for the `"hidden"` state.
 - `"visible"` Wait until the element is [visible](https://playwright.dev/python/docs/actionability).
 - `"hidden"` Wait until the element is [not visible](https://playwright.dev/python/docs/actionability) or
   [not attached](https://playwright.dev/python/docs/actionability). Note that waiting for hidden does not throw when the element detaches.

@@ -205,9 +205,14 @@ module Playwright
       end
 
       def set_input_files(files, noWaitAfter: nil, timeout: nil)
-        file_payloads = InputFiles.new(files).as_params
-        params = { files: file_payloads, noWaitAfter: noWaitAfter, timeout: timeout }.compact
-        @channel.send_message_to_server('setInputFiles', params)
+        frame = owner_frame
+        unless frame
+          raise 'Cannot set input files to detached element'
+        end
+
+        method_name, params = InputFiles.new(frame.page.context, files).as_method_and_params
+        params.merge!({ noWaitAfter: noWaitAfter, timeout: timeout }.compact)
+        @channel.send_message_to_server(method_name, params)
 
         nil
       end
@@ -282,18 +287,22 @@ module Playwright
 
       def screenshot(
         animations: nil,
+        caret: nil,
         mask: nil,
         omitBackground: nil,
         path: nil,
         quality: nil,
+        scale: nil,
         timeout: nil,
         type: nil)
 
         params = {
           animations: animations,
+          caret: caret,
           omitBackground: omitBackground,
           path: path,
           quality: quality,
+          scale: scale,
           timeout: timeout,
           type: type,
         }.compact

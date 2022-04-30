@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'tmpdir'
 
 RSpec.describe 'Page#set_input_files' do
   let(:file_to_upload) { File.join('spec', 'assets', 'file-to-upload.txt') }
@@ -18,6 +19,54 @@ RSpec.describe 'Page#set_input_files' do
       }
       JAVASCRIPT
       expect(page.evaluate(js, arg: input)).to eq('contents of the file')
+    end
+  end
+
+  it 'should upload large file', sinatra: true do
+    skip if webkit?
+    if ENV['CI']
+      # suppress logging for avoiding timeout exceeded.
+      allow_any_instance_of(Playwright::Transport).to receive(:debug_send_message)
+    end
+
+    with_page do |page|
+      page.goto("#{server_prefix}/input/fileupload.html")
+
+      Dir.mktmpdir do |dir|
+        upload_file = File.join(dir, '200MB.not.zip')
+        open(upload_file, 'w') do |f|
+          200.times do |i|
+            f.write('A' * 1024 * 1024)
+          end
+        end
+        input = page.locator('input[type="file"]')
+
+        events = input.evaluate_handle(<<~JAVASCRIPT)
+          (e) => {
+            const events = [];
+            e.addEventListener('input', () => events.push('input'));
+            e.addEventListener('change', () => events.push('change'));
+            return events;
+          }
+        JAVASCRIPT
+        Timeout.timeout(30) { input.set_input_files(upload_file) }
+        expect(input.evaluate('e => e.files[0].name')).to eq('200MB.not.zip')
+        expect(events.evaluate('e => e')).to contain_exactly('input', 'change')
+
+        future = Concurrent::Promises.resolvable_future
+        sinatra.post('/upload') do
+          future.fulfill({
+            filename: params[:file1][:filename],
+            filesize: File::Stat.new(params[:file1][:tempfile]).size,
+          })
+          'OK'
+        end
+
+        page.click('input[type=submit]')
+        result = future.value!
+        expect(result[:filename]).to eq('200MB.not.zip')
+        expect(result[:filesize]).to eq(200 * 1024 * 1024)
+      end
     end
   end
 

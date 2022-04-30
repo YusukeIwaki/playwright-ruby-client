@@ -450,7 +450,7 @@ The method finds an element matching the specified selector in the [Locator](./l
 def nth(index)
 ```
 
-Returns locator to the n-th matching element.
+Returns locator to the n-th matching element. It's zero based, `nth(0)` selects the first element.
 
 ## page
 
@@ -490,10 +490,12 @@ modifier, modifier is pressed and being held while the subsequent key is being p
 ```
 def screenshot(
       animations: nil,
+      caret: nil,
       mask: nil,
       omitBackground: nil,
       path: nil,
       quality: nil,
+      scale: nil,
       timeout: nil,
       type: nil)
 ```

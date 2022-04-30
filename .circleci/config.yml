@@ -21,7 +21,7 @@ jobs:
           name: Setup playwright driver
           command: |
             apt-get install -y unzip wget
-            wget -O driver.zip https://playwright.azureedge.net/builds/driver/next/playwright-$(cat development/CLI_VERSION)-linux.zip
+            wget -O driver.zip https://playwright.azureedge.net/builds/driver/next/playwright-$(cat development/CLI_VERSION)-linux.zip || wget -O driver.zip https://playwright.azureedge.net/builds/driver/playwright-$(cat development/CLI_VERSION)-linux.zip
             unzip driver.zip && rm driver.zip
             ./playwright.sh install chromium
             ./playwright.sh install-deps chromium
@@ -57,7 +57,7 @@ jobs:
           name: Setup playwright driver
           command: |
             apt-get install -y unzip wget
-            wget -O driver.zip https://playwright.azureedge.net/builds/driver/next/playwright-$(cat development/CLI_VERSION)-linux.zip
+            wget -O driver.zip https://playwright.azureedge.net/builds/driver/next/playwright-$(cat development/CLI_VERSION)-linux.zip || wget -O driver.zip https://playwright.azureedge.net/builds/driver/playwright-$(cat development/CLI_VERSION)-linux.zip
             unzip driver.zip && rm driver.zip
             ./playwright.sh install webkit
             ./playwright.sh install-deps webkit

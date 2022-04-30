@@ -12,7 +12,7 @@ DRIVER_DOWNLOAD_DIR=~/Downloads
 
 echo "## Downloading driver"
 
-wget https://playwright.azureedge.net/builds/driver/next/playwright-$DRIVER_VERSION-mac.zip -O __driver.zip
+wget https://playwright.azureedge.net/builds/driver/next/playwright-$(cat development/CLI_VERSION)-mac.zip -O __driver.zip || wget https://playwright.azureedge.net/builds/driver/playwright-$(cat development/CLI_VERSION)-mac.zip -O __driver.zip
 
 echo "## Extracting driver"
 

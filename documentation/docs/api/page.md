@@ -1013,12 +1013,14 @@ To remove a route with its handler you can use [Page#unroute](./page#unroute).
 ```
 def screenshot(
       animations: nil,
+      caret: nil,
       clip: nil,
       fullPage: nil,
       mask: nil,
       omitBackground: nil,
       path: nil,
       quality: nil,
+      scale: nil,
       timeout: nil,
       type: nil)
 ```
@@ -1606,6 +1608,7 @@ associated with the page.
 
 ## request
 
-API testing helper associated with this page. Requests made with this API will use page cookies.
+API testing helper associated with this page. This method returns the same instance as
+[BrowserContext#request](./browser_context#request) on the page's context. See [BrowserContext#request](./browser_context#request) for more details.
 
 ## touchscreen

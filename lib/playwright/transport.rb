@@ -110,12 +110,22 @@ module Playwright
 
     def debug_send_message(message)
       metadata = message.delete(:metadata)
-      puts "\x1b[33mSEND>\x1b[0m#{message}"
+      puts "\x1b[33mSEND>\x1b[0m#{shorten_double_quoted_string(message)}"
       message[:metadata] = metadata
     end
 
     def debug_recv_message(message)
-      puts "\x1b[33mRECV>\x1b[0m#{message}"
+      puts "\x1b[33mRECV>\x1b[0m#{shorten_double_quoted_string(message)}"
+    end
+
+    def shorten_double_quoted_string(message, maxlen: 512)
+      message.to_s.gsub(/"([^"]+)"/) do |str|
+        if $1.length > maxlen
+          "\"#{$1[0...maxlen]}...\""
+        else
+          str
+        end
+      end
     end
   end
 end
