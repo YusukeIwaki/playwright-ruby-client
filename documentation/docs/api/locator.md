@@ -285,6 +285,14 @@ instead.
 
 To send fine-grained keyboard events, use [Locator#type](./locator#type).
 
+## filter
+
+```
+def filter(has: nil, hasText: nil)
+```
+
+This method narrows existing locator according to the options, for example filters by text.
+
 ## first
 
 ```
