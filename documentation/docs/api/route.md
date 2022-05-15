@@ -7,6 +7,8 @@ sidebar_position: 10
 Whenever a network route is set up with [Page#route](./page#route) or [BrowserContext#route](./browser_context#route), the [Route](./route) object
 allows to handle the route.
 
+Learn more about [networking](https://playwright.dev/python/docs/network).
+
 ## abort
 
 ```

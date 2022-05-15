@@ -413,6 +413,7 @@
 * evaluate_all
 * evaluate_handle
 * fill
+* ~~filter~~
 * first
 * focus
 * frame_locator
