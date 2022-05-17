@@ -122,21 +122,41 @@ module Playwright
       }
     end
 
-    private def wrap_impl(object)
+    private def wrap_impl(object, visited: {})
       if object.is_a?(Array)
-        object.map { |obj| wrap_impl(obj) }
+        unless visited[object]
+          visited[object] = []
+          object.each { |obj| visited[object] << wrap_impl(obj) }
+        end
+        visited[object]
       elsif object.is_a?(Hash)
-        object.map { |key, obj| [key, wrap_impl(obj)] }.to_h
+        unless visited[object]
+          visited[object] = {}
+          object.each do |key, obj|
+            visited[object][key] = wrap_impl(obj, visited: visited)
+          end
+        end
+        visited[object]
       else
         ::Playwright::PlaywrightApi.wrap(object)
       end
     end
 
-    private def unwrap_impl(object)
+    private def unwrap_impl(object, visited: {})
       if object.is_a?(Array)
-        object.map { |obj| unwrap_impl(obj) }
+        unless visited[object]
+          visited[object] = []
+          object.each { |obj| visited[object] << unwrap_impl(obj) }
+        end
+        visited[object]
       elsif object.is_a?(Hash)
-        object.map { |key, obj| [key, unwrap_impl(obj)] }.to_h
+        unless visited[object]
+          visited[object] = {}
+          object.each do |key, obj|
+            visited[object][key] = unwrap_impl(obj, visited: visited)
+          end
+        end
+        visited[object]
       elsif object.is_a?(PlaywrightApi)
         ::Playwright::PlaywrightApi.unwrap(object)
       else
