@@ -24,7 +24,8 @@ RSpec.describe 'Page#expect_request_finished' do
       request = page.expect_request_finished do
         page.click('a')
       end
-      expect(request.url).to eq("#{server_prefix}/one-style.html")
+      # one-style.css or one-style.html
+      expect(request.url).to start_with("#{server_prefix}/one-style.")
     end
   end
 
