@@ -285,6 +285,14 @@ instead.
 
 To send fine-grained keyboard events, use [Locator#type](./locator#type).
 
+## filter
+
+```
+def filter(has: nil, hasText: nil)
+```
+
+This method narrows existing locator according to the options, for example filters by text.
+
 ## first
 
 ```
@@ -378,7 +386,10 @@ Returns the `element.innerText`.
 def input_value(timeout: nil)
 ```
 
-Returns `input.value` for `<input>` or `<textarea>` or `<select>` element. Throws for non-input elements.
+Returns `input.value` for the selected `<input>` or `<textarea>` or `<select>` element.
+
+Throws for non-input elements. However, if the element is inside the `<label>` element that has an associated
+[control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), returns the value of the control.
 
 ## checked?
 
@@ -442,7 +453,8 @@ Returns locator to the last matching element.
 def locator(selector, has: nil, hasText: nil)
 ```
 
-The method finds an element matching the specified selector in the [Locator](./locator)'s subtree.
+The method finds an element matching the specified selector in the [Locator](./locator)'s subtree. It also accepts filter options,
+similar to [Locator#filter](./locator#filter) method.
 
 ## nth
 
@@ -500,10 +512,14 @@ def screenshot(
       type: nil)
 ```
 
-Returns the buffer with the captured screenshot.
+This method captures a screenshot of the page, clipped to the size and position of a particular element matching the
+locator. If the element is covered by other elements, it will not be actually visible on the screenshot. If the element
+is a scrollable container, only the currently scrolled content will be visible on the screenshot.
 
 This method waits for the [actionability](https://playwright.dev/python/docs/actionability) checks, then scrolls element into view before taking a
 screenshot. If the element is detached from DOM, the method throws an error.
+
+Returns the buffer with the captured screenshot.
 
 ## scroll_into_view_if_needed
 
@@ -564,6 +580,10 @@ def select_text(force: nil, timeout: nil)
 This method waits for [actionability](https://playwright.dev/python/docs/actionability) checks, then focuses the element and selects all its text
 content.
 
+If the element is inside the `<label>` element that has an associated
+[control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), focuses and selects text in the
+control instead.
+
 ## set_checked
 
 ```
@@ -597,11 +617,13 @@ def set_input_files(files, noWaitAfter: nil, timeout: nil)
 ```
 alias: `input_files=`
 
-This method expects `element` to point to an
-[input element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input).
-
 Sets the value of the file input to these file paths or files. If some of the `filePaths` are relative paths, then they
-are resolved relative to the the current working directory. For empty array, clears the selected files.
+are resolved relative to the current working directory. For empty array, clears the selected files.
+
+This method expects [Locator](./locator) to point to an
+[input element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input). However, if the element is inside the
+`<label>` element that has an associated
+[control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), targets the control instead.
 
 ## tap_point
 

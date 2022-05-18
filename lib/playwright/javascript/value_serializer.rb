@@ -1,8 +1,11 @@
+require_relative './visitor_info'
+
 module Playwright
   module JavaScript
     class ValueSerializer
       def initialize(ruby_value)
         @value = ruby_value
+        @visited = VisitorInfo.new
       end
 
       # @return [Hash]
@@ -41,10 +44,18 @@ module Playwright
           flags << 'ms' if (value.options & Regexp::MULTILINE) != 0
           flags << 'i' if (value.options & Regexp::IGNORECASE) != 0
           { r: { p: value.source, f: flags.join('') } }
+        when -> (value) { @visited.ref(value) }
+          { ref: @visited.ref(value) }
         when Array
-          { a: value.map { |v| serialize_value(v) } }
+          id = @visited.log(value)
+          result = []
+          value.each { |v| result << serialize_value(v) }
+          { a: result, id: id }
         when Hash
-          { o: value.map { |key, v| { k: key, v: serialize_value(v) } } }
+          id = @visited.log(value)
+          result = []
+          value.each { |key, v| result << { k: key, v: serialize_value(v) } }
+          { o: result, id: id }
         else
           raise ArgumentError.new("Unexpected value: #{value}")
         end

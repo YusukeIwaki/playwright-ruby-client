@@ -124,4 +124,18 @@ RSpec.describe 'Locator' do
       }.to raise_error(/Inner "has" locator must belong to the same frame./)
     end
   end
+
+  it 'should support locator.filter' do
+    with_page do |page|
+      page.content = '<section><div><span>hello</span></div><div><span>world</span></div></section>'
+      expect(page.locator('div').filter(hasText: 'hello').count).to eq(1)
+      expect(page.locator('div', hasText: 'hello').filter(hasText: 'hello').count).to eq(1)
+      expect(page.locator('div', hasText: 'hello').filter(hasText: 'world').count).to eq(0)
+      expect(page.locator('section', hasText: 'hello').filter(hasText: 'world').count).to eq(1)
+      expect(page.locator('div').filter(hasText: 'hello').locator('span').count).to eq(1)
+      expect(page.locator('div').filter(has: page.locator('span', hasText: 'world')).count).to eq(1)
+      expect(page.locator('div').filter(has: page.locator('span')).count).to eq(2)
+      expect(page.locator('div').filter(has: page.locator('span'), hasText: 'world').count).to eq(1)
+    end
+  end
 end

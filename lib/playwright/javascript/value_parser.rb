@@ -5,6 +5,7 @@ module Playwright
     class ValueParser
       def initialize(hash)
         @hash = hash
+        @refs = {}
       end
 
       # @return [Hash]
@@ -21,6 +22,10 @@ module Playwright
       private def parse_hash(hash)
         %w(n s b).each do |key|
           return hash[key] if hash.key?(key)
+        end
+
+        if hash.key?('ref')
+          return @refs[hash['ref']]
         end
 
         if hash.key?('v')
@@ -55,11 +60,21 @@ module Playwright
         end
 
         if hash.key?('a')
-          return hash['a'].map { |value| parse_hash(value) }
+          result = []
+          if hash['id']
+            @refs[hash['id']] = result
+          end
+          hash['a'].each { |value| result << parse_hash(value) }
+          return result
         end
 
         if hash.key?('o')
-          return hash['o'].map { |obj| [obj['k'], parse_hash(obj['v'])] }.to_h
+          result = {}
+          if hash['id']
+            @refs[hash['id']] = result
+          end
+          hash['o'].each { |obj| result[obj['k']] = parse_hash(obj['v']) }
+          return result
         end
 
         if hash.key?('h')

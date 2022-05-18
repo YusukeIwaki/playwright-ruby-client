@@ -486,7 +486,10 @@ Returns `element.innerText`.
 def input_value(selector, strict: nil, timeout: nil)
 ```
 
-Returns `input.value` for the selected `<input>` or `<textarea>` or `<select>` element. Throws for non-input elements.
+Returns `input.value` for the selected `<input>` or `<textarea>` or `<select>` element.
+
+Throws for non-input elements. However, if the element is inside the `<label>` element that has an associated
+[control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), returns the value of the control.
 
 ## checked?
 
@@ -555,6 +558,8 @@ def locator(selector, has: nil, hasText: nil)
 The method returns an element locator that can be used to perform actions in the frame. Locator is resolved to the
 element immediately before performing an action, so a series of actions on the same locator can in fact be performed on
 different DOM elements. That would happen if the DOM structure between those actions has changed.
+
+[Learn more about locators](https://playwright.dev/python/docs/locators).
 
 ## name
 
@@ -724,11 +729,13 @@ def set_input_files(
       timeout: nil)
 ```
 
-This method expects `selector` to point to an
-[input element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input).
-
 Sets the value of the file input to these file paths or files. If some of the `filePaths` are relative paths, then they
-are resolved relative to the the current working directory. For empty array, clears the selected files.
+are resolved relative to the current working directory. For empty array, clears the selected files.
+
+This method expects `selector` to point to an
+[input element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input). However, if the element is inside the
+`<label>` element that has an associated
+[control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), targets the control instead.
 
 ## tap_point
 
