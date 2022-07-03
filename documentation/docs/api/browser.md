@@ -21,6 +21,14 @@ end
 
 
 
+## browser_type
+
+```
+def browser_type
+```
+
+Get the browser type (chromium, firefox or webkit) that the browser belongs to.
+
 ## close
 
 ```

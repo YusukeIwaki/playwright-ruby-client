@@ -5,6 +5,7 @@ module Playwright
     include Utils::PrepareBrowserContextOptions
 
     private def after_initialize
+      @browser_type = @parent
       @connected = true
       @closed_or_closing = false
       @should_close_connection_on_close = false
@@ -15,6 +16,10 @@ module Playwright
 
     def contexts
       @contexts.to_a
+    end
+
+    def browser_type
+      @browser_type
     end
 
     def connected?

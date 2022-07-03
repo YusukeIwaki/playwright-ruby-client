@@ -364,7 +364,7 @@
 
 ## Browser
 
-* ~~browser_type~~
+* browser_type
 * close
 * contexts
 * connected?
