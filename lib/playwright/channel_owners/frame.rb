@@ -30,6 +30,13 @@ module Playwright
       if remove
         @load_states.delete(remove)
       end
+      unless @parent_frame
+        if add == 'load'
+          @page&.emit(Events::Page::Load, @page)
+        elsif add == 'domcontentloaded'
+          @page&.emit(Events::Page::DOMContentLoaded, @page)
+        end
+      end
     end
 
     private def on_frame_navigated(event)
@@ -38,7 +45,7 @@ module Playwright
       @event_emitter.emit('navigated', event)
 
       unless event['error']
-        @page&.emit('framenavigated', self)
+        @page&.emit(Events::Page::FrameNavigated, self)
       end
     end
 

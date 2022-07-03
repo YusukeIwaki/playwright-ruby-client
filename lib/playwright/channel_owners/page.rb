@@ -39,7 +39,6 @@ module Playwright
       })
       @channel.on('crash', ->(_) { emit(Events::Page::Crash) })
       @channel.on('dialog', method(:on_dialog))
-      @channel.on('domcontentloaded', ->(_) { emit(Events::Page::DOMContentLoaded) })
       @channel.on('download', method(:on_download))
       @channel.on('fileChooser', ->(params) {
         chooser = FileChooserImpl.new(
@@ -54,7 +53,6 @@ module Playwright
       @channel.on('frameDetached', ->(params) {
         on_frame_detached(ChannelOwners::Frame.from(params['frame']))
       })
-      @channel.on('load', ->(_) { emit(Events::Page::Load) })
       @channel.on('pageError', ->(params) {
         emit(Events::Page::PageError, Error.parse(params['error']['error']))
       })
