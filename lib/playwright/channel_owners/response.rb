@@ -52,6 +52,12 @@ module Playwright
       RawHeaders.new(@channel.send_message_to_server('rawResponseHeaders'))
     end
 
+    def from_service_worker
+      @initializer['fromServiceWorker']
+    end
+
+    alias_method :from_service_worker?, :from_service_worker
+
     def all_headers
       actual_headers.headers
     end

@@ -27,7 +27,7 @@
 * body
 * finished
 * frame
-* ~~from_service_worker~~
+* from_service_worker
 * headers
 * headers_array
 * header_value
