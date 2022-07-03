@@ -504,11 +504,6 @@ element_handle.select_option(label: "blue")
 element_handle.select_option(value: ["red", "green", "blue"])
 ```
 
-```ruby
-# multiple selection for blue, red and second option
-element_handle.select_option(value: "blue", index: 2, label: "red")
-```
-
 
 
 ## select_text

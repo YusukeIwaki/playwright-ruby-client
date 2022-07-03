@@ -27,6 +27,7 @@
 * body
 * finished
 * frame
+* ~~from_service_worker~~
 * headers
 * headers_array
 * header_value
@@ -45,6 +46,7 @@
 
 * abort
 * continue
+* ~~fallback~~
 * fulfill
 * request
 
@@ -280,6 +282,7 @@
 * query_selector_all
 * reload
 * route
+* ~~route_from_har~~
 * screenshot
 * select_option
 * set_checked
@@ -339,6 +342,7 @@
 * new_page
 * pages
 * route
+* ~~route_from_har~~
 * service_workers
 * set_default_navigation_timeout
 * set_default_timeout
@@ -360,6 +364,7 @@
 
 ## Browser
 
+* ~~browser_type~~
 * close
 * contexts
 * connected?

@@ -25,16 +25,18 @@ def continue(headers: nil, method: nil, postData: nil, url: nil)
 
 Continues route's request with optional overrides.
 
-```ruby
-def handle(route, request)
-  # override headers
-  headers = request.headers
-  headers['foo'] = 'bar' # set "foo" header
-  headers['user-agent'] = 'Unknown Browser' # modify user-agent
+```python sync title=example_bbeb6c856287d9a14962cd222891b682b8f1c52dafcf933198e651e634906122.py
+def handle(route, request):
+    # override headers
+    headers = {
+        **request.headers,
+        "foo": "foo-value" # set "foo" header
+        "bar": None # remove "bar" header
+    }
+    route.continue_(headers=headers)
+}
+page.route("**/*", handle)
 
-  route.continue(headers: headers)
-end
-page.route("**/*", method(:handle))
 ```
 
 
