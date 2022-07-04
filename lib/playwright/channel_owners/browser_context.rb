@@ -78,11 +78,13 @@ module Playwright
       end
 
       if handler_entry
-        handler_entry.async_handle(wrapped_route, wrapped_request)
-
-        @routes.reject!(&:expired?)
-        if @routes.count == 0
-          @channel.async_send_message_to_server('setNetworkInterceptionEnabled', enabled: false)
+        handler_entry.async_handle(wrapped_route, wrapped_request).then do |result|
+          @routes.reject!(&:expired?)
+          if @routes.count == 0
+            @channel.async_send_message_to_server('setNetworkInterceptionEnabled', enabled: false)
+          end
+        end.rescue do |err|
+          puts err, err.backtrace
         end
       else
         route.continue

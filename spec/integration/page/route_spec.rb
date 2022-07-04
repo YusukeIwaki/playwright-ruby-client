@@ -677,6 +677,20 @@ RSpec.describe 'Page#route', sinatra: true do
     expect(intercepted).to eq(%w[intercepted intercepted])
   end
 
+  it 'should support async handler w/ times' do
+    with_page do |page|
+      page.route('**/empty.html', ->(route, _) {
+        sleep 0.1
+        route.fulfill(body: '<html>intercepted</html>', contentType: 'text/html')
+      }, times: 1)
+
+      page.goto(server_empty_page)
+      expect(page.locator('body').text_content).to eq('intercepted')
+      page.goto(server_empty_page)
+      expect(page.locator('body').text_content).not_to include('intercepted')
+    end
+  end
+
   it 'should contain raw request header' do
     with_page do |page|
       headers_promise = Concurrent::Promises.resolvable_future
