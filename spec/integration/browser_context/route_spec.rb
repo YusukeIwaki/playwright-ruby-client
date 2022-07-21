@@ -152,4 +152,87 @@ RSpec.describe 'BrowserContext#route', sinatra: true do
       expect(response.text).to eq('context')
     end
   end
+
+  it 'should chain continue' do
+    intercepted = []
+    with_context do |context|
+      context.route('**/empty.html', ->(route, _) {
+        intercepted << 1
+        route.continue
+      })
+      context.route('**/empty.html', ->(route, _) {
+        intercepted << 2
+        route.continue
+      })
+      context.route('**/empty.html', ->(route, _) {
+        intercepted << 3
+        route.continue
+      })
+      page.goto(server_empty_page)
+    end
+    expect(intercepted).to eq([3, 2, 1])
+  end
+
+it 'should not chain fulfill' do
+  failed = false
+  with_context do |context|
+    context.route('**/empty.html', ->(route, _) {
+      failed = true
+    })
+    context.route('**/empty.html', ->(route, _) {
+      route.fulfill(status: 200, body: 'fulfilled')
+    })
+    context.route('**/empty.html', ->(route, _) {
+      route.continue
+    })
+    response = page.goto(server_empty_page)
+    expect(response.body.to_s).to eq('fulfilled')
+    expect(failed).to eq(false)
+  end
+
+  # it('should not chain abort', async ({ context, page, server }) => {
+  #   let failed = false;
+  #   await context.route('**/empty.html', route => {
+  #     failed = true;
+  #   });
+  #   await context.route('**/empty.html', route => {
+  #     route.abort();
+  #   });
+  #   await context.route('**/empty.html', route => {
+  #     route.continue();
+  #   });
+  #   const e = await page.goto(server.EMPTY_PAGE).catch(e => e);
+  #   expect(e).toBeTruthy();
+  #   expect(failed).toBeFalsy();
+  # });
+
+  # it('should chain continue into page', async ({ context, page, server }) => {
+  #   const intercepted = [];
+  #   await context.route('**/empty.html', route => {
+  #     intercepted.push(1);
+  #     route.continue();
+  #   });
+  #   await context.route('**/empty.html', route => {
+  #     intercepted.push(2);
+  #     route.continue();
+  #   });
+  #   await context.route('**/empty.html', route => {
+  #     intercepted.push(3);
+  #     route.continue();
+  #   });
+  #   await page.route('**/empty.html', route => {
+  #     intercepted.push(4);
+  #     route.continue();
+  #   });
+  #   await page.route('**/empty.html', route => {
+  #     intercepted.push(5);
+  #     route.continue();
+  #   });
+  #   await page.route('**/empty.html', route => {
+  #     intercepted.push(6);
+  #     route.continue();
+  #   });
+  #   await page.goto(server.EMPTY_PAGE);
+  #   expect(intercepted).toEqual([6, 5, 4, 3, 2, 1]);
+  # });
 end
