@@ -73,21 +73,29 @@ module Playwright
       wrapped_route = PlaywrightApi.wrap(route)
       wrapped_request = PlaywrightApi.wrap(request)
 
-      handler_entry = @routes.find do |entry|
-        entry.match?(request.url)
+      handled = @routes.any? do |handler_entry|
+        next false unless handler_entry.match?(request.url)
+
+        promise = Concurrent::Promises.resolvable_future
+        route.send(:set_handling_future, promise)
+
+        promise_handled = Concurrent::Promises.zip(
+          promise,
+          handler_entry.async_handle(wrapped_route, wrapped_request)
+        ).value!.first
+
+        promise_handled
       end
 
-      if handler_entry
-        handler_entry.async_handle(wrapped_route, wrapped_request).then do |result|
-          @routes.reject!(&:expired?)
-          if @routes.count == 0
-            @channel.async_send_message_to_server('setNetworkInterceptionEnabled', enabled: false)
-          end
-        end.rescue do |err|
+      @routes.reject!(&:expired?)
+      if @routes.count == 0
+        @channel.async_send_message_to_server('setNetworkInterceptionEnabled', enabled: false)
+      end
+
+      unless handled
+        route.send(:async_continue_route).rescue do |err|
           puts err, err.backtrace
         end
-      else
-        route.continue
       end
     end
 

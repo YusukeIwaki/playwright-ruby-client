@@ -46,7 +46,7 @@
 
 * abort
 * continue
-* ~~fallback~~
+* fallback
 * fulfill
 * request
 

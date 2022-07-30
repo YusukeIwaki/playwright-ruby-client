@@ -50,7 +50,9 @@ module Playwright
     def async_handle(route, request)
       @counter.increment
 
-      Concurrent::Promises.future { @handler.call(route, request) }
+      Concurrent::Promises.future { @handler.call(route, request) }.rescue do |err|
+        puts err, err.backtrace
+      end
     end
 
     def expired?
