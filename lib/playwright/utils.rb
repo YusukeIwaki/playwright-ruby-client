@@ -14,8 +14,27 @@ module Playwright
           params[:recordHar] = {
             path: params.delete(:record_har_path)
           }
+          if params[:record_har_url_filter]
+            opt = params.delete(:record_har_url_filter)
+            if opt.is_a?(Regexp)
+              regex = ::Playwright::JavaScript::Regex.new(opt)
+              params[:recordHar][:urlRegexSource] = regex.source
+              params[:recordHar][:urlRegexFlags] = regex.flag
+            elsif opt.is_a?(String)
+              params[:recordHar][:urlGlob] = opt
+            end
+          end
+          if params[:record_har_mode]
+            params[:recordHar][:mode] = params.delete(:record_har_mode)
+          end
+          if params[:record_har_content]
+            params[:recordHar][:content] = params.delete(:record_har_content)
+          end
           if params[:record_har_omit_content]
-            params[:recordHar][:omitContent] = params.delete(:record_har_omit_content)
+            old_api_omit_content = params.delete(:record_har_omit_content)
+            if old_api_omit_content
+              params[:recordHar][:content] ||= 'omit'
+            end
           end
         end
         if params[:record_video_dir]

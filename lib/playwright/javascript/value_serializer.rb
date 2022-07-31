@@ -1,4 +1,5 @@
 require_relative './visitor_info'
+require_relative './regex'
 
 module Playwright
   module JavaScript
@@ -40,10 +41,8 @@ module Playwright
           require 'time'
           { d: value.utc.iso8601 }
         when Regexp
-          flags = []
-          flags << 'ms' if (value.options & Regexp::MULTILINE) != 0
-          flags << 'i' if (value.options & Regexp::IGNORECASE) != 0
-          { r: { p: value.source, f: flags.join('') } }
+          regex_value = Regex.new(value)
+          { r: { p: regex_value.source, f: regex_value.flag } }
         when -> (value) { @visited.ref(value) }
           { ref: @visited.ref(value) }
         when Array
