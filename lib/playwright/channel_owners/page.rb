@@ -57,7 +57,11 @@ module Playwright
         emit(Events::Page::PageError, Error.parse(params['error']['error']))
       })
       @channel.on('route', ->(params) {
-        on_route(ChannelOwners::Route.from(params['route']), ChannelOwners::Request.from(params['request']))
+        Concurrent::Promises.future {
+          on_route(ChannelOwners::Route.from(params['route']), ChannelOwners::Request.from(params['request']))
+        }.rescue do |err|
+          puts err, err.backtrace
+        end
       })
       @channel.on('video', method(:on_video))
       @channel.on('webSocket', ->(params) {
@@ -411,6 +415,16 @@ module Playwright
       if @routes.count == 0
         @channel.send_message_to_server('setNetworkInterceptionEnabled', enabled: false)
       end
+    end
+
+    def route_from_har(har, notFound: nil, update: nil, url: nil)
+      router = HarRouter.create(
+        @connection.local_utils,
+        har.to_s,
+        notFound || "abort",
+        url_match: url,
+      )
+      router.add_page_route(self)
     end
 
     def screenshot(

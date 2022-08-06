@@ -1013,6 +1013,19 @@ To remove a route with its handler you can use [Page#unroute](./page#unroute).
 
 > NOTE: Enabling routing disables http cache.
 
+## route_from_har
+
+```
+def route_from_har(har, notFound: nil, update: nil, url: nil)
+```
+
+If specified the network requests that are made in the page will be served from the HAR file. Read more about
+[Replaying from HAR](https://playwright.dev/python/docs/network).
+
+Playwright will not serve requests intercepted by Service Worker from the HAR file. See
+[this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using
+request interception by setting `Browser.newContext.serviceWorkers` to `'block'`.
+
 ## screenshot
 
 ```

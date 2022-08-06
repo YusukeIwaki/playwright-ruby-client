@@ -136,7 +136,7 @@ module Playwright
       @channel.async_send_message_to_server('continue', params)
     end
 
-    private def redirected_navigation_request(url)
+    def redirect_navigation_request(url)
       handling_with_result(true) do
         # TODO _race_with_page_close
         @channel.send_message_to_server('redirectNavigationRequest', { url: url })

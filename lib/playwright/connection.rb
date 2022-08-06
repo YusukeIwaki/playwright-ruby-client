@@ -24,6 +24,8 @@ module Playwright
       @remote = false
     end
 
+    attr_reader :local_utils
+
     def mark_as_remote
       @remote = true
     end
@@ -127,12 +129,15 @@ module Playwright
       params = msg['params']
 
       if method == "__create__"
-        create_remote_object(
+        remote_object = create_remote_object(
           parent_guid: guid,
           type: params["type"],
           guid: params["guid"],
           initializer: params["initializer"],
         )
+        if remote_object.is_a?(ChannelOwners::LocalUtils)
+          @local_utils = remote_object
+        end
         return
       end
 
