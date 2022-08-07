@@ -32,8 +32,12 @@ module Playwright
     end
 
     # @param har_id [String]
-    def har_close(har_id)
+    def async_har_close(har_id)
       @channel.async_send_message_to_server('harClose', harId: har_id)
+    end
+
+    def har_unzip(zip_file, har_file)
+      @channel.send_message_to_server('harUnzip', zipFile: zip_file, harFile: har_file)
     end
   end
 end

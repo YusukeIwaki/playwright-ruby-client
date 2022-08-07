@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'tmpdir'
 
 RSpec.describe 'BrowserContext.route_from_har' do
   let(:har_fulfill) { File.join('spec', 'assets', 'har-fulfill.har') }
@@ -253,26 +254,31 @@ RSpec.describe 'BrowserContext.route_from_har' do
   #   await expect(page2.locator('body')).toHaveCSS('background-color', 'rgb(255, 192, 203)');
   # });
 
-  # it('should produce extracted zip', async ({ contextFactory, isAndroid, server }, testInfo) => {
-  #   it.fixme(isAndroid);
+  it 'should produce extracted zip', sinatra: true do
+    Dir.mktmpdir do |dir|
+      har_path = File.join(dir, 'one-style.har')
 
-  #   const harPath = testInfo.outputPath('har.har');
-  #   const context1 = await contextFactory({ recordHar: { mode: 'minimal', path: harPath, content: 'attach' } });
-  #   const page1 = await context1.newPage();
-  #   await page1.goto(server.PREFIX + '/one-style.html');
-  #   await context1.close();
+      options = {
+        record_har_mode: 'minimal',
+        record_har_path: har_path,
+        record_har_content: 'attach',
+      }
+      with_context(**options) do |context|
+        context.route_from_har(har_path, update: true)
+        page = context.new_page
+        page.goto("#{server_prefix}/one-style.html")
+      end
 
-  #   expect(fs.existsSync(harPath)).toBeTruthy();
-  #   const har = fs.readFileSync(harPath, 'utf-8');
-  #   expect(har).not.toContain('background-color');
+      with_context do |context|
+        context.route_from_har(har_path, notFound: 'abort')
+        page = context.new_page
+        page.goto("#{server_prefix}/one-style.html")
 
-  #   const context2 = await contextFactory();
-  #   await context2.routeFromHAR(harPath, { notFound: 'abort' });
-  #   const page2 = await context2.newPage();
-  #   await page2.goto(server.PREFIX + '/one-style.html');
-  #   expect(await page2.content()).toContain('hello, world!');
-  #   await expect(page2.locator('body')).toHaveCSS('background-color', 'rgb(255, 192, 203)');
-  # });
+        style = page.locator('body').evaluate("e => window.getComputedStyle(e).getPropertyValue('background-color')")
+        expect(style).to eq('rgb(255, 192, 203)')
+      end
+    end
+  end
 
   # it('should round-trip extracted har.zip', async ({ contextFactory, isAndroid, server }, testInfo) => {
   #   it.fixme(isAndroid);
@@ -365,57 +371,64 @@ RSpec.describe 'BrowserContext.route_from_har' do
   #   expect(await page2.evaluate(fetchFunction, 'baz4')).toBe('baz1');
   # });
 
-  # it('should update har.zip for context', async ({ contextFactory, isAndroid, server }, testInfo) => {
-  #   it.fixme(isAndroid);
+  it 'should update har.zip for context', sinatra: true do
+    Dir.mktmpdir do |dir|
+      har_path = File.join(dir, 'one-style.zip')
 
-  #   const harPath = testInfo.outputPath('har.zip');
-  #   const context1 = await contextFactory();
-  #   await context1.routeFromHAR(harPath, { update: true });
-  #   const page1 = await context1.newPage();
-  #   await page1.goto(server.PREFIX + '/one-style.html');
-  #   await context1.close();
+      with_context do |context|
+        context.route_from_har(har_path, update: true)
+        page = context.new_page
+        page.goto("#{server_prefix}/one-style.html")
+      end
 
-  #   const context2 = await contextFactory();
-  #   await context2.routeFromHAR(harPath, { notFound: 'abort' });
-  #   const page2 = await context2.newPage();
-  #   await page2.goto(server.PREFIX + '/one-style.html');
-  #   expect(await page2.content()).toContain('hello, world!');
-  #   await expect(page2.locator('body')).toHaveCSS('background-color', 'rgb(255, 192, 203)');
-  # });
+      with_context do |context|
+        context.route_from_har(har_path, notFound: 'abort')
+        page = context.new_page
+        page.goto("#{server_prefix}/one-style.html")
 
-  # it('should update har.zip for page', async ({ contextFactory, isAndroid, server }, testInfo) => {
-  #   it.fixme(isAndroid);
+        style = page.locator('body').evaluate("e => window.getComputedStyle(e).getPropertyValue('background-color')")
+        expect(style).to eq('rgb(255, 192, 203)')
+      end
+    end
+  end
 
-  #   const harPath = testInfo.outputPath('har.zip');
-  #   const context1 = await contextFactory();
-  #   const page1 = await context1.newPage();
-  #   await page1.routeFromHAR(harPath, { update: true });
-  #   await page1.goto(server.PREFIX + '/one-style.html');
-  #   await context1.close();
+  it 'should update har.zip for page', sinatra: true do
+    Dir.mktmpdir do |dir|
+      har_path = File.join(dir, 'one-style.zip')
 
-  #   const context2 = await contextFactory();
-  #   const page2 = await context2.newPage();
-  #   await page2.routeFromHAR(harPath, { notFound: 'abort' });
-  #   await page2.goto(server.PREFIX + '/one-style.html');
-  #   expect(await page2.content()).toContain('hello, world!');
-  #   await expect(page2.locator('body')).toHaveCSS('background-color', 'rgb(255, 192, 203)');
-  # });
+      with_page do |page|
+        page.route_from_har(har_path, update: true)
+        page.goto("#{server_prefix}/one-style.html")
+      end
 
-  # it('should update extracted har.zip for page', async ({ contextFactory, isAndroid, server }, testInfo) => {
-  #   it.fixme(isAndroid);
+      with_page do |page|
+        page.route_from_har(har_path, notFound: 'abort')
+        page.goto("#{server_prefix}/one-style.html")
 
-  #   const harPath = testInfo.outputPath('har.har');
-  #   const context1 = await contextFactory();
-  #   const page1 = await context1.newPage();
-  #   await page1.routeFromHAR(harPath, { update: true });
-  #   await page1.goto(server.PREFIX + '/one-style.html');
-  #   await context1.close();
+        expect(page.content).to include('hello, world!')
+        style = page.locator('body').evaluate("e => window.getComputedStyle(e).getPropertyValue('background-color')")
+        expect(style).to eq('rgb(255, 192, 203)')
+      end
+    end
+  end
 
-  #   const context2 = await contextFactory();
-  #   const page2 = await context2.newPage();
-  #   await page2.routeFromHAR(harPath, { notFound: 'abort' });
-  #   await page2.goto(server.PREFIX + '/one-style.html');
-  #   expect(await page2.content()).toContain('hello, world!');
-  #   await expect(page2.locator('body')).toHaveCSS('background-color', 'rgb(255, 192, 203)');
-  # });
+  it 'should update extracted har.zip for page', sinatra: true do
+    Dir.mktmpdir do |dir|
+      har_path = File.join(dir, 'one-style.har')
+
+      with_page do |page|
+        page.route_from_har(har_path, update: true)
+        page.goto("#{server_prefix}/one-style.html")
+      end
+
+      with_page do |page|
+        page.route_from_har(har_path, notFound: 'abort')
+        page.goto("#{server_prefix}/one-style.html")
+
+        expect(page.content).to include('hello, world!')
+        style = page.locator('body').evaluate("e => window.getComputedStyle(e).getPropertyValue('background-color')")
+        expect(style).to eq('rgb(255, 192, 203)')
+      end
+    end
+  end
 end

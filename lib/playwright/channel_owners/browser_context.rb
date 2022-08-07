@@ -2,6 +2,8 @@ module Playwright
   # @ref https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_browser_context.py
   define_channel_owner :BrowserContext do
     include Utils::Errors::SafeCloseError
+    include Utils::PrepareBrowserContextOptions
+
     attr_accessor :browser
     attr_writer :owner_page, :options
     attr_reader :tracing, :request
@@ -17,6 +19,7 @@ module Playwright
 
       @tracing = ChannelOwners::Tracing.from(@initializer['tracing'])
       @request = ChannelOwners::APIRequestContext.from(@initializer['APIRequestContext'])
+      @har_recorders = {}
 
       @channel.on('bindingCall', ->(params) { on_binding(ChannelOwners::BindingCall.from(params['binding'])) })
       @channel.once('close', ->(_) { on_close })
@@ -57,6 +60,16 @@ module Playwright
       })
 
       @closed_promise = Concurrent::Promises.resolvable_future
+    end
+
+    private def update_browser_type(browser_type)
+      @browser_type = browser_type
+      if @options[:recordHar]
+        @har_recorders[''] = {
+          path: @options[:recordHar][:path],
+          content: @options[:recordHar][:content]
+        }
+      end
     end
 
     private def on_page(page)
@@ -280,7 +293,28 @@ module Playwright
       end
     end
 
+    private def record_into_har(har, page, notFound:, url:)
+      params = {
+        options: prepare_record_har_options(
+          record_har_path: har,
+          record_har_content: "attach",
+          record_har_mode: "minimal",
+          record_har_url_filter: url,
+        )
+      }
+      if page
+        params[:page] = page.channel
+      end
+      har_id = @channel.send_message_to_server('harStart', params)
+      @har_recorders[har_id] = { path: har, content: 'attach' }
+    end
+
     def route_from_har(har, notFound: nil, update: nil, url: nil)
+      if update
+        record_into_har(har, nil, notFound: notFound, url: url)
+        return
+      end
+
       router = HarRouter.create(
         @connection.local_utils,
         har.to_s,
@@ -307,9 +341,19 @@ module Playwright
     end
 
     def close
-      if @options && @options.key?(:recordHar)
-        har = ChannelOwners::Artifact.from(@channel.send_message_to_server('harExport'))
-        har.save_as(@options[:recordHar][:path])
+      @har_recorders.each do |har_id, params|
+        har = ChannelOwners::Artifact.from(@channel.send_message_to_server('harExport', harId: har_id))
+        # Server side will compress artifact if content is attach or if file is .zip.
+        compressed = params[:content] == "attach" || params[:path].end_with?('.zip')
+        need_comppressed = params[:path].end_with?('.zip')
+        if compressed && !need_comppressed
+          tmp_path = "#{params[:path]}.tmp"
+          har.save_as(tmp_path)
+          @connection.local_utils.har_unzip(tmp_path, params[:path])
+        else
+          har.save_as(params[:path])
+        end
+
         har.delete
       end
       @channel.send_message_to_server('close')

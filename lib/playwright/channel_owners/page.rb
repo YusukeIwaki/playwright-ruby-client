@@ -418,6 +418,11 @@ module Playwright
     end
 
     def route_from_har(har, notFound: nil, update: nil, url: nil)
+      if update
+        @browser_context.send(:record_into_har, har, self, notFound: notFound, url: url)
+        return
+      end
+
       router = HarRouter.create(
         @connection.local_utils,
         har.to_s,
@@ -471,9 +476,12 @@ module Playwright
     end
 
     def close(runBeforeUnload: nil)
-      options = { runBeforeUnload: runBeforeUnload }.compact
-      @channel.send_message_to_server('close', options)
-      @owned_context&.close
+      if @owned_context
+        @owned_context.close
+      else
+        options = { runBeforeUnload: runBeforeUnload }.compact
+        @channel.send_message_to_server('close', options)
+      end
       nil
     rescue => err
       raise unless safe_close_error?(err)

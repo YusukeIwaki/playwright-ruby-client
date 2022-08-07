@@ -76,7 +76,7 @@ module Playwright
     end
 
     def dispose
-      @local_utils.har_close(@har_id)
+      @local_utils.async_har_close(@har_id)
     end
   end
 end

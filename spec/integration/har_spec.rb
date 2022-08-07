@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'tempfile'
+require 'tmpdir'
 
 RSpec.describe 'HAR' do
   def parse_har_file(file)
@@ -8,12 +8,14 @@ RSpec.describe 'HAR' do
   end
 
   def with_page_with_har(**options, &block)
-    Tempfile.create do |file|
-      options[:record_har_path] = file.path
+    Dir.mktmpdir do |dir|
+      har_path = File.join(dir, 'test.har')
+
+      options[:record_har_path] = har_path
       with_context(**options) do |context|
         block.call(context.new_page)
       end
-      parse_har_file(file.path)
+      parse_har_file(har_path)
     end
   end
 
