@@ -26,7 +26,6 @@ ALL_TYPES = %w[
     Tracing
     Locator
     FrameLocator
-    LocalUtils
     APIResponse
     APIRequestContext
     APIRequest
