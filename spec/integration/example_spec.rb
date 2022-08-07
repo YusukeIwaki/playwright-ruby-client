@@ -330,9 +330,17 @@ RSpec.describe 'example' do
     end
 
     it 'should work with Route#continue', sinatra: true do
+      sinatra.get('/empty2.html') do
+        headers(
+          'foo' => 'FOO',
+          'bar' => 'BAR',
+        )
+        body('')
+      end
+
       with_page do |page|
-        example_1960aabd58c9553683368e29429d39c1209d35e6e3625bbef1280a1fa022a9ee(page: page)
-        url = "#{server_cross_process_prefix}/empty.html"
+        example_bbeb6c856287d9a14962cd222891b682b8f1c52dafcf933198e651e634906122(page: page)
+        url = "#{server_cross_process_prefix}/empty2.html"
         page.content = "<a href=\"#{url}\">link</a>"
         response = page.expect_request(url) { page.click('a') }
         headers = response.all_headers

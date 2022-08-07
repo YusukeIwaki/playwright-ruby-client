@@ -1194,12 +1194,13 @@ module ExampleCodes
   end
 
   # Route#continue
-  def example_1960aabd58c9553683368e29429d39c1209d35e6e3625bbef1280a1fa022a9ee(page:)
+  def example_bbeb6c856287d9a14962cd222891b682b8f1c52dafcf933198e651e634906122(page:)
     def handle(route, request)
       # override headers
       headers = request.headers
       headers['foo'] = 'bar' # set "foo" header
       headers['user-agent'] = 'Unknown Browser' # modify user-agent
+      headers.delete('bar') # remove "bar" header
 
       route.continue(headers: headers)
     end

@@ -124,12 +124,12 @@ module Playwright
 
       params = request.send(:fallback_overrides).dup
 
-      if params['headers']
-        params['headers'] = HttpHeaders.new(params['headers']).as_serialized
+      if params[:headers]
+        params[:headers] = HttpHeaders.new(params[:headers]).as_serialized
       end
 
       if post_data_for_wire
-        params['postData'] = post_data_for_wire
+        params[:postData] = post_data_for_wire
       end
 
       # TODO _race_with_page_close

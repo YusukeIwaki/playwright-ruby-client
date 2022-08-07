@@ -95,7 +95,7 @@ module Playwright
 
     def headers
       if (override = @fallback_overrides[:headers])
-        RawHeaders.new(override).headers
+        RawHeaders.new(HttpHeaders.new(override).as_serialized).headers
       else
         @provisional_headers.headers
       end
@@ -104,7 +104,7 @@ module Playwright
     # @return [RawHeaders|nil]
     private def actual_headers
       if (override = @fallback_overrides[:headers])
-        RawHeaders.new(override).headers
+        RawHeaders.new(HttpHeaders.new(override).as_serialized)
       else
         @actual_headers ||= raw_request_headers
       end

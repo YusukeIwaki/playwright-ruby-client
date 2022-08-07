@@ -7,7 +7,7 @@ module Playwright
 
     def as_serialized
       @headers.map do |key, value|
-        { name: key, value: value }
+        { 'name' => key, 'value' => value }
       end
     end
   end
