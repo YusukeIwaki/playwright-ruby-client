@@ -721,6 +721,16 @@ module ExampleCodes
     elements.evaluate_all("(divs, min) => divs.length >= min", arg: 10)
   end
 
+  # Locator#filter
+  def example_e4e1e47809bf39ddce020b8a6bdb0560ffb660f92bd0743107c9c1557f4bbd60(page:)
+    row_locator = page.locator("tr")
+    # ...
+    row_locator.
+        filter(has_text="text in column 1").
+        filter(has=page.locator("tr", has_text="column 2 button")).
+        screenshot
+  end
+
   # Locator#frame_locator
   def example_18679ec4d71712b9c205ae9896778924011d154c4529df7b44d33d6d6ece55cb(page:)
     locator = page.frame_locator("iframe").locator("text=Submit")
@@ -1205,6 +1215,54 @@ module ExampleCodes
       route.continue(headers: headers)
     end
     page.route("**/*", method(:handle))
+  end
+
+  # Route#fallback
+  def example_347531c10d6bf4b1f6e727494b385f224aa59a068df9073b0afaa2ca1b66362d(page:)
+    page.route("**/*", -> (route,_) { route.abort })  # Runs last.
+    page.route("**/*", -> (route,_) { route.fallback })  # Runs second.
+    page.route("**/*", -> (route,_) { route.fallback })  # Runs first.
+  end
+
+  # Route#fallback
+  def example_2b4eca732c7ed8d0d22b23cd55d462cdd20bfc2f94f19640e744e265f53286ca(page:)
+    # Handle GET requests.
+    def handle_post(route, request)
+      if request.method != "GET"
+        route.fallback
+        return
+      end
+
+      # Handling GET only.
+      # ...
+    end
+
+    # Handle POST requests.
+    def handle_post(route)
+      if request.method != "POST"
+        route.fallback
+        return
+      end
+
+      # Handling POST only.
+      # ...
+    end
+
+    page.route("**/*", handle_get)
+    page.route("**/*", handle_post)
+  end
+
+  # Route#fallback
+  def example_457b18e26c0c4a1a8074c8678d0377ba50fe9d0eeb1ef2b520acbb2c68da240a(page:)
+    def handle(route, request)
+      # override headers
+      headers = request.headers
+      headers['foo'] = 'bar' # set "foo" header
+      headers['user-agent'] = 'Unknown Browser' # modify user-agent
+      headers.delete('bar') # remove "bar" header
+
+      route.fallback(headers: headers)
+    end
   end
 
   # Route#fulfill
