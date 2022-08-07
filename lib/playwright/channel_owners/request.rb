@@ -21,7 +21,9 @@ module Playwright
       @fallback_overrides = {}
     end
 
-    private attr_accessor :fallback_overrides
+    private def fallback_overrides
+      @fallback_overrides
+    end
 
     def apply_fallback_overrides(overrides)
       allowed_key = %i[url method headers postData]
