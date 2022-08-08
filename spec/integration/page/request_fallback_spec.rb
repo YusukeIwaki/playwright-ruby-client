@@ -61,7 +61,7 @@ RSpec.describe 'request#fallback', sinatra: true do
         route.fallback
       })
       page = context.new_page
-      expect { page.goto(server_empty_page) }.to raise_error(/net::ERR_FAILED|Request intercepted/)
+      expect { page.goto(server_empty_page) }.to raise_error(/net::ERR_FAILED|Request intercepted|Blocked by Web Inspector/)
       expect(failed).to eq(false)
     end
   end
