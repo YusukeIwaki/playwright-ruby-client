@@ -25,7 +25,9 @@ module Playwright
     private def on_load_state(add:, remove:)
       if add
         @load_states << add
-        @event_emitter.emit('loadstate', add)
+
+        # Original JS version of Playwright emit event here.
+        # @event_emitter.emit('loadstate', add)
       end
       if remove
         @load_states.delete(remove)
@@ -36,6 +38,11 @@ module Playwright
         elsif add == 'domcontentloaded'
           @page&.emit(Events::Page::DOMContentLoaded, @page)
         end
+      end
+
+      # emit to waitForLoadState(load) listeners explicitly after waitForEvent(load) listeners
+      if add
+        @event_emitter.emit('loadstate', add)
       end
     end
 
