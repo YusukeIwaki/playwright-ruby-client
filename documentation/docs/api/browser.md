@@ -21,6 +21,14 @@ end
 
 
 
+## browser_type
+
+```
+def browser_type
+```
+
+Get the browser type (chromium, firefox or webkit) that the browser belongs to.
+
 ## close
 
 ```
@@ -93,12 +101,16 @@ def new_context(
       offline: nil,
       permissions: nil,
       proxy: nil,
+      record_har_content: nil,
+      record_har_mode: nil,
       record_har_omit_content: nil,
       record_har_path: nil,
+      record_har_url_filter: nil,
       record_video_dir: nil,
       record_video_size: nil,
       reducedMotion: nil,
       screen: nil,
+      serviceWorkers: nil,
       storageState: nil,
       strictSelectors: nil,
       timezoneId: nil,
@@ -144,12 +156,16 @@ def new_page(
       offline: nil,
       permissions: nil,
       proxy: nil,
+      record_har_content: nil,
+      record_har_mode: nil,
       record_har_omit_content: nil,
       record_har_path: nil,
+      record_har_url_filter: nil,
       record_video_dir: nil,
       record_video_size: nil,
       reducedMotion: nil,
       screen: nil,
+      serviceWorkers: nil,
       storageState: nil,
       strictSelectors: nil,
       timezoneId: nil,

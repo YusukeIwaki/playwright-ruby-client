@@ -118,6 +118,7 @@ RSpec.describe 'WebSocket', web_socket: true do
       ws = page.expect_websocket do
         page.evaluate("window.ws = new WebSocket('#{ws_url}')")
       end
+      ws.wait_for_event('framereceived')
       expect {
         ws.expect_event('framesent') do
           page.evaluate('window.ws.close()')
@@ -132,6 +133,7 @@ RSpec.describe 'WebSocket', web_socket: true do
         ws = page.expect_websocket do
           page.evaluate("window.ws = new WebSocket('#{ws_url}')")
         end
+        ws.wait_for_event('framereceived')
         expect {
           ws.expect_event('framesent') do
             page.close

@@ -37,13 +37,11 @@ module Playwright
 
     # @param method [String]
     # @param params [Hash]
-    # @returns nil
+    # @returns [Concurrent::Promises::Future]
     def async_send_message_to_server(method, params = {})
       with_logging do |metadata|
         @connection.async_send_message_to_server(@guid, method, params, metadata: metadata)
       end
-
-      nil
     end
 
     private def with_logging(&block)

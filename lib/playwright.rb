@@ -20,6 +20,7 @@ require 'playwright/channel_owner'
 require 'playwright/http_headers'
 require 'playwright/input_files'
 require 'playwright/connection'
+require 'playwright/har_router'
 require 'playwright/raw_headers'
 require 'playwright/route_handler'
 require 'playwright/select_option_values'
@@ -143,6 +144,7 @@ module Playwright
         playwright = connection.initialize_playwright
         browser = playwright.send(:pre_launched_browser)
         browser.should_close_connection_on_close!
+        browser.send(:update_browser_type, browser.browser_type)
         Execution.new(connection, PlaywrightApi.wrap(playwright), PlaywrightApi.wrap(browser))
       rescue
         connection.stop

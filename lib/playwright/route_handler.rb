@@ -50,12 +50,8 @@ module Playwright
     def async_handle(route, request)
       @counter.increment
 
-      Concurrent::Promises.future do
-        begin
-          @handler.call(route, request)
-        rescue => err
-          puts err, err.backtrace
-        end
+      Concurrent::Promises.future { @handler.call(route, request) }.rescue do |err|
+        puts err, err.backtrace
       end
     end
 

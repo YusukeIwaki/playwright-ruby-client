@@ -5,6 +5,7 @@ module Playwright
     include Utils::PrepareBrowserContextOptions
 
     private def after_initialize
+      @browser_type = @parent
       @connected = true
       @closed_or_closing = false
       @should_close_connection_on_close = false
@@ -15,6 +16,10 @@ module Playwright
 
     def contexts
       @contexts.to_a
+    end
+
+    def browser_type
+      @browser_type
     end
 
     def connected?
@@ -30,6 +35,7 @@ module Playwright
       @contexts << context
       context.browser = self
       context.options = params
+      context.send(:update_browser_type, @browser_type)
       return context unless block
 
       begin
@@ -51,6 +57,13 @@ module Playwright
         block.call(page)
       ensure
         page.close
+      end
+    end
+
+    private def update_browser_type(browser_type)
+      @browser_type = browser_type
+      @contexts.each do |context|
+        context.send(:update_browser_type, browser_type)
       end
     end
 

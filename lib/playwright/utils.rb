@@ -1,6 +1,36 @@
 module Playwright
   module Utils
     module PrepareBrowserContextOptions
+      private def prepare_record_har_options(params)
+        out_params = {
+          path: params.delete(:record_har_path)
+        }
+        if params[:record_har_url_filter]
+          opt = params.delete(:record_har_url_filter)
+          if opt.is_a?(Regexp)
+            regex = ::Playwright::JavaScript::Regex.new(opt)
+            out_params[:urlRegexSource] = regex.source
+            out_params[:urlRegexFlags] = regex.flag
+          elsif opt.is_a?(String)
+            out_params[:urlGlob] = opt
+          end
+        end
+        if params[:record_har_mode]
+          out_params[:mode] = params.delete(:record_har_mode)
+        end
+        if params[:record_har_content]
+          out_params[:content] = params.delete(:record_har_content)
+        end
+        if params[:record_har_omit_content]
+          old_api_omit_content = params.delete(:record_har_omit_content)
+          if old_api_omit_content
+            out_params[:content] ||= 'omit'
+          end
+        end
+
+        out_params
+      end
+
       # @see https://github.com/microsoft/playwright/blob/5a2cfdbd47ed3c3deff77bb73e5fac34241f649d/src/client/browserContext.ts#L265
       private def prepare_browser_context_options(params)
         if params[:noViewport] == 0
@@ -11,12 +41,7 @@ module Playwright
           params[:extraHTTPHeaders] = ::Playwright::HttpHeaders.new(params[:extraHTTPHeaders]).as_serialized
         end
         if params[:record_har_path]
-          params[:recordHar] = {
-            path: params.delete(:record_har_path)
-          }
-          if params[:record_har_omit_content]
-            params[:recordHar][:omitContent] = params.delete(:record_har_omit_content)
-          end
+          params[:recordHar] = prepare_record_har_options(params)
         end
         if params[:record_video_dir]
           params[:recordVideo] = {

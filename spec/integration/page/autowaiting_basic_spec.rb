@@ -376,14 +376,13 @@ RSpec.describe 'autowaiting basic' do
           messages << 'clickload'
         },
         Concurrent::Promises.future {
-          page.expect_event('framenavigated')
-          page.wait_for_load_state(state: 'domcontentloaded')
-          messages << 'domcontentloaded'
+          page.expect_event('load')
+          messages << 'load'
         }
       ]
       await_all(promises)
     end
-    expect(messages).to eq(%w(route domcontentloaded clickload))
+    expect(messages).to eq(%w(route load clickload))
   end
 
   it 'should work with goto following click', sinatra: true do

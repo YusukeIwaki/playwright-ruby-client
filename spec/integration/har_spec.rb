@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'tempfile'
+require 'tmpdir'
 
 RSpec.describe 'HAR' do
   def parse_har_file(file)
@@ -7,12 +7,15 @@ RSpec.describe 'HAR' do
     har['log']
   end
 
-  def with_page_with_har(&block)
-    Tempfile.create do |file|
-      with_context(record_har_path: file.path) do |context|
+  def with_page_with_har(**options, &block)
+    Dir.mktmpdir do |dir|
+      har_path = File.join(dir, 'test.har')
+
+      options[:record_har_path] = har_path
+      with_context(**options) do |context|
         block.call(context.new_page)
       end
-      parse_har_file(file.path)
+      parse_har_file(har_path)
     end
   end
 
@@ -22,6 +25,42 @@ RSpec.describe 'HAR' do
     end
     expect(log['version']).to eq('1.2')
     expect(log['creator']['name']).to eq('Playwright')
+  end
+
+  it 'should omit content', sinatra: true do
+    log = with_page_with_har(record_har_content: :omit) do |page|
+      page.goto("#{server_prefix}/har.html")
+      page.evaluate("() => fetch('/pptr.png').then(r => r.arrayBuffer())")
+    end
+
+    entry = log['entries'].first
+    expect(entry.dig(*%w(response content text))).to be_nil
+  end
+
+  it 'should omit content legacy', sinatra: true do
+    log = with_page_with_har(record_har_omit_content: true) do |page|
+      page.goto("#{server_prefix}/har.html")
+      page.evaluate("() => fetch('/pptr.png').then(r => r.arrayBuffer())")
+    end
+
+    entry = log['entries'].first
+    expect(entry.dig(*%w(response content text))).to be_nil
+  end
+
+  it 'should filter by glob', sinatra: true do
+    log = with_page_with_har(baseURL: server_prefix, record_har_url_filter: '/*.css') do |page|
+      page.goto('/har.html')
+    end
+    expect(log['entries'].count).to eq(1)
+    expect(log['entries'].first['request']['url']).to end_with('/one-style.css')
+  end
+
+  it 'should filter by regexp', sinatra: true do
+    log = with_page_with_har(record_har_url_filter: /HAR.X?HTML/i) do |page|
+      page.goto("#{server_prefix}/har.html")
+    end
+    expect(log['entries'].count).to eq(1)
+    expect(log['entries'].first['request']['url']).to end_with('/har.html')
   end
 
   it 'should have different hars for concurrent contexts' do

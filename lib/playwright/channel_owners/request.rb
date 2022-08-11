@@ -18,10 +18,24 @@ module Playwright
         responseStart: -1,
         responseEnd: -1,
       }
+      @fallback_overrides = {}
+    end
+
+    private def fallback_overrides
+      @fallback_overrides
+    end
+
+    def apply_fallback_overrides(overrides)
+      allowed_key = %i[url method headers postData]
+      overrides.each do |key, value|
+        raise ArgumentError.new("invalid key: #{key}") unless allowed_key.include?(key)
+        @fallback_overrides[key] = value
+      end
+      @fallback_overrides
     end
 
     def url
-      @initializer['url']
+      @fallback_overrides[:url] || @initializer['url']
     end
 
     def resource_type
@@ -29,7 +43,7 @@ module Playwright
     end
 
     def method
-      @initializer['method']
+      @fallback_overrides[:method] || @initializer['method']
     end
 
     def post_data
@@ -51,8 +65,11 @@ module Playwright
     end
 
     def post_data_buffer
-      base64_content = @initializer['postData']
-      if base64_content
+      if (override = @fallback_overrides[:postData])
+        return override
+      end
+
+      if (base64_content = @initializer['postData'])
         Base64.strict_decode64(base64_content)
       else
         nil
@@ -79,12 +96,20 @@ module Playwright
     attr_reader :redirected_from, :redirected_to, :timing
 
     def headers
-      @provisional_headers.headers
+      if (override = @fallback_overrides[:headers])
+        RawHeaders.new(HttpHeaders.new(override).as_serialized).headers
+      else
+        @provisional_headers.headers
+      end
     end
 
     # @return [RawHeaders|nil]
     private def actual_headers
-      @actual_headers ||= raw_request_headers
+      if (override = @fallback_overrides[:headers])
+        RawHeaders.new(HttpHeaders.new(override).as_serialized)
+      else
+        @actual_headers ||= raw_request_headers
+      end
     end
 
     private def raw_request_headers

@@ -121,6 +121,21 @@ RSpec.describe 'BrowserContext#route', sinatra: true do
     expect(intercepted).to eq(%w[intercepted intercepted])
   end
 
+  it 'should support async handler w/ times' do
+    with_context do |context|
+      page = context.new_page
+      context.route('**/empty.html', ->(route, _) {
+        sleep 0.1
+        route.fulfill(body: '<html>intercepted</html>', contentType: 'text/html')
+      }, times: 1)
+
+      page.goto(server_empty_page)
+      expect(page.locator('body').text_content).to eq('intercepted')
+      page.goto(server_empty_page)
+      expect(page.locator('body').text_content).not_to include('intercepted')
+    end
+  end
+
   xit 'should handle even if raise error' do
     with_context do |context|
       context.route('**/empty.html', ->(route, _) {

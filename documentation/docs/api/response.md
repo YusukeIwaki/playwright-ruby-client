@@ -38,13 +38,24 @@ def frame
 
 Returns the [Frame](./frame) that initiated this response.
 
+## from_service_worker
+
+```
+def from_service_worker
+```
+
+Indicates whether this Response was fullfilled by a Service Worker's Fetch Handler (i.e. via
+[FetchEvent.respondWith](https://developer.mozilla.org/en-US/docs/Web/API/FetchEvent/respondWith)).
+
 ## headers
 
 ```
 def headers
 ```
 
-**DEPRECATED** Incomplete list of headers as seen by the rendering engine. Use [Response#all_headers](./response#all_headers) instead.
+An object with the response HTTP headers. The header names are lower-cased. Note that this method does not return
+security-related headers, including cookie-related ones. You can use [Response#all_headers](./response#all_headers) for complete list
+of headers that include `cookie` information.
 
 ## headers_array
 

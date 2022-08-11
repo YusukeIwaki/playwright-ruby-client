@@ -31,11 +31,9 @@ module Playwright
 
       case hasText
       when Regexp
-        source = EscapeWithQuotes.new(hasText.source, '"')
-        flags = []
-        flags << 'ms' if (hasText.options & Regexp::MULTILINE) != 0
-        flags << 'i' if (hasText.options & Regexp::IGNORECASE) != 0
-        selector_scopes << ":scope:text-matches(#{source}, \"#{flags.join('')}\")"
+        regex = JavaScript::Regex.new(hasText)
+        source = EscapeWithQuotes.new(regex.source, '"')
+        selector_scopes << ":scope:text-matches(#{source}, \"#{regex.flag}\")"
       when String
         text = EscapeWithQuotes.new(hasText, '"')
         selector_scopes << ":scope:has-text(#{text})"

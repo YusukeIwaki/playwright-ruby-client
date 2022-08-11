@@ -39,7 +39,6 @@ module Playwright
       })
       @channel.on('crash', ->(_) { emit(Events::Page::Crash) })
       @channel.on('dialog', method(:on_dialog))
-      @channel.on('domcontentloaded', ->(_) { emit(Events::Page::DOMContentLoaded) })
       @channel.on('download', method(:on_download))
       @channel.on('fileChooser', ->(params) {
         chooser = FileChooserImpl.new(
@@ -54,12 +53,15 @@ module Playwright
       @channel.on('frameDetached', ->(params) {
         on_frame_detached(ChannelOwners::Frame.from(params['frame']))
       })
-      @channel.on('load', ->(_) { emit(Events::Page::Load) })
       @channel.on('pageError', ->(params) {
         emit(Events::Page::PageError, Error.parse(params['error']['error']))
       })
       @channel.on('route', ->(params) {
-        on_route(ChannelOwners::Route.from(params['route']), ChannelOwners::Request.from(params['request']))
+        Concurrent::Promises.future {
+          on_route(ChannelOwners::Route.from(params['route']), ChannelOwners::Request.from(params['request']))
+        }.rescue do |err|
+          puts err, err.backtrace
+        end
       })
       @channel.on('video', method(:on_video))
       @channel.on('webSocket', ->(params) {
@@ -98,18 +100,26 @@ module Playwright
       wrapped_route = PlaywrightApi.wrap(route)
       wrapped_request = PlaywrightApi.wrap(request)
 
-      handler_entry = @routes.find do |entry|
-        entry.match?(request.url)
+      handled = @routes.any? do |handler_entry|
+        next false unless handler_entry.match?(request.url)
+
+        promise = Concurrent::Promises.resolvable_future
+        route.send(:set_handling_future, promise)
+
+        promise_handled = Concurrent::Promises.zip(
+          promise,
+          handler_entry.async_handle(wrapped_route, wrapped_request)
+        ).value!.first
+
+        promise_handled
       end
 
-      if handler_entry
-        handler_entry.async_handle(wrapped_route, wrapped_request)
+      @routes.reject!(&:expired?)
+      if @routes.count == 0
+        @channel.async_send_message_to_server('setNetworkInterceptionEnabled', enabled: false)
+      end
 
-        @routes.reject!(&:expired?)
-        if @routes.count == 0
-          @channel.async_send_message_to_server('setNetworkInterceptionEnabled', enabled: false)
-        end
-      else
+      unless handled
         @browser_context.send(:on_route, route, request)
       end
     end
@@ -407,6 +417,21 @@ module Playwright
       end
     end
 
+    def route_from_har(har, notFound: nil, update: nil, url: nil)
+      if update
+        @browser_context.send(:record_into_har, har, self, notFound: notFound, url: url)
+        return
+      end
+
+      router = HarRouter.create(
+        @connection.local_utils,
+        har.to_s,
+        notFound || "abort",
+        url_match: url,
+      )
+      router.add_page_route(self)
+    end
+
     def screenshot(
       animations: nil,
       caret: nil,
@@ -451,9 +476,12 @@ module Playwright
     end
 
     def close(runBeforeUnload: nil)
-      options = { runBeforeUnload: runBeforeUnload }.compact
-      @channel.send_message_to_server('close', options)
-      @owned_context&.close
+      if @owned_context
+        @owned_context.close
+      else
+        options = { runBeforeUnload: runBeforeUnload }.compact
+        @channel.send_message_to_server('close', options)
+      end
       nil
     rescue => err
       raise unless safe_close_error?(err)

@@ -2,6 +2,8 @@ module Playwright
   # @ref https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_browser_context.py
   define_channel_owner :BrowserContext do
     include Utils::Errors::SafeCloseError
+    include Utils::PrepareBrowserContextOptions
+
     attr_accessor :browser
     attr_writer :owner_page, :options
     attr_reader :tracing, :request
@@ -17,12 +19,17 @@ module Playwright
 
       @tracing = ChannelOwners::Tracing.from(@initializer['tracing'])
       @request = ChannelOwners::APIRequestContext.from(@initializer['APIRequestContext'])
+      @har_recorders = {}
 
       @channel.on('bindingCall', ->(params) { on_binding(ChannelOwners::BindingCall.from(params['binding'])) })
       @channel.once('close', ->(_) { on_close })
       @channel.on('page', ->(params) { on_page(ChannelOwners::Page.from(params['page']) )})
       @channel.on('route', ->(params) {
-        on_route(ChannelOwners::Route.from(params['route']), ChannelOwners::Request.from(params['request']))
+        Concurrent::Promises.future {
+          on_route(ChannelOwners::Route.from(params['route']), ChannelOwners::Request.from(params['request']))
+        }.rescue do |err|
+          puts err, err.backtrace
+        end
       })
       @channel.on('backgroundPage', ->(params) {
         on_background_page(ChannelOwners::Page.from(params['page']))
@@ -55,6 +62,16 @@ module Playwright
       @closed_promise = Concurrent::Promises.resolvable_future
     end
 
+    private def update_browser_type(browser_type)
+      @browser_type = browser_type
+      if @options[:recordHar]
+        @har_recorders[''] = {
+          path: @options[:recordHar][:path],
+          content: @options[:recordHar][:content]
+        }
+      end
+    end
+
     private def on_page(page)
       @pages << page
       emit(Events::BrowserContext::Page, page)
@@ -73,19 +90,29 @@ module Playwright
       wrapped_route = PlaywrightApi.wrap(route)
       wrapped_request = PlaywrightApi.wrap(request)
 
-      handler_entry = @routes.find do |entry|
-        entry.match?(request.url)
+      handled = @routes.any? do |handler_entry|
+        next false unless handler_entry.match?(request.url)
+
+        promise = Concurrent::Promises.resolvable_future
+        route.send(:set_handling_future, promise)
+
+        promise_handled = Concurrent::Promises.zip(
+          promise,
+          handler_entry.async_handle(wrapped_route, wrapped_request)
+        ).value!.first
+
+        promise_handled
       end
 
-      if handler_entry
-        handler_entry.async_handle(wrapped_route, wrapped_request)
+      @routes.reject!(&:expired?)
+      if @routes.count == 0
+        @channel.async_send_message_to_server('setNetworkInterceptionEnabled', enabled: false)
+      end
 
-        @routes.reject!(&:expired?)
-        if @routes.count == 0
-          @channel.async_send_message_to_server('setNetworkInterceptionEnabled', enabled: false)
+      unless handled
+        route.send(:async_continue_route).rescue do |err|
+          puts err, err.backtrace
         end
-      else
-        route.continue
       end
     end
 
@@ -266,6 +293,37 @@ module Playwright
       end
     end
 
+    private def record_into_har(har, page, notFound:, url:)
+      params = {
+        options: prepare_record_har_options(
+          record_har_path: har,
+          record_har_content: "attach",
+          record_har_mode: "minimal",
+          record_har_url_filter: url,
+        )
+      }
+      if page
+        params[:page] = page.channel
+      end
+      har_id = @channel.send_message_to_server('harStart', params)
+      @har_recorders[har_id] = { path: har, content: 'attach' }
+    end
+
+    def route_from_har(har, notFound: nil, update: nil, url: nil)
+      if update
+        record_into_har(har, nil, notFound: notFound, url: url)
+        return
+      end
+
+      router = HarRouter.create(
+        @connection.local_utils,
+        har.to_s,
+        notFound || "abort",
+        url_match: url,
+      )
+      router.add_context_route(self)
+    end
+
     def expect_event(event, predicate: nil, timeout: nil, &block)
       wait_helper = WaitHelper.new
       wait_helper.reject_on_timeout(timeout || @timeout_settings.timeout, "Timeout while waiting for event \"#{event}\"")
@@ -283,9 +341,19 @@ module Playwright
     end
 
     def close
-      if @options && @options.key?(:recordHar)
-        har = ChannelOwners::Artifact.from(@channel.send_message_to_server('harExport'))
-        har.save_as(@options[:recordHar][:path])
+      @har_recorders.each do |har_id, params|
+        har = ChannelOwners::Artifact.from(@channel.send_message_to_server('harExport', harId: har_id))
+        # Server side will compress artifact if content is attach or if file is .zip.
+        compressed = params[:content] == "attach" || params[:path].end_with?('.zip')
+        need_comppressed = params[:path].end_with?('.zip')
+        if compressed && !need_comppressed
+          tmp_path = "#{params[:path]}.tmp"
+          har.save_as(tmp_path)
+          @connection.local_utils.har_unzip(tmp_path, params[:path])
+        else
+          har.save_as(params[:path])
+        end
+
         har.delete
       end
       @channel.send_message_to_server('close')

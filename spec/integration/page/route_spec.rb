@@ -310,6 +310,26 @@ RSpec.describe 'Page#route', sinatra: true do
   #     expect(chain[i].redirectedTo()).toBe(i ? chain[i - 1] : null);
   # });
 
+  it 'should chain fallback w/ dynamic URL' do
+    with_page do |page|
+      intercepted = []
+      page.route('**/bar', -> (route, _) {
+        intercepted << 1
+        route.fallback(url: server_empty_page)
+      })
+      page.route('**/foo', -> (route, _) {
+        intercepted << 2
+        route.fallback(url: 'http://localhost/bar')
+      })
+      page.route('**/empty.html', -> (route, _) {
+        intercepted << 3
+        route.fallback(url: 'http://localhost/foo')
+      })
+      page.goto(server_empty_page)
+      expect(intercepted).to eq([3, 2, 1])
+    end
+  end
+
   # it('should work with redirects for subresources', async ({page, server}) => {
   #   const intercepted = [];
   #   await page.route('**/*', route => {
@@ -675,6 +695,20 @@ RSpec.describe 'Page#route', sinatra: true do
     end
 
     expect(intercepted).to eq(%w[intercepted intercepted])
+  end
+
+  it 'should support async handler w/ times' do
+    with_page do |page|
+      page.route('**/empty.html', ->(route, _) {
+        sleep 0.1
+        route.fulfill(body: '<html>intercepted</html>', contentType: 'text/html')
+      }, times: 1)
+
+      page.goto(server_empty_page)
+      expect(page.locator('body').text_content).to eq('intercepted')
+      page.goto(server_empty_page)
+      expect(page.locator('body').text_content).not_to include('intercepted')
+    end
   end
 
   it 'should contain raw request header' do
