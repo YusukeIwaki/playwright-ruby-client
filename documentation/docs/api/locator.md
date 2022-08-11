@@ -34,7 +34,7 @@ def bounding_box(timeout: nil)
 This method returns the bounding box of the element, or `null` if the element is not visible. The bounding box is
 calculated relative to the main frame viewport - which is usually the same as the browser window.
 
-Scrolling affects the returned bonding box, similarly to
+Scrolling affects the returned bounding box, similarly to
 [Element.getBoundingClientRect](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect). That
 means `x` and/or `y` may be negative.
 
@@ -294,13 +294,14 @@ def filter(has: nil, hasText: nil)
 This method narrows existing locator according to the options, for example filters by text. It can be chained to filter
 multiple times.
 
-```ruby
+```python sync title=example_e2c1d5cff1ee10c126c8add2674c81927966bacadaacd4ed283eeb4319d8495f.py
 row_locator = page.locator("tr")
 # ...
-row_locator.
-    filter(has_text="text in column 1").
-    filter(has=page.locator("tr", has_text="column 2 button")).
-    screenshot
+row_locator
+    .filter(has_text="text in column 1")
+    .filter(has=page.locator("tr", has_text="column 2 button"))
+    .screenshot()
+
 ```
 
 

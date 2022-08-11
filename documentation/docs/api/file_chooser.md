@@ -6,11 +6,12 @@ sidebar_position: 10
 
 [FileChooser](./file_chooser) objects are dispatched by the page in the [`event: Page.fileChooser`] event.
 
-```ruby
-file_chooser = page.expect_file_chooser do
-  page.click("upload") # action to trigger file uploading
-end
+```python sync title=example_0511532585a1977c2f90ae3606eb154fbd89087e50e61add1189d555044a53e7.py
+with page.expect_file_chooser() as fc_info:
+    page.locator("upload").click()
+file_chooser = fc_info.value
 file_chooser.set_files("myfile.pdf")
+
 ```
 
 
