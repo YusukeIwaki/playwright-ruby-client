@@ -130,18 +130,15 @@ context via [BrowserContext#close](./browser_context#close) when your code is do
 [Browser#close](./browser#close). This will ensure the `context` is closed gracefully and any artifacts—like HARs and
 videos—are fully flushed and saved.
 
-```python sync title=example_7c214a04c3801b617a25fc020a766d671422782121b1ec7e1876d10789385c9c.py
-browser = playwright.firefox.launch() # or "chromium" or "webkit".
-# create a new incognito browser context.
-context = browser.new_context()
-# create a new page in a pristine context.
-page = context.new_page()
-page.goto("https://example.com")
-
-# gracefully close up everything
-context.close()
-browser.close()
-
+```ruby
+playwright.firefox.launch do |browser| # or "chromium.launch" or "webkit.launch".
+  # create a new incognito browser context.
+  browser.new_context do |context|
+    # create a new page in a pristine context.
+    page = context.new_page
+    page.goto("https://example.com")
+  end
+end
 ```
 
 

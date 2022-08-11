@@ -294,14 +294,13 @@ def filter(has: nil, hasText: nil)
 This method narrows existing locator according to the options, for example filters by text. It can be chained to filter
 multiple times.
 
-```python sync title=example_e2c1d5cff1ee10c126c8add2674c81927966bacadaacd4ed283eeb4319d8495f.py
+```ruby
 row_locator = page.locator("tr")
 # ...
-row_locator
-    .filter(has_text="text in column 1")
-    .filter(has=page.locator("tr", has_text="column 2 button"))
-    .screenshot()
-
+row_locator.
+    filter(has_text="text in column 1").
+    filter(has=page.locator("tr", has_text="column 2 button")).
+    screenshot
 ```
 
 

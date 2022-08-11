@@ -105,14 +105,14 @@ module ExampleCodes
   end
 
   # Browser#new_context
-  def example_3661a62dd097b41417b066df731db5f80905ccb40be870c04c44980ee7425f56(playwright:)
+  def example_7c214a04c3801b617a25fc020a766d671422782121b1ec7e1876d10789385c9c(playwright:)
     playwright.firefox.launch do |browser| # or "chromium.launch" or "webkit.launch".
       # create a new incognito browser context.
-      context = browser.new_context
-
-      # create a new page in a pristine context.
-      page = context.new_page()
-      page.goto("https://example.com")
+      browser.new_context do |context|
+        # create a new page in a pristine context.
+        page = context.new_page
+        page.goto("https://example.com")
+      end
     end
   end
 
@@ -136,7 +136,7 @@ module ExampleCodes
     page.goto("https://example.com")
 
     # dispose context once it is no longer needed.
-    context.close()
+    context.close
   end
 
   # BrowserContext#add_cookies
@@ -161,7 +161,7 @@ module ExampleCodes
   end
 
   # BrowserContext#expose_binding
-  def example_81b90f669e98413d55dfbd74319b8b505b137187a593ed03c46b56125a286201(browser_context:)
+  def example_b5278c03b97db04837578d9c4b3127e749c5631b3913c394d87fd2eb7c60d6fd(browser_context:)
     browser_context.expose_binding("pageURL", ->(source) { source[:page].url })
     page = browser_context.new_page
 
@@ -175,7 +175,7 @@ module ExampleCodes
     <div></div>
     HTML
 
-    page.click("button")
+    page.locator("button").click
   end
 
   # BrowserContext#expose_binding
@@ -197,11 +197,11 @@ module ExampleCodes
     <div>Or click me</div>
     HTML
 
-    page.click('div')
+    page.locator('div').click
   end
 
   # BrowserContext#expose_function
-  def example_ed09ff5e8c17b09741f2221b75c3891c550a9bd02835d030532f76d85ec25011(browser_context:)
+  def example_c522a7b05c05a56efaa701e7f606bb933c695fe49d80cc094776ee9a6b0430c9(browser_context:)
     require 'digest'
 
     def sha256(text)
@@ -219,7 +219,7 @@ module ExampleCodes
     <button onclick="onClick()">Click me</button>
     <div></div>
     HTML
-    page.click("button")
+    page.locator("button").click
   end
 
   # BrowserContext#route
@@ -257,9 +257,9 @@ module ExampleCodes
   end
 
   # BrowserContext#expect_event
-  def example_80ebd2eab628fbcf7b668dcf8abf7f058ec345ba2b67e6cc9330c1710c732240(browser_context:, page:)
+  def example_975e00f210447a2dc27c6cba698d8926f949ac6e3a1c663680bf83a2409ab319(browser_context:, page:)
     new_page = browser_context.expect_event('page') do
-      page.click('button')
+      page.locator('button').click
     end
   end
 
@@ -340,9 +340,9 @@ module ExampleCodes
   end
 
   # Download
-  def example_1392659acf52ded5cc668ec84a8a9ee4ad0b5a474f61e8ed565d5e29cb35ab2a(page:)
+  def example_57ba49c8dae5a0b6903980e8329cd393ceb9b066488ea8a0f37299d949a79755(page:)
     download = page.expect_download do
-      page.click('a')
+      page.locator('a').click
     end
 
     # wait for download to complete
@@ -441,9 +441,9 @@ module ExampleCodes
   end
 
   # FileChooser
-  def example_371975841dd417527a865b1501e3a8ba40f905b895cf3317ca90d9890e980843(page:)
+  def example_0511532585a1977c2f90ae3606eb154fbd89087e50e61add1189d555044a53e7(page:)
     file_chooser = page.expect_file_chooser do
-      page.click("upload") # action to trigger file uploading
+      page.locator("upload").click # action to trigger file uploading
     end
     file_chooser.set_files("myfile.pdf")
   end
@@ -722,7 +722,7 @@ module ExampleCodes
   end
 
   # Locator#filter
-  def example_e4e1e47809bf39ddce020b8a6bdb0560ffb660f92bd0743107c9c1557f4bbd60(page:)
+  def example_e2c1d5cff1ee10c126c8add2674c81927966bacadaacd4ed283eeb4319d8495f(page:)
     row_locator = page.locator("tr")
     # ...
     row_locator.
@@ -946,7 +946,7 @@ module ExampleCodes
     <button onclick="onClick()">Click me</button>
     <div></div>
     HTML
-    page.click("button")
+    page.locator("button").click
   end
 
   # Page#expose_binding
@@ -1282,7 +1282,7 @@ module ExampleCodes
   end
 
   # Selectors
-  def example_a3760c848fe1796fedc319aa8ea6c85d3cf5ed986eba8efbdab821cafab64b0d(playwright:)
+  def example_2a1ca76da8b425f9c7c34806bd0468a41808d975ce8d0e3887995b6ef785318d(playwright:)
     tag_selector = <<~JAVASCRIPT
     {
         // Returns the first element matching given selector in the root's subtree.
@@ -1303,9 +1303,9 @@ module ExampleCodes
       page.content = '<div><button>Click me</button></div>'
 
       # Use the selector prefixed with its name.
-      button = page.query_selector('tag=button')
+      button = page.locator('tag=button')
       # Combine it with other selector engines.
-      page.click('tag=div >> text="Click me"')
+      page.locator('tag=div >> text="Click me"').click
 
       # Can use it in any methods supporting selectors.
       button_count = page.locator('tag=button').count
@@ -1332,13 +1332,13 @@ module ExampleCodes
   end
 
   # Tracing#start_chunk
-  def example_e1cd2de07d683c41d7d1b375aa821afaab49c5407ea48c77dfdc3262f597ff1a(context:)
+  def example_20726490b43bb0d4f3a8ec9f7d9b08bad90ac24377cec399737fc5bdf537ca4b(context:)
     context.tracing.start(name: "trace", screenshots: true, snapshots: true)
     page = context.new_page
     page.goto("https://playwright.dev")
 
     context.tracing.start_chunk
-    page.click("text=Get Started")
+    page.locator("text=Get Started").click
     # Everything between start_chunk and stop_chunk will be recorded in the trace.
     context.tracing.stop_chunk(path: "trace1.zip")
 
