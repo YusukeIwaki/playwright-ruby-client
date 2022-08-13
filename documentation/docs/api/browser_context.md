@@ -184,7 +184,7 @@ page.content = <<~HTML
 <div>Or click me</div>
 HTML
 
-page.locator('div').click
+page.locator('div').first.click
 ```
 
 

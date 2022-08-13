@@ -197,7 +197,7 @@ module ExampleCodes
     <div>Or click me</div>
     HTML
 
-    page.locator('div').click
+    page.locator('div').first.click
   end
 
   # BrowserContext#expose_function
@@ -966,7 +966,7 @@ module ExampleCodes
     <div>Or click me</div>
     HTML
 
-    page.click('div')
+    page.locator('div').first.click
   end
 
   # Page#expose_function
@@ -987,7 +987,7 @@ module ExampleCodes
     <button onclick="onClick()">Click me</button>
     <div></div>
     HTML
-    page.click("button")
+    page.locator("button").click
   end
 
   # Page#frame
