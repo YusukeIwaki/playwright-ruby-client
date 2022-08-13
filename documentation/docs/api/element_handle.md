@@ -55,7 +55,7 @@ def bounding_box
 This method returns the bounding box of the element, or `null` if the element is not visible. The bounding box is
 calculated relative to the main frame viewport - which is usually the same as the browser window.
 
-Scrolling affects the returned bonding box, similarly to
+Scrolling affects the returned bounding box, similarly to
 [Element.getBoundingClientRect](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect). That
 means `x` and/or `y` may be negative.
 

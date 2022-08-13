@@ -124,9 +124,9 @@ RSpec.describe 'example' do
 
     it 'should work with BrowserContext#expose_binding' do
       with_context do |context|
-        example_81b90f669e98413d55dfbd74319b8b505b137187a593ed03c46b56125a286201(browser_context: context)
+        example_b5278c03b97db04837578d9c4b3127e749c5631b3913c394d87fd2eb7c60d6fd(browser_context: context)
         example_93e847f70b01456eec429a1ebfaa6b8f5334f4c227fd73e62dd6a7facb48dbbd(browser_context: context)
-        example_ed09ff5e8c17b09741f2221b75c3891c550a9bd02835d030532f76d85ec25011(browser_context: context)
+        example_c522a7b05c05a56efaa701e7f606bb933c695fe49d80cc094776ee9a6b0430c9(browser_context: context)
       end
     end
 
@@ -174,7 +174,7 @@ RSpec.describe 'example' do
 
       with_page(acceptDownloads: true) do |page|
         page.content = "<a href=\"#{server_prefix}/download\">download</a>"
-        path = example_1392659acf52ded5cc668ec84a8a9ee4ad0b5a474f61e8ed565d5e29cb35ab2a(page: page)
+        path = example_57ba49c8dae5a0b6903980e8329cd393ceb9b066488ea8a0f37299d949a79755(page: page)
         expect(File.exist?(path)).to eq(true)
       end
     end
@@ -362,12 +362,12 @@ RSpec.describe 'example' do
     it 'should work with Selector' do
       skip unless chromium?
 
-      expect(example_a3760c848fe1796fedc319aa8ea6c85d3cf5ed986eba8efbdab821cafab64b0d(playwright: playwright)).to eq(1)
+      expect(example_2a1ca76da8b425f9c7c34806bd0468a41808d975ce8d0e3887995b6ef785318d(playwright: playwright)).to eq(1)
     end
 
     it 'should work with Tracing' do
       with_context do |context|
-        example_e1cd2de07d683c41d7d1b375aa821afaab49c5407ea48c77dfdc3262f597ff1a(context: context)
+        example_20726490b43bb0d4f3a8ec9f7d9b08bad90ac24377cec399737fc5bdf537ca4b(context: context)
       end
     end
 

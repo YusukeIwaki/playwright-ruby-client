@@ -23,7 +23,7 @@ page = context.new_page
 page.goto("https://example.com")
 
 # dispose context once it is no longer needed.
-context.close()
+context.close
 ```
 
 
@@ -161,7 +161,7 @@ page.content = <<~HTML
 <div></div>
 HTML
 
-page.click("button")
+page.locator("button").click
 ```
 
 An example of passing an element handle:
@@ -184,7 +184,7 @@ page.content = <<~HTML
 <div>Or click me</div>
 HTML
 
-page.click('div')
+page.locator('div').first.click
 ```
 
 
@@ -222,7 +222,7 @@ page.content = <<~HTML
 <button onclick="onClick()">Click me</button>
 <div></div>
 HTML
-page.click("button")
+page.locator("button").click
 ```
 
 
@@ -434,7 +434,7 @@ value. Will throw an error if the context closes before the event is fired. Retu
 
 ```ruby
 new_page = browser_context.expect_event('page') do
-  page.click('button')
+  page.locator('button').click
 end
 ```
 

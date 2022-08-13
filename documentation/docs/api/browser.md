@@ -41,6 +41,10 @@ were opened).
 In case this browser is connected to, clears all created contexts belonging to this browser and disconnects from the
 browser server.
 
+> NOTE: This is similar to force quitting the browser. Therefore, you should call [BrowserContext#close](./browser_context#close) on
+any [BrowserContext](./browser_context)'s you explicitly created earlier with [Browser#new_context](./browser#new_context) **before** calling
+[Browser#close](./browser#close).
+
 The [Browser](./browser) object itself is considered to be disposed and cannot be used anymore.
 
 ## contexts
@@ -121,14 +125,19 @@ def new_context(
 
 Creates a new browser context. It won't share cookies/cache with other browser contexts.
 
+> NOTE: If directly using this method to create [BrowserContext](./browser_context)s, it is best practice to explicilty close the returned
+context via [BrowserContext#close](./browser_context#close) when your code is done with the [BrowserContext](./browser_context), and before calling
+[Browser#close](./browser#close). This will ensure the `context` is closed gracefully and any artifacts—like HARs and
+videos—are fully flushed and saved.
+
 ```ruby
 playwright.firefox.launch do |browser| # or "chromium.launch" or "webkit.launch".
   # create a new incognito browser context.
-  context = browser.new_context
-
-  # create a new page in a pristine context.
-  page = context.new_page()
-  page.goto("https://example.com")
+  browser.new_context do |context|
+    # create a new page in a pristine context.
+    page = context.new_page
+    page.goto("https://example.com")
+  end
 end
 ```
 

@@ -36,4 +36,54 @@ RSpec.describe 'Page#evaluate' do
       expect(result['b']).to eq(result)
     end
   end
+
+  it 'should evaluate date' do
+    with_page do |page|
+      result = page.evaluate('() => new Date("2017-09-26T00:00:00.000Z")')
+      expect(result).to be_a(Date)
+      expect(result).to eq(Date.parse('2017-09-26 00:00:00'))
+    end
+  end
+
+  it 'should jsonValue() date' do
+    with_page do |page|
+      result_handle = page.evaluate_handle('() => new Date("2017-09-26T00:00:00.000Z")')
+      date = result_handle.json_value
+      expect(date).to be_a(Date)
+      expect(date).to eq(Date.parse('2017-09-26 00:00:00'))
+    end
+  end
+
+  it 'should evaluate url' do
+    with_page do |page|
+      result = page.evaluate("() => ({ url: new URL('https://example.com') })")
+      expect(result['url']).to be_a(URI)
+      expect(result['url']).to eq(URI('https://example.com'))
+    end
+  end
+
+  it 'should roundtrip url' do
+    with_page do |page|
+      url = URI('https://example.com/search?q=123')
+      result = page.evaluate('url => url', arg: url)
+      expect(result).to eq(url)
+    end
+  end
+
+  it 'should jsonValue() url' do
+    with_page do |page|
+      result_handle = page.evaluate_handle("() => ({ url: new URL('https://example.com/search?q=123') })")
+      result = result_handle.json_value
+      expect(result['url']).to be_a(URI)
+      expect(result['url']).to eq(URI('https://example.com/search?q=123'))
+    end
+  end
+
+  it 'should not use toJSON when evaluating' do
+    with_page do |page|
+      result = page.evaluate("() => ({ toJSON: () => 'string', data: 'data' })")
+      expect(result['data']).to eq('data')
+      expect(result['toJSON']).to eq({})
+    end
+  end
 end

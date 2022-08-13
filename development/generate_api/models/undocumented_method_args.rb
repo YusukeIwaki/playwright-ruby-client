@@ -61,7 +61,7 @@ class UndocumentedMethodArgs
     @args.empty?
   end
 
-  def single?
-    @args.size == 1
+  def requires_single?
+    @args.count { |arg| arg.is_a?(RequiredArg) } == 1
   end
 end

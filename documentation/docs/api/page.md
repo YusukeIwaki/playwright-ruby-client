@@ -462,7 +462,7 @@ page.content = <<~HTML
 <button onclick="onClick()">Click me</button>
 <div></div>
 HTML
-page.click("button")
+page.locator("button").click
 ```
 
 An example of passing an element handle:
@@ -483,7 +483,7 @@ page.content = <<~HTML
 <div>Or click me</div>
 HTML
 
-page.click('div')
+page.locator('div').first.click
 ```
 
 
@@ -522,7 +522,7 @@ page.content = <<~HTML
 <button onclick="onClick()">Click me</button>
 <div></div>
 HTML
-page.click("button")
+page.locator("button").click
 ```
 
 

@@ -6,12 +6,12 @@ module MethodAliasing
 
     aliases = []
     if method_name.start_with?('set_')
-      if !has_block? && method_args.setter_parameter?
+      if !has_block? && method_args.requires_single?
         aliases << "#{method_name[4..-1]}="
       end
     end
 
-    if method_name == 'get_attribute' && method_args.single?
+    if method_name == 'get_attribute' && method_args.requires_single?
       aliases << "[]"
     elsif method_name.start_with?('get_')
       if !has_block? && method_args.empty?

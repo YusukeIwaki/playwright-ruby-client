@@ -8,7 +8,7 @@ sidebar_position: 10
 
 ```ruby
 file_chooser = page.expect_file_chooser do
-  page.click("upload") # action to trigger file uploading
+  page.locator("upload").click # action to trigger file uploading
 end
 file_chooser.set_files("myfile.pdf")
 ```

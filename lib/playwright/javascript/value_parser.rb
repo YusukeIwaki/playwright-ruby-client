@@ -48,6 +48,10 @@ module Playwright
           return DateTime.parse(hash['d'])
         end
 
+        if hash.key?('u')
+          return URI(hash['u'])
+        end
+
         if hash.key?('r')
           # @see https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/RegExp
           # @see https://docs.ruby-lang.org/ja/latest/class/Regexp.html
