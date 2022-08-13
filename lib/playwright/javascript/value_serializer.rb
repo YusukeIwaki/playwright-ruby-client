@@ -40,6 +40,8 @@ module Playwright
         when Time
           require 'time'
           { d: value.utc.iso8601 }
+        when URI
+          { u: value.to_s }
         when Regexp
           regex_value = Regex.new(value)
           { r: { p: regex_value.source, f: regex_value.flag } }
