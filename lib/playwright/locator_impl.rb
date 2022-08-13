@@ -33,7 +33,7 @@ module Playwright
       when Regexp
         regex = JavaScript::Regex.new(hasText)
         source = EscapeWithQuotes.new(regex.source, '"')
-        selector_scopes << ":scope:text-matches(#{source}, \"#{regex.flag}\")"
+        selector_scopes << "has=#{"text=/#{regex.source}/#{regex.flag}".to_json}"
       when String
         text = EscapeWithQuotes.new(hasText, '"')
         selector_scopes << ":scope:has-text(#{text})"

@@ -81,11 +81,7 @@ class DocumentedMethodArgs
     @args.empty? && !@with_block
   end
 
-  def single?
-    @args.size == 1 && !@with_block
-  end
-
-  def setter_parameter?
+  def requires_single?
     @args.count { |arg| arg.is_a?(RequiredArg) } == 1
   end
 

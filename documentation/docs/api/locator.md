@@ -342,6 +342,7 @@ locator.click
 ```
 def get_attribute(name, timeout: nil)
 ```
+alias: `[]`
 
 Returns element attribute value.
 

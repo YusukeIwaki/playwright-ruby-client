@@ -98,6 +98,27 @@ RSpec.describe 'Locator' do
     end
   end
 
+  it 'should filter by case-insensitive regex in a child' do
+    with_page do |page|
+      page.content = '<div class="test"><h5>Title Text</h5></div>'
+      expect(page.locator('div', hasText: /^title text$/i).text_content).to eq('Title Text')
+    end
+  end
+
+  it 'should filter by case-insensitive regex in multiple children' do
+    with_page do |page|
+      page.content = '<div class="test"><h5>Title</h5> <h2><i>Text</i></h2></div>'
+      expect(page.locator('div', hasText: /^title text$/i)['class']).to eq('test')
+    end
+  end
+
+  it 'should filter by regex with special symbols' do
+    with_page do |page|
+      page.content = '<div class="test"><h5>First/"and"</h5><h2><i>Second\\</i></h2></div>'
+      expect(page.locator('div', hasText: /^first\/".*"second\\$/si)['class']).to eq('test')
+    end
+  end
+
   it 'should support has:locator' do
     with_page do |page|
       page.content = '<div><span>hello</span></div><div><span>world</span></div>'
