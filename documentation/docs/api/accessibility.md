@@ -4,6 +4,10 @@ sidebar_position: 10
 
 # Accessibility
 
+**DEPRECATED** This class is deprecated. Please use other libraries such as [Axe](https://www.deque.com/axe/) if you
+need to test page accessibility. See our Node.js [guide](https://playwright.dev/docs/accessibility-testing) for
+integration with Axe.
+
 The Accessibility class provides methods for inspecting Chromium's accessibility tree. The accessibility tree is used by
 assistive technology such as [screen readers](https://en.wikipedia.org/wiki/Screen_reader) or
 [switches](https://en.wikipedia.org/wiki/Switch_access).
@@ -23,6 +27,10 @@ only the "interesting" nodes of the tree.
 ```
 def snapshot(interestingOnly: nil, root: nil)
 ```
+
+**DEPRECATED** This method is deprecated. Please use other libraries such as [Axe](https://www.deque.com/axe/) if you
+need to test page accessibility. See our Node.js [guide](https://playwright.dev/docs/accessibility-testing) for
+integration with Axe.
 
 Captures the current state of the accessibility tree. The returned object represents the root accessible node of the
 page.

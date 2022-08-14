@@ -141,19 +141,25 @@ module Playwright
         return
       end
 
-      if method == "__dispose__"
-        object = @objects[guid]
-        unless object
-          raise "Cannot find object to dispose: #{guid}"
+      object = @objects[guid]
+      unless object
+        raise "Cannot find object to \"#{method}\": #{guid}"
+      end
+
+      if method == "__adopt__"
+        child = @objects[params["guid"]]
+        unless child
+          raise "Unknown new child: #{params['guid']}"
         end
+        object.send(:adopt!, child)
+        return
+      end
+
+      if method == "__dispose__"
         object.send(:dispose!)
         return
       end
 
-      object = @objects[guid]
-      unless object
-        raise "Cannot find object to emit \"#{method}\": #{guid}"
-      end
       object.channel.emit(method, replace_guids_with_channels(params))
     end
 

@@ -44,7 +44,7 @@ Returns the [Frame](./frame) that initiated this response.
 def from_service_worker
 ```
 
-Indicates whether this Response was fullfilled by a Service Worker's Fetch Handler (i.e. via
+Indicates whether this Response was fulfilled by a Service Worker's Fetch Handler (i.e. via
 [FetchEvent.respondWith](https://developer.mozilla.org/en-US/docs/Web/API/FetchEvent/respondWith)).
 
 ## headers

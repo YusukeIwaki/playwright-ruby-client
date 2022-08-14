@@ -13,14 +13,14 @@ possible to create a new APIRequestContext instance manually by calling [APIRequ
 
 **Cookie management**
 
-[APIRequestContext](./api_request_context) retuned by [BrowserContext#request](./browser_context#request) and [Page#request](./page#request) shares cookie storage
-with the corresponding [BrowserContext](./browser_context). Each API request will have `Cookie` header populated with the values from the
-browser context. If the API response contains `Set-Cookie` header it will automatically update [BrowserContext](./browser_context) cookies
-and requests made from the page will pick them up. This means that if you log in using this API, your e2e test will be
-logged in and vice versa.
+[APIRequestContext](./api_request_context) returned by [BrowserContext#request](./browser_context#request) and [Page#request](./page#request) shares cookie
+storage with the corresponding [BrowserContext](./browser_context). Each API request will have `Cookie` header populated with the values
+from the browser context. If the API response contains `Set-Cookie` header it will automatically update [BrowserContext](./browser_context)
+cookies and requests made from the page will pick them up. This means that if you log in using this API, your e2e test
+will be logged in and vice versa.
 
-If you want API requests to not interfere with the browser cookies you shoud create a new [APIRequestContext](./api_request_context) by calling
-[APIRequest#new_context](./api_request#new_context). Such [APIRequestContext](./api_request_context) object will have its own isolated cookie storage.
+If you want API requests to not interfere with the browser cookies you should create a new [APIRequestContext](./api_request_context) by
+calling [APIRequest#new_context](./api_request#new_context). Such [APIRequestContext](./api_request_context) object will have its own isolated cookie storage.
 
 ```ruby
 playwright.chromium.launch do |browser|

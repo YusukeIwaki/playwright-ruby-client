@@ -125,7 +125,7 @@ def new_context(
 
 Creates a new browser context. It won't share cookies/cache with other browser contexts.
 
-> NOTE: If directly using this method to create [BrowserContext](./browser_context)s, it is best practice to explicilty close the returned
+> NOTE: If directly using this method to create [BrowserContext](./browser_context)s, it is best practice to explicitly close the returned
 context via [BrowserContext#close](./browser_context#close) when your code is done with the [BrowserContext](./browser_context), and before calling
 [Browser#close](./browser#close). This will ensure the `context` is closed gracefully and any artifacts—like HARs and
 videos—are fully flushed and saved.

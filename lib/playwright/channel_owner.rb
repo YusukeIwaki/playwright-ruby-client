@@ -42,10 +42,16 @@ module Playwright
 
     attr_reader :channel
 
+    private def adopt!(child)
+      unless child.is_a?(ChannelOwner)
+        raise ArgumentError.new("child must be a ChannelOwner: #{child.inspect}")
+      end
+      child.send(:update_parent, self)
+    end
+
     # used only from Connection. Not intended for public use. So keep private.
     private def dispose!
       # Clean up from parent and connection.
-      @parent&.send(:delete_object_from_child, @guid)
       @connection.send(:delete_object_from_channel_owner, @guid)
 
       # Dispose all children.
@@ -63,6 +69,12 @@ module Playwright
     end
 
     private def after_initialize
+    end
+
+    private def update_parent(new_parent)
+      @parent.send(:delete_object_from_child, @guid)
+      new_parent.send(:update_object_from_child, @guid, self)
+      @parent = new_parent
     end
 
     private def update_object_from_child(guid, child)

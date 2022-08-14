@@ -4,6 +4,10 @@
     "spec": [
       {
         "type": "text",
+        "text": "**DEPRECATED** This class is deprecated. Please use other libraries such as [Axe](https://www.deque.com/axe/) if you need to test page accessibility. See our Node.js [guide](https://playwright.dev/docs/accessibility-testing) for integration with Axe."
+      },
+      {
+        "type": "text",
         "text": "The Accessibility class provides methods for inspecting Chromium's accessibility tree. The accessibility tree is used by assistive technology such as [screen readers](https://en.wikipedia.org/wiki/Screen_reader) or [switches](https://en.wikipedia.org/wiki/Switch_access)."
       },
       {
@@ -29,7 +33,7 @@
       "types": {},
       "overrides": {}
     },
-    "comment": "The Accessibility class provides methods for inspecting Chromium's accessibility tree. The accessibility tree is used by\nassistive technology such as [screen readers](https://en.wikipedia.org/wiki/Screen_reader) or\n[switches](https://en.wikipedia.org/wiki/Switch_access).\n\nAccessibility is a very platform-specific thing. On different platforms, there are different screen readers that might\nhave wildly different output.\n\nRendering engines of Chromium, Firefox and WebKit have a concept of \"accessibility tree\", which is then translated into\ndifferent platform-specific APIs. Accessibility namespace gives access to this Accessibility Tree.\n\nMost of the accessibility tree gets filtered out when converting from internal browser AX Tree to Platform-specific\nAX-Tree or by assistive technologies themselves. By default, Playwright tries to approximate this filtering, exposing\nonly the \"interesting\" nodes of the tree.",
+    "comment": "**DEPRECATED** This class is deprecated. Please use other libraries such as [Axe](https://www.deque.com/axe/) if you\nneed to test page accessibility. See our Node.js [guide](https://playwright.dev/docs/accessibility-testing) for\nintegration with Axe.\n\nThe Accessibility class provides methods for inspecting Chromium's accessibility tree. The accessibility tree is used by\nassistive technology such as [screen readers](https://en.wikipedia.org/wiki/Screen_reader) or\n[switches](https://en.wikipedia.org/wiki/Switch_access).\n\nAccessibility is a very platform-specific thing. On different platforms, there are different screen readers that might\nhave wildly different output.\n\nRendering engines of Chromium, Firefox and WebKit have a concept of \"accessibility tree\", which is then translated into\ndifferent platform-specific APIs. Accessibility namespace gives access to this Accessibility Tree.\n\nMost of the accessibility tree gets filtered out when converting from internal browser AX Tree to Platform-specific\nAX-Tree or by assistive technologies themselves. By default, Playwright tries to approximate this filtering, exposing\nonly the \"interesting\" nodes of the tree.",
     "members": [
       {
         "kind": "method",
@@ -734,6 +738,10 @@
         "spec": [
           {
             "type": "text",
+            "text": "**DEPRECATED** This method is deprecated. Please use other libraries such as [Axe](https://www.deque.com/axe/) if you need to test page accessibility. See our Node.js [guide](https://playwright.dev/docs/accessibility-testing) for integration with Axe."
+          },
+          {
+            "type": "text",
             "text": "Captures the current state of the accessibility tree. The returned object represents the root accessible node of the page."
           },
           {
@@ -865,8 +873,8 @@
           }
         ],
         "required": true,
-        "comment": "Captures the current state of the accessibility tree. The returned object represents the root accessible node of the\npage.\n\n> NOTE: The Chromium accessibility tree contains nodes that go unused on most platforms and by most screen readers.\nPlaywright will discard them as well for an easier to process tree, unless `interestingOnly` is set to `false`.\n\nAn example of dumping the entire accessibility tree:\n\n```js\nconst snapshot = await page.accessibility.snapshot();\nconsole.log(snapshot);\n```\n\n```java\nString snapshot = page.accessibility().snapshot();\nSystem.out.println(snapshot);\n```\n\n```python async\nsnapshot = await page.accessibility.snapshot()\nprint(snapshot)\n```\n\n```python sync\nsnapshot = page.accessibility.snapshot()\nprint(snapshot)\n```\n\n```csharp\nvar accessibilitySnapshot = await page.Accessibility.SnapshotAsync();\nConsole.WriteLine(System.Text.Json.JsonSerializer.Serialize(accessibilitySnapshot));\n```\n\nAn example of logging the focused node's name:\n\n```js\nconst snapshot = await page.accessibility.snapshot();\nconst node = findFocusedNode(snapshot);\nconsole.log(node && node.name);\n\nfunction findFocusedNode(node) {\n  if (node.focused)\n    return node;\n  for (const child of node.children || []) {\n    const foundNode = findFocusedNode(child);\n    if (foundNode)\n      return foundNode;\n  }\n  return null;\n}\n```\n\n```csharp\nvar accessibilitySnapshot = await page.Accessibility.SnapshotAsync();\nConsole.WriteLine(System.Text.Json.JsonSerializer.Serialize(accessibilitySnapshot));\n```\n\n```java\n// FIXME\nString snapshot = page.accessibility().snapshot();\n```\n\n```python async\ndef find_focused_node(node):\n    if (node.get(\"focused\"))\n        return node\n    for child in (node.get(\"children\") or []):\n        found_node = find_focused_node(child)\n        if (found_node)\n            return found_node\n    return None\n\nsnapshot = await page.accessibility.snapshot()\nnode = find_focused_node(snapshot)\nif node:\n    print(node[\"name\"])\n```\n\n```python sync\ndef find_focused_node(node):\n    if (node.get(\"focused\"))\n        return node\n    for child in (node.get(\"children\") or []):\n        found_node = find_focused_node(child)\n        if (found_node)\n            return found_node\n    return None\n\nsnapshot = page.accessibility.snapshot()\nnode = find_focused_node(snapshot)\nif node:\n    print(node[\"name\"])\n```\n",
-        "deprecated": false,
+        "comment": "**DEPRECATED** This method is deprecated. Please use other libraries such as [Axe](https://www.deque.com/axe/) if you\nneed to test page accessibility. See our Node.js [guide](https://playwright.dev/docs/accessibility-testing) for\nintegration with Axe.\n\nCaptures the current state of the accessibility tree. The returned object represents the root accessible node of the\npage.\n\n> NOTE: The Chromium accessibility tree contains nodes that go unused on most platforms and by most screen readers.\nPlaywright will discard them as well for an easier to process tree, unless `interestingOnly` is set to `false`.\n\nAn example of dumping the entire accessibility tree:\n\n```js\nconst snapshot = await page.accessibility.snapshot();\nconsole.log(snapshot);\n```\n\n```java\nString snapshot = page.accessibility().snapshot();\nSystem.out.println(snapshot);\n```\n\n```python async\nsnapshot = await page.accessibility.snapshot()\nprint(snapshot)\n```\n\n```python sync\nsnapshot = page.accessibility.snapshot()\nprint(snapshot)\n```\n\n```csharp\nvar accessibilitySnapshot = await page.Accessibility.SnapshotAsync();\nConsole.WriteLine(System.Text.Json.JsonSerializer.Serialize(accessibilitySnapshot));\n```\n\nAn example of logging the focused node's name:\n\n```js\nconst snapshot = await page.accessibility.snapshot();\nconst node = findFocusedNode(snapshot);\nconsole.log(node && node.name);\n\nfunction findFocusedNode(node) {\n  if (node.focused)\n    return node;\n  for (const child of node.children || []) {\n    const foundNode = findFocusedNode(child);\n    if (foundNode)\n      return foundNode;\n  }\n  return null;\n}\n```\n\n```csharp\nvar accessibilitySnapshot = await page.Accessibility.SnapshotAsync();\nConsole.WriteLine(System.Text.Json.JsonSerializer.Serialize(accessibilitySnapshot));\n```\n\n```java\n// FIXME\nString snapshot = page.accessibility().snapshot();\n```\n\n```python async\ndef find_focused_node(node):\n    if (node.get(\"focused\"))\n        return node\n    for child in (node.get(\"children\") or []):\n        found_node = find_focused_node(child)\n        if (found_node)\n            return found_node\n    return None\n\nsnapshot = await page.accessibility.snapshot()\nnode = find_focused_node(snapshot)\nif node:\n    print(node[\"name\"])\n```\n\n```python sync\ndef find_focused_node(node):\n    if (node.get(\"focused\"))\n        return node\n    for child in (node.get(\"children\") or []):\n        found_node = find_focused_node(child)\n        if (found_node)\n            return found_node\n    return None\n\nsnapshot = page.accessibility.snapshot()\nnode = find_focused_node(snapshot)\nif node:\n    print(node[\"name\"])\n```\n",
+        "deprecated": true,
         "async": true,
         "alias": "snapshot",
         "overloadIndex": 0,
@@ -7509,11 +7517,11 @@
       },
       {
         "type": "text",
-        "text": "`APIRequestContext` retuned by [`property: BrowserContext.request`] and [`property: Page.request`] shares cookie storage with the corresponding `BrowserContext`. Each API request will have `Cookie` header populated with the values from the browser context. If the API response contains `Set-Cookie` header it will automatically update `BrowserContext` cookies and requests made from the page will pick them up. This means that if you log in using this API, your e2e test will be logged in and vice versa."
+        "text": "`APIRequestContext` returned by [`property: BrowserContext.request`] and [`property: Page.request`] shares cookie storage with the corresponding `BrowserContext`. Each API request will have `Cookie` header populated with the values from the browser context. If the API response contains `Set-Cookie` header it will automatically update `BrowserContext` cookies and requests made from the page will pick them up. This means that if you log in using this API, your e2e test will be logged in and vice versa."
       },
       {
         "type": "text",
-        "text": "If you want API requests to not interfere with the browser cookies you shoud create a new `APIRequestContext` by calling [`method: APIRequest.newContext`]. Such `APIRequestContext` object will have its own isolated cookie storage."
+        "text": "If you want API requests to not interfere with the browser cookies you should create a new `APIRequestContext` by calling [`method: APIRequest.newContext`]. Such `APIRequestContext` object will have its own isolated cookie storage."
       },
       {
         "type": "code",
@@ -7529,7 +7537,7 @@
           "async def run(playwright: Playwright):",
           "    # This will launch a new browser, create a context and page. When making HTTP",
           "    # requests with the internal APIRequestContext (e.g. `context.request` or `page.request`)",
-          "    # it will automatically set the cookies to the browser page and vise versa.",
+          "    # it will automatically set the cookies to the browser page and vice versa.",
           "    browser = await playwright.chromium.launch()",
           "    context = await browser.new_context(base_url=\"https://api.github.com\")",
           "    api_request_context = context.request",
@@ -7584,7 +7592,7 @@
           "with sync_playwright() as p:",
           "    # This will launch a new browser, create a context and page. When making HTTP",
           "    # requests with the internal APIRequestContext (e.g. `context.request` or `page.request`)",
-          "    # it will automatically set the cookies to the browser page and vise versa.",
+          "    # it will automatically set the cookies to the browser page and vice versa.",
           "    browser = p.chromium.launch()",
           "    context = browser.new_context(base_url=\"https://api.github.com\")",
           "    api_request_context = context.request",
@@ -7623,7 +7631,7 @@
       }
     ],
     "langs": {},
-    "comment": "This API is used for the Web API testing. You can use it to trigger API endpoints, configure micro-services, prepare\nenvironment or the service to your e2e test.\n\nEach Playwright browser context has associated with it `APIRequestContext` instance which shares cookie storage with the\nbrowser context and can be accessed via [`property: BrowserContext.request`] or [`property: Page.request`]. It is also\npossible to create a new APIRequestContext instance manually by calling [`method: APIRequest.newContext`].\n\n**Cookie management**\n\n`APIRequestContext` retuned by [`property: BrowserContext.request`] and [`property: Page.request`] shares cookie storage\nwith the corresponding `BrowserContext`. Each API request will have `Cookie` header populated with the values from the\nbrowser context. If the API response contains `Set-Cookie` header it will automatically update `BrowserContext` cookies\nand requests made from the page will pick them up. This means that if you log in using this API, your e2e test will be\nlogged in and vice versa.\n\nIf you want API requests to not interfere with the browser cookies you shoud create a new `APIRequestContext` by calling\n[`method: APIRequest.newContext`]. Such `APIRequestContext` object will have its own isolated cookie storage.\n\n```python async\nimport os\nimport asyncio\nfrom playwright.async_api import async_playwright, Playwright\n\nREPO = \"test-repo-1\"\nUSER = \"github-username\"\nAPI_TOKEN = os.getenv(\"GITHUB_API_TOKEN\")\n\nasync def run(playwright: Playwright):\n    # This will launch a new browser, create a context and page. When making HTTP\n    # requests with the internal APIRequestContext (e.g. `context.request` or `page.request`)\n    # it will automatically set the cookies to the browser page and vise versa.\n    browser = await playwright.chromium.launch()\n    context = await browser.new_context(base_url=\"https://api.github.com\")\n    api_request_context = context.request\n    page = await context.new_page()\n\n    # Alternatively you can create a APIRequestContext manually without having a browser context attached:\n    # api_request_context = await playwright.request.new_context(base_url=\"https://api.github.com\")\n\n    # Create a repository.\n    response = await api_request_context.post(\n        \"/user/repos\",\n        headers={\n            \"Accept\": \"application/vnd.github.v3+json\",\n            # Add GitHub personal access token.\n            \"Authorization\": f\"token {API_TOKEN}\",\n        },\n        data={\"name\": REPO},\n    )\n    assert response.ok\n    assert response.json()[\"name\"] == REPO\n\n    # Delete a repository.\n    response = await api_request_context.delete(\n        f\"/repos/{USER}/{REPO}\",\n        headers={\n            \"Accept\": \"application/vnd.github.v3+json\",\n            # Add GitHub personal access token.\n            \"Authorization\": f\"token {API_TOKEN}\",\n        },\n    )\n    assert response.ok\n    assert await response.body() == '{\"status\": \"ok\"}'\n\nasync def main():\n    async with async_playwright() as playwright:\n        await run(playwright)\n\nasyncio.run(main())\n```\n\n```python sync\nimport os\nfrom playwright.sync_api import sync_playwright\n\nREPO = \"test-repo-1\"\nUSER = \"github-username\"\nAPI_TOKEN = os.getenv(\"GITHUB_API_TOKEN\")\n\nwith sync_playwright() as p:\n    # This will launch a new browser, create a context and page. When making HTTP\n    # requests with the internal APIRequestContext (e.g. `context.request` or `page.request`)\n    # it will automatically set the cookies to the browser page and vise versa.\n    browser = p.chromium.launch()\n    context = browser.new_context(base_url=\"https://api.github.com\")\n    api_request_context = context.request\n    page = context.new_page()\n\n    # Alternatively you can create a APIRequestContext manually without having a browser context attached:\n    # api_request_context = p.request.new_context(base_url=\"https://api.github.com\")\n\n\n    # Create a repository.\n    response = api_request_context.post(\n        \"/user/repos\",\n        headers={\n            \"Accept\": \"application/vnd.github.v3+json\",\n            # Add GitHub personal access token.\n            \"Authorization\": f\"token {API_TOKEN}\",\n        },\n        data={\"name\": REPO},\n    )\n    assert response.ok\n    assert response.json()[\"name\"] == REPO\n\n    # Delete a repository.\n    response = api_request_context.delete(\n        f\"/repos/{USER}/{REPO}\",\n        headers={\n            \"Accept\": \"application/vnd.github.v3+json\",\n            # Add GitHub personal access token.\n            \"Authorization\": f\"token {API_TOKEN}\",\n        },\n    )\n    assert response.ok\n    assert await response.body() == '{\"status\": \"ok\"}'\n```\n",
+    "comment": "This API is used for the Web API testing. You can use it to trigger API endpoints, configure micro-services, prepare\nenvironment or the service to your e2e test.\n\nEach Playwright browser context has associated with it `APIRequestContext` instance which shares cookie storage with the\nbrowser context and can be accessed via [`property: BrowserContext.request`] or [`property: Page.request`]. It is also\npossible to create a new APIRequestContext instance manually by calling [`method: APIRequest.newContext`].\n\n**Cookie management**\n\n`APIRequestContext` returned by [`property: BrowserContext.request`] and [`property: Page.request`] shares cookie\nstorage with the corresponding `BrowserContext`. Each API request will have `Cookie` header populated with the values\nfrom the browser context. If the API response contains `Set-Cookie` header it will automatically update `BrowserContext`\ncookies and requests made from the page will pick them up. This means that if you log in using this API, your e2e test\nwill be logged in and vice versa.\n\nIf you want API requests to not interfere with the browser cookies you should create a new `APIRequestContext` by\ncalling [`method: APIRequest.newContext`]. Such `APIRequestContext` object will have its own isolated cookie storage.\n\n```python async\nimport os\nimport asyncio\nfrom playwright.async_api import async_playwright, Playwright\n\nREPO = \"test-repo-1\"\nUSER = \"github-username\"\nAPI_TOKEN = os.getenv(\"GITHUB_API_TOKEN\")\n\nasync def run(playwright: Playwright):\n    # This will launch a new browser, create a context and page. When making HTTP\n    # requests with the internal APIRequestContext (e.g. `context.request` or `page.request`)\n    # it will automatically set the cookies to the browser page and vice versa.\n    browser = await playwright.chromium.launch()\n    context = await browser.new_context(base_url=\"https://api.github.com\")\n    api_request_context = context.request\n    page = await context.new_page()\n\n    # Alternatively you can create a APIRequestContext manually without having a browser context attached:\n    # api_request_context = await playwright.request.new_context(base_url=\"https://api.github.com\")\n\n    # Create a repository.\n    response = await api_request_context.post(\n        \"/user/repos\",\n        headers={\n            \"Accept\": \"application/vnd.github.v3+json\",\n            # Add GitHub personal access token.\n            \"Authorization\": f\"token {API_TOKEN}\",\n        },\n        data={\"name\": REPO},\n    )\n    assert response.ok\n    assert response.json()[\"name\"] == REPO\n\n    # Delete a repository.\n    response = await api_request_context.delete(\n        f\"/repos/{USER}/{REPO}\",\n        headers={\n            \"Accept\": \"application/vnd.github.v3+json\",\n            # Add GitHub personal access token.\n            \"Authorization\": f\"token {API_TOKEN}\",\n        },\n    )\n    assert response.ok\n    assert await response.body() == '{\"status\": \"ok\"}'\n\nasync def main():\n    async with async_playwright() as playwright:\n        await run(playwright)\n\nasyncio.run(main())\n```\n\n```python sync\nimport os\nfrom playwright.sync_api import sync_playwright\n\nREPO = \"test-repo-1\"\nUSER = \"github-username\"\nAPI_TOKEN = os.getenv(\"GITHUB_API_TOKEN\")\n\nwith sync_playwright() as p:\n    # This will launch a new browser, create a context and page. When making HTTP\n    # requests with the internal APIRequestContext (e.g. `context.request` or `page.request`)\n    # it will automatically set the cookies to the browser page and vice versa.\n    browser = p.chromium.launch()\n    context = browser.new_context(base_url=\"https://api.github.com\")\n    api_request_context = context.request\n    page = context.new_page()\n\n    # Alternatively you can create a APIRequestContext manually without having a browser context attached:\n    # api_request_context = p.request.new_context(base_url=\"https://api.github.com\")\n\n\n    # Create a repository.\n    response = api_request_context.post(\n        \"/user/repos\",\n        headers={\n            \"Accept\": \"application/vnd.github.v3+json\",\n            # Add GitHub personal access token.\n            \"Authorization\": f\"token {API_TOKEN}\",\n        },\n        data={\"name\": REPO},\n    )\n    assert response.ok\n    assert response.json()[\"name\"] == REPO\n\n    # Delete a repository.\n    response = api_request_context.delete(\n        f\"/repos/{USER}/{REPO}\",\n        headers={\n            \"Accept\": \"application/vnd.github.v3+json\",\n            # Add GitHub personal access token.\n            \"Authorization\": f\"token {API_TOKEN}\",\n        },\n    )\n    assert response.ok\n    assert await response.body() == '{\"status\": \"ok\"}'\n```\n",
     "members": [
       {
         "kind": "method",
@@ -13336,7 +13344,7 @@
           {
             "type": "note",
             "noteType": "note",
-            "text": "If directly using this method to create `BrowserContext`s, it is best practice to explicilty close the returned context via [`method: BrowserContext.close`] when your code is done with the `BrowserContext`, and before calling [`method: Browser.close`]. This will ensure the `context` is closed gracefully and any artifacts—like HARs and videos—are fully flushed and saved."
+            "text": "If directly using this method to create `BrowserContext`s, it is best practice to explicitly close the returned context via [`method: BrowserContext.close`] when your code is done with the `BrowserContext`, and before calling [`method: Browser.close`]. This will ensure the `context` is closed gracefully and any artifacts—like HARs and videos—are fully flushed and saved."
           },
           {
             "type": "code",
@@ -13366,7 +13374,7 @@
               "Page page = context.newPage();",
               "page.navigate('https://example.com');",
               "",
-              "// Gracefull close up everything",
+              "// Graceful close up everything",
               "context.close();",
               "browser.close();"
             ],
@@ -13423,7 +13431,7 @@
           }
         ],
         "required": true,
-        "comment": "Creates a new browser context. It won't share cookies/cache with other browser contexts.\n\n> NOTE: If directly using this method to create `BrowserContext`s, it is best practice to explicilty close the returned\ncontext via [`method: BrowserContext.close`] when your code is done with the `BrowserContext`, and before calling\n[`method: Browser.close`]. This will ensure the `context` is closed gracefully and any artifacts—like HARs and\nvideos—are fully flushed and saved.\n\n```js\n(async () => {\n  const browser = await playwright.firefox.launch();  // Or 'chromium' or 'webkit'.\n  // Create a new incognito browser context.\n  const context = await browser.newContext();\n  // Create a new page in a pristine context.\n  const page = await context.newPage();\n  await page.goto('https://example.com');\n\n  // Gracefully close up everything\n  await context.close();\n  await browser.close();\n})();\n```\n\n```java\nBrowser browser = playwright.firefox().launch();  // Or 'chromium' or 'webkit'.\n// Create a new incognito browser context.\nBrowserContext context = browser.newContext();\n// Create a new page in a pristine context.\nPage page = context.newPage();\npage.navigate('https://example.com');\n\n// Gracefull close up everything\ncontext.close();\nbrowser.close();\n```\n\n```python async\nbrowser = await playwright.firefox.launch() # or \"chromium\" or \"webkit\".\n# create a new incognito browser context.\ncontext = await browser.new_context()\n# create a new page in a pristine context.\npage = await context.new_page()\nawait page.goto(\"https://example.com\")\n\n# gracefully close up everything\nawait context.close()\nawait browser.close()\n```\n\n```python sync\nbrowser = playwright.firefox.launch() # or \"chromium\" or \"webkit\".\n# create a new incognito browser context.\ncontext = browser.new_context()\n# create a new page in a pristine context.\npage = context.new_page()\npage.goto(\"https://example.com\")\n\n# gracefully close up everything\ncontext.close()\nbrowser.close()\n```\n\n```csharp\nusing var playwright = await Playwright.CreateAsync();\nvar browser = await playwright.Firefox.LaunchAsync();\n// Create a new incognito browser context.\nvar context = await browser.NewContextAsync();\n// Create a new page in a pristine context.\nvar page = await context.NewPageAsync(); ;\nawait page.GotoAsync(\"https://www.bing.com\");\n\n// Gracefully close up everything\nawait context.CloseAsync();\nawait browser.CloseAsync();\n```\n",
+        "comment": "Creates a new browser context. It won't share cookies/cache with other browser contexts.\n\n> NOTE: If directly using this method to create `BrowserContext`s, it is best practice to explicitly close the returned\ncontext via [`method: BrowserContext.close`] when your code is done with the `BrowserContext`, and before calling\n[`method: Browser.close`]. This will ensure the `context` is closed gracefully and any artifacts—like HARs and\nvideos—are fully flushed and saved.\n\n```js\n(async () => {\n  const browser = await playwright.firefox.launch();  // Or 'chromium' or 'webkit'.\n  // Create a new incognito browser context.\n  const context = await browser.newContext();\n  // Create a new page in a pristine context.\n  const page = await context.newPage();\n  await page.goto('https://example.com');\n\n  // Gracefully close up everything\n  await context.close();\n  await browser.close();\n})();\n```\n\n```java\nBrowser browser = playwright.firefox().launch();  // Or 'chromium' or 'webkit'.\n// Create a new incognito browser context.\nBrowserContext context = browser.newContext();\n// Create a new page in a pristine context.\nPage page = context.newPage();\npage.navigate('https://example.com');\n\n// Graceful close up everything\ncontext.close();\nbrowser.close();\n```\n\n```python async\nbrowser = await playwright.firefox.launch() # or \"chromium\" or \"webkit\".\n# create a new incognito browser context.\ncontext = await browser.new_context()\n# create a new page in a pristine context.\npage = await context.new_page()\nawait page.goto(\"https://example.com\")\n\n# gracefully close up everything\nawait context.close()\nawait browser.close()\n```\n\n```python sync\nbrowser = playwright.firefox.launch() # or \"chromium\" or \"webkit\".\n# create a new incognito browser context.\ncontext = browser.new_context()\n# create a new page in a pristine context.\npage = context.new_page()\npage.goto(\"https://example.com\")\n\n# gracefully close up everything\ncontext.close()\nbrowser.close()\n```\n\n```csharp\nusing var playwright = await Playwright.CreateAsync();\nvar browser = await playwright.Firefox.LaunchAsync();\n// Create a new incognito browser context.\nvar context = await browser.NewContextAsync();\n// Create a new page in a pristine context.\nvar page = await context.NewPageAsync(); ;\nawait page.GotoAsync(\"https://www.bing.com\");\n\n// Gracefully close up everything\nawait context.CloseAsync();\nawait browser.CloseAsync();\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "newContext",
@@ -23795,11 +23803,11 @@
         "spec": [
           {
             "type": "text",
-            "text": "This method attaches Playwright to an existing browser instance."
+            "text": "This method attaches Playwright to an existing browser instance. When connecting to another browser launched via `BrowserType.launchServer` in Node.js, the major and minor version needs to match the client version (1.2.3 → is compatible with 1.2.x)."
           }
         ],
         "required": true,
-        "comment": "This method attaches Playwright to an existing browser instance.",
+        "comment": "This method attaches Playwright to an existing browser instance. When connecting to another browser launched via\n`BrowserType.launchServer` in Node.js, the major and minor version needs to match the client version (1.2.3 → is\ncompatible with 1.2.x).",
         "deprecated": false,
         "async": true,
         "alias": "connect",
@@ -27680,7 +27688,7 @@
         "spec": [
           {
             "type": "text",
-            "text": "Returns the browser app instance."
+            "text": "Returns the browser app instance. You can connect to it via [`method: BrowserType.connect`], which requires the major/minor client/server version to match (1.2.3 → is compatible with 1.2.x)."
           },
           {
             "type": "text",
@@ -27704,7 +27712,7 @@
           }
         ],
         "required": true,
-        "comment": "Returns the browser app instance.\n\nLaunches browser server that client can connect to. An example of launching a browser executable and connecting to it\nlater:\n\n```js\nconst { chromium } = require('playwright');  // Or 'webkit' or 'firefox'.\n\n(async () => {\n  const browserServer = await chromium.launchServer();\n  const wsEndpoint = browserServer.wsEndpoint();\n  // Use web socket endpoint later to establish a connection.\n  const browser = await chromium.connect(wsEndpoint);\n  // Close browser instance.\n  await browserServer.close();\n})();\n```\n",
+        "comment": "Returns the browser app instance. You can connect to it via [`method: BrowserType.connect`], which requires the\nmajor/minor client/server version to match (1.2.3 → is compatible with 1.2.x).\n\nLaunches browser server that client can connect to. An example of launching a browser executable and connecting to it\nlater:\n\n```js\nconst { chromium } = require('playwright');  // Or 'webkit' or 'firefox'.\n\n(async () => {\n  const browserServer = await chromium.launchServer();\n  const wsEndpoint = browserServer.wsEndpoint();\n  // Use web socket endpoint later to establish a connection.\n  const browser = await chromium.connect(wsEndpoint);\n  // Close browser instance.\n  await browserServer.close();\n})();\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "launchServer",
@@ -35416,11 +35424,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box `#FF00FF` that completely covers its bounding box."
+                      "text": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlaid with a pink box `#FF00FF` that completely covers its bounding box."
                     }
                   ],
                   "required": false,
-                  "comment": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box\n`#FF00FF` that completely covers its bounding box.",
+                  "comment": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlaid with a pink box\n`#FF00FF` that completely covers its bounding box.",
                   "deprecated": false,
                   "async": false,
                   "alias": "mask",
@@ -55399,11 +55407,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box `#FF00FF` that completely covers its bounding box."
+                      "text": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlaid with a pink box `#FF00FF` that completely covers its bounding box."
                     }
                   ],
                   "required": false,
-                  "comment": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box\n`#FF00FF` that completely covers its bounding box.",
+                  "comment": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlaid with a pink box\n`#FF00FF` that completely covers its bounding box.",
                   "deprecated": false,
                   "async": false,
                   "alias": "mask",
@@ -62025,56 +62033,139 @@
           },
           {
             "type": "text",
-            "text": "Note that if array is passed as an expected value, entire lists of elements can be asserted:"
+            "text": "If you pass an array as an expected value, the expectations are:"
+          },
+          {
+            "type": "li",
+            "text": "Locator resolves to a list of elements.",
+            "liType": "ordinal"
+          },
+          {
+            "type": "li",
+            "text": "Elements from a **subset** of this list contain text from the expected array, respectively.",
+            "liType": "ordinal"
+          },
+          {
+            "type": "li",
+            "text": "The matching subset of elements has the same order as the expected array.",
+            "liType": "ordinal"
+          },
+          {
+            "type": "li",
+            "text": "Each text value from the expected array is matched by some element from the list.",
+            "liType": "ordinal"
+          },
+          {
+            "type": "text",
+            "text": "For example, consider the following list:"
           },
           {
             "type": "code",
             "lines": [
-              "const locator = page.locator('list > .list-item');",
-              "await expect(locator).toContainText(['Text 1', 'Text 4', 'Text 5']);"
+              "<ul>",
+              "  <li>Item Text 1</li>",
+              "  <li>Item Text 2</li>",
+              "  <li>Item Text 3</li>",
+              "</ul>"
+            ],
+            "codeLang": "html"
+          },
+          {
+            "type": "text",
+            "text": "Let's see how we can use the assertion:"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "// ✓ Contains the right items in the right order",
+              "await expect(page.locator('ul > li')).toContainText(['Text 1', 'Text 3']);",
+              "",
+              "// ✖ Wrong order",
+              "await expect(page.locator('ul > li')).toContainText(['Text 3', 'Text 2']);",
+              "",
+              "// ✖ No item contains this text",
+              "await expect(page.locator('ul > li')).toContainText(['Some 33']);",
+              "",
+              "// ✖ Locator points to the outer list element, not to the list items",
+              "await expect(page.locator('ul')).toContainText(['Text 3']);"
             ],
             "codeLang": "js"
           },
           {
             "type": "code",
             "lines": [
-              "assertThat(page.locator(\"list > .list-item\")).containsText(new String[] {\"Text 1\", \"Text 4\", \"Text 5\"});"
+              "// ✓ Contains the right items in the right order",
+              "assertThat(page.locator(\"ul > li\")).containsText(new String[] {\"Text 1\", \"Text 3\", \"Text 4\"});",
+              "",
+              "// ✖ Wrong order",
+              "assertThat(page.locator(\"ul > li\")).containsText(new String[] {\"Text 3\", \"Text 2\"});",
+              "",
+              "// ✖ No item contains this text",
+              "assertThat(page.locator(\"ul > li\")).containsText(new String[] {\"Some 33\"});",
+              "",
+              "// ✖ Locator points to the outer list element, not to the list items",
+              "assertThat(page.locator(\"ul\")).containsText(new String[] {\"Text 3\"});"
             ],
             "codeLang": "java"
           },
           {
             "type": "code",
             "lines": [
-              "import re",
               "from playwright.async_api import expect",
               "",
-              "locator = page.locator(\"list > .list-item\")",
-              "await expect(locator).to_contain_text([\"Text 1\", \"Text 4\", \"Text 5\"])"
+              "# ✓ Contains the right items in the right order",
+              "await expect(page.locator(\"ul > li\")).to_contain_text([\"Text 1\", \"Text 3\", \"Text 4\"])",
+              "",
+              "# ✖ Wrong order",
+              "await expect(page.locator(\"ul > li\")).to_contain_text([\"Text 3\", \"Text 2\"])",
+              "",
+              "# ✖ No item contains this text",
+              "await expect(page.locator(\"ul > li\")).to_contain_text([\"Some 33\"])",
+              "",
+              "# ✖ Locator points to the outer list element, not to the list items",
+              "await expect(page.locator(\"ul\")).to_contain_text([\"Text 3\"])"
             ],
             "codeLang": "python async"
           },
           {
             "type": "code",
             "lines": [
-              "import re",
               "from playwright.sync_api import expect",
               "",
-              "locator = page.locator(\"list > .list-item\")",
-              "expect(locator).to_contain_text([\"Text 1\", \"Text 4\", \"Text 5\"])"
+              "# ✓ Contains the right items in the right order",
+              "expect(page.locator(\"ul > li\")).to_contain_text([\"Text 1\", \"Text 3\", \"Text 4\"])",
+              "",
+              "# ✖ Wrong order",
+              "expect(page.locator(\"ul > li\")).to_contain_text([\"Text 3\", \"Text 2\"])",
+              "",
+              "# ✖ No item contains this text",
+              "expect(page.locator(\"ul > li\")).to_contain_text([\"Some 33\"])",
+              "",
+              "# ✖ Locator points to the outer list element, not to the list items",
+              "expect(page.locator(\"ul\")).to_contain_text([\"Text 3\"])"
             ],
             "codeLang": "python sync"
           },
           {
             "type": "code",
             "lines": [
-              "var locator = Page.Locator(\"list > .list-item\");",
-              "await Expect(locator).ToContainTextAsync(new string[] { \"Text 1\", \"Text 4\", \"Text 5\" });"
+              "// ✓ Contains the right items in the right order",
+              "await Expect(Page.Locator(\"ul > li\")).ToContainTextAsync(new string[] {\"Text 1\", \"Text 3\", \"Text 4\"});",
+              "",
+              "// ✖ Wrong order",
+              "await Expect(Page.Locator(\"ul > li\")).ToContainTextAsync(new string[] {\"Text 3\", \"Text 2\"});",
+              "",
+              "// ✖ No item contains this text",
+              "await Expect(Page.Locator(\"ul > li\")).ToContainTextAsync(new string[] {\"Some 33\"});",
+              "",
+              "// ✖ Locator points to the outer list element, not to the list items",
+              "await Expect(Page.Locator(\"ul\")).ToContainTextAsync(new string[] {\"Text 3\"});"
             ],
             "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Ensures the `Locator` points to an element that contains the given text. You can use regular expressions for the value\nas well.\n\n```js\nconst locator = page.locator('.title');\nawait expect(locator).toContainText('substring');\nawait expect(locator).toContainText(/\\d messages/);\n```\n\n```java\nassertThat(page.locator(\".title\")).containsText(\"substring\");\n```\n\n```python async\nimport re\nfrom playwright.async_api import expect\n\nlocator = page.locator('.title')\nawait expect(locator).to_contain_text(\"substring\")\nawait expect(locator).to_contain_text(re.compile(r\"\\d messages\"))\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\nlocator = page.locator('.title')\nexpect(locator).to_contain_text(\"substring\")\nexpect(locator).to_contain_text(re.compile(r\"\\d messages\"))\n```\n\n```csharp\nvar locator = Page.Locator(\".title\");\nawait Expect(locator).ToContainTextAsync(\"substring\");\nawait Expect(locator).ToContainTextAsync(new Regex(\"\\\\d messages\"));\n```\n\nNote that if array is passed as an expected value, entire lists of elements can be asserted:\n\n```js\nconst locator = page.locator('list > .list-item');\nawait expect(locator).toContainText(['Text 1', 'Text 4', 'Text 5']);\n```\n\n```java\nassertThat(page.locator(\"list > .list-item\")).containsText(new String[] {\"Text 1\", \"Text 4\", \"Text 5\"});\n```\n\n```python async\nimport re\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"list > .list-item\")\nawait expect(locator).to_contain_text([\"Text 1\", \"Text 4\", \"Text 5\"])\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"list > .list-item\")\nexpect(locator).to_contain_text([\"Text 1\", \"Text 4\", \"Text 5\"])\n```\n\n```csharp\nvar locator = Page.Locator(\"list > .list-item\");\nawait Expect(locator).ToContainTextAsync(new string[] { \"Text 1\", \"Text 4\", \"Text 5\" });\n```\n",
+        "comment": "Ensures the `Locator` points to an element that contains the given text. You can use regular expressions for the value\nas well.\n\n```js\nconst locator = page.locator('.title');\nawait expect(locator).toContainText('substring');\nawait expect(locator).toContainText(/\\d messages/);\n```\n\n```java\nassertThat(page.locator(\".title\")).containsText(\"substring\");\n```\n\n```python async\nimport re\nfrom playwright.async_api import expect\n\nlocator = page.locator('.title')\nawait expect(locator).to_contain_text(\"substring\")\nawait expect(locator).to_contain_text(re.compile(r\"\\d messages\"))\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\nlocator = page.locator('.title')\nexpect(locator).to_contain_text(\"substring\")\nexpect(locator).to_contain_text(re.compile(r\"\\d messages\"))\n```\n\n```csharp\nvar locator = Page.Locator(\".title\");\nawait Expect(locator).ToContainTextAsync(\"substring\");\nawait Expect(locator).ToContainTextAsync(new Regex(\"\\\\d messages\"));\n```\n\nIf you pass an array as an expected value, the expectations are:\n1. Locator resolves to a list of elements.\n1. Elements from a **subset** of this list contain text from the expected array, respectively.\n1. The matching subset of elements has the same order as the expected array.\n1. Each text value from the expected array is matched by some element from the list.\n\nFor example, consider the following list:\n\n```html\n<ul>\n  <li>Item Text 1</li>\n  <li>Item Text 2</li>\n  <li>Item Text 3</li>\n</ul>\n```\n\nLet's see how we can use the assertion:\n\n```js\n// ✓ Contains the right items in the right order\nawait expect(page.locator('ul > li')).toContainText(['Text 1', 'Text 3']);\n\n// ✖ Wrong order\nawait expect(page.locator('ul > li')).toContainText(['Text 3', 'Text 2']);\n\n// ✖ No item contains this text\nawait expect(page.locator('ul > li')).toContainText(['Some 33']);\n\n// ✖ Locator points to the outer list element, not to the list items\nawait expect(page.locator('ul')).toContainText(['Text 3']);\n```\n\n```java\n// ✓ Contains the right items in the right order\nassertThat(page.locator(\"ul > li\")).containsText(new String[] {\"Text 1\", \"Text 3\", \"Text 4\"});\n\n// ✖ Wrong order\nassertThat(page.locator(\"ul > li\")).containsText(new String[] {\"Text 3\", \"Text 2\"});\n\n// ✖ No item contains this text\nassertThat(page.locator(\"ul > li\")).containsText(new String[] {\"Some 33\"});\n\n// ✖ Locator points to the outer list element, not to the list items\nassertThat(page.locator(\"ul\")).containsText(new String[] {\"Text 3\"});\n```\n\n```python async\nfrom playwright.async_api import expect\n\n# ✓ Contains the right items in the right order\nawait expect(page.locator(\"ul > li\")).to_contain_text([\"Text 1\", \"Text 3\", \"Text 4\"])\n\n# ✖ Wrong order\nawait expect(page.locator(\"ul > li\")).to_contain_text([\"Text 3\", \"Text 2\"])\n\n# ✖ No item contains this text\nawait expect(page.locator(\"ul > li\")).to_contain_text([\"Some 33\"])\n\n# ✖ Locator points to the outer list element, not to the list items\nawait expect(page.locator(\"ul\")).to_contain_text([\"Text 3\"])\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\n# ✓ Contains the right items in the right order\nexpect(page.locator(\"ul > li\")).to_contain_text([\"Text 1\", \"Text 3\", \"Text 4\"])\n\n# ✖ Wrong order\nexpect(page.locator(\"ul > li\")).to_contain_text([\"Text 3\", \"Text 2\"])\n\n# ✖ No item contains this text\nexpect(page.locator(\"ul > li\")).to_contain_text([\"Some 33\"])\n\n# ✖ Locator points to the outer list element, not to the list items\nexpect(page.locator(\"ul\")).to_contain_text([\"Text 3\"])\n```\n\n```csharp\n// ✓ Contains the right items in the right order\nawait Expect(Page.Locator(\"ul > li\")).ToContainTextAsync(new string[] {\"Text 1\", \"Text 3\", \"Text 4\"});\n\n// ✖ Wrong order\nawait Expect(Page.Locator(\"ul > li\")).ToContainTextAsync(new string[] {\"Text 3\", \"Text 2\"});\n\n// ✖ No item contains this text\nawait Expect(Page.Locator(\"ul > li\")).ToContainTextAsync(new string[] {\"Some 33\"});\n\n// ✖ Locator points to the outer list element, not to the list items\nawait Expect(Page.Locator(\"ul\")).ToContainTextAsync(new string[] {\"Text 3\"});\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "toContainText",
@@ -63835,11 +63926,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box `#FF00FF` that completely covers its bounding box."
+                      "text": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlaid with a pink box `#FF00FF` that completely covers its bounding box."
                     }
                   ],
                   "required": false,
-                  "comment": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box\n`#FF00FF` that completely covers its bounding box.",
+                  "comment": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlaid with a pink box\n`#FF00FF` that completely covers its bounding box.",
                   "deprecated": false,
                   "async": false,
                   "alias": "mask",
@@ -64185,11 +64276,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box `#FF00FF` that completely covers its bounding box."
+                      "text": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlaid with a pink box `#FF00FF` that completely covers its bounding box."
                     }
                   ],
                   "required": false,
-                  "comment": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box\n`#FF00FF` that completely covers its bounding box.",
+                  "comment": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlaid with a pink box\n`#FF00FF` that completely covers its bounding box.",
                   "deprecated": false,
                   "async": false,
                   "alias": "mask",
@@ -64464,20 +64555,73 @@
           },
           {
             "type": "text",
-            "text": "Note that if array is passed as an expected value, entire lists of elements can be asserted:"
+            "text": "If you pass an array as an expected value, the expectations are:"
+          },
+          {
+            "type": "li",
+            "text": "Locator resolves to a list of elements.",
+            "liType": "ordinal"
+          },
+          {
+            "type": "li",
+            "text": "The number of elements equals the number of expected values in the array.",
+            "liType": "ordinal"
+          },
+          {
+            "type": "li",
+            "text": "Elements from the list have text matching expected array values, one by one, in order.",
+            "liType": "ordinal"
+          },
+          {
+            "type": "text",
+            "text": "For example, consider the following list:"
           },
           {
             "type": "code",
             "lines": [
-              "const locator = page.locator('list > .component');",
-              "await expect(locator).toHaveText(['Text 1', 'Text 2', 'Text 3']);"
+              "<ul>",
+              "  <li>Text 1</li>",
+              "  <li>Text 2</li>",
+              "  <li>Text 3</li>",
+              "</ul>"
+            ],
+            "codeLang": "html"
+          },
+          {
+            "type": "text",
+            "text": "Let's see how we can use the assertion:"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "// ✓ Has the right items in the right order",
+              "await expect(page.locator('ul > li')).toHaveText(['Text 1', 'Text 2', 'Text 3']);",
+              "",
+              "// ✖ Wrong order",
+              "await expect(page.locator('ul > li')).toHaveText(['Text 3', 'Text 2', 'Text 1']);",
+              "",
+              "// ✖ Last item does not match",
+              "await expect(page.locator('ul > li')).toHaveText(['Text 1', 'Text 2', 'Text']);",
+              "",
+              "// ✖ Locator points to the outer list element, not to the list items",
+              "await expect(page.locator('ul')).toHaveText(['Text 1', 'Text 2', 'Text 3']);"
             ],
             "codeLang": "js"
           },
           {
             "type": "code",
             "lines": [
-              "assertThat(page.locator(\"list > .component\")).hasText(new String[] {\"Text 1\", \"Text 2\", \"Text 3\"});"
+              "// ✓ Has the right items in the right order",
+              "assertThat(page.locator(\"ul > li\")).hasText(new String[] {\"Text 1\", \"Text 2\", \"Text 3\"});",
+              "",
+              "// ✖ Wrong order",
+              "assertThat(page.locator(\"ul > li\")).hasText(new String[] {\"Text 3\", \"Text 2\", \"Text 1\"});",
+              "",
+              "// ✖ Last item does not match",
+              "assertThat(page.locator(\"ul > li\")).hasText(new String[] {\"Text 1\", \"Text 2\", \"Text\"});",
+              "",
+              "// ✖ Locator points to the outer list element, not to the list items",
+              "assertThat(page.locator(\"ul\")).hasText(new String[] {\"Text 1\", \"Text 2\", \"Text 3\"});"
             ],
             "codeLang": "java"
           },
@@ -64486,8 +64630,17 @@
             "lines": [
               "from playwright.async_api import expect",
               "",
-              "locator = page.locator(\"list > .component\")",
-              "await expect(locator).to_have_text([\"Text 1\", \"Text 2\", \"Text 3\"])"
+              "# ✓ Has the right items in the right order",
+              "await expect(page.locator(\"ul > li\")).to_have_text([\"Text 1\", \"Text 2\", \"Text 3\"])",
+              "",
+              "# ✖ Wrong order",
+              "await expect(page.locator(\"ul > li\")).to_have_text([\"Text 3\", \"Text 2\", \"Text 1\"])",
+              "",
+              "# ✖ Last item does not match",
+              "await expect(page.locator(\"ul > li\")).to_have_text([\"Text 1\", \"Text 2\", \"Text\"])",
+              "",
+              "# ✖ Locator points to the outer list element, not to the list items",
+              "await expect(page.locator(\"ul\")).to_have_text([\"Text 1\", \"Text 2\", \"Text 3\"])"
             ],
             "codeLang": "python async"
           },
@@ -64496,22 +64649,40 @@
             "lines": [
               "from playwright.sync_api import expect",
               "",
-              "locator = page.locator(\"list > .component\")",
-              "expect(locator).to_have_text([\"Text 1\", \"Text 2\", \"Text 3\"])"
+              "# ✓ Has the right items in the right order",
+              "await expect(page.locator(\"ul > li\")).to_have_text([\"Text 1\", \"Text 2\", \"Text 3\"])",
+              "",
+              "# ✖ Wrong order",
+              "await expect(page.locator(\"ul > li\")).to_have_text([\"Text 3\", \"Text 2\", \"Text 1\"])",
+              "",
+              "# ✖ Last item does not match",
+              "await expect(page.locator(\"ul > li\")).to_have_text([\"Text 1\", \"Text 2\", \"Text\"])",
+              "",
+              "# ✖ Locator points to the outer list element, not to the list items",
+              "await expect(page.locator(\"ul\")).to_have_text([\"Text 1\", \"Text 2\", \"Text 3\"])"
             ],
             "codeLang": "python sync"
           },
           {
             "type": "code",
             "lines": [
-              "var locator = Page.Locator(\"list > .component\");",
-              "await Expect(locator).toHaveTextAsync(new string[]{ \"Text 1\", \"Text 2\", \"Text 3\" });"
+              "// ✓ Has the right items in the right order",
+              "await Expect(Page.Locator(\"ul > li\")).ToHaveTextAsync(new string[] {\"Text 1\", \"Text 2\", \"Text 3\"});",
+              "",
+              "// ✖ Wrong order",
+              "await Expect(Page.Locator(\"ul > li\")).ToHaveTextAsync(new string[] {\"Text 3\", \"Text 2\", \"Text 1\"});",
+              "",
+              "// ✖ Last item does not match",
+              "await Expect(Page.Locator(\"ul > li\")).ToHaveTextAsync(new string[] {\"Text 1\", \"Text 2\", \"Text\"});",
+              "",
+              "// ✖ Locator points to the outer list element, not to the list items",
+              "await Expect(Page.Locator(\"ul\")).ToHaveTextAsync(new string[] {\"Text 1\", \"Text 2\", \"Text 3\"});"
             ],
             "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Ensures the `Locator` points to an element with the given text. You can use regular expressions for the value as well.\n\n```js\nconst locator = page.locator('.title');\nawait expect(locator).toHaveText(/Welcome, Test User/);\nawait expect(locator).toHaveText(/Welcome, .*/);\n```\n\n```java\nassertThat(page.locator(\".title\")).hasText(\"Welcome, Test User\");\nassertThat(page.locator(\".title\")).hasText(Pattern.compile(\"Welcome, .*\"));\n```\n\n```python async\nimport re\nfrom playwright.async_api import expect\n\nlocator = page.locator(\".title\")\nawait expect(locator).to_have_text(re.compile(r\"Welcome, Test User\"))\nawait expect(locator).to_have_text(re.compile(r\"Welcome, .*\"))\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\".title\")\nexpect(locator).to_have_text(re.compile(r\"Welcome, Test User\"))\nexpect(locator).to_have_text(re.compile(r\"Welcome, .*\"))\n```\n\n```csharp\nvar locator = Page.Locator(\".title\");\nawait Expect(locator).ToHaveTextAsync(new Regex(\"Welcome, Test User\"));\nawait Expect(locator).ToHaveTextAsync(new Regex(\"Welcome, .*\"));\n```\n\nNote that if array is passed as an expected value, entire lists of elements can be asserted:\n\n```js\nconst locator = page.locator('list > .component');\nawait expect(locator).toHaveText(['Text 1', 'Text 2', 'Text 3']);\n```\n\n```java\nassertThat(page.locator(\"list > .component\")).hasText(new String[] {\"Text 1\", \"Text 2\", \"Text 3\"});\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator(\"list > .component\")\nawait expect(locator).to_have_text([\"Text 1\", \"Text 2\", \"Text 3\"])\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\"list > .component\")\nexpect(locator).to_have_text([\"Text 1\", \"Text 2\", \"Text 3\"])\n```\n\n```csharp\nvar locator = Page.Locator(\"list > .component\");\nawait Expect(locator).toHaveTextAsync(new string[]{ \"Text 1\", \"Text 2\", \"Text 3\" });\n```\n",
+        "comment": "Ensures the `Locator` points to an element with the given text. You can use regular expressions for the value as well.\n\n```js\nconst locator = page.locator('.title');\nawait expect(locator).toHaveText(/Welcome, Test User/);\nawait expect(locator).toHaveText(/Welcome, .*/);\n```\n\n```java\nassertThat(page.locator(\".title\")).hasText(\"Welcome, Test User\");\nassertThat(page.locator(\".title\")).hasText(Pattern.compile(\"Welcome, .*\"));\n```\n\n```python async\nimport re\nfrom playwright.async_api import expect\n\nlocator = page.locator(\".title\")\nawait expect(locator).to_have_text(re.compile(r\"Welcome, Test User\"))\nawait expect(locator).to_have_text(re.compile(r\"Welcome, .*\"))\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\nlocator = page.locator(\".title\")\nexpect(locator).to_have_text(re.compile(r\"Welcome, Test User\"))\nexpect(locator).to_have_text(re.compile(r\"Welcome, .*\"))\n```\n\n```csharp\nvar locator = Page.Locator(\".title\");\nawait Expect(locator).ToHaveTextAsync(new Regex(\"Welcome, Test User\"));\nawait Expect(locator).ToHaveTextAsync(new Regex(\"Welcome, .*\"));\n```\n\nIf you pass an array as an expected value, the expectations are:\n1. Locator resolves to a list of elements.\n1. The number of elements equals the number of expected values in the array.\n1. Elements from the list have text matching expected array values, one by one, in order.\n\nFor example, consider the following list:\n\n```html\n<ul>\n  <li>Text 1</li>\n  <li>Text 2</li>\n  <li>Text 3</li>\n</ul>\n```\n\nLet's see how we can use the assertion:\n\n```js\n// ✓ Has the right items in the right order\nawait expect(page.locator('ul > li')).toHaveText(['Text 1', 'Text 2', 'Text 3']);\n\n// ✖ Wrong order\nawait expect(page.locator('ul > li')).toHaveText(['Text 3', 'Text 2', 'Text 1']);\n\n// ✖ Last item does not match\nawait expect(page.locator('ul > li')).toHaveText(['Text 1', 'Text 2', 'Text']);\n\n// ✖ Locator points to the outer list element, not to the list items\nawait expect(page.locator('ul')).toHaveText(['Text 1', 'Text 2', 'Text 3']);\n```\n\n```java\n// ✓ Has the right items in the right order\nassertThat(page.locator(\"ul > li\")).hasText(new String[] {\"Text 1\", \"Text 2\", \"Text 3\"});\n\n// ✖ Wrong order\nassertThat(page.locator(\"ul > li\")).hasText(new String[] {\"Text 3\", \"Text 2\", \"Text 1\"});\n\n// ✖ Last item does not match\nassertThat(page.locator(\"ul > li\")).hasText(new String[] {\"Text 1\", \"Text 2\", \"Text\"});\n\n// ✖ Locator points to the outer list element, not to the list items\nassertThat(page.locator(\"ul\")).hasText(new String[] {\"Text 1\", \"Text 2\", \"Text 3\"});\n```\n\n```python async\nfrom playwright.async_api import expect\n\n# ✓ Has the right items in the right order\nawait expect(page.locator(\"ul > li\")).to_have_text([\"Text 1\", \"Text 2\", \"Text 3\"])\n\n# ✖ Wrong order\nawait expect(page.locator(\"ul > li\")).to_have_text([\"Text 3\", \"Text 2\", \"Text 1\"])\n\n# ✖ Last item does not match\nawait expect(page.locator(\"ul > li\")).to_have_text([\"Text 1\", \"Text 2\", \"Text\"])\n\n# ✖ Locator points to the outer list element, not to the list items\nawait expect(page.locator(\"ul\")).to_have_text([\"Text 1\", \"Text 2\", \"Text 3\"])\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\n# ✓ Has the right items in the right order\nawait expect(page.locator(\"ul > li\")).to_have_text([\"Text 1\", \"Text 2\", \"Text 3\"])\n\n# ✖ Wrong order\nawait expect(page.locator(\"ul > li\")).to_have_text([\"Text 3\", \"Text 2\", \"Text 1\"])\n\n# ✖ Last item does not match\nawait expect(page.locator(\"ul > li\")).to_have_text([\"Text 1\", \"Text 2\", \"Text\"])\n\n# ✖ Locator points to the outer list element, not to the list items\nawait expect(page.locator(\"ul\")).to_have_text([\"Text 1\", \"Text 2\", \"Text 3\"])\n```\n\n```csharp\n// ✓ Has the right items in the right order\nawait Expect(Page.Locator(\"ul > li\")).ToHaveTextAsync(new string[] {\"Text 1\", \"Text 2\", \"Text 3\"});\n\n// ✖ Wrong order\nawait Expect(Page.Locator(\"ul > li\")).ToHaveTextAsync(new string[] {\"Text 3\", \"Text 2\", \"Text 1\"});\n\n// ✖ Last item does not match\nawait Expect(Page.Locator(\"ul > li\")).ToHaveTextAsync(new string[] {\"Text 1\", \"Text 2\", \"Text\"});\n\n// ✖ Locator points to the outer list element, not to the list items\nawait Expect(Page.Locator(\"ul\")).ToHaveTextAsync(new string[] {\"Text 1\", \"Text 2\", \"Text 3\"});\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "toHaveText",
@@ -67416,10 +67587,15 @@
           "name": "Accessibility",
           "expression": "[Accessibility]"
         },
-        "spec": [],
+        "spec": [
+          {
+            "type": "text",
+            "text": "**DEPRECATED** This property is deprecated. Please use other libraries such as [Axe](https://www.deque.com/axe/) if you need to test page accessibility. See our Node.js [guide](https://playwright.dev/docs/accessibility-testing) for integration with Axe."
+          }
+        ],
         "required": true,
-        "comment": "",
-        "deprecated": false,
+        "comment": "**DEPRECATED** This property is deprecated. Please use other libraries such as [Axe](https://www.deque.com/axe/) if you\nneed to test page accessibility. See our Node.js [guide](https://playwright.dev/docs/accessibility-testing) for\nintegration with Axe.",
+        "deprecated": true,
         "async": false,
         "alias": "accessibility",
         "overloadIndex": 0,
@@ -77764,11 +77940,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box `#FF00FF` that completely covers its bounding box."
+                      "text": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlaid with a pink box `#FF00FF` that completely covers its bounding box."
                     }
                   ],
                   "required": false,
-                  "comment": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box\n`#FF00FF` that completely covers its bounding box.",
+                  "comment": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlaid with a pink box\n`#FF00FF` that completely covers its bounding box.",
                   "deprecated": false,
                   "async": false,
                   "alias": "mask",
@@ -86259,11 +86435,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box `#FF00FF` that completely covers its bounding box."
+                      "text": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlaid with a pink box `#FF00FF` that completely covers its bounding box."
                     }
                   ],
                   "required": false,
-                  "comment": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box\n`#FF00FF` that completely covers its bounding box.",
+                  "comment": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlaid with a pink box\n`#FF00FF` that completely covers its bounding box.",
                   "deprecated": false,
                   "async": false,
                   "alias": "mask",
@@ -86754,11 +86930,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box `#FF00FF` that completely covers its bounding box."
+                      "text": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlaid with a pink box `#FF00FF` that completely covers its bounding box."
                     }
                   ],
                   "required": false,
-                  "comment": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlayed with a pink box\n`#FF00FF` that completely covers its bounding box.",
+                  "comment": "Specify locators that should be masked when the screenshot is taken. Masked elements will be overlaid with a pink box\n`#FF00FF` that completely covers its bounding box.",
                   "deprecated": false,
                   "async": false,
                   "alias": "mask",
@@ -88090,7 +88266,7 @@
           "using Microsoft.Playwright.NUnit;",
           "using NUnit.Framework;",
           "",
-          "namespace Playwright.TestingHarnessTest.NUnit;",
+          "namespace PlaywrightTests;",
           "",
           "public class ExampleTests : PageTest",
           "{",
@@ -88114,7 +88290,7 @@
       }
     ],
     "langs": {},
-    "comment": "Playwright gives you Web-First Assertions with convenience methods for creating assertions that will wait and retry\nuntil the expected condition is met.\n\nConsider the following example:\n\n```js\nimport { test, expect } from '@playwright/test';\n\ntest('status becomes submitted', async ({ page }) => {\n  // ...\n  await page.locator('#submit-button').click()\n  await expect(page.locator('.status')).toHaveText('Submitted');\n});\n```\n\n```python async\nfrom playwright.async_api import Page, expect\n\nasync def test_status_becomes_submitted(page: Page) -> None:\n    # ..\n    await page.locator(\"#submit-button\").click()\n    await expect(page.locator(\".status\")).to_have_text(\"Submitted\")\n```\n\n```python sync\nfrom playwright.sync_api import Page, expect\n\ndef test_status_becomes_submitted(page: Page) -> None:\n    # ..\n    page.locator(\"#submit-button\").click()\n    expect(page.locator(\".status\")).to_have_text(\"Submitted\")\n```\n\n```java\n...\nimport static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;\n\npublic class TestExample {\n  ...\n  @Test\n  void statusBecomesSubmitted() {\n    ...\n    page.locator(\"#submit-button\").click();\n    assertThat(page.locator(\".status\")).hasText(\"Submitted\");\n  }\n}\n```\n\n```csharp\nusing System.Threading.Tasks;\nusing Microsoft.Playwright.NUnit;\nusing NUnit.Framework;\n\nnamespace Playwright.TestingHarnessTest.NUnit;\n\npublic class ExampleTests : PageTest\n{\n    [Test]\n    public async Task StatusBecomesSubmitted()\n    {\n        await Page.Locator(\"#submit-button\").ClickAsync();\n        await Expect(Page.Locator(\".status\")).ToHaveTextAsync(\"Submitted\");\n    }\n}\n```\n\nPlaywright will be re-testing the node with the selector `.status` until fetched Node has the `\"Submitted\"` text. It\nwill be re-fetching the node and checking it over and over, until the condition is met or until the timeout is reached.\nYou can pass this timeout as an option.\n\nBy default, the timeout for assertions is set to 5 seconds.",
+    "comment": "Playwright gives you Web-First Assertions with convenience methods for creating assertions that will wait and retry\nuntil the expected condition is met.\n\nConsider the following example:\n\n```js\nimport { test, expect } from '@playwright/test';\n\ntest('status becomes submitted', async ({ page }) => {\n  // ...\n  await page.locator('#submit-button').click()\n  await expect(page.locator('.status')).toHaveText('Submitted');\n});\n```\n\n```python async\nfrom playwright.async_api import Page, expect\n\nasync def test_status_becomes_submitted(page: Page) -> None:\n    # ..\n    await page.locator(\"#submit-button\").click()\n    await expect(page.locator(\".status\")).to_have_text(\"Submitted\")\n```\n\n```python sync\nfrom playwright.sync_api import Page, expect\n\ndef test_status_becomes_submitted(page: Page) -> None:\n    # ..\n    page.locator(\"#submit-button\").click()\n    expect(page.locator(\".status\")).to_have_text(\"Submitted\")\n```\n\n```java\n...\nimport static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;\n\npublic class TestExample {\n  ...\n  @Test\n  void statusBecomesSubmitted() {\n    ...\n    page.locator(\"#submit-button\").click();\n    assertThat(page.locator(\".status\")).hasText(\"Submitted\");\n  }\n}\n```\n\n```csharp\nusing System.Threading.Tasks;\nusing Microsoft.Playwright.NUnit;\nusing NUnit.Framework;\n\nnamespace PlaywrightTests;\n\npublic class ExampleTests : PageTest\n{\n    [Test]\n    public async Task StatusBecomesSubmitted()\n    {\n        await Page.Locator(\"#submit-button\").ClickAsync();\n        await Expect(Page.Locator(\".status\")).ToHaveTextAsync(\"Submitted\");\n    }\n}\n```\n\nPlaywright will be re-testing the node with the selector `.status` until fetched Node has the `\"Submitted\"` text. It\nwill be re-fetching the node and checking it over and over, until the condition is met or until the timeout is reached.\nYou can pass this timeout as an option.\n\nBy default, the timeout for assertions is set to 5 seconds.",
     "members": [
       {
         "kind": "method",
@@ -88328,6 +88504,69 @@
             "deprecated": false,
             "async": false,
             "alias": "page",
+            "overloadIndex": 0,
+            "paramOrOption": null
+          }
+        ]
+      },
+      {
+        "kind": "method",
+        "langs": {
+          "only": [
+            "java"
+          ],
+          "aliases": {},
+          "types": {},
+          "overrides": {}
+        },
+        "experimental": false,
+        "since": "v1.25",
+        "name": "setDefaultAssertionTimeout",
+        "type": {
+          "name": "void"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Changes default timeout for Playwright assertions from 5 seconds to the specified value."
+          },
+          {
+            "type": "code",
+            "lines": [
+              "PlaywrightAssertions.setDefaultAssertionTimeout(30_000);"
+            ],
+            "codeLang": "java"
+          }
+        ],
+        "required": true,
+        "comment": "Changes default timeout for Playwright assertions from 5 seconds to the specified value.\n\n```java\nPlaywrightAssertions.setDefaultAssertionTimeout(30_000);\n```\n",
+        "deprecated": false,
+        "async": false,
+        "alias": "setDefaultAssertionTimeout",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "experimental": false,
+            "since": "v1.25",
+            "name": "timeout",
+            "type": {
+              "name": "float",
+              "expression": "[float]"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Timeout in milliseconds."
+              }
+            ],
+            "required": true,
+            "comment": "Timeout in milliseconds.",
+            "deprecated": false,
+            "async": false,
+            "alias": "timeout",
             "overloadIndex": 0,
             "paramOrOption": null
           }
@@ -90454,11 +90693,11 @@
         "spec": [
           {
             "type": "text",
-            "text": "Indicates whether this Response was fullfilled by a Service Worker's Fetch Handler (i.e. via [FetchEvent.respondWith](https://developer.mozilla.org/en-US/docs/Web/API/FetchEvent/respondWith))."
+            "text": "Indicates whether this Response was fulfilled by a Service Worker's Fetch Handler (i.e. via [FetchEvent.respondWith](https://developer.mozilla.org/en-US/docs/Web/API/FetchEvent/respondWith))."
           }
         ],
         "required": true,
-        "comment": "Indicates whether this Response was fullfilled by a Service Worker's Fetch Handler (i.e. via\n[FetchEvent.respondWith](https://developer.mozilla.org/en-US/docs/Web/API/FetchEvent/respondWith)).",
+        "comment": "Indicates whether this Response was fulfilled by a Service Worker's Fetch Handler (i.e. via\n[FetchEvent.respondWith](https://developer.mozilla.org/en-US/docs/Web/API/FetchEvent/respondWith)).",
         "deprecated": false,
         "async": false,
         "alias": "fromServiceWorker",
@@ -94299,7 +94538,16 @@
       },
       {
         "kind": "method",
-        "langs": {},
+        "langs": {
+          "types": {
+            "java": {
+              "name": "void"
+            },
+            "python": {
+              "name": "void"
+            }
+          }
+        },
         "experimental": false,
         "since": "v1.11",
         "name": "saveAs",
