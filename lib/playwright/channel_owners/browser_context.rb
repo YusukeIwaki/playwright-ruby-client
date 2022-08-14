@@ -18,7 +18,7 @@ module Playwright
       @owner_page = nil
 
       @tracing = ChannelOwners::Tracing.from(@initializer['tracing'])
-      @request = ChannelOwners::APIRequestContext.from(@initializer['APIRequestContext'])
+      @request = ChannelOwners::APIRequestContext.from(@initializer['requestContext'])
       @har_recorders = {}
 
       @channel.on('bindingCall', ->(params) { on_binding(ChannelOwners::BindingCall.from(params['binding'])) })
