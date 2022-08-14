@@ -36,7 +36,7 @@ module ExampleCodes
   end
 
   # APIRequestContext
-  def example_0c5f51141df669382ab234ed7a2f8b4b5dbbd629f4bc6354860f0a8288dddb8d(playwright:)
+  def example_8b05a1e391492122df853bef56d8d3680ea0911e5ff2afd7e442ce0b1a3a4e10(playwright:)
     playwright.chromium.launch do |browser|
       # This will launch a new browser, create a context and page. When making HTTP
       # requests with the internal APIRequestContext (e.g. `context.request` or `page.request`)
