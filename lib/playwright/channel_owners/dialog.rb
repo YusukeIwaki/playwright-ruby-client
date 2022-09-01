@@ -13,7 +13,7 @@ module Playwright
     end
 
     def accept(promptText: nil)
-      accept_async(prompt_text: promptText).value!
+      accept_async(promptText: promptText).value!
     end
 
     def accept_async(promptText: nil)
