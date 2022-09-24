@@ -66,6 +66,7 @@ def delete(
       form: nil,
       headers: nil,
       ignoreHTTPSErrors: nil,
+      maxRedirects: nil,
       multipart: nil,
       params: nil,
       timeout: nil)
@@ -95,6 +96,7 @@ def fetch(
       form: nil,
       headers: nil,
       ignoreHTTPSErrors: nil,
+      maxRedirects: nil,
       method: nil,
       multipart: nil,
       params: nil,
@@ -112,6 +114,7 @@ def get(
       failOnStatusCode: nil,
       headers: nil,
       ignoreHTTPSErrors: nil,
+      maxRedirects: nil,
       params: nil,
       timeout: nil)
 ```
@@ -128,6 +131,7 @@ def head(
       failOnStatusCode: nil,
       headers: nil,
       ignoreHTTPSErrors: nil,
+      maxRedirects: nil,
       params: nil,
       timeout: nil)
 ```
@@ -146,6 +150,7 @@ def patch(
       form: nil,
       headers: nil,
       ignoreHTTPSErrors: nil,
+      maxRedirects: nil,
       multipart: nil,
       params: nil,
       timeout: nil)
@@ -165,6 +170,7 @@ def post(
       form: nil,
       headers: nil,
       ignoreHTTPSErrors: nil,
+      maxRedirects: nil,
       multipart: nil,
       params: nil,
       timeout: nil)
@@ -184,6 +190,7 @@ def put(
       form: nil,
       headers: nil,
       ignoreHTTPSErrors: nil,
+      maxRedirects: nil,
       multipart: nil,
       params: nil,
       timeout: nil)

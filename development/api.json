@@ -2238,15 +2238,10 @@
                     {
                       "type": "text",
                       "text": "Emulates `'forced-colors'` media feature, supported values are `'active'`, `'none'`. See [`method: Page.emulateMedia`] for more details. Defaults to `'none'`."
-                    },
-                    {
-                      "type": "note",
-                      "noteType": "note",
-                      "text": "It's not supported in WebKit, see [here](https://bugs.webkit.org/show_bug.cgi?id=225281) in their issue tracker."
                     }
                   ],
                   "required": false,
-                  "comment": "Emulates `'forced-colors'` media feature, supported values are `'active'`, `'none'`. See [`method: Page.emulateMedia`]\nfor more details. Defaults to `'none'`.\n\n> NOTE: It's not supported in WebKit, see [here](https://bugs.webkit.org/show_bug.cgi?id=225281) in their issue tracker.",
+                  "comment": "Emulates `'forced-colors'` media feature, supported values are `'active'`, `'none'`. See [`method: Page.emulateMedia`]\nfor more details. Defaults to `'none'`.",
                   "deprecated": false,
                   "async": false,
                   "alias": "forcedColors",
@@ -7995,6 +7990,39 @@
                   "langs": {
                     "only": [
                       "js",
+                      "python",
+                      "csharp"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "experimental": false,
+                  "since": "v1.26",
+                  "name": "maxRedirects",
+                  "type": {
+                    "name": "int",
+                    "expression": "[int]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Maximum number of request redirects that will be followed automatically. An error will be thrown if the number is exceeded. Defaults to `20`. Pass `0` to not follow redirects."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Maximum number of request redirects that will be followed automatically. An error will be thrown if the number is\nexceeded. Defaults to `20`. Pass `0` to not follow redirects.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "maxRedirects",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "js",
                       "python"
                     ],
                     "aliases": {},
@@ -8735,6 +8763,39 @@
                     "overrides": {}
                   },
                   "experimental": false,
+                  "since": "v1.26",
+                  "name": "maxRedirects",
+                  "type": {
+                    "name": "int",
+                    "expression": "[int]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Maximum number of request redirects that will be followed automatically. An error will be thrown if the number is exceeded. Defaults to `20`. Pass `0` to not follow redirects."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Maximum number of request redirects that will be followed automatically. An error will be thrown if the number is\nexceeded. Defaults to `20`. Pass `0` to not follow redirects.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "maxRedirects",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "js",
+                      "python",
+                      "csharp"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "experimental": false,
                   "since": "v1.16",
                   "name": "method",
                   "type": {
@@ -9330,6 +9391,39 @@
                   "langs": {
                     "only": [
                       "js",
+                      "python",
+                      "csharp"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "experimental": false,
+                  "since": "v1.26",
+                  "name": "maxRedirects",
+                  "type": {
+                    "name": "int",
+                    "expression": "[int]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Maximum number of request redirects that will be followed automatically. An error will be thrown if the number is exceeded. Defaults to `20`. Pass `0` to not follow redirects."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Maximum number of request redirects that will be followed automatically. An error will be thrown if the number is\nexceeded. Defaults to `20`. Pass `0` to not follow redirects.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "maxRedirects",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "js",
                       "python"
                     ],
                     "aliases": {},
@@ -9652,6 +9746,39 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "ignoreHTTPSErrors",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "js",
+                      "python",
+                      "csharp"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "experimental": false,
+                  "since": "v1.26",
+                  "name": "maxRedirects",
+                  "type": {
+                    "name": "int",
+                    "expression": "[int]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Maximum number of request redirects that will be followed automatically. An error will be thrown if the number is exceeded. Defaults to `20`. Pass `0` to not follow redirects."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Maximum number of request redirects that will be followed automatically. An error will be thrown if the number is\nexceeded. Defaults to `20`. Pass `0` to not follow redirects.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "maxRedirects",
                   "overloadIndex": 0,
                   "paramOrOption": null
                 },
@@ -10112,6 +10239,39 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "ignoreHTTPSErrors",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "js",
+                      "python",
+                      "csharp"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "experimental": false,
+                  "since": "v1.26",
+                  "name": "maxRedirects",
+                  "type": {
+                    "name": "int",
+                    "expression": "[int]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Maximum number of request redirects that will be followed automatically. An error will be thrown if the number is exceeded. Defaults to `20`. Pass `0` to not follow redirects."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Maximum number of request redirects that will be followed automatically. An error will be thrown if the number is\nexceeded. Defaults to `20`. Pass `0` to not follow redirects.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "maxRedirects",
                   "overloadIndex": 0,
                   "paramOrOption": null
                 },
@@ -10820,6 +10980,39 @@
                   "langs": {
                     "only": [
                       "js",
+                      "python",
+                      "csharp"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "experimental": false,
+                  "since": "v1.26",
+                  "name": "maxRedirects",
+                  "type": {
+                    "name": "int",
+                    "expression": "[int]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Maximum number of request redirects that will be followed automatically. An error will be thrown if the number is exceeded. Defaults to `20`. Pass `0` to not follow redirects."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Maximum number of request redirects that will be followed automatically. An error will be thrown if the number is\nexceeded. Defaults to `20`. Pass `0` to not follow redirects.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "maxRedirects",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "js",
                       "python"
                     ],
                     "aliases": {},
@@ -11512,6 +11705,39 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "ignoreHTTPSErrors",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "js",
+                      "python",
+                      "csharp"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "experimental": false,
+                  "since": "v1.26",
+                  "name": "maxRedirects",
+                  "type": {
+                    "name": "int",
+                    "expression": "[int]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Maximum number of request redirects that will be followed automatically. An error will be thrown if the number is exceeded. Defaults to `20`. Pass `0` to not follow redirects."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Maximum number of request redirects that will be followed automatically. An error will be thrown if the number is\nexceeded. Defaults to `20`. Pass `0` to not follow redirects.",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "maxRedirects",
                   "overloadIndex": 0,
                   "paramOrOption": null
                 },
@@ -12826,16 +13052,7 @@
         "codeLang": "python sync"
       }
     ],
-    "langs": {
-      "only": [
-        "js",
-        "java",
-        "python"
-      ],
-      "aliases": {},
-      "types": {},
-      "overrides": {}
-    },
+    "langs": {},
     "comment": "The `APIResponseAssertions` class provides assertion methods that can be used to make assertions about the `APIResponse`\nin the tests. A new instance of `APIResponseAssertions` is created by calling\n[`method: PlaywrightAssertions.expectAPIResponse`]:\n\n```js\nimport { test, expect } from '@playwright/test';\n\ntest('navigates to login', async ({ page }) => {\n  // ...\n  const response = await page.request.get('https://playwright.dev');\n  await expect(response).toBeOK();\n});\n```\n\n```java\n...\nimport static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;\n\npublic class TestPage {\n  ...\n  @Test\n  void navigatesToLoginPage() {\n    ...\n    APIResponse response = page.request().get('https://playwright.dev');\n    assertThat(response).isOK();\n  }\n}\n```\n\n```python async\nfrom playwright.async_api import Page, expect\n\nasync def test_navigates_to_login_page(page: Page) -> None:\n    # ..\n    response = await page.request.get('https://playwright.dev')\n    await expect(response).to_be_ok()\n```\n\n```python sync\nfrom playwright.sync_api import Page, expect\n\ndef test_navigates_to_login_page(page: Page) -> None:\n    # ..\n    response = page.request.get('https://playwright.dev')\n    expect(response).to_be_ok()\n```\n",
     "members": [
       {
@@ -12843,7 +13060,8 @@
         "langs": {
           "only": [
             "java",
-            "js"
+            "js",
+            "csharp"
           ],
           "aliases": {},
           "types": {},
@@ -12934,7 +13152,7 @@
         "spec": [
           {
             "type": "text",
-            "text": "Ensures the response status code is within [200..299] range."
+            "text": "Ensures the response status code is within `200..299` range."
           },
           {
             "type": "code",
@@ -12973,7 +13191,7 @@
           }
         ],
         "required": true,
-        "comment": "Ensures the response status code is within [200..299] range.\n\n```js\nawait expect(response).toBeOK();\n```\n\n```java\nassertThat(response).isOK();\n```\n\n```python async\nfrom playwright.async_api import expect\n\n# ...\nawait expect(response).to_be_ok()\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\n# ...\nexpect(response).to_be_ok()\n```\n",
+        "comment": "Ensures the response status code is within `200..299` range.\n\n```js\nawait expect(response).toBeOK();\n```\n\n```java\nassertThat(response).isOK();\n```\n\n```python async\nfrom playwright.async_api import expect\n\n# ...\nawait expect(response).to_be_ok()\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import expect\n\n# ...\nexpect(response).to_be_ok()\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "toBeOK",
@@ -13647,15 +13865,10 @@
                     {
                       "type": "text",
                       "text": "Emulates `'forced-colors'` media feature, supported values are `'active'`, `'none'`. See [`method: Page.emulateMedia`] for more details. Defaults to `'none'`."
-                    },
-                    {
-                      "type": "note",
-                      "noteType": "note",
-                      "text": "It's not supported in WebKit, see [here](https://bugs.webkit.org/show_bug.cgi?id=225281) in their issue tracker."
                     }
                   ],
                   "required": false,
-                  "comment": "Emulates `'forced-colors'` media feature, supported values are `'active'`, `'none'`. See [`method: Page.emulateMedia`]\nfor more details. Defaults to `'none'`.\n\n> NOTE: It's not supported in WebKit, see [here](https://bugs.webkit.org/show_bug.cgi?id=225281) in their issue tracker.",
+                  "comment": "Emulates `'forced-colors'` media feature, supported values are `'active'`, `'none'`. See [`method: Page.emulateMedia`]\nfor more details. Defaults to `'none'`.",
                   "deprecated": false,
                   "async": false,
                   "alias": "forcedColors",
@@ -16153,15 +16366,10 @@
                     {
                       "type": "text",
                       "text": "Emulates `'forced-colors'` media feature, supported values are `'active'`, `'none'`. See [`method: Page.emulateMedia`] for more details. Defaults to `'none'`."
-                    },
-                    {
-                      "type": "note",
-                      "noteType": "note",
-                      "text": "It's not supported in WebKit, see [here](https://bugs.webkit.org/show_bug.cgi?id=225281) in their issue tracker."
                     }
                   ],
                   "required": false,
-                  "comment": "Emulates `'forced-colors'` media feature, supported values are `'active'`, `'none'`. See [`method: Page.emulateMedia`]\nfor more details. Defaults to `'none'`.\n\n> NOTE: It's not supported in WebKit, see [here](https://bugs.webkit.org/show_bug.cgi?id=225281) in their issue tracker.",
+                  "comment": "Emulates `'forced-colors'` media feature, supported values are `'active'`, `'none'`. See [`method: Page.emulateMedia`]\nfor more details. Defaults to `'none'`.",
                   "deprecated": false,
                   "async": false,
                   "alias": "forcedColors",
@@ -23993,10 +24201,55 @@
             "type": "note",
             "noteType": "note",
             "text": "Connecting over the Chrome DevTools Protocol is only supported for Chromium-based browsers."
+          },
+          {
+            "type": "code",
+            "lines": [
+              "const browser = await playwright.chromium.connectOverCDP('http://localhost:9222');",
+              "const defaultContext = browser.contexts()[0];",
+              "const page = defaultContext.pages()[0];"
+            ],
+            "codeLang": "js"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "Browser browser = playwright.chromium().connectOverCDP(\"http://localhost:9222\");",
+              "BrowserContext defaultContext = browser.contexts().get(0);",
+              "Page page = defaultContext.pages().get(0);"
+            ],
+            "codeLang": "java"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "browser = await playwright.chromium.connect_over_cdp(\"http://localhost:9222\")",
+              "default_context = browser.contexts[0]",
+              "page = default_context.pages[0]"
+            ],
+            "codeLang": "python async"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "browser = playwright.chromium.connect_over_cdp(\"http://localhost:9222\")",
+              "default_context = browser.contexts[0]",
+              "page = default_context.pages[0]"
+            ],
+            "codeLang": "python sync"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "var browser = await playwright.Chromium.ConnectOverCDPAsync(\"http://localhost:9222\");",
+              "var defaultContext = browser.Contexts[0];",
+              "var page = defaultContext.Pages[0];"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "This method attaches Playwright to an existing browser instance using the Chrome DevTools Protocol.\n\nThe default browser context is accessible via [`method: Browser.contexts`].\n\n> NOTE: Connecting over the Chrome DevTools Protocol is only supported for Chromium-based browsers.",
+        "comment": "This method attaches Playwright to an existing browser instance using the Chrome DevTools Protocol.\n\nThe default browser context is accessible via [`method: Browser.contexts`].\n\n> NOTE: Connecting over the Chrome DevTools Protocol is only supported for Chromium-based browsers.\n\n```js\nconst browser = await playwright.chromium.connectOverCDP('http://localhost:9222');\nconst defaultContext = browser.contexts()[0];\nconst page = defaultContext.pages()[0];\n```\n\n```java\nBrowser browser = playwright.chromium().connectOverCDP(\"http://localhost:9222\");\nBrowserContext defaultContext = browser.contexts().get(0);\nPage page = defaultContext.pages().get(0);\n```\n\n```python async\nbrowser = await playwright.chromium.connect_over_cdp(\"http://localhost:9222\")\ndefault_context = browser.contexts[0]\npage = default_context.pages[0]\n```\n\n```python sync\nbrowser = playwright.chromium.connect_over_cdp(\"http://localhost:9222\")\ndefault_context = browser.contexts[0]\npage = default_context.pages[0]\n```\n\n```csharp\nvar browser = await playwright.Chromium.ConnectOverCDPAsync(\"http://localhost:9222\");\nvar defaultContext = browser.Contexts[0];\nvar page = defaultContext.Pages[0];\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "connectOverCDP",
@@ -25596,15 +25849,10 @@
                     {
                       "type": "text",
                       "text": "Emulates `'forced-colors'` media feature, supported values are `'active'`, `'none'`. See [`method: Page.emulateMedia`] for more details. Defaults to `'none'`."
-                    },
-                    {
-                      "type": "note",
-                      "noteType": "note",
-                      "text": "It's not supported in WebKit, see [here](https://bugs.webkit.org/show_bug.cgi?id=225281) in their issue tracker."
                     }
                   ],
                   "required": false,
-                  "comment": "Emulates `'forced-colors'` media feature, supported values are `'active'`, `'none'`. See [`method: Page.emulateMedia`]\nfor more details. Defaults to `'none'`.\n\n> NOTE: It's not supported in WebKit, see [here](https://bugs.webkit.org/show_bug.cgi?id=225281) in their issue tracker.",
+                  "comment": "Emulates `'forced-colors'` media feature, supported values are `'active'`, `'none'`. See [`method: Page.emulateMedia`]\nfor more details. Defaults to `'none'`.",
                   "deprecated": false,
                   "async": false,
                   "alias": "forcedColors",
@@ -37322,7 +37570,7 @@
             "type": "code",
             "lines": [
               "await elementHandle.TypeAsync(\"Hello\"); // Types instantly",
-              "await elementHandle.TypeAsync(\"World\", delay: 100); // Types slower, like a user"
+              "await elementHandle.TypeAsync(\"World\", new() { Delay = 100 }); // Types slower, like a user"
             ],
             "codeLang": "csharp"
           },
@@ -37377,7 +37625,7 @@
           }
         ],
         "required": true,
-        "comment": "Focuses the element, and then sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text.\n\nTo press a special key, like `Control` or `ArrowDown`, use [`method: ElementHandle.press`].\n\n```js\nawait elementHandle.type('Hello'); // Types instantly\nawait elementHandle.type('World', {delay: 100}); // Types slower, like a user\n```\n\n```java\nelementHandle.type(\"Hello\"); // Types instantly\nelementHandle.type(\"World\", new ElementHandle.TypeOptions().setDelay(100)); // Types slower, like a user\n```\n\n```python async\nawait element_handle.type(\"hello\") # types instantly\nawait element_handle.type(\"world\", delay=100) # types slower, like a user\n```\n\n```python sync\nelement_handle.type(\"hello\") # types instantly\nelement_handle.type(\"world\", delay=100) # types slower, like a user\n```\n\n```csharp\nawait elementHandle.TypeAsync(\"Hello\"); // Types instantly\nawait elementHandle.TypeAsync(\"World\", delay: 100); // Types slower, like a user\n```\n\nAn example of typing into a text field and then submitting the form:\n\n```js\nconst elementHandle = await page.$('input');\nawait elementHandle.type('some text');\nawait elementHandle.press('Enter');\n```\n\n```java\nElementHandle elementHandle = page.querySelector(\"input\");\nelementHandle.type(\"some text\");\nelementHandle.press(\"Enter\");\n```\n\n```python async\nelement_handle = await page.query_selector(\"input\")\nawait element_handle.type(\"some text\")\nawait element_handle.press(\"Enter\")\n```\n\n```python sync\nelement_handle = page.query_selector(\"input\")\nelement_handle.type(\"some text\")\nelement_handle.press(\"Enter\")\n```\n\n```csharp\nvar elementHandle = await page.QuerySelectorAsync(\"input\");\nawait elementHandle.TypeAsync(\"some text\");\nawait elementHandle.PressAsync(\"Enter\");\n```\n",
+        "comment": "Focuses the element, and then sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text.\n\nTo press a special key, like `Control` or `ArrowDown`, use [`method: ElementHandle.press`].\n\n```js\nawait elementHandle.type('Hello'); // Types instantly\nawait elementHandle.type('World', {delay: 100}); // Types slower, like a user\n```\n\n```java\nelementHandle.type(\"Hello\"); // Types instantly\nelementHandle.type(\"World\", new ElementHandle.TypeOptions().setDelay(100)); // Types slower, like a user\n```\n\n```python async\nawait element_handle.type(\"hello\") # types instantly\nawait element_handle.type(\"world\", delay=100) # types slower, like a user\n```\n\n```python sync\nelement_handle.type(\"hello\") # types instantly\nelement_handle.type(\"world\", delay=100) # types slower, like a user\n```\n\n```csharp\nawait elementHandle.TypeAsync(\"Hello\"); // Types instantly\nawait elementHandle.TypeAsync(\"World\", new() { Delay = 100 }); // Types slower, like a user\n```\n\nAn example of typing into a text field and then submitting the form:\n\n```js\nconst elementHandle = await page.$('input');\nawait elementHandle.type('some text');\nawait elementHandle.press('Enter');\n```\n\n```java\nElementHandle elementHandle = page.querySelector(\"input\");\nelementHandle.type(\"some text\");\nelementHandle.press(\"Enter\");\n```\n\n```python async\nelement_handle = await page.query_selector(\"input\")\nawait element_handle.type(\"some text\")\nawait element_handle.press(\"Enter\")\n```\n\n```python sync\nelement_handle = page.query_selector(\"input\")\nelement_handle.type(\"some text\")\nelement_handle.press(\"Enter\")\n```\n\n```csharp\nvar elementHandle = await page.QuerySelectorAsync(\"input\");\nawait elementHandle.TypeAsync(\"some text\");\nawait elementHandle.PressAsync(\"Enter\");\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "type",
@@ -38099,11 +38347,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -39695,11 +39943,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -40137,11 +40385,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -40566,11 +40814,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -40883,11 +41131,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -41140,11 +41388,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -41515,11 +41763,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -42415,11 +42663,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -42531,11 +42779,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -42848,11 +43096,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -43366,11 +43614,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -43507,11 +43755,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -43624,11 +43872,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -43745,11 +43993,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -43862,11 +44110,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -44004,11 +44252,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -44121,11 +44369,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -44238,11 +44486,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -44355,11 +44603,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -44472,11 +44720,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -44905,11 +45153,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -45046,11 +45294,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -45556,11 +45804,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -46044,11 +46292,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -46548,11 +46796,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -46863,11 +47111,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -47012,11 +47260,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -47140,13 +47388,13 @@
             "type": "code",
             "lines": [
               "await frame.TypeAsync(\"#mytextarea\", \"hello\"); // types instantly",
-              "await frame.TypeAsync(\"#mytextarea\", \"world\", delay: 100); // types slower, like a user"
+              "await frame.TypeAsync(\"#mytextarea\", \"world\", new() { Delay = 100 }); // types slower, like a user"
             ],
             "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text. `frame.type` can be used to\nsend fine-grained keyboard events. To fill values in form fields, use [`method: Frame.fill`].\n\nTo press a special key, like `Control` or `ArrowDown`, use [`method: Keyboard.press`].\n\n```js\nawait frame.type('#mytextarea', 'Hello'); // Types instantly\nawait frame.type('#mytextarea', 'World', {delay: 100}); // Types slower, like a user\n```\n\n```java\n// Types instantly\nframe.type(\"#mytextarea\", \"Hello\");\n// Types slower, like a user\nframe.type(\"#mytextarea\", \"World\", new Frame.TypeOptions().setDelay(100));\n```\n\n```python async\nawait frame.type(\"#mytextarea\", \"hello\") # types instantly\nawait frame.type(\"#mytextarea\", \"world\", delay=100) # types slower, like a user\n```\n\n```python sync\nframe.type(\"#mytextarea\", \"hello\") # types instantly\nframe.type(\"#mytextarea\", \"world\", delay=100) # types slower, like a user\n```\n\n```csharp\nawait frame.TypeAsync(\"#mytextarea\", \"hello\"); // types instantly\nawait frame.TypeAsync(\"#mytextarea\", \"world\", delay: 100); // types slower, like a user\n```\n",
+        "comment": "Sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text. `frame.type` can be used to\nsend fine-grained keyboard events. To fill values in form fields, use [`method: Frame.fill`].\n\nTo press a special key, like `Control` or `ArrowDown`, use [`method: Keyboard.press`].\n\n```js\nawait frame.type('#mytextarea', 'Hello'); // Types instantly\nawait frame.type('#mytextarea', 'World', {delay: 100}); // Types slower, like a user\n```\n\n```java\n// Types instantly\nframe.type(\"#mytextarea\", \"Hello\");\n// Types slower, like a user\nframe.type(\"#mytextarea\", \"World\", new Frame.TypeOptions().setDelay(100));\n```\n\n```python async\nawait frame.type(\"#mytextarea\", \"hello\") # types instantly\nawait frame.type(\"#mytextarea\", \"world\", delay=100) # types slower, like a user\n```\n\n```python sync\nframe.type(\"#mytextarea\", \"hello\") # types instantly\nframe.type(\"#mytextarea\", \"world\", delay=100) # types slower, like a user\n```\n\n```csharp\nawait frame.TypeAsync(\"#mytextarea\", \"hello\"); // types instantly\nawait frame.TypeAsync(\"#mytextarea\", \"world\", new() { Delay = 100 }); // types slower, like a user\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "type",
@@ -47271,11 +47519,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -47548,11 +47796,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -48765,11 +49013,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -49129,7 +49377,7 @@
       },
       {
         "type": "text",
-        "text": "Frame locators are strict. This means that all operations on frame locators will throw if more than one element matches given selector."
+        "text": "Frame locators are strict. This means that all operations on frame locators will throw if more than one element matches a given selector."
       },
       {
         "type": "code",
@@ -49231,7 +49479,7 @@
       }
     ],
     "langs": {},
-    "comment": "FrameLocator represents a view to the `iframe` on the page. It captures the logic sufficient to retrieve the `iframe`\nand locate elements in that iframe. FrameLocator can be created with either [`method: Page.frameLocator`] or\n[`method: Locator.frameLocator`] method.\n\n```js\nconst locator = page.frameLocator('#my-frame').locator('text=Submit');\nawait locator.click();\n```\n\n```java\nLocator locator = page.frameLocator(\"#my-frame\").locator(\"text=Submit\");\nlocator.click();\n```\n\n```python async\nlocator = page.frame_locator(\"#my-frame\").locator(\"text=Submit\")\nawait locator.click()\n```\n\n```python sync\nlocator = page.frame_locator(\"my-frame\").locator(\"text=Submit\")\nlocator.click()\n```\n\n```csharp\nvar locator = page.FrameLocator(\"#my-frame\").Locator(\"text=Submit\");\nawait locator.ClickAsync();\n```\n\n**Strictness**\n\nFrame locators are strict. This means that all operations on frame locators will throw if more than one element matches\ngiven selector.\n\n```js\n// Throws if there are several frames in DOM:\nawait page.frameLocator('.result-frame').locator('button').click();\n\n// Works because we explicitly tell locator to pick the first frame:\nawait page.frameLocator('.result-frame').first().locator('button').click();\n```\n\n```python async\n# Throws if there are several frames in DOM:\nawait page.frame_locator('.result-frame').locator('button').click()\n\n# Works because we explicitly tell locator to pick the first frame:\nawait page.frame_locator('.result-frame').first.locator('button').click()\n```\n\n```python sync\n# Throws if there are several frames in DOM:\npage.frame_locator('.result-frame').locator('button').click()\n\n# Works because we explicitly tell locator to pick the first frame:\npage.frame_locator('.result-frame').first.locator('button').click()\n```\n\n```java\n// Throws if there are several frames in DOM:\npage.frame_locator(\".result-frame\").locator(\"button\").click();\n\n// Works because we explicitly tell locator to pick the first frame:\npage.frame_locator(\".result-frame\").first().locator(\"button\").click();\n```\n\n```csharp\n// Throws if there are several frames in DOM:\nawait page.FrameLocator(\".result-frame\").Locator(\"button\").ClickAsync();\n\n// Works because we explicitly tell locator to pick the first frame:\nawait page.FrameLocator(\".result-frame\").First.Locator(\"button\").ClickAsync();\n```\n\n**Converting Locator to FrameLocator**\n\nIf you have a `Locator` object pointing to an `iframe` it can be converted to `FrameLocator` using\n[`:scope`](https://developer.mozilla.org/en-US/docs/Web/CSS/:scope) CSS selector:\n\n```js\nconst frameLocator = locator.frameLocator(':scope');\n```\n\n```java\nLocator frameLocator = locator.frameLocator(':scope');\n```\n\n```python async\nframeLocator = locator.frame_locator(\":scope\");\n```\n\n```python sync\nframeLocator = locator.frame_locator(\":scope\");\n```\n\n```csharp\nvar frameLocator = locator.FrameLocator(\":scope\");\n```\n",
+    "comment": "FrameLocator represents a view to the `iframe` on the page. It captures the logic sufficient to retrieve the `iframe`\nand locate elements in that iframe. FrameLocator can be created with either [`method: Page.frameLocator`] or\n[`method: Locator.frameLocator`] method.\n\n```js\nconst locator = page.frameLocator('#my-frame').locator('text=Submit');\nawait locator.click();\n```\n\n```java\nLocator locator = page.frameLocator(\"#my-frame\").locator(\"text=Submit\");\nlocator.click();\n```\n\n```python async\nlocator = page.frame_locator(\"#my-frame\").locator(\"text=Submit\")\nawait locator.click()\n```\n\n```python sync\nlocator = page.frame_locator(\"my-frame\").locator(\"text=Submit\")\nlocator.click()\n```\n\n```csharp\nvar locator = page.FrameLocator(\"#my-frame\").Locator(\"text=Submit\");\nawait locator.ClickAsync();\n```\n\n**Strictness**\n\nFrame locators are strict. This means that all operations on frame locators will throw if more than one element matches\na given selector.\n\n```js\n// Throws if there are several frames in DOM:\nawait page.frameLocator('.result-frame').locator('button').click();\n\n// Works because we explicitly tell locator to pick the first frame:\nawait page.frameLocator('.result-frame').first().locator('button').click();\n```\n\n```python async\n# Throws if there are several frames in DOM:\nawait page.frame_locator('.result-frame').locator('button').click()\n\n# Works because we explicitly tell locator to pick the first frame:\nawait page.frame_locator('.result-frame').first.locator('button').click()\n```\n\n```python sync\n# Throws if there are several frames in DOM:\npage.frame_locator('.result-frame').locator('button').click()\n\n# Works because we explicitly tell locator to pick the first frame:\npage.frame_locator('.result-frame').first.locator('button').click()\n```\n\n```java\n// Throws if there are several frames in DOM:\npage.frame_locator(\".result-frame\").locator(\"button\").click();\n\n// Works because we explicitly tell locator to pick the first frame:\npage.frame_locator(\".result-frame\").first().locator(\"button\").click();\n```\n\n```csharp\n// Throws if there are several frames in DOM:\nawait page.FrameLocator(\".result-frame\").Locator(\"button\").ClickAsync();\n\n// Works because we explicitly tell locator to pick the first frame:\nawait page.FrameLocator(\".result-frame\").First.Locator(\"button\").ClickAsync();\n```\n\n**Converting Locator to FrameLocator**\n\nIf you have a `Locator` object pointing to an `iframe` it can be converted to `FrameLocator` using\n[`:scope`](https://developer.mozilla.org/en-US/docs/Web/CSS/:scope) CSS selector:\n\n```js\nconst frameLocator = locator.frameLocator(':scope');\n```\n\n```java\nLocator frameLocator = locator.frameLocator(':scope');\n```\n\n```python async\nframeLocator = locator.frame_locator(\":scope\");\n```\n\n```python sync\nframeLocator = locator.frame_locator(\":scope\");\n```\n\n```csharp\nvar frameLocator = locator.FrameLocator(\":scope\");\n```\n",
     "members": [
       {
         "kind": "method",
@@ -57345,7 +57593,7 @@
             "type": "code",
             "lines": [
               "await element.TypeAsync(\"Hello\"); // Types instantly",
-              "await element.TypeAsync(\"World\", delay: 100); // Types slower, like a user"
+              "await element.TypeAsync(\"World\", new() { Delay = 100 }); // Types slower, like a user"
             ],
             "codeLang": "csharp"
           },
@@ -57400,7 +57648,7 @@
           }
         ],
         "required": true,
-        "comment": "Focuses the element, and then sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text.\n\nTo press a special key, like `Control` or `ArrowDown`, use [`method: Locator.press`].\n\n```js\nawait element.type('Hello'); // Types instantly\nawait element.type('World', {delay: 100}); // Types slower, like a user\n```\n\n```java\nelement.type(\"Hello\"); // Types instantly\nelement.type(\"World\", new Locator.TypeOptions().setDelay(100)); // Types slower, like a user\n```\n\n```python async\nawait element.type(\"hello\") # types instantly\nawait element.type(\"world\", delay=100) # types slower, like a user\n```\n\n```python sync\nelement.type(\"hello\") # types instantly\nelement.type(\"world\", delay=100) # types slower, like a user\n```\n\n```csharp\nawait element.TypeAsync(\"Hello\"); // Types instantly\nawait element.TypeAsync(\"World\", delay: 100); // Types slower, like a user\n```\n\nAn example of typing into a text field and then submitting the form:\n\n```js\nconst element = page.locator('input');\nawait element.type('some text');\nawait element.press('Enter');\n```\n\n```java\nLocator element = page.locator(\"input\");\nelement.type(\"some text\");\nelement.press(\"Enter\");\n```\n\n```python async\nelement = page.locator(\"input\")\nawait element.type(\"some text\")\nawait element.press(\"Enter\")\n```\n\n```python sync\nelement = page.locator(\"input\")\nelement.type(\"some text\")\nelement.press(\"Enter\")\n```\n\n```csharp\nvar element = page.Locator(\"input\");\nawait element.TypeAsync(\"some text\");\nawait element.PressAsync(\"Enter\");\n```\n",
+        "comment": "Focuses the element, and then sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text.\n\nTo press a special key, like `Control` or `ArrowDown`, use [`method: Locator.press`].\n\n```js\nawait element.type('Hello'); // Types instantly\nawait element.type('World', {delay: 100}); // Types slower, like a user\n```\n\n```java\nelement.type(\"Hello\"); // Types instantly\nelement.type(\"World\", new Locator.TypeOptions().setDelay(100)); // Types slower, like a user\n```\n\n```python async\nawait element.type(\"hello\") # types instantly\nawait element.type(\"world\", delay=100) # types slower, like a user\n```\n\n```python sync\nelement.type(\"hello\") # types instantly\nelement.type(\"world\", delay=100) # types slower, like a user\n```\n\n```csharp\nawait element.TypeAsync(\"Hello\"); // Types instantly\nawait element.TypeAsync(\"World\", new() { Delay = 100 }); // Types slower, like a user\n```\n\nAn example of typing into a text field and then submitting the form:\n\n```js\nconst element = page.locator('input');\nawait element.type('some text');\nawait element.press('Enter');\n```\n\n```java\nLocator element = page.locator(\"input\");\nelement.type(\"some text\");\nelement.press(\"Enter\");\n```\n\n```python async\nelement = page.locator(\"input\")\nawait element.type(\"some text\")\nawait element.press(\"Enter\")\n```\n\n```python sync\nelement = page.locator(\"input\")\nelement.type(\"some text\")\nelement.press(\"Enter\")\n```\n\n```csharp\nvar element = page.Locator(\"input\");\nawait element.TypeAsync(\"some text\");\nawait element.PressAsync(\"Enter\");\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "type",
@@ -58020,6 +58268,7 @@
           "",
           "namespace PlaywrightTests;",
           "",
+          "[TestFixture]",
           "public class ExampleTests : PageTest",
           "{",
           "    [Test]",
@@ -58035,7 +58284,7 @@
       }
     ],
     "langs": {},
-    "comment": "The `LocatorAssertions` class provides assertion methods that can be used to make assertions about the `Locator` state\nin the tests. A new instance of `LocatorAssertions` is created by calling\n[`method: PlaywrightAssertions.expectLocator`]:\n\n```js\nimport { test, expect } from '@playwright/test';\n\ntest('status becomes submitted', async ({ page }) => {\n  // ...\n  await page.locator('#submit-button').click();\n  await expect(page.locator('.status')).toHaveText('Submitted');\n});\n```\n\n```java\n...\nimport static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;\n\npublic class TestLocator {\n  ...\n  @Test\n  void statusBecomesSubmitted() {\n    ...\n    page.locator(\"#submit-button\").click();\n    assertThat(page.locator(\".status\")).hasText(\"Submitted\");\n  }\n}\n```\n\n```python async\nfrom playwright.async_api import Page, expect\n\nasync def test_status_becomes_submitted(page: Page) -> None:\n    # ..\n    await page.locator(\"#submit-button\").click()\n    await expect(page.locator(\".status\")).to_have_text(\"Submitted\")\n```\n\n```python sync\nfrom playwright.sync_api import Page, expect\n\ndef test_status_becomes_submitted(page: Page) -> None:\n    # ..\n    page.locator(\"#submit-button\").click()\n    expect(page.locator(\".status\")).to_have_text(\"Submitted\")\n```\n\n```csharp\nusing System.Text.RegularExpressions;\nusing System.Threading.Tasks;\nusing Microsoft.Playwright.NUnit;\nusing NUnit.Framework;\n\nnamespace PlaywrightTests;\n\npublic class ExampleTests : PageTest\n{\n    [Test]\n    public async Task StatusBecomesSubmitted()\n    {\n        // ..\n        await Page.Locator(\"#submit-button\").ClickAsync();\n        await Expect(Page.Locator(\".status\")).ToHaveTextAsync(\"Submitted\");\n    }\n}\n```\n",
+    "comment": "The `LocatorAssertions` class provides assertion methods that can be used to make assertions about the `Locator` state\nin the tests. A new instance of `LocatorAssertions` is created by calling\n[`method: PlaywrightAssertions.expectLocator`]:\n\n```js\nimport { test, expect } from '@playwright/test';\n\ntest('status becomes submitted', async ({ page }) => {\n  // ...\n  await page.locator('#submit-button').click();\n  await expect(page.locator('.status')).toHaveText('Submitted');\n});\n```\n\n```java\n...\nimport static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;\n\npublic class TestLocator {\n  ...\n  @Test\n  void statusBecomesSubmitted() {\n    ...\n    page.locator(\"#submit-button\").click();\n    assertThat(page.locator(\".status\")).hasText(\"Submitted\");\n  }\n}\n```\n\n```python async\nfrom playwright.async_api import Page, expect\n\nasync def test_status_becomes_submitted(page: Page) -> None:\n    # ..\n    await page.locator(\"#submit-button\").click()\n    await expect(page.locator(\".status\")).to_have_text(\"Submitted\")\n```\n\n```python sync\nfrom playwright.sync_api import Page, expect\n\ndef test_status_becomes_submitted(page: Page) -> None:\n    # ..\n    page.locator(\"#submit-button\").click()\n    expect(page.locator(\".status\")).to_have_text(\"Submitted\")\n```\n\n```csharp\nusing System.Text.RegularExpressions;\nusing System.Threading.Tasks;\nusing Microsoft.Playwright.NUnit;\nusing NUnit.Framework;\n\nnamespace PlaywrightTests;\n\n[TestFixture]\npublic class ExampleTests : PageTest\n{\n    [Test]\n    public async Task StatusBecomesSubmitted()\n    {\n        // ..\n        await Page.Locator(\"#submit-button\").ClickAsync();\n        await Expect(Page.Locator(\".status\")).ToHaveTextAsync(\"Submitted\");\n    }\n}\n```\n",
     "members": [
       {
         "kind": "property",
@@ -58363,6 +58612,25 @@
               "properties": [
                 {
                   "kind": "property",
+                  "langs": {},
+                  "experimental": false,
+                  "since": "v1.26",
+                  "name": "editable",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [],
+                  "required": false,
+                  "comment": "",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "editable",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
                   "langs": {
                     "only": [
                       "js"
@@ -58591,6 +58859,25 @@
             "type": {
               "name": "Object",
               "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "experimental": false,
+                  "since": "v1.26",
+                  "name": "enabled",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [],
+                  "required": false,
+                  "comment": "",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "enabled",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
                 {
                   "kind": "property",
                   "langs": {
@@ -58997,6 +59284,25 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "experimental": false,
+                  "since": "v1.26",
+                  "name": "visible",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [],
+                  "required": false,
+                  "comment": "",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "visible",
                   "overloadIndex": 0,
                   "paramOrOption": null
                 }
@@ -61103,6 +61409,25 @@
               "properties": [
                 {
                   "kind": "property",
+                  "langs": {},
+                  "experimental": false,
+                  "since": "v1.26",
+                  "name": "editable",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [],
+                  "required": false,
+                  "comment": "",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "editable",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
                   "langs": {
                     "only": [
                       "js"
@@ -61417,6 +61742,25 @@
               "properties": [
                 {
                   "kind": "property",
+                  "langs": {},
+                  "experimental": false,
+                  "since": "v1.26",
+                  "name": "enabled",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [],
+                  "required": false,
+                  "comment": "",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "enabled",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
                   "langs": {
                     "only": [
                       "js"
@@ -61666,7 +62010,7 @@
         "spec": [
           {
             "type": "text",
-            "text": "Ensures the `Locator` points to a hidden DOM node, which is the opposite of [visible](./actionability.md#visible)."
+            "text": "Ensures that `Locator` either does not resolve to any DOM node, or resolves to a [non-visible](./actionability.md#visible) one."
           },
           {
             "type": "code",
@@ -61713,7 +62057,7 @@
           }
         ],
         "required": true,
-        "comment": "Ensures the `Locator` points to a hidden DOM node, which is the opposite of [visible](./actionability.md#visible).\n\n```js\nconst locator = page.locator('.my-element');\nawait expect(locator).toBeHidden();\n```\n\n```java\nassertThat(page.locator(\".my-element\")).isHidden();\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator('.my-element')\nawait expect(locator).to_be_hidden()\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator('.my-element')\nexpect(locator).to_be_hidden()\n```\n\n```csharp\nvar locator = Page.Locator(\".my-element\");\nawait Expect(locator).ToBeHiddenAsync();\n```\n",
+        "comment": "Ensures that `Locator` either does not resolve to any DOM node, or resolves to a\n[non-visible](./actionability.md#visible) one.\n\n```js\nconst locator = page.locator('.my-element');\nawait expect(locator).toBeHidden();\n```\n\n```java\nassertThat(page.locator(\".my-element\")).isHidden();\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator('.my-element')\nawait expect(locator).to_be_hidden()\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator('.my-element')\nexpect(locator).to_be_hidden()\n```\n\n```csharp\nvar locator = Page.Locator(\".my-element\");\nawait Expect(locator).ToBeHiddenAsync();\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "toBeHidden",
@@ -61823,7 +62167,7 @@
         "spec": [
           {
             "type": "text",
-            "text": "Ensures the `Locator` points to a [visible](./actionability.md#visible) DOM node."
+            "text": "Ensures that `Locator` points to an [attached](./actionability.md#visible) and [visible](./actionability.md#visible) DOM node."
           },
           {
             "type": "code",
@@ -61870,7 +62214,7 @@
           }
         ],
         "required": true,
-        "comment": "Ensures the `Locator` points to a [visible](./actionability.md#visible) DOM node.\n\n```js\nconst locator = page.locator('.my-element');\nawait expect(locator).toBeVisible();\n```\n\n```java\nassertThat(page.locator(\".my-element\")).isVisible();\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator('.my-element')\nawait expect(locator).to_be_visible()\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator('.my-element')\nexpect(locator).to_be_visible()\n```\n\n```csharp\nvar locator = Page.Locator(\".my-element\");\nawait Expect(locator).ToBeVisibleAsync();\n```\n",
+        "comment": "Ensures that `Locator` points to an [attached](./actionability.md#visible) and [visible](./actionability.md#visible) DOM\nnode.\n\n```js\nconst locator = page.locator('.my-element');\nawait expect(locator).toBeVisible();\n```\n\n```java\nassertThat(page.locator(\".my-element\")).isVisible();\n```\n\n```python async\nfrom playwright.async_api import expect\n\nlocator = page.locator('.my-element')\nawait expect(locator).to_be_visible()\n```\n\n```python sync\nfrom playwright.sync_api import expect\n\nlocator = page.locator('.my-element')\nexpect(locator).to_be_visible()\n```\n\n```csharp\nvar locator = Page.Locator(\".my-element\");\nawait Expect(locator).ToBeVisibleAsync();\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "toBeVisible",
@@ -61947,6 +62291,25 @@
                   "deprecated": false,
                   "async": false,
                   "alias": "timeout",
+                  "overloadIndex": 0,
+                  "paramOrOption": null
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "experimental": false,
+                  "since": "v1.26",
+                  "name": "visible",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [],
+                  "required": false,
+                  "comment": "",
+                  "deprecated": false,
+                  "async": false,
+                  "alias": "visible",
                   "overloadIndex": 0,
                   "paramOrOption": null
                 }
@@ -68446,11 +68809,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -68867,11 +69230,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -69439,11 +69802,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -69755,11 +70118,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -70012,11 +70375,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -70499,15 +70862,10 @@
                     {
                       "type": "text",
                       "text": "Emulates `'forced-colors'` media feature, supported values are `'active'` and `'none'`. Passing `null` disables forced colors emulation."
-                    },
-                    {
-                      "type": "note",
-                      "noteType": "note",
-                      "text": "It's not supported in WebKit, see [here](https://bugs.webkit.org/show_bug.cgi?id=225281) in their issue tracker."
                     }
                   ],
                   "required": false,
-                  "comment": "Emulates `'forced-colors'` media feature, supported values are `'active'` and `'none'`. Passing `null` disables forced\ncolors emulation.\n\n> NOTE: It's not supported in WebKit, see [here](https://bugs.webkit.org/show_bug.cgi?id=225281) in their issue tracker.",
+                  "comment": "Emulates `'forced-colors'` media feature, supported values are `'active'` and `'none'`. Passing `null` disables forced\ncolors emulation.",
                   "deprecated": false,
                   "async": false,
                   "alias": "forcedColors",
@@ -70977,11 +71335,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -72515,11 +72873,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -72635,11 +72993,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -73327,11 +73685,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -74131,11 +74489,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -74272,11 +74630,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -74389,11 +74747,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -74510,11 +74868,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -74627,11 +74985,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -74769,11 +75127,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -74886,11 +75244,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -75003,11 +75361,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -75120,11 +75478,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -75237,11 +75595,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -76706,11 +77064,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -76847,11 +77205,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -78548,11 +78906,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -79040,11 +79398,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -79749,11 +80107,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -80276,11 +80634,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -80425,11 +80783,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -80573,7 +80931,7 @@
             "type": "code",
             "lines": [
               "await page.TypeAsync(\"#mytextarea\", \"hello\"); // types instantly",
-              "await page.TypeAsync(\"#mytextarea\", \"world\"); // types slower, like a user"
+              "await page.TypeAsync(\"#mytextarea\", \"world\", new() { Delay = 100 }); // types slower, like a user"
             ],
             "codeLang": "csharp"
           },
@@ -80583,7 +80941,7 @@
           }
         ],
         "required": true,
-        "comment": "Sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text. `page.type` can be used to send\nfine-grained keyboard events. To fill values in form fields, use [`method: Page.fill`].\n\nTo press a special key, like `Control` or `ArrowDown`, use [`method: Keyboard.press`].\n\n```js\nawait page.type('#mytextarea', 'Hello'); // Types instantly\nawait page.type('#mytextarea', 'World', {delay: 100}); // Types slower, like a user\n```\n\n```java\n// Types instantly\npage.type(\"#mytextarea\", \"Hello\");\n// Types slower, like a user\npage.type(\"#mytextarea\", \"World\", new Page.TypeOptions().setDelay(100));\n```\n\n```python async\nawait page.type(\"#mytextarea\", \"hello\") # types instantly\nawait page.type(\"#mytextarea\", \"world\", delay=100) # types slower, like a user\n```\n\n```python sync\npage.type(\"#mytextarea\", \"hello\") # types instantly\npage.type(\"#mytextarea\", \"world\", delay=100) # types slower, like a user\n```\n\n```csharp\nawait page.TypeAsync(\"#mytextarea\", \"hello\"); // types instantly\nawait page.TypeAsync(\"#mytextarea\", \"world\"); // types slower, like a user\n```\n\nShortcut for main frame's [`method: Frame.type`].",
+        "comment": "Sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text. `page.type` can be used to send\nfine-grained keyboard events. To fill values in form fields, use [`method: Page.fill`].\n\nTo press a special key, like `Control` or `ArrowDown`, use [`method: Keyboard.press`].\n\n```js\nawait page.type('#mytextarea', 'Hello'); // Types instantly\nawait page.type('#mytextarea', 'World', {delay: 100}); // Types slower, like a user\n```\n\n```java\n// Types instantly\npage.type(\"#mytextarea\", \"Hello\");\n// Types slower, like a user\npage.type(\"#mytextarea\", \"World\", new Page.TypeOptions().setDelay(100));\n```\n\n```python async\nawait page.type(\"#mytextarea\", \"hello\") # types instantly\nawait page.type(\"#mytextarea\", \"world\", delay=100) # types slower, like a user\n```\n\n```python sync\npage.type(\"#mytextarea\", \"hello\") # types instantly\npage.type(\"#mytextarea\", \"world\", delay=100) # types slower, like a user\n```\n\n```csharp\nawait page.TypeAsync(\"#mytextarea\", \"hello\"); // types instantly\nawait page.TypeAsync(\"#mytextarea\", \"world\", new() { Delay = 100 }); // types slower, like a user\n```\n\nShortcut for main frame's [`method: Frame.type`].",
         "deprecated": false,
         "async": true,
         "alias": "type",
@@ -80708,11 +81066,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -80989,11 +81347,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -84391,7 +84749,7 @@
           {
             "type": "note",
             "noteType": "note",
-            "text": "Playwright automatically waits for element to be ready before performing an action. Using `Locator` objects and web-first assertions make the code wait-for-selector-free."
+            "text": "Playwright automatically waits for element to be ready before performing an action. Using `Locator` objects and web-first assertions makes the code wait-for-selector-free."
           },
           {
             "type": "text",
@@ -84515,7 +84873,7 @@
           }
         ],
         "required": true,
-        "comment": "Returns when element specified by selector satisfies `state` option. Returns `null` if waiting for `hidden` or\n`detached`.\n\n> NOTE: Playwright automatically waits for element to be ready before performing an action. Using `Locator` objects and\nweb-first assertions make the code wait-for-selector-free.\n\nWait for the `selector` to satisfy `state` option (either appear/disappear from dom, or become visible/hidden). If at\nthe moment of calling the method `selector` already satisfies the condition, the method will return immediately. If the\nselector doesn't satisfy the condition for the `timeout` milliseconds, the function will throw.\n\nThis method works across navigations:\n\n```js\nconst { chromium } = require('playwright');  // Or 'firefox' or 'webkit'.\n\n(async () => {\n  const browser = await chromium.launch();\n  const page = await browser.newPage();\n  for (let currentURL of ['https://google.com', 'https://bbc.com']) {\n    await page.goto(currentURL);\n    const element = await page.waitForSelector('img');\n    console.log('Loaded image: ' + await element.getAttribute('src'));\n  }\n  await browser.close();\n})();\n```\n\n```java\nimport com.microsoft.playwright.*;\n\npublic class Example {\n  public static void main(String[] args) {\n    try (Playwright playwright = Playwright.create()) {\n      BrowserType chromium = playwright.chromium();\n      Browser browser = chromium.launch();\n      Page page = browser.newPage();\n      for (String currentURL : Arrays.asList(\"https://google.com\", \"https://bbc.com\")) {\n        page.navigate(currentURL);\n        ElementHandle element = page.waitForSelector(\"img\");\n        System.out.println(\"Loaded image: \" + element.getAttribute(\"src\"));\n      }\n      browser.close();\n    }\n  }\n}\n```\n\n```python async\nimport asyncio\nfrom playwright.async_api import async_playwright\n\nasync def run(playwright):\n    chromium = playwright.chromium\n    browser = await chromium.launch()\n    page = await browser.new_page()\n    for current_url in [\"https://google.com\", \"https://bbc.com\"]:\n        await page.goto(current_url, wait_until=\"domcontentloaded\")\n        element = await page.wait_for_selector(\"img\")\n        print(\"Loaded image: \" + str(await element.get_attribute(\"src\")))\n    await browser.close()\n\nasync def main():\n    async with async_playwright() as playwright:\n        await run(playwright)\nasyncio.run(main())\n```\n\n```python sync\nfrom playwright.sync_api import sync_playwright\n\ndef run(playwright):\n    chromium = playwright.chromium\n    browser = chromium.launch()\n    page = browser.new_page()\n    for current_url in [\"https://google.com\", \"https://bbc.com\"]:\n        page.goto(current_url, wait_until=\"domcontentloaded\")\n        element = page.wait_for_selector(\"img\")\n        print(\"Loaded image: \" + str(element.get_attribute(\"src\")))\n    browser.close()\n\nwith sync_playwright() as playwright:\n    run(playwright)\n```\n\n```csharp\nusing Microsoft.Playwright;\nusing System;\nusing System.Threading.Tasks;\n\nclass FrameExamples\n{\n  public static async Task Images()\n  {\n      using var playwright = await Playwright.CreateAsync();\n      await using var browser = await playwright.Chromium.LaunchAsync();\n      var page = await browser.NewPageAsync();\n\n      foreach (var currentUrl in new[] { \"https://www.google.com\", \"https://bbc.com\" })\n      {\n          await page.GotoAsync(currentUrl);\n          var element = await page.WaitForSelectorAsync(\"img\");\n          Console.WriteLine($\"Loaded image: {await element.GetAttributeAsync(\"src\")}\");\n      }\n\n      await browser.CloseAsync();\n  }\n}\n```\n",
+        "comment": "Returns when element specified by selector satisfies `state` option. Returns `null` if waiting for `hidden` or\n`detached`.\n\n> NOTE: Playwright automatically waits for element to be ready before performing an action. Using `Locator` objects and\nweb-first assertions makes the code wait-for-selector-free.\n\nWait for the `selector` to satisfy `state` option (either appear/disappear from dom, or become visible/hidden). If at\nthe moment of calling the method `selector` already satisfies the condition, the method will return immediately. If the\nselector doesn't satisfy the condition for the `timeout` milliseconds, the function will throw.\n\nThis method works across navigations:\n\n```js\nconst { chromium } = require('playwright');  // Or 'firefox' or 'webkit'.\n\n(async () => {\n  const browser = await chromium.launch();\n  const page = await browser.newPage();\n  for (let currentURL of ['https://google.com', 'https://bbc.com']) {\n    await page.goto(currentURL);\n    const element = await page.waitForSelector('img');\n    console.log('Loaded image: ' + await element.getAttribute('src'));\n  }\n  await browser.close();\n})();\n```\n\n```java\nimport com.microsoft.playwright.*;\n\npublic class Example {\n  public static void main(String[] args) {\n    try (Playwright playwright = Playwright.create()) {\n      BrowserType chromium = playwright.chromium();\n      Browser browser = chromium.launch();\n      Page page = browser.newPage();\n      for (String currentURL : Arrays.asList(\"https://google.com\", \"https://bbc.com\")) {\n        page.navigate(currentURL);\n        ElementHandle element = page.waitForSelector(\"img\");\n        System.out.println(\"Loaded image: \" + element.getAttribute(\"src\"));\n      }\n      browser.close();\n    }\n  }\n}\n```\n\n```python async\nimport asyncio\nfrom playwright.async_api import async_playwright\n\nasync def run(playwright):\n    chromium = playwright.chromium\n    browser = await chromium.launch()\n    page = await browser.new_page()\n    for current_url in [\"https://google.com\", \"https://bbc.com\"]:\n        await page.goto(current_url, wait_until=\"domcontentloaded\")\n        element = await page.wait_for_selector(\"img\")\n        print(\"Loaded image: \" + str(await element.get_attribute(\"src\")))\n    await browser.close()\n\nasync def main():\n    async with async_playwright() as playwright:\n        await run(playwright)\nasyncio.run(main())\n```\n\n```python sync\nfrom playwright.sync_api import sync_playwright\n\ndef run(playwright):\n    chromium = playwright.chromium\n    browser = chromium.launch()\n    page = browser.new_page()\n    for current_url in [\"https://google.com\", \"https://bbc.com\"]:\n        page.goto(current_url, wait_until=\"domcontentloaded\")\n        element = page.wait_for_selector(\"img\")\n        print(\"Loaded image: \" + str(element.get_attribute(\"src\")))\n    browser.close()\n\nwith sync_playwright() as playwright:\n    run(playwright)\n```\n\n```csharp\nusing Microsoft.Playwright;\nusing System;\nusing System.Threading.Tasks;\n\nclass FrameExamples\n{\n  public static async Task Images()\n  {\n      using var playwright = await Playwright.CreateAsync();\n      await using var browser = await playwright.Chromium.LaunchAsync();\n      var page = await browser.NewPageAsync();\n\n      foreach (var currentUrl in new[] { \"https://www.google.com\", \"https://bbc.com\" })\n      {\n          await page.GotoAsync(currentUrl);\n          var element = await page.WaitForSelectorAsync(\"img\");\n          Console.WriteLine($\"Loaded image: {await element.GetAttributeAsync(\"src\")}\");\n      }\n\n      await browser.CloseAsync();\n  }\n}\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "waitForSelector",
@@ -84626,11 +84984,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one element, the call throws an exception."
+                      "text": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one element, the call throws an exception."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more then one\nelement, the call throws an exception.",
+                  "comment": "When true, the call requires selector to resolve to a single element. If given selector resolves to more than one\nelement, the call throws an exception.",
                   "deprecated": false,
                   "async": false,
                   "alias": "strict",
@@ -85742,6 +86100,7 @@
           "",
           "namespace PlaywrightTests;",
           "",
+          "[TestFixture]",
           "public class ExampleTests : PageTest",
           "{",
           "    [Test]",
@@ -85757,7 +86116,7 @@
       }
     ],
     "langs": {},
-    "comment": "The `PageAssertions` class provides assertion methods that can be used to make assertions about the `Page` state in the\ntests. A new instance of `PageAssertions` is created by calling [`method: PlaywrightAssertions.expectPage`]:\n\n```js\nimport { test, expect } from '@playwright/test';\n\ntest('navigates to login', async ({ page }) => {\n  // ...\n  await page.locator('#login').click();\n  await expect(page).toHaveURL(/.*\\/login/);\n});\n```\n\n```java\n...\nimport static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;\n\npublic class TestPage {\n  ...\n  @Test\n  void navigatesToLoginPage() {\n    ...\n    page.locator(\"#login\").click();\n    assertThat(page).hasURL(Pattern.compile(\".*/login\"));\n  }\n}\n```\n\n```python async\nimport re\nfrom playwright.async_api import Page, expect\n\nasync def test_navigates_to_login_page(page: Page) -> None:\n    # ..\n    await page.locator(\"#login\").click()\n    await expect(page).to_have_url(re.compile(r\".*/login\"))\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import Page, expect\n\ndef test_navigates_to_login_page(page: Page) -> None:\n    # ..\n    page.locator(\"#login\").click()\n    expect(page).to_have_url(re.compile(r\".*/login\"))\n```\n\n```csharp\nusing System.Text.RegularExpressions;\nusing System.Threading.Tasks;\nusing Microsoft.Playwright.NUnit;\nusing NUnit.Framework;\n\nnamespace PlaywrightTests;\n\npublic class ExampleTests : PageTest\n{\n    [Test]\n    public async Task NavigatetoLoginPage()\n    {\n        // ..\n        await Page.Locator(\"#login\").ClickAsync();\n        await Expect(Page.Locator(\"div#foobar\")).ToHaveURL(new Regex(\".*/login\"));\n    }\n}\n```\n",
+    "comment": "The `PageAssertions` class provides assertion methods that can be used to make assertions about the `Page` state in the\ntests. A new instance of `PageAssertions` is created by calling [`method: PlaywrightAssertions.expectPage`]:\n\n```js\nimport { test, expect } from '@playwright/test';\n\ntest('navigates to login', async ({ page }) => {\n  // ...\n  await page.locator('#login').click();\n  await expect(page).toHaveURL(/.*\\/login/);\n});\n```\n\n```java\n...\nimport static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;\n\npublic class TestPage {\n  ...\n  @Test\n  void navigatesToLoginPage() {\n    ...\n    page.locator(\"#login\").click();\n    assertThat(page).hasURL(Pattern.compile(\".*/login\"));\n  }\n}\n```\n\n```python async\nimport re\nfrom playwright.async_api import Page, expect\n\nasync def test_navigates_to_login_page(page: Page) -> None:\n    # ..\n    await page.locator(\"#login\").click()\n    await expect(page).to_have_url(re.compile(r\".*/login\"))\n```\n\n```python sync\nimport re\nfrom playwright.sync_api import Page, expect\n\ndef test_navigates_to_login_page(page: Page) -> None:\n    # ..\n    page.locator(\"#login\").click()\n    expect(page).to_have_url(re.compile(r\".*/login\"))\n```\n\n```csharp\nusing System.Text.RegularExpressions;\nusing System.Threading.Tasks;\nusing Microsoft.Playwright.NUnit;\nusing NUnit.Framework;\n\nnamespace PlaywrightTests;\n\n[TestFixture]\npublic class ExampleTests : PageTest\n{\n    [Test]\n    public async Task NavigatetoLoginPage()\n    {\n        // ..\n        await Page.Locator(\"#login\").ClickAsync();\n        await Expect(Page.Locator(\"div#foobar\")).ToHaveURL(new Regex(\".*/login\"));\n    }\n}\n```\n",
     "members": [
       {
         "kind": "property",
@@ -88268,6 +88627,7 @@
           "",
           "namespace PlaywrightTests;",
           "",
+          "[TestFixture]",
           "public class ExampleTests : PageTest",
           "{",
           "    [Test]",
@@ -88290,16 +88650,11 @@
       }
     ],
     "langs": {},
-    "comment": "Playwright gives you Web-First Assertions with convenience methods for creating assertions that will wait and retry\nuntil the expected condition is met.\n\nConsider the following example:\n\n```js\nimport { test, expect } from '@playwright/test';\n\ntest('status becomes submitted', async ({ page }) => {\n  // ...\n  await page.locator('#submit-button').click()\n  await expect(page.locator('.status')).toHaveText('Submitted');\n});\n```\n\n```python async\nfrom playwright.async_api import Page, expect\n\nasync def test_status_becomes_submitted(page: Page) -> None:\n    # ..\n    await page.locator(\"#submit-button\").click()\n    await expect(page.locator(\".status\")).to_have_text(\"Submitted\")\n```\n\n```python sync\nfrom playwright.sync_api import Page, expect\n\ndef test_status_becomes_submitted(page: Page) -> None:\n    # ..\n    page.locator(\"#submit-button\").click()\n    expect(page.locator(\".status\")).to_have_text(\"Submitted\")\n```\n\n```java\n...\nimport static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;\n\npublic class TestExample {\n  ...\n  @Test\n  void statusBecomesSubmitted() {\n    ...\n    page.locator(\"#submit-button\").click();\n    assertThat(page.locator(\".status\")).hasText(\"Submitted\");\n  }\n}\n```\n\n```csharp\nusing System.Threading.Tasks;\nusing Microsoft.Playwright.NUnit;\nusing NUnit.Framework;\n\nnamespace PlaywrightTests;\n\npublic class ExampleTests : PageTest\n{\n    [Test]\n    public async Task StatusBecomesSubmitted()\n    {\n        await Page.Locator(\"#submit-button\").ClickAsync();\n        await Expect(Page.Locator(\".status\")).ToHaveTextAsync(\"Submitted\");\n    }\n}\n```\n\nPlaywright will be re-testing the node with the selector `.status` until fetched Node has the `\"Submitted\"` text. It\nwill be re-fetching the node and checking it over and over, until the condition is met or until the timeout is reached.\nYou can pass this timeout as an option.\n\nBy default, the timeout for assertions is set to 5 seconds.",
+    "comment": "Playwright gives you Web-First Assertions with convenience methods for creating assertions that will wait and retry\nuntil the expected condition is met.\n\nConsider the following example:\n\n```js\nimport { test, expect } from '@playwright/test';\n\ntest('status becomes submitted', async ({ page }) => {\n  // ...\n  await page.locator('#submit-button').click()\n  await expect(page.locator('.status')).toHaveText('Submitted');\n});\n```\n\n```python async\nfrom playwright.async_api import Page, expect\n\nasync def test_status_becomes_submitted(page: Page) -> None:\n    # ..\n    await page.locator(\"#submit-button\").click()\n    await expect(page.locator(\".status\")).to_have_text(\"Submitted\")\n```\n\n```python sync\nfrom playwright.sync_api import Page, expect\n\ndef test_status_becomes_submitted(page: Page) -> None:\n    # ..\n    page.locator(\"#submit-button\").click()\n    expect(page.locator(\".status\")).to_have_text(\"Submitted\")\n```\n\n```java\n...\nimport static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;\n\npublic class TestExample {\n  ...\n  @Test\n  void statusBecomesSubmitted() {\n    ...\n    page.locator(\"#submit-button\").click();\n    assertThat(page.locator(\".status\")).hasText(\"Submitted\");\n  }\n}\n```\n\n```csharp\nusing System.Threading.Tasks;\nusing Microsoft.Playwright.NUnit;\nusing NUnit.Framework;\n\nnamespace PlaywrightTests;\n\n[TestFixture]\npublic class ExampleTests : PageTest\n{\n    [Test]\n    public async Task StatusBecomesSubmitted()\n    {\n        await Page.Locator(\"#submit-button\").ClickAsync();\n        await Expect(Page.Locator(\".status\")).ToHaveTextAsync(\"Submitted\");\n    }\n}\n```\n\nPlaywright will be re-testing the node with the selector `.status` until fetched Node has the `\"Submitted\"` text. It\nwill be re-fetching the node and checking it over and over, until the condition is met or until the timeout is reached.\nYou can pass this timeout as an option.\n\nBy default, the timeout for assertions is set to 5 seconds.",
     "members": [
       {
         "kind": "method",
         "langs": {
-          "only": [
-            "js",
-            "java",
-            "python"
-          ],
           "aliases": {
             "java": "assertThat",
             "python": "expect",
@@ -90296,6 +90651,51 @@
             "deprecated": false,
             "async": false,
             "alias": "ignoreHTTPSErrors",
+            "overloadIndex": 0,
+            "paramOrOption": null
+          }
+        ]
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "experimental": false,
+        "since": "v1.26",
+        "name": "setMaxRedirects",
+        "type": {
+          "name": "RequestOptions",
+          "expression": "[RequestOptions]"
+        },
+        "spec": [],
+        "required": true,
+        "comment": "",
+        "deprecated": false,
+        "async": false,
+        "alias": "setMaxRedirects",
+        "overloadIndex": 0,
+        "paramOrOption": null,
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "experimental": false,
+            "since": "v1.26",
+            "name": "maxRedirects",
+            "type": {
+              "name": "int",
+              "expression": "[int]"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Maximum number of request redirects that will be followed automatically. An error will be thrown if the number is exceeded. Defaults to `20`. Pass `0` to not follow redirects."
+              }
+            ],
+            "required": true,
+            "comment": "Maximum number of request redirects that will be followed automatically. An error will be thrown if the number is\nexceeded. Defaults to `20`. Pass `0` to not follow redirects.",
+            "deprecated": false,
+            "async": false,
+            "alias": "maxRedirects",
             "overloadIndex": 0,
             "paramOrOption": null
           }
@@ -93096,7 +93496,7 @@
           {
             "type": "code",
             "lines": [
-              "// Script that evaluates to a selector engine instance.",
+              "// Script that evaluates to a selector engine instance. The script is evaluated in the page context.",
               "String createTagNameEngine = \"{\\n\" +",
               "  \"  // Returns the first element matching given selector in the root's subtree.\\n\" +",
               "  \"  query(root, selector) {\\n\" +",
@@ -93206,7 +93606,7 @@
             "type": "code",
             "lines": [
               "using var playwright = await Playwright.CreateAsync();",
-              "// Script that evaluates to a selector engine instance.",
+              "// Script that evaluates to a selector engine instance. The script is evaluated in the page context.",
               "await playwright.Selectors.RegisterAsync(\"tag\", @\"{",
               "// Returns the first element matching given selector in the root's subtree.",
               "query(root, selector) {",
@@ -93232,7 +93632,7 @@
           }
         ],
         "required": true,
-        "comment": "An example of registering selector engine that queries elements based on a tag name:\n\n```js\nconst { selectors, firefox } = require('playwright');  // Or 'chromium' or 'webkit'.\n\n(async () => {\n  // Must be a function that evaluates to a selector engine instance.\n  const createTagNameEngine = () => ({\n    // Returns the first element matching given selector in the root's subtree.\n    query(root, selector) {\n      return root.querySelector(selector);\n    },\n\n    // Returns all elements matching given selector in the root's subtree.\n    queryAll(root, selector) {\n      return Array.from(root.querySelectorAll(selector));\n    }\n  });\n\n  // Register the engine. Selectors will be prefixed with \"tag=\".\n  await selectors.register('tag', createTagNameEngine);\n\n  const browser = await firefox.launch();\n  const page = await browser.newPage();\n  await page.setContent(`<div><button>Click me</button></div>`);\n\n  // Use the selector prefixed with its name.\n  const button = page.locator('tag=button');\n  // Combine it with other selector engines.\n  await page.locator('tag=div >> text=\"Click me\"').click();\n  // Can use it in any methods supporting selectors.\n  const buttonCount = await page.locator('tag=button').count();\n\n  await browser.close();\n})();\n```\n\n```java\n// Script that evaluates to a selector engine instance.\nString createTagNameEngine = \"{\\n\" +\n  \"  // Returns the first element matching given selector in the root's subtree.\\n\" +\n  \"  query(root, selector) {\\n\" +\n  \"    return root.querySelector(selector);\\n\" +\n  \"  },\\n\" +\n  \"  // Returns all elements matching given selector in the root's subtree.\\n\" +\n  \"  queryAll(root, selector) {\\n\" +\n  \"    return Array.from(root.querySelectorAll(selector));\\n\" +\n  \"  }\\n\" +\n  \"}\";\n// Register the engine. Selectors will be prefixed with \"tag=\".\nplaywright.selectors().register(\"tag\", createTagNameEngine);\nBrowser browser = playwright.firefox().launch();\nPage page = browser.newPage();\npage.setContent(\"<div><button>Click me</button></div>\");\n// Use the selector prefixed with its name.\nLocator button = page.locator(\"tag=button\");\n// Combine it with other selector engines.\npage.locator(\"tag=div >> text=\\\"Click me\\\"\").click();\n// Can use it in any methods supporting selectors.\nint buttonCount = (int) page.locator(\"tag=button\").count();\nbrowser.close();\n```\n\n```python async\nimport asyncio\nfrom playwright.async_api import async_playwright\n\nasync def run(playwright):\n    tag_selector = \"\"\"\n      {\n          // Returns the first element matching given selector in the root's subtree.\n          query(root, selector) {\n              return root.querySelector(selector);\n          },\n          // Returns all elements matching given selector in the root's subtree.\n          queryAll(root, selector) {\n              return Array.from(root.querySelectorAll(selector));\n          }\n      }\"\"\"\n\n    # Register the engine. Selectors will be prefixed with \"tag=\".\n    await playwright.selectors.register(\"tag\", tag_selector)\n    browser = await playwright.chromium.launch()\n    page = await browser.new_page()\n    await page.set_content('<div><button>Click me</button></div>')\n\n    # Use the selector prefixed with its name.\n    button = await page.query_selector('tag=button')\n    # Combine it with other selector engines.\n    await page.locator('tag=div >> text=\"Click me\"').click()\n    # Can use it in any methods supporting selectors.\n    button_count = await page.locator('tag=button').count()\n    print(button_count)\n    await browser.close()\n\nasync def main():\n    async with async_playwright() as playwright:\n        await run(playwright)\n\nasyncio.run(main())\n```\n\n```python sync\nfrom playwright.sync_api import sync_playwright\n\ndef run(playwright):\n    tag_selector = \"\"\"\n      {\n          // Returns the first element matching given selector in the root's subtree.\n          query(root, selector) {\n              return root.querySelector(selector);\n          },\n          // Returns all elements matching given selector in the root's subtree.\n          queryAll(root, selector) {\n              return Array.from(root.querySelectorAll(selector));\n          }\n      }\"\"\"\n\n    # Register the engine. Selectors will be prefixed with \"tag=\".\n    playwright.selectors.register(\"tag\", tag_selector)\n    browser = playwright.chromium.launch()\n    page = browser.new_page()\n    page.set_content('<div><button>Click me</button></div>')\n\n    # Use the selector prefixed with its name.\n    button = page.locator('tag=button')\n    # Combine it with other selector engines.\n    page.locator('tag=div >> text=\"Click me\"').click()\n    # Can use it in any methods supporting selectors.\n    button_count = page.locator('tag=button').count()\n    print(button_count)\n    browser.close()\n\nwith sync_playwright() as playwright:\n    run(playwright)\n```\n\n```csharp\nusing var playwright = await Playwright.CreateAsync();\n// Script that evaluates to a selector engine instance.\nawait playwright.Selectors.RegisterAsync(\"tag\", @\"{\n// Returns the first element matching given selector in the root's subtree.\nquery(root, selector) {\n    return root.querySelector(selector);\n  },\n  // Returns all elements matching given selector in the root's subtree.\n  queryAll(root, selector) {\n    return Array.from(root.querySelectorAll(selector));\n  }\n}\");\n\nawait using var browser = await playwright.Chromium.LaunchAsync();\nvar page = await browser.NewPageAsync();\nawait page.SetContentAsync(\"<div><button>Click me</button></div>\");\n// Use the selector prefixed with its name.\nvar button = page.Locator(\"tag=button\");\n// Combine it with other selector engines.\nawait page.Locator(\"tag=div >> text=\\\"Click me\\\"\").ClickAsync();\n// Can use it in any methods supporting selectors.\nint buttonCount = await page.Locator(\"tag=button\").CountAsync();\n```\n",
+        "comment": "An example of registering selector engine that queries elements based on a tag name:\n\n```js\nconst { selectors, firefox } = require('playwright');  // Or 'chromium' or 'webkit'.\n\n(async () => {\n  // Must be a function that evaluates to a selector engine instance.\n  const createTagNameEngine = () => ({\n    // Returns the first element matching given selector in the root's subtree.\n    query(root, selector) {\n      return root.querySelector(selector);\n    },\n\n    // Returns all elements matching given selector in the root's subtree.\n    queryAll(root, selector) {\n      return Array.from(root.querySelectorAll(selector));\n    }\n  });\n\n  // Register the engine. Selectors will be prefixed with \"tag=\".\n  await selectors.register('tag', createTagNameEngine);\n\n  const browser = await firefox.launch();\n  const page = await browser.newPage();\n  await page.setContent(`<div><button>Click me</button></div>`);\n\n  // Use the selector prefixed with its name.\n  const button = page.locator('tag=button');\n  // Combine it with other selector engines.\n  await page.locator('tag=div >> text=\"Click me\"').click();\n  // Can use it in any methods supporting selectors.\n  const buttonCount = await page.locator('tag=button').count();\n\n  await browser.close();\n})();\n```\n\n```java\n// Script that evaluates to a selector engine instance. The script is evaluated in the page context.\nString createTagNameEngine = \"{\\n\" +\n  \"  // Returns the first element matching given selector in the root's subtree.\\n\" +\n  \"  query(root, selector) {\\n\" +\n  \"    return root.querySelector(selector);\\n\" +\n  \"  },\\n\" +\n  \"  // Returns all elements matching given selector in the root's subtree.\\n\" +\n  \"  queryAll(root, selector) {\\n\" +\n  \"    return Array.from(root.querySelectorAll(selector));\\n\" +\n  \"  }\\n\" +\n  \"}\";\n// Register the engine. Selectors will be prefixed with \"tag=\".\nplaywright.selectors().register(\"tag\", createTagNameEngine);\nBrowser browser = playwright.firefox().launch();\nPage page = browser.newPage();\npage.setContent(\"<div><button>Click me</button></div>\");\n// Use the selector prefixed with its name.\nLocator button = page.locator(\"tag=button\");\n// Combine it with other selector engines.\npage.locator(\"tag=div >> text=\\\"Click me\\\"\").click();\n// Can use it in any methods supporting selectors.\nint buttonCount = (int) page.locator(\"tag=button\").count();\nbrowser.close();\n```\n\n```python async\nimport asyncio\nfrom playwright.async_api import async_playwright\n\nasync def run(playwright):\n    tag_selector = \"\"\"\n      {\n          // Returns the first element matching given selector in the root's subtree.\n          query(root, selector) {\n              return root.querySelector(selector);\n          },\n          // Returns all elements matching given selector in the root's subtree.\n          queryAll(root, selector) {\n              return Array.from(root.querySelectorAll(selector));\n          }\n      }\"\"\"\n\n    # Register the engine. Selectors will be prefixed with \"tag=\".\n    await playwright.selectors.register(\"tag\", tag_selector)\n    browser = await playwright.chromium.launch()\n    page = await browser.new_page()\n    await page.set_content('<div><button>Click me</button></div>')\n\n    # Use the selector prefixed with its name.\n    button = await page.query_selector('tag=button')\n    # Combine it with other selector engines.\n    await page.locator('tag=div >> text=\"Click me\"').click()\n    # Can use it in any methods supporting selectors.\n    button_count = await page.locator('tag=button').count()\n    print(button_count)\n    await browser.close()\n\nasync def main():\n    async with async_playwright() as playwright:\n        await run(playwright)\n\nasyncio.run(main())\n```\n\n```python sync\nfrom playwright.sync_api import sync_playwright\n\ndef run(playwright):\n    tag_selector = \"\"\"\n      {\n          // Returns the first element matching given selector in the root's subtree.\n          query(root, selector) {\n              return root.querySelector(selector);\n          },\n          // Returns all elements matching given selector in the root's subtree.\n          queryAll(root, selector) {\n              return Array.from(root.querySelectorAll(selector));\n          }\n      }\"\"\"\n\n    # Register the engine. Selectors will be prefixed with \"tag=\".\n    playwright.selectors.register(\"tag\", tag_selector)\n    browser = playwright.chromium.launch()\n    page = browser.new_page()\n    page.set_content('<div><button>Click me</button></div>')\n\n    # Use the selector prefixed with its name.\n    button = page.locator('tag=button')\n    # Combine it with other selector engines.\n    page.locator('tag=div >> text=\"Click me\"').click()\n    # Can use it in any methods supporting selectors.\n    button_count = page.locator('tag=button').count()\n    print(button_count)\n    browser.close()\n\nwith sync_playwright() as playwright:\n    run(playwright)\n```\n\n```csharp\nusing var playwright = await Playwright.CreateAsync();\n// Script that evaluates to a selector engine instance. The script is evaluated in the page context.\nawait playwright.Selectors.RegisterAsync(\"tag\", @\"{\n// Returns the first element matching given selector in the root's subtree.\nquery(root, selector) {\n    return root.querySelector(selector);\n  },\n  // Returns all elements matching given selector in the root's subtree.\n  queryAll(root, selector) {\n    return Array.from(root.querySelectorAll(selector));\n  }\n}\");\n\nawait using var browser = await playwright.Chromium.LaunchAsync();\nvar page = await browser.NewPageAsync();\nawait page.SetContentAsync(\"<div><button>Click me</button></div>\");\n// Use the selector prefixed with its name.\nvar button = page.Locator(\"tag=button\");\n// Combine it with other selector engines.\nawait page.Locator(\"tag=div >> text=\\\"Click me\\\"\").ClickAsync();\n// Can use it in any methods supporting selectors.\nint buttonCount = await page.Locator(\"tag=button\").CountAsync();\n```\n",
         "deprecated": false,
         "async": true,
         "alias": "register",
@@ -93344,11 +93744,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "Script that evaluates to a selector engine instance."
+                "text": "Script that evaluates to a selector engine instance. The script is evaluated in the page context."
               }
             ],
             "required": true,
-            "comment": "Script that evaluates to a selector engine instance.",
+            "comment": "Script that evaluates to a selector engine instance. The script is evaluated in the page context.",
             "deprecated": false,
             "async": false,
             "alias": "script",
@@ -93383,11 +93783,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "Script that evaluates to a selector engine instance."
+                "text": "Script that evaluates to a selector engine instance. The script is evaluated in the page context."
               }
             ],
             "required": true,
-            "comment": "Script that evaluates to a selector engine instance.",
+            "comment": "Script that evaluates to a selector engine instance. The script is evaluated in the page context.",
             "deprecated": false,
             "async": false,
             "alias": "script",
@@ -93447,11 +93847,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Script that evaluates to a selector engine instance."
+                      "text": "Script that evaluates to a selector engine instance. The script is evaluated in the page context."
                     }
                   ],
                   "required": false,
-                  "comment": "Script that evaluates to a selector engine instance.",
+                  "comment": "Script that evaluates to a selector engine instance. The script is evaluated in the page context.",
                   "deprecated": false,
                   "async": false,
                   "alias": "path",
@@ -93509,11 +93909,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Script that evaluates to a selector engine instance."
+                      "text": "Script that evaluates to a selector engine instance. The script is evaluated in the page context."
                     }
                   ],
                   "required": false,
-                  "comment": "Script that evaluates to a selector engine instance.",
+                  "comment": "Script that evaluates to a selector engine instance. The script is evaluated in the page context.",
                   "deprecated": false,
                   "async": false,
                   "alias": "script",

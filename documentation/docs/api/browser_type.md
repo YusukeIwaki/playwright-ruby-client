@@ -37,6 +37,15 @@ The default browser context is accessible via [Browser#contexts](./browser#conte
 
 > NOTE: Connecting over the Chrome DevTools Protocol is only supported for Chromium-based browsers.
 
+```python sync title=example_7ae1379c9f44409ef613cbabe79f870ce054522aa0aaa84078f853257efb38f2.py
+browser = playwright.chromium.connect_over_cdp("http://localhost:9222")
+default_context = browser.contexts[0]
+page = default_context.pages[0]
+
+```
+
+
+
 ## executable_path
 
 ```
