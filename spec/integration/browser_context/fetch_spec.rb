@@ -102,6 +102,29 @@ RSpec.describe 'fetch', sinatra: true do
     end
   end
 
+  it 'should throw an error when maxRedirects is exceeded' do
+    sinatra.get('/redirect1') { redirect '/redirect2' }
+    sinatra.get('/redirect2') { redirect '/redirect3' }
+    sinatra.get('/redirect3') { redirect '/redirect4' }
+    sinatra.get('/redirect4') { redirect '/simple.json' }
+
+    with_context do |context|
+      expect {
+        context.request.get("#{server_prefix}/redirect1", maxRedirects: 3)
+      }.to raise_error(/Max redirect count exceeded/)
+    end
+  end
+
+  it 'should not follow redirects when maxRedirects is set to 0' do
+    sinatra.get('/redirect1') { redirect '/simple.json' }
+
+    with_context do |context|
+      response = context.request.get("#{server_prefix}/redirect1", maxRedirects: 0)
+      expect(response.headers['location']).to include('/simple.json')
+      expect(response.status).to eq(302)
+    end
+  end
+
   it 'should work with http credentials' do
     sinatra.use Rack::Auth::Basic do |username, password|
       username == 'user' && password == 'pass'
@@ -129,8 +152,9 @@ RSpec.describe 'fetch', sinatra: true do
     end
   end
 
-  %i(delete patch post put).each do |http_method|
+  %i(delete get head patch post put).each do |http_method|
     it "#{http_method} should support post data" do
+      pending 'https://github.com/microsoft/playwright/issues/16930' if http_method == :get || http_method == :head
       promise = Concurrent::Promises.resolvable_future
       sinatra.send(http_method, '/simple.json') do
         promise.fulfill([
@@ -343,14 +367,6 @@ RSpec.describe 'fetch', sinatra: true do
       expect(multipart['first_name']).to eq('John')
       expect(multipart['last_name']).to eq('Doe')
       expect(multipart['file'][:tempfile].read).to eq("var x = 10;\r\n;console.log(x);")
-    end
-  end
-
-  it 'should throw when data passed for unsupported request' do
-    with_context do |context|
-      expect {
-        context.request.fetch(server_empty_page, method: 'GET', data: { foo: 'bar' })
-      }.to raise_error(/Method GET does not accept post data/)
     end
   end
 end

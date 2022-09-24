@@ -10,136 +10,34 @@ module Playwright
       @channel.send_message_to_server('dispose')
     end
 
-    def delete(
-          url,
-          data: nil,
-          failOnStatusCode: nil,
-          form: nil,
-          headers: nil,
-          ignoreHTTPSErrors: nil,
-          multipart: nil,
-          params: nil,
-          timeout: nil)
-      fetch(
-        url,
-        method: 'DELETE',
-        data: data,
-        failOnStatusCode: failOnStatusCode,
-        form: form,
-        headers: headers,
-        ignoreHTTPSErrors: ignoreHTTPSErrors,
-        multipart: multipart,
-        params: params,
-        timeout: timeout,
-      )
+    def delete(url, **options)
+      fetch_options = options.merge(method: 'DELETE')
+      fetch(url, **fetch_options)
     end
 
-    def head(
-          url,
-          failOnStatusCode: nil,
-          headers: nil,
-          ignoreHTTPSErrors: nil,
-          params: nil,
-          timeout: nil)
-      fetch(
-        url,
-        method: 'HEAD',
-        failOnStatusCode: failOnStatusCode,
-        headers: headers,
-        ignoreHTTPSErrors: ignoreHTTPSErrors,
-        params: params,
-        timeout: timeout,
-      )
+    def head(url, **options)
+      fetch_options = options.merge(method: 'HEAD')
+      fetch(url, **fetch_options)
     end
 
-    def get(
-          url,
-          failOnStatusCode: nil,
-          headers: nil,
-          ignoreHTTPSErrors: nil,
-          params: nil,
-          timeout: nil)
-      fetch(
-        url,
-        method: 'GET',
-        failOnStatusCode: failOnStatusCode,
-        headers: headers,
-        ignoreHTTPSErrors: ignoreHTTPSErrors,
-        params: params,
-        timeout: timeout,
-      )
+    def get(url, **options)
+      fetch_options = options.merge(method: 'GET')
+      fetch(url, **fetch_options)
     end
 
-    def patch(
-          url,
-          data: nil,
-          failOnStatusCode: nil,
-          form: nil,
-          headers: nil,
-          ignoreHTTPSErrors: nil,
-          multipart: nil,
-          params: nil,
-          timeout: nil)
-      fetch(
-        url,
-        method: 'PATCH',
-        data: data,
-        failOnStatusCode: failOnStatusCode,
-        form: form,
-        headers: headers,
-        ignoreHTTPSErrors: ignoreHTTPSErrors,
-        multipart: multipart,
-        params: params,
-        timeout: timeout,
-      )
+    def patch(url, **options)
+      fetch_options = options.merge(method: 'PATCH')
+      fetch(url, **fetch_options)
     end
 
-    def put(
-          url,
-          data: nil,
-          failOnStatusCode: nil,
-          form: nil,
-          headers: nil,
-          ignoreHTTPSErrors: nil,
-          multipart: nil,
-          params: nil,
-          timeout: nil)
-      fetch(
-        url,
-        method: 'PUT',
-        data: data,
-        failOnStatusCode: failOnStatusCode,
-        form: form,
-        headers: headers,
-        ignoreHTTPSErrors: ignoreHTTPSErrors,
-        multipart: multipart,
-        params: params,
-        timeout: timeout,
-      )
+    def put(url, **options)
+      fetch_options = options.merge(method: 'PUT')
+      fetch(url, **fetch_options)
     end
 
-    def post(
-          url,
-          data: nil,
-          failOnStatusCode: nil,
-          form: nil,
-          headers: nil,
-          ignoreHTTPSErrors: nil,
-          multipart: nil,
-          params: nil,
-          timeout: nil)
-      fetch(
-        url,
-        method: 'POST',
-        data: data,
-        failOnStatusCode: failOnStatusCode,
-        form: form,
-        headers: headers,
-        ignoreHTTPSErrors: ignoreHTTPSErrors,
-        multipart: multipart,
-        params: params,
-        timeout: timeout,
-      )
+    def post(url, **options)
+      fetch_options = options.merge(method: 'POST')
+      fetch(url, **fetch_options)
     end
 
     def fetch(
@@ -149,6 +47,7 @@ module Playwright
           form: nil,
           headers: nil,
           ignoreHTTPSErrors: nil,
+          maxRedirects: nil,
           method: nil,
           multipart: nil,
           params: nil,
@@ -159,6 +58,9 @@ module Playwright
       end
       if [data, form, multipart].compact.count > 1
         raise ArgumentError.new("Only one of 'data', 'form' or 'multipart' can be specified")
+      end
+      if maxRedirects && maxRedirects < 0
+        raise ArgumentError.new("'maxRedirects' should be greater than or equal to '0'")
       end
 
       request = urlOrRequest.is_a?(ChannelOwners::Request) ? urlOrRequest : nil
@@ -212,6 +114,7 @@ module Playwright
       fetch_params[:timeout] = timeout
       fetch_params[:failOnStatusCode] = failOnStatusCode
       fetch_params[:ignoreHTTPSErrors] = ignoreHTTPSErrors
+      fetch_params[:maxRedirects] = maxRedirects
       fetch_params.compact!
       response = @channel.send_message_to_server('fetch', fetch_params)
 
