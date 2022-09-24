@@ -13,7 +13,7 @@ const FeatureList = [
     ),
   },
   {
-    title: 'Make more relyable tests',
+    title: 'Make more reliable tests',
     Svg: require('../../static/img/undraw_dropdown_menu.svg').default,
     description: (
       <>
