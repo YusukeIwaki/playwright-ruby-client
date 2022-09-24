@@ -275,6 +275,13 @@ module ExampleCodes
     end
   end
 
+  # BrowserType#connect_over_cdp
+  def example_7ae1379c9f44409ef613cbabe79f870ce054522aa0aaa84078f853257efb38f2(playwright:)
+    browser = playwright.chromium.connect_over_cdp("http://localhost:9222")
+    default_context = browser.contexts.first
+    page = default_context.pages.first
+  end
+
   # BrowserType#launch
   def example_90d6ec37772ce92e29e8942ec516d4859264d02aa9b8b8e6f3a773318f567f90(playwright:)
     browser = playwright.chromium.launch( # or "firefox" or "webkit".
