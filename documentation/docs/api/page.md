@@ -1541,7 +1541,7 @@ Returns when element specified by selector satisfies `state` option. Returns `nu
 `detached`.
 
 > NOTE: Playwright automatically waits for element to be ready before performing an action. Using [Locator](./locator) objects and
-web-first assertions make the code wait-for-selector-free.
+web-first assertions makes the code wait-for-selector-free.
 
 Wait for the `selector` to satisfy `state` option (either appear/disappear from dom, or become visible/hidden). If at
 the moment of calling the method `selector` already satisfies the condition, the method will return immediately. If the

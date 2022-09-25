@@ -37,6 +37,14 @@ The default browser context is accessible via [Browser#contexts](./browser#conte
 
 > NOTE: Connecting over the Chrome DevTools Protocol is only supported for Chromium-based browsers.
 
+```ruby
+browser = playwright.chromium.connect_over_cdp("http://localhost:9222")
+default_context = browser.contexts.first
+page = default_context.pages.first
+```
+
+
+
 ## executable_path
 
 ```

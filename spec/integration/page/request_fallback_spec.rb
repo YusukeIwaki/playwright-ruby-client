@@ -195,7 +195,7 @@ RSpec.describe 'request#fallback', sinatra: true do
       end
 
       expect(url).to eq("#{server_prefix}/global-var.html")
-      expect(response.url).to eq("#{server_prefix}/foo")
+      expect(response.url).to eq("#{server_prefix}/global-var.html")
       expect(page.evaluate("() => window['globalVar']")).to eq(123)
     end
   end

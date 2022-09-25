@@ -47,10 +47,10 @@ module Playwright
       @url_matcher.match?(url)
     end
 
-    def async_handle(route, request)
+    def async_handle(route)
       @counter.increment
 
-      Concurrent::Promises.future { @handler.call(route, request) }.rescue do |err|
+      Concurrent::Promises.future { @handler.call(route, route.request) }.rescue do |err|
         puts err, err.backtrace
       end
     end
