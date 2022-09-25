@@ -134,7 +134,7 @@ class ExampleTest < ApplicationSystemTestCase
     @page = @playwright_page
   end
 
-  it 'can browse' do
+  test 'can browse' do
     @page.goto("/tests/#{user.id}")
     @page.wait_for_selector('input').type('hoge')
     @page.keyboard.press('Enter')
