@@ -113,7 +113,7 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     super(...)
     base_url = Capybara.current_session.server.base_url
     @playwright_browser = self.class.playwright.playwright.chromium.launch(headless: false)
-    @playwright_page = @browser.new_page(baseURL: base_url)
+    @playwright_page = @playwright_browser.new_page(baseURL: base_url)
   end
 
   def after_teardown
