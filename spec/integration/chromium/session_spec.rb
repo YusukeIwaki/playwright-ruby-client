@@ -104,7 +104,9 @@ RSpec.describe 'CDPSession' do
     got_event = false
     session.on('Target.targetCreated', -> (target) { got_event = true })
     session.send_message('Target.setDiscoverTargets', params: { discover: true })
-    expect(got_event).to eq(true)
+    browser.new_page do
+      expect(got_event).to eq(true)
+    end
     session.detach
   end
 end
