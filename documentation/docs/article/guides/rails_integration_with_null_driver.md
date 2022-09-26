@@ -108,9 +108,9 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   def self.playwright
     @playwright ||= Playwright.create(playwright_cli_executable_path: 'npx playwright')
   end
-
-  def initialize(...)
-    super(...)
+  
+  def before_setup
+    super    
     base_url = Capybara.current_session.server.base_url
     @playwright_browser = self.class.playwright.playwright.chromium.launch(headless: false)
     @playwright_page = @playwright_browser.new_page(baseURL: base_url)
