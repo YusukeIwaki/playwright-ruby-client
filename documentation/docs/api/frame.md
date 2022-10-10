@@ -400,9 +400,10 @@ When working with iframes, you can create a frame locator that will enter the if
 that iframe. Following snippet locates element with text "Submit" in the iframe with id `my-frame`, like `<iframe
 id="my-frame">`:
 
-```ruby
-locator = frame.frame_locator("#my-iframe").locator("text=Submit")
-locator.click
+```python sync title=example_7c9cfab83defacca7518fb1e95efb47bdd2a9ba0e6be836e973be19d8b4c4cb7.py
+locator = frame.frame_locator("#my-iframe").get_by_text("Submit")
+locator.click()
+
 ```
 
 
@@ -555,9 +556,11 @@ considered not visible.
 def locator(selector, has: nil, hasText: nil)
 ```
 
-The method returns an element locator that can be used to perform actions in the frame. Locator is resolved to the
-element immediately before performing an action, so a series of actions on the same locator can in fact be performed on
-different DOM elements. That would happen if the DOM structure between those actions has changed.
+The method returns an element locator that can be used to perform actions on this page / frame. Locator is resolved to
+the element immediately before performing an action, so a series of actions on the same locator can in fact be performed
+on different DOM elements. That would happen if the DOM structure between those actions has changed.
+
+[Learn more about locators](https://playwright.dev/python/docs/locators).
 
 [Learn more about locators](https://playwright.dev/python/docs/locators).
 

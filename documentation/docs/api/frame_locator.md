@@ -18,12 +18,13 @@ locator.click
 Frame locators are strict. This means that all operations on frame locators will throw if more than one element matches
 a given selector.
 
-```ruby
+```python sync title=example_e2ea8f31994ab012b3f8cd7f5abfb4cb610286a4be96c9d4d6f1ad9f9678a0ed.py
 # Throws if there are several frames in DOM:
-page.frame_locator('.result-frame').locator('button').click
+page.frame_locator('.result-frame').get_by_role('button').click()
 
 # Works because we explicitly tell locator to pick the first frame:
-page.frame_locator('.result-frame').first.locator('button').click
+page.frame_locator('.result-frame').first.get_by_role('button').click()
+
 ```
 
 **Converting Locator to FrameLocator**
@@ -68,7 +69,10 @@ Returns locator to the last matching frame.
 def locator(selector, has: nil, hasText: nil)
 ```
 
-The method finds an element matching the specified selector in the FrameLocator's subtree.
+The method finds an element matching the specified selector in the locator's subtree. It also accepts filter options,
+similar to [Locator#filter](./locator#filter) method.
+
+[Learn more about locators](https://playwright.dev/python/docs/locators).
 
 ## nth
 

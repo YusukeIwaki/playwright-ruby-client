@@ -38,10 +38,11 @@ handle.click
 With the locator, every time the `element` is used, up-to-date DOM element is located in the page using the selector. So
 in the snippet below, underlying DOM element is going to be located twice.
 
-```ruby
-locator = page.locator("text=Submit")
-locator.hover
-locator.click
+```python sync title=example_2d68ae4f558fc720de25f387c810e7b69eb8716a0e0e4200699393f99b8db6b2.py
+locator = page.get_by_text("Submit")
+locator.hover()
+locator.click()
+
 ```
 
 

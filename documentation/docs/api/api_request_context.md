@@ -106,15 +106,48 @@ def fetch(
 Sends HTTP(S) request and returns its response. The method will populate request cookies from the context and update
 context cookies from the response. The method will automatically follow redirects.
 
+JSON objects can be passed directly to the request:
+
+```python title=example_19c86319c1f40a2cae90cfaf7f6471c50b59319e8b08d6e37d9be9d4697de0b8.py
+data = {
+    "title": "Book Title",
+    "body": "John Doe",
+}
+api_request_context.fetch("https://example.com/api/createBook", method="post", data=data)
+
+```
+
+The common way to send file(s) in the body of a request is to encode it as form fields with `multipart/form-data`
+encoding. You can achieve that with Playwright API like this:
+
+```python title=example_c5f1dfbcb296a3bc1e1e9e0216dacb2ee7c2af8685053b9e4bb44c823d82767c.py
+api_request_context.fetch(
+  "https://example.com/api/uploadScrip'",
+  method="post",
+  multipart={
+    "fileField": {
+      "name": "f.js",
+      "mimeType": "text/javascript",
+      "buffer": b"console.log(2022);",
+    },
+  })
+
+```
+
+
+
 ## get
 
 ```
 def get(
       url,
+      data: nil,
       failOnStatusCode: nil,
+      form: nil,
       headers: nil,
       ignoreHTTPSErrors: nil,
       maxRedirects: nil,
+      multipart: nil,
       params: nil,
       timeout: nil)
 ```
@@ -123,15 +156,31 @@ Sends HTTP(S) [GET](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GE
 method will populate request cookies from the context and update context cookies from the response. The method will
 automatically follow redirects.
 
+Request parameters can be configured with `params` option, they will be serialized into the URL search parameters:
+
+```python title=example_cf0d399f908388d6949e0fd2a750800a486e56e31ddc57b5b8f685b94cccfed8.py
+query_params = {
+  "isbn": "1234",
+  "page": "23"
+}
+api_request_context.get("https://example.com/api/getText", params=query_params)
+
+```
+
+
+
 ## head
 
 ```
 def head(
       url,
+      data: nil,
       failOnStatusCode: nil,
+      form: nil,
       headers: nil,
       ignoreHTTPSErrors: nil,
       maxRedirects: nil,
+      multipart: nil,
       params: nil,
       timeout: nil)
 ```
@@ -179,6 +228,47 @@ def post(
 Sends HTTP(S) [POST](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST) request and returns its response.
 The method will populate request cookies from the context and update context cookies from the response. The method will
 automatically follow redirects.
+
+JSON objects can be passed directly to the request:
+
+```python title=example_d42fb8f54175536448ed40ab14732e18bb20140493c96e5d07990ef7c200ac15.py
+data = {
+    "title": "Book Title",
+    "body": "John Doe",
+}
+api_request_context.post("https://example.com/api/createBook", data=data)
+
+```
+
+To send form data to the server use `form` option. Its value will be encoded into the request body with
+`application/x-www-form-urlencoded` encoding (see below how to use `multipart/form-data` form encoding to send files):
+
+```python title=example_858c53bcbc4088deffa2489935a030bb6a485ae8927e43b393b38fd7e4414c17.py
+formData = {
+    "title": "Book Title",
+    "body": "John Doe",
+}
+api_request_context.post("https://example.com/api/findBook", form=formData)
+
+```
+
+The common way to send file(s) in the body of a request is to upload them as form fields with `multipart/form-data`
+encoding. You can achieve that with Playwright API like this:
+
+```python title=example_3a940e5f148822e63981b92e0dd21748d81cdebc826935849d9fa08723fbccdc.py
+api_request_context.post(
+  "https://example.com/api/uploadScrip'",
+  multipart={
+    "fileField": {
+      "name": "f.js",
+      "mimeType": "text/javascript",
+      "buffer": b"console.log(2022);",
+    },
+  })
+
+```
+
+
 
 ## put
 

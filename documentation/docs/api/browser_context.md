@@ -147,21 +147,29 @@ See [Page#expose_binding](./page#expose_binding) for page-only version.
 
 An example of exposing page URL to all frames in all pages in the context:
 
-```ruby
-browser_context.expose_binding("pageURL", ->(source) { source[:page].url })
-page = browser_context.new_page
+```python sync title=example_fac8dd8edc4c565fc04b423141a6881aab2388e7951e425c43865ddd656ffad6.py
+from playwright.sync_api import sync_playwright
 
-page.content = <<~HTML
-<script>
-  async function onClick() {
-    document.querySelector('div').textContent = await window.pageURL();
-  }
-</script>
-<button onclick="onClick()">Click me</button>
-<div></div>
-HTML
+def run(playwright):
+    webkit = playwright.webkit
+    browser = webkit.launch(headless=false)
+    context = browser.new_context()
+    context.expose_binding("pageURL", lambda source: source["page"].url)
+    page = context.new_page()
+    page.set_content("""
+    <script>
+      async function onClick() {
+        document.querySelector('div').textContent = await window.pageURL();
+      }
+    </script>
+    <button onclick="onClick()">Click me</button>
+    <div></div>
+    """)
+    page.get_by_role("button").click()
 
-page.locator("button").click
+with sync_playwright() as playwright:
+    run(playwright)
+
 ```
 
 An example of passing an element handle:
@@ -204,25 +212,36 @@ See [Page#expose_function](./page#expose_function) for page-only version.
 
 An example of adding a `sha256` function to all pages in the context:
 
-```ruby
-require 'digest'
+```python sync title=example_3465d6b0d3caee840bd7e5ca7076e4def34af07010caca46ea35d2a536d7445d.py
+import hashlib
+from playwright.sync_api import sync_playwright
 
-def sha256(text)
-  Digest::SHA256.hexdigest(text)
-end
+def sha256(text):
+    m = hashlib.sha256()
+    m.update(bytes(text, "utf8"))
+    return m.hexdigest()
 
-browser_context.expose_function("sha256", method(:sha256))
-page = browser_context.new_page()
-page.content = <<~HTML
-<script>
-  async function onClick() {
-    document.querySelector('div').textContent = await window.sha256('PLAYWRIGHT');
-  }
-</script>
-<button onclick="onClick()">Click me</button>
-<div></div>
-HTML
-page.locator("button").click
+
+def run(playwright):
+    webkit = playwright.webkit
+    browser = webkit.launch(headless=False)
+    context = browser.new_context()
+    context.expose_function("sha256", sha256)
+    page = context.new_page()
+    page.set_content("""
+        <script>
+          async function onClick() {
+            document.querySelector('div').textContent = await window.sha256('PLAYWRIGHT');
+          }
+        </script>
+        <button onclick="onClick()">Click me</button>
+        <div></div>
+    """)
+    page.get_by_role("button").click()
+
+with sync_playwright() as playwright:
+    run(playwright)
+
 ```
 
 
@@ -432,10 +451,11 @@ def expect_event(event, predicate: nil, timeout: nil, &block)
 Waits for event to fire and passes its value into the predicate function. Returns when the predicate returns truthy
 value. Will throw an error if the context closes before the event is fired. Returns the event data value.
 
-```ruby
-new_page = browser_context.expect_event('page') do
-  page.locator('button').click
-end
+```python sync title=example_6619b3b87b68e56013f61689b1e1df60f6bf2950241ef796dd2dc58b7d3292c8.py
+with context.expect_event("page") as event_info:
+    page.get_by_role("button").click()
+page = event_info.value
+
 ```
 
 

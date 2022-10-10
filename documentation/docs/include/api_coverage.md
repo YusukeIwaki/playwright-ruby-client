@@ -159,6 +159,13 @@
 * frame_element
 * frame_locator
 * get_attribute
+* ~~get_by_alt_text~~
+* ~~get_by_label~~
+* ~~get_by_placeholder~~
+* ~~get_by_role~~
+* ~~get_by_test_id~~
+* ~~get_by_text~~
+* ~~get_by_title~~
 * goto
 * hover
 * inner_html
@@ -204,6 +211,7 @@
 ## Selectors
 
 * register
+* ~~set_test_id_attribute~~
 
 ## ConsoleMessage
 
@@ -258,6 +266,13 @@
 * frame_locator
 * frames
 * get_attribute
+* ~~get_by_alt_text~~
+* ~~get_by_label~~
+* ~~get_by_placeholder~~
+* ~~get_by_role~~
+* ~~get_by_test_id~~
+* ~~get_by_text~~
+* ~~get_by_title~~
 * go_back
 * go_forward
 * goto
@@ -423,6 +438,13 @@
 * focus
 * frame_locator
 * get_attribute
+* ~~get_by_alt_text~~
+* ~~get_by_label~~
+* ~~get_by_placeholder~~
+* ~~get_by_role~~
+* ~~get_by_test_id~~
+* ~~get_by_text~~
+* ~~get_by_title~~
 * highlight
 * hover
 * inner_html
@@ -455,6 +477,13 @@
 
 * first
 * frame_locator
+* ~~get_by_alt_text~~
+* ~~get_by_label~~
+* ~~get_by_placeholder~~
+* ~~get_by_role~~
+* ~~get_by_test_id~~
+* ~~get_by_text~~
+* ~~get_by_title~~
 * last
 * locator
 * nth

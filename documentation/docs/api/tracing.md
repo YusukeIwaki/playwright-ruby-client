@@ -52,20 +52,21 @@ Start a new trace chunk. If you'd like to record multiple traces on the same [Br
 [Tracing#start](./tracing#start) once, and then create multiple trace chunks with [Tracing#start_chunk](./tracing#start_chunk) and
 [Tracing#stop_chunk](./tracing#stop_chunk).
 
-```ruby
-context.tracing.start(name: "trace", screenshots: true, snapshots: true)
-page = context.new_page
+```python sync title=example_e04b4e47771d459712f345ce14b805815a7240ddf2b30b0ae0395d4f62741043.py
+context.tracing.start(name="trace", screenshots=True, snapshots=True)
+page = context.new_page()
 page.goto("https://playwright.dev")
 
-context.tracing.start_chunk
-page.locator("text=Get Started").click
+context.tracing.start_chunk()
+page.get_by_text("Get Started").click()
 # Everything between start_chunk and stop_chunk will be recorded in the trace.
-context.tracing.stop_chunk(path: "trace1.zip")
+context.tracing.stop_chunk(path = "trace1.zip")
 
-context.tracing.start_chunk
+context.tracing.start_chunk()
 page.goto("http://example.com")
 # Save a second trace file with different actions.
-context.tracing.stop_chunk(path: "trace2.zip")
+context.tracing.stop_chunk(path = "trace2.zip")
+
 ```
 
 

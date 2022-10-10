@@ -190,6 +190,23 @@ def drag_to(
       trial: nil)
 ```
 
+This method drags the locator to another target locator or target position. It will first move to the source element,
+perform a `mousedown`, then move to the target element or position and perform a `mouseup`.
+
+```python sync title=example_f4046df878cf5096f750d2865c48060a3d7dd5e198e508776f9a09afbc567763.py
+source = page.locator("#source")
+target = page.locator("#target")
+
+source.drag_to(target)
+# or specify exact positions relative to the top-left corners of the elements:
+source.drag_to(
+  target,
+  source_position={"x": 34, "y": 7},
+  target_position={"x": 10, "y": 20}
+)
+
+```
+
 
 
 ## element_handle
@@ -294,13 +311,14 @@ def filter(has: nil, hasText: nil)
 This method narrows existing locator according to the options, for example filters by text. It can be chained to filter
 multiple times.
 
-```ruby
+```python sync title=example_516c962e3016789b2f0d21854daed72507a490b018b3f0213d4ae25f9ee03267.py
 row_locator = page.locator("tr")
 # ...
-row_locator.
-    filter(has_text="text in column 1").
-    filter(has=page.locator("tr", has_text="column 2 button")).
-    screenshot
+row_locator
+    .filter(has_text="text in column 1")
+    .filter(has=page.get_by_role("button", name="column 2 button"))
+    .screenshot()
+
 ```
 
 
@@ -330,9 +348,10 @@ def frame_locator(selector)
 When working with iframes, you can create a frame locator that will enter the iframe and allow selecting elements in
 that iframe:
 
-```ruby
-locator = page.frame_locator("iframe").locator("text=Submit")
-locator.click
+```python sync title=example_0ec60e5949820a3a318c7e05ea06b826218f2d79a94f8d599a29c8b07b2c1e63.py
+locator = page.frame_locator("iframe").get_by_text("Submit")
+locator.click()
+
 ```
 
 
@@ -466,8 +485,10 @@ Returns locator to the last matching element.
 def locator(selector, has: nil, hasText: nil)
 ```
 
-The method finds an element matching the specified selector in the [Locator](./locator)'s subtree. It also accepts filter options,
+The method finds an element matching the specified selector in the locator's subtree. It also accepts filter options,
 similar to [Locator#filter](./locator#filter) method.
+
+[Learn more about locators](https://playwright.dev/python/docs/locators).
 
 ## nth
 
@@ -683,10 +704,11 @@ element.type("world", delay: 100) # types slower, like a user
 
 An example of typing into a text field and then submitting the form:
 
-```ruby
-element = page.locator("input")
-element.type("some text")
+```python sync title=example_c52737358713c715eb9607198a15d3e7533c8ca126cf61fa58d6cb31a701585b.py
+element = page.get_by_label("Password")
+element.type("my password")
 element.press("Enter")
+
 ```
 
 
