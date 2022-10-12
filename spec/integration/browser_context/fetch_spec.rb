@@ -154,7 +154,6 @@ RSpec.describe 'fetch', sinatra: true do
 
   %i(delete get head patch post put).each do |http_method|
     it "#{http_method} should support post data" do
-      pending 'https://github.com/microsoft/playwright/issues/16930' if http_method == :get || http_method == :head
       promise = Concurrent::Promises.resolvable_future
       sinatra.send(http_method, '/simple.json') do
         promise.fulfill([
