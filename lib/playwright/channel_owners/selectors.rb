@@ -18,5 +18,9 @@ module Playwright
 
       nil
     end
+
+    def text_id_attribute=(attribute_name)
+      ::Playwright::LocatorUtils.instance_variable_set(:@test_id_attribute_name, attribute_name)
+    end
   end
 end

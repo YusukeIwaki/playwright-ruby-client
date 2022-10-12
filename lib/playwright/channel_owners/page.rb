@@ -1,9 +1,11 @@
 require 'base64'
+require_relative '../locator_utils'
 
 module Playwright
   # @ref https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_page.py
   define_channel_owner :Page do
     include Utils::Errors::SafeCloseError
+    include LocatorUtils
     attr_writer :owned_context
 
     private def after_initialize

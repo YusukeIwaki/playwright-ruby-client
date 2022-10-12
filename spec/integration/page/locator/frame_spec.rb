@@ -8,11 +8,12 @@ RSpec.describe 'FrameLocator' do
         <<~HTML
         <html>
           <div>
-            <button>Hello iframe</button>
+          <button data-testid="buttonId">Hello iframe</button>
             <iframe src="iframe-2.html"></iframe>
           </div>
           <span>1</span>
           <span>2</span>
+          <label for=target>Name</label><input id=target type=text placeholder=Placeholder title=Title alt=Alternative>
         </html>
         HTML
       }
@@ -233,6 +234,28 @@ RSpec.describe 'FrameLocator' do
       expect(button2.inner_text).to eq('Hello from iframe-2')
       button3 = page.locator('body').frame_locator('iframe').last.locator('button')
       expect(button3.inner_text).to eq('Hello from iframe-3')
+    end
+  end
+
+  it 'get_by coverage', sinatra: true, route: :iframe do
+    with_page do |page|
+      page.goto(server_empty_page)
+      button1 = page.frame_locator('iframe').get_by_role('button')
+      button2 = page.frame_locator('iframe').get_by_text('Hello')
+      button3 = page.frame_locator('iframe').get_by_test_id('buttonId')
+      expect(button1.text_content).to include('Hello iframe')
+      expect(button2.text_content).to include('Hello iframe')
+      expect(button3.text_content).to include('Hello iframe')
+
+      input1 = page.frame_locator('iframe').get_by_label('Name')
+      input2 = page.frame_locator('iframe').get_by_placeholder('Placeholder')
+      input3 = page.frame_locator('iframe').get_by_alt_text('Alternative')
+      input4 = page.frame_locator('iframe').get_by_title('Title')
+
+      expect(input1.input_value).to eq('')
+      expect(input2.input_value).to eq('')
+      expect(input3.input_value).to eq('')
+      expect(input4.input_value).to eq('')
     end
   end
 end

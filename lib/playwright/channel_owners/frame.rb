@@ -1,6 +1,10 @@
+require_relative '../locator_utils'
+
 module Playwright
   # @ref https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_frame.py
   define_channel_owner :Frame do
+    include LocatorUtils
+
     private def after_initialize
       if @initializer['parentFrame']
         @parent_frame = ChannelOwners::Frame.from(@initializer['parentFrame'])
