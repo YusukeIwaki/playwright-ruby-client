@@ -10,13 +10,13 @@ All the downloaded files belonging to the browser context are deleted when the b
 
 Download event is emitted once the download starts. Download path becomes available once download completes:
 
-```python sync title=example_26c9f5a18a58f9976e24d83a3ae807479df5e28de9028f085615d99be2cea5a1.py
-with page.expect_download() as download_info:
-    page.get_by_text("Download file").click()
-download = download_info.value
-# wait for download to complete
-path = download.path()
+```ruby
+download = page.expect_download do
+  page.get_by_text("Download file").click
+end
 
+# wait for download to complete
+path = download.path
 ```
 
 

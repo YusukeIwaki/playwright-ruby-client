@@ -347,9 +347,9 @@ module ExampleCodes
   end
 
   # Download
-  def example_57ba49c8dae5a0b6903980e8329cd393ceb9b066488ea8a0f37299d949a79755(page:)
+  def example_26c9f5a18a58f9976e24d83a3ae807479df5e28de9028f085615d99be2cea5a1(page:)
     download = page.expect_download do
-      page.locator('a').click
+      page.get_by_text("Download file").click
     end
 
     # wait for download to complete
@@ -370,8 +370,8 @@ module ExampleCodes
   end
 
   # ElementHandle
-  def example_72d79aac84ca1f30354016c388b09aa8f9e10ef146d517bb70de34ba79f90691(page:)
-    locator = page.locator("text=Submit")
+  def example_2d68ae4f558fc720de25f387c810e7b69eb8716a0e0e4200699393f99b8db6b2(page:)
+    locator = page.get_by_text("Submit")
     locator.hover
     locator.click
   end
@@ -448,9 +448,9 @@ module ExampleCodes
   end
 
   # FileChooser
-  def example_0511532585a1977c2f90ae3606eb154fbd89087e50e61add1189d555044a53e7(page:)
+  def example_533e27e640e6a8598a6bd8950ee981ccbdf560436fdf5dc94548fbda89f0197f(page:)
     file_chooser = page.expect_file_chooser do
-      page.locator("upload").click # action to trigger file uploading
+      page.get_by_text("Upload").click # action to trigger file uploading
     end
     file_chooser.set_files("myfile.pdf")
   end
@@ -526,8 +526,8 @@ module ExampleCodes
   end
 
   # Frame#frame_locator
-  def example_98e54eb4301cf08d791c58051ebb49ec65a4edf618abe5329d0abeae3e23a9de(frame:)
-    locator = frame.frame_locator("#my-iframe").locator("text=Submit")
+  def example_7c9cfab83defacca7518fb1e95efb47bdd2a9ba0e6be836e973be19d8b4c4cb7(frame:)
+    locator = frame.frame_locator("#my-iframe").get_by_text("Submit")
     locator.click
   end
 

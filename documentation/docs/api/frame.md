@@ -400,10 +400,9 @@ When working with iframes, you can create a frame locator that will enter the if
 that iframe. Following snippet locates element with text "Submit" in the iframe with id `my-frame`, like `<iframe
 id="my-frame">`:
 
-```python sync title=example_7c9cfab83defacca7518fb1e95efb47bdd2a9ba0e6be836e973be19d8b4c4cb7.py
+```ruby
 locator = frame.frame_locator("#my-iframe").get_by_text("Submit")
-locator.click()
-
+locator.click
 ```
 
 

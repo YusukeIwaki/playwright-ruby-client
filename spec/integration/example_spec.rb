@@ -173,8 +173,8 @@ RSpec.describe 'example' do
       end
 
       with_page(acceptDownloads: true) do |page|
-        page.content = "<a href=\"#{server_prefix}/download\">download</a>"
-        path = example_57ba49c8dae5a0b6903980e8329cd393ceb9b066488ea8a0f37299d949a79755(page: page)
+        page.content = "<a href=\"#{server_prefix}/download\">Download file</a>"
+        path = example_26c9f5a18a58f9976e24d83a3ae807479df5e28de9028f085615d99be2cea5a1(page: page)
         expect(File.exist?(path)).to eq(true)
       end
     end

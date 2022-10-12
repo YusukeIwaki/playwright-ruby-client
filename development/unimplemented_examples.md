@@ -5,44 +5,6 @@ Excample codes in API documentation is replaces with the methods defined in deve
 The examples listed below is not yet implemented, and documentation shows Python code.
 
 
-### example_2d68ae4f558fc720de25f387c810e7b69eb8716a0e0e4200699393f99b8db6b2
-
-```
-locator = page.get_by_text("Submit")
-locator.hover()
-locator.click()
-
-```
-
-### example_533e27e640e6a8598a6bd8950ee981ccbdf560436fdf5dc94548fbda89f0197f
-
-```
-with page.expect_file_chooser() as fc_info:
-    page.get_by_text("Upload").click()
-file_chooser = fc_info.value
-file_chooser.set_files("myfile.pdf")
-
-```
-
-### example_7c9cfab83defacca7518fb1e95efb47bdd2a9ba0e6be836e973be19d8b4c4cb7
-
-```
-locator = frame.frame_locator("#my-iframe").get_by_text("Submit")
-locator.click()
-
-```
-
-### example_26c9f5a18a58f9976e24d83a3ae807479df5e28de9028f085615d99be2cea5a1
-
-```
-with page.expect_download() as download_info:
-    page.get_by_text("Download file").click()
-download = download_info.value
-# wait for download to complete
-path = download.path()
-
-```
-
 ### example_1b16c833a5a31719df85ea8c7d134c3199d3396171a69df3f0c80e67cc0df538
 
 ```
