@@ -279,16 +279,15 @@ def drag_and_drop(
 This method drags the source element to the target element. It will first move to the source element, perform a
 `mousedown`, then move to the target element and perform a `mouseup`.
 
-```python sync title=example_1b16c833a5a31719df85ea8c7d134c3199d3396171a69df3f0c80e67cc0df538.py
+```ruby
 page.drag_and_drop("#source", "#target")
 # or specify exact positions relative to the top-left corners of the elements:
 page.drag_and_drop(
   "#source",
   "#target",
-  source_position={"x": 34, "y": 7},
-  target_position={"x": 10, "y": 20}
+  sourcePosition: { x: 34, y: 7 },
+  targetPosition: { x: 10, y: 20 },
 )
-
 ```
 
 
@@ -606,10 +605,9 @@ When working with iframes, you can create a frame locator that will enter the if
 that iframe. Following snippet locates element with text "Submit" in the iframe with id `my-frame`, like `<iframe
 id="my-frame">`:
 
-```python sync title=example_e2abd82db97f2a0531855941d4ae70ef68fe8f844318e7a474d14a217dfd2595.py
+```ruby
 locator = page.frame_locator("#my-iframe").get_by_text("Submit")
-locator.click()
-
+locator.click
 ```
 
 
@@ -1473,11 +1471,10 @@ def expect_event(event, predicate: nil, timeout: nil, &block)
 Waits for event to fire and passes its value into the predicate function. Returns when the predicate returns truthy
 value. Will throw an error if the page is closed before the event is fired. Returns the event data value.
 
-```python sync title=example_37a07ca53382af80ed79aeaa2d65e450d4a8f6ee9753eb3c22ae2125d9cf83c8.py
-with page.expect_event("framenavigated") as event_info:
-    page.get_by_role("button")
-frame = event_info.value
-
+```ruby
+frame = page.expect_event("framenavigated") do
+  page.get_by_role("button")
+end
 ```
 
 
@@ -1526,20 +1523,19 @@ Returns when the required load state has been reached.
 This resolves when the page reaches a required load state, `load` by default. The navigation must have been committed
 when this method is called. If current document has already reached the required state, resolves immediately.
 
-```python sync title=example_c20d17a107bdb6b05189fa02485e9c32a290ae0052686ac9d9611312995c5eed.py
-page.get_by_role("button").click() # click triggers navigation.
-page.wait_for_load_state() # the promise resolves after "load" event.
-
+```ruby
+page.get_by_role("button").click # click triggers navigation.
+page.wait_for_load_state # the promise resolves after "load" event.
 ```
 
-```python sync title=example_8b3643dc7effb0afc06a5aacd17473b73535d351d55cb0d532497fa565024d48.py
-with page.expect_popup() as page_info:
-    page.get_by_role("button").click() # click triggers a popup.
-popup = page_info.value
- # Following resolves after "domcontentloaded" event.
-popup.wait_for_load_state("domcontentloaded")
-print(popup.title()) # popup is ready to use.
+```ruby
+popup = page.expect_popup do
+  page.get_by_role("button").click # click triggers a popup.
+end
 
+# Following resolves after "domcontentloaded" event.
+popup.wait_for_load_state("domcontentloaded")
+puts popup.title # popup is ready to use.
 ```
 
 Shortcut for main frame's [Frame#wait_for_load_state](./frame#wait_for_load_state).

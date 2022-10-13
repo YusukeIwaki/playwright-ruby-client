@@ -193,7 +193,7 @@ def drag_to(
 This method drags the locator to another target locator or target position. It will first move to the source element,
 perform a `mousedown`, then move to the target element or position and perform a `mouseup`.
 
-```python sync title=example_f4046df878cf5096f750d2865c48060a3d7dd5e198e508776f9a09afbc567763.py
+```ruby
 source = page.locator("#source")
 target = page.locator("#target")
 
@@ -201,10 +201,9 @@ source.drag_to(target)
 # or specify exact positions relative to the top-left corners of the elements:
 source.drag_to(
   target,
-  source_position={"x": 34, "y": 7},
-  target_position={"x": 10, "y": 20}
+  sourcePosition: { x: 34, y: 7 },
+  targetPosition: { x: 10, y: 20 },
 )
-
 ```
 
 
@@ -311,14 +310,13 @@ def filter(has: nil, hasText: nil)
 This method narrows existing locator according to the options, for example filters by text. It can be chained to filter
 multiple times.
 
-```python sync title=example_516c962e3016789b2f0d21854daed72507a490b018b3f0213d4ae25f9ee03267.py
+```ruby
 row_locator = page.locator("tr")
 # ...
-row_locator
-    .filter(has_text="text in column 1")
-    .filter(has=page.get_by_role("button", name="column 2 button"))
-    .screenshot()
-
+row_locator.
+    filter(hasText: "text in column 1").
+    filter(has: page.get_by_role("button", name: "column 2 button")).
+    screenshot
 ```
 
 
@@ -348,10 +346,9 @@ def frame_locator(selector)
 When working with iframes, you can create a frame locator that will enter the iframe and allow selecting elements in
 that iframe:
 
-```python sync title=example_0ec60e5949820a3a318c7e05ea06b826218f2d79a94f8d599a29c8b07b2c1e63.py
+```ruby
 locator = page.frame_locator("iframe").get_by_text("Submit")
-locator.click()
-
+locator.click
 ```
 
 
@@ -801,11 +798,10 @@ element.type("world", delay: 100) # types slower, like a user
 
 An example of typing into a text field and then submitting the form:
 
-```python sync title=example_c52737358713c715eb9607198a15d3e7533c8ca126cf61fa58d6cb31a701585b.py
+```ruby
 element = page.get_by_label("Password")
 element.type("my password")
 element.press("Enter")
-
 ```
 
 

@@ -161,7 +161,7 @@ module ExampleCodes
   end
 
   # BrowserContext#expose_binding
-  def example_b5278c03b97db04837578d9c4b3127e749c5631b3913c394d87fd2eb7c60d6fd(browser_context:)
+  def example_fac8dd8edc4c565fc04b423141a6881aab2388e7951e425c43865ddd656ffad6(browser_context:)
     browser_context.expose_binding("pageURL", ->(source) { source[:page].url })
     page = browser_context.new_page
 
@@ -175,7 +175,7 @@ module ExampleCodes
     <div></div>
     HTML
 
-    page.locator("button").click
+    page.get_by_role("button").click
   end
 
   # BrowserContext#expose_binding
@@ -201,7 +201,7 @@ module ExampleCodes
   end
 
   # BrowserContext#expose_function
-  def example_c522a7b05c05a56efaa701e7f606bb933c695fe49d80cc094776ee9a6b0430c9(browser_context:)
+  def example_3465d6b0d3caee840bd7e5ca7076e4def34af07010caca46ea35d2a536d7445d(browser_context:)
     require 'digest'
 
     def sha256(text)
@@ -219,7 +219,7 @@ module ExampleCodes
     <button onclick="onClick()">Click me</button>
     <div></div>
     HTML
-    page.locator("button").click
+    page.get_by_role("button").click
   end
 
   # BrowserContext#route
@@ -257,9 +257,9 @@ module ExampleCodes
   end
 
   # BrowserContext#expect_event
-  def example_975e00f210447a2dc27c6cba698d8926f949ac6e3a1c663680bf83a2409ab319(browser_context:, page:)
+  def example_6619b3b87b68e56013f61689b1e1df60f6bf2950241ef796dd2dc58b7d3292c8(browser_context:, page:)
     new_page = browser_context.expect_event('page') do
-      page.locator('button').click
+      page.get_by_role("button").click
     end
   end
 
@@ -590,17 +590,17 @@ module ExampleCodes
 
   # FrameLocator
   def example_532f18c59b0dfaae95be697748f0c1c035b46e4acfaf509542b9e23a65830dd1(page:)
-    locator = page.frame_locator("my-frame").locator("text=Submit")
+    locator = page.frame_locator("my-frame").get_by_text("Submit")
     locator.click
   end
 
   # FrameLocator
-  def example_9487c6c0f622a64723782638d6e962a9b5637df47ab693ed110f7202e6d67ee2(page:)
+  def example_e2ea8f31994ab012b3f8cd7f5abfb4cb610286a4be96c9d4d6f1ad9f9678a0ed(page:)
     # Throws if there are several frames in DOM:
-    page.frame_locator('.result-frame').locator('button').click
+    page.frame_locator('.result-frame').get_by_role('button').click
 
     # Works because we explicitly tell locator to pick the first frame:
-    page.frame_locator('.result-frame').first.locator('button').click
+    page.frame_locator('.result-frame').first.get_by_role('button').click
   end
 
   # FrameLocator
@@ -716,6 +716,20 @@ module ExampleCodes
     element.dispatch_event("dragstart", eventInit: { dataTransfer: data_transfer })
   end
 
+  # Locator#drag_to
+  def example_f4046df878cf5096f750d2865c48060a3d7dd5e198e508776f9a09afbc567763(page:)
+    source = page.locator("#source")
+    target = page.locator("#target")
+
+    source.drag_to(target)
+    # or specify exact positions relative to the top-left corners of the elements:
+    source.drag_to(
+      target,
+      sourcePosition: { x: 34, y: 7 },
+      targetPosition: { x: 10, y: 20 },
+    )
+  end
+
   # Locator#evaluate
   def example_df39b3df921f81e7cfb71cd873b76a5e91e46b4aa41e1f164128cb322aa38305(page:)
     tweet = page.query_selector(".tweet .retweets")
@@ -729,18 +743,18 @@ module ExampleCodes
   end
 
   # Locator#filter
-  def example_e2c1d5cff1ee10c126c8add2674c81927966bacadaacd4ed283eeb4319d8495f(page:)
+  def example_516c962e3016789b2f0d21854daed72507a490b018b3f0213d4ae25f9ee03267(page:)
     row_locator = page.locator("tr")
     # ...
     row_locator.
-        filter(has_text="text in column 1").
-        filter(has=page.locator("tr", has_text="column 2 button")).
+        filter(hasText: "text in column 1").
+        filter(has: page.get_by_role("button", name: "column 2 button")).
         screenshot
   end
 
   # Locator#frame_locator
-  def example_18679ec4d71712b9c205ae9896778924011d154c4529df7b44d33d6d6ece55cb(page:)
-    locator = page.frame_locator("iframe").locator("text=Submit")
+  def example_0ec60e5949820a3a318c7e05ea06b826218f2d79a94f8d599a29c8b07b2c1e63(page:)
+    locator = page.frame_locator("iframe").get_by_text("Submit")
     locator.click
   end
 
@@ -767,9 +781,9 @@ module ExampleCodes
   end
 
   # Locator#type
-  def example_adefe90dee78708d4375c20f081f12f2b71f2becb472a2e0d4fdc8cc49c37809(page:)
-    element = page.locator("input")
-    element.type("some text")
+  def example_c52737358713c715eb9607198a15d3e7533c8ca126cf61fa58d6cb31a701585b(page:)
+    element = page.get_by_label("Password")
+    element.type("my password")
     element.press("Enter")
   end
 
@@ -866,6 +880,18 @@ module ExampleCodes
     # note you can only create data_transfer in chromium and firefox
     data_transfer = page.evaluate_handle("new DataTransfer()")
     page.dispatch_event("#source", "dragstart", eventInit: { dataTransfer: data_transfer })
+  end
+
+  # Page#drag_and_drop
+  def example_1b16c833a5a31719df85ea8c7d134c3199d3396171a69df3f0c80e67cc0df538(page:)
+    page.drag_and_drop("#source", "#target")
+    # or specify exact positions relative to the top-left corners of the elements:
+    page.drag_and_drop(
+      "#source",
+      "#target",
+      sourcePosition: { x: 34, y: 7 },
+      targetPosition: { x: 10, y: 20 },
+    )
   end
 
   # Page#emulate_media
@@ -1008,8 +1034,8 @@ module ExampleCodes
   end
 
   # Page#frame_locator
-  def example_eb0ce81d1bf099df22f979b0abd935fe1482f91609a6530c455951120396c50a(page:)
-    locator = page.frame_locator("#my-iframe").locator("text=Submit")
+  def example_e2abd82db97f2a0531855941d4ae70ef68fe8f844318e7a474d14a217dfd2595(page:)
+    locator = page.frame_locator("#my-iframe").get_by_text("Submit")
     locator.click
   end
 
@@ -1079,9 +1105,9 @@ module ExampleCodes
   end
 
   # Page#expect_event
-  def example_1b007e0db5f2b594b586367be3b56f9eb9b928740efbceada2c60cb7794592d4(page:)
+  def example_37a07ca53382af80ed79aeaa2d65e450d4a8f6ee9753eb3c22ae2125d9cf83c8(page:)
     frame = page.expect_event("framenavigated") do
-      page.click("button")
+      page.get_by_role("button")
     end
   end
 
@@ -1103,15 +1129,15 @@ module ExampleCodes
   end
 
   # Page#wait_for_load_state
-  def example_cd35fb085612055231ddf97f68bc5331b4620914e0686b889f2cd4061836cff8(page:)
-    page.click("button") # click triggers navigation.
+  def example_c20d17a107bdb6b05189fa02485e9c32a290ae0052686ac9d9611312995c5eed(page:)
+    page.get_by_role("button").click # click triggers navigation.
     page.wait_for_load_state # the promise resolves after "load" event.
   end
 
   # Page#wait_for_load_state
-  def example_51ba8a745d5093516e9a50482d8bf3ce29afe507ca5cfe89f4a0e35963f52a36(page:)
+  def example_8b3643dc7effb0afc06a5aacd17473b73535d351d55cb0d532497fa565024d48(page:)
     popup = page.expect_popup do
-      page.click("button") # click triggers a popup.
+      page.get_by_role("button").click # click triggers a popup.
     end
 
     # Following resolves after "domcontentloaded" event.
@@ -1339,13 +1365,13 @@ module ExampleCodes
   end
 
   # Tracing#start_chunk
-  def example_20726490b43bb0d4f3a8ec9f7d9b08bad90ac24377cec399737fc5bdf537ca4b(context:)
+  def example_e04b4e47771d459712f345ce14b805815a7240ddf2b30b0ae0395d4f62741043(context:)
     context.tracing.start(name: "trace", screenshots: true, snapshots: true)
     page = context.new_page
     page.goto("https://playwright.dev")
 
     context.tracing.start_chunk
-    page.locator("text=Get Started").click
+    page.get_by_text("Get Started").click
     # Everything between start_chunk and stop_chunk will be recorded in the trace.
     context.tracing.stop_chunk(path: "trace1.zip")
 
