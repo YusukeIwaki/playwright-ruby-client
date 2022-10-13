@@ -69,6 +69,71 @@ module ExampleCodes
     end
   end
 
+  # APIRequestContext#fetch
+  def example_19c86319c1f40a2cae90cfaf7f6471c50b59319e8b08d6e37d9be9d4697de0b8(api_request_context:)
+    data = {
+      title: "Book Title",
+      body: "John Doe",
+    }
+    api_request_context.fetch("https://example.com/api/create_book", method: 'post', data: data)
+  end
+
+  # APIRequestContext#fetch
+  def example_c5f1dfbcb296a3bc1e1e9e0216dacb2ee7c2af8685053b9e4bb44c823d82767c(api_request_context:)
+    api_request_context.fetch(
+      "https://example.com/api/upload_script",
+      method: 'post',
+      multipart: {
+        fileField: {
+          name: "f.js",
+          mimeType: "text/javascript",
+          buffer: "console.log(2022);",
+        },
+      },
+    )
+  end
+
+  # APIRequestContext#get
+  def example_cf0d399f908388d6949e0fd2a750800a486e56e31ddc57b5b8f685b94cccfed8(api_request_context:)
+    query_params = {
+      isbn: "1234",
+      page: "23"
+    }
+    api_request_context.get("https://example.com/api/get_text", params: query_params)
+  end
+
+  # APIRequestContext#post
+  def example_d42fb8f54175536448ed40ab14732e18bb20140493c96e5d07990ef7c200ac15(api_request_context:)
+    data = {
+      title: "Book Title",
+      body: "John Doe",
+    }
+    api_request_context.post("https://example.com/api/create_book", data: data)
+  end
+
+  # APIRequestContext#post
+  def example_858c53bcbc4088deffa2489935a030bb6a485ae8927e43b393b38fd7e4414c17(api_request_context:)
+    form_data = {
+      title: "Book Title",
+      body: "John Doe",
+    }
+    api_request_context.post("https://example.com/api/find_book", form: form_data)
+  end
+
+  # APIRequestContext#post
+  def example_3a940e5f148822e63981b92e0dd21748d81cdebc826935849d9fa08723fbccdc(api_request_context:)
+    api_request_context.post(
+      "https://example.com/api/upload_script",
+      multipart: {
+        fileField: {
+          name: "f.js",
+          mimeType: "text/javascript",
+          buffer: "console.log(2022);",
+        },
+      },
+    )
+  end
+
   # APIResponse
   def example_a719a9b85189fe45a431d283eeae787323cce9a2a09aeadb86555240ef21417c(playwright:)
     playwright.chromium.launch do |browser|
