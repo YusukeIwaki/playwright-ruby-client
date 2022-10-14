@@ -1,5 +1,9 @@
+require_relative './locator_utils'
+
 module Playwright
   define_api_implementation :FrameLocatorImpl do
+    include LocatorUtils
+
     def initialize(frame:, timeout_settings:, frame_selector:)
       @frame = frame
       @timeout_settings = timeout_settings
@@ -10,7 +14,7 @@ module Playwright
       LocatorImpl.new(
         frame: @frame,
         timeout_settings: @timeout_settings,
-        selector: "#{@frame_selector} >> control=enter-frame >> #{selector}",
+        selector: "#{@frame_selector} >> internal:control=enter-frame >> #{selector}",
         hasText: hasText,
         has: has,
       )
@@ -20,7 +24,7 @@ module Playwright
       FrameLocatorImpl.new(
         frame: @frame,
         timeout_settings: @timeout_settings,
-        frame_selector: "#{@frame_selector} >> control=enter-frame >> #{selector}",
+        frame_selector: "#{@frame_selector} >> internal:control=enter-frame >> #{selector}",
       )
     end
 

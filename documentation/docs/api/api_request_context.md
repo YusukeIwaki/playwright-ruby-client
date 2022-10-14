@@ -106,15 +106,47 @@ def fetch(
 Sends HTTP(S) request and returns its response. The method will populate request cookies from the context and update
 context cookies from the response. The method will automatically follow redirects.
 
+JSON objects can be passed directly to the request:
+
+```ruby
+data = {
+  title: "Book Title",
+  body: "John Doe",
+}
+api_request_context.fetch("https://example.com/api/create_book", method: 'post', data: data)
+```
+
+The common way to send file(s) in the body of a request is to encode it as form fields with `multipart/form-data`
+encoding. You can achieve that with Playwright API like this:
+
+```ruby
+api_request_context.fetch(
+  "https://example.com/api/upload_script",
+  method: 'post',
+  multipart: {
+    fileField: {
+      name: "f.js",
+      mimeType: "text/javascript",
+      buffer: "console.log(2022);",
+    },
+  },
+)
+```
+
+
+
 ## get
 
 ```
 def get(
       url,
+      data: nil,
       failOnStatusCode: nil,
+      form: nil,
       headers: nil,
       ignoreHTTPSErrors: nil,
       maxRedirects: nil,
+      multipart: nil,
       params: nil,
       timeout: nil)
 ```
@@ -123,15 +155,30 @@ Sends HTTP(S) [GET](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GE
 method will populate request cookies from the context and update context cookies from the response. The method will
 automatically follow redirects.
 
+Request parameters can be configured with `params` option, they will be serialized into the URL search parameters:
+
+```ruby
+query_params = {
+  isbn: "1234",
+  page: "23"
+}
+api_request_context.get("https://example.com/api/get_text", params: query_params)
+```
+
+
+
 ## head
 
 ```
 def head(
       url,
+      data: nil,
       failOnStatusCode: nil,
+      form: nil,
       headers: nil,
       ignoreHTTPSErrors: nil,
       maxRedirects: nil,
+      multipart: nil,
       params: nil,
       timeout: nil)
 ```
@@ -179,6 +226,45 @@ def post(
 Sends HTTP(S) [POST](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST) request and returns its response.
 The method will populate request cookies from the context and update context cookies from the response. The method will
 automatically follow redirects.
+
+JSON objects can be passed directly to the request:
+
+```ruby
+data = {
+  title: "Book Title",
+  body: "John Doe",
+}
+api_request_context.post("https://example.com/api/create_book", data: data)
+```
+
+To send form data to the server use `form` option. Its value will be encoded into the request body with
+`application/x-www-form-urlencoded` encoding (see below how to use `multipart/form-data` form encoding to send files):
+
+```ruby
+form_data = {
+  title: "Book Title",
+  body: "John Doe",
+}
+api_request_context.post("https://example.com/api/find_book", form: form_data)
+```
+
+The common way to send file(s) in the body of a request is to upload them as form fields with `multipart/form-data`
+encoding. You can achieve that with Playwright API like this:
+
+```ruby
+api_request_context.post(
+  "https://example.com/api/upload_script",
+  multipart: {
+    fileField: {
+      name: "f.js",
+      mimeType: "text/javascript",
+      buffer: "console.log(2022);",
+    },
+  },
+)
+```
+
+
 
 ## put
 

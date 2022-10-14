@@ -190,6 +190,22 @@ def drag_to(
       trial: nil)
 ```
 
+This method drags the locator to another target locator or target position. It will first move to the source element,
+perform a `mousedown`, then move to the target element or position and perform a `mouseup`.
+
+```ruby
+source = page.locator("#source")
+target = page.locator("#target")
+
+source.drag_to(target)
+# or specify exact positions relative to the top-left corners of the elements:
+source.drag_to(
+  target,
+  sourcePosition: { x: 34, y: 7 },
+  targetPosition: { x: 10, y: 20 },
+)
+```
+
 
 
 ## element_handle
@@ -298,8 +314,8 @@ multiple times.
 row_locator = page.locator("tr")
 # ...
 row_locator.
-    filter(has_text="text in column 1").
-    filter(has=page.locator("tr", has_text="column 2 button")).
+    filter(hasText: "text in column 1").
+    filter(has: page.get_by_role("button", name: "column 2 button")).
     screenshot
 ```
 
@@ -331,7 +347,7 @@ When working with iframes, you can create a frame locator that will enter the if
 that iframe:
 
 ```ruby
-locator = page.frame_locator("iframe").locator("text=Submit")
+locator = page.frame_locator("iframe").get_by_text("Submit")
 locator.click
 ```
 
@@ -345,6 +361,103 @@ def get_attribute(name, timeout: nil)
 alias: `[]`
 
 Returns element attribute value.
+
+## get_by_alt_text
+
+```
+def get_by_alt_text(text, exact: nil)
+```
+
+Allows locating elements by their alt text. For example, this method will find the image by alt text "Castle":
+
+```html
+<img alt='Castle'>
+```
+
+
+## get_by_label
+
+```
+def get_by_label(text, exact: nil)
+```
+
+Allows locating input elements by the text of the associated label. For example, this method will find the input by
+label text Password in the following DOM:
+
+```html
+<label for="password-input">Password:</label>
+<input id="password-input">
+```
+
+
+## get_by_placeholder
+
+```
+def get_by_placeholder(text, exact: nil)
+```
+
+Allows locating input elements by the placeholder text. For example, this method will find the input by placeholder
+"Country":
+
+```html
+<input placeholder="Country">
+```
+
+
+## get_by_role
+
+```
+def get_by_role(
+      role,
+      checked: nil,
+      disabled: nil,
+      expanded: nil,
+      includeHidden: nil,
+      level: nil,
+      name: nil,
+      pressed: nil,
+      selected: nil)
+```
+
+Allows locating elements by their [ARIA role](https://www.w3.org/TR/wai-aria-1.2/#roles),
+[ARIA attributes](https://www.w3.org/TR/wai-aria-1.2/#aria-attributes) and
+[accessible name](https://w3c.github.io/accname/#dfn-accessible-name). Note that role selector **does not replace**
+accessibility audits and conformance tests, but rather gives early feedback about the ARIA guidelines.
+
+Note that many html elements have an implicitly
+[defined role](https://w3c.github.io/html-aam/#html-element-role-mappings) that is recognized by the role selector. You
+can find all the [supported roles here](https://www.w3.org/TR/wai-aria-1.2/#role_definitions). ARIA guidelines **do not
+recommend** duplicating implicit roles and attributes by setting `role` and/or `aria-*` attributes to default values.
+
+## get_by_test_id
+
+```
+def get_by_test_id(testId)
+```
+
+Locate element by the test id. By default, the `data-testid` attribute is used as a test id. Use
+[Selectors#set_test_id_attribute](./selectors#set_test_id_attribute) to configure a different test id attribute if necessary.
+
+## get_by_text
+
+```
+def get_by_text(text, exact: nil)
+```
+
+Allows locating elements that contain given text.
+
+## get_by_title
+
+```
+def get_by_title(text, exact: nil)
+```
+
+Allows locating elements by their title. For example, this method will find the button by its title "Submit":
+
+```html
+<button title='Place the order'>Order Now</button>
+```
+
 
 ## highlight
 
@@ -466,8 +579,10 @@ Returns locator to the last matching element.
 def locator(selector, has: nil, hasText: nil)
 ```
 
-The method finds an element matching the specified selector in the [Locator](./locator)'s subtree. It also accepts filter options,
+The method finds an element matching the specified selector in the locator's subtree. It also accepts filter options,
 similar to [Locator#filter](./locator#filter) method.
+
+[Learn more about locators](https://playwright.dev/python/docs/locators).
 
 ## nth
 
@@ -684,8 +799,8 @@ element.type("world", delay: 100) # types slower, like a user
 An example of typing into a text field and then submitting the form:
 
 ```ruby
-element = page.locator("input")
-element.type("some text")
+element = page.get_by_label("Password")
+element.type("my password")
 element.press("Enter")
 ```
 

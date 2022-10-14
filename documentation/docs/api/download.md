@@ -12,7 +12,7 @@ Download event is emitted once the download starts. Download path becomes availa
 
 ```ruby
 download = page.expect_download do
-  page.locator('a').click
+  page.get_by_text("Download file").click
 end
 
 # wait for download to complete

@@ -124,9 +124,9 @@ RSpec.describe 'example' do
 
     it 'should work with BrowserContext#expose_binding' do
       with_context do |context|
-        example_b5278c03b97db04837578d9c4b3127e749c5631b3913c394d87fd2eb7c60d6fd(browser_context: context)
+        example_fac8dd8edc4c565fc04b423141a6881aab2388e7951e425c43865ddd656ffad6(browser_context: context)
         example_93e847f70b01456eec429a1ebfaa6b8f5334f4c227fd73e62dd6a7facb48dbbd(browser_context: context)
-        example_c522a7b05c05a56efaa701e7f606bb933c695fe49d80cc094776ee9a6b0430c9(browser_context: context)
+        example_3465d6b0d3caee840bd7e5ca7076e4def34af07010caca46ea35d2a536d7445d(browser_context: context)
       end
     end
 
@@ -173,8 +173,8 @@ RSpec.describe 'example' do
       end
 
       with_page(acceptDownloads: true) do |page|
-        page.content = "<a href=\"#{server_prefix}/download\">download</a>"
-        path = example_57ba49c8dae5a0b6903980e8329cd393ceb9b066488ea8a0f37299d949a79755(page: page)
+        page.content = "<a href=\"#{server_prefix}/download\">Download file</a>"
+        path = example_26c9f5a18a58f9976e24d83a3ae807479df5e28de9028f085615d99be2cea5a1(page: page)
         expect(File.exist?(path)).to eq(true)
       end
     end
@@ -367,7 +367,7 @@ RSpec.describe 'example' do
 
     it 'should work with Tracing' do
       with_context do |context|
-        example_20726490b43bb0d4f3a8ec9f7d9b08bad90ac24377cec399737fc5bdf537ca4b(context: context)
+        example_e04b4e47771d459712f345ce14b805815a7240ddf2b30b0ae0395d4f62741043(context: context)
       end
     end
 

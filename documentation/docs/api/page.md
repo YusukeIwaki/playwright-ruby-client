@@ -276,6 +276,20 @@ def drag_and_drop(
       trial: nil)
 ```
 
+This method drags the source element to the target element. It will first move to the source element, perform a
+`mousedown`, then move to the target element and perform a `mouseup`.
+
+```ruby
+page.drag_and_drop("#source", "#target")
+# or specify exact positions relative to the top-left corners of the elements:
+page.drag_and_drop(
+  "#source",
+  "#target",
+  sourcePosition: { x: 34, y: 7 },
+  targetPosition: { x: 10, y: 20 },
+)
+```
+
 
 
 ## emulate_media
@@ -592,7 +606,7 @@ that iframe. Following snippet locates element with text "Submit" in the iframe 
 id="my-frame">`:
 
 ```ruby
-locator = page.frame_locator("#my-iframe").locator("text=Submit")
+locator = page.frame_locator("#my-iframe").get_by_text("Submit")
 locator.click
 ```
 
@@ -613,6 +627,103 @@ def get_attribute(selector, name, strict: nil, timeout: nil)
 ```
 
 Returns element attribute value.
+
+## get_by_alt_text
+
+```
+def get_by_alt_text(text, exact: nil)
+```
+
+Allows locating elements by their alt text. For example, this method will find the image by alt text "Castle":
+
+```html
+<img alt='Castle'>
+```
+
+
+## get_by_label
+
+```
+def get_by_label(text, exact: nil)
+```
+
+Allows locating input elements by the text of the associated label. For example, this method will find the input by
+label text Password in the following DOM:
+
+```html
+<label for="password-input">Password:</label>
+<input id="password-input">
+```
+
+
+## get_by_placeholder
+
+```
+def get_by_placeholder(text, exact: nil)
+```
+
+Allows locating input elements by the placeholder text. For example, this method will find the input by placeholder
+"Country":
+
+```html
+<input placeholder="Country">
+```
+
+
+## get_by_role
+
+```
+def get_by_role(
+      role,
+      checked: nil,
+      disabled: nil,
+      expanded: nil,
+      includeHidden: nil,
+      level: nil,
+      name: nil,
+      pressed: nil,
+      selected: nil)
+```
+
+Allows locating elements by their [ARIA role](https://www.w3.org/TR/wai-aria-1.2/#roles),
+[ARIA attributes](https://www.w3.org/TR/wai-aria-1.2/#aria-attributes) and
+[accessible name](https://w3c.github.io/accname/#dfn-accessible-name). Note that role selector **does not replace**
+accessibility audits and conformance tests, but rather gives early feedback about the ARIA guidelines.
+
+Note that many html elements have an implicitly
+[defined role](https://w3c.github.io/html-aam/#html-element-role-mappings) that is recognized by the role selector. You
+can find all the [supported roles here](https://www.w3.org/TR/wai-aria-1.2/#role_definitions). ARIA guidelines **do not
+recommend** duplicating implicit roles and attributes by setting `role` and/or `aria-*` attributes to default values.
+
+## get_by_test_id
+
+```
+def get_by_test_id(testId)
+```
+
+Locate element by the test id. By default, the `data-testid` attribute is used as a test id. Use
+[Selectors#set_test_id_attribute](./selectors#set_test_id_attribute) to configure a different test id attribute if necessary.
+
+## get_by_text
+
+```
+def get_by_text(text, exact: nil)
+```
+
+Allows locating elements that contain given text.
+
+## get_by_title
+
+```
+def get_by_title(text, exact: nil)
+```
+
+Allows locating elements by their title. For example, this method will find the button by its title "Submit":
+
+```html
+<button title='Place the order'>Order Now</button>
+```
+
 
 ## go_back
 
@@ -780,13 +891,11 @@ considered not visible.
 def locator(selector, has: nil, hasText: nil)
 ```
 
-The method returns an element locator that can be used to perform actions on the page. Locator is resolved to the
-element immediately before performing an action, so a series of actions on the same locator can in fact be performed on
-different DOM elements. That would happen if the DOM structure between those actions has changed.
+The method returns an element locator that can be used to perform actions on this page / frame. Locator is resolved to
+the element immediately before performing an action, so a series of actions on the same locator can in fact be performed
+on different DOM elements. That would happen if the DOM structure between those actions has changed.
 
 [Learn more about locators](https://playwright.dev/python/docs/locators).
-
-Shortcut for main frame's [Frame#locator](./frame#locator).
 
 ## main_frame
 
@@ -1364,7 +1473,7 @@ value. Will throw an error if the page is closed before the event is fired. Retu
 
 ```ruby
 frame = page.expect_event("framenavigated") do
-  page.click("button")
+  page.get_by_role("button")
 end
 ```
 
@@ -1415,13 +1524,13 @@ This resolves when the page reaches a required load state, `load` by default. Th
 when this method is called. If current document has already reached the required state, resolves immediately.
 
 ```ruby
-page.click("button") # click triggers navigation.
+page.get_by_role("button").click # click triggers navigation.
 page.wait_for_load_state # the promise resolves after "load" event.
 ```
 
 ```ruby
 popup = page.expect_popup do
-  page.click("button") # click triggers a popup.
+  page.get_by_role("button").click # click triggers a popup.
 end
 
 # Following resolves after "domcontentloaded" event.

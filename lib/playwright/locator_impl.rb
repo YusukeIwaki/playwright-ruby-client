@@ -1,49 +1,25 @@
 require 'json'
+require_relative './locator_utils'
 
 module Playwright
-  class EscapeWithQuotes
-    def initialize(text, char = "'")
-      stringified = text.to_json
-      escaped_text = stringified[1...-1].gsub(/\\"/, '"')
-
-      case char
-      when '"'
-        text = escaped_text.gsub(/["]/, '\\"')
-        @text = "\"#{text}\""
-      when "'"
-        text = escaped_text.gsub(/[']/, '\\\'')
-        @text = "'#{text}'"
-      else
-        raise ArgumentError.new('Invalid escape char')
-      end
-    end
-
-    def to_s
-      @text
-    end
-  end
-
   define_api_implementation :LocatorImpl do
+    include LocatorUtils
+
     def initialize(frame:, timeout_settings:, selector:, hasText: nil, has: nil)
       @frame = frame
       @timeout_settings = timeout_settings
       selector_scopes = [selector]
 
-      case hasText
-      when Regexp
-        regex = JavaScript::Regex.new(hasText)
-        source = EscapeWithQuotes.new(regex.source, '"')
-        selector_scopes << "has=#{"text=/#{regex.source}/#{regex.flag}".to_json}"
-      when String
-        text = EscapeWithQuotes.new(hasText, '"')
-        selector_scopes << ":scope:has-text(#{text})"
+      if hasText
+        text_selector = "text=#{escape_for_text_selector(hasText, false)}"
+        selector_scopes << "internal:has=#{text_selector.to_json}"
       end
 
       if has
         unless same_frame?(has)
           raise DifferentFrameError.new
         end
-        selector_scopes << "has=#{has.send(:selector_json)}"
+        selector_scopes << "internal:has=#{has.send(:selector_json)}"
       end
 
       @selector = selector_scopes.join(' >> ')

@@ -39,7 +39,7 @@ With the locator, every time the `element` is used, up-to-date DOM element is lo
 in the snippet below, underlying DOM element is going to be located twice.
 
 ```ruby
-locator = page.locator("text=Submit")
+locator = page.get_by_text("Submit")
 locator.hover
 locator.click
 ```

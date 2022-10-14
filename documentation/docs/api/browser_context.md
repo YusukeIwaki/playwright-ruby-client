@@ -161,7 +161,7 @@ page.content = <<~HTML
 <div></div>
 HTML
 
-page.locator("button").click
+page.get_by_role("button").click
 ```
 
 An example of passing an element handle:
@@ -222,7 +222,7 @@ page.content = <<~HTML
 <button onclick="onClick()">Click me</button>
 <div></div>
 HTML
-page.locator("button").click
+page.get_by_role("button").click
 ```
 
 
@@ -434,7 +434,7 @@ value. Will throw an error if the context closes before the event is fired. Retu
 
 ```ruby
 new_page = browser_context.expect_event('page') do
-  page.locator('button').click
+  page.get_by_role("button").click
 end
 ```
 

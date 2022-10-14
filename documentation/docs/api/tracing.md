@@ -58,7 +58,7 @@ page = context.new_page
 page.goto("https://playwright.dev")
 
 context.tracing.start_chunk
-page.locator("text=Get Started").click
+page.get_by_text("Get Started").click
 # Everything between start_chunk and stop_chunk will be recorded in the trace.
 context.tracing.stop_chunk(path: "trace1.zip")
 
