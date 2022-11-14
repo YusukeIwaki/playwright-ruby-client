@@ -95,6 +95,7 @@ These parameters can be passed into `Capybara::Playwright::Driver.new`
   * record_video_dir
   * record_video_size
   * screen
+  * serviceWorkers
   * storageState
   * timezoneId
   * userAgent
