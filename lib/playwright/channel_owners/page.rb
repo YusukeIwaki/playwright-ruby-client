@@ -366,14 +366,22 @@ module Playwright
 
     def emulate_media(colorScheme: nil, forcedColors: nil, media: nil, reducedMotion: nil)
       params = {
-        colorScheme: colorScheme,
-        forcedColors: forcedColors,
-        media: media,
-        reducedMotion: reducedMotion,
+        colorScheme: no_override_if_null(colorScheme),
+        forcedColors: no_override_if_null(forcedColors),
+        media: no_override_if_null(media),
+        reducedMotion: no_override_if_null(reducedMotion),
       }.compact
       @channel.send_message_to_server('emulateMedia', params)
 
       nil
+    end
+
+    private def no_override_if_null(target)
+      if target == 'null'
+        'no-override'
+      else
+        target
+      end
     end
 
     def set_viewport_size(viewportSize)
@@ -637,6 +645,7 @@ module Playwright
           selector,
           force: nil,
           modifiers: nil,
+          noWaitAfter: nil,
           position: nil,
           strict: nil,
           timeout: nil,
@@ -645,6 +654,7 @@ module Playwright
         selector,
         force: force,
         modifiers: modifiers,
+        noWaitAfter: noWaitAfter,
         position: position,
         strict: strict,
         timeout: timeout,

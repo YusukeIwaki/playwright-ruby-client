@@ -55,6 +55,12 @@ module Playwright
           params[:storageState] = JSON.parse(File.read(params[:storageState]))
         end
 
+        %i[colorScheme reducedMotion forcedColors].each do |key|
+          if params[key] == 'null'
+            params[key] = 'no-override'
+          end
+        end
+
         params
       end
     end
