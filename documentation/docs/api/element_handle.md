@@ -292,6 +292,7 @@ Returns element attribute value.
 def hover(
       force: nil,
       modifiers: nil,
+      noWaitAfter: nil,
       position: nil,
       timeout: nil,
       trial: nil)

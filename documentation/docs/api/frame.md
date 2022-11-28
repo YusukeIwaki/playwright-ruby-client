@@ -435,7 +435,7 @@ def get_by_label(text, exact: nil)
 ```
 
 Allows locating input elements by the text of the associated label. For example, this method will find the input by
-label text Password in the following DOM:
+label text "Password" in the following DOM:
 
 ```html
 <label for="password-input">Password:</label>
@@ -464,6 +464,7 @@ def get_by_role(
       role,
       checked: nil,
       disabled: nil,
+      exact: nil,
       expanded: nil,
       includeHidden: nil,
       level: nil,
@@ -491,13 +492,48 @@ def get_by_test_id(testId)
 Locate element by the test id. By default, the `data-testid` attribute is used as a test id. Use
 [Selectors#set_test_id_attribute](./selectors#set_test_id_attribute) to configure a different test id attribute if necessary.
 
+
+
 ## get_by_text
 
 ```
 def get_by_text(text, exact: nil)
 ```
 
-Allows locating elements that contain given text.
+Allows locating elements that contain given text. Consider the following DOM structure:
+
+```html
+<div>Hello <span>world</span></div>
+<div>Hello</div>
+```
+
+You can locate by text substring, exact string, or a regular expression:
+
+```python sync title=example_cbf4890335f3140b7b275bdad85b330140e5fbb21e7f4b89643c73115ee62a17.py
+# Matches <span>
+page.get_by_text("world")
+
+# Matches first <div>
+page.get_by_text("Hello world")
+
+# Matches second <div>
+page.get_by_text("Hello", exact=True)
+
+# Matches both <div>s
+page.get_by_text(re.compile("Hello"))
+
+# Matches second <div>
+page.get_by_text(re.compile("^hello$", re.IGNORECASE))
+
+```
+
+See also [Locator#filter](./locator#filter) that allows to match by another criteria, like an accessible role, and then filter
+by the text content.
+
+> NOTE: Matching by text always normalizes whitespace, even with exact match. For example, it turns multiple spaces into
+one, turns line breaks into spaces and ignores leading and trailing whitespace.
+> NOTE: Input elements of the type `button` and `submit` are matched by their `value` instead of the text content. For
+example, locating by text `"Log in"` matches `<input type=button value="Log in">`.
 
 ## get_by_title
 
@@ -505,7 +541,7 @@ Allows locating elements that contain given text.
 def get_by_title(text, exact: nil)
 ```
 
-Allows locating elements by their title. For example, this method will find the button by its title "Submit":
+Allows locating elements by their title. For example, this method will find the button by its title "Place the order":
 
 ```html
 <button title='Place the order'>Order Now</button>
@@ -544,6 +580,7 @@ def hover(
       selector,
       force: nil,
       modifiers: nil,
+      noWaitAfter: nil,
       position: nil,
       strict: nil,
       timeout: nil,
