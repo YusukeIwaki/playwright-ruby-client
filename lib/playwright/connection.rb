@@ -43,7 +43,10 @@ module Playwright
     end
 
     def initialize_playwright
-      result = send_message_to_server('', 'initialize', { sdkLanguage: 'ruby' })
+      # Avoid Error: sdkLanguage: expected one of (javascript|python|java|csharp)
+      # ref: https://github.com/microsoft/playwright/pull/18308
+      # ref: https://github.com/YusukeIwaki/playwright-ruby-client/issues/228
+      result = send_message_to_server('', 'initialize', { sdkLanguage: 'python' })
       ChannelOwners::Playwright.from(result['playwright'])
     end
 
