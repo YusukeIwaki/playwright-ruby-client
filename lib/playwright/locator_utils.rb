@@ -1,3 +1,5 @@
+require 'json'
+
 module Playwright
   module LocatorUtils
     def get_by_test_id(test_id)
@@ -59,7 +61,7 @@ module Playwright
     end
 
     private def get_by_text_selector(text, exact:)
-      "text=#{escape_for_text_selector(text, exact)}"
+      "internal:text=#{escape_for_text_selector(text, exact)}"
     end
 
     private def get_by_role_selector(role, **options)
@@ -82,12 +84,12 @@ module Playwright
       ].each do |attr_name|
         if options.key?(attr_name)
           attr_value = options[attr_name]
-          props << ex[attr_name]&.call(attr_value) || [attr_name, attr_value.to_s]
+          props << (ex[attr_name]&.call(attr_value) || [attr_name, attr_value.to_s])
         end
       end
 
       opts = props.map { |k, v| "[#{k}=#{v}]"}.join('')
-      "role=#{role}#{opts}"
+      "internal:role=#{role}#{opts}"
     end
 
     # @param text [String]
@@ -103,16 +105,10 @@ module Playwright
       end
 
       if exact
-        _text = text.gsub(/["]/, '\\"')
-        return "\"#{_text}\""
+        "#{text.to_json}s"
+      else
+        "#{text.to_json}i"
       end
-
-      if text.include?('"') || text.include?('>>') || text.start_with?('/')
-        _text = escape_for_regex(text).gsub(/\s+/, '\\s+')
-        return "/#{_text}/i"
-      end
-
-      text
     end
 
     # @param text [Regexp|String]
