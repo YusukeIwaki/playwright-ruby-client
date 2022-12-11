@@ -11,8 +11,7 @@ module Playwright
       selector_scopes = [selector]
 
       if hasText
-        text_selector = "text=#{escape_for_text_selector(hasText, false)}"
-        selector_scopes << "internal:has=#{text_selector.to_json}"
+        selector_scopes << "internal:has-text=#{escape_for_text_selector(hasText, false)}"
       end
 
       if has
