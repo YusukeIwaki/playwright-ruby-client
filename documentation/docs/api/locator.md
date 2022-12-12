@@ -87,6 +87,20 @@ If the element is detached from the DOM at any moment during the action, this me
 When all steps combined have not finished during the specified `timeout`, this method throws a `TimeoutError`. Passing
 zero timeout disables this.
 
+## clear
+
+```
+def clear(force: nil, noWaitAfter: nil, timeout: nil)
+```
+
+This method waits for [actionability](https://playwright.dev/python/docs/actionability) checks, focuses the element, clears it and triggers an
+`input` event after clearing.
+
+If the target element is not an `<input>`, `<textarea>` or `[contenteditable]` element, this method throws an error.
+However, if the element is inside the `<label>` element that has an associated
+[control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), the control will be cleared
+instead.
+
 ## click
 
 ```

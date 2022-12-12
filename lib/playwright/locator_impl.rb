@@ -186,6 +186,10 @@ module Playwright
       @frame.fill(@selector, value, strict: true, force: force, noWaitAfter: noWaitAfter, timeout: timeout)
     end
 
+    def clear(force: nil, noWaitAfter: nil, timeout: nil)
+      @frame.fill(@selector, '', strict: true, force: force, noWaitAfter: noWaitAfter, timeout: timeout)
+    end
+
     def locator(selector, hasText: nil, has: nil)
       LocatorImpl.new(
         frame: @frame,

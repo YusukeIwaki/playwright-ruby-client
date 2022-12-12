@@ -423,7 +423,7 @@
 * blur
 * bounding_box
 * check
-* ~~clear~~
+* clear
 * click
 * count
 * dblclick

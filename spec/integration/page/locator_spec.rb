@@ -41,6 +41,17 @@ RSpec.describe 'locator' do
       end
     end
 
+    it 'should clear input', sinatra: true do
+      with_page do |page|
+        page.goto("#{server_prefix}/input/textarea.html")
+        handle = page.locator('input')
+        handle.fill('some value')
+        expect { handle.clear }.to change {
+          page.evaluate("() => window['result']")
+        }.from('some value').to('')
+      end
+    end
+
     it 'should check the box' do
       with_page do |page|
         page.content = "<input id='checkbox' type='checkbox'></input>"
