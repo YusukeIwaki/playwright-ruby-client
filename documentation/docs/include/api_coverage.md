@@ -420,7 +420,7 @@
 
 * all_inner_texts
 * all_text_contents
-* ~~blur~~
+* blur
 * bounding_box
 * check
 * ~~clear~~

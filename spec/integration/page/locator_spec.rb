@@ -80,13 +80,17 @@ RSpec.describe 'locator' do
       end
     end
 
-    it 'should focus a button', sinatra: true do
+    it 'should focus and blur a button', sinatra: true do
       with_page do |page|
         page.goto("#{server_prefix}/input/button.html")
         button = page.locator('button')
         expect { button.focus }.to change {
           button.evaluate("button => document.activeElement === button")
         }.from(false).to(true)
+
+        expect { button.blur }.to change {
+          button.evaluate("button => document.activeElement === button")
+        }.from(true).to(false)
       end
     end
 

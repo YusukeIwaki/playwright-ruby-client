@@ -25,6 +25,14 @@ def all_text_contents
 
 Returns an array of `node.textContent` values for all matching nodes.
 
+## blur
+
+```
+def blur(timeout: nil)
+```
+
+Calls [blur](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/blur) on the element.
+
 ## bounding_box
 
 ```

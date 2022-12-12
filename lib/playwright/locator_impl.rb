@@ -250,6 +250,15 @@ module Playwright
       @frame.focus(@selector, strict: true, timeout: timeout)
     end
 
+    def blur(timeout: nil)
+      params = {
+        selector: @selector,
+        strict: true,
+        timeout: timeout,
+      }.compact
+      @frame.channel.send_message_to_server('blur', params)
+    end
+
     def count
       @frame.eval_on_selector_all(@selector, 'ee => ee.length')
     end
