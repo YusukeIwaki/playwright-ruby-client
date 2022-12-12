@@ -69,7 +69,7 @@ module Playwright
 
       ex = {
         includeHidden: -> (value) { ['include-hidden', value.to_s] },
-        name: -> (value) { ['name', escape_for_attribute_selector_or_regex(value, false)]},
+        name: -> (value) { ['name', escape_for_attribute_selector_or_regex(value, options[:exact])]},
       }
 
       %i[

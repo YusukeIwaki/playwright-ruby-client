@@ -155,4 +155,42 @@ world</label><input id=control />"
       expect(page.get_by_title("hello my\nworld")['id']).to eq('control')
     end
   end
+
+  it 'getByRole escaping' do
+    with_page do |page|
+      page.content = <<~HTML
+      <a href="https://playwright.dev">issues 123</a>
+      <a href="https://playwright.dev">he llo 56</a>
+      <button>Click me</button>
+      HTML
+
+      expect(page.get_by_role('button').evaluate_all('els => els.map(e => e.outerHTML)')).to contain_exactly(
+        '<button>Click me</button>'
+      )
+
+      expect(page.get_by_role('link').evaluate_all('els => els.map(e => e.outerHTML)')).to contain_exactly(
+        '<a href="https://playwright.dev">issues 123</a>',
+        '<a href="https://playwright.dev">he llo 56</a>',
+      )
+
+      expect(page.get_by_role('link', name: 'issues 123').evaluate_all('els => els.map(e => e.outerHTML)')).to contain_exactly(
+        '<a href="https://playwright.dev">issues 123</a>',
+      )
+
+      expect(page.get_by_role('link', name: 'sues').evaluate_all('els => els.map(e => e.outerHTML)')).to contain_exactly(
+        '<a href="https://playwright.dev">issues 123</a>',
+      )
+
+      expect(page.get_by_role('link', name: "  he    \n  llo ").evaluate_all('els => els.map(e => e.outerHTML)')).to contain_exactly(
+        '<a href="https://playwright.dev">he llo 56</a>',
+      )
+
+      expect(page.get_by_role('button', name: 'issues').evaluate_all('els => els.map(e => e.outerHTML)')).to be_empty
+      expect(page.get_by_role('link', name: 'sues', exact: true).evaluate_all('els => els.map(e => e.outerHTML)')).to be_empty
+
+      expect(page.get_by_role('link', name: "   he \n llo 56 ", exact: true).evaluate_all('els => els.map(e => e.outerHTML)')).to contain_exactly(
+        '<a href="https://playwright.dev">he llo 56</a>',
+      )
+    end
+  end
 end
