@@ -41,6 +41,17 @@ RSpec.describe 'locator' do
       end
     end
 
+    it 'should clear input', sinatra: true do
+      with_page do |page|
+        page.goto("#{server_prefix}/input/textarea.html")
+        handle = page.locator('input')
+        handle.fill('some value')
+        expect { handle.clear }.to change {
+          page.evaluate("() => window['result']")
+        }.from('some value').to('')
+      end
+    end
+
     it 'should check the box' do
       with_page do |page|
         page.content = "<input id='checkbox' type='checkbox'></input>"
@@ -80,13 +91,17 @@ RSpec.describe 'locator' do
       end
     end
 
-    it 'should focus a button', sinatra: true do
+    it 'should focus and blur a button', sinatra: true do
       with_page do |page|
         page.goto("#{server_prefix}/input/button.html")
         button = page.locator('button')
         expect { button.focus }.to change {
           button.evaluate("button => document.activeElement === button")
         }.from(false).to(true)
+
+        expect { button.blur }.to change {
+          button.evaluate("button => document.activeElement === button")
+        }.from(true).to(false)
       end
     end
 

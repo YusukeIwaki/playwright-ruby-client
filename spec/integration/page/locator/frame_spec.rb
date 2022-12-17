@@ -71,7 +71,7 @@ RSpec.describe 'FrameLocator' do
       page.goto(server_empty_page)
       expect {
         page.frame_locator('iframe').locator('span').click(timeout: 300)
-      }.to raise_error(/waiting for frame "iframe"/)
+      }.to raise_error(/waiting for frame_locator\("iframe"\)/)
     end
   end
 
@@ -221,7 +221,7 @@ RSpec.describe 'FrameLocator' do
     with_page do |page|
       page.goto(server_empty_page)
       button = page.locator('body').frame_locator('iframe').locator('button')
-      expect { button.wait_for }.to raise_error(/Error: strict mode violation: "body >> iframe" resolved to 3 elements/)
+      expect { button.wait_for }.to raise_error(/Error: strict mode violation: locator\("body"\).locator\("iframe"\) resolved to 3 elements/)
     end
   end
 

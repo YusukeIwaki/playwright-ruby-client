@@ -11,8 +11,7 @@ module Playwright
       selector_scopes = [selector]
 
       if hasText
-        text_selector = "text=#{escape_for_text_selector(hasText, false)}"
-        selector_scopes << "internal:has=#{text_selector.to_json}"
+        selector_scopes << "internal:has-text=#{escape_for_text_selector(hasText, false)}"
       end
 
       if has
@@ -187,6 +186,10 @@ module Playwright
       @frame.fill(@selector, value, strict: true, force: force, noWaitAfter: noWaitAfter, timeout: timeout)
     end
 
+    def clear(force: nil, noWaitAfter: nil, timeout: nil)
+      @frame.fill(@selector, '', strict: true, force: force, noWaitAfter: noWaitAfter, timeout: timeout)
+    end
+
     def locator(selector, hasText: nil, has: nil)
       LocatorImpl.new(
         frame: @frame,
@@ -251,6 +254,15 @@ module Playwright
       @frame.focus(@selector, strict: true, timeout: timeout)
     end
 
+    def blur(timeout: nil)
+      params = {
+        selector: @selector,
+        strict: true,
+        timeout: timeout,
+      }.compact
+      @frame.channel.send_message_to_server('blur', params)
+    end
+
     def count
       @frame.eval_on_selector_all(@selector, 'ee => ee.length')
     end
@@ -262,6 +274,7 @@ module Playwright
     def hover(
           force: nil,
           modifiers: nil,
+          noWaitAfter: nil,
           position: nil,
           timeout: nil,
           trial: nil)
@@ -269,6 +282,7 @@ module Playwright
         strict: true,
         force: force,
         modifiers: modifiers,
+        noWaitAfter: noWaitAfter,
         position: position,
         timeout: timeout,
         trial: trial)

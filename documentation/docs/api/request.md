@@ -15,7 +15,7 @@ the  [`event: Page.requestFailed`] event is emitted.
 > NOTE: HTTP Error responses, such as 404 or 503, are still successful responses from HTTP standpoint, so request will
 complete with `'requestfinished'` event.
 
-If request gets a 'redirect' response, the request is successfully finished with the 'requestfinished' event, and a new
+If request gets a 'redirect' response, the request is successfully finished with the `requestfinished` event, and a new
 request is  issued to a redirected url.
 
 ## all_headers

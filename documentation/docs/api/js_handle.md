@@ -85,10 +85,12 @@ The method returns a map with **own property names** as keys and JSHandle instan
 
 ```ruby
 page.goto('https://example.com/')
-window_handle = page.evaluate_handle("window")
-properties = window_handle.properties
+handle = page.evaluate_handle("({window, document})")
+properties = handle.properties
 puts properties
-window_handle.dispose
+window_handle = properties["window"]
+document_handle = properties["document"]
+handle.dispose
 ```
 
 

@@ -5,7 +5,7 @@ sidebar_position: 10
 # Keyboard
 
 Keyboard provides an api for managing a virtual keyboard. The high level api is [Keyboard#type](./keyboard#type), which takes
-raw characters and generates proper keydown, keypress/input, and keyup events on your page.
+raw characters and generates proper `keydown`, `keypress`/`input`, and `keyup` events on your page.
 
 For finer control, you can use [Keyboard#down](./keyboard#down), [Keyboard#up](./keyboard#up), and [Keyboard#insert_text](./keyboard#insert_text)
 to manually fire events as if they were generated from a real keyboard.

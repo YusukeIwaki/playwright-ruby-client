@@ -76,10 +76,17 @@ module Playwright
         nil
       end
 
-      def hover(force: nil, modifiers: nil, position: nil, timeout: nil, trial: nil)
+      def hover(
+            force: nil,
+            modifiers: nil,
+            noWaitAfter: nil,
+            position: nil,
+            timeout: nil,
+            trial: nil)
         params = {
           force: force,
           modifiers: modifiers,
+          noWaitAfter: noWaitAfter,
           position: position,
           timeout: timeout,
           trial: trial,

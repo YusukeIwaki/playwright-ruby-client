@@ -1,7 +1,10 @@
+require 'json'
+
 module Playwright
   module LocatorUtils
     def get_by_test_id(test_id)
-      locator(get_by_test_id_selector(test_id))
+      test_id_attribute_name = ::Playwright::LocatorUtils.instance_variable_get(:@test_id_attribute_name)
+      locator(get_by_test_id_selector(test_id_attribute_name, test_id))
     end
 
     def get_by_alt_text(text, exact: false)
@@ -35,11 +38,8 @@ module Playwright
       "internal:attr=[#{attr_name}=#{escape_for_attribute_selector_or_regex(text, exact)}]"
     end
 
-    private def get_by_test_id_selector(test_id)
-      get_by_attribute_text_selector(
-        ::Playwright::LocatorUtils.instance_variable_get(:@test_id_attribute_name),
-        test_id,
-        exact: true)
+    private def get_by_test_id_selector(test_id_attribute_name, test_id)
+      "internal:testid=[#{test_id_attribute_name}=#{escape_for_attribute_selector(test_id, true)}]"
     end
 
     private def get_by_label_selector(text, exact:)
@@ -59,7 +59,7 @@ module Playwright
     end
 
     private def get_by_text_selector(text, exact:)
-      "text=#{escape_for_text_selector(text, exact)}"
+      "internal:text=#{escape_for_text_selector(text, exact)}"
     end
 
     private def get_by_role_selector(role, **options)
@@ -67,7 +67,7 @@ module Playwright
 
       ex = {
         includeHidden: -> (value) { ['include-hidden', value.to_s] },
-        name: -> (value) { ['name', escape_for_attribute_selector_or_regex(value, false)]},
+        name: -> (value) { ['name', escape_for_attribute_selector_or_regex(value, options[:exact])]},
       }
 
       %i[
@@ -82,12 +82,12 @@ module Playwright
       ].each do |attr_name|
         if options.key?(attr_name)
           attr_value = options[attr_name]
-          props << ex[attr_name]&.call(attr_value) || [attr_name, attr_value.to_s]
+          props << (ex[attr_name]&.call(attr_value) || [attr_name, attr_value.to_s])
         end
       end
 
       opts = props.map { |k, v| "[#{k}=#{v}]"}.join('')
-      "role=#{role}#{opts}"
+      "internal:role=#{role}#{opts}"
     end
 
     # @param text [String]
@@ -103,16 +103,10 @@ module Playwright
       end
 
       if exact
-        _text = text.gsub(/["]/, '\\"')
-        return "\"#{_text}\""
+        "#{text.to_json}s"
+      else
+        "#{text.to_json}i"
       end
-
-      if text.include?('"') || text.include?('>>') || text.start_with?('/')
-        _text = escape_for_regex(text).gsub(/\s+/, '\\s+')
-        return "/#{_text}/i"
-      end
-
-      text
     end
 
     # @param text [Regexp|String]

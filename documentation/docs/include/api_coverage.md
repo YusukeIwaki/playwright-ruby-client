@@ -420,8 +420,10 @@
 
 * all_inner_texts
 * all_text_contents
+* blur
 * bounding_box
 * check
+* clear
 * click
 * count
 * dblclick
@@ -519,6 +521,7 @@
 
 ## Android
 
+* ~~connect~~
 * devices
 * ~~set_default_timeout~~
 

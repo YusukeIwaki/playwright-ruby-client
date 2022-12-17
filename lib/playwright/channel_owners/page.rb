@@ -8,6 +8,7 @@ module Playwright
     include LocatorUtils
     attr_writer :owned_context
 
+
     private def after_initialize
       @browser_context = @parent
       @timeout_settings = TimeoutSettings.new(@browser_context.send(:_timeout_settings))
@@ -72,6 +73,14 @@ module Playwright
       @channel.on('worker', ->(params) {
         worker = ChannelOwners::Worker.from(params['worker'])
         on_worker(worker)
+      })
+
+      set_event_to_subscription_mapping({
+        Events::Page::Request => "request",
+        Events::Page::Response => "response",
+        Events::Page::RequestFinished => "requestFinished",
+        Events::Page::RequestFailed => "requestFailed",
+        Events::Page::FileChooser => "fileChooser",
       })
     end
 
@@ -167,30 +176,6 @@ module Playwright
     private def on_video(params)
       artifact = ChannelOwners::Artifact.from(params['artifact'])
       video.send(:set_artifact, artifact)
-    end
-
-    # @override
-    def on(event, callback)
-      if event == Events::Page::FileChooser && listener_count(event) == 0
-        @channel.async_send_message_to_server('setFileChooserInterceptedNoReply', intercepted: true)
-      end
-      super
-    end
-
-    # @override
-    def once(event, callback)
-      if event == Events::Page::FileChooser && listener_count(event) == 0
-        @channel.async_send_message_to_server('setFileChooserInterceptedNoReply', intercepted: true)
-      end
-      super
-    end
-
-    # @override
-    def off(event, callback)
-      super
-      if event == Events::Page::FileChooser && listener_count(event) == 0
-        @channel.async_send_message_to_server('setFileChooserInterceptedNoReply', intercepted: false)
-      end
     end
 
     def context
@@ -366,14 +351,22 @@ module Playwright
 
     def emulate_media(colorScheme: nil, forcedColors: nil, media: nil, reducedMotion: nil)
       params = {
-        colorScheme: colorScheme,
-        forcedColors: forcedColors,
-        media: media,
-        reducedMotion: reducedMotion,
+        colorScheme: no_override_if_null(colorScheme),
+        forcedColors: no_override_if_null(forcedColors),
+        media: no_override_if_null(media),
+        reducedMotion: no_override_if_null(reducedMotion),
       }.compact
       @channel.send_message_to_server('emulateMedia', params)
 
       nil
+    end
+
+    private def no_override_if_null(target)
+      if target == 'null'
+        'no-override'
+      else
+        target
+      end
     end
 
     def set_viewport_size(viewportSize)
@@ -637,6 +630,7 @@ module Playwright
           selector,
           force: nil,
           modifiers: nil,
+          noWaitAfter: nil,
           position: nil,
           strict: nil,
           timeout: nil,
@@ -645,6 +639,7 @@ module Playwright
         selector,
         force: force,
         modifiers: modifiers,
+        noWaitAfter: noWaitAfter,
         position: position,
         strict: strict,
         timeout: timeout,

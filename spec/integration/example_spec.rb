@@ -196,7 +196,7 @@ RSpec.describe 'example' do
     it 'should work with JSHandle#properties' do
       with_page do |page|
         with_network_retry do
-          example_8292f0e8974d97d20be9bb303d55ccd2d50e42f954e0ada4958ddbef2c6c2977(page: page)
+          example_b5cbf187e1332705618516d4be127b8091a5d1acfa9a12d382086a2b0e738909(page: page)
         end
       end
     end
@@ -267,6 +267,12 @@ RSpec.describe 'example' do
         </body>
         HTML
         expect(example_32478e941514ed28b6ac221e6d54b55cf117038ecac6f4191db676480ab68d44(page: page)).to eq(false)
+      end
+    end
+
+    it 'should work with Locator#get_by_text' do
+      with_page do |page|
+        example_cbf4890335f3140b7b275bdad85b330140e5fbb21e7f4b89643c73115ee62a17(page: page)
       end
     end
 
