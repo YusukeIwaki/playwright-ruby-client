@@ -509,22 +509,33 @@ Allows locating elements that contain given text. Consider the following DOM str
 
 You can locate by text substring, exact string, or a regular expression:
 
-```python sync title=example_cbf4890335f3140b7b275bdad85b330140e5fbb21e7f4b89643c73115ee62a17.py
+```ruby
+page.content = <<~HTML
+  <div>Hello <span>world</span></div>
+  <div>Hello</div>
+HTML
+
 # Matches <span>
-page.get_by_text("world")
+locator = page.get_by_text("world")
+expect(locator.evaluate('e => e.outerHTML')).to eq('<span>world</span>')
 
 # Matches first <div>
-page.get_by_text("Hello world")
+locator = page.get_by_text("Hello world")
+expect(locator.evaluate('e => e.outerHTML')).to eq('<div>Hello <span>world</span></div>')
 
 # Matches second <div>
-page.get_by_text("Hello", exact=True)
+locator = page.get_by_text("Hello", exact: true)
+expect(locator.evaluate('e => e.outerHTML')).to eq('<div>Hello</div>')
 
 # Matches both <div>s
-page.get_by_text(re.compile("Hello"))
+locator = page.get_by_text(/Hello/)
+expect(locator.count).to eq(2)
+expect(locator.first.evaluate('e => e.outerHTML')).to eq('<div>Hello <span>world</span></div>')
+expect(locator.last.evaluate('e => e.outerHTML')).to eq('<div>Hello</div>')
 
 # Matches second <div>
-page.get_by_text(re.compile("^hello$", re.IGNORECASE))
-
+locator = page.get_by_text(/^hello$/i)
+expect(locator.evaluate('e => e.outerHTML')).to eq('<div>Hello</div>')
 ```
 
 See also [Locator#filter](./locator#filter) that allows to match by another criteria, like an accessible role, and then filter

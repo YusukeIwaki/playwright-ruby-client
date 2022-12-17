@@ -8,10 +8,9 @@ FrameLocator represents a view to the `iframe` on the page. It captures the logi
 and locate elements in that iframe. FrameLocator can be created with either [Page#frame_locator](./page#frame_locator) or
 [Locator#frame_locator](./locator#frame_locator) method.
 
-```python sync title=example_4b7e4ce2b2fdb7e75c2145e4ba89216e4cbd2892caff1b05189e8729d3aa8dfb.py
+```ruby
 locator = page.frame_locator("my-frame").get_by_text("Submit")
-locator.click()
-
+locator.click
 ```
 
 **Strictness**
@@ -32,9 +31,8 @@ page.frame_locator('.result-frame').first.get_by_role('button').click
 If you have a [Locator](./locator) object pointing to an `iframe` it can be converted to [FrameLocator](./frame_locator) using
 [`:scope`](https://developer.mozilla.org/en-US/docs/Web/CSS/:scope) CSS selector:
 
-```python sync title=example_12733f9ff809e08435510bc818e9a4194f9f89cbf6de5c38bfb3e1dca9e72565.py
-frameLocator = locator.frame_locator(":scope")
-
+```ruby
+frame_locator = locator.frame_locator(':scope')
 ```
 
 
@@ -150,22 +148,33 @@ Allows locating elements that contain given text. Consider the following DOM str
 
 You can locate by text substring, exact string, or a regular expression:
 
-```python sync title=example_cbf4890335f3140b7b275bdad85b330140e5fbb21e7f4b89643c73115ee62a17.py
+```ruby
+page.content = <<~HTML
+  <div>Hello <span>world</span></div>
+  <div>Hello</div>
+HTML
+
 # Matches <span>
-page.get_by_text("world")
+locator = page.get_by_text("world")
+expect(locator.evaluate('e => e.outerHTML')).to eq('<span>world</span>')
 
 # Matches first <div>
-page.get_by_text("Hello world")
+locator = page.get_by_text("Hello world")
+expect(locator.evaluate('e => e.outerHTML')).to eq('<div>Hello <span>world</span></div>')
 
 # Matches second <div>
-page.get_by_text("Hello", exact=True)
+locator = page.get_by_text("Hello", exact: true)
+expect(locator.evaluate('e => e.outerHTML')).to eq('<div>Hello</div>')
 
 # Matches both <div>s
-page.get_by_text(re.compile("Hello"))
+locator = page.get_by_text(/Hello/)
+expect(locator.count).to eq(2)
+expect(locator.first.evaluate('e => e.outerHTML')).to eq('<div>Hello <span>world</span></div>')
+expect(locator.last.evaluate('e => e.outerHTML')).to eq('<div>Hello</div>')
 
 # Matches second <div>
-page.get_by_text(re.compile("^hello$", re.IGNORECASE))
-
+locator = page.get_by_text(/^hello$/i)
+expect(locator.evaluate('e => e.outerHTML')).to eq('<div>Hello</div>')
 ```
 
 See also [Locator#filter](./locator#filter) that allows to match by another criteria, like an accessible role, and then filter

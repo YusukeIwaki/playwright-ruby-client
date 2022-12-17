@@ -83,13 +83,14 @@ alias: `properties`
 
 The method returns a map with **own property names** as keys and JSHandle instances for the property values.
 
-```python sync title=example_b5cbf187e1332705618516d4be127b8091a5d1acfa9a12d382086a2b0e738909.py
+```ruby
+page.goto('https://example.com/')
 handle = page.evaluate_handle("({window, document})")
-properties = handle.get_properties()
-window_handle = properties.get("window")
-document_handle = properties.get("document")
-handle.dispose()
-
+properties = handle.properties
+puts properties
+window_handle = properties["window"]
+document_handle = properties["document"]
+handle.dispose
 ```
 
 

@@ -654,7 +654,7 @@ module ExampleCodes
   end
 
   # FrameLocator
-  def example_532f18c59b0dfaae95be697748f0c1c035b46e4acfaf509542b9e23a65830dd1(page:)
+  def example_4b7e4ce2b2fdb7e75c2145e4ba89216e4cbd2892caff1b05189e8729d3aa8dfb(page:)
     locator = page.frame_locator("my-frame").get_by_text("Submit")
     locator.click
   end
@@ -669,7 +669,7 @@ module ExampleCodes
   end
 
   # FrameLocator
-  def example_8426bf9e29f61c04b0a4add1fa16d1eaac4d8564014710acba09027036643b8b
+  def example_12733f9ff809e08435510bc818e9a4194f9f89cbf6de5c38bfb3e1dca9e72565
     frame_locator = locator.frame_locator(':scope')
   end
 
@@ -686,12 +686,14 @@ module ExampleCodes
   end
 
   # JSHandle#properties
-  def example_8292f0e8974d97d20be9bb303d55ccd2d50e42f954e0ada4958ddbef2c6c2977(page:)
+  def example_b5cbf187e1332705618516d4be127b8091a5d1acfa9a12d382086a2b0e738909(page:)
     page.goto('https://example.com/')
-    window_handle = page.evaluate_handle("window")
-    properties = window_handle.properties
+    handle = page.evaluate_handle("({window, document})")
+    properties = handle.properties
     puts properties
-    window_handle.dispose
+    window_handle = properties["window"]
+    document_handle = properties["document"]
+    handle.dispose
   end
 
   # Keyboard
@@ -815,6 +817,36 @@ module ExampleCodes
         filter(hasText: "text in column 1").
         filter(has: page.get_by_role("button", name: "column 2 button")).
         screenshot
+  end
+
+  # Locator#get_by_text
+  def example_cbf4890335f3140b7b275bdad85b330140e5fbb21e7f4b89643c73115ee62a17(page:)
+    page.content = <<~HTML
+      <div>Hello <span>world</span></div>
+      <div>Hello</div>
+    HTML
+
+    # Matches <span>
+    locator = page.get_by_text("world")
+    expect(locator.evaluate('e => e.outerHTML')).to eq('<span>world</span>')
+
+    # Matches first <div>
+    locator = page.get_by_text("Hello world")
+    expect(locator.evaluate('e => e.outerHTML')).to eq('<div>Hello <span>world</span></div>')
+
+    # Matches second <div>
+    locator = page.get_by_text("Hello", exact: true)
+    expect(locator.evaluate('e => e.outerHTML')).to eq('<div>Hello</div>')
+
+    # Matches both <div>s
+    locator = page.get_by_text(/Hello/)
+    expect(locator.count).to eq(2)
+    expect(locator.first.evaluate('e => e.outerHTML')).to eq('<div>Hello <span>world</span></div>')
+    expect(locator.last.evaluate('e => e.outerHTML')).to eq('<div>Hello</div>')
+
+    # Matches second <div>
+    locator = page.get_by_text(/^hello$/i)
+    expect(locator.evaluate('e => e.outerHTML')).to eq('<div>Hello</div>')
   end
 
   # Locator#frame_locator
