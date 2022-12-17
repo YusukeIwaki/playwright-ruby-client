@@ -8,6 +8,7 @@ module Playwright
     include LocatorUtils
     attr_writer :owned_context
 
+
     private def after_initialize
       @browser_context = @parent
       @timeout_settings = TimeoutSettings.new(@browser_context.send(:_timeout_settings))
@@ -72,6 +73,14 @@ module Playwright
       @channel.on('worker', ->(params) {
         worker = ChannelOwners::Worker.from(params['worker'])
         on_worker(worker)
+      })
+
+      set_event_to_subscription_mapping({
+        Events::Page::Request => "request",
+        Events::Page::Response => "response",
+        Events::Page::RequestFinished => "requestFinished",
+        Events::Page::RequestFailed => "requestFailed",
+        Events::Page::FileChooser => "fileChooser",
       })
     end
 
@@ -167,30 +176,6 @@ module Playwright
     private def on_video(params)
       artifact = ChannelOwners::Artifact.from(params['artifact'])
       video.send(:set_artifact, artifact)
-    end
-
-    # @override
-    def on(event, callback)
-      if event == Events::Page::FileChooser && listener_count(event) == 0
-        @channel.async_send_message_to_server('setFileChooserInterceptedNoReply', intercepted: true)
-      end
-      super
-    end
-
-    # @override
-    def once(event, callback)
-      if event == Events::Page::FileChooser && listener_count(event) == 0
-        @channel.async_send_message_to_server('setFileChooserInterceptedNoReply', intercepted: true)
-      end
-      super
-    end
-
-    # @override
-    def off(event, callback)
-      super
-      if event == Events::Page::FileChooser && listener_count(event) == 0
-        @channel.async_send_message_to_server('setFileChooserInterceptedNoReply', intercepted: false)
-      end
     end
 
     def context

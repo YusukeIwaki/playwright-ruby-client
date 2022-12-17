@@ -36,6 +36,7 @@ module Playwright
       @type = type
       @guid = guid
       @initializer = initializer
+      @event_to_subscription_mapping = {}
 
       after_initialize
     end
@@ -58,6 +59,46 @@ module Playwright
       @objects.each_value { |object| object.send(:dispose!) }
       @objects.clear
     end
+
+    private def set_event_to_subscription_mapping(event_to_subscription_mapping)
+      @event_to_subscription_mapping = event_to_subscription_mapping
+    end
+
+    private def update_subscription(event, enabled)
+      protocol_event = @event_to_subscription_mapping[event]
+      if protocol_event
+        payload = {
+          event: protocol_event,
+          enabled: enabled,
+        }
+        @channel.async_send_message_to_server('updateSubscription', payload)
+      end
+    end
+
+    # @override
+    def on(event, callback)
+      if listener_count(event) == 0
+        update_subscription(event, true)
+      end
+      super
+    end
+
+    # @override
+    def once(event, callback)
+      if listener_count(event) == 0
+        update_subscription(event, true)
+      end
+      super
+    end
+
+    # @override
+    def off(event, callback)
+      super
+      if listener_count(event) == 0
+        update_subscription(event, false)
+      end
+    end
+
 
     # Suppress long long inspect log and avoid RSpec from hanging up...
     def inspect

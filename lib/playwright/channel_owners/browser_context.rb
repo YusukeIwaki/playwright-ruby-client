@@ -58,6 +58,12 @@ module Playwright
           ChannelOwners::Page.from_nullable(params['page']),
         )
       })
+      set_event_to_subscription_mapping({
+        Events::BrowserContext::Request => "request",
+        Events::BrowserContext::Response => "response",
+        Events::BrowserContext::RequestFinished => "requestFinished",
+        Events::BrowserContext::RequestFailed => "requestFailed",
+      })
 
       @closed_promise = Concurrent::Promises.resolvable_future
     end
