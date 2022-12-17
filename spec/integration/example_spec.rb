@@ -187,6 +187,14 @@ RSpec.describe 'example' do
       end
     end
 
+    it 'should work with ElementHandle#set_input_files' do
+      with_page do |page|
+        page.content = "<input type='file' />"
+        element = page.query_selector('input')
+        element.set_input_files(File.new(__FILE__))
+      end
+    end
+
     it 'should work with Frame' do
       with_page do |page|
         example_a4a9e01d1e0879958d591c4bc9061574f5c035e821a94214e650d15564d77bf4(page: page)

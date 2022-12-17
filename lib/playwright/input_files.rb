@@ -4,7 +4,9 @@ module Playwright
   class InputFiles
     def initialize(context, files)
       @context = context
-      if files.is_a?(Enumerable)
+      if files.is_a?(File)
+        @files = [files]
+      elsif files.is_a?(Enumerable)
         @files = files
       else
         @files = [files]
