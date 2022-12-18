@@ -4,8 +4,8 @@ module Playwright
       @timeout_settings = TimeoutSettings.new
     end
 
-    def devices(port: nil)
-      params = { port: port }.compact
+    def devices(host: nil, omitDriverInstall: nil, port: nil)
+      params = { host: host, port: port, omitDriverInstall: omitDriverInstall }.compact
       resp = @channel.send_message_to_server('devices', params)
       resp.map { |device| ChannelOwners::AndroidDevice.from(device) }
     end

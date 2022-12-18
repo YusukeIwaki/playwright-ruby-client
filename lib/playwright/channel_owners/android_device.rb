@@ -86,60 +86,10 @@ module Playwright
       Base64.strict_decode64(resp)
     end
 
-    def launch_browser(
-          pkg: nil,
-          acceptDownloads: nil,
-          bypassCSP: nil,
-          colorScheme: nil,
-          deviceScaleFactor: nil,
-          extraHTTPHeaders: nil,
-          geolocation: nil,
-          hasTouch: nil,
-          httpCredentials: nil,
-          ignoreHTTPSErrors: nil,
-          isMobile: nil,
-          javaScriptEnabled: nil,
-          locale: nil,
-          noViewport: nil,
-          offline: nil,
-          permissions: nil,
-          proxy: nil,
-          record_har_omit_content: nil,
-          record_har_path: nil,
-          record_video_dir: nil,
-          record_video_size: nil,
-          storageState: nil,
-          timezoneId: nil,
-          userAgent: nil,
-          viewport: nil,
-          &block)
-      params = {
-        pkg: pkg,
-        acceptDownloads: acceptDownloads,
-        bypassCSP: bypassCSP,
-        colorScheme: colorScheme,
-        deviceScaleFactor: deviceScaleFactor,
-        extraHTTPHeaders: extraHTTPHeaders,
-        geolocation: geolocation,
-        hasTouch: hasTouch,
-        httpCredentials: httpCredentials,
-        ignoreHTTPSErrors: ignoreHTTPSErrors,
-        isMobile: isMobile,
-        javaScriptEnabled: javaScriptEnabled,
-        locale: locale,
-        noViewport: noViewport,
-        offline: offline,
-        permissions: permissions,
-        proxy: proxy,
-        record_har_omit_content: record_har_omit_content,
-        record_har_path: record_har_path,
-        record_video_dir: record_video_dir,
-        record_video_size: record_video_size,
-        storageState: storageState,
-        timezoneId: timezoneId,
-        userAgent: userAgent,
-        viewport: viewport,
-      }.compact
+    def launch_browser(pkg: nil, **options, &block)
+      params = options.dup
+      params[:pkg] = pkg
+      params.compact!
       prepare_browser_context_options(params)
 
       resp = @channel.send_message_to_server('launchBrowser', params)
