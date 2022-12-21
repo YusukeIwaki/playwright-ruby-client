@@ -4,6 +4,11 @@ module Playwright
 
     private def after_initialize
       @input = AndroidInputImpl.new(@channel)
+      @should_close_connection_on_close = false
+    end
+
+    def should_close_connection_on_close!
+      @should_close_connection_on_close = true
     end
 
     attr_reader :input
@@ -77,8 +82,12 @@ module Playwright
     end
 
     def close
-      @channel.send_message_to_server('close')
       emit(Events::AndroidDevice::Close)
+      if @should_close_connection_on_close
+        @connection.stop
+      else
+        @channel.send_message_to_server('close')
+      end
     end
 
     def shell(command)

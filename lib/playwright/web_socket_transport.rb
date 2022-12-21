@@ -49,7 +49,7 @@ module Playwright
       end
 
       # Wait for closed actually.
-      future.value!
+      future.value!(2)
     end
 
     # Start `playwright-cli run-driver`
