@@ -39,6 +39,13 @@ module Playwright
       ::Playwright::ChannelOwners::Browser.from(@initializer['preLaunchedBrowser'])
     end
 
+    private def pre_connected_android_device
+      unless @initializer['preConnectedAndroidDevice']
+        raise 'Malformed endpoint. Did you use Android.launchServer method?'
+      end
+      ::Playwright::ChannelOwners::AndroidDevice.from(@initializer['preConnectedAndroidDevice'])
+    end
+
     private def parse_device_descriptor(descriptor)
       # This return value can be passed into Browser#new_context as it is.
       # ex:

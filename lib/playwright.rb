@@ -51,6 +51,22 @@ module Playwright
     attr_reader :playwright, :browser
   end
 
+  class AndroidExecution
+    def initialize(connection, playwright, device = nil)
+      @connection = connection
+      @playwright = playwright
+      @device = device
+    end
+
+    def stop
+      @device&.close
+      @connection.stop
+    end
+
+    attr_reader :playwright, :device
+  end
+
+
   # Recommended to call this method with block.
   #
   # Playwright.create(...) do |playwright|
@@ -154,6 +170,45 @@ module Playwright
     if block
       begin
         block.call(execution.browser)
+      ensure
+        execution.stop
+      end
+    else
+      execution
+    end
+  end
+
+    # Connects to Playwright server, launched by `npx playwright launch-server chromium` or `playwright.chromium.launchServer()`
+  #
+  # Playwright.connect_to_browser_server('ws://....') do |browser|
+  #   page = browser.new_page
+  #   ...
+  # end
+  #
+  # @experimental
+  module_function def connect_to_android_server(ws_endpoint, &block)
+    require 'playwright/web_socket_client'
+    require 'playwright/web_socket_transport'
+
+    transport = WebSocketTransport.new(ws_endpoint: ws_endpoint)
+    connection = Connection.new(transport)
+    connection.mark_as_remote
+    connection.async_run
+
+    execution =
+      begin
+        playwright = connection.initialize_playwright
+        android_device = playwright.send(:pre_connected_android_device)
+        android_device.should_close_connection_on_close!
+        AndroidExecution.new(connection, PlaywrightApi.wrap(playwright), PlaywrightApi.wrap(android_device))
+      rescue
+        connection.stop
+        raise
+      end
+
+    if block
+      begin
+        block.call(execution.device)
       ensure
         execution.stop
       end
