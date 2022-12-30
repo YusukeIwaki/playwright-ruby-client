@@ -10,13 +10,22 @@ All the downloaded files belonging to the browser context are deleted when the b
 
 Download event is emitted once the download starts. Download path becomes available once download completes:
 
-```ruby
-download = page.expect_download do
-  page.get_by_text("Download file").click
-end
+```py title=example_31c8c0c365b2871c56ba48c85ab8152b3e538d01f399232ad3fb65918dafd7ea.py
+async with page.expect_download() as download_info:
+    await page.get_by_text("Download file").click()
+download = await download_info.value
+# waits for download to complete
+path = await download.path()
 
+```
+
+```py title=example_d5326a0e969ff7ff7651c944af492b72a2383b7479e4b5e244b0530c0ce494e0.py
+with page.expect_download() as download_info:
+    page.get_by_text("Download file").click()
+download = download_info.value
 # wait for download to complete
-path = download.path
+path = download.path()
+
 ```
 
 
@@ -60,11 +69,11 @@ Get the page that the download belongs to.
 def path
 ```
 
-Returns path to the downloaded file in case of successful download. The method will wait for the download to finish if
-necessary. The method throws when connected remotely.
+Returns path to the downloaded file in case of successful download. The method will wait for the download to finish
+if necessary. The method throws when connected remotely.
 
-Note that the download's file name is a random GUID, use [Download#suggested_filename](./download#suggested_filename) to get suggested file
-name.
+Note that the download's file name is a random GUID, use [Download#suggested_filename](./download#suggested_filename) to get suggested
+file name.
 
 ## save_as
 
@@ -72,8 +81,8 @@ name.
 def save_as(path)
 ```
 
-Copy the download to a user-specified path. It is safe to call this method while the download is still in progress. Will
-wait for the download to finish if necessary.
+Copy the download to a user-specified path. It is safe to call this method while the download is still in progress.
+Will wait for the download to finish if necessary.
 
 ## suggested_filename
 
@@ -82,9 +91,9 @@ def suggested_filename
 ```
 
 Returns suggested filename for this download. It is typically computed by the browser from the
-[`Content-Disposition`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition) response header
-or the `download` attribute. See the spec on [whatwg](https://html.spec.whatwg.org/#downloading-resources). Different
-browsers can use different logic for computing it.
+[`Content-Disposition`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition) response
+header or the `download` attribute. See the spec on [whatwg](https://html.spec.whatwg.org/#downloading-resources).
+Different browsers can use different logic for computing it.
 
 ## url
 

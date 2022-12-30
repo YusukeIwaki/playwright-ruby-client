@@ -4,26 +4,43 @@ sidebar_position: 10
 
 # FrameLocator
 
-FrameLocator represents a view to the `iframe` on the page. It captures the logic sufficient to retrieve the `iframe`
-and locate elements in that iframe. FrameLocator can be created with either [Page#frame_locator](./page#frame_locator) or
-[Locator#frame_locator](./locator#frame_locator) method.
+FrameLocator represents a view to the `iframe` on the page. It captures the logic sufficient to retrieve the
+`iframe` and locate elements in that iframe. FrameLocator can be created with either [Page#frame_locator](./page#frame_locator)
+or [Locator#frame_locator](./locator#frame_locator) method.
 
-```ruby
+```py title=example_7085c284c1726494e43688ac754f9dcdbd38bf93ee7128ba1134458327c05c2f.py
+locator = page.frame_locator("#my-frame").get_by_text("Submit")
+await locator.click()
+
+```
+
+```py title=example_791cecc9e970e61b183e25aef1c21c7d50779ad7bbf4ce88373237c3d1d0600e.py
 locator = page.frame_locator("my-frame").get_by_text("Submit")
-locator.click
+locator.click()
+
 ```
 
 **Strictness**
 
-Frame locators are strict. This means that all operations on frame locators will throw if more than one element matches
-a given selector.
+Frame locators are strict. This means that all operations on frame locators will throw if more than one element
+matches a given selector.
 
-```ruby
+```py title=example_8935c3bfed74b0c267484faa26906377c7118db6a12dcad300ffd932b6a4662c.py
 # Throws if there are several frames in DOM:
-page.frame_locator('.result-frame').get_by_role('button').click
+await page.frame_locator('.result-frame').get_by_role('button').click()
 
 # Works because we explicitly tell locator to pick the first frame:
-page.frame_locator('.result-frame').first.get_by_role('button').click
+await page.frame_locator('.result-frame').first.get_by_role('button').click()
+
+```
+
+```py title=example_dbf7936cee6e1ca1a2609de3b6929703f05249e6dee4c5c47eb41e7cc6aea6af.py
+# Throws if there are several frames in DOM:
+page.frame_locator('.result-frame').get_by_role('button').click()
+
+# Works because we explicitly tell locator to pick the first frame:
+page.frame_locator('.result-frame').first.get_by_role('button').click()
+
 ```
 
 **Converting Locator to FrameLocator**
@@ -31,8 +48,14 @@ page.frame_locator('.result-frame').first.get_by_role('button').click
 If you have a [Locator](./locator) object pointing to an `iframe` it can be converted to [FrameLocator](./frame_locator) using
 [`:scope`](https://developer.mozilla.org/en-US/docs/Web/CSS/:scope) CSS selector:
 
-```ruby
-frame_locator = locator.frame_locator(':scope')
+```py title=example_dea11e67882ec5fb3ab3a1d1cce87136bc78b06fa49a32c0278a43e93278a9fd.py
+frameLocator = locator.frame_locator(":scope")
+
+```
+
+```py title=example_dea11e67882ec5fb3ab3a1d1cce87136bc78b06fa49a32c0278a43e93278a9fd.py
+frameLocator = locator.frame_locator(":scope")
+
 ```
 
 
@@ -51,8 +74,8 @@ Returns locator to the first matching frame.
 def frame_locator(selector)
 ```
 
-When working with iframes, you can create a frame locator that will enter the iframe and allow selecting elements in
-that iframe.
+When working with iframes, you can create a frame locator that will enter the iframe and allow selecting elements
+in that iframe.
 
 ## get_by_alt_text
 
@@ -118,9 +141,10 @@ Allows locating elements by their [ARIA role](https://www.w3.org/TR/wai-aria-1.2
 accessibility audits and conformance tests, but rather gives early feedback about the ARIA guidelines.
 
 Note that many html elements have an implicitly
-[defined role](https://w3c.github.io/html-aam/#html-element-role-mappings) that is recognized by the role selector. You
-can find all the [supported roles here](https://www.w3.org/TR/wai-aria-1.2/#role_definitions). ARIA guidelines **do not
-recommend** duplicating implicit roles and attributes by setting `role` and/or `aria-*` attributes to default values.
+[defined role](https://w3c.github.io/html-aam/#html-element-role-mappings) that is recognized by the role selector.
+You can find all the [supported roles here](https://www.w3.org/TR/wai-aria-1.2/#role_definitions). ARIA guidelines
+**do not recommend** duplicating implicit roles and attributes by setting `role` and/or `aria-*` attributes to
+default values.
 
 ## get_by_test_id
 
@@ -148,42 +172,50 @@ Allows locating elements that contain given text. Consider the following DOM str
 
 You can locate by text substring, exact string, or a regular expression:
 
-```ruby
-page.content = <<~HTML
-  <div>Hello <span>world</span></div>
-  <div>Hello</div>
-HTML
-
+```py title=example_c6955d996988d22b00dab15c3992b7961b9814c65a49cf0681728cd32653553c.py
 # Matches <span>
-locator = page.get_by_text("world")
-expect(locator.evaluate('e => e.outerHTML')).to eq('<span>world</span>')
+page.get_by_text("world")
 
 # Matches first <div>
-locator = page.get_by_text("Hello world")
-expect(locator.evaluate('e => e.outerHTML')).to eq('<div>Hello <span>world</span></div>')
+page.get_by_text("Hello world")
 
 # Matches second <div>
-locator = page.get_by_text("Hello", exact: true)
-expect(locator.evaluate('e => e.outerHTML')).to eq('<div>Hello</div>')
+page.get_by_text("Hello", exact=True)
 
 # Matches both <div>s
-locator = page.get_by_text(/Hello/)
-expect(locator.count).to eq(2)
-expect(locator.first.evaluate('e => e.outerHTML')).to eq('<div>Hello <span>world</span></div>')
-expect(locator.last.evaluate('e => e.outerHTML')).to eq('<div>Hello</div>')
+page.get_by_text(re.compile("Hello"))
 
 # Matches second <div>
-locator = page.get_by_text(/^hello$/i)
-expect(locator.evaluate('e => e.outerHTML')).to eq('<div>Hello</div>')
+page.get_by_text(re.compile("^hello$", re.IGNORECASE))
+
 ```
 
-See also [Locator#filter](./locator#filter) that allows to match by another criteria, like an accessible role, and then filter
-by the text content.
+```py title=example_c6955d996988d22b00dab15c3992b7961b9814c65a49cf0681728cd32653553c.py
+# Matches <span>
+page.get_by_text("world")
 
-> NOTE: Matching by text always normalizes whitespace, even with exact match. For example, it turns multiple spaces into
-one, turns line breaks into spaces and ignores leading and trailing whitespace.
-> NOTE: Input elements of the type `button` and `submit` are matched by their `value` instead of the text content. For
-example, locating by text `"Log in"` matches `<input type=button value="Log in">`.
+# Matches first <div>
+page.get_by_text("Hello world")
+
+# Matches second <div>
+page.get_by_text("Hello", exact=True)
+
+# Matches both <div>s
+page.get_by_text(re.compile("Hello"))
+
+# Matches second <div>
+page.get_by_text(re.compile("^hello$", re.IGNORECASE))
+
+```
+
+See also [Locator#filter](./locator#filter) that allows to match by another criteria, like an accessible role, and then
+filter by the text content.
+
+**NOTE** Matching by text always normalizes whitespace, even with exact match. For example, it turns multiple
+spaces into one, turns line breaks into spaces and ignores leading and trailing whitespace.
+
+**NOTE** Input elements of the type `button` and `submit` are matched by their `value` instead of the text content.
+For example, locating by text `"Log in"` matches `<input type=button value="Log in">`.
 
 ## get_by_title
 
@@ -191,7 +223,8 @@ example, locating by text `"Log in"` matches `<input type=button value="Log in">
 def get_by_title(text, exact: nil)
 ```
 
-Allows locating elements by their title. For example, this method will find the button by its title "Place the order":
+Allows locating elements by their title. For example, this method will find the button by its title "Place the
+order":
 
 ```html
 <button title='Place the order'>Order Now</button>
@@ -212,8 +245,8 @@ Returns locator to the last matching frame.
 def locator(selector, has: nil, hasText: nil)
 ```
 
-The method finds an element matching the specified selector in the locator's subtree. It also accepts filter options,
-similar to [Locator#filter](./locator#filter) method.
+The method finds an element matching the specified selector in the locator's subtree. It also accepts filter
+options, similar to [Locator#filter](./locator#filter) method.
 
 [Learn more about locators](https://playwright.dev/python/docs/locators).
 
