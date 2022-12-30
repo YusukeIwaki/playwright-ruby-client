@@ -43,6 +43,8 @@ module Playwright
 
       if key == :element
         values.map(&:channel)
+      elsif key == :value
+        values.map { |value| { valueOrLabel: value } }
       else
         values.map { |value| { key => value } }
       end

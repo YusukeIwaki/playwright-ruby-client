@@ -10,6 +10,15 @@ RSpec.describe 'Page#select_option' do
     end
   end
 
+  it 'should fall back to selecting by label', sinatra: true do
+    with_page do |page|
+      page.goto("#{server_prefix}/input/select.html")
+      page.select_option('select', value: 'Blue')
+      expect(page.evaluate("() => window['result'].onInput")).to eq(['blue'])
+      expect(page.evaluate("() => window['result'].onChange")).to eq(['blue'])
+    end
+  end
+
   it 'should select single option by label', sinatra: true do
     with_page do |page|
       page.goto("#{server_prefix}/input/select.html")
