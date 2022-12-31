@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
+require 'rack/handler/falcon'
 require 'playwright'
 require 'timeout'
 require 'tmpdir'
@@ -156,24 +157,6 @@ RSpec.configure do |config|
     end
   end
 
-  if ENV['CI']
-    module PumaEventsLogSuppressing
-      ACCEPT= [
-        /^\* Listening on http/,
-      ]
-
-      def log(str)
-        if ACCEPT.any? { |regex| regex.match?(str) }
-          super
-        else
-          # suppress log
-        end
-      end
-    end
-    require 'puma/events'
-    Puma::Events.prepend(PumaEventsLogSuppressing)
-  end
-
   config.around(sinatra: true) do |example|
     require 'net/http'
     require 'sinatra/base'
@@ -220,6 +203,7 @@ RSpec.configure do |config|
 
     sinatra_app.disable(:protection)
     sinatra_app.set(:public_folder, File.join(__dir__, 'assets'))
+    sinatra_app.set(:quiet, true)
     sinatra_app.use(WsApp) if example.metadata[:web_socket]
 
     (8000..8010).each do |server_port|
@@ -249,17 +233,6 @@ RSpec.configure do |config|
           sleep 0.1
         end
       end
-    end
-
-    if defined?(Puma::Launcher)
-      # Puma::Launcher consumes SIGINT.
-      # For stopping execution immidiately by Ctrl+C,
-      # raise SignalException manually here.
-      Signal.trap(:INT) do
-        raise SignalException.new('INT')
-      end
-    else
-      raise 'Consider removing this if puma is no longer used'
     end
 
     begin
