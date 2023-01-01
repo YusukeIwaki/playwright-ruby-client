@@ -164,6 +164,41 @@ page.route("**/*", handle)
 
 
 
+## fetch
+
+```
+def fetch(headers: nil, method: nil, postData: nil, url: nil)
+```
+
+Performs the request and fetches result without fulfilling it, so that the response could be modified and then
+fulfilled.
+
+**Usage**
+
+```py title=example_16dfd34f10f41f06ac49647fc6269cfeacdb1c9dbc899dcf3a4243283cd9839f.py
+async def handle(route):
+    response = await route.fulfill()
+    json = await response.json()
+    json["message"]["big_red_dog"] = []
+    await route.fulfill(response=response, json=json)
+
+await page.route("https://dog.ceo/api/breeds/list/all", handle)
+
+```
+
+```py title=example_ae03b1dcd71f7860d148d648ee165279204314e9967f74dd02010597fe8ef3ac.py
+def handle(route):
+    response = route.fulfill()
+    json = response.json()
+    json["message"]["big_red_dog"] = []
+    route.fulfill(response=response, json=json)
+
+page.route("https://dog.ceo/api/breeds/list/all", handle)
+
+```
+
+
+
 ## fulfill
 
 ```

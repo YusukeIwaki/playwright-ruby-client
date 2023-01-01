@@ -187,6 +187,32 @@ page.route("**/*", handle)
 
 ```
 
+### example_16dfd34f10f41f06ac49647fc6269cfeacdb1c9dbc899dcf3a4243283cd9839f
+
+```
+async def handle(route):
+    response = await route.fulfill()
+    json = await response.json()
+    json["message"]["big_red_dog"] = []
+    await route.fulfill(response=response, json=json)
+
+await page.route("https://dog.ceo/api/breeds/list/all", handle)
+
+```
+
+### example_ae03b1dcd71f7860d148d648ee165279204314e9967f74dd02010597fe8ef3ac
+
+```
+def handle(route):
+    response = route.fulfill()
+    json = response.json()
+    json["message"]["big_red_dog"] = []
+    route.fulfill(response=response, json=json)
+
+page.route("https://dog.ceo/api/breeds/list/all", handle)
+
+```
+
 ### example_4a076d47c9f849e2ca57423937c13605083c7201e2f45fa36030a143ba27ec01
 
 ```

@@ -56,6 +56,42 @@ module Playwright
       if [ChannelOwners::Request, String].none? { |type| urlOrRequest.is_a?(type) }
         raise ArgumentError.new("First argument must be either URL string or Request")
       end
+      if urlOrRequest.is_a?(ChannelOwners::Request)
+        request = urlOrRequest
+        url = nil
+      else
+        url = urlOrRequest
+        request = nil
+      end
+      _inner_fetch(
+        request,
+        url,
+        data: data,
+        failOnStatusCode: failOnStatusCode,
+        form: form,
+        headers: headers,
+        ignoreHTTPSErrors: ignoreHTTPSErrors,
+        maxRedirects: maxRedirects,
+        method: method,
+        multipart: multipart,
+        params: params,
+        timeout: timeout,
+      )
+    end
+
+    private def _inner_fetch(
+          request,
+          url,
+          data: nil,
+          failOnStatusCode: nil,
+          form: nil,
+          headers: nil,
+          ignoreHTTPSErrors: nil,
+          maxRedirects: nil,
+          method: nil,
+          multipart: nil,
+          params: nil,
+          timeout: nil)
       if [data, form, multipart].compact.count > 1
         raise ArgumentError.new("Only one of 'data', 'form' or 'multipart' can be specified")
       end
@@ -63,10 +99,9 @@ module Playwright
         raise ArgumentError.new("'maxRedirects' should be greater than or equal to '0'")
       end
 
-      request = urlOrRequest.is_a?(ChannelOwners::Request) ? urlOrRequest : nil
       headers_obj = headers || request&.headers
       fetch_params = {
-        url: request&.url || urlOrRequest,
+        url: url || request.url,
         params: object_to_array(params),
         method: method || request&.method || 'GET',
         headers: headers_obj ? HttpHeaders.new(headers_obj).as_serialized : nil,

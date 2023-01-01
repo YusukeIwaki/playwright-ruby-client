@@ -47,7 +47,7 @@
 * abort
 * continue
 * fallback
-* ~~fetch~~
+* fetch
 * fulfill
 * request
 
