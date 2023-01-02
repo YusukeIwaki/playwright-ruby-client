@@ -12,7 +12,7 @@ An example of using [Dialog](./dialog) class:
 def handle_dialog(dialog)
   puts "[#{dialog.type}] #{dialog.message}"
   if dialog.message =~ /foo/
-    dialog.accept_async
+    dialog.accept
   else
     dialog.dismiss
   end

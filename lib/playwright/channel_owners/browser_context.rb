@@ -24,13 +24,7 @@ module Playwright
       @channel.on('bindingCall', ->(params) { on_binding(ChannelOwners::BindingCall.from(params['binding'])) })
       @channel.once('close', ->(_) { on_close })
       @channel.on('page', ->(params) { on_page(ChannelOwners::Page.from(params['page']) )})
-      @channel.on('route', ->(params) {
-        Concurrent::Promises.future {
-          on_route(ChannelOwners::Route.from(params['route']))
-        }.rescue do |err|
-          puts err, err.backtrace
-        end
-      })
+      @channel.on('route', ->(params) { on_route(ChannelOwners::Route.from(params['route'])) })
       @channel.on('backgroundPage', ->(params) {
         on_background_page(ChannelOwners::Page.from(params['page']))
       })
@@ -93,31 +87,33 @@ module Playwright
       # It is not desired to use PlaywrightApi.wrap directly.
       # However it is a little difficult to define wrapper for `handler` parameter in generate_api.
       # Just a workaround...
-      wrapped_route = PlaywrightApi.wrap(route)
+      Concurrent::Promises.future(PlaywrightApi.wrap(route)) do |wrapped_route|
+        handled = @routes.any? do |handler_entry|
+          next false unless handler_entry.match?(route.request.url)
 
-      handled = @routes.any? do |handler_entry|
-        next false unless handler_entry.match?(route.request.url)
+          promise = Concurrent::Promises.resolvable_future
+          route.send(:set_handling_future, promise)
 
-        promise = Concurrent::Promises.resolvable_future
-        route.send(:set_handling_future, promise)
+          promise_handled = Concurrent::Promises.zip(
+            promise,
+            handler_entry.async_handle(wrapped_route)
+          ).value!.first
 
-        promise_handled = Concurrent::Promises.zip(
-          promise,
-          handler_entry.async_handle(wrapped_route)
-        ).value!.first
-
-        promise_handled
-      end
-
-      @routes.reject!(&:expired?)
-      if @routes.count == 0
-        @channel.async_send_message_to_server('setNetworkInterceptionEnabled', enabled: false)
-      end
-
-      unless handled
-        route.send(:async_continue_route).rescue do |err|
-          puts err, err.backtrace
+          promise_handled
         end
+
+        @routes.reject!(&:expired?)
+        if @routes.count == 0
+          @channel.async_send_message_to_server('setNetworkInterceptionEnabled', enabled: false)
+        end
+
+        unless handled
+          route.send(:async_continue_route).rescue do |err|
+            puts err, err.backtrace
+          end
+        end
+      end.rescue do |err|
+        puts err, err.backtrace
       end
     end
 
