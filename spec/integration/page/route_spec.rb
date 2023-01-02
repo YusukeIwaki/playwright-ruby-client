@@ -717,9 +717,7 @@ RSpec.describe 'Page#route', sinatra: true do
       page.route(
         '**/*',
         ->(route, req) {
-          Concurrent::Promises.future(req) do |_req|
-            headers_promise.fulfill(_req.all_headers)
-          end
+          headers_promise.fulfill(req.all_headers)
           route.continue
         },
       )
