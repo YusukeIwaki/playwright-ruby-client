@@ -14,7 +14,7 @@ class ImplementedMethodWithDoc
 
   # @returns [String|nil]
   def method_comment
-    @doc.comment_without_unusable_code_examples
+    @doc.comment_with_python_codes
   end
 
   def js_method_name

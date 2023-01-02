@@ -19,13 +19,34 @@ class Doc
   end
 
   # @returns [String|nil]
-  def comment
-    json_with_python_override['comment']
-  end
-
-  # @returns [String|nil]
-  def comment_without_unusable_code_examples
-    comment&.gsub(/```(js|js browser|java|python async|csharp)\n.*?```\n+/m, '')
+  def comment_with_python_codes
+    @json['spec'].filter_map do |spec|
+      case spec['type']
+      when 'text'
+        spec['text'].gsub('↵', "\n")
+      when 'code'
+        case spec['codeLang']
+        when 'js', 'js browser', 'java', 'csharp', 'python async'
+          nil # ignore.
+        else
+          code = spec['lines'].join("\n")
+          "```#{spec['codeLang']}\n#{code}\n```"
+        end
+      when 'li'
+        case spec['liType']
+        when 'bullet'
+          "- #{spec['text']}"
+        when 'ordinal'
+          "1. #{spec['text']}"
+        else
+          raise "Unknown liType: #{spec['liType']}"
+        end
+      when 'note'
+        "\n**NOTE**: #{spec['text']}"
+      else
+        raise "Unknown spec type: #{spec['type']}"
+      end
+    end.join("\n")
   end
 
   private def json_with_python_override

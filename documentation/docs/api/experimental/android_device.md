@@ -4,8 +4,7 @@ sidebar_position: 10
 
 # AndroidDevice
 
-[AndroidDevice](./android_device) represents a connected device, either real hardware or emulated. Devices can be obtained using
-[Android#devices](./android#devices).
+[AndroidDevice](./android_device) represents a connected device, either real hardware or emulated. Devices can be obtained using [Android#devices](./android#devices).
 
 ## close
 

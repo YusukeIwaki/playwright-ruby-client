@@ -44,8 +44,7 @@ Returns the [Frame](./frame) that initiated this response.
 def from_service_worker
 ```
 
-Indicates whether this Response was fulfilled by a Service Worker's Fetch Handler (i.e. via
-[FetchEvent.respondWith](https://developer.mozilla.org/en-US/docs/Web/API/FetchEvent/respondWith)).
+Indicates whether this Response was fulfilled by a Service Worker's Fetch Handler (i.e. via [FetchEvent.respondWith](https://developer.mozilla.org/en-US/docs/Web/API/FetchEvent/respondWith)).
 
 ## headers
 
@@ -53,9 +52,9 @@ Indicates whether this Response was fulfilled by a Service Worker's Fetch Handle
 def headers
 ```
 
-An object with the response HTTP headers. The header names are lower-cased. Note that this method does not return
-security-related headers, including cookie-related ones. You can use [Response#all_headers](./response#all_headers) for complete
-list of headers that include `cookie` information.
+An object with the response HTTP headers. The header names are lower-cased.
+Note that this method does not return security-related headers, including cookie-related ones.
+You can use [Response#all_headers](./response#all_headers) for complete list of headers that include `cookie` information.
 
 ## headers_array
 
@@ -63,9 +62,8 @@ list of headers that include `cookie` information.
 def headers_array
 ```
 
-An array with all the request HTTP headers associated with this response. Unlike [Response#all_headers](./response#all_headers),
-header names are NOT lower-cased. Headers with multiple entries, such as `Set-Cookie`, appear in the array multiple
-times.
+An array with all the request HTTP headers associated with this response. Unlike [Response#all_headers](./response#all_headers), header names are NOT lower-cased.
+Headers with multiple entries, such as `Set-Cookie`, appear in the array multiple times.
 
 ## header_value
 
@@ -73,9 +71,8 @@ times.
 def header_value(name)
 ```
 
-Returns the value of the header matching the name. The name is case insensitive. If multiple headers have the same
-name (except `set-cookie`), they are returned as a list separated by `, `. For `set-cookie`, the `\n` separator is
-used. If no headers are found, `null` is returned.
+Returns the value of the header matching the name. The name is case insensitive. If multiple headers have
+the same name (except `set-cookie`), they are returned as a list separated by `, `. For `set-cookie`, the `\n` separator is used. If no headers are found, `null` is returned.
 
 ## header_values
 
@@ -92,7 +89,6 @@ def json
 ```
 
 Returns the JSON representation of response body.
-
 This method will throw if the response body is not parsable via `JSON.parse`.
 
 ## ok
