@@ -68,7 +68,7 @@ def check(
 ```
 
 This method checks the element by performing the following steps:
-1. Ensure that element is a checkbox or a radio input. If not, this method throws. If the element is already↵checked, this method returns immediately.
+1. Ensure that element is a checkbox or a radio input. If not, this method throws. If the element is already checked, this method returns immediately.
 1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to click in the center of the element.
@@ -139,7 +139,7 @@ This method double clicks the element by performing the following steps:
 1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to double click in the center of the element, or the specified `position`.
-1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set. Note that↵if the first click of the `dblclick()` triggers a navigation event, this method will throw.
+1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set. Note that if the first click of the `dblclick()` triggers a navigation event, this method will throw.
 If the element is detached from the DOM at any moment during the action, this method throws.
 When all steps combined have not finished during the specified `timeout`, this method throws a
 `TimeoutError`. Passing zero timeout disables this.
@@ -523,7 +523,7 @@ Returns whether the element is checked. Throws if the element is not a checkbox 
 def disabled?(timeout: nil)
 ```
 
-Returns whether the element is disabled, the opposite of [enabled](https://playwright.dev/python/docs/actionability).
+Returns whether the element is disabled, the opposite of [enabled](https://playwright.dev/python/docs/actionability#enabled).
 
 ## editable?
 
@@ -531,7 +531,7 @@ Returns whether the element is disabled, the opposite of [enabled](https://playw
 def editable?(timeout: nil)
 ```
 
-Returns whether the element is [editable](https://playwright.dev/python/docs/actionability).
+Returns whether the element is [editable](https://playwright.dev/python/docs/actionability#editable).
 
 ## enabled?
 
@@ -539,7 +539,7 @@ Returns whether the element is [editable](https://playwright.dev/python/docs/act
 def enabled?(timeout: nil)
 ```
 
-Returns whether the element is [enabled](https://playwright.dev/python/docs/actionability).
+Returns whether the element is [enabled](https://playwright.dev/python/docs/actionability#enabled).
 
 ## hidden?
 
@@ -547,7 +547,7 @@ Returns whether the element is [enabled](https://playwright.dev/python/docs/acti
 def hidden?(timeout: nil)
 ```
 
-Returns whether the element is hidden, the opposite of [visible](https://playwright.dev/python/docs/actionability).
+Returns whether the element is hidden, the opposite of [visible](https://playwright.dev/python/docs/actionability#visible).
 
 ## visible?
 
@@ -555,7 +555,7 @@ Returns whether the element is hidden, the opposite of [visible](https://playwri
 def visible?(timeout: nil)
 ```
 
-Returns whether the element is [visible](https://playwright.dev/python/docs/actionability).
+Returns whether the element is [visible](https://playwright.dev/python/docs/actionability#visible).
 
 ## last
 
@@ -703,7 +703,7 @@ alias: `checked=`
 This method checks or unchecks an element by performing the following steps:
 1. Ensure that matched element is a checkbox or a radio input. If not, this method throws.
 1. If the element already has the right checked state, this method returns immediately.
-1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is↵set. If the element is detached during the checks, the whole action is retried.
+1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the matched element, unless `force` option is set. If the element is detached during the checks, the whole action is retried.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to click in the center of the element.
 1. Wait for initiated navigations to either succeed or fail, unless `noWaitAfter` option is set.
@@ -786,7 +786,7 @@ def uncheck(
 ```
 
 This method checks the element by performing the following steps:
-1. Ensure that element is a checkbox or a radio input. If not, this method throws. If the element is already↵unchecked, this method returns immediately.
+1. Ensure that element is a checkbox or a radio input. If not, this method throws. If the element is already unchecked, this method returns immediately.
 1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
 1. Scroll the element into view if needed.
 1. Use [Page#mouse](./page#mouse) to click in the center of the element.

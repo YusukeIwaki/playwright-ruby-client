@@ -43,7 +43,7 @@ def add_init_script(path: nil, script: nil)
 
 Adds a script which would be evaluated in one of the following scenarios:
 - Whenever a page is created in the browser context or is navigated.
-- Whenever a child frame is attached or navigated in any page in the browser context. In this case, the script is↵evaluated in the context of the newly attached frame.
+- Whenever a child frame is attached or navigated in any page in the browser context. In this case, the script is evaluated in the context of the newly attached frame.
 The script is evaluated after the document was created but before any of its scripts were run. This is useful to amend
 the JavaScript environment, e.g. to seed `Math.random`.
 **Usage**
@@ -287,7 +287,7 @@ To remove a route with its handler you can use [BrowserContext#unroute](./browse
 def route_from_har(har, notFound: nil, update: nil, url: nil)
 ```
 
-If specified the network requests that are made in the context will be served from the HAR file. Read more about [Replaying from HAR](https://playwright.dev/python/docs/network).
+If specified the network requests that are made in the context will be served from the HAR file. Read more about [Replaying from HAR](https://playwright.dev/python/docs/network#replaying-from-har).
 Playwright will not serve requests intercepted by Service Worker from the HAR file. See [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using request interception by setting `Browser.newContext.serviceWorkers` to `'block'`.
 
 ## service_workers

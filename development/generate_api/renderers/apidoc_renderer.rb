@@ -258,7 +258,7 @@ class ApidocRenderer
     end
 
     private def convert_local_md_link(content)
-      content.gsub(/\[(.+)\]\(\.+\/(.+)\.md(#.*)?\)/) { "[#{$1}](https://playwright.dev/python/docs/#{$2})"}
+      content.gsub(/\[([^\]]+)\]\(\.+\/([^)]+)\.md(#[^)]*)?\)/) { "[#{$1}](https://playwright.dev/python/docs/#{$2}#{$3})"}
     end
 
     private def convert_misc_static_link(content)

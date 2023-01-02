@@ -9,8 +9,8 @@ The [CDPSession](./cdp_session) instances are used to talk raw Chrome Devtools P
 - protocol methods can be called with `session.send_message` method.
 - protocol events can be subscribed to with `session.on` method.
 Useful links:
-- Documentation on DevTools Protocol can be found here:↵[DevTools Protocol Viewer](https://chromedevtools.github.io/devtools-protocol/).
-- Getting Started with DevTools Protocol:↵https://github.com/aslushnikov/getting-started-with-cdp/blob/master/README.md
+- Documentation on DevTools Protocol can be found here: [DevTools Protocol Viewer](https://chromedevtools.github.io/devtools-protocol/).
+- Getting Started with DevTools Protocol: https://github.com/aslushnikov/getting-started-with-cdp/blob/master/README.md
 ```ruby
 client = page.context.new_cdp_session(page)
 client.send_message('Animation.enable')

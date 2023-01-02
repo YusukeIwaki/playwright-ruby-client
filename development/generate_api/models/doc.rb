@@ -35,9 +35,9 @@ class Doc
       when 'li'
         case spec['liType']
         when 'bullet'
-          "- #{spec['text']}"
+          "- #{spec['text'].gsub('↵', " ")}"
         when 'ordinal'
-          "1. #{spec['text']}"
+          "1. #{spec['text'].gsub('↵', " ")}"
         else
           raise "Unknown liType: #{spec['liType']}"
         end
