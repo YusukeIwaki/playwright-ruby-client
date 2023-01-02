@@ -31,8 +31,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'chunky_png'
   spec.add_development_dependency 'dry-inflector'
   spec.add_development_dependency 'faye-websocket'
-  spec.add_development_dependency 'falcon'
   spec.add_development_dependency 'pry-byebug'
+  spec.add_development_dependency 'puma'
   spec.add_development_dependency 'rake', '~> 13.0.3'
   spec.add_development_dependency 'rspec', '~> 3.10.0 '
   spec.add_development_dependency 'rspec_junit_formatter' # for CircleCI.
