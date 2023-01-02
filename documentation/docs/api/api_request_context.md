@@ -4,20 +4,26 @@ sidebar_position: 10
 
 # APIRequestContext
 
+
 This API is used for the Web API testing. You can use it to trigger API endpoints, configure micro-services, prepare
 environment or the service to your e2e test.
+
 Each Playwright browser context has associated with it [APIRequestContext](./api_request_context) instance which shares cookie storage with
 the browser context and can be accessed via [BrowserContext#request](./browser_context#request) or [Page#request](./page#request).
 It is also possible to create a new APIRequestContext instance manually by calling [APIRequest#new_context](./api_request#new_context).
+
 **Cookie management**
+
 [APIRequestContext](./api_request_context) returned by [BrowserContext#request](./browser_context#request) and [Page#request](./page#request) shares cookie
 storage with the corresponding [BrowserContext](./browser_context). Each API request will have `Cookie` header populated with the
 values from the browser context. If the API response contains `Set-Cookie` header it will automatically update
 [BrowserContext](./browser_context) cookies and requests made from the page will pick them up. This means that if you log in using
 this API, your e2e test will be logged in and vice versa.
+
 If you want API requests to not interfere with the browser cookies you should create a new [APIRequestContext](./api_request_context) by
 calling [APIRequest#new_context](./api_request#new_context). Such [APIRequestContext](./api_request_context) object will have its own isolated cookie
 storage.
+
 ```ruby
 playwright.chromium.launch do |browser|
   # This will launch a new browser, create a context and page. When making HTTP
@@ -67,6 +73,7 @@ def delete(
       timeout: nil)
 ```
 
+
 Sends HTTP(S) [DELETE](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/DELETE) request and returns its response.
 The method will populate request cookies from the context and update
 context cookies from the response. The method will automatically follow redirects.
@@ -76,6 +83,7 @@ context cookies from the response. The method will automatically follow redirect
 ```
 def dispose
 ```
+
 
 All responses returned by [APIRequestContext#get](./api_request_context#get) and similar methods are stored in the memory, so that you can later call [APIResponse#body](./api_response#body). This method
 discards all stored responses, and makes [APIResponse#body](./api_response#body) throw "Response disposed" error.
@@ -97,9 +105,12 @@ def fetch(
       timeout: nil)
 ```
 
+
 Sends HTTP(S) request and returns its response. The method will populate request cookies from the context and update
 context cookies from the response. The method will automatically follow redirects. JSON objects can be passed directly to the request.
+
 **Usage**
+
 ```ruby
 data = {
   title: "Book Title",
@@ -107,7 +118,9 @@ data = {
 }
 api_request_context.fetch("https://example.com/api/create_book", method: 'post', data: data)
 ```
+
 The common way to send file(s) in the body of a request is to encode it as form fields with `multipart/form-data` encoding. You can achieve that with Playwright API like this:
+
 ```ruby
 api_request_context.fetch(
   "https://example.com/api/upload_script",
@@ -138,11 +151,15 @@ def get(
       timeout: nil)
 ```
 
+
 Sends HTTP(S) [GET](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET) request and returns its response.
 The method will populate request cookies from the context and update
 context cookies from the response. The method will automatically follow redirects.
+
 **Usage**
+
 Request parameters can be configured with `params` option, they will be serialized into the URL search parameters:
+
 ```ruby
 query_params = {
   isbn: "1234",
@@ -167,6 +184,7 @@ def head(
       timeout: nil)
 ```
 
+
 Sends HTTP(S) [HEAD](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/HEAD) request and returns its response.
 The method will populate request cookies from the context and update
 context cookies from the response. The method will automatically follow redirects.
@@ -186,6 +204,7 @@ def patch(
       params: nil,
       timeout: nil)
 ```
+
 
 Sends HTTP(S) [PATCH](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PATCH) request and returns its response.
 The method will populate request cookies from the context and update
@@ -207,11 +226,15 @@ def post(
       timeout: nil)
 ```
 
+
 Sends HTTP(S) [POST](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST) request and returns its response.
 The method will populate request cookies from the context and update
 context cookies from the response. The method will automatically follow redirects.
+
 **Usage**
+
 JSON objects can be passed directly to the request:
+
 ```ruby
 data = {
   title: "Book Title",
@@ -219,7 +242,9 @@ data = {
 }
 api_request_context.post("https://example.com/api/create_book", data: data)
 ```
+
 To send form data to the server use `form` option. Its value will be encoded into the request body with `application/x-www-form-urlencoded` encoding (see below how to use `multipart/form-data` form encoding to send files):
+
 ```ruby
 form_data = {
   title: "Book Title",
@@ -227,7 +252,9 @@ form_data = {
 }
 api_request_context.post("https://example.com/api/find_book", form: form_data)
 ```
+
 The common way to send file(s) in the body of a request is to upload them as form fields with `multipart/form-data` encoding. You can achieve that with Playwright API like this:
+
 ```ruby
 api_request_context.post(
   "https://example.com/api/upload_script",
@@ -256,6 +283,7 @@ def put(
       params: nil,
       timeout: nil)
 ```
+
 
 Sends HTTP(S) [PUT](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PUT) request and returns its response.
 The method will populate request cookies from the context and update

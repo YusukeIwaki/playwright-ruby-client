@@ -23,14 +23,14 @@ class Doc
     @json['spec'].filter_map do |spec|
       case spec['type']
       when 'text'
-        spec['text'].gsub('↵', "\n")
+        "\n#{spec['text'].gsub('↵', "\n")}"
       when 'code'
         case spec['codeLang']
         when 'js', 'js browser', 'java', 'csharp', 'python async'
           nil # ignore.
         else
           code = spec['lines'].join("\n")
-          "```#{spec['codeLang']}\n#{code}\n```"
+          "\n```#{spec['codeLang']}\n#{code}\n```"
         end
       when 'li'
         case spec['liType']
@@ -42,7 +42,7 @@ class Doc
           raise "Unknown liType: #{spec['liType']}"
         end
       when 'note'
-        "\n**NOTE**: #{spec['text']}"
+        "\n**NOTE**: #{spec['text'].gsub('↵', "\n")}"
       else
         raise "Unknown spec type: #{spec['type']}"
       end

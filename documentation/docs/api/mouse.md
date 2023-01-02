@@ -4,8 +4,11 @@ sidebar_position: 10
 
 # Mouse
 
+
 The Mouse class operates in main-frame CSS pixels relative to the top-left corner of the viewport.
+
 Every `page` object has its own Mouse, accessible with [Page#mouse](./page#mouse).
+
 ```ruby
 # using ‘page.mouse’ to trace a 100x100 square.
 page.mouse.move(0, 0)
@@ -28,6 +31,7 @@ def click(
       delay: nil)
 ```
 
+
 Shortcut for [Mouse#move](./mouse#move), [Mouse#down](./mouse#down), [Mouse#up](./mouse#up).
 
 ## dblclick
@@ -35,6 +39,7 @@ Shortcut for [Mouse#move](./mouse#move), [Mouse#down](./mouse#down), [Mouse#up](
 ```
 def dblclick(x, y, button: nil, delay: nil)
 ```
+
 
 Shortcut for [Mouse#move](./mouse#move), [Mouse#down](./mouse#down), [Mouse#up](./mouse#up), [Mouse#down](./mouse#down) and
 [Mouse#up](./mouse#up).
@@ -45,6 +50,7 @@ Shortcut for [Mouse#move](./mouse#move), [Mouse#down](./mouse#down), [Mouse#up](
 def down(button: nil, clickCount: nil)
 ```
 
+
 Dispatches a `mousedown` event.
 
 ## move
@@ -52,6 +58,7 @@ Dispatches a `mousedown` event.
 ```
 def move(x, y, steps: nil)
 ```
+
 
 Dispatches a `mousemove` event.
 
@@ -61,6 +68,7 @@ Dispatches a `mousemove` event.
 def up(button: nil, clickCount: nil)
 ```
 
+
 Dispatches a `mouseup` event.
 
 ## wheel
@@ -69,6 +77,8 @@ Dispatches a `mouseup` event.
 def wheel(deltaX, deltaY)
 ```
 
+
 Dispatches a `wheel` event.
 
-**NOTE**: Wheel events may cause scrolling if they are not handled, and this method does not↵wait for the scrolling to finish before returning.
+**NOTE**: Wheel events may cause scrolling if they are not handled, and this method does not
+wait for the scrolling to finish before returning.

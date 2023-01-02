@@ -4,8 +4,11 @@ sidebar_position: 10
 
 # Dialog
 
+
 [Dialog](./dialog) objects are dispatched by page via the [`event: Page.dialog`] event.
+
 An example of using [Dialog](./dialog) class:
+
 ```ruby
 def handle_dialog(dialog)
   puts "[#{dialog.type}] #{dialog.message}"
@@ -23,13 +26,15 @@ page.evaluate("alert('bar')") # will be dismissed
 # => [alert] bar
 ```
 
-**NOTE**: Dialogs are dismissed automatically, unless there is a [`event: Page.dialog`] listener.↵When listener is present, it **must** either [Dialog#accept](./dialog#accept) or [Dialog#dismiss](./dialog#dismiss) the dialog - otherwise the page will [freeze](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop#never_blocking) waiting for the dialog, and actions like click will never finish.
+**NOTE**: Dialogs are dismissed automatically, unless there is a [`event: Page.dialog`] listener.
+When listener is present, it **must** either [Dialog#accept](./dialog#accept) or [Dialog#dismiss](./dialog#dismiss) the dialog - otherwise the page will [freeze](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop#never_blocking) waiting for the dialog, and actions like click will never finish.
 
 ## accept
 
 ```
 def accept(promptText: nil)
 ```
+
 
 Returns when the dialog has been accepted.
 
@@ -39,6 +44,7 @@ Returns when the dialog has been accepted.
 def default_value
 ```
 
+
 If dialog is prompt, returns default prompt value. Otherwise, returns empty string.
 
 ## dismiss
@@ -46,6 +52,7 @@ If dialog is prompt, returns default prompt value. Otherwise, returns empty stri
 ```
 def dismiss
 ```
+
 
 Returns when the dialog has been dismissed.
 
@@ -55,6 +62,7 @@ Returns when the dialog has been dismissed.
 def message
 ```
 
+
 A message displayed in the dialog.
 
 ## type
@@ -62,5 +70,6 @@ A message displayed in the dialog.
 ```
 def type
 ```
+
 
 Returns dialog's type, can be one of `alert`, `beforeunload`, `confirm` or `prompt`.

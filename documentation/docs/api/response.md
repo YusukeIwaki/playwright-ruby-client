@@ -4,6 +4,7 @@ sidebar_position: 10
 
 # Response
 
+
 [Response](./response) class represents responses which are received by page.
 
 ## all_headers
@@ -11,6 +12,7 @@ sidebar_position: 10
 ```
 def all_headers
 ```
+
 
 An object with all the response HTTP headers associated with this response.
 
@@ -20,6 +22,7 @@ An object with all the response HTTP headers associated with this response.
 def body
 ```
 
+
 Returns the buffer with response body.
 
 ## finished
@@ -27,6 +30,7 @@ Returns the buffer with response body.
 ```
 def finished
 ```
+
 
 Waits for this response to finish, returns always `null`.
 
@@ -36,6 +40,7 @@ Waits for this response to finish, returns always `null`.
 def frame
 ```
 
+
 Returns the [Frame](./frame) that initiated this response.
 
 ## from_service_worker
@@ -44,6 +49,7 @@ Returns the [Frame](./frame) that initiated this response.
 def from_service_worker
 ```
 
+
 Indicates whether this Response was fulfilled by a Service Worker's Fetch Handler (i.e. via [FetchEvent.respondWith](https://developer.mozilla.org/en-US/docs/Web/API/FetchEvent/respondWith)).
 
 ## headers
@@ -51,6 +57,7 @@ Indicates whether this Response was fulfilled by a Service Worker's Fetch Handle
 ```
 def headers
 ```
+
 
 An object with the response HTTP headers. The header names are lower-cased.
 Note that this method does not return security-related headers, including cookie-related ones.
@@ -62,6 +69,7 @@ You can use [Response#all_headers](./response#all_headers) for complete list of 
 def headers_array
 ```
 
+
 An array with all the request HTTP headers associated with this response. Unlike [Response#all_headers](./response#all_headers), header names are NOT lower-cased.
 Headers with multiple entries, such as `Set-Cookie`, appear in the array multiple times.
 
@@ -70,6 +78,7 @@ Headers with multiple entries, such as `Set-Cookie`, appear in the array multipl
 ```
 def header_value(name)
 ```
+
 
 Returns the value of the header matching the name. The name is case insensitive. If multiple headers have
 the same name (except `set-cookie`), they are returned as a list separated by `, `. For `set-cookie`, the `\n` separator is used. If no headers are found, `null` is returned.
@@ -80,6 +89,7 @@ the same name (except `set-cookie`), they are returned as a list separated by `,
 def header_values(name)
 ```
 
+
 Returns all values of the headers matching the name, for example `set-cookie`. The name is case insensitive.
 
 ## json
@@ -88,7 +98,9 @@ Returns all values of the headers matching the name, for example `set-cookie`. T
 def json
 ```
 
+
 Returns the JSON representation of response body.
+
 This method will throw if the response body is not parsable via `JSON.parse`.
 
 ## ok
@@ -96,6 +108,7 @@ This method will throw if the response body is not parsable via `JSON.parse`.
 ```
 def ok
 ```
+
 
 Contains a boolean stating whether the response was successful (status in the range 200-299) or not.
 
@@ -105,6 +118,7 @@ Contains a boolean stating whether the response was successful (status in the ra
 def request
 ```
 
+
 Returns the matching [Request](./request) object.
 
 ## security_details
@@ -112,6 +126,7 @@ Returns the matching [Request](./request) object.
 ```
 def security_details
 ```
+
 
 Returns SSL and other security information.
 
@@ -121,6 +136,7 @@ Returns SSL and other security information.
 def server_addr
 ```
 
+
 Returns the IP address and port of the server.
 
 ## status
@@ -128,6 +144,7 @@ Returns the IP address and port of the server.
 ```
 def status
 ```
+
 
 Contains the status code of the response (e.g., 200 for a success).
 
@@ -137,6 +154,7 @@ Contains the status code of the response (e.g., 200 for a success).
 def status_text
 ```
 
+
 Contains the status text of the response (e.g. usually an "OK" for a success).
 
 ## text
@@ -145,6 +163,7 @@ Contains the status text of the response (e.g. usually an "OK" for a success).
 def text
 ```
 
+
 Returns the text representation of response body.
 
 ## url
@@ -152,5 +171,6 @@ Returns the text representation of response body.
 ```
 def url
 ```
+
 
 Contains the URL of the response.

@@ -4,6 +4,7 @@ sidebar_position: 10
 
 # AndroidDevice
 
+
 [AndroidDevice](./android_device) represents a connected device, either real hardware or emulated. Devices can be obtained using [Android#devices](./android#devices).
 
 ## close
@@ -12,6 +13,7 @@ sidebar_position: 10
 def close
 ```
 
+
 Disconnects from the device.
 
 ## info
@@ -19,6 +21,7 @@ Disconnects from the device.
 ```
 def info(selector)
 ```
+
 
 Returns information about a widget defined by `selector`.
 
@@ -63,6 +66,7 @@ def launch_browser(
       &block)
 ```
 
+
 Launches Chrome browser on the device, and returns its persistent context.
 
 ## model
@@ -70,6 +74,7 @@ Launches Chrome browser on the device, and returns its persistent context.
 ```
 def model
 ```
+
 
 Device model.
 
@@ -79,6 +84,7 @@ Device model.
 def screenshot(path: nil)
 ```
 
+
 Returns the buffer with the captured screenshot of the device.
 
 ## serial
@@ -87,6 +93,7 @@ Returns the buffer with the captured screenshot of the device.
 def serial
 ```
 
+
 Device serial number.
 
 ## shell
@@ -94,6 +101,7 @@ Device serial number.
 ```
 def shell(command)
 ```
+
 
 Executes a shell command on the device and returns its output.
 

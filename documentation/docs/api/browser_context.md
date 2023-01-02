@@ -5,11 +5,15 @@ sidebar_position: 10
 # BrowserContext
 
 - extends: [EventEmitter]
+
 BrowserContexts provide a way to operate multiple independent browser sessions.
+
 If a page opens another page, e.g. with a `window.open` call, the popup will belong to the parent page's browser
 context.
+
 Playwright allows creating "incognito" browser contexts with [Browser#new_context](./browser#new_context) method. "Incognito" browser
 contexts don't write any browsing data to disk.
+
 ```ruby
 # create a new incognito browser context
 context = browser.new_context
@@ -28,9 +32,12 @@ context.close
 def add_cookies(cookies)
 ```
 
+
 Adds cookies into this browser context. All pages within this context will have these cookies installed. Cookies can be
 obtained via [BrowserContext#cookies](./browser_context#cookies).
+
 **Usage**
+
 ```ruby
 browser_context.add_cookies([cookie_object1, cookie_object2])
 ```
@@ -41,19 +48,25 @@ browser_context.add_cookies([cookie_object1, cookie_object2])
 def add_init_script(path: nil, script: nil)
 ```
 
+
 Adds a script which would be evaluated in one of the following scenarios:
 - Whenever a page is created in the browser context or is navigated.
 - Whenever a child frame is attached or navigated in any page in the browser context. In this case, the script is evaluated in the context of the newly attached frame.
+
 The script is evaluated after the document was created but before any of its scripts were run. This is useful to amend
 the JavaScript environment, e.g. to seed `Math.random`.
+
 **Usage**
+
 An example of overriding `Math.random` before the page loads:
+
 ```ruby
 # in your playwright script, assuming the preload.js file is in same directory.
 browser_context.add_init_script(path: "preload.js")
 ```
 
-**NOTE**: The order of evaluation of multiple scripts installed via [BrowserContext#add_init_script](./browser_context#add_init_script) and↵[Page#add_init_script](./page#add_init_script) is not defined.
+**NOTE**: The order of evaluation of multiple scripts installed via [BrowserContext#add_init_script](./browser_context#add_init_script) and
+[Page#add_init_script](./page#add_init_script) is not defined.
 
 ## background_pages
 
@@ -63,6 +76,7 @@ def background_pages
 
 
 **NOTE**: Background pages are only supported on Chromium-based browsers.
+
 All existing background pages in the context.
 
 ## browser
@@ -70,6 +84,7 @@ All existing background pages in the context.
 ```
 def browser
 ```
+
 
 Returns the browser instance of the context. If it was launched as a persistent context null gets returned.
 
@@ -79,6 +94,7 @@ Returns the browser instance of the context. If it was launched as a persistent 
 def clear_cookies
 ```
 
+
 Clears context cookies.
 
 ## clear_permissions
@@ -87,8 +103,11 @@ Clears context cookies.
 def clear_permissions
 ```
 
+
 Clears all permission overrides for the browser context.
+
 **Usage**
+
 ```ruby
 context = browser.new_context
 context.grant_permissions(["clipboard-read"])
@@ -104,6 +123,7 @@ context.clear_permissions
 def close
 ```
 
+
 Closes the browser context. All the pages that belong to the browser context will be closed.
 
 **NOTE**: The default browser context cannot be closed.
@@ -114,6 +134,7 @@ Closes the browser context. All the pages that belong to the browser context wil
 def cookies(urls: nil)
 ```
 
+
 If no URLs are specified, this method returns all cookies. If URLs are specified, only cookies that affect those URLs
 are returned.
 
@@ -123,14 +144,20 @@ are returned.
 def expose_binding(name, callback, handle: nil)
 ```
 
+
 The method adds a function called `name` on the `window` object of every frame in every page in the context.
 When called, the function executes `callback` and returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) which resolves to the return value of
 `callback`. If the `callback` returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), it will be awaited.
+
 The first argument of the `callback` function contains information about the caller: `{ browserContext:
 BrowserContext, page: Page, frame: Frame }`.
+
 See [Page#expose_binding](./page#expose_binding) for page-only version.
+
 **Usage**
+
 An example of exposing page URL to all frames in all pages in the context:
+
 ```ruby
 browser_context.expose_binding("pageURL", ->(source) { source[:page].url })
 page = browser_context.new_page
@@ -147,7 +174,9 @@ HTML
 
 page.get_by_role("button").click
 ```
+
 An example of passing an element handle:
+
 ```ruby
 def print_text(source, element)
   element.text_content
@@ -175,13 +204,19 @@ page.locator('div').first.click
 def expose_function(name, callback)
 ```
 
+
 The method adds a function called `name` on the `window` object of every frame in every page in the context.
 When called, the function executes `callback` and returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) which resolves to the return value of
 `callback`.
+
 If the `callback` returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), it will be awaited.
+
 See [Page#expose_function](./page#expose_function) for page-only version.
+
 **Usage**
+
 An example of adding a `sha256` function to all pages in the context:
+
 ```ruby
 require 'digest'
 
@@ -209,6 +244,7 @@ page.get_by_role("button").click
 def grant_permissions(permissions, origin: nil)
 ```
 
+
 Grants specified permissions to the browser context. Only grants corresponding permissions to the given origin if
 specified.
 
@@ -220,6 +256,7 @@ def new_cdp_session(page)
 
 
 **NOTE**: CDP sessions are only supported on Chromium-based browsers.
+
 Returns the newly created session.
 
 ## new_page
@@ -227,6 +264,7 @@ Returns the newly created session.
 ```
 def new_page(&block)
 ```
+
 
 Creates a new page in the browser context.
 
@@ -236,6 +274,7 @@ Creates a new page in the browser context.
 def pages
 ```
 
+
 Returns all open pages in the context.
 
 ## route
@@ -244,26 +283,34 @@ Returns all open pages in the context.
 def route(url, handler, times: nil)
 ```
 
+
 Routing provides the capability to modify network requests that are made by any page in the browser context. Once route
 is enabled, every request matching the url pattern will stall unless it's continued, fulfilled or aborted.
 
 **NOTE**: [BrowserContext#route](./browser_context#route) will not intercept requests intercepted by Service Worker. See [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using request interception by setting `Browser.newContext.serviceWorkers` to `'block'`.
+
 **Usage**
+
 An example of a naive handler that aborts all image requests:
+
 ```ruby
 context = browser.new_context
 page = context.new_page
 context.route("**/*.{png,jpg,jpeg}", ->(route, request) { route.abort })
 page.goto("https://example.com")
 ```
+
 or the same snippet using a regex pattern instead:
+
 ```ruby
 context = browser.new_context
 page = context.new_page
 context.route(/\.(png|jpg)$/, ->(route, request) { route.abort })
 page.goto("https://example.com")
 ```
+
 It is possible to examine the request to decide the route action. For example, mocking all requests that contain some post data, and leaving all other requests as is:
+
 ```ruby
 def handle_route(route, request)
   if request.post_data["my-string"]
@@ -275,8 +322,10 @@ def handle_route(route, request)
 end
 context.route("/api/**", method(:handle_route))
 ```
+
 Page routes (set up with [Page#route](./page#route)) take precedence over browser context routes when request matches both
 handlers.
+
 To remove a route with its handler you can use [BrowserContext#unroute](./browser_context#unroute).
 
 **NOTE**: Enabling routing disables http cache.
@@ -287,7 +336,9 @@ To remove a route with its handler you can use [BrowserContext#unroute](./browse
 def route_from_har(har, notFound: nil, update: nil, url: nil)
 ```
 
+
 If specified the network requests that are made in the context will be served from the HAR file. Read more about [Replaying from HAR](https://playwright.dev/python/docs/network#replaying-from-har).
+
 Playwright will not serve requests intercepted by Service Worker from the HAR file. See [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using request interception by setting `Browser.newContext.serviceWorkers` to `'block'`.
 
 ## service_workers
@@ -298,6 +349,7 @@ def service_workers
 
 
 **NOTE**: Service workers are only supported on Chromium-based browsers.
+
 All existing service workers in the context.
 
 ## set_default_navigation_timeout
@@ -307,6 +359,7 @@ def set_default_navigation_timeout(timeout)
 ```
 alias: `default_navigation_timeout=`
 
+
 This setting will change the default maximum navigation time for the following methods and related shortcuts:
 - [Page#go_back](./page#go_back)
 - [Page#go_forward](./page#go_forward)
@@ -315,7 +368,8 @@ This setting will change the default maximum navigation time for the following m
 - [Page#set_content](./page#set_content)
 - [Page#expect_navigation](./page#expect_navigation)
 
-**NOTE**: [Page#set_default_navigation_timeout](./page#set_default_navigation_timeout) and [Page#set_default_timeout](./page#set_default_timeout) take priority over↵[BrowserContext#set_default_navigation_timeout](./browser_context#set_default_navigation_timeout).
+**NOTE**: [Page#set_default_navigation_timeout](./page#set_default_navigation_timeout) and [Page#set_default_timeout](./page#set_default_timeout) take priority over
+[BrowserContext#set_default_navigation_timeout](./browser_context#set_default_navigation_timeout).
 
 ## set_default_timeout
 
@@ -324,9 +378,11 @@ def set_default_timeout(timeout)
 ```
 alias: `default_timeout=`
 
+
 This setting will change the default maximum time for all the methods accepting `timeout` option.
 
-**NOTE**: [Page#set_default_navigation_timeout](./page#set_default_navigation_timeout), [Page#set_default_timeout](./page#set_default_timeout) and↵[BrowserContext#set_default_navigation_timeout](./browser_context#set_default_navigation_timeout) take priority over [BrowserContext#set_default_timeout](./browser_context#set_default_timeout).
+**NOTE**: [Page#set_default_navigation_timeout](./page#set_default_navigation_timeout), [Page#set_default_timeout](./page#set_default_timeout) and
+[BrowserContext#set_default_navigation_timeout](./browser_context#set_default_navigation_timeout) take priority over [BrowserContext#set_default_timeout](./browser_context#set_default_timeout).
 
 ## set_extra_http_headers
 
@@ -334,6 +390,7 @@ This setting will change the default maximum time for all the methods accepting 
 def set_extra_http_headers(headers)
 ```
 alias: `extra_http_headers=`
+
 
 The extra HTTP headers will be sent with every request initiated by any page in the context. These headers are merged
 with page-specific extra HTTP headers set with [Page#set_extra_http_headers](./page#set_extra_http_headers). If page overrides a particular
@@ -348,13 +405,17 @@ def set_geolocation(geolocation)
 ```
 alias: `geolocation=`
 
+
 Sets the context's geolocation. Passing `null` or `undefined` emulates position unavailable.
+
 **Usage**
+
 ```ruby
 browser_context.geolocation = { latitude: 59.95, longitude: 30.31667 }
 ```
 
-**NOTE**: Consider using [BrowserContext#grant_permissions](./browser_context#grant_permissions) to grant permissions for the browser context pages to read↵its geolocation.
+**NOTE**: Consider using [BrowserContext#grant_permissions](./browser_context#grant_permissions) to grant permissions for the browser context pages to read
+its geolocation.
 
 ## set_offline
 
@@ -371,6 +432,7 @@ alias: `offline=`
 def storage_state(path: nil)
 ```
 
+
 Returns storage state for this browser context, contains current cookies and local storage snapshot.
 
 ## unroute
@@ -378,6 +440,7 @@ Returns storage state for this browser context, contains current cookies and loc
 ```
 def unroute(url, handler: nil)
 ```
+
 
 Removes a route created with [BrowserContext#route](./browser_context#route). When `handler` is not specified, removes all
 routes for the `url`.
@@ -388,9 +451,12 @@ routes for the `url`.
 def expect_event(event, predicate: nil, timeout: nil, &block)
 ```
 
+
 Waits for event to fire and passes its value into the predicate function. Returns when the predicate returns truthy
 value. Will throw an error if the context closes before the event is fired. Returns the event data value.
+
 **Usage**
+
 ```ruby
 new_page = browser_context.expect_event('page') do
   page.get_by_role("button").click
@@ -403,11 +469,13 @@ end
 def expect_page(predicate: nil, timeout: nil)
 ```
 
+
 Performs action and waits for a new [Page](./page) to be created in the context. If predicate is provided, it passes
 [Page](./page) value into the `predicate` function and waits for `predicate(event)` to return a truthy value.
 Will throw an error if the context closes before new [Page](./page) is created.
 
 ## request
+
 
 API testing helper associated with this context. Requests made with this API will use context cookies.
 

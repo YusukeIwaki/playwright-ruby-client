@@ -4,6 +4,7 @@ sidebar_position: 10
 
 # Selectors
 
+
 Selectors can be used to install custom selector engines. See [extensibility](https://playwright.dev/python/docs/extensibility) for more
 information.
 
@@ -13,8 +14,11 @@ information.
 def register(name, contentScript: nil, path: nil, script: nil)
 ```
 
+
 **Usage**
+
 An example of registering selector engine that queries elements based on a tag name:
+
 ```ruby
 tag_selector = <<~JAVASCRIPT
 {

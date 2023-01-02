@@ -4,8 +4,10 @@ sidebar_position: 10
 
 # BrowserType
 
+
 BrowserType provides methods to launch a specific browser instance or connect to an existing one. The following is a
 typical example of using Playwright to drive automation:
+
 ```ruby
 chromium = playwright.chromium
 chromium.launch do |browser|
@@ -28,11 +30,15 @@ def connect_over_cdp(
       &block)
 ```
 
+
 This method attaches Playwright to an existing browser instance using the Chrome DevTools Protocol.
+
 The default browser context is accessible via [Browser#contexts](./browser#contexts).
 
 **NOTE**: Connecting over the Chrome DevTools Protocol is only supported for Chromium-based browsers.
+
 **Usage**
+
 ```ruby
 browser = playwright.chromium.connect_over_cdp("http://localhost:9222")
 default_context = browser.contexts.first
@@ -44,6 +50,7 @@ page = default_context.pages.first
 ```
 def executable_path
 ```
+
 
 A path where Playwright expects to find a bundled browser executable.
 
@@ -71,9 +78,13 @@ def launch(
       &block)
 ```
 
+
 Returns the browser instance.
+
 **Usage**
+
 You can use `ignoreDefaultArgs` to filter out `--mute-audio` from default arguments:
+
 ```ruby
 browser = playwright.chromium.launch( # or "firefox" or "webkit".
   ignoreDefaultArgs: ["--mute-audio"]
@@ -81,14 +92,19 @@ browser = playwright.chromium.launch( # or "firefox" or "webkit".
 
 browser.close
 ```
+
 > **Chromium-only** Playwright can also be used to control the Google Chrome or Microsoft Edge browsers, but it works best with the version of
 Chromium it is bundled with. There is no guarantee it will work with any other version. Use `executablePath`
 option with extreme caution.
+
 >
+
 > If Google Chrome (rather than Chromium) is preferred, a
 [Chrome Canary](https://www.google.com/chrome/browser/canary.html) or
 [Dev Channel](https://www.chromium.org/getting-involved/dev-channel) build is suggested.
+
 >
+
 > Stock browsers like Google Chrome and Microsoft Edge are suitable for tests that require proprietary media codecs for video playback. See [this article](https://www.howtogeek.com/202825/what%E2%80%99s-the-difference-between-chromium-and-chrome/) for other differences between Chromium and Chrome.
 [This article](https://chromium.googlesource.com/chromium/src/+/lkgr/docs/chromium_browser_vs_google_chrome.md)
 describes some differences for Linux users.
@@ -148,7 +164,9 @@ def launch_persistent_context(
       &block)
 ```
 
+
 Returns the persistent browser context instance.
+
 Launches browser that uses persistent storage located at `userDataDir` and returns the only context. Closing
 this context will automatically close the browser.
 
@@ -157,5 +175,6 @@ this context will automatically close the browser.
 ```
 def name
 ```
+
 
 Returns browser name. For example: `'chromium'`, `'webkit'` or `'firefox'`.

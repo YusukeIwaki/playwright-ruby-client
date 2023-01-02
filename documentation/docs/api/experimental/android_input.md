@@ -12,6 +12,7 @@ sidebar_position: 10
 def drag(from, to, steps)
 ```
 
+
 Performs a drag between `from` and `to` points.
 
 ## press
@@ -19,6 +20,7 @@ Performs a drag between `from` and `to` points.
 ```
 def press(key)
 ```
+
 
 Presses the `key`.
 
@@ -28,6 +30,7 @@ Presses the `key`.
 def tap_point(point)
 ```
 
+
 Taps at the specified `point`.
 
 ## type
@@ -35,5 +38,6 @@ Taps at the specified `point`.
 ```
 def type(text)
 ```
+
 
 Types `text` into currently focused widget.
