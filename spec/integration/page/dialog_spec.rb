@@ -10,7 +10,7 @@ RSpec.describe 'dialog' do
           default_value: dialog.default_value,
           message: dialog.message,
         })
-        dialog.accept_async
+        dialog.accept
       })
       page.evaluate('() => alert("yo")')
 
@@ -31,7 +31,7 @@ RSpec.describe 'dialog' do
           default_value: dialog.default_value,
           message: dialog.message,
         })
-        dialog.accept_async(promptText: 'answer!')
+        dialog.accept(promptText: 'answer!')
       })
       result = page.evaluate("() => prompt('question?', 'yes.')")
 
@@ -54,7 +54,7 @@ RSpec.describe 'dialog' do
 
   it 'should accept the confirm prompt' do
     with_page do |page|
-      page.once('dialog', ->(dialog) { dialog.accept_async })
+      page.once('dialog', ->(dialog) { dialog.accept })
       result = page.evaluate("() => confirm('boolean?')")
       expect(result).to eq(true)
     end
@@ -70,7 +70,7 @@ RSpec.describe 'dialog' do
 
   it 'should handle multiple alerts' do
     with_page do |page|
-      page.on('dialog', ->(dialog) { dialog.accept_async })
+      page.on('dialog', ->(dialog) { dialog.accept })
       page.content = <<~HTML
         <p>Hello World</p>
         <script>
@@ -86,7 +86,7 @@ RSpec.describe 'dialog' do
 
   it 'should handle multiple confirms' do
     with_page do |page|
-      page.on('dialog', ->(dialog) { dialog.accept_async })
+      page.on('dialog', ->(dialog) { dialog.accept })
       page.content = <<~HTML
         <p>Hello World</p>
         <script>

@@ -59,13 +59,7 @@ module Playwright
       @channel.on('pageError', ->(params) {
         emit(Events::Page::PageError, Error.parse(params['error']['error']))
       })
-      @channel.on('route', ->(params) {
-        Concurrent::Promises.future {
-          on_route(ChannelOwners::Route.from(params['route']))
-        }.rescue do |err|
-          puts err, err.backtrace
-        end
-      })
+      @channel.on('route', ->(params) { on_route(ChannelOwners::Route.from(params['route'])) })
       @channel.on('video', method(:on_video))
       @channel.on('webSocket', ->(params) {
         emit(Events::Page::WebSocket, ChannelOwners::WebSocket.from(params['webSocket']))
@@ -108,29 +102,31 @@ module Playwright
       # It is not desired to use PlaywrightApi.wrap directly.
       # However it is a little difficult to define wrapper for `handler` parameter in generate_api.
       # Just a workaround...
-      wrapped_route = PlaywrightApi.wrap(route)
+      Concurrent::Promises.future(PlaywrightApi.wrap(route)) do |wrapped_route|
+        handled = @routes.any? do |handler_entry|
+          next false unless handler_entry.match?(route.request.url)
 
-      handled = @routes.any? do |handler_entry|
-        next false unless handler_entry.match?(route.request.url)
+          promise = Concurrent::Promises.resolvable_future
+          route.send(:set_handling_future, promise)
 
-        promise = Concurrent::Promises.resolvable_future
-        route.send(:set_handling_future, promise)
+          promise_handled = Concurrent::Promises.zip(
+            promise,
+            handler_entry.async_handle(wrapped_route)
+          ).value!.first
 
-        promise_handled = Concurrent::Promises.zip(
-          promise,
-          handler_entry.async_handle(wrapped_route)
-        ).value!.first
+          promise_handled
+        end
 
-        promise_handled
-      end
+        @routes.reject!(&:expired?)
+        if @routes.count == 0
+          @channel.async_send_message_to_server('setNetworkInterceptionEnabled', enabled: false)
+        end
 
-      @routes.reject!(&:expired?)
-      if @routes.count == 0
-        @channel.async_send_message_to_server('setNetworkInterceptionEnabled', enabled: false)
-      end
-
-      unless handled
-        @browser_context.send(:on_route, route)
+        unless handled
+          @browser_context.send(:on_route, route)
+        end
+      end.rescue do |err|
+        puts err, err.backtrace
       end
     end
 
@@ -176,6 +172,20 @@ module Playwright
     private def on_video(params)
       artifact = ChannelOwners::Artifact.from(params['artifact'])
       video.send(:set_artifact, artifact)
+    end
+
+    # @override
+    private def perform_event_emitter_callback(event, callback, args)
+      should_callback_async = [
+        Events::Page::Dialog,
+        Events::Page::Response,
+      ].freeze
+
+      if should_callback_async.include?(event)
+        Concurrent::Promises.future { super }
+      else
+        super
+      end
     end
 
     def context

@@ -38,7 +38,7 @@ module Playwright
     def emit(event, *args)
       handled = false
       (@__event_emitter ||= {})[event.to_s]&.each do |callback|
-        callback.call(*args)
+        perform_event_emitter_callback(event, callback, args)
         handled = true
       end
       handled
@@ -46,6 +46,11 @@ module Playwright
 
     private def listener_count(event)
       ((@__event_emitter ||= {})[event.to_s] ||= Set.new).count
+    end
+
+    # can be overriden
+    private def perform_event_emitter_callback(event, callback, args)
+      callback.call(*args)
     end
 
     # @param event [String]
