@@ -31,21 +31,27 @@ module Playwright
           body: nil,
           contentType: nil,
           headers: nil,
+          json: nil,
           path: nil,
           status: nil,
           response: nil)
       handling_with_result(true) do
-        params = {
-          contentType: contentType,
-          status: status,
-        }.compact
+        option_status = status
+        option_headers = headers
         option_body = body
 
-        if response
-          params[:status] ||= response.status
-          params[:headers] ||= response.headers
+        if json
+          raise ArgumentError.new('Can specify either body or json parameters') if body
+          option_body = JSON.generate(json)
+        end
 
-          if !body && !path && response.is_a?(APIResponse)
+        params = {}
+
+        if response
+          option_status ||= response.status
+          option_headers ||= response.headers
+
+          if !body && !path && response.is_a?(APIResponseImpl)
             if response.send(:_request).send(:same_connection?, self)
               params[:fetchResponseUid] = response.send(:fetch_uid)
             else
@@ -63,9 +69,11 @@ module Playwright
             nil
           end
 
-        param_headers = headers || {}
+        param_headers = option_headers || {}
         if contentType
           param_headers['content-type'] = contentType
+        elsif json
+          param_headers['content-type'] = 'application/json'
         elsif path
           param_headers['content-type'] = mime_type_for(path)
         end
@@ -81,6 +89,7 @@ module Playwright
           param_headers['content-length'] ||= content.length.to_s
         end
 
+        params[:status] = option_status || 200
         params[:headers] = HttpHeaders.new(param_headers).as_serialized
 
         @channel.async_send_message_to_server('fulfill', params)
@@ -98,6 +107,17 @@ module Playwright
       handling_with_result(false) do
         request.apply_fallback_overrides(overrides)
       end
+    end
+
+    def fetch(headers: nil, method: nil, postData: nil, url: nil)
+      api_request_context = request.frame.page.context.request
+      api_request_context.send(:_inner_fetch,
+        request,
+        url,
+        headers: headers,
+        method: method,
+        data: postData,
+      )
     end
 
     def continue(headers: nil, method: nil, postData: nil, url: nil)

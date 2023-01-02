@@ -47,6 +47,7 @@
 * abort
 * continue
 * fallback
+* fetch
 * fulfill
 * request
 
@@ -418,6 +419,7 @@
 
 ## Locator
 
+* ~~all~~
 * all_inner_texts
 * all_text_contents
 * blur

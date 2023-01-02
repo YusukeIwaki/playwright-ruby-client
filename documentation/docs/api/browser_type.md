@@ -4,18 +4,42 @@ sidebar_position: 10
 
 # BrowserType
 
-BrowserType provides methods to launch a specific browser instance or connect to an existing one. The following is a
-typical example of using Playwright to drive automation:
+BrowserType provides methods to launch a specific browser instance or connect to an existing one. The following is
+a typical example of using Playwright to drive automation:
 
-```ruby
-chromium = playwright.chromium
-chromium.launch do |browser|
-  page = browser.new_page
-  page.goto('https://example.com/')
+```py title=example_b8af68101a9c3416ce98d4a9e7dc7dbffbf2942c9a3302a5c9de83949c4f415d.py
+import asyncio
+from playwright.async_api import async_playwright
 
-  # other actions
+async def run(playwright):
+    chromium = playwright.chromium
+    browser = await chromium.launch()
+    page = await browser.new_page()
+    await page.goto("https://example.com")
+    # other actions...
+    await browser.close()
 
-end
+async def main():
+    async with async_playwright() as playwright:
+        await run(playwright)
+asyncio.run(main())
+
+```
+
+```py title=example_3129411f9b39671407a5ef7b3166b79c9a276343aeb2cddcb32a66d0dfe98b6a.py
+from playwright.sync_api import sync_playwright
+
+def run(playwright):
+    chromium = playwright.chromium
+    browser = chromium.launch()
+    page = browser.new_page()
+    page.goto("https://example.com")
+    # other actions...
+    browser.close()
+
+with sync_playwright() as playwright:
+    run(playwright)
+
 ```
 
 
@@ -35,12 +59,22 @@ This method attaches Playwright to an existing browser instance using the Chrome
 
 The default browser context is accessible via [Browser#contexts](./browser#contexts).
 
-> NOTE: Connecting over the Chrome DevTools Protocol is only supported for Chromium-based browsers.
+**NOTE** Connecting over the Chrome DevTools Protocol is only supported for Chromium-based browsers.
 
-```ruby
+**Usage**
+
+```py title=example_e3394274245ab8a4232580a495133b7c8ffe4ff115de15beed2c172d0c529d58.py
+browser = await playwright.chromium.connect_over_cdp("http://localhost:9222")
+default_context = browser.contexts[0]
+page = default_context.pages[0]
+
+```
+
+```py title=example_d4cd91a13c9c84ee6e9768c603751b6386f0b46a15be0526e206196423a4abe4.py
 browser = playwright.chromium.connect_over_cdp("http://localhost:9222")
-default_context = browser.contexts.first
-page = default_context.pages.first
+default_context = browser.contexts[0]
+page = default_context.pages[0]
+
 ```
 
 
@@ -79,28 +113,36 @@ def launch(
 
 Returns the browser instance.
 
+**Usage**
+
 You can use `ignoreDefaultArgs` to filter out `--mute-audio` from default arguments:
 
-```ruby
-browser = playwright.chromium.launch( # or "firefox" or "webkit".
-  ignoreDefaultArgs: ["--mute-audio"]
+```py title=example_711634d1fa2c081d640b6e7a900b05c693ce5561753cfb1c1987aeb22db1654a.py
+browser = await playwright.chromium.launch( # or "firefox" or "webkit".
+    ignore_default_args=["--mute-audio"]
 )
 
-browser.close
 ```
 
-> **Chromium-only** Playwright can also be used to control the Google Chrome or Microsoft Edge browsers, but it works
-best with the version of Chromium it is bundled with. There is no guarantee it will work with any other version. Use
-`executablePath` option with extreme caution.
+```py title=example_6556c029d76ac60be292651bed6372b0512d228b6681172d26d388fbe2700af2.py
+browser = playwright.chromium.launch( # or "firefox" or "webkit".
+    ignore_default_args=["--mute-audio"]
+)
+
+```
+
+> **Chromium-only** Playwright can also be used to control the Google Chrome or Microsoft Edge browsers, but it
+works best with the version of Chromium it is bundled with. There is no guarantee it will work with any other
+version. Use `executablePath` option with extreme caution.
 >
 > If Google Chrome (rather than Chromium) is preferred, a
 [Chrome Canary](https://www.google.com/chrome/browser/canary.html) or
 [Dev Channel](https://www.chromium.org/getting-involved/dev-channel) build is suggested.
 >
-> Stock browsers like Google Chrome and Microsoft Edge are suitable for tests that require proprietary media codecs for
-video playback. See
-[this article](https://www.howtogeek.com/202825/what%E2%80%99s-the-difference-between-chromium-and-chrome/) for other
-differences between Chromium and Chrome.
+> Stock browsers like Google Chrome and Microsoft Edge are suitable for tests that require proprietary media codecs
+for video playback. See
+[this article](https://www.howtogeek.com/202825/what%E2%80%99s-the-difference-between-chromium-and-chrome/) for
+other differences between Chromium and Chrome.
 [This article](https://chromium.googlesource.com/chromium/src/+/lkgr/docs/chromium_browser_vs_google_chrome.md)
 describes some differences for Linux users.
 
