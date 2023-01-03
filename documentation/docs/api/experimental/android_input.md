@@ -5,11 +5,13 @@ sidebar_position: 10
 # AndroidInput
 
 
+
 ## drag
 
 ```
 def drag(from, to, steps)
 ```
+
 
 Performs a drag between `from` and `to` points.
 
@@ -19,6 +21,7 @@ Performs a drag between `from` and `to` points.
 def press(key)
 ```
 
+
 Presses the `key`.
 
 ## tap_point
@@ -27,6 +30,7 @@ Presses the `key`.
 def tap_point(point)
 ```
 
+
 Taps at the specified `point`.
 
 ## type
@@ -34,5 +38,6 @@ Taps at the specified `point`.
 ```
 def type(text)
 ```
+
 
 Types `text` into currently focused widget.

@@ -513,9 +513,9 @@ module ExampleCodes
   end
 
   # FileChooser
-  def example_533e27e640e6a8598a6bd8950ee981ccbdf560436fdf5dc94548fbda89f0197f(page:)
+  def example_b43c3f24b4fb04caf6c90bd75037e31ef5e16331e30b7799192f4cc0ad450778(page:)
     file_chooser = page.expect_file_chooser do
-      page.get_by_text("Upload").click # action to trigger file uploading
+      page.get_by_text("Upload file").click # action to trigger file uploading
     end
     file_chooser.set_files("myfile.pdf")
   end
@@ -804,9 +804,9 @@ module ExampleCodes
   end
 
   # Locator#evaluate_all
-  def example_32478e941514ed28b6ac221e6d54b55cf117038ecac6f4191db676480ab68d44(page:)
+  def example_813906f825a0172541af7454641ac075a05318ead3513d5292b5a782b6c7202b(page:)
     elements = page.locator("div")
-    elements.evaluate_all("(divs, min) => divs.length >= min", arg: 10)
+    div_counts = elements.evaluate_all("(divs, min) => divs.length >= min", arg: 10)
   end
 
   # Locator#filter
@@ -856,8 +856,8 @@ module ExampleCodes
   end
 
   # Locator#select_option
-  def example_2825b0a50091868d1ce3ea0752d94ba32d826d504c1ac6842522796ca405913e(element_handle:)
-    # single selection matching the value
+  def example_05e2ba1e92a54ea2d01e939597114efd78e2eec8bae4764c87d4c7d0c0f10689(element_handle:)
+    # single selection matching the value or label
     element.select_option(value: "blue")
     # single selection matching both the label
     element.select_option(label: "blue")
@@ -1232,46 +1232,47 @@ module ExampleCodes
   end
 
   # Page#wait_for_load_state
-  def example_8b3643dc7effb0afc06a5aacd17473b73535d351d55cb0d532497fa565024d48(page:)
+  def example_fbda9305b509a808a81b1c3a54dc1eca9fbddf2695c8dd708b365ba75b777aa3(page:)
     popup = page.expect_popup do
       page.get_by_role("button").click # click triggers a popup.
     end
 
-    # Following resolves after "domcontentloaded" event.
+    # Wait for the "DOMContentLoaded" event.
     popup.wait_for_load_state("domcontentloaded")
     puts popup.title # popup is ready to use.
   end
 
   # Page#expect_navigation
-  def example_bc5a01f756c1275b9942c4b3e50a9f1748c04da8d5f8f697567b9d04806ec0dc(page:)
+  def example_3eda55b8be7aa66b69117d8f1a98374e8938923ba516831ee46bc5e1994aff33(page:)
     page.expect_navigation do
-      page.click("a.delayed-navigation") # clicking the link will indirectly cause a navigation
+      # This action triggers the navigation after a timeout.
+      page.get_by_text("Navigate after timeout").click
     end # Resolves after navigation has finished
   end
 
   # Page#expect_request
-  def example_9246912bc386c2f9310662279b12200ae131f724a1ec1ca99e511568767cb9c8(page:)
-    page.content = '<form action="https://example.com/resource"><input type="submit" /></form>'
+  def example_0c91be8bc12e1e564d14d37e5e0be8d4e56189ef1184ff34ccc0d92338ad598b(page:)
+    page.content = '<form action="https://example.com/resource"><input type="submit" value="trigger request" /></form>'
     request = page.expect_request(/example.com\/resource/) do
-      page.click("input")
+      page.get_by_text("trigger request").click()
     end
     puts request.headers
 
     page.wait_for_load_state # wait for request finished.
 
     # or with a predicate
-    page.content = '<form action="https://example.com/resource"><input type="submit" /></form>'
+    page.content = '<form action="https://example.com/resource"><input type="submit" value="trigger request" /></form>'
     request = page.expect_request(->(req) { req.url.start_with? 'https://example.com/resource' }) do
-      page.click("input")
+      page.get_by_text("trigger request").click()
     end
     puts request.headers
   end
 
   # Page#expect_response
-  def example_8640a109091eac678c17600c4918b2b0010771a4d76054580bb879719eb3e05e(page:)
-    page.content = '<form action="https://example.com/resource"><input type="submit" /></form>'
+  def example_bdc21f273866a6ed56d91f269e9665afe7f32d277a2c27f399c1af0bcb087b28(page:)
+    page.content = '<form action="https://example.com/resource"><input type="submit" value="trigger response" /></form>'
     response = page.expect_response(/example.com\/resource/) do
-      page.click("input")
+      page.get_by_text("trigger response").click()
     end
     puts response.body
     puts response.ok?
@@ -1279,9 +1280,9 @@ module ExampleCodes
     page.wait_for_load_state # wait for request finished.
 
     # or with a predicate
-    page.content = '<form action="https://example.com/resource"><input type="submit" /></form>'
+    page.content = '<form action="https://example.com/resource"><input type="submit" value="trigger response" /></form>'
     response = page.expect_response(->(res) { res.url.start_with? 'https://example.com/resource' }) do
-      page.click("input")
+      page.get_by_text("trigger response").click()
     end
     puts response.body
     puts response.ok?
@@ -1334,7 +1335,7 @@ module ExampleCodes
   end
 
   # Route#continue
-  def example_bbeb6c856287d9a14962cd222891b682b8f1c52dafcf933198e651e634906122(page:)
+  def example_39b99a97428d536c6d26b43e024ebbd90aa62cdd9f58cc70d67e23ca6b6b1799(page:)
     def handle(route, request)
       # override headers
       headers = request.headers
@@ -1383,7 +1384,7 @@ module ExampleCodes
   end
 
   # Route#fallback
-  def example_457b18e26c0c4a1a8074c8678d0377ba50fe9d0eeb1ef2b520acbb2c68da240a(page:)
+  def example_1622b8b89837489dedec666cb29388780382f6e997246b261aed07fb60c70cd8(page:)
     def handle(route, request)
       # override headers
       headers = request.headers
@@ -1393,6 +1394,19 @@ module ExampleCodes
 
       route.fallback(headers: headers)
     end
+    page.route("**/*", method(:handle))
+  end
+
+  # Route#fetch
+  def example_031e6d15c4e66b677f9dcdae52998eb1c8076acdd2e8ee543637dcc021355cfd(page:)
+    def handle(route, request)
+      response = route.fetch
+      json = response.json
+      json["message"]["big_red_dog"] = []
+
+      route.fulfill(response: response, json: json)
+    end
+    page.route("https://dog.ceo/api/breeds/list/all", method(:handle))
   end
 
   # Route#fulfill

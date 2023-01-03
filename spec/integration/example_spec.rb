@@ -267,14 +267,14 @@ RSpec.describe 'example' do
         #{10.times.map { |i| "<div>#{i}</div>" } }
         </body>
         HTML
-        expect(example_32478e941514ed28b6ac221e6d54b55cf117038ecac6f4191db676480ab68d44(page: page)).to eq(true)
+        expect(example_813906f825a0172541af7454641ac075a05318ead3513d5292b5a782b6c7202b(page: page)).to eq(true)
 
         page.content = <<~HTML
         <body>
         #{9.times.map { |i| "<div>#{i}</div>" } }
         </body>
         HTML
-        expect(example_32478e941514ed28b6ac221e6d54b55cf117038ecac6f4191db676480ab68d44(page: page)).to eq(false)
+        expect(example_813906f825a0172541af7454641ac075a05318ead3513d5292b5a782b6c7202b(page: page)).to eq(false)
       end
     end
 
@@ -302,7 +302,7 @@ RSpec.describe 'example' do
     it 'should work with Page#expect_request' do
       with_page do |page|
         with_network_retry do
-          example_9246912bc386c2f9310662279b12200ae131f724a1ec1ca99e511568767cb9c8(page: page)
+          example_0c91be8bc12e1e564d14d37e5e0be8d4e56189ef1184ff34ccc0d92338ad598b(page: page)
         end
       end
     end
@@ -310,7 +310,7 @@ RSpec.describe 'example' do
     it 'should work with Page#expect_response' do
       with_page do |page|
         with_network_retry do
-          example_8640a109091eac678c17600c4918b2b0010771a4d76054580bb879719eb3e05e(page: page)
+          example_bdc21f273866a6ed56d91f269e9665afe7f32d277a2c27f399c1af0bcb087b28(page: page)
         end
       end
     end
@@ -353,13 +353,43 @@ RSpec.describe 'example' do
       end
 
       with_page do |page|
-        example_bbeb6c856287d9a14962cd222891b682b8f1c52dafcf933198e651e634906122(page: page)
+        example_39b99a97428d536c6d26b43e024ebbd90aa62cdd9f58cc70d67e23ca6b6b1799(page: page)
         url = "#{server_cross_process_prefix}/empty2.html"
         page.content = "<a href=\"#{url}\">link</a>"
         response = page.expect_request(url) { page.click('a') }
         headers = response.all_headers
         expect(headers['foo']).to eq('bar')
         expect(headers['user-agent']).to eq('Unknown Browser')
+      end
+    end
+
+    it 'should work with Route#fallback', sinatra: true do
+      sinatra.get('/empty2.html') do
+        headers(
+          'foo' => 'FOO',
+          'bar' => 'BAR',
+        )
+        body('')
+      end
+
+      with_page do |page|
+        example_1622b8b89837489dedec666cb29388780382f6e997246b261aed07fb60c70cd8(page: page)
+        url = "#{server_cross_process_prefix}/empty2.html"
+        page.content = "<a href=\"#{url}\">link</a>"
+        response = page.expect_request(url) { page.click('a') }
+        headers = response.all_headers
+        expect(headers['foo']).to eq('bar')
+        expect(headers['user-agent']).to eq('Unknown Browser')
+      end
+    end
+
+    it 'should work with Route#fetch', sinatra: true do
+      with_page do |page|
+        example_031e6d15c4e66b677f9dcdae52998eb1c8076acdd2e8ee543637dcc021355cfd(page: page)
+        response = page.goto('https://dog.ceo/api/breeds/list/all')
+        json = response.json
+        expect(json["message"]["big_red_dog"]).to be_a(Array)
+        expect(json["message"]["big_red_dog"]).to be_empty
       end
     end
 

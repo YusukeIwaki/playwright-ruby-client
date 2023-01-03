@@ -4,35 +4,21 @@ sidebar_position: 10
 
 # Mouse
 
+
 The Mouse class operates in main-frame CSS pixels relative to the top-left corner of the viewport.
 
 Every `page` object has its own Mouse, accessible with [Page#mouse](./page#mouse).
 
-```py title=example_adbe40ae54d19e3e57a3e18ea638c1d3380fec4520e1e81fd841612512c66cf4.py
-# using ‘page.mouse’ to trace a 100x100 square.
-await page.mouse.move(0, 0)
-await page.mouse.down()
-await page.mouse.move(0, 100)
-await page.mouse.move(100, 100)
-await page.mouse.move(100, 0)
-await page.mouse.move(0, 0)
-await page.mouse.up()
-
-```
-
-```py title=example_4c269cf509274f0565d4307f2e48580958b5f12bb8a39f326fc747707dc4c101.py
+```ruby
 # using ‘page.mouse’ to trace a 100x100 square.
 page.mouse.move(0, 0)
-page.mouse.down()
+page.mouse.down
 page.mouse.move(0, 100)
 page.mouse.move(100, 100)
 page.mouse.move(100, 0)
 page.mouse.move(0, 0)
-page.mouse.up()
-
+page.mouse.up
 ```
-
-
 
 ## click
 
@@ -45,6 +31,7 @@ def click(
       delay: nil)
 ```
 
+
 Shortcut for [Mouse#move](./mouse#move), [Mouse#down](./mouse#down), [Mouse#up](./mouse#up).
 
 ## dblclick
@@ -52,6 +39,7 @@ Shortcut for [Mouse#move](./mouse#move), [Mouse#down](./mouse#down), [Mouse#up](
 ```
 def dblclick(x, y, button: nil, delay: nil)
 ```
+
 
 Shortcut for [Mouse#move](./mouse#move), [Mouse#down](./mouse#down), [Mouse#up](./mouse#up), [Mouse#down](./mouse#down) and
 [Mouse#up](./mouse#up).
@@ -62,6 +50,7 @@ Shortcut for [Mouse#move](./mouse#move), [Mouse#down](./mouse#down), [Mouse#up](
 def down(button: nil, clickCount: nil)
 ```
 
+
 Dispatches a `mousedown` event.
 
 ## move
@@ -69,6 +58,7 @@ Dispatches a `mousedown` event.
 ```
 def move(x, y, steps: nil)
 ```
+
 
 Dispatches a `mousemove` event.
 
@@ -78,6 +68,7 @@ Dispatches a `mousemove` event.
 def up(button: nil, clickCount: nil)
 ```
 
+
 Dispatches a `mouseup` event.
 
 ## wheel
@@ -86,7 +77,8 @@ Dispatches a `mouseup` event.
 def wheel(deltaX, deltaY)
 ```
 
+
 Dispatches a `wheel` event.
 
-**NOTE** Wheel events may cause scrolling if they are not handled, and this method does not wait for the scrolling
-to finish before returning.
+**NOTE**: Wheel events may cause scrolling if they are not handled, and this method does not
+wait for the scrolling to finish before returning.

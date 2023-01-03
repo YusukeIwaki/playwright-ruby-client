@@ -9,7 +9,7 @@ class ImplementedPropertyWithDoc
   end
 
   def property_comment
-    @doc.comment_without_unusable_code_examples
+    @doc.comment_with_python_codes
   end
 
   def js_property_name
