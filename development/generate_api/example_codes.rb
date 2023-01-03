@@ -762,6 +762,13 @@ module ExampleCodes
     page.locator('button').count
   end
 
+  # Locator#all
+  def example_0d78b77c4a8b63146297e6f4db0c955a4077e32528fe59a292d9a3e76c000918(page:)
+    page.get_by_role('listitem').all.each do |li|
+      li.click
+    end
+  end
+
   # Locator#bounding_box
   def example_4d635e937854fa2ee56b7c43151ded535940f0bbafc00cf48e8214bed86715eb(page:)
     box = element.bounding_box
