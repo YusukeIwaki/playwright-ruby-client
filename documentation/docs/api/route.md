@@ -30,18 +30,17 @@ Continues route's request with optional overrides.
 
 **Usage**
 
-```python sync title=example_39b99a97428d536c6d26b43e024ebbd90aa62cdd9f58cc70d67e23ca6b6b1799.py
-def handle(route, request):
-    # override headers
-    headers = {
-        **request.headers,
-        "foo": "foo-value" # set "foo" header
-        "bar": None # remove "bar" header
-    }
-    route.continue_(headers=headers)
+```ruby
+def handle(route, request)
+  # override headers
+  headers = request.headers
+  headers['foo'] = 'bar' # set "foo" header
+  headers['user-agent'] = 'Unknown Browser' # modify user-agent
+  headers.delete('bar') # remove "bar" header
 
-page.route("**/*", handle)
-
+  route.continue(headers: headers)
+end
+page.route("**/*", method(:handle))
 ```
 
 ## fallback
@@ -98,18 +97,17 @@ page.route("**/*", handle_post)
 One can also modify request while falling back to the subsequent handler, that way intermediate
 route handler can modify url, method, headers and postData of the request.
 
-```python sync title=example_1622b8b89837489dedec666cb29388780382f6e997246b261aed07fb60c70cd8.py
-def handle(route, request):
-    # override headers
-    headers = {
-        **request.headers,
-        "foo": "foo-value" # set "foo" header
-        "bar": None # remove "bar" header
-    }
-    route.fallback(headers=headers)
+```ruby
+def handle(route, request)
+  # override headers
+  headers = request.headers
+  headers['foo'] = 'bar' # set "foo" header
+  headers['user-agent'] = 'Unknown Browser' # modify user-agent
+  headers.delete('bar') # remove "bar" header
 
-page.route("**/*", handle)
-
+  route.fallback(headers: headers)
+end
+page.route("**/*", method(:handle))
 ```
 
 ## fetch
@@ -124,15 +122,15 @@ could be modified and then fulfilled.
 
 **Usage**
 
-```python sync title=example_031e6d15c4e66b677f9dcdae52998eb1c8076acdd2e8ee543637dcc021355cfd.py
-def handle(route):
-    response = route.fulfill()
-    json = response.json()
-    json["message"]["big_red_dog"] = []
-    route.fulfill(response=response, json=json)
+```ruby
+def handle(route, request)
+  response = route.fetch
+  json = response.json
+  json["message"]["big_red_dog"] = []
 
-page.route("https://dog.ceo/api/breeds/list/all", handle)
-
+  route.fulfill(response: response, json: json)
+end
+page.route("https://dog.ceo/api/breeds/list/all", method(:handle))
 ```
 
 ## fulfill

@@ -1580,14 +1580,14 @@ page.get_by_role("button").click # click triggers navigation.
 page.wait_for_load_state # the promise resolves after "load" event.
 ```
 
-```python sync title=example_fbda9305b509a808a81b1c3a54dc1eca9fbddf2695c8dd708b365ba75b777aa3.py
-with page.expect_popup() as page_info:
-    page.get_by_role("button").click() # click triggers a popup.
-popup = page_info.value
+```ruby
+popup = page.expect_popup do
+  page.get_by_role("button").click # click triggers a popup.
+end
+
 # Wait for the "DOMContentLoaded" event.
 popup.wait_for_load_state("domcontentloaded")
-print(popup.title()) # popup is ready to use.
-
+puts popup.title # popup is ready to use.
 ```
 
 ## expect_navigation
@@ -1607,12 +1607,11 @@ This resolves when the page navigates to a new URL or reloads. It is useful for 
 cause the page to navigate. e.g. The click target has an `onclick` handler that triggers navigation from a `setTimeout`.
 Consider this example:
 
-```python sync title=example_3eda55b8be7aa66b69117d8f1a98374e8938923ba516831ee46bc5e1994aff33.py
-with page.expect_navigation():
-    # This action triggers the navigation after a timeout.
-    page.get_by_text("Navigate after timeout").click()
-# Resolves after navigation has finished
-
+```ruby
+page.expect_navigation do
+  # This action triggers the navigation after a timeout.
+  page.get_by_text("Navigate after timeout").click
+end # Resolves after navigation has finished
 ```
 
 **NOTE**: Usage of the [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API) to change the URL is considered
@@ -1640,16 +1639,21 @@ Waits for the matching request and returns it. See [waiting for event](https://p
 
 **Usage**
 
-```python sync title=example_0c91be8bc12e1e564d14d37e5e0be8d4e56189ef1184ff34ccc0d92338ad598b.py
-with page.expect_request("http://example.com/resource") as first:
-    page.get_by_text("trigger request").click()
-first_request = first.value
+```ruby
+page.content = '<form action="https://example.com/resource"><input type="submit" value="trigger request" /></form>'
+request = page.expect_request(/example.com\/resource/) do
+  page.get_by_text("trigger request").click()
+end
+puts request.headers
 
-# or with a lambda
-with page.expect_request(lambda request: request.url == "http://example.com" and request.method == "get") as second:
-    page.get_by_text("trigger request").click()
-second_request = second.value
+page.wait_for_load_state # wait for request finished.
 
+# or with a predicate
+page.content = '<form action="https://example.com/resource"><input type="submit" value="trigger request" /></form>'
+request = page.expect_request(->(req) { req.url.start_with? 'https://example.com/resource' }) do
+  page.get_by_text("trigger request").click()
+end
+puts request.headers
 ```
 
 ## expect_request_finished
@@ -1674,18 +1678,23 @@ Returns the matched response. See [waiting for event](https://playwright.dev/pyt
 
 **Usage**
 
-```python sync title=example_bdc21f273866a6ed56d91f269e9665afe7f32d277a2c27f399c1af0bcb087b28.py
-with page.expect_response("https://example.com/resource") as response_info:
-    page.get_by_text("trigger response").click()
-response = response_info.value
-return response.ok
+```ruby
+page.content = '<form action="https://example.com/resource"><input type="submit" value="trigger response" /></form>'
+response = page.expect_response(/example.com\/resource/) do
+  page.get_by_text("trigger response").click()
+end
+puts response.body
+puts response.ok?
 
-# or with a lambda
-with page.expect_response(lambda response: response.url == "https://example.com" and response.status == 200) as response_info:
-    page.get_by_text("trigger response").click()
-response = response_info.value
-return response.ok
+page.wait_for_load_state # wait for request finished.
 
+# or with a predicate
+page.content = '<form action="https://example.com/resource"><input type="submit" value="trigger response" /></form>'
+response = page.expect_response(->(res) { res.url.start_with? 'https://example.com/resource' }) do
+  page.get_by_text("trigger response").click()
+end
+puts response.body
+puts response.ok?
 ```
 
 ## wait_for_selector

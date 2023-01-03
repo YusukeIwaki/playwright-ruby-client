@@ -297,10 +297,9 @@ to resolve and return its value.
 
 **Usage**
 
-```python sync title=example_813906f825a0172541af7454641ac075a05318ead3513d5292b5a782b6c7202b.py
+```ruby
 elements = page.locator("div")
-div_counts = elements.evaluate_all("(divs, min) => divs.length >= min", 10)
-
+div_counts = elements.evaluate_all("(divs, min) => divs.length >= min", arg: 10)
 ```
 
 ## evaluate_handle
@@ -785,14 +784,13 @@ Triggers a `change` and `input` event once all the provided options have been se
 </select>
 ```
 
-```python sync title=example_05e2ba1e92a54ea2d01e939597114efd78e2eec8bae4764c87d4c7d0c0f10689.py
+```ruby
 # single selection matching the value or label
-element.select_option("blue")
-# single selection matching the label
-element.select_option(label="blue")
-# multiple selection for blue, red and second option
-element.select_option(value=["red", "green", "blue"])
-
+element.select_option(value: "blue")
+# single selection matching both the label
+element.select_option(label: "blue")
+# multiple selection
+element.select_option(value: ["red", "green", "blue"])
 ```
 
 ## select_text
