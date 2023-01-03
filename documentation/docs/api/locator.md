@@ -10,6 +10,24 @@ a way to find element(s) on the page at any moment. Locator can be created with 
 
 [Learn more about locators](https://playwright.dev/python/docs/locators).
 
+## all
+
+```
+def all
+```
+
+
+When locator points to a list of elements, returns array of locators, pointing
+to respective elements.
+
+**Usage**
+
+```ruby
+page.get_by_role('listitem').all.each do |li|
+  li.click
+end
+```
+
 ## all_inner_texts
 
 ```

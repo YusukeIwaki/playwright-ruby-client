@@ -419,7 +419,7 @@
 
 ## Locator
 
-* ~~all~~
+* all
 * all_inner_texts
 * all_text_contents
 * blur

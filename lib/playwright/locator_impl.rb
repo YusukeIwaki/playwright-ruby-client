@@ -263,6 +263,14 @@ module Playwright
       @frame.channel.send_message_to_server('blur', params)
     end
 
+    def all
+      Enumerator.new do |out|
+        count.times do |i|
+          out << nth(i)
+        end
+      end
+    end
+
     def count
       @frame.eval_on_selector_all(@selector, 'ee => ee.length')
     end
