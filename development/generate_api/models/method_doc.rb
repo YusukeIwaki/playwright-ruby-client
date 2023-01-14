@@ -2,8 +2,8 @@ require_relative './doc'
 
 class MethodDoc < Doc
   # @returns [String]
-  def return_type_signature
-    json_with_python_override['type']['name']
+  def return_type
+    JsType.new(json_with_python_override['type'])
   end
 
   def arg_docs

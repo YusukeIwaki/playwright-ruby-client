@@ -33,7 +33,7 @@ class ClassDoc < Doc
   def property_docs
     json_with_python_override['members'].
       select { |json| json['kind'] == 'property' }.
-      map{ |json| MethodDoc.new(json) }.
+      map{ |json| PropertyDoc.new(json) }.
       reject { |doc| doc.langs.not_for_python? }
   end
 end

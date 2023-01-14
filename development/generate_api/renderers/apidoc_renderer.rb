@@ -137,7 +137,7 @@ class ApidocRenderer
             when DocumentedMethodArgs::BlockArg
               "&block"
             else
-              "What is this? -> #{arg}"
+              raise "What is this? -> #{arg}"
             end
           end
 

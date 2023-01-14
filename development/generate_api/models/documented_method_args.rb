@@ -13,6 +13,10 @@ class DocumentedMethodArgs
     def options?
       false
     end
+
+    def js_type
+      @doc.arg_type
+    end
   end
 
   class OptionalArg
@@ -25,13 +29,17 @@ class DocumentedMethodArgs
     end
 
     def options?
-      @doc.name.end_with?('options') && @doc.type_signature == 'Object'
+      @doc.name.end_with?('options') && @doc.arg_type.object?
     end
 
     def optional_args
       @doc.properties&.map do |arg_doc|
         OptionalKwArg.new(arg_doc)
       end || []
+    end
+
+    def js_type
+      @doc.arg_type
     end
   end
 
@@ -42,6 +50,10 @@ class DocumentedMethodArgs
 
     def name
       @doc.name
+    end
+
+    def js_type
+      @doc.arg_type
     end
   end
 

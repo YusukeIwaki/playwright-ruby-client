@@ -1,8 +1,8 @@
 require_relative './doc'
 
 class ArgDoc < Doc
-  def type_signature
-    json_with_python_override['type']['name']
+  def arg_type
+    JsType.new(json_with_python_override['type'])
   end
 
   def required?
