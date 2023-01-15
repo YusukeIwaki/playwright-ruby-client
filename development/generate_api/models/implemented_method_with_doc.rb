@@ -33,4 +33,8 @@ class ImplementedMethodWithDoc
   def has_block?
     @method.parameters.last&.first == :block
   end
+
+  def js_return_type
+    @doc.return_type
+  end
 end

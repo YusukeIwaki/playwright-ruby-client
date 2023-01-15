@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
     `git ls-files -z`.split("\x0").reject do |f|
       f.match(%r{^(test|spec|features)/}) || f.include?(".git") || f.include?(".circleci") || f.start_with?("development/")
     end
-  end + `find lib/playwright_api -name *.rb -type f`.split("\n")
+  end + `find lib/playwright_api -name *.rb -type f`.split("\n") + `find sig -name *.rbs -type f`.split("\n")
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']

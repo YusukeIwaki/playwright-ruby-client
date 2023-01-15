@@ -101,4 +101,5 @@ if $0 == __FILE__
   PlaywrightApiRenderer.new(target_classes).render
   ApiCoverageRenderer.new(target_classes).render
   ApidocRenderer.new(target_classes).render
+  RbsRenderer.new(target_classes).render
 end

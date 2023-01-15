@@ -20,4 +20,8 @@ class ImplementedPropertyWithDoc
   def property_name
     @property_name ||= MethodName.new(@inflector, @doc.name).rubyish_name
   end
+
+  def js_property_type
+    @doc.property_type
+  end
 end
