@@ -37,6 +37,13 @@ def all_inner_texts
 
 Returns an array of `node.innerText` values for all matching nodes.
 
+**Usage**
+
+```python sync title=example_db3fbc8764290dcac5864a6d11dae6643865e74e0d1bb7e6a00ce777321a0b2f.py
+texts = page.get_by_role("link").all_inner_texts()
+
+```
+
 ## all_text_contents
 
 ```
@@ -45,6 +52,13 @@ def all_text_contents
 
 
 Returns an array of `node.textContent` values for all matching nodes.
+
+**Usage**
+
+```python sync title=example_46e7add209e0c75ea54b931e47cefd095d989d034e76ec8918939e0f47b89ca3.py
+texts = page.get_by_role("link").all_text_contents()
+
+```
 
 ## blur
 
@@ -62,8 +76,10 @@ def bounding_box(timeout: nil)
 ```
 
 
-This method returns the bounding box of the element, or `null` if the element is not visible. The bounding box is
+This method returns the bounding box of the element matching the locator, or `null` if the element is not visible. The bounding box is
 calculated relative to the main frame viewport - which is usually the same as the browser window.
+
+**Details**
 
 Scrolling affects the returned bounding box, similarly to
 [Element.getBoundingClientRect](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect). That
@@ -77,12 +93,10 @@ snippet should click the center of the element.
 
 **Usage**
 
-```ruby
-box = element.bounding_box
-page.mouse.click(
-  box["x"] + box["width"] / 2,
-  box["y"] + box["height"] / 2,
-)
+```python sync title=example_09bf5cd40405b9e5cd84333743b6ef919d0714bb4da78c86404789d26ff196ae.py
+box = page.get_by_role("button").bounding_box()
+page.mouse.click(box["x"] + box["width"] / 2, box["y"] + box["height"] / 2)
+
 ```
 
 ## check
@@ -97,7 +111,11 @@ def check(
 ```
 
 
-This method checks the element by performing the following steps:
+Ensure that checkbox or radio element is checked.
+
+**Details**
+
+Performs the following steps:
 1. Ensure that element is a checkbox or a radio input. If not, this method throws. If the element is already checked, this method returns immediately.
 1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
 1. Scroll the element into view if needed.
@@ -110,6 +128,13 @@ If the element is detached from the DOM at any moment during the action, this me
 When all steps combined have not finished during the specified `timeout`, this method throws a
 `TimeoutError`. Passing zero timeout disables this.
 
+**Usage**
+
+```python sync title=example_17dff0bf6d8bc93d2e17be7fd1c1231ee72555eabb19c063d71ee804928273a8.py
+page.get_by_role("checkbox").check()
+
+```
+
 ## clear
 
 ```
@@ -117,9 +142,20 @@ def clear(force: nil, noWaitAfter: nil, timeout: nil)
 ```
 
 
+Clear the input field.
+
+**Details**
+
 This method waits for [actionability](https://playwright.dev/python/docs/actionability) checks, focuses the element, clears it and triggers an `input` event after clearing.
 
 If the target element is not an `<input>`, `<textarea>` or `[contenteditable]` element, this method throws an error. However, if the element is inside the `<label>` element that has an associated [control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), the control will be cleared instead.
+
+**Usage**
+
+```python sync title=example_ccddf9c70c0dd2f6eaa85f46cf99155666e5be09f98bacfca21735d25e990707.py
+page.get_by_role("textbox").clear()
+
+```
 
 ## click
 
@@ -152,6 +188,24 @@ If the element is detached from the DOM at any moment during the action, this me
 When all steps combined have not finished during the specified `timeout`, this method throws a
 `TimeoutError`. Passing zero timeout disables this.
 
+**Usage**
+
+Click a button:
+
+```python sync title=example_0e93b0bcf462c0151fa70dfb6c3cb691c67ec10cdf0498478427a5c1d2a83521.py
+page.get_by_role("button").click()
+
+```
+
+Shift-right-click at a specific position on a canvas:
+
+```python sync title=example_855b70722b9c7795f29b6aa150ba7997d542adf67f9104638ca48fd680ad6d86.py
+page.locator("canvas").click(
+    button="right", modifiers=["Shift"], position={"x": 23, "y": 32}
+)
+
+```
+
 ## count
 
 ```
@@ -159,7 +213,14 @@ def count
 ```
 
 
-Returns the number of elements matching given selector.
+Returns the number of elements matching the locator.
+
+**Usage**
+
+```python sync title=example_a711e425f2e4fe8cdd4e7ff99d609e607146ddb7b1fb5c5d8978bd0555ac1fcd.py
+count = page.get_by_role("listitem").count()
+
+```
 
 ## dblclick
 
@@ -175,6 +236,10 @@ def dblclick(
       trial: nil)
 ```
 
+
+Double-click an element.
+
+**Details**
 
 This method double clicks the element by performing the following steps:
 1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
@@ -196,15 +261,20 @@ def dispatch_event(type, eventInit: nil, timeout: nil)
 ```
 
 
-The snippet below dispatches the `click` event on the element. Regardless of the visibility state of the element, `click`
-is dispatched. This is equivalent to calling
-[element.click()](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click).
+Programmaticaly dispatch an event on the matching element.
 
 **Usage**
 
-```ruby
-element.dispatch_event("click")
+```python sync title=example_72b38530862dccd8b3ad53982f45a24a5ee82fc6e50fccec328d544bf1a78909.py
+locator.dispatch_event("click")
+
 ```
+
+**Details**
+
+The snippet above dispatches the `click` event on the element. Regardless of the visibility state of the element, `click`
+is dispatched. This is equivalent to calling
+[element.click()](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click).
 
 Under the hood, it creates an instance of an event based on the given `type`, initializes it with
 `eventInit` properties and dispatches it on the element. Events are `composed`, `cancelable` and bubble by
@@ -222,10 +292,11 @@ properties:
 
 You can also specify [JSHandle](./js_handle) as the property value if you want live objects to be passed into the event:
 
-```ruby
+```python sync title=example_bf805bb1858c7b8ea50d9c52704fab32064e1c26fb608232e823fe87267a07b3.py
 # note you can only create data_transfer in chromium and firefox
 data_transfer = page.evaluate_handle("new DataTransfer()")
-element.dispatch_event("dragstart", eventInit: { dataTransfer: data_transfer })
+locator.dispatch_event("#source", "dragstart", {"dataTransfer": data_transfer})
+
 ```
 
 ## drag_to
@@ -241,6 +312,10 @@ def drag_to(
       trial: nil)
 ```
 
+
+Drag the source element towards the target element and drop it.
+
+**Details**
 
 This method drags the locator to another target locator or target position. It will
 first move to the source element, perform a `mousedown`, then move to the target
@@ -268,7 +343,7 @@ def element_handle(timeout: nil)
 ```
 
 
-Resolves given locator to the first matching DOM element. If no elements matching the query are visible, waits for them up to a given timeout. If multiple elements match the selector, throws.
+Resolves given locator to the first matching DOM element. If there are no matching elements, waits for one. If multiple elements match the locator, throws.
 
 ## element_handles
 
@@ -277,7 +352,7 @@ def element_handles
 ```
 
 
-Resolves given locator to all matching DOM elements.
+Resolves given locator to all matching DOM elements. If there are no matching elements, returns an empty list.
 
 ## evaluate
 
@@ -286,12 +361,15 @@ def evaluate(expression, arg: nil, timeout: nil)
 ```
 
 
-Returns the return value of `expression`.
+Execute JavaScript code in the page, taking the matching element as an argument.
 
-This method passes this handle as the first argument to `expression`.
+**Details**
 
-If `expression` returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), then `handle.evaluate` would wait for the promise to resolve and return
-its value.
+Returns the return value of `expression`, called with the matching element as a first argument, and `arg` as a second argument.
+
+If `expression` returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), this method will wait for the promise to resolve and return its value.
+
+If `expression` throws or rejects, this method throws.
 
 **Usage**
 
@@ -307,17 +385,22 @@ def evaluate_all(expression, arg: nil)
 ```
 
 
-The method finds all elements matching the specified locator and passes an array of matched elements as
-a first argument to `expression`. Returns the result of `expression` invocation.
+Execute JavaScript code in the page, taking all matching elements as an argument.
 
-If `expression` returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), then [Locator#evaluate_all](./locator#evaluate_all) would wait for the promise
-to resolve and return its value.
+**Details**
+
+Returns the return value of `expression`, called with an array of all matching elements as a first argument, and `arg` as a second argument.
+
+If `expression` returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), this method will wait for the promise to resolve and return its value.
+
+If `expression` throws or rejects, this method throws.
 
 **Usage**
 
-```ruby
-elements = page.locator("div")
-div_counts = elements.evaluate_all("(divs, min) => divs.length >= min", arg: 10)
+```python sync title=example_877178e12857c7b3ef09f6c50606489c9d9894220622379b72e1e180a2970b96.py
+locator = page.locator("div")
+more_than_ten = locator.evaluate_all("(divs, min) => divs.length > min", 10)
+
 ```
 
 ## evaluate_handle
@@ -327,14 +410,17 @@ def evaluate_handle(expression, arg: nil, timeout: nil)
 ```
 
 
-Returns the return value of `expression` as a [JSHandle](./js_handle).
+Execute JavaScript code in the page, taking the matching element as an argument, and return a [JSHandle](./js_handle) with the result.
 
-This method passes this handle as the first argument to `expression`.
+**Details**
+
+Returns the return value of `expression` as a[JSHandle](./js_handle), called with the matching element as a first argument, and `arg` as a second argument.
 
 The only difference between [Locator#evaluate](./locator#evaluate) and [Locator#evaluate_handle](./locator#evaluate_handle) is that [Locator#evaluate_handle](./locator#evaluate_handle) returns [JSHandle](./js_handle).
 
-If the function passed to the [Locator#evaluate_handle](./locator#evaluate_handle) returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), then [Locator#evaluate_handle](./locator#evaluate_handle) would wait
-for the promise to resolve and return its value.
+If `expression` returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), this method will wait for the promise to resolve and return its value.
+
+If `expression` throws or rejects, this method throws.
 
 See [Page#evaluate_handle](./page#evaluate_handle) for more details.
 
@@ -344,6 +430,17 @@ See [Page#evaluate_handle](./page#evaluate_handle) for more details.
 def fill(value, force: nil, noWaitAfter: nil, timeout: nil)
 ```
 
+
+Set a value to the input field.
+
+**Usage**
+
+```python sync title=example_77567051f4c8531c719eb0b94e53a061ffe9a414e3bb131cbc956d1fdcf6eab3.py
+page.get_by_role("textbox").fill("example value")
+
+```
+
+**Details**
 
 This method waits for [actionability](https://playwright.dev/python/docs/actionability) checks, focuses the element, fills it and triggers an `input` event after filling. Note that you can pass an empty string to clear the input field.
 
@@ -388,7 +485,7 @@ def focus(timeout: nil)
 ```
 
 
-Calls [focus](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus) on the element.
+Calls [focus](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus) on the matching element.
 
 ## frame_locator
 
@@ -397,10 +494,10 @@ def frame_locator(selector)
 ```
 
 
-**Usage**
-
-When working with iframes, you can create a frame locator that will enter the iframe and allow selecting elements
+When working with iframes, you can create a frame locator that will enter the iframe and allow locating elements
 in that iframe:
+
+**Usage**
 
 ```ruby
 locator = page.frame_locator("iframe").get_by_text("Submit")
@@ -415,7 +512,7 @@ def get_attribute(name, timeout: nil)
 alias: `[]`
 
 
-Returns element attribute value.
+Returns the matching element's attribute value.
 
 ## get_by_alt_text
 
@@ -424,10 +521,19 @@ def get_by_alt_text(text, exact: nil)
 ```
 
 
-Allows locating elements by their alt text. For example, this method will find the image by alt text "Castle":
+Allows locating elements by their alt text.
+
+**Usage**
+
+For example, this method will find the image by alt text "Playwright logo":
 
 ```html
-<img alt='Castle'>
+<img alt='Playwright logo'>
+```
+
+```python sync title=example_40a7d124045a4f729e0deddcfb511b9232ada7f16e0caa4e07ea083c2bfd3c16.py
+page.get_by_alt_text("Playwright logo").click()
+
 ```
 
 ## get_by_label
@@ -437,11 +543,20 @@ def get_by_label(text, exact: nil)
 ```
 
 
-Allows locating input elements by the text of the associated label. For example, this method will find the input by label text "Password" in the following DOM:
+Allows locating input elements by the text of the associated label.
+
+**Usage**
+
+For example, this method will find the input by label text "Password" in the following DOM:
 
 ```html
 <label for="password-input">Password:</label>
 <input id="password-input">
+```
+
+```python sync title=example_c19c4ba9cb058cdfedf7fd87eb1634459f0b62d9ee872e61272414b0fb69a01c.py
+page.get_by_label("Password").fill("secret")
+
 ```
 
 ## get_by_placeholder
@@ -451,10 +566,21 @@ def get_by_placeholder(text, exact: nil)
 ```
 
 
-Allows locating input elements by the placeholder text. For example, this method will find the input by placeholder "Country":
+Allows locating input elements by the placeholder text.
+
+**Usage**
+
+For example, consider the following DOM structure.
 
 ```html
-<input placeholder="Country">
+<input type="email" placeholder="name@example.com" />
+```
+
+You can fill the input after locating it by the placeholder text:
+
+```python sync title=example_c521b79be0a480325f84dc2c110a9803f0d74b2042da32c84660abe90ab7bb37.py
+page.get_by_placeholder("name@example.com").fill("playwright@microsoft.com")
+
 ```
 
 ## get_by_role
@@ -474,9 +600,37 @@ def get_by_role(
 ```
 
 
-Allows locating elements by their [ARIA role](https://www.w3.org/TR/wai-aria-1.2/#roles), [ARIA attributes](https://www.w3.org/TR/wai-aria-1.2/#aria-attributes) and [accessible name](https://w3c.github.io/accname/#dfn-accessible-name). Note that role selector **does not replace** accessibility audits and conformance tests, but rather gives early feedback about the ARIA guidelines.
+Allows locating elements by their [ARIA role](https://www.w3.org/TR/wai-aria-1.2/#roles), [ARIA attributes](https://www.w3.org/TR/wai-aria-1.2/#aria-attributes) and [accessible name](https://w3c.github.io/accname/#dfn-accessible-name).
 
-Note that many html elements have an implicitly [defined role](https://w3c.github.io/html-aam/#html-element-role-mappings) that is recognized by the role selector. You can find all the [supported roles here](https://www.w3.org/TR/wai-aria-1.2/#role_definitions). ARIA guidelines **do not recommend** duplicating implicit roles and attributes by setting `role` and/or `aria-*` attributes to default values.
+**Usage**
+
+Consider the following DOM structure.
+
+```html
+<h3>Sign up</h3>
+<label>
+  <input type="checkbox" /> Subscribe
+</label>
+<br/>
+<button>Submit</button>
+```
+
+You can locate each element by it's implicit role:
+
+```python sync title=example_d0da510d996da8a4b3e0505412b0b651049ab11b56317300ba3dc52e928500b3.py
+expect(page.get_by_role("heading", name="Sign up")).to_be_visible()
+
+page.get_by_role("checkbox", name="Subscribe").check()
+
+page.get_by_role("button", name=re.compile("submit", re.IGNORECASE)).click()
+
+```
+
+**Details**
+
+Role selector **does not replace** accessibility audits and conformance tests, but rather gives early feedback about the ARIA guidelines.
+
+Many html elements have an implicitly [defined role](https://w3c.github.io/html-aam/#html-element-role-mappings) that is recognized by the role selector. You can find all the [supported roles here](https://www.w3.org/TR/wai-aria-1.2/#role_definitions). ARIA guidelines **do not recommend** duplicating implicit roles and attributes by setting `role` and/or `aria-*` attributes to default values.
 
 ## get_by_test_id
 
@@ -485,7 +639,26 @@ def get_by_test_id(testId)
 ```
 
 
-Locate element by the test id. By default, the `data-testid` attribute is used as a test id. Use [Selectors#set_test_id_attribute](./selectors#set_test_id_attribute) to configure a different test id attribute if necessary.
+Locate element by the test id.
+
+**Usage**
+
+Consider the following DOM structure.
+
+```html
+<button data-testid="directions">Itinéraire</button>
+```
+
+You can locate the element by it's test id:
+
+```python sync title=example_291583061a6a67f91ea5f926eac4b5cd6c351d7009ddfef39b52efba03909ca0.py
+page.get_by_test_id("directions").click()
+
+```
+
+**Details**
+
+By default, the `data-testid` attribute is used as a test id. Use [Selectors#set_test_id_attribute](./selectors#set_test_id_attribute) to configure a different test id attribute if necessary.
 
 ## get_by_text
 
@@ -494,7 +667,13 @@ def get_by_text(text, exact: nil)
 ```
 
 
-Allows locating elements that contain given text. Consider the following DOM structure:
+Allows locating elements that contain given text.
+
+See also [Locator#filter](./locator#filter) that allows to match by another criteria, like an accessible role, and then filter by the text content.
+
+**Usage**
+
+Consider the following DOM structure:
 
 ```html
 <div>Hello <span>world</span></div>
@@ -532,11 +711,11 @@ locator = page.get_by_text(/^hello$/i)
 expect(locator.evaluate('e => e.outerHTML')).to eq('<div>Hello</div>')
 ```
 
-See also [Locator#filter](./locator#filter) that allows to match by another criteria, like an accessible role, and then filter by the text content.
+**Details**
 
-**NOTE**: Matching by text always normalizes whitespace, even with exact match. For example, it turns multiple spaces into one, turns line breaks into spaces and ignores leading and trailing whitespace.
+Matching by text always normalizes whitespace, even with exact match. For example, it turns multiple spaces into one, turns line breaks into spaces and ignores leading and trailing whitespace.
 
-**NOTE**: Input elements of the type `button` and `submit` are matched by their `value` instead of the text content. For example, locating by text `"Log in"` matches `<input type=button value="Log in">`.
+Input elements of the type `button` and `submit` are matched by their `value` instead of the text content. For example, locating by text `"Log in"` matches `<input type=button value="Log in">`.
 
 ## get_by_title
 
@@ -545,10 +724,21 @@ def get_by_title(text, exact: nil)
 ```
 
 
-Allows locating elements by their title. For example, this method will find the button by its title "Place the order":
+Allows locating elements by their title attribute.
+
+**Usage**
+
+Consider the following DOM structure.
 
 ```html
-<button title='Place the order'>Order Now</button>
+<span title='Issues count'>25 issues</span>
+```
+
+You can check the issues count after locating it by the title text:
+
+```python sync title=example_0aecb761822601bd6adf174c0aeb9db69bf4880a62eb4a1cdeb67c2f57c7149e.py
+expect(page.get_by_title("Issues count")).to_have_text("25 issues")
+
 ```
 
 ## highlight
@@ -573,6 +763,17 @@ def hover(
 ```
 
 
+Hover over the matching element.
+
+**Usage**
+
+```python sync title=example_0a9e085f6c2ab04459adc2bf6ec73a06ff3cde201943ff8f4965552528b73f89.py
+page.get_by_role("link").hover()
+
+```
+
+**Details**
+
 This method hovers over the element by performing the following steps:
 1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
 1. Scroll the element into view if needed.
@@ -591,7 +792,7 @@ def inner_html(timeout: nil)
 ```
 
 
-Returns the `element.innerHTML`.
+Returns the [`element.innerHTML`](https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML).
 
 ## inner_text
 
@@ -600,7 +801,7 @@ def inner_text(timeout: nil)
 ```
 
 
-Returns the `element.innerText`.
+Returns the [`element.innerText`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/innerText).
 
 ## input_value
 
@@ -609,9 +810,18 @@ def input_value(timeout: nil)
 ```
 
 
-Returns `input.value` for the selected `<input>` or `<textarea>` or `<select>` element.
+Returns the value for the matching `<input>` or `<textarea>` or `<select>` element.
 
-Throws for non-input elements. However, if the element is inside the `<label>` element that has an associated [control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), returns the value of the control.
+**Usage**
+
+```python sync title=example_bb8cec73e5210f884833e04e6d71f7c035451bafd39500e057e6d6325c990474.py
+value = page.get_by_role("textbox").input_value()
+
+```
+
+**Details**
+
+Throws elements that are not an input, textarea or a select. However, if the element is inside the `<label>` element that has an associated [control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), returns the value of the control.
 
 ## checked?
 
@@ -622,6 +832,13 @@ def checked?(timeout: nil)
 
 Returns whether the element is checked. Throws if the element is not a checkbox or radio input.
 
+**Usage**
+
+```python sync title=example_f617df59758f06107dd5c79e986aabbfde5861fbda6ccc5d8b91a508ebdc48f7.py
+checked = page.get_by_role("checkbox").is_checked()
+
+```
+
 ## disabled?
 
 ```
@@ -630,6 +847,13 @@ def disabled?(timeout: nil)
 
 
 Returns whether the element is disabled, the opposite of [enabled](https://playwright.dev/python/docs/actionability#enabled).
+
+**Usage**
+
+```python sync title=example_5c008cd1a3ece779fe8c29092643a482cd0215d5c09001cd9ef08c444ea6cdd1.py
+disabled = page.get_by_role("button").is_disabled()
+
+```
 
 ## editable?
 
@@ -640,6 +864,13 @@ def editable?(timeout: nil)
 
 Returns whether the element is [editable](https://playwright.dev/python/docs/actionability#editable).
 
+**Usage**
+
+```python sync title=example_10e437a8b21b128feda412f1e3cf85615fe260be2ad08758a3c5e5216b46187b.py
+editable = page.get_by_role("textbox").is_editable()
+
+```
+
 ## enabled?
 
 ```
@@ -648,6 +879,13 @@ def enabled?(timeout: nil)
 
 
 Returns whether the element is [enabled](https://playwright.dev/python/docs/actionability#enabled).
+
+**Usage**
+
+```python sync title=example_69710ffa4599909a9ae6cd570a2b88f6981c064c577b1e255fe5cc21b07d033c.py
+enabled = page.get_by_role("button").is_enabled()
+
+```
 
 ## hidden?
 
@@ -658,6 +896,13 @@ def hidden?(timeout: nil)
 
 Returns whether the element is hidden, the opposite of [visible](https://playwright.dev/python/docs/actionability#visible).
 
+**Usage**
+
+```python sync title=example_f25a3bde8e8a1d091d01321314daa6059cb8aa026a3c2c4be50b1611bbdb3c19.py
+hidden = page.get_by_role("button").is_hidden()
+
+```
+
 ## visible?
 
 ```
@@ -667,6 +912,13 @@ def visible?(timeout: nil)
 
 Returns whether the element is [visible](https://playwright.dev/python/docs/actionability#visible).
 
+**Usage**
+
+```python sync title=example_b54ab20fe81143e0242d5d001ce2b1af4a272a2cc7c9d6925551de10f46a68c4.py
+visible = page.get_by_role("button").is_visible()
+
+```
+
 ## last
 
 ```
@@ -675,6 +927,13 @@ def last
 
 
 Returns locator to the last matching element.
+
+**Usage**
+
+```python sync title=example_37f239c3646f77e0658c12f139a5883eb99d9952f7761ad58ffb629fa385c7bb.py
+banana = page.get_by_role("listitem").last()
+
+```
 
 ## locator
 
@@ -696,6 +955,13 @@ def nth(index)
 
 Returns locator to the n-th matching element. It's zero based, `nth(0)` selects the first element.
 
+**Usage**
+
+```python sync title=example_d6cc7c4a653d7139137c582ad853bebd92e3b97893fb6d5f88919553404c57e4.py
+banana = page.get_by_role("listitem").nth(2)
+
+```
+
 ## page
 
 ```
@@ -711,6 +977,17 @@ A page this locator belongs to.
 def press(key, delay: nil, noWaitAfter: nil, timeout: nil)
 ```
 
+
+Focuses the mathing element and presses a combintation of the keys.
+
+**Usage**
+
+```python sync title=example_29eed7b713b928678523c677c788808779cf13dda2bb117aab2562cef3b08647.py
+page.get_by_role("textbox").press("Backspace")
+
+```
+
+**Details**
 
 Focuses the element, and then uses [Keyboard#down](./keyboard#down) and [Keyboard#up](./keyboard#up).
 
@@ -747,6 +1024,24 @@ def screenshot(
       type: nil)
 ```
 
+
+Take a screenshot of the element matching the locator.
+
+**Usage**
+
+```python sync title=example_43381950beaa21258e3f378d4b6aff54b83fa3eba52f36c65f4ca2d3d6df248d.py
+page.get_by_role("link").screenshot()
+
+```
+
+Disable animations and save screenshot to a file:
+
+```python sync title=example_d787f101e95d45bbcf3184b241bab4925e68d8e5c117299d0a95bf66f19bbdaa.py
+page.get_by_role("link").screenshot(animations="disabled", path="link.png")
+
+```
+
+**Details**
 
 This method captures a screenshot of the page, clipped to the size and position of a particular element matching the locator. If the element is covered by other elements, it will not be actually visible on the screenshot. If the element is a scrollable container, only the currently scrolled content will be visible on the screenshot.
 
@@ -837,6 +1132,17 @@ def set_checked(
 alias: `checked=`
 
 
+Set the state of a checkbox or a radio element.
+
+**Usage**
+
+```python sync title=example_bab309d5b9f84c3b57a3057462dbddf7436cba6181457788c8e302d8e20aa108.py
+page.get_by_role("checkbox").set_checked(True)
+
+```
+
+**Details**
+
 This method checks or unchecks an element by performing the following steps:
 1. Ensure that matched element is a checkbox or a radio input. If not, this method throws.
 1. If the element already has the right checked state, this method returns immediately.
@@ -857,6 +1163,31 @@ def set_input_files(files, noWaitAfter: nil, timeout: nil)
 alias: `input_files=`
 
 
+Upload file or multiple files into `<input type=file>`.
+
+**Usage**
+
+```python sync title=example_f1bf5c6c31c8405ce60cee9138c6d6dc6923be52e61ff8c2a3c3d28186b72282.py
+# Select one file
+page.get_by_label("Upload file").set_input_files('myfile.pdf')
+
+# Select multiple files
+page.get_by_label("Upload files").set_input_files(['file1.txt', 'file2.txt'])
+
+# Remove all the selected files
+page.get_by_label("Upload file").set_input_files([])
+
+# Upload buffer from memory
+page.get_by_label("Upload file").set_input_files(
+    files=[
+        {"name": "test.txt", "mimeType": "text/plain", "buffer": b"this is a test"}
+    ],
+)
+
+```
+
+**Details**
+
 Sets the value of the file input to these file paths or files. If some of the `filePaths` are relative paths, then they
 are resolved relative to the current working directory. For empty array, clears the selected files.
 
@@ -875,6 +1206,10 @@ def tap_point(
       trial: nil)
 ```
 
+
+Perform a tap gesture on the element matching the locator.
+
+**Details**
 
 This method taps the element by performing the following steps:
 1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
@@ -896,7 +1231,7 @@ def text_content(timeout: nil)
 ```
 
 
-Returns the `node.textContent`.
+Returns the [`node.textContent`](https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent).
 
 ## type
 
@@ -936,7 +1271,18 @@ def uncheck(
 ```
 
 
-This method checks the element by performing the following steps:
+Ensure that checkbox or radio element is unchecked.
+
+**Usage**
+
+```python sync title=example_ead0dc91ccaf4d3de1e28cccdadfacb0e75c79ffcfb8fc5a2b55afa736870fa6.py
+page.get_by_role("checkbox").uncheck()
+
+```
+
+**Details**
+
+This method unchecks the element by performing the following steps:
 1. Ensure that element is a checkbox or a radio input. If not, this method throws. If the element is already unchecked, this method returns immediately.
 1. Wait for [actionability](https://playwright.dev/python/docs/actionability) checks on the element, unless `force` option is set.
 1. Scroll the element into view if needed.

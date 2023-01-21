@@ -630,10 +630,19 @@ def get_by_alt_text(text, exact: nil)
 ```
 
 
-Allows locating elements by their alt text. For example, this method will find the image by alt text "Castle":
+Allows locating elements by their alt text.
+
+**Usage**
+
+For example, this method will find the image by alt text "Playwright logo":
 
 ```html
-<img alt='Castle'>
+<img alt='Playwright logo'>
+```
+
+```python sync title=example_40a7d124045a4f729e0deddcfb511b9232ada7f16e0caa4e07ea083c2bfd3c16.py
+page.get_by_alt_text("Playwright logo").click()
+
 ```
 
 ## get_by_label
@@ -643,11 +652,20 @@ def get_by_label(text, exact: nil)
 ```
 
 
-Allows locating input elements by the text of the associated label. For example, this method will find the input by label text "Password" in the following DOM:
+Allows locating input elements by the text of the associated label.
+
+**Usage**
+
+For example, this method will find the input by label text "Password" in the following DOM:
 
 ```html
 <label for="password-input">Password:</label>
 <input id="password-input">
+```
+
+```python sync title=example_c19c4ba9cb058cdfedf7fd87eb1634459f0b62d9ee872e61272414b0fb69a01c.py
+page.get_by_label("Password").fill("secret")
+
 ```
 
 ## get_by_placeholder
@@ -657,10 +675,21 @@ def get_by_placeholder(text, exact: nil)
 ```
 
 
-Allows locating input elements by the placeholder text. For example, this method will find the input by placeholder "Country":
+Allows locating input elements by the placeholder text.
+
+**Usage**
+
+For example, consider the following DOM structure.
 
 ```html
-<input placeholder="Country">
+<input type="email" placeholder="name@example.com" />
+```
+
+You can fill the input after locating it by the placeholder text:
+
+```python sync title=example_c521b79be0a480325f84dc2c110a9803f0d74b2042da32c84660abe90ab7bb37.py
+page.get_by_placeholder("name@example.com").fill("playwright@microsoft.com")
+
 ```
 
 ## get_by_role
@@ -680,9 +709,37 @@ def get_by_role(
 ```
 
 
-Allows locating elements by their [ARIA role](https://www.w3.org/TR/wai-aria-1.2/#roles), [ARIA attributes](https://www.w3.org/TR/wai-aria-1.2/#aria-attributes) and [accessible name](https://w3c.github.io/accname/#dfn-accessible-name). Note that role selector **does not replace** accessibility audits and conformance tests, but rather gives early feedback about the ARIA guidelines.
+Allows locating elements by their [ARIA role](https://www.w3.org/TR/wai-aria-1.2/#roles), [ARIA attributes](https://www.w3.org/TR/wai-aria-1.2/#aria-attributes) and [accessible name](https://w3c.github.io/accname/#dfn-accessible-name).
 
-Note that many html elements have an implicitly [defined role](https://w3c.github.io/html-aam/#html-element-role-mappings) that is recognized by the role selector. You can find all the [supported roles here](https://www.w3.org/TR/wai-aria-1.2/#role_definitions). ARIA guidelines **do not recommend** duplicating implicit roles and attributes by setting `role` and/or `aria-*` attributes to default values.
+**Usage**
+
+Consider the following DOM structure.
+
+```html
+<h3>Sign up</h3>
+<label>
+  <input type="checkbox" /> Subscribe
+</label>
+<br/>
+<button>Submit</button>
+```
+
+You can locate each element by it's implicit role:
+
+```python sync title=example_d0da510d996da8a4b3e0505412b0b651049ab11b56317300ba3dc52e928500b3.py
+expect(page.get_by_role("heading", name="Sign up")).to_be_visible()
+
+page.get_by_role("checkbox", name="Subscribe").check()
+
+page.get_by_role("button", name=re.compile("submit", re.IGNORECASE)).click()
+
+```
+
+**Details**
+
+Role selector **does not replace** accessibility audits and conformance tests, but rather gives early feedback about the ARIA guidelines.
+
+Many html elements have an implicitly [defined role](https://w3c.github.io/html-aam/#html-element-role-mappings) that is recognized by the role selector. You can find all the [supported roles here](https://www.w3.org/TR/wai-aria-1.2/#role_definitions). ARIA guidelines **do not recommend** duplicating implicit roles and attributes by setting `role` and/or `aria-*` attributes to default values.
 
 ## get_by_test_id
 
@@ -691,7 +748,26 @@ def get_by_test_id(testId)
 ```
 
 
-Locate element by the test id. By default, the `data-testid` attribute is used as a test id. Use [Selectors#set_test_id_attribute](./selectors#set_test_id_attribute) to configure a different test id attribute if necessary.
+Locate element by the test id.
+
+**Usage**
+
+Consider the following DOM structure.
+
+```html
+<button data-testid="directions">Itinéraire</button>
+```
+
+You can locate the element by it's test id:
+
+```python sync title=example_291583061a6a67f91ea5f926eac4b5cd6c351d7009ddfef39b52efba03909ca0.py
+page.get_by_test_id("directions").click()
+
+```
+
+**Details**
+
+By default, the `data-testid` attribute is used as a test id. Use [Selectors#set_test_id_attribute](./selectors#set_test_id_attribute) to configure a different test id attribute if necessary.
 
 ## get_by_text
 
@@ -700,7 +776,13 @@ def get_by_text(text, exact: nil)
 ```
 
 
-Allows locating elements that contain given text. Consider the following DOM structure:
+Allows locating elements that contain given text.
+
+See also [Locator#filter](./locator#filter) that allows to match by another criteria, like an accessible role, and then filter by the text content.
+
+**Usage**
+
+Consider the following DOM structure:
 
 ```html
 <div>Hello <span>world</span></div>
@@ -738,11 +820,11 @@ locator = page.get_by_text(/^hello$/i)
 expect(locator.evaluate('e => e.outerHTML')).to eq('<div>Hello</div>')
 ```
 
-See also [Locator#filter](./locator#filter) that allows to match by another criteria, like an accessible role, and then filter by the text content.
+**Details**
 
-**NOTE**: Matching by text always normalizes whitespace, even with exact match. For example, it turns multiple spaces into one, turns line breaks into spaces and ignores leading and trailing whitespace.
+Matching by text always normalizes whitespace, even with exact match. For example, it turns multiple spaces into one, turns line breaks into spaces and ignores leading and trailing whitespace.
 
-**NOTE**: Input elements of the type `button` and `submit` are matched by their `value` instead of the text content. For example, locating by text `"Log in"` matches `<input type=button value="Log in">`.
+Input elements of the type `button` and `submit` are matched by their `value` instead of the text content. For example, locating by text `"Log in"` matches `<input type=button value="Log in">`.
 
 ## get_by_title
 
@@ -751,10 +833,21 @@ def get_by_title(text, exact: nil)
 ```
 
 
-Allows locating elements by their title. For example, this method will find the button by its title "Place the order":
+Allows locating elements by their title attribute.
+
+**Usage**
+
+Consider the following DOM structure.
 
 ```html
-<button title='Place the order'>Order Now</button>
+<span title='Issues count'>25 issues</span>
+```
+
+You can check the issues count after locating it by the title text:
+
+```python sync title=example_0aecb761822601bd6adf174c0aeb9db69bf4880a62eb4a1cdeb67c2f57c7149e.py
+expect(page.get_by_title("Issues count")).to_have_text("25 issues")
+
 ```
 
 ## go_back
