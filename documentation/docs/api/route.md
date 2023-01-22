@@ -122,15 +122,15 @@ could be modified and then fulfilled.
 
 **Usage**
 
-```python sync title=example_62dfcdbf7cb03feca462cfd43ba72022e8c7432f93d9566ad1abde69ec3f7666.py
-def handle(route):
-    response = route.fetch()
-    json = response.json()
-    json["message"]["big_red_dog"] = []
-    route.fulfill(response=response, json=json)
+```ruby
+def handle(route, request)
+  response = route.fetch
+  json = response.json
+  json["message"]["big_red_dog"] = []
 
-page.route("https://dog.ceo/api/breeds/list/all", handle)
-
+  route.fulfill(response: response, json: json)
+end
+page.route("https://dog.ceo/api/breeds/list/all", method(:handle))
 ```
 
 ## fulfill

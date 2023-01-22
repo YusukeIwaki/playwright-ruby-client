@@ -39,9 +39,8 @@ Returns an array of `node.innerText` values for all matching nodes.
 
 **Usage**
 
-```python sync title=example_db3fbc8764290dcac5864a6d11dae6643865e74e0d1bb7e6a00ce777321a0b2f.py
-texts = page.get_by_role("link").all_inner_texts()
-
+```ruby
+texts = page.get_by_role("link").all_inner_texts
 ```
 
 ## all_text_contents
@@ -55,9 +54,8 @@ Returns an array of `node.textContent` values for all matching nodes.
 
 **Usage**
 
-```python sync title=example_46e7add209e0c75ea54b931e47cefd095d989d034e76ec8918939e0f47b89ca3.py
-texts = page.get_by_role("link").all_text_contents()
-
+```ruby
+texts = page.get_by_role("link").all_text_contents
 ```
 
 ## blur
@@ -93,10 +91,13 @@ snippet should click the center of the element.
 
 **Usage**
 
-```python sync title=example_09bf5cd40405b9e5cd84333743b6ef919d0714bb4da78c86404789d26ff196ae.py
-box = page.get_by_role("button").bounding_box()
-page.mouse.click(box["x"] + box["width"] / 2, box["y"] + box["height"] / 2)
-
+```ruby
+element = page.get_by_role("button")
+box = element.bounding_box
+page.mouse.click(
+  box["x"] + box["width"] / 2,
+  box["y"] + box["height"] / 2,
+)
 ```
 
 ## check
@@ -130,9 +131,8 @@ When all steps combined have not finished during the specified `timeout`, this m
 
 **Usage**
 
-```python sync title=example_17dff0bf6d8bc93d2e17be7fd1c1231ee72555eabb19c063d71ee804928273a8.py
-page.get_by_role("checkbox").check()
-
+```ruby
+page.get_by_role("checkbox").check
 ```
 
 ## clear
@@ -152,9 +152,8 @@ If the target element is not an `<input>`, `<textarea>` or `[contenteditable]` e
 
 **Usage**
 
-```python sync title=example_ccddf9c70c0dd2f6eaa85f46cf99155666e5be09f98bacfca21735d25e990707.py
-page.get_by_role("textbox").clear()
-
+```ruby
+page.get_by_role("textbox").clear
 ```
 
 ## click
@@ -192,18 +191,14 @@ When all steps combined have not finished during the specified `timeout`, this m
 
 Click a button:
 
-```python sync title=example_0e93b0bcf462c0151fa70dfb6c3cb691c67ec10cdf0498478427a5c1d2a83521.py
-page.get_by_role("button").click()
-
+```ruby
+page.get_by_role("button").click
 ```
 
 Shift-right-click at a specific position on a canvas:
 
-```python sync title=example_855b70722b9c7795f29b6aa150ba7997d542adf67f9104638ca48fd680ad6d86.py
-page.locator("canvas").click(
-    button="right", modifiers=["Shift"], position={"x": 23, "y": 32}
-)
-
+```ruby
+page.locator("canvas").click(button: "right", modifiers: ["Shift"], position: { x: 23, y: 32 })
 ```
 
 ## count
@@ -217,9 +212,8 @@ Returns the number of elements matching the locator.
 
 **Usage**
 
-```python sync title=example_a711e425f2e4fe8cdd4e7ff99d609e607146ddb7b1fb5c5d8978bd0555ac1fcd.py
-count = page.get_by_role("listitem").count()
-
+```ruby
+count = page.get_by_role("listitem").count
 ```
 
 ## dblclick
@@ -265,9 +259,8 @@ Programmaticaly dispatch an event on the matching element.
 
 **Usage**
 
-```python sync title=example_72b38530862dccd8b3ad53982f45a24a5ee82fc6e50fccec328d544bf1a78909.py
+```ruby
 locator.dispatch_event("click")
-
 ```
 
 **Details**
@@ -292,11 +285,10 @@ properties:
 
 You can also specify [JSHandle](./js_handle) as the property value if you want live objects to be passed into the event:
 
-```python sync title=example_bf805bb1858c7b8ea50d9c52704fab32064e1c26fb608232e823fe87267a07b3.py
+```ruby
 # note you can only create data_transfer in chromium and firefox
 data_transfer = page.evaluate_handle("new DataTransfer()")
-locator.dispatch_event("#source", "dragstart", {"dataTransfer": data_transfer})
-
+locator.dispatch_event("dragstart", eventInit: { dataTransfer: data_transfer })
 ```
 
 ## drag_to
@@ -397,10 +389,9 @@ If `expression` throws or rejects, this method throws.
 
 **Usage**
 
-```python sync title=example_877178e12857c7b3ef09f6c50606489c9d9894220622379b72e1e180a2970b96.py
+```ruby
 locator = page.locator("div")
-more_than_ten = locator.evaluate_all("(divs, min) => divs.length > min", 10)
-
+more_than_ten = locator.evaluate_all("(divs, min) => divs.length >= min", arg: 10)
 ```
 
 ## evaluate_handle
@@ -435,9 +426,8 @@ Set a value to the input field.
 
 **Usage**
 
-```python sync title=example_77567051f4c8531c719eb0b94e53a061ffe9a414e3bb131cbc956d1fdcf6eab3.py
+```ruby
 page.get_by_role("textbox").fill("example value")
-
 ```
 
 **Details**
@@ -531,9 +521,8 @@ For example, this method will find the image by alt text "Playwright logo":
 <img alt='Playwright logo'>
 ```
 
-```python sync title=example_40a7d124045a4f729e0deddcfb511b9232ada7f16e0caa4e07ea083c2bfd3c16.py
-page.get_by_alt_text("Playwright logo").click()
-
+```ruby
+page.get_by_alt_text("Playwright logo").click
 ```
 
 ## get_by_label
@@ -554,9 +543,8 @@ For example, this method will find the input by label text "Password" in the fol
 <input id="password-input">
 ```
 
-```python sync title=example_c19c4ba9cb058cdfedf7fd87eb1634459f0b62d9ee872e61272414b0fb69a01c.py
+```ruby
 page.get_by_label("Password").fill("secret")
-
 ```
 
 ## get_by_placeholder
@@ -578,9 +566,8 @@ For example, consider the following DOM structure.
 
 You can fill the input after locating it by the placeholder text:
 
-```python sync title=example_c521b79be0a480325f84dc2c110a9803f0d74b2042da32c84660abe90ab7bb37.py
+```ruby
 page.get_by_placeholder("name@example.com").fill("playwright@microsoft.com")
-
 ```
 
 ## get_by_role
@@ -617,13 +604,10 @@ Consider the following DOM structure.
 
 You can locate each element by it's implicit role:
 
-```python sync title=example_d0da510d996da8a4b3e0505412b0b651049ab11b56317300ba3dc52e928500b3.py
-expect(page.get_by_role("heading", name="Sign up")).to_be_visible()
-
-page.get_by_role("checkbox", name="Subscribe").check()
-
-page.get_by_role("button", name=re.compile("submit", re.IGNORECASE)).click()
-
+```ruby
+page.get_by_role("heading", name: "Sign up").visible? # => true
+page.get_by_role("checkbox", name: "Subscribe").check
+page.get_by_role("button", name: /submit/i).click
 ```
 
 **Details**
@@ -651,9 +635,8 @@ Consider the following DOM structure.
 
 You can locate the element by it's test id:
 
-```python sync title=example_291583061a6a67f91ea5f926eac4b5cd6c351d7009ddfef39b52efba03909ca0.py
-page.get_by_test_id("directions").click()
-
+```ruby
+page.get_by_test_id("directions").click
 ```
 
 **Details**
@@ -736,9 +719,8 @@ Consider the following DOM structure.
 
 You can check the issues count after locating it by the title text:
 
-```python sync title=example_0aecb761822601bd6adf174c0aeb9db69bf4880a62eb4a1cdeb67c2f57c7149e.py
-expect(page.get_by_title("Issues count")).to_have_text("25 issues")
-
+```ruby
+page.get_by_title("Issues count").text_content # => "25 issues"
 ```
 
 ## highlight
@@ -767,9 +749,8 @@ Hover over the matching element.
 
 **Usage**
 
-```python sync title=example_0a9e085f6c2ab04459adc2bf6ec73a06ff3cde201943ff8f4965552528b73f89.py
-page.get_by_role("link").hover()
-
+```ruby
+page.get_by_role("link").hover
 ```
 
 **Details**
@@ -814,9 +795,8 @@ Returns the value for the matching `<input>` or `<textarea>` or `<select>` eleme
 
 **Usage**
 
-```python sync title=example_bb8cec73e5210f884833e04e6d71f7c035451bafd39500e057e6d6325c990474.py
-value = page.get_by_role("textbox").input_value()
-
+```ruby
+value = page.get_by_role("textbox").input_value
 ```
 
 **Details**
@@ -834,9 +814,8 @@ Returns whether the element is checked. Throws if the element is not a checkbox 
 
 **Usage**
 
-```python sync title=example_f617df59758f06107dd5c79e986aabbfde5861fbda6ccc5d8b91a508ebdc48f7.py
-checked = page.get_by_role("checkbox").is_checked()
-
+```ruby
+checked = page.get_by_role("checkbox").checked?
 ```
 
 ## disabled?
@@ -850,9 +829,8 @@ Returns whether the element is disabled, the opposite of [enabled](https://playw
 
 **Usage**
 
-```python sync title=example_5c008cd1a3ece779fe8c29092643a482cd0215d5c09001cd9ef08c444ea6cdd1.py
-disabled = page.get_by_role("button").is_disabled()
-
+```ruby
+disabled = page.get_by_role("button").disabled?
 ```
 
 ## editable?
@@ -866,9 +844,8 @@ Returns whether the element is [editable](https://playwright.dev/python/docs/act
 
 **Usage**
 
-```python sync title=example_10e437a8b21b128feda412f1e3cf85615fe260be2ad08758a3c5e5216b46187b.py
-editable = page.get_by_role("textbox").is_editable()
-
+```ruby
+editable = page.get_by_role("textbox").editable?
 ```
 
 ## enabled?
@@ -882,9 +859,8 @@ Returns whether the element is [enabled](https://playwright.dev/python/docs/acti
 
 **Usage**
 
-```python sync title=example_69710ffa4599909a9ae6cd570a2b88f6981c064c577b1e255fe5cc21b07d033c.py
-enabled = page.get_by_role("button").is_enabled()
-
+```ruby
+enabled = page.get_by_role("button").enabled?
 ```
 
 ## hidden?
@@ -898,9 +874,8 @@ Returns whether the element is hidden, the opposite of [visible](https://playwri
 
 **Usage**
 
-```python sync title=example_f25a3bde8e8a1d091d01321314daa6059cb8aa026a3c2c4be50b1611bbdb3c19.py
-hidden = page.get_by_role("button").is_hidden()
-
+```ruby
+hidden = page.get_by_role("button").hidden?
 ```
 
 ## visible?
@@ -914,9 +889,8 @@ Returns whether the element is [visible](https://playwright.dev/python/docs/acti
 
 **Usage**
 
-```python sync title=example_b54ab20fe81143e0242d5d001ce2b1af4a272a2cc7c9d6925551de10f46a68c4.py
-visible = page.get_by_role("button").is_visible()
-
+```ruby
+visible = page.get_by_role("button").visible?
 ```
 
 ## last
@@ -930,9 +904,8 @@ Returns locator to the last matching element.
 
 **Usage**
 
-```python sync title=example_37f239c3646f77e0658c12f139a5883eb99d9952f7761ad58ffb629fa385c7bb.py
-banana = page.get_by_role("listitem").last()
-
+```ruby
+banana = page.get_by_role("listitem").last
 ```
 
 ## locator
@@ -957,9 +930,8 @@ Returns locator to the n-th matching element. It's zero based, `nth(0)` selects 
 
 **Usage**
 
-```python sync title=example_d6cc7c4a653d7139137c582ad853bebd92e3b97893fb6d5f88919553404c57e4.py
+```ruby
 banana = page.get_by_role("listitem").nth(2)
-
 ```
 
 ## page
@@ -982,9 +954,8 @@ Focuses the mathing element and presses a combintation of the keys.
 
 **Usage**
 
-```python sync title=example_29eed7b713b928678523c677c788808779cf13dda2bb117aab2562cef3b08647.py
+```ruby
 page.get_by_role("textbox").press("Backspace")
-
 ```
 
 **Details**
@@ -1029,16 +1000,14 @@ Take a screenshot of the element matching the locator.
 
 **Usage**
 
-```python sync title=example_43381950beaa21258e3f378d4b6aff54b83fa3eba52f36c65f4ca2d3d6df248d.py
-page.get_by_role("link").screenshot()
-
+```ruby
+page.get_by_role("link").screenshot
 ```
 
 Disable animations and save screenshot to a file:
 
-```python sync title=example_d787f101e95d45bbcf3184b241bab4925e68d8e5c117299d0a95bf66f19bbdaa.py
+```ruby
 page.get_by_role("link").screenshot(animations="disabled", path="link.png")
-
 ```
 
 **Details**
@@ -1136,9 +1105,9 @@ Set the state of a checkbox or a radio element.
 
 **Usage**
 
-```python sync title=example_bab309d5b9f84c3b57a3057462dbddf7436cba6181457788c8e302d8e20aa108.py
-page.get_by_role("checkbox").set_checked(True)
-
+```ruby
+page.get_by_role("checkbox").checked = true
+page.get_by_role("checkbox").set_checked(true)
 ```
 
 **Details**
@@ -1167,7 +1136,7 @@ Upload file or multiple files into `<input type=file>`.
 
 **Usage**
 
-```python sync title=example_f1bf5c6c31c8405ce60cee9138c6d6dc6923be52e61ff8c2a3c3d28186b72282.py
+```ruby
 # Select one file
 page.get_by_label("Upload file").set_input_files('myfile.pdf')
 
@@ -1176,14 +1145,6 @@ page.get_by_label("Upload files").set_input_files(['file1.txt', 'file2.txt'])
 
 # Remove all the selected files
 page.get_by_label("Upload file").set_input_files([])
-
-# Upload buffer from memory
-page.get_by_label("Upload file").set_input_files(
-    files=[
-        {"name": "test.txt", "mimeType": "text/plain", "buffer": b"this is a test"}
-    ],
-)
-
 ```
 
 **Details**
@@ -1275,9 +1236,8 @@ Ensure that checkbox or radio element is unchecked.
 
 **Usage**
 
-```python sync title=example_ead0dc91ccaf4d3de1e28cccdadfacb0e75c79ffcfb8fc5a2b55afa736870fa6.py
-page.get_by_role("checkbox").uncheck()
-
+```ruby
+page.get_by_role("checkbox").uncheck
 ```
 
 **Details**

@@ -68,9 +68,8 @@ For example, this method will find the image by alt text "Playwright logo":
 <img alt='Playwright logo'>
 ```
 
-```python sync title=example_40a7d124045a4f729e0deddcfb511b9232ada7f16e0caa4e07ea083c2bfd3c16.py
-page.get_by_alt_text("Playwright logo").click()
-
+```ruby
+page.get_by_alt_text("Playwright logo").click
 ```
 
 ## get_by_label
@@ -91,9 +90,8 @@ For example, this method will find the input by label text "Password" in the fol
 <input id="password-input">
 ```
 
-```python sync title=example_c19c4ba9cb058cdfedf7fd87eb1634459f0b62d9ee872e61272414b0fb69a01c.py
+```ruby
 page.get_by_label("Password").fill("secret")
-
 ```
 
 ## get_by_placeholder
@@ -115,9 +113,8 @@ For example, consider the following DOM structure.
 
 You can fill the input after locating it by the placeholder text:
 
-```python sync title=example_c521b79be0a480325f84dc2c110a9803f0d74b2042da32c84660abe90ab7bb37.py
+```ruby
 page.get_by_placeholder("name@example.com").fill("playwright@microsoft.com")
-
 ```
 
 ## get_by_role
@@ -154,13 +151,10 @@ Consider the following DOM structure.
 
 You can locate each element by it's implicit role:
 
-```python sync title=example_d0da510d996da8a4b3e0505412b0b651049ab11b56317300ba3dc52e928500b3.py
-expect(page.get_by_role("heading", name="Sign up")).to_be_visible()
-
-page.get_by_role("checkbox", name="Subscribe").check()
-
-page.get_by_role("button", name=re.compile("submit", re.IGNORECASE)).click()
-
+```ruby
+page.get_by_role("heading", name: "Sign up").visible? # => true
+page.get_by_role("checkbox", name: "Subscribe").check
+page.get_by_role("button", name: /submit/i).click
 ```
 
 **Details**
@@ -188,9 +182,8 @@ Consider the following DOM structure.
 
 You can locate the element by it's test id:
 
-```python sync title=example_291583061a6a67f91ea5f926eac4b5cd6c351d7009ddfef39b52efba03909ca0.py
-page.get_by_test_id("directions").click()
-
+```ruby
+page.get_by_test_id("directions").click
 ```
 
 **Details**
@@ -273,9 +266,8 @@ Consider the following DOM structure.
 
 You can check the issues count after locating it by the title text:
 
-```python sync title=example_0aecb761822601bd6adf174c0aeb9db69bf4880a62eb4a1cdeb67c2f57c7149e.py
-expect(page.get_by_title("Issues count")).to_have_text("25 issues")
-
+```ruby
+page.get_by_title("Issues count").text_content # => "25 issues"
 ```
 
 ## last
