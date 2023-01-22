@@ -596,6 +596,37 @@ module ExampleCodes
     locator.click
   end
 
+  # Frame#get_by_alt_text
+  def example_40a7d124045a4f729e0deddcfb511b9232ada7f16e0caa4e07ea083c2bfd3c16(page:)
+    page.get_by_alt_text("Playwright logo").click
+  end
+
+  # Frame#get_by_label
+  def example_c19c4ba9cb058cdfedf7fd87eb1634459f0b62d9ee872e61272414b0fb69a01c(page:)
+    page.get_by_label("Password").fill("secret")
+  end
+
+  # Frame#get_by_placeholder
+  def example_c521b79be0a480325f84dc2c110a9803f0d74b2042da32c84660abe90ab7bb37(page:)
+    page.get_by_placeholder("name@example.com").fill("playwright@microsoft.com")
+  end
+
+  # Frame#get_by_role
+  def example_d0da510d996da8a4b3e0505412b0b651049ab11b56317300ba3dc52e928500b3(page:)
+    page.get_by_role("heading", name: "Sign up").visible? # => true
+    page.get_by_role("checkbox", name: "Subscribe").check
+    page.get_by_role("button", name: /submit/i).click
+  end
+
+  # Frame#get_by_test_id
+  def example_291583061a6a67f91ea5f926eac4b5cd6c351d7009ddfef39b52efba03909ca0(page:)
+    page.get_by_test_id("directions").click
+  end
+
+  def example_0aecb761822601bd6adf174c0aeb9db69bf4880a62eb4a1cdeb67c2f57c7149e(page:)
+    page.get_by_title("Issues count").text_content # => "25 issues"
+  end
+
   # Frame#select_option
   def example_230c12044664b222bf35d6163b1e415c011d87d9911a4d39648c7f601b344a31(frame:)
     # single selection matching the value
@@ -769,8 +800,19 @@ module ExampleCodes
     end
   end
 
+  # Locator#all_inner_texts
+  def example_db3fbc8764290dcac5864a6d11dae6643865e74e0d1bb7e6a00ce777321a0b2f(page:)
+    texts = page.get_by_role("link").all_inner_texts
+  end
+
+  # Locator#all_text_contents
+  def example_46e7add209e0c75ea54b931e47cefd095d989d034e76ec8918939e0f47b89ca3(page:)
+    texts = page.get_by_role("link").all_text_contents
+  end
+
   # Locator#bounding_box
-  def example_4d635e937854fa2ee56b7c43151ded535940f0bbafc00cf48e8214bed86715eb(page:)
+  def example_09bf5cd40405b9e5cd84333743b6ef919d0714bb4da78c86404789d26ff196ae(page:)
+    element = page.get_by_role("button")
     box = element.bounding_box
     page.mouse.click(
       box["x"] + box["width"] / 2,
@@ -778,16 +820,57 @@ module ExampleCodes
     )
   end
 
-  # Locator#dispatch_event
-  def example_8d92b900a98c237ffdcb102ddc35660e37101bde7d107dc64d97a7edeed62a43(element_handle:)
-    element.dispatch_event("click")
+  # Locator#check
+  def example_17dff0bf6d8bc93d2e17be7fd1c1231ee72555eabb19c063d71ee804928273a8(page:)
+    page.get_by_role("checkbox").check
+  end
+
+  # Locator#checked?
+  def example_f617df59758f06107dd5c79e986aabbfde5861fbda6ccc5d8b91a508ebdc48f7(page:)
+    checked = page.get_by_role("checkbox").checked?
+  end
+
+  # Locator#checked=
+  def example_bab309d5b9f84c3b57a3057462dbddf7436cba6181457788c8e302d8e20aa108(page:)
+    page.get_by_role("checkbox").checked = true
+    page.get_by_role("checkbox").set_checked(true)
+  end
+
+  # Locator#clear
+  def example_ccddf9c70c0dd2f6eaa85f46cf99155666e5be09f98bacfca21735d25e990707(page:)
+    page.get_by_role("textbox").clear
+  end
+
+  # Locator#click
+  def example_0e93b0bcf462c0151fa70dfb6c3cb691c67ec10cdf0498478427a5c1d2a83521(page:)
+    page.get_by_role("button").click
+  end
+
+  # Locator#click
+  def example_855b70722b9c7795f29b6aa150ba7997d542adf67f9104638ca48fd680ad6d86(page:)
+    page.locator("canvas").click(button: "right", modifiers: ["Shift"], position: { x: 23, y: 32 })
+  end
+
+  # Locator#count
+  def example_a711e425f2e4fe8cdd4e7ff99d609e607146ddb7b1fb5c5d8978bd0555ac1fcd(page:)
+    count = page.get_by_role("listitem").count
+  end
+
+  # Locator#disabled?
+  def example_5c008cd1a3ece779fe8c29092643a482cd0215d5c09001cd9ef08c444ea6cdd1(page:)
+    disabled = page.get_by_role("button").disabled?
   end
 
   # Locator#dispatch_event
-  def example_e369442a3ff291ab476da408ef63a63dacf47984dc766ff7189d82008ae2848b(page:, element_handle:)
+  def example_72b38530862dccd8b3ad53982f45a24a5ee82fc6e50fccec328d544bf1a78909(element_handle:)
+    locator.dispatch_event("click")
+  end
+
+  # Locator#dispatch_event
+  def example_bf805bb1858c7b8ea50d9c52704fab32064e1c26fb608232e823fe87267a07b3(page:, element_handle:)
     # note you can only create data_transfer in chromium and firefox
     data_transfer = page.evaluate_handle("new DataTransfer()")
-    element.dispatch_event("dragstart", eventInit: { dataTransfer: data_transfer })
+    locator.dispatch_event("dragstart", eventInit: { dataTransfer: data_transfer })
   end
 
   # Locator#drag_to
@@ -804,6 +887,16 @@ module ExampleCodes
     )
   end
 
+  # Locator#editable?
+  def example_10e437a8b21b128feda412f1e3cf85615fe260be2ad08758a3c5e5216b46187b(page:)
+    editable = page.get_by_role("textbox").editable?
+  end
+
+  # Locator#enabled?
+  def example_69710ffa4599909a9ae6cd570a2b88f6981c064c577b1e255fe5cc21b07d033c(page:)
+    enabled = page.get_by_role("button").enabled?
+  end
+
   # Locator#evaluate
   def example_df39b3df921f81e7cfb71cd873b76a5e91e46b4aa41e1f164128cb322aa38305(page:)
     tweet = page.query_selector(".tweet .retweets")
@@ -811,9 +904,14 @@ module ExampleCodes
   end
 
   # Locator#evaluate_all
-  def example_813906f825a0172541af7454641ac075a05318ead3513d5292b5a782b6c7202b(page:)
-    elements = page.locator("div")
-    div_counts = elements.evaluate_all("(divs, min) => divs.length >= min", arg: 10)
+  def example_877178e12857c7b3ef09f6c50606489c9d9894220622379b72e1e180a2970b96(page:)
+    locator = page.locator("div")
+    more_than_ten = locator.evaluate_all("(divs, min) => divs.length >= min", arg: 10)
+  end
+
+  # Locator#fill
+  def example_77567051f4c8531c719eb0b94e53a061ffe9a414e3bb131cbc956d1fdcf6eab3(page:)
+    page.get_by_role("textbox").fill("example value")
   end
 
   # Locator#filter
@@ -856,10 +954,50 @@ module ExampleCodes
     expect(locator.evaluate('e => e.outerHTML')).to eq('<div>Hello</div>')
   end
 
+  # Locator#hidden?
+  def example_f25a3bde8e8a1d091d01321314daa6059cb8aa026a3c2c4be50b1611bbdb3c19(page:)
+    hidden = page.get_by_role("button").hidden?
+  end
+
   # Locator#frame_locator
   def example_0ec60e5949820a3a318c7e05ea06b826218f2d79a94f8d599a29c8b07b2c1e63(page:)
     locator = page.frame_locator("iframe").get_by_text("Submit")
     locator.click
+  end
+
+  # Locator#hover
+  def example_0a9e085f6c2ab04459adc2bf6ec73a06ff3cde201943ff8f4965552528b73f89(page:)
+    page.get_by_role("link").hover
+  end
+
+  # Locator#input_valie
+  def example_bb8cec73e5210f884833e04e6d71f7c035451bafd39500e057e6d6325c990474(page:)
+    value = page.get_by_role("textbox").input_value
+  end
+
+  # Locator#last
+  def example_37f239c3646f77e0658c12f139a5883eb99d9952f7761ad58ffb629fa385c7bb(page:)
+    banana = page.get_by_role("listitem").last
+  end
+
+  # Locator#nth
+  def example_d6cc7c4a653d7139137c582ad853bebd92e3b97893fb6d5f88919553404c57e4(page:)
+    banana = page.get_by_role("listitem").nth(2)
+  end
+
+  # Locator#press
+  def example_29eed7b713b928678523c677c788808779cf13dda2bb117aab2562cef3b08647(page:)
+    page.get_by_role("textbox").press("Backspace")
+  end
+
+  # Locator#screenshot
+  def example_43381950beaa21258e3f378d4b6aff54b83fa3eba52f36c65f4ca2d3d6df248d(page:)
+    page.get_by_role("link").screenshot
+  end
+
+  # Locator#screenshot
+  def example_d787f101e95d45bbcf3184b241bab4925e68d8e5c117299d0a95bf66f19bbdaa(page:)
+    page.get_by_role("link").screenshot(animations="disabled", path="link.png")
   end
 
   # Locator#select_option
@@ -878,6 +1016,18 @@ module ExampleCodes
     element.select_option(value: "blue", index: 2, label: "red")
   end
 
+  # Locator#set_input_files
+  def example_f1bf5c6c31c8405ce60cee9138c6d6dc6923be52e61ff8c2a3c3d28186b72282(page:)
+    # Select one file
+    page.get_by_label("Upload file").set_input_files('myfile.pdf')
+
+    # Select multiple files
+    page.get_by_label("Upload files").set_input_files(['file1.txt', 'file2.txt'])
+
+    # Remove all the selected files
+    page.get_by_label("Upload file").set_input_files([])
+  end
+
   # Locator#type
   def example_fa1712c0b6ceb96fcaa74790d33f2c2eefe2bd1f06e61b78e0bb84a6f22c7961(element_handle:)
     element.type("hello") # types instantly
@@ -889,6 +1039,16 @@ module ExampleCodes
     element = page.get_by_label("Password")
     element.type("my password")
     element.press("Enter")
+  end
+
+  # Locator#uncheck
+  def example_ead0dc91ccaf4d3de1e28cccdadfacb0e75c79ffcfb8fc5a2b55afa736870fa6(page:)
+    page.get_by_role("checkbox").uncheck
+  end
+
+  # Locator#visible?
+  def example_b54ab20fe81143e0242d5d001ce2b1af4a272a2cc7c9d6925551de10f46a68c4(page:)
+    visible = page.get_by_role("button").visible?
   end
 
   # Locator#wait_for
@@ -1405,7 +1565,7 @@ module ExampleCodes
   end
 
   # Route#fetch
-  def example_031e6d15c4e66b677f9dcdae52998eb1c8076acdd2e8ee543637dcc021355cfd(page:)
+  def example_62dfcdbf7cb03feca462cfd43ba72022e8c7432f93d9566ad1abde69ec3f7666(page:)
     def handle(route, request)
       response = route.fetch
       json = response.json

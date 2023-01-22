@@ -201,6 +201,55 @@ RSpec.describe 'example' do
       end
     end
 
+    it 'should work with Frame#get_by_label' do
+      with_page do |page|
+        page.content = <<~HTML
+        <label for="password-input">Password:</label>
+        <input id="password-input">
+        HTML
+        example_c19c4ba9cb058cdfedf7fd87eb1634459f0b62d9ee872e61272414b0fb69a01c(page: page)
+        expect(page.locator('#password-input').input_value).to eq('secret')
+      end
+    end
+
+    it 'should work with Frame#get_by_placeholder' do
+      with_page do |page|
+        page.content = '<input type="email" placeholder="name@example.com" />'
+        example_c521b79be0a480325f84dc2c110a9803f0d74b2042da32c84660abe90ab7bb37(page: page)
+        expect(page.locator('input').input_value).to eq('playwright@microsoft.com')
+      end
+    end
+
+    it 'should work with Frame#get_by_role' do
+      with_page do |page|
+        page.content = <<~HTML
+        <h3>Sign up</h3>
+        <label>
+          <input type="checkbox" /> Subscribe
+        </label>
+        <br/>
+        <button>Submit</button>
+        HTML
+        example_d0da510d996da8a4b3e0505412b0b651049ab11b56317300ba3dc52e928500b3(page: page)
+      end
+    end
+
+    it 'should work with Frame#get_by_test_id' do
+      with_page do |page|
+        page.content = '<button data-testid="directions" onclick="this.innerText=123">Itinéraire</button>'
+        example_291583061a6a67f91ea5f926eac4b5cd6c351d7009ddfef39b52efba03909ca0(page: page)
+        expect(page.text_content('button')).to eq('123')
+      end
+    end
+
+    it 'should work with Frame#get_by_title' do
+      with_page do |page|
+        page.content = "<span title='Issues count'>25 issues</span>"
+        text = example_0aecb761822601bd6adf174c0aeb9db69bf4880a62eb4a1cdeb67c2f57c7149e(page: page)
+        expect(text).to eq('25 issues')
+      end
+    end
+
     it 'should work with JSHandle#properties' do
       with_page do |page|
         with_network_retry do
@@ -260,6 +309,20 @@ RSpec.describe 'example' do
       end
     end
 
+    it 'should work with Locator#count' do
+      with_page do |page|
+        page.content = <<~HTML
+        <ul>
+          <li>Item 1</li>
+          <li>Item 2</li>
+          <li>Item 3</li>
+          <li>Item 4</li>
+        </ul>
+        HTML
+        expect(example_a711e425f2e4fe8cdd4e7ff99d609e607146ddb7b1fb5c5d8978bd0555ac1fcd(page: page)).to eq(4)
+      end
+    end
+
     it 'should work with Locator#evaluate_all' do
       with_page do |page|
         page.content = <<~HTML
@@ -267,14 +330,14 @@ RSpec.describe 'example' do
         #{10.times.map { |i| "<div>#{i}</div>" } }
         </body>
         HTML
-        expect(example_813906f825a0172541af7454641ac075a05318ead3513d5292b5a782b6c7202b(page: page)).to eq(true)
+        expect(example_877178e12857c7b3ef09f6c50606489c9d9894220622379b72e1e180a2970b96(page: page)).to eq(true)
 
         page.content = <<~HTML
         <body>
         #{9.times.map { |i| "<div>#{i}</div>" } }
         </body>
         HTML
-        expect(example_813906f825a0172541af7454641ac075a05318ead3513d5292b5a782b6c7202b(page: page)).to eq(false)
+        expect(example_877178e12857c7b3ef09f6c50606489c9d9894220622379b72e1e180a2970b96(page: page)).to eq(false)
       end
     end
 
@@ -385,7 +448,7 @@ RSpec.describe 'example' do
 
     it 'should work with Route#fetch', sinatra: true do
       with_page do |page|
-        example_031e6d15c4e66b677f9dcdae52998eb1c8076acdd2e8ee543637dcc021355cfd(page: page)
+        example_62dfcdbf7cb03feca462cfd43ba72022e8c7432f93d9566ad1abde69ec3f7666(page: page)
         response = page.goto('https://dog.ceo/api/breeds/list/all')
         json = response.json
         expect(json["message"]["big_red_dog"]).to be_a(Array)

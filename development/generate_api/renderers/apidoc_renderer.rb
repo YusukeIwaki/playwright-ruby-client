@@ -63,7 +63,7 @@ class ApidocRenderer
         if @implemented
           if @class_with_doc.class_comment
             comment = @comment_converter.convert(@class_with_doc.class_comment)
-            data << @example_code_converter.convert(comment)
+            data << @example_code_converter.convert(comment, memo: @class_with_doc.class_name)
           end
           method_lines.each do |line|
             data << line
@@ -83,7 +83,7 @@ class ApidocRenderer
           next unless method_with_doc.is_a?(ImplementedMethodWithDoc)
 
           data << ''
-          ImplementedMethodWithDocRenderer.new(method_with_doc, @comment_converter, @example_code_converter).render_lines.each do |line|
+          ImplementedMethodWithDocRenderer.new(@class_with_doc, method_with_doc, @comment_converter, @example_code_converter).render_lines.each do |line|
             data << line
           end
         end
@@ -91,7 +91,8 @@ class ApidocRenderer
     end
 
     class ImplementedMethodWithDocRenderer
-      def initialize(method_with_doc, comment_converter, example_code_converter)
+      def initialize(class_with_doc, method_with_doc, comment_converter, example_code_converter)
+        @class_with_doc = class_with_doc
         @method_with_doc = method_with_doc
         @comment_converter = comment_converter
         @example_code_converter = example_code_converter
@@ -109,7 +110,7 @@ class ApidocRenderer
           end
           data << ''
           comment = @comment_converter.convert(@method_with_doc.method_comment)
-          data << @example_code_converter.convert(comment)
+          data << @example_code_converter.convert(comment, memo: "#{@class_with_doc.class_name}##{@method_with_doc.method_name}")
         end
       end
 
@@ -157,7 +158,7 @@ class ApidocRenderer
           next unless property_with_doc.is_a?(ImplementedPropertyWithDoc)
 
           data << ''
-          ImplementedPropertyWithDocRenderer.new(property_with_doc, @comment_converter, @example_code_converter).render_lines.each do |line|
+          ImplementedPropertyWithDocRenderer.new(@class_with_doc, property_with_doc, @comment_converter, @example_code_converter).render_lines.each do |line|
             data << line
           end
         end
@@ -165,7 +166,8 @@ class ApidocRenderer
     end
 
     class ImplementedPropertyWithDocRenderer
-      def initialize(property_with_doc, comment_converter, example_code_converter)
+      def initialize(class_with_doc, property_with_doc, comment_converter, example_code_converter)
+        @class_with_doc = class_with_doc
         @property_with_doc = property_with_doc
         @comment_converter = comment_converter
         @example_code_converter = example_code_converter
@@ -178,7 +180,7 @@ class ApidocRenderer
           if @property_with_doc.property_comment && @property_with_doc.property_comment.size > 0
             data << ''
             comment = @comment_converter.convert(@property_with_doc.property_comment)
-            data << @example_code_converter.convert(comment)
+            data << @example_code_converter.convert(comment, memo: "#{@class_with_doc.class_name}##{@property_with_doc.property_name}")
           end
         end
       end
@@ -348,13 +350,13 @@ class ApidocRenderer
 
     # @param content [String]
     # @returns [String]
-    def convert(content)
+    def convert(content, memo:)
       content.gsub(/```(py.*?)\n(.*?)```/m).with_index do |code, index|
         key = "example_#{Digest::SHA256.hexdigest(code)}"
         if @methods[key]
           "```ruby\n#{@methods[key].rstrip}\n```"
         else
-          @no_impl_examples << [key, $2]
+          @no_impl_examples << ["#{key} (#{memo})", $2]
           "```#{$1} title=#{key}.py\n#{$2}\n```"
         end
       end
