@@ -255,7 +255,7 @@ def dispatch_event(type, eventInit: nil, timeout: nil)
 ```
 
 
-Programmaticaly dispatch an event on the matching element.
+Programmatically dispatch an event on the matching element.
 
 **Usage**
 
@@ -950,7 +950,7 @@ def press(key, delay: nil, noWaitAfter: nil, timeout: nil)
 ```
 
 
-Focuses the mathing element and presses a combintation of the keys.
+Focuses the matching element and presses a combination of the keys.
 
 **Usage**
 
