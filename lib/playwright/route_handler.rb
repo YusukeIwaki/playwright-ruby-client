@@ -43,6 +43,10 @@ module Playwright
         end
     end
 
+    def as_pattern
+      @url_matcher.as_pattern
+    end
+
     def match?(url)
       @url_matcher.match?(url)
     end
@@ -65,6 +69,10 @@ module Playwright
       else
         @url_value == url
       end
+    end
+
+    def self.prepare_interception_patterns(handlers)
+      handlers.filter_map(&:as_pattern)
     end
   end
 end

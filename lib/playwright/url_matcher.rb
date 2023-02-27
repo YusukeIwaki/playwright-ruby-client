@@ -7,6 +7,18 @@ module Playwright
       @base_url = base_url
     end
 
+    def as_pattern
+      case @url
+      when String
+        { glob: @url }
+      when Regexp
+        regex = JavaScript::Regex.new(@url)
+        { regexSource: regex.source, regexFlags: regex.flag }
+      else
+        nil
+      end
+    end
+
     def match?(target_url)
       case @url
       when String
