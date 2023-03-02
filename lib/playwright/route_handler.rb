@@ -72,7 +72,7 @@ module Playwright
     end
 
     def self.prepare_interception_patterns(handlers)
-      handlers.filter_map(&:as_pattern)
+      handlers.map(&:as_pattern).compact
     end
   end
 end
