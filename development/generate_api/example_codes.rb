@@ -1593,7 +1593,7 @@ module ExampleCodes
   end
 
   # Selectors
-  def example_2a1ca76da8b425f9c7c34806bd0468a41808d975ce8d0e3887995b6ef785318d(playwright:)
+  def example_a1cd3939b9af300fdf06f296bb66176d84c00edb31cae728310fa823f22691f8(playwright:)
     tag_selector = <<~JAVASCRIPT
     {
         // Returns the first element matching given selector in the root's subtree.
@@ -1616,7 +1616,7 @@ module ExampleCodes
       # Use the selector prefixed with its name.
       button = page.locator('tag=button')
       # Combine it with other selector engines.
-      page.locator('tag=div >> text="Click me"').click
+      page.locator('tag=div').get_by_text('Click me').click
 
       # Can use it in any methods supporting selectors.
       button_count = page.locator('tag=button').count
