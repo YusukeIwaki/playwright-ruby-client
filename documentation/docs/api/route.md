@@ -43,6 +43,10 @@ end
 page.route("**/*", method(:handle))
 ```
 
+**Details**
+
+Note that any overrides such as `url` or `headers` only apply to the request being routed. If this request results in a redirect, overrides will not be applied to the new redirected request. If you want to propagate a header through redirects, use the combination of [Route#fetch](./route#fetch) and [Route#fulfill](./route#fulfill) instead.
+
 ## fallback
 
 ```
@@ -113,7 +117,12 @@ page.route("**/*", method(:handle))
 ## fetch
 
 ```
-def fetch(headers: nil, method: nil, postData: nil, url: nil)
+def fetch(
+      headers: nil,
+      maxRedirects: nil,
+      method: nil,
+      postData: nil,
+      url: nil)
 ```
 
 
@@ -132,6 +141,10 @@ def handle(route, request)
 end
 page.route("https://dog.ceo/api/breeds/list/all", method(:handle))
 ```
+
+**Details**
+
+Note that `headers` option will apply to the fetched request as well as any redirects initiated by it. If you want to only apply `headers` to the original request, but not to redirects, look into [Route#continue](./route#continue) instead.
 
 ## fulfill
 

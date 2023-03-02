@@ -11,9 +11,11 @@ information.
 ## register
 
 ```
-def register(name, contentScript: nil, path: nil, script: nil)
+def register(name, script: nil, contentScript: nil, path: nil)
 ```
 
+
+Selectors must be registered before creating the page.
 
 **Usage**
 
@@ -42,7 +44,7 @@ playwright.chromium.launch do |browser|
   # Use the selector prefixed with its name.
   button = page.locator('tag=button')
   # Combine it with other selector engines.
-  page.locator('tag=div >> text="Click me"').click
+  page.locator('tag=div').get_by_text('Click me').click
 
   # Can use it in any methods supporting selectors.
   button_count = page.locator('tag=button').count

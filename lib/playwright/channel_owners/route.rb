@@ -109,7 +109,7 @@ module Playwright
       end
     end
 
-    def fetch(headers: nil, method: nil, postData: nil, url: nil)
+    def fetch(headers: nil, method: nil, postData: nil, url: nil, maxRedirects: nil)
       api_request_context = request.frame.page.context.request
       api_request_context.send(:_inner_fetch,
         request,
@@ -117,6 +117,7 @@ module Playwright
         headers: headers,
         method: method,
         data: postData,
+        maxRedirects: maxRedirects,
       )
     end
 

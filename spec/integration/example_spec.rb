@@ -469,7 +469,7 @@ RSpec.describe 'example' do
     it 'should work with Selector' do
       skip unless chromium?
 
-      expect(example_2a1ca76da8b425f9c7c34806bd0468a41808d975ce8d0e3887995b6ef785318d(playwright: playwright)).to eq(1)
+      expect(example_a1cd3939b9af300fdf06f296bb66176d84c00edb31cae728310fa823f22691f8(playwright: playwright)).to eq(1)
     end
 
     it 'should work with Tracing' do

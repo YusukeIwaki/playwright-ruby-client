@@ -111,6 +111,7 @@ module Playwright
 
     # @param text [Regexp|String]
     private def escape_for_attribute_selector_or_regex(text, exact)
+      puts "escape_for_attribute_selector_or_regex #{text}"
       if text.is_a?(Regexp)
         regex = JavaScript::Regex.new(text)
         "/#{regex.source}/#{regex.flag}"
@@ -125,7 +126,7 @@ module Playwright
       # cssEscape(value).replace(/\\ /g, ' ')
       # However, our attribute selectors do not conform to CSS parsing spec,
       # so we escape them differently.
-      _text = text.gsub(/["]/, '\\"')
+      _text = text.gsub(/\\/) { "\\\\" }.gsub(/["]/, '\\"')
       if exact
         "\"#{_text}\""
       else

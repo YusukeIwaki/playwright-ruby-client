@@ -104,7 +104,7 @@ module Playwright
 
         @routes.reject!(&:expired?)
         if @routes.count == 0
-          @channel.async_send_message_to_server('setNetworkInterceptionEnabled', enabled: false)
+          async_update_interception_patterns
         end
 
         unless handled
@@ -280,18 +280,14 @@ module Playwright
     def route(url, handler, times: nil)
       entry = RouteHandler.new(url, base_url, handler, times)
       @routes.unshift(entry)
-      if @routes.count >= 1
-        @channel.send_message_to_server('setNetworkInterceptionEnabled', enabled: true)
-      end
+      update_interception_patterns
     end
 
     def unroute(url, handler: nil)
       @routes.reject! do |handler_entry|
         handler_entry.same_value?(url: url, handler: handler)
       end
-      if @routes.count == 0
-        @channel.send_message_to_server('setNetworkInterceptionEnabled', enabled: false)
-      end
+      update_interception_patterns
     end
 
     private def record_into_har(har, page, notFound:, url:)
@@ -323,6 +319,16 @@ module Playwright
         url_match: url,
       )
       router.add_context_route(self)
+    end
+
+    private def async_update_interception_patterns
+      patterns = RouteHandler.prepare_interception_patterns(@routes)
+      @channel.async_send_message_to_server('setNetworkInterceptionPatterns', patterns: patterns)
+    end
+
+    private def update_interception_patterns
+      patterns = RouteHandler.prepare_interception_patterns(@routes)
+      @channel.send_message_to_server('setNetworkInterceptionPatterns', patterns: patterns)
     end
 
     def expect_event(event, predicate: nil, timeout: nil, &block)

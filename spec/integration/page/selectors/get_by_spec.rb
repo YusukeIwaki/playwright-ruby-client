@@ -153,6 +153,13 @@ world</label><input id=control />"
       expect(page.get_by_placeholder("hello my\nworld")['id']).to eq('control')
       expect(page.get_by_alt_text("hello my\nworld")['id']).to eq('control')
       expect(page.get_by_title("hello my\nworld")['id']).to eq('control')
+
+      page.content = '<div id=target title="my title">Text here</div>'
+      expect(page.get_by_title('my title', exact: true).count).to eq(1)
+      expect(page.get_by_title("my t\itle", exact: true).count).to eq(1)
+      expect(page.get_by_title("my t\\itle", exact: true).count).to eq(0)
+      expect(page.get_by_title("my t\\\itle", exact: true).count).to eq(0)
+      expect(page.get_by_title("my t\\\\itle", exact: true).count).to eq(0)
     end
   end
 

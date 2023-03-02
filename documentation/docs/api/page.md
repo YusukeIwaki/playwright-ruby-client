@@ -1464,7 +1464,7 @@ This method taps an element matching `selector` by performing the following step
 When all steps combined have not finished during the specified `timeout`, this method throws a
 `TimeoutError`. Passing zero timeout disables this.
 
-**NOTE**: [Page#tap_point](./page#tap_point) requires that the `hasTouch` option of the browser context be set to true.
+**NOTE**: [Page#tap_point](./page#tap_point) the method will throw if `hasTouch` option of the browser context is false.
 
 ## text_content
 
