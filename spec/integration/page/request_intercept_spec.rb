@@ -175,6 +175,19 @@ RSpec.describe 'request interception', sinatra: true do
     end
   end
 
+  it 'should not follow redirects when maxRedirects is set to 0 in route.fetch' do
+    sinatra.get('/foo') { redirect '/empty.html' }
+
+    with_page do |page|
+      page.route('**/*', -> (route, _) {
+        response = route.fetch(maxRedirects: 0)
+        route.fulfill(body: 'Hello maxRedirects=0')
+      })
+      page.goto("#{server_prefix}/foo")
+      expect(page.content).to include('Hello maxRedirects=0')
+    end
+  end
+
   it 'should intercept with url override', sinatra: true do
     with_page do |page|
       page.route('**/*', -> (route, _) {
