@@ -111,7 +111,6 @@ module Playwright
 
     # @param text [Regexp|String]
     private def escape_for_attribute_selector_or_regex(text, exact)
-      puts "escape_for_attribute_selector_or_regex #{text}"
       if text.is_a?(Regexp)
         regex = JavaScript::Regex.new(text)
         "/#{regex.source}/#{regex.flag}"
