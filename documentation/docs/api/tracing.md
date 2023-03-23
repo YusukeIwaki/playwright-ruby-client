@@ -44,7 +44,7 @@ context.tracing.stop(path: 'trace.zip')
 ## start_chunk
 
 ```
-def start_chunk(title: nil)
+def start_chunk(name: nil, title: nil)
 ```
 
 
