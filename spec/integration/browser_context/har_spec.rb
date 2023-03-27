@@ -412,6 +412,26 @@ RSpec.describe 'BrowserContext.route_from_har' do
     end
   end
 
+  it 'should update har.zip for page with different options', sinatra: true do
+    Dir.mktmpdir do |dir|
+      har_path = File.join(dir, 'one-style.zip')
+
+      with_page do |page|
+        page.route_from_har(har_path, update: true, updateContent: 'embed', updateMode: 'full')
+        page.goto("#{server_prefix}/one-style.html")
+      end
+
+      with_page do |page|
+        page.route_from_har(har_path, notFound: 'abort')
+        page.goto("#{server_prefix}/one-style.html")
+
+        expect(page.content).to include('hello, world!')
+        style = page.locator('body').evaluate("e => window.getComputedStyle(e).getPropertyValue('background-color')")
+        expect(style).to eq('rgb(255, 192, 203)')
+      end
+    end
+  end
+
   it 'should update extracted har.zip for page', sinatra: true do
     Dir.mktmpdir do |dir|
       har_path = File.join(dir, 'one-style.har')

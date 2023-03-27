@@ -417,9 +417,9 @@ module Playwright
       update_interception_patterns
     end
 
-    def route_from_har(har, notFound: nil, update: nil, url: nil)
+    def route_from_har(har, notFound: nil, update: nil, url: nil, updateContent: nil, updateMode: nil)
       if update
-        @browser_context.send(:record_into_har, har, self, notFound: notFound, url: url)
+        @browser_context.send(:record_into_har, har, self, notFound: notFound, url: url, updateContent: updateContent, updateMode: updateMode)
         return
       end
 
