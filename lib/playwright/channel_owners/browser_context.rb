@@ -70,6 +70,7 @@ module Playwright
           content: @options[:recordHar][:content]
         }
       end
+      @tracing.send(:update_traces_dir, @options[:tracesDir])
     end
 
     private def on_page(page)

@@ -22,6 +22,7 @@ module Playwright
       @callbacks = {} # Hash [ guid => Promise<ChannelOwner> ]
       @root_object = RootChannelOwner.new(self)
       @remote = false
+      @tracing_count = 0
     end
 
     attr_reader :local_utils
@@ -50,6 +51,14 @@ module Playwright
       ChannelOwners::Playwright.from(result['playwright'])
     end
 
+    def set_in_tracing(value)
+      if value
+        @tracing_count += 1
+      else
+        @tracing_count -= 1
+      end
+    end
+
     def async_send_message_to_server(guid, method, params, metadata: nil)
       callback = Concurrent::Promises.resolvable_future
 
@@ -58,12 +67,21 @@ module Playwright
         # @see https://github.com/YusukeIwaki/puppeteer-ruby/pull/34
         @callbacks[id] = callback
 
+        _metadata = {}
+        if metadata
+          _metadata[:wallTime] = metadata[:wallTime]
+          _metadata[:apiName] = metadata[:apiName]
+          _metadata[:location] = metadata[:stack].first
+          _metadata[:internal] = !metadata[:apiName]
+        end
+        _metadata.compact!
+
         message = {
           id: id,
           guid: guid,
           method: method,
           params: replace_channels_with_guids(params),
-          metadata: metadata || {},
+          metadata: _metadata,
         }
 
         begin
@@ -72,6 +90,10 @@ module Playwright
           @callbacks.delete(id)
           callback.reject(err)
           raise unless err.is_a?(Transport::AlreadyDisconnectedError)
+        end
+
+        if @tracing_count > 0 && !metadata[:stack].empty? && guid != 'localUtils'
+          @local_utils.add_stack_to_tracing_no_reply(id, metadata[:stack])
         end
       end
 

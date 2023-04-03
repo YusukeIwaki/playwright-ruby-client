@@ -1,12 +1,7 @@
 module Playwright
   define_channel_owner :LocalUtils do
     # @param zip_file [String]
-    # @param name_value_array [Array<Hash<{name: string, value: string}>>]
-    def zip(zip_file, name_value_array)
-      params = {
-        zipFile: zip_file,
-        entries: name_value_array,
-      }
+    def zip(params)
       @channel.send_message_to_server('zip', params)
       nil
     end
@@ -38,6 +33,23 @@ module Playwright
 
     def har_unzip(zip_file, har_file)
       @channel.send_message_to_server('harUnzip', zipFile: zip_file, harFile: har_file)
+    end
+
+    def tracing_started(traces_dir, trace_name)
+      params = {
+        tracesDir: traces_dir,
+        traceName: trace_name,
+      }.compact
+      @channel.send_message_to_server('tracingStarted', params)
+    end
+
+    def tracing_discarded(stacks_id)
+      @channel.send_message_to_server('traceDiscarded', stacksId: stacks_id)
+    end
+
+    def add_stack_to_tracing_no_reply(id, stack)
+      @channel.async_send_message_to_server('addStackToTracingNoReply', callData: { id: id, stack: stack })
+      nil
     end
   end
 end
