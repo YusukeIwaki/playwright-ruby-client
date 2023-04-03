@@ -663,10 +663,9 @@ For example, this method will find inputs by label "Username" and "Password" in 
 <input id="password-input">
 ```
 
-```python sync title=example_18ca1d75e8a2404e6a0c269ff926bc1499f15e7dc041441f764ae3bde033b0cf.py
+```ruby
 page.get_by_label("Username").fill("john")
 page.get_by_label("Password").fill("secret")
-
 ```
 
 ## get_by_placeholder

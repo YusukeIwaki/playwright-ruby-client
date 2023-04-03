@@ -204,10 +204,12 @@ RSpec.describe 'example' do
     it 'should work with Frame#get_by_label' do
       with_page do |page|
         page.content = <<~HTML
+        <input aria-label="Username">
         <label for="password-input">Password:</label>
         <input id="password-input">
         HTML
-        example_c19c4ba9cb058cdfedf7fd87eb1634459f0b62d9ee872e61272414b0fb69a01c(page: page)
+        example_18ca1d75e8a2404e6a0c269ff926bc1499f15e7dc041441f764ae3bde033b0cf(page: page)
+        expect(page.locator('input').first.input_value).to eq('john')
         expect(page.locator('#password-input').input_value).to eq('secret')
       end
     end

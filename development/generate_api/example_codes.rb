@@ -602,7 +602,8 @@ module ExampleCodes
   end
 
   # Frame#get_by_label
-  def example_c19c4ba9cb058cdfedf7fd87eb1634459f0b62d9ee872e61272414b0fb69a01c(page:)
+  def example_18ca1d75e8a2404e6a0c269ff926bc1499f15e7dc041441f764ae3bde033b0cf(page:)
+    page.get_by_label("Username").fill("john")
     page.get_by_label("Password").fill("secret")
   end
 
