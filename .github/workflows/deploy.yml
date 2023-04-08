@@ -13,7 +13,7 @@ jobs:
     steps:
     - name: Set RELEASE_TAG
       run: echo "RELEASE_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: 3.1
