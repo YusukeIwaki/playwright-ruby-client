@@ -171,7 +171,12 @@ RSpec.describe 'locator' do
         textarea = page.locator('textarea')
         textarea.evaluate("textarea => textarea.value = 'some value'")
         textarea.select_text
-        expect(page.evaluate('() => window.getSelection().toString()')).to eq('some value')
+        if chromium?
+          expect(page.evaluate('() => window.getSelection().toString()')).to eq('some value')
+        else
+          expect(textarea.evaluate("el => el.selectionStart")).to eq(0)
+          expect(textarea.evaluate("el => el.selectionEnd")).to eq(10)
+        end
       end
     end
 
