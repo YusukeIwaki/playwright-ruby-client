@@ -159,8 +159,8 @@ module Playwright
       begin
         playwright = connection.initialize_playwright
         browser = playwright.send(:pre_launched_browser)
+        browser.browser_type.send(:did_launch_browser, browser)
         browser.should_close_connection_on_close!
-        browser.send(:update_browser_type, browser.browser_type)
         Execution.new(connection, PlaywrightApi.wrap(playwright), PlaywrightApi.wrap(browser))
       rescue
         connection.stop

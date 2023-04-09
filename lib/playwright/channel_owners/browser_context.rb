@@ -9,6 +9,10 @@ module Playwright
     attr_reader :tracing, :request
 
     private def after_initialize
+      if @parent.is_a?(ChannelOwners::Browser)
+        @browser = @parent
+        @browser.send(:add_context, self)
+      end
       @pages = Set.new
       @routes = []
       @bindings = {}
@@ -62,15 +66,15 @@ module Playwright
       @closed_promise = Concurrent::Promises.resolvable_future
     end
 
-    private def update_browser_type(browser_type)
-      @browser_type = browser_type
+    private def update_options(context_options:, browser_options:)
+      @options = context_options
       if @options[:recordHar]
         @har_recorders[''] = {
           path: @options[:recordHar][:path],
           content: @options[:recordHar][:content]
         }
       end
-      @tracing.send(:update_traces_dir, @options[:tracesDir])
+      @tracing.send(:update_traces_dir, browser_options[:tracesDir])
     end
 
     private def on_page(page)

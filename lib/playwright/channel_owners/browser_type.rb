@@ -13,7 +13,7 @@ module Playwright
     def launch(options, &block)
       resp = @channel.send_message_to_server('launch', options.compact)
       browser = ChannelOwners::Browser.from(resp)
-      browser.send(:update_browser_type, self)
+      did_launch_browser(browser)
       return browser unless block
 
       begin
@@ -30,8 +30,7 @@ module Playwright
 
       resp = @channel.send_message_to_server('launchPersistentContext', params.compact)
       context = ChannelOwners::Browser.from(resp)
-      context.options = params
-      context.send(:update_browser_type, self)
+      did_create_context(context, params, params)
       return context unless block
 
       begin
@@ -57,11 +56,11 @@ module Playwright
 
       result = @channel.send_message_to_server_result('connectOverCDP', params)
       browser = ChannelOwners::Browser.from(result['browser'])
-      browser.send(:update_browser_type, self)
+      did_launch_browser(browser)
 
       if result['defaultContext']
-        context = ChannelOwners::BrowserContext.from(result['defaultContext'])
-        browser.send(:add_context, context)
+        default_context = ChannelOwners::BrowserContext.from(result['defaultContext'])
+        did_create_context(default_context)
       end
 
       if block
@@ -73,6 +72,14 @@ module Playwright
       else
         browser
       end
+    end
+
+    private def did_create_context(context, context_options = {}, browser_options = {})
+      context.send(:update_options, context_options: context_options, browser_options: browser_options)
+    end
+
+    private def did_launch_browser(browser)
+      browser.send(:update_browser_type, self)
     end
   end
 end
