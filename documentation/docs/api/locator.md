@@ -20,6 +20,8 @@ def all
 When locator points to a list of elements, returns array of locators, pointing
 to respective elements.
 
+Note that [Locator#all](./locator#all) does not wait for elements to match the locator, and instead immediately returns whatever is present in the page. To avoid flakiness when elements are loaded dynamically, wait for the loading to finish before calling [Locator#all](./locator#all).
+
 **Usage**
 
 ```ruby
@@ -532,18 +534,20 @@ def get_by_label(text, exact: nil)
 ```
 
 
-Allows locating input elements by the text of the associated label.
+Allows locating input elements by the text of the associated `<label>` or `aria-labelledby` element, or by the `aria-label` attribute.
 
 **Usage**
 
-For example, this method will find the input by label text "Password" in the following DOM:
+For example, this method will find inputs by label "Username" and "Password" in the following DOM:
 
 ```html
+<input aria-label="Username">
 <label for="password-input">Password:</label>
 <input id="password-input">
 ```
 
 ```ruby
+page.get_by_label("Username").fill("john")
 page.get_by_label("Password").fill("secret")
 ```
 
@@ -911,7 +915,7 @@ banana = page.get_by_role("listitem").last
 ## locator
 
 ```
-def locator(selector, has: nil, hasText: nil)
+def locator(selectorOrLocator, has: nil, hasText: nil)
 ```
 
 

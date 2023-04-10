@@ -9,6 +9,10 @@ module Playwright
     attr_reader :tracing, :request
 
     private def after_initialize
+      if @parent.is_a?(ChannelOwners::Browser)
+        @browser = @parent
+        @browser.send(:add_context, self)
+      end
       @pages = Set.new
       @routes = []
       @bindings = {}
@@ -62,14 +66,15 @@ module Playwright
       @closed_promise = Concurrent::Promises.resolvable_future
     end
 
-    private def update_browser_type(browser_type)
-      @browser_type = browser_type
+    private def update_options(context_options:, browser_options:)
+      @options = context_options
       if @options[:recordHar]
         @har_recorders[''] = {
           path: @options[:recordHar][:path],
           content: @options[:recordHar][:content]
         }
       end
+      @tracing.send(:update_traces_dir, browser_options[:tracesDir])
     end
 
     private def on_page(page)
@@ -290,12 +295,12 @@ module Playwright
       update_interception_patterns
     end
 
-    private def record_into_har(har, page, notFound:, url:)
+    private def record_into_har(har, page, notFound:, url:, updateContent:, updateMode:)
       params = {
         options: prepare_record_har_options(
           record_har_path: har,
-          record_har_content: "attach",
-          record_har_mode: "minimal",
+          record_har_content: updateContent || 'attach',
+          record_har_mode: updateMode || 'minimal',
           record_har_url_filter: url,
         )
       }
@@ -306,9 +311,9 @@ module Playwright
       @har_recorders[har_id] = { path: har, content: 'attach' }
     end
 
-    def route_from_har(har, notFound: nil, update: nil, url: nil)
+    def route_from_har(har, notFound: nil, update: nil, updateContent: nil, updateMode: nil, url: nil)
       if update
-        record_into_har(har, nil, notFound: notFound, url: url)
+        record_into_har(har, nil, notFound: notFound, url: url, updateContent: updateContent, updateMode: updateMode)
         return
       end
 

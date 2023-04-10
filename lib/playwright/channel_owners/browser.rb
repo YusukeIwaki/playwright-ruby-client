@@ -32,10 +32,7 @@ module Playwright
 
       resp = @channel.send_message_to_server('newContext', params.compact)
       context = ChannelOwners::BrowserContext.from(resp)
-      @contexts << context
-      context.browser = self
-      context.options = params
-      context.send(:update_browser_type, @browser_type)
+      @browser_type.send(:did_create_context, context, params)
       return context unless block
 
       begin
@@ -62,9 +59,6 @@ module Playwright
 
     private def update_browser_type(browser_type)
       @browser_type = browser_type
-      @contexts.each do |context|
-        context.send(:update_browser_type, browser_type)
-      end
     end
 
     def close
@@ -110,7 +104,7 @@ module Playwright
       @closed_or_closing = true
     end
 
-    # called from BrowserType#connectOverCDP
+    # called from BrowserContext#initialize, BrowserType#connectOverCDP
     private def add_context(context)
       @contexts << context
     end

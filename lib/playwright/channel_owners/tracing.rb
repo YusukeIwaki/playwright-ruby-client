@@ -7,12 +7,23 @@ module Playwright
         snapshots: snapshots,
         sources: sources,
       }.compact
+      @include_sources = params[:sources] || false
       @channel.send_message_to_server('tracingStart', params)
-      @channel.send_message_to_server('tracingStartChunk', { title: title }.compact)
+      trace_name = @channel.send_message_to_server('tracingStartChunk', { title: title, name: name }.compact)
+      start_collecting_stacks(trace_name)
     end
 
-    def start_chunk(title: nil)
-      @channel.send_message_to_server('tracingStartChunk', { title: title }.compact)
+    def start_chunk(title: nil, name: nil)
+      trace_name = @channel.send_message_to_server('tracingStartChunk', { title: title, name: name }.compact)
+      start_collecting_stacks(trace_name)
+    end
+
+    private def start_collecting_stacks(trace_name)
+      unless @is_tracing
+        @is_tracing = true
+        @connection.set_in_tracing(true)
+      end
+      @stacks_id = @connection.local_utils.tracing_started(@traces_dir, trace_name)
     end
 
     def stop_chunk(path: nil)
@@ -25,26 +36,61 @@ module Playwright
     end
 
     private def do_stop_chunk(file_path:)
-      mode = 'doNotSave'
-      if file_path
-        if @connection.remote?
-          mode = 'compressTrace'
-        else
-          mode = 'compressTraceAndSources'
-        end
+      if @is_tracing
+        @is_tracing = false
+        @connection.set_in_tracing(false)
       end
 
-      result = @channel.send_message_to_server_result('tracingStopChunk', mode: mode)
-      return unless file_path # Not interested in artifacts.
-      return unless result['artifact'] # The artifact may be missing if the browser closed while stopping tracing.
+      unless file_path
+        # Not interested in any artifacts
+        @channel.send_message_to_server('tracingStopChunk', mode: 'discard')
+        if @stacks_id
+          @connection.local_utils.trace_discarded(@stacks_id)
+        end
 
+        return
+      end
+
+      unless @connection.remote?
+        result = @channel.send_message_to_server_result('tracingStopChunk', mode: 'entries')
+        @connection.local_utils.zip(
+          zipFile: file_path,
+          entries: result['entries'],
+          stacksId: @stacks_id,
+          mode: 'write',
+          includeSources: @include_sources,
+        )
+
+        return
+      end
+
+
+      result = @channel.send_message_to_server_result('tracingStopChunk', mode: 'archive')
+      # The artifact may be missing if the browser closed while stopping tracing.
+      unless result['artifact']
+        if @stacks_id
+          @connection.local_utils.trace_discarded(@stacks_id)
+        end
+
+        return
+      end
+
+      # Save trace to the final local file.
       artifact = ChannelOwners::Artifact.from(result['artifact'])
       artifact.save_as(file_path)
       artifact.delete
 
-      # // Add local sources to the remote trace if necessary.
-      # if (result.sourceEntries?.length)
-      #   await this._context._localUtils.zip(filePath, result.sourceEntries);
+      @connection.local_utils.zip(
+        zipFile: file_path,
+        entries: [],
+        stacksId: @stacks_id,
+        mode: 'append',
+        includeSources: @include_sources,
+      )
+    end
+
+    private def update_traces_dir(traces_dir)
+      @traces_dir = traces_dir
     end
   end
 end

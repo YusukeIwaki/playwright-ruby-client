@@ -67,6 +67,7 @@ module Playwright
 
     private def build_metadata_payload_from(api_name, stacks)
       {
+        wallTime: (Time.now.to_f * 1000).to_i,
         apiName: api_name,
         stack: stacks.map do |loc|
           { file: loc.absolute_path || '', line: loc.lineno, function: loc.label }

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
 module Playwright
-  VERSION = '1.31.1'
-  COMPATIBLE_PLAYWRIGHT_VERSION = '1.31.1'
+  VERSION = '1.32.0'
+  COMPATIBLE_PLAYWRIGHT_VERSION = '1.32.2'
 end

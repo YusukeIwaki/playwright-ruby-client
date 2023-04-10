@@ -651,18 +651,20 @@ def get_by_label(text, exact: nil)
 ```
 
 
-Allows locating input elements by the text of the associated label.
+Allows locating input elements by the text of the associated `<label>` or `aria-labelledby` element, or by the `aria-label` attribute.
 
 **Usage**
 
-For example, this method will find the input by label text "Password" in the following DOM:
+For example, this method will find inputs by label "Username" and "Password" in the following DOM:
 
 ```html
+<input aria-label="Username">
 <label for="password-input">Password:</label>
 <input id="password-input">
 ```
 
 ```ruby
+page.get_by_label("Username").fill("john")
 page.get_by_label("Password").fill("secret")
 ```
 
@@ -1256,7 +1258,13 @@ To remove a route with its handler you can use [Page#unroute](./page#unroute).
 ## route_from_har
 
 ```
-def route_from_har(har, notFound: nil, update: nil, url: nil)
+def route_from_har(
+      har,
+      notFound: nil,
+      update: nil,
+      updateContent: nil,
+      updateMode: nil,
+      url: nil)
 ```
 
 

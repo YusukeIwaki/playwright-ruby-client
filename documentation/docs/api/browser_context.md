@@ -333,7 +333,13 @@ To remove a route with its handler you can use [BrowserContext#unroute](./browse
 ## route_from_har
 
 ```
-def route_from_har(har, notFound: nil, update: nil, url: nil)
+def route_from_har(
+      har,
+      notFound: nil,
+      update: nil,
+      updateContent: nil,
+      updateMode: nil,
+      url: nil)
 ```
 
 
