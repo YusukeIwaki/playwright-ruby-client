@@ -284,7 +284,12 @@ Returns locator to the last matching frame.
 ## locator
 
 ```
-def locator(selectorOrLocator, has: nil, hasText: nil)
+def locator(
+      selectorOrLocator,
+      has: nil,
+      hasNot: nil,
+      hasNotText: nil,
+      hasText: nil)
 ```
 
 

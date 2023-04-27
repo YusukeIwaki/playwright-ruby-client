@@ -779,7 +779,12 @@ Returns whether the element is [visible](https://playwright.dev/python/docs/acti
 ## locator
 
 ```
-def locator(selector, has: nil, hasText: nil)
+def locator(
+      selector,
+      has: nil,
+      hasNot: nil,
+      hasNotText: nil,
+      hasText: nil)
 ```
 
 
