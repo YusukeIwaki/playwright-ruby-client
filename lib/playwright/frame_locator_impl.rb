@@ -10,14 +10,20 @@ module Playwright
       @frame_selector = frame_selector
     end
 
-    def locator(selector, hasText: nil, has: nil)
+    def locator(
+      selector,
+      has: nil,
+      hasNot: nil,
+      hasNotText: nil,
+      hasText: nil)
       LocatorImpl.new(
         frame: @frame,
         timeout_settings: @timeout_settings,
         selector: "#{@frame_selector} >> internal:control=enter-frame >> #{selector}",
-        hasText: hasText,
         has: has,
-      )
+        hasNot: hasNot,
+        hasNotText: hasNotText,
+        hasText: hasText)
     end
 
     def frame_locator(selector)

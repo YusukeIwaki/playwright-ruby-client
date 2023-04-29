@@ -614,8 +614,18 @@ module Playwright
         timeout: timeout)
     end
 
-    def locator(selector, hasText: nil, has: nil)
-      @main_frame.locator(selector, hasText: hasText, has: has)
+    def locator(
+      selector,
+      has: nil,
+      hasNot: nil,
+      hasNotText: nil,
+      hasText: nil)
+      @main_frame.locator(
+        selector,
+        has: has,
+        hasNot: hasNot,
+        hasNotText: hasNotText,
+        hasText: hasText)
     end
 
     def frame_locator(selector)

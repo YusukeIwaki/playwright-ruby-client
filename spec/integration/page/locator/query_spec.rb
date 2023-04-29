@@ -157,6 +157,11 @@ RSpec.describe 'Locator' do
       expect(page.locator('div').filter(has: page.locator('span', hasText: 'world')).count).to eq(1)
       expect(page.locator('div').filter(has: page.locator('span')).count).to eq(2)
       expect(page.locator('div').filter(has: page.locator('span'), hasText: 'world').count).to eq(1)
+      expect(page.locator('div').filter(hasNot: page.locator('span', hasText: 'world')).count).to eq(1)
+      expect(page.locator('div').filter(hasNot: page.locator('section')).count).to eq(2)
+      expect(page.locator('div').filter(hasNot: page.locator('span')).count).to eq(0)
+      expect(page.locator('div').filter(hasNotText: 'hello').count).to eq(1)
+      expect(page.locator('div').filter(hasNotText: 'foo').count).to eq(2)
     end
   end
 end
