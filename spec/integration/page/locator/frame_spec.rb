@@ -87,7 +87,6 @@ RSpec.describe 'FrameLocator' do
   end
 
   it 'should wait for frame to go', sinatra: true, route: :iframe do
-    pending 'Not work also in JS...'
     with_page do |page|
       page.goto(server_empty_page)
       Concurrent::Promises.schedule(0.3) {
@@ -100,7 +99,6 @@ RSpec.describe 'FrameLocator' do
   end
 
   it 'should not wait for frame', sinatra: true do
-    pending 'Not work also in JS...'
     with_page do |page|
       page.goto(server_empty_page)
       Timeout.timeout(2) {
