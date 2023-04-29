@@ -122,6 +122,7 @@ def fetch(
       maxRedirects: nil,
       method: nil,
       postData: nil,
+      timeout: nil,
       url: nil)
 ```
 

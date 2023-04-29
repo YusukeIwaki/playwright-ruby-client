@@ -5,7 +5,7 @@ module Playwright
   define_api_implementation :LocatorImpl do
     include LocatorUtils
 
-    def initialize(frame:, timeout_settings:, selector:, hasText: nil, has: nil)
+    def initialize(frame:, timeout_settings:, selector:, has: nil, hasNot: nil, hasNotText: nil, hasText: nil)
       @frame = frame
       @timeout_settings = timeout_settings
       selector_scopes = [selector]
@@ -16,9 +16,20 @@ module Playwright
 
       if has
         unless same_frame?(has)
-          raise DifferentFrameError.new
+          raise DifferentFrameError.new('has')
         end
         selector_scopes << "internal:has=#{has.send(:selector_json)}"
+      end
+
+      if hasNotText
+        selector_scopes << "internal:has-not-text=#{escape_for_text_selector(hasNotText, false)}"
+      end
+
+      if hasNot
+        unless same_frame?(hasNot)
+          raise DifferentFrameError.new('hasNot')
+        end
+        selector_scopes << "internal:has-not=#{hasNot.send(:selector_json)}"
       end
 
       @selector = selector_scopes.join(' >> ')
@@ -36,8 +47,8 @@ module Playwright
     end
 
     class DifferentFrameError < StandardError
-      def initialize
-        super('Inner "has" locator must belong to the same frame.')
+      def initialize(method_name)
+        super("Inner \"#{method_name}\" locator must belong to the same frame.")
       end
     end
 
@@ -190,14 +201,20 @@ module Playwright
       @frame.fill(@selector, '', strict: true, force: force, noWaitAfter: noWaitAfter, timeout: timeout)
     end
 
-    def locator(selector, hasText: nil, has: nil)
+    def locator(
+      selector,
+      has: nil,
+      hasNot: nil,
+      hasNotText: nil,
+      hasText: nil)
       LocatorImpl.new(
         frame: @frame,
         timeout_settings: @timeout_settings,
         selector: "#{@selector} >> #{selector}",
-        hasText: hasText,
         has: has,
-      )
+        hasNot: hasNot,
+        hasNotText: hasNotText,
+        hasText: hasText)
     end
 
     def frame_locator(selector)
@@ -216,14 +233,15 @@ module Playwright
       @frame.query_selector_all(@selector)
     end
 
-    def filter(has: nil, hasText: nil)
+    def filter(has: nil, hasNot: nil, hasNotText: nil, hasText: nil)
       LocatorImpl.new(
         frame: @frame,
         timeout_settings: @timeout_settings,
         selector: @selector,
-        hasText: hasText,
         has: has,
-      )
+        hasNot: hasNot,
+        hasNotText: hasNotText,
+        hasText: hasText)
     end
 
     def first
@@ -247,6 +265,17 @@ module Playwright
         frame: @frame,
         timeout_settings: @timeout_settings,
         selector: "#{@selector} >> nth=#{index}",
+      )
+    end
+
+    def or(locator)
+      unless same_frame?(locator)
+        raise DifferentFrameError.new('locator')
+      end
+      LocatorImpl.new(
+        frame: @frame,
+        timeout_settings: @timeout_settings,
+        selector: "#{@selector} >> internal:or=#{locator.send(:selector_json)}",
       )
     end
 

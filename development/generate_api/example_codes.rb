@@ -986,6 +986,17 @@ module ExampleCodes
     banana = page.get_by_role("listitem").nth(2)
   end
 
+  # Locator#or
+  def example_1828ac86226726cd674afe7d43e8d2bda4b1e9309c5ed1f2d57b4fd1c8024060(page:)
+    new_email = page.get_by_role("button", name: "New")
+    dialog = page.get_by_text("Confirm security settings")
+    new_email.or(dialog).wait_for(state: 'visible')
+    if dialog.visible?
+      page.get_by_role("button", name: "Dismiss").click
+    end
+    new_email.click
+  end
+
   # Locator#press
   def example_29eed7b713b928678523c677c788808779cf13dda2bb117aab2562cef3b08647(page:)
     page.get_by_role("textbox").press("Backspace")

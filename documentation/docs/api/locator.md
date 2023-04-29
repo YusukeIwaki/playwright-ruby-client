@@ -20,7 +20,11 @@ def all
 When locator points to a list of elements, returns array of locators, pointing
 to respective elements.
 
-Note that [Locator#all](./locator#all) does not wait for elements to match the locator, and instead immediately returns whatever is present in the page. To avoid flakiness when elements are loaded dynamically, wait for the loading to finish before calling [Locator#all](./locator#all).
+**NOTE**: [Locator#all](./locator#all) does not wait for elements to match the locator, and instead immediately returns whatever is present in the page.
+
+When the list of elements changes dynamically, [Locator#all](./locator#all) will produce unpredictable and flaky results.
+
+When the list of elements is stable, but loaded dynamically, wait for the full list to finish loading before calling [Locator#all](./locator#all).
 
 **Usage**
 
@@ -443,7 +447,7 @@ To send fine-grained keyboard events, use [Locator#type](./locator#type).
 ## filter
 
 ```
-def filter(has: nil, hasText: nil)
+def filter(has: nil, hasNot: nil, hasNotText: nil, hasText: nil)
 ```
 
 
@@ -915,7 +919,12 @@ banana = page.get_by_role("listitem").last
 ## locator
 
 ```
-def locator(selectorOrLocator, has: nil, hasText: nil)
+def locator(
+      selectorOrLocator,
+      has: nil,
+      hasNot: nil,
+      hasNotText: nil,
+      hasText: nil)
 ```
 
 
@@ -936,6 +945,29 @@ Returns locator to the n-th matching element. It's zero based, `nth(0)` selects 
 
 ```ruby
 banana = page.get_by_role("listitem").nth(2)
+```
+
+## or
+
+```
+def or(locator)
+```
+
+
+Creates a locator that matches either of the two locators.
+
+**Usage**
+
+Consider a scenario where you'd like to click on a "New email" button, but sometimes a security settings dialog shows up instead. In this case, you can wait for either a "New email" button, or a dialog and act accordingly.
+
+```ruby
+new_email = page.get_by_role("button", name: "New")
+dialog = page.get_by_text("Confirm security settings")
+new_email.or(dialog).wait_for(state: 'visible')
+if dialog.visible?
+  page.get_by_role("button", name: "Dismiss").click
+end
+new_email.click
 ```
 
 ## page
