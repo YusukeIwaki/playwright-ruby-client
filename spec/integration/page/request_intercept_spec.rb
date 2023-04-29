@@ -188,6 +188,24 @@ RSpec.describe 'request interception', sinatra: true do
     end
   end
 
+  it 'should support timeout option in route.fetch' do
+    sinatra.get('/slow') { sleep 2; 'OK' }
+
+    with_page do |page|
+      page.route('**/*', -> (route, _) {
+        begin
+          response = route.fetch(timeout: 10)
+          route.fulfill(response: response)
+        rescue => e
+          route.fulfill(status: 200, body: e.message.split("\n").first)
+        end
+      })
+      response = page.goto("#{server_prefix}/slow", timeout: 20000)
+      expect(response.body).to eq('Error: Request timed out after 10ms')
+    end
+  end
+
+
   it 'should intercept with url override', sinatra: true do
     with_page do |page|
       page.route('**/*', -> (route, _) {

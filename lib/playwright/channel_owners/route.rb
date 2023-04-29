@@ -21,7 +21,7 @@ module Playwright
 
     def abort(errorCode: nil)
       handling_with_result(true) do
-        params = { errorCode: errorCode }.compact
+        params = { requestUrl: request.send(:internal_url), errorCode: errorCode }.compact
         # TODO _race_with_page_close
         @channel.async_send_message_to_server('abort', params)
       end
@@ -91,6 +91,7 @@ module Playwright
 
         params[:status] = option_status || 200
         params[:headers] = HttpHeaders.new(param_headers).as_serialized
+        params[:requestUrl] = request.send(:internal_url)
 
         @channel.async_send_message_to_server('fulfill', params)
       end
@@ -109,7 +110,7 @@ module Playwright
       end
     end
 
-    def fetch(headers: nil, method: nil, postData: nil, url: nil, maxRedirects: nil)
+    def fetch(headers: nil, method: nil, postData: nil, url: nil, maxRedirects: nil, timeout: nil)
       api_request_context = request.frame.page.context.request
       api_request_context.send(:_inner_fetch,
         request,
@@ -118,6 +119,7 @@ module Playwright
         method: method,
         data: postData,
         maxRedirects: maxRedirects,
+        timeout: timeout,
       )
     end
 
@@ -152,6 +154,7 @@ module Playwright
       if post_data_for_wire
         params[:postData] = post_data_for_wire
       end
+      params[:requestUrl] = request.send(:internal_url)
 
       # TODO _race_with_page_close
       @channel.async_send_message_to_server('continue', params)

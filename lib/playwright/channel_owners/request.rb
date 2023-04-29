@@ -19,6 +19,7 @@ module Playwright
         responseEnd: -1,
       }
       @fallback_overrides = {}
+      @url = @initializer['url']
     end
 
     private def fallback_overrides
@@ -35,7 +36,11 @@ module Playwright
     end
 
     def url
-      @fallback_overrides[:url] || @initializer['url']
+      @fallback_overrides[:url] || @url
+    end
+
+    private def internal_url
+      @url
     end
 
     def resource_type
