@@ -401,45 +401,22 @@ RSpec.describe 'selector/misc' do
     end
   end
 
-  # it('should work with internal:or=', async ({ page, server }) => {
-  #   await page.setContent(`
-  #     <div>hello</div>
-  #     <span>world</span>
-  #   `);
-  #   expect(await page.$$eval(`div >> internal:or="span"`, els => els.map(e => e.textContent))).toEqual(['hello', 'world']);
-  #   expect(await page.$$eval(`span >> internal:or="div"`, els => els.map(e => e.textContent))).toEqual(['hello', 'world']);
-  #   expect(await page.$$eval(`article >> internal:or="something"`, els => els.length)).toBe(0);
-  #   expect(await page.locator(`article >> internal:or="div"`).textContent()).toBe('hello');
-  #   expect(await page.locator(`article >> internal:or="span"`).textContent()).toBe('world');
-  #   expect(await page.locator(`div >> internal:or="article"`).textContent()).toBe('hello');
-  #   expect(await page.locator(`span >> internal:or="article"`).textContent()).toBe('world');
-  # });
+  it 'should work with internal:or=' do
+    with_page do |page|
+      page.content = <<~HTML
+        <div>hello</div>
+        <span>world</span>
+      HTML
 
-  # it('should work with internal:and=', async ({ page, server }) => {
-  #   await page.setContent(`
-  #     <div class=foo>hello</div><div class=bar>world</div>
-  #     <span class=foo>hello2</span><span class=bar>world2</span>
-  #   `);
-  #   expect(await page.$$eval(`div >> internal:and="span"`, els => els.map(e => e.textContent))).toEqual([]);
-  #   expect(await page.$$eval(`div >> internal:and=".foo"`, els => els.map(e => e.textContent))).toEqual(['hello']);
-  #   expect(await page.$$eval(`div >> internal:and=".bar"`, els => els.map(e => e.textContent))).toEqual(['world']);
-  #   expect(await page.$$eval(`span >> internal:and="span"`, els => els.map(e => e.textContent))).toEqual(['hello2', 'world2']);
-  #   expect(await page.$$eval(`.foo >> internal:and="div"`, els => els.map(e => e.textContent))).toEqual(['hello']);
-  #   expect(await page.$$eval(`.bar >> internal:and="span"`, els => els.map(e => e.textContent))).toEqual(['world2']);
-  # });
-
-  # it('should work with internal:not=', async ({ page, server }) => {
-  #   await page.setContent(`
-  #     <div class=foo>hello</div>
-  #     <div class=bar>world</div>
-  #   `);
-  #   expect(await page.$$eval(`div >> internal:not="span"`, els => els.map(e => e.textContent))).toEqual(['hello', 'world']);
-  #   expect(await page.$$eval(`div >> internal:not=".foo"`, els => els.map(e => e.textContent))).toEqual(['world']);
-  #   expect(await page.$$eval(`div >> internal:not=".bar"`, els => els.map(e => e.textContent))).toEqual(['hello']);
-  #   expect(await page.$$eval(`div >> internal:not="div"`, els => els.map(e => e.textContent))).toEqual([]);
-  #   expect(await page.$$eval(`span >> internal:not="div"`, els => els.map(e => e.textContent))).toEqual([]);
-  #   expect(await page.$$eval(`.foo >> internal:not=".bar"`, els => els.map(e => e.textContent))).toEqual(['hello']);
-  # });
+      expect(page.eval_on_selector_all('div >> internal:or="span"', 'els => els.map(e => e.textContent)')).to eq(%w[hello world])
+      expect(page.eval_on_selector_all('span >> internal:or="div"', 'els => els.map(e => e.textContent)')).to eq(%w[hello world])
+      expect(page.eval_on_selector_all('article >> internal:or="something"', 'els => els.map(e => e.textContent)')).to be_empty
+      expect(page.eval_on_selector_all('article >> internal:or="div"', 'els => els.map(e => e.textContent)')).to eq(%w[hello])
+      expect(page.eval_on_selector_all('article >> internal:or="span"', 'els => els.map(e => e.textContent)')).to eq(%w[world])
+      expect(page.eval_on_selector_all('div >> internal:or="article"', 'els => els.map(e => e.textContent)')).to eq(%w[hello])
+      expect(page.eval_on_selector_all('span >> internal:or="article"', 'els => els.map(e => e.textContent)')).to eq(%w[world])
+    end
+  end
 
   # it('chaining should work with large DOM @smoke', async ({ page, server }) => {
   #   await page.evaluate(() => {

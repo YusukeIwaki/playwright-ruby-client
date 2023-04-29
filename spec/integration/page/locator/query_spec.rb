@@ -164,4 +164,32 @@ RSpec.describe 'Locator' do
       expect(page.locator('div').filter(hasNotText: 'foo').count).to eq(2)
     end
   end
+
+  it 'should support locator.or' do
+    with_page do |page|
+      page.content = "<div>hello</div><span>world</span>"
+      expect(page.locator('div').or(page.locator('span')).count).to eq(2)
+      expect(page.locator('div').or(page.locator('span')).evaluate_all('els => els.map(el => el.textContent)')).to eq(%w[hello world])
+      expect(page.locator('span').or(page.locator('article')).or(page.locator('div')).evaluate_all('els => els.map(el => el.textContent)')).to eq(%w[hello world])
+      expect(page.locator('article').or(page.locator('something')).count).to eq(0)
+      expect(page.locator('article').or(page.locator('div')).evaluate('el => el.textContent')).to eq('hello')
+      expect(page.locator('article').or(page.locator('span')).evaluate('el => el.textContent')).to eq('world')
+      expect(page.locator('div').or(page.locator('article')).evaluate('el => el.textContent')).to eq('hello')
+      expect(page.locator('span').or(page.locator('article')).evaluate('el => el.textContent')).to eq('world')
+    end
+  end
+
+  # it('should enforce same frame for has/leftOf/rightOf/above/below/near', async ({ page, server }) => {
+  #   await page.goto(server.PREFIX + '/frames/two-frames.html');
+  #   const child = page.frames()[1];
+  #   for (const option of ['has']) {
+  #     let error;
+  #     try {
+  #       page.locator('div', { [option]: child.locator('span') });
+  #     } catch (e) {
+  #       error = e;
+  #     }
+  #     expect(error.message).toContain(`Inner "${option}" locator must belong to the same frame.`);
+  #   }
+  # });
 end

@@ -947,6 +947,29 @@ Returns locator to the n-th matching element. It's zero based, `nth(0)` selects 
 banana = page.get_by_role("listitem").nth(2)
 ```
 
+## or
+
+```
+def or(locator)
+```
+
+
+Creates a locator that matches either of the two locators.
+
+**Usage**
+
+Consider a scenario where you'd like to click on a "New email" button, but sometimes a security settings dialog shows up instead. In this case, you can wait for either a "New email" button, or a dialog and act accordingly.
+
+```ruby
+new_email = page.get_by_role("button", name: "New")
+dialog = page.get_by_text("Confirm security settings")
+new_email.or(dialog).wait_for(state: 'visible')
+if dialog.visible?
+  page.get_by_role("button", name: "Dismiss").click
+end
+new_email.click
+```
+
 ## page
 
 ```

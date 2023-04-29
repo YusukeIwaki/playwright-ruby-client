@@ -268,6 +268,17 @@ module Playwright
       )
     end
 
+    def or(locator)
+      unless same_frame?(locator)
+        raise DifferentFrameError.new('locator')
+      end
+      LocatorImpl.new(
+        frame: @frame,
+        timeout_settings: @timeout_settings,
+        selector: "#{@selector} >> internal:or=#{locator.send(:selector_json)}",
+      )
+    end
+
     def focus(timeout: nil)
       @frame.focus(@selector, strict: true, timeout: timeout)
     end

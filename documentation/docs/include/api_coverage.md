@@ -463,7 +463,7 @@
 * last
 * locator
 * nth
-* ~~or~~
+* or
 * page
 * press
 * screenshot
