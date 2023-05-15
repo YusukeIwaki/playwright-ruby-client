@@ -74,7 +74,7 @@ module Playwright
   #   ...
   # end
   #
-  # When we use this method without block, an instance of Puppeteer::Execution is returned
+  # When we use this method without block, an instance of Playwright::Execution is returned
   # and we *must* call execution.stop on the end.
   # The instance of playwright is available by calling execution.playwright
   module_function def create(playwright_cli_executable_path:, &block)
