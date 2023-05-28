@@ -71,26 +71,31 @@ Registering multiple routes is useful when you want separate handlers to
 handle different kinds of requests, for example API calls vs page resources or
 GET requests vs POST requests as in the example below.
 
-```python sync title=example_a0214f71feb828a3ca472dbb01db9a2325f8244f80716ff4740f072fb85e9e18.py
+```ruby
 # Handle GET requests.
-def handle_get(route):
-    if route.request.method != "GET":
-        route.fallback()
-        return
+def handle_post(route, request)
+  if request.method != "GET"
+    route.fallback
+    return
+  end
+
   # Handling GET only.
   # ...
+end
 
 # Handle POST requests.
-def handle_post(route):
-    if route.request.method != "POST":
-        route.fallback()
-        return
+def handle_post(route, request)
+  if request.method != "POST"
+    route.fallback
+    return
+  end
+
   # Handling POST only.
   # ...
+end
 
 page.route("**/*", handle_get)
 page.route("**/*", handle_post)
-
 ```
 
 One can also modify request while falling back to the subsequent handler, that way intermediate

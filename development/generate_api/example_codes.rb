@@ -1535,7 +1535,7 @@ module ExampleCodes
   end
 
   # Route#fallback
-  def example_2b4eca732c7ed8d0d22b23cd55d462cdd20bfc2f94f19640e744e265f53286ca(page:)
+  def example_a0214f71feb828a3ca472dbb01db9a2325f8244f80716ff4740f072fb85e9e18(page:)
     # Handle GET requests.
     def handle_post(route, request)
       if request.method != "GET"
@@ -1548,7 +1548,7 @@ module ExampleCodes
     end
 
     # Handle POST requests.
-    def handle_post(route)
+    def handle_post(route, request)
       if request.method != "POST"
         route.fallback
         return
