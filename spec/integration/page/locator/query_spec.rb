@@ -165,6 +165,22 @@ RSpec.describe 'Locator' do
     end
   end
 
+  it 'should support locator.and' do
+    with_page do |page|
+      page.content = <<~HTML
+      <div data-testid=foo>hello</div><div data-testid=bar>world</div>
+      <span data-testid=foo>hello2</span><span data-testid=bar>world2</span>
+      HTML
+
+      expect(page.locator('div').and(page.locator('div')).count).to eq(2)
+      expect(page.locator('div').and(page.get_by_test_id('foo')).evaluate_all('els => els.map(e => e.textContent)')).to eq(['hello'])
+      expect(page.locator('div').and(page.get_by_test_id('bar')).evaluate_all('els => els.map(e => e.textContent)')).to eq(['world'])
+      expect(page.get_by_test_id('foo').and(page.locator('div')).evaluate_all('els => els.map(e => e.textContent)')).to eq(['hello'])
+      expect(page.get_by_test_id('bar').and(page.locator('span')).evaluate_all('els => els.map(e => e.textContent)')).to eq(['world2'])
+      expect(page.locator('span').and(page.get_by_test_id(/bar|foo/)).count).to eq(2)
+    end
+  end
+
   it 'should support locator.or' do
     with_page do |page|
       page.content = "<div>hello</div><span>world</span>"

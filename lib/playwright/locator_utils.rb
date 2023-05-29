@@ -39,7 +39,7 @@ module Playwright
     end
 
     private def get_by_test_id_selector(test_id_attribute_name, test_id)
-      "internal:testid=[#{test_id_attribute_name}=#{escape_for_attribute_selector(test_id, true)}]"
+      "internal:testid=[#{test_id_attribute_name}=#{escape_for_attribute_selector_or_regex(test_id, true)}]"
     end
 
     private def get_by_label_selector(text, exact:)

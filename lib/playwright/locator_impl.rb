@@ -268,9 +268,20 @@ module Playwright
       )
     end
 
+    def and(locator)
+      unless same_frame?(locator)
+        raise DifferentFrameError.new('and')
+      end
+      LocatorImpl.new(
+        frame: @frame,
+        timeout_settings: @timeout_settings,
+        selector: "#{@selector} >> internal:and=#{locator.send(:selector_json)}",
+      )
+    end
+
     def or(locator)
       unless same_frame?(locator)
-        raise DifferentFrameError.new('locator')
+        raise DifferentFrameError.new('or')
       end
       LocatorImpl.new(
         frame: @frame,

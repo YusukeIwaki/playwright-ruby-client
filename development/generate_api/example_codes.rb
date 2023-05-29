@@ -811,6 +811,11 @@ module ExampleCodes
     texts = page.get_by_role("link").all_text_contents
   end
 
+  # Locator#and
+  def example_0174039af5c928df43c04ef148ea798c5dcc7b6fc4ce4abc3a99a300f372a104(page:)
+    button = page.get_by_role("button").and(page.get_by_title("Subscribe"))
+  end
+
   # Locator#bounding_box
   def example_09bf5cd40405b9e5cd84333743b6ef919d0714bb4da78c86404789d26ff196ae(page:)
     element = page.get_by_role("button")

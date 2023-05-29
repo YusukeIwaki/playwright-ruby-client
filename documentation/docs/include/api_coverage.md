@@ -425,7 +425,7 @@
 * all
 * all_inner_texts
 * all_text_contents
-* ~~and~~
+* and
 * blur
 * bounding_box
 * check
