@@ -451,6 +451,17 @@ def unroute(url, handler: nil)
 Removes a route created with [BrowserContext#route](./browser_context#route). When `handler` is not specified, removes all
 routes for the `url`.
 
+## expect_console_message
+
+```
+def expect_console_message(predicate: nil, timeout: nil, &block)
+```
+
+
+Performs action and waits for a [ConsoleMessage](./console_message) to be logged by in the pages in the context. If predicate is provided, it passes
+[ConsoleMessage](./console_message) value into the `predicate` function and waits for `predicate(message)` to return a truthy value.
+Will throw an error if the page is closed before the [`event: BrowserContext.console`] event is fired.
+
 ## expect_event
 
 ```
@@ -472,7 +483,7 @@ end
 ## expect_page
 
 ```
-def expect_page(predicate: nil, timeout: nil)
+def expect_page(predicate: nil, timeout: nil, &block)
 ```
 
 

@@ -35,6 +35,12 @@ module Playwright
       @channel.on('serviceWorker', ->(params) {
         on_service_worker(ChannelOwners::Worker.from(params['worker']))
       })
+      @channel.on('console', ->(params) {
+        on_console_message(ChannelOwners::ConsoleMessage.from(params['message']))
+      })
+      @channel.on('dialog', ->(params) {
+        on_dialog(ChannelOwners::Dialog.from(params['dialog']))
+      })
       @channel.on('request', ->(params) {
         on_request(
           ChannelOwners::Request.from(params['request']),
@@ -57,6 +63,8 @@ module Playwright
         )
       })
       set_event_to_subscription_mapping({
+        Events::BrowserContext::Console => 'console',
+        Events::BrowserContext::Dialog => 'dialog',
         Events::BrowserContext::Request => "request",
         Events::BrowserContext::Response => "response",
         Events::BrowserContext::RequestFinished => "requestFinished",
@@ -145,6 +153,28 @@ module Playwright
       emit(Events::BrowserContext::RequestFinished, request)
       page&.emit(Events::Page::RequestFinished, request)
       response&.send(:mark_as_finished)
+    end
+
+    private def on_console_message(message)
+      emit(Events::BrowserContext::Console, message)
+      if (page = message.page)
+        page.emit(Events::Page::Console, message)
+      end
+    end
+
+    private def on_dialog(dialog)
+      consumed_by_context = emit(Events::BrowserContext::Dialog, dialog)
+      if (page = dialog.page)
+        consumed_by_page = page.emit(Events::Page::Dialog, dialog)
+      end
+
+      if !consumed_by_context && !consumed_by_page
+        if dialog.type == 'beforeunload'
+          dialog.accept_async
+        else
+          dialog.dismiss
+        end
+      end
     end
 
     private def on_request(request, page)
@@ -414,12 +444,20 @@ module Playwright
       end
     end
 
-    def expect_page(predicate: nil, timeout: nil)
+    def expect_console_message(predicate: nil, timeout: nil, &block)
       params = {
         predicate: predicate,
         timeout: timeout,
       }.compact
-      expect_event(Events::BrowserContext::Page, params)
+      expect_event(Events::BrowserContext::Console, params, &block)
+    end
+
+    def expect_page(predicate: nil, timeout: nil, &block)
+      params = {
+        predicate: predicate,
+        timeout: timeout,
+      }.compact
+      expect_event(Events::BrowserContext::Page, params, &block)
     end
 
     # called from Page#on_close with send(:remove_page, page), so keep private

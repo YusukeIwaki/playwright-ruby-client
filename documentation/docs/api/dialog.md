@@ -65,6 +65,15 @@ def message
 
 A message displayed in the dialog.
 
+## page
+
+```
+def page
+```
+
+
+The page that initiated this dialog, if available.
+
 ## type
 
 ```
