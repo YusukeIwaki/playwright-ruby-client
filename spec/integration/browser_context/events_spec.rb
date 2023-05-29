@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 RSpec.describe 'BrowserContext events' do
+  before { skip unless chromium? }
+
   it 'console event should work @smoke' do
     with_page do |page|
       message = page.context.expect_event('console') do
