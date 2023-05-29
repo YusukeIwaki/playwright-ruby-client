@@ -311,6 +311,19 @@ RSpec.describe 'example' do
       end
     end
 
+    it 'should work with Locator#and' do
+      with_page do |page|
+        page.content = <<~HTML
+        <div>
+          <button id="btn_cancel" title='No thank you'>Cancel</button>
+          <button id="btn_ok" title='Subscribe'>OK - sub</button>
+        </div>
+        HTML
+        button = example_0174039af5c928df43c04ef148ea798c5dcc7b6fc4ce4abc3a99a300f372a104(page: page)
+        expect(button['id']).to eq('btn_ok')
+      end
+    end
+
     it 'should work with Locator#count' do
       with_page do |page|
         page.content = <<~HTML

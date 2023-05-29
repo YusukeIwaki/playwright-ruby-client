@@ -1,5 +1,9 @@
 module Playwright
   define_channel_owner :Dialog do
+    def page
+      @page ||= ChannelOwners::Page.from_nullable(@initializer['page'])
+    end
+
     def type
       @initializer['type']
     end

@@ -64,6 +64,23 @@ Returns an array of `node.textContent` values for all matching nodes.
 texts = page.get_by_role("link").all_text_contents
 ```
 
+## and
+
+```
+def and(locator)
+```
+
+
+Creates a locator that matches both this locator and the argument locator.
+
+**Usage**
+
+The following example finds a button with a specific title.
+
+```ruby
+button = page.get_by_role("button").and(page.get_by_title("Subscribe"))
+```
+
 ## blur
 
 ```

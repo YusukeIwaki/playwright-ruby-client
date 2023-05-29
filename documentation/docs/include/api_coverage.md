@@ -218,6 +218,7 @@
 
 * args
 * location
+* page
 * text
 * type
 
@@ -227,6 +228,7 @@
 * default_value
 * dismiss
 * message
+* page
 * type
 
 ## Download
@@ -367,6 +369,7 @@
 * set_offline
 * storage_state
 * unroute
+* expect_console_message
 * expect_event
 * expect_page
 * ~~wait_for_event~~
@@ -422,6 +425,7 @@
 * all
 * all_inner_texts
 * all_text_contents
+* and
 * blur
 * bounding_box
 * check

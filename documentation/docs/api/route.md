@@ -84,7 +84,7 @@ def handle_post(route, request)
 end
 
 # Handle POST requests.
-def handle_post(route)
+def handle_post(route, request)
   if request.method != "POST"
     route.fallback
     return

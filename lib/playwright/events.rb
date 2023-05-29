@@ -26,6 +26,8 @@ end
   BrowserContext: {
     BackgroundPage: 'backgroundpage',
     Close: 'close',
+    Console: 'console',
+    Dialog: 'dialog',
     Page: 'page',
     ServiceWorker: 'serviceworker',
     Request: 'request',

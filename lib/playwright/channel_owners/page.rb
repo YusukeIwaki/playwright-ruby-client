@@ -36,12 +36,7 @@ module Playwright
 
       @channel.on('bindingCall', ->(params) { on_binding(ChannelOwners::BindingCall.from(params['binding'])) })
       @channel.once('close', ->(_) { on_close })
-      @channel.on('console', ->(params) {
-        console_message = ChannelOwners::ConsoleMessage.from(params['message'])
-        emit(Events::Page::Console, console_message)
-      })
       @channel.on('crash', ->(_) { emit(Events::Page::Crash) })
-      @channel.on('dialog', method(:on_dialog))
       @channel.on('download', method(:on_download))
       @channel.on('fileChooser', ->(params) {
         chooser = FileChooserImpl.new(
@@ -70,6 +65,8 @@ module Playwright
       })
 
       set_event_to_subscription_mapping({
+        Events::Page::Console => "console",
+        Events::Page::Dialog => "dialog",
         Events::Page::Request => "request",
         Events::Page::Response => "response",
         Events::Page::RequestFinished => "requestFinished",
@@ -149,13 +146,6 @@ module Playwright
       @browser_context.send(:remove_page, self)
       @browser_context.send(:remove_background_page, self)
       emit(Events::Page::Close)
-    end
-
-    private def on_dialog(params)
-      dialog = ChannelOwners::Dialog.from(params['dialog'])
-      unless emit(Events::Page::Dialog, dialog)
-        dialog.dismiss
-      end
     end
 
     private def on_download(params)

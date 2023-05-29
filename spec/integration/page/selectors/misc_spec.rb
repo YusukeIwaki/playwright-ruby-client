@@ -401,6 +401,22 @@ RSpec.describe 'selector/misc' do
     end
   end
 
+  it 'should work with internal:and=' do
+    with_page do |page|
+      page.content = <<~HTML
+      <div class=foo>hello</div><div class=bar>world</div>
+      <span class=foo>hello2</span><span class=bar>world2</span>
+      HTML
+
+      expect(page.eval_on_selector_all('div >> internal:and="span"', 'els => els.map(e => e.textContent)')).to be_empty
+      expect(page.eval_on_selector_all('div >> internal:and=".foo"', 'els => els.map(e => e.textContent)')).to eq(%w[hello])
+      expect(page.eval_on_selector_all('div >> internal:and=".bar"', 'els => els.map(e => e.textContent)')).to eq(%w[world])
+      expect(page.eval_on_selector_all('span >> internal:and="span"', 'els => els.map(e => e.textContent)')).to eq(%w[hello2 world2])
+      expect(page.eval_on_selector_all('.foo >> internal:and="div"', 'els => els.map(e => e.textContent)')).to eq(%w[hello])
+      expect(page.eval_on_selector_all('.bar >> internal:and="span"', 'els => els.map(e => e.textContent)')).to eq(%w[world2])
+    end
+  end
+
   it 'should work with internal:or=' do
     with_page do |page|
       page.content = <<~HTML
