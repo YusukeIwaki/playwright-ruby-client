@@ -450,6 +450,7 @@ def screenshot(
       animations: nil,
       caret: nil,
       mask: nil,
+      maskColor: nil,
       omitBackground: nil,
       path: nil,
       quality: nil,

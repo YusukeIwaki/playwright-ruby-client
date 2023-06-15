@@ -1286,6 +1286,7 @@ def screenshot(
       clip: nil,
       fullPage: nil,
       mask: nil,
+      maskColor: nil,
       omitBackground: nil,
       path: nil,
       quality: nil,

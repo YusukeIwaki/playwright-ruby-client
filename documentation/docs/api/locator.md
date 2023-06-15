@@ -929,8 +929,9 @@ Returns locator to the last matching element.
 
 **Usage**
 
-```ruby
+```python sync title=example_2e421ea5f306bc8b63fb4a73f9be8b1fffb8d75bbdbf2d14a565673268fb41da.py
 banana = page.get_by_role("listitem").last
+
 ```
 
 ## locator
@@ -1040,6 +1041,7 @@ def screenshot(
       animations: nil,
       caret: nil,
       mask: nil,
+      maskColor: nil,
       omitBackground: nil,
       path: nil,
       quality: nil,
