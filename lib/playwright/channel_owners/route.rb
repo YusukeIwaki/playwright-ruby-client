@@ -137,7 +137,7 @@ module Playwright
       end
     end
 
-    private def async_continue_route
+    private def async_continue_route(internal: false)
       post_data_for_wire =
         if (post_data_from_overrides = request.send(:fallback_overrides)[:postData])
           post_data_for_wire = Base64.strict_encode64(post_data_from_overrides)
@@ -155,6 +155,7 @@ module Playwright
         params[:postData] = post_data_for_wire
       end
       params[:requestUrl] = request.send(:internal_url)
+      params[:isFallback] = internal
 
       # TODO _race_with_page_close
       @channel.async_send_message_to_server('continue', params)

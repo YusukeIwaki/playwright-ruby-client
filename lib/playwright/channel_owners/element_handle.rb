@@ -296,6 +296,7 @@ module Playwright
         animations: nil,
         caret: nil,
         mask: nil,
+        maskColor: nil,
         omitBackground: nil,
         path: nil,
         quality: nil,
@@ -306,6 +307,7 @@ module Playwright
         params = {
           animations: animations,
           caret: caret,
+          maskColor: maskColor,
           omitBackground: omitBackground,
           path: path,
           quality: quality,
