@@ -45,100 +45,6 @@ RSpec.describe 'autowaiting basic' do
     expect(messages).to eq(%w(route navigated click))
   end
 
-  it 'should await navigation when clicking anchor programmatically', sinatra: true do
-    messages = init_server
-
-    with_page do |page|
-      page.content = "<a id=\"anchor\" href=\"#{server_empty_page}\" >empty.html</a>"
-
-      promises = [
-        Concurrent::Promises.future {
-          sleep_a_bit_for_race_condition
-          page.evaluate("() => window.anchor.click()")
-          messages << 'click'
-        },
-        Concurrent::Promises.future {
-          page.expect_event('framenavigated')
-          messages << 'navigated'
-        }
-      ]
-      await_all(promises)
-    end
-
-    expect(messages).to eq(%w(route navigated click))
-  end
-
-  it 'should await navigation when clicking anchor via $eval', sinatra: true do
-    messages = init_server
-
-    with_page do |page|
-      page.content = "<a id=\"anchor\" href=\"#{server_empty_page}\" >empty.html</a>"
-
-      promises = [
-        Concurrent::Promises.future {
-          sleep_a_bit_for_race_condition
-          page.eval_on_selector('#anchor', "(anchor) => anchor.click()")
-          messages << 'click'
-        },
-        Concurrent::Promises.future {
-          page.expect_event('framenavigated')
-          messages << 'navigated'
-        }
-      ]
-      await_all(promises)
-    end
-
-    expect(messages).to eq(%w(route navigated click))
-  end
-
-  it 'should await navigation when clicking anchor via handle.eval', sinatra: true do
-    messages = init_server
-
-    with_page do |page|
-      page.content = "<a id=\"anchor\" href=\"#{server_empty_page}\" >empty.html</a>"
-      handle = page.evaluate_handle('document')
-
-      promises = [
-        Concurrent::Promises.future {
-          sleep_a_bit_for_race_condition
-          handle.evaluate("(doc) => doc.getElementById('anchor').click()")
-          messages << 'click'
-        },
-        Concurrent::Promises.future {
-          page.expect_event('framenavigated')
-          messages << 'navigated'
-        }
-      ]
-      await_all(promises)
-    end
-
-    expect(messages).to eq(%w(route navigated click))
-  end
-
-  it 'should await navigation when clicking anchor via handle.$eval', sinatra: true do
-    messages = init_server
-
-    with_page do |page|
-      page.content = "<a id=\"anchor\" href=\"#{server_empty_page}\" >empty.html</a>"
-      handle = page.query_selector('body')
-
-      promises = [
-        Concurrent::Promises.future {
-          sleep_a_bit_for_race_condition
-          handle.eval_on_selector('#anchor', "(anchor) => anchor.click()")
-          messages << 'click'
-        },
-        Concurrent::Promises.future {
-          page.expect_event('framenavigated')
-          messages << 'navigated'
-        }
-      ]
-      await_all(promises)
-    end
-
-    expect(messages).to eq(%w(route navigated click))
-  end
-
   it 'should await cross-process navigation when clicking anchor', sinatra: true do
     messages = init_server
 
@@ -149,29 +55,6 @@ RSpec.describe 'autowaiting basic' do
         Concurrent::Promises.future {
           sleep_a_bit_for_race_condition
           page.click('a')
-          messages << 'click'
-        },
-        Concurrent::Promises.future {
-          page.expect_event('framenavigated')
-          messages << 'navigated'
-        }
-      ]
-      await_all(promises)
-    end
-
-    expect(messages).to eq(%w(route navigated click))
-  end
-
-  it 'should await cross-process navigation when clicking anchor programatically', sinatra: true do
-    messages = init_server
-
-    with_page do |page|
-      page.content = "<a id=\"anchor\" href=\"#{server_cross_process_prefix}/empty.html\" >empty.html</a>"
-
-      promises = [
-        Concurrent::Promises.future {
-          sleep_a_bit_for_race_condition
-          page.evaluate('window.anchor.click()')
           messages << 'click'
         },
         Concurrent::Promises.future {
@@ -241,70 +124,6 @@ RSpec.describe 'autowaiting basic' do
     end
 
     expect(messages).to eq(%w(route navigated click))
-  end
-
-  it 'should await navigation when assigning location', sinatra: true do
-    messages = init_server
-
-    with_page do |page|
-      promises = [
-        Concurrent::Promises.future {
-          sleep_a_bit_for_race_condition
-          page.evaluate("window.location.href = \"#{server_cross_process_prefix}/empty.html\"")
-          messages << 'evaluate'
-        },
-        Concurrent::Promises.future {
-          page.expect_event('framenavigated')
-          messages << 'navigated'
-        }
-      ]
-      await_all(promises)
-    end
-
-    expect(messages).to eq(%w(route navigated evaluate))
-  end
-
-  it 'should await navigation when assigning location twice', sinatra: true do
-    messages = []
-
-    sinatra.get("/empty.html/cancel") { 'done' }
-    sinatra.get("/empty.html/override") { messages << 'routeoverride' ; 'done' }
-
-    with_page do |page|
-      js = <<~JAVASCRIPT
-      window.location.href = "#{server_cross_process_prefix}/empty.html/cancel";
-      window.location.href = "#{server_cross_process_prefix}/empty.html/override";
-      JAVASCRIPT
-
-      page.evaluate(js)
-      messages << 'evaluate'
-    end
-
-    expect(messages).to eq(%w(routeoverride evaluate))
-  end
-
-  it 'should await navigation when evaluating reload', sinatra: true do
-    messages = init_server
-
-    with_page do |page|
-      page.goto(server_empty_page)
-      messages.clear
-
-      promises = [
-        Concurrent::Promises.future {
-          sleep_a_bit_for_race_condition
-          page.evaluate('window.location.reload()')
-          messages << 'evaluate'
-        },
-        Concurrent::Promises.future {
-          page.expect_event('framenavigated')
-          messages << 'navigated'
-        }
-      ]
-      await_all(promises)
-    end
-
-    expect(messages).to eq(%w(route navigated evaluate))
   end
 
   it 'should await navigating specified target', sinatra: true do

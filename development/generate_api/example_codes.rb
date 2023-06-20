@@ -982,7 +982,7 @@ module ExampleCodes
   end
 
   # Locator#last
-  def example_37f239c3646f77e0658c12f139a5883eb99d9952f7761ad58ffb629fa385c7bb(page:)
+  def example_2e421ea5f306bc8b63fb4a73f9be8b1fffb8d75bbdbf2d14a565673268fb41da(page:)
     banana = page.get_by_role("listitem").last
   end
 

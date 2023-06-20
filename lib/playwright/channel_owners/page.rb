@@ -438,6 +438,7 @@ module Playwright
       clip: nil,
       fullPage: nil,
       mask: nil,
+      maskColor: nil,
       omitBackground: nil,
       path: nil,
       quality: nil,
@@ -450,6 +451,7 @@ module Playwright
         quality: quality,
         fullPage: fullPage,
         clip: clip,
+        maskColor: maskColor,
         omitBackground: omitBackground,
         animations: animations,
         caret: caret,
@@ -484,7 +486,7 @@ module Playwright
       end
       nil
     rescue => err
-      raise unless safe_close_error?(err)
+      raise if !safe_close_error?(err) || !runBeforeUnload
     end
 
     def closed?

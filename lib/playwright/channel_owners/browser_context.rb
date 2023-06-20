@@ -121,7 +121,7 @@ module Playwright
         end
 
         unless handled
-          route.send(:async_continue_route).rescue do |err|
+          route.send(:async_continue_route, internal: true).rescue do |err|
             puts err, err.backtrace
           end
         end
