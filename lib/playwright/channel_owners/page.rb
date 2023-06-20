@@ -486,7 +486,7 @@ module Playwright
       end
       nil
     rescue => err
-      raise unless safe_close_error?(err)
+      raise if !safe_close_error?(err) || !runBeforeUnload
     end
 
     def closed?
