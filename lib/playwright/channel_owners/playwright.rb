@@ -35,7 +35,6 @@ module Playwright
       unless @initializer['preLaunchedBrowser']
         raise 'Malformed endpoint. Did you use launchServer method?'
       end
-
       ::Playwright::ChannelOwners::Browser.from(@initializer['preLaunchedBrowser'])
     end
 

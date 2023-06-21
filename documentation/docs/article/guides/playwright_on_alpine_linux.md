@@ -14,14 +14,14 @@ This all-in-one architecture is reasonable for browser automation in our own com
 
 However we may have trouble with bringing Playwright into:
 
-* Docker
-  * Alpine Linux
-* Serverless computing
-  * AWS Lambda
-  * Google Cloud Functions
-* PaaS
-  * Heroku
-  * Google App Engine
+- Docker
+  - Alpine Linux
+- Serverless computing
+  - AWS Lambda
+  - Google Cloud Functions
+- PaaS
+  - Heroku
+  - Google App Engine
 
 This article introduces a way to separate environments into client (for executing Playwright script) and server (for working with browsers). The main use-case assumes Docker (using Alpine Linux), however the way can be applied also into other use-cases.
 
@@ -39,15 +39,21 @@ Playwright provides two kind of methods to share the browser environments for cl
 
 When you want to share only one browser environment, Browser server is suitable. This feature is officially supported in Playwright.
 
-* Server can be launched with [BrowserType#launchServer](https://playwright.dev/docs/api/class-browsertype#browser-type-launch-server) instead of `BrowserType#launch`.
-* Client can connect to server with [BrowserType#connect](https://playwright.dev/docs/api/class-browsertype#browser-type-connect). In playwright-ruby-client, `BrowserType#connect` and not implemented yet and use `Playwright#connect_to_browser_server()` instead.
+- Server can be launched with [BrowserType#launchServer](https://playwright.dev/docs/api/class-browsertype#browser-type-launch-server) instead of `BrowserType#launch`.
+- Client can connect to server with [BrowserType#connect](https://playwright.dev/docs/api/class-browsertype#browser-type-connect). In playwright-ruby-client, `BrowserType#connect` and not implemented yet and use `Playwright#connect_to_browser_server()` instead.
 
 Another method is sharing all browser environment. This method is very simple, but not an official feature, and can be changed in future.
 
-* Server can be launched with `playwright run-server` (CLI command).
-* Client can connect to server with `Playwright.connect_to_playwright_server` instead of `Playwright.create`
+- Server can be launched with `playwright run-server` (CLI command).
+- Client can connect to server with `Playwright.connect_to_playwright_server` instead of `Playwright.create`
 
 ## Playwright server/client
+
+:::caution
+
+This method is no longer supported on Playwright driver >= 1.35. See [this issue](https://github.com/YusukeIwaki/playwright-ruby-client/issues/254) for detail, and use Browser server/client method instead.
+
+:::
 
 ### Client code
 
@@ -74,10 +80,10 @@ With the [official Docker image](https://hub.docker.com/_/microsoft-playwright) 
 If custom Docker image is preferred, build it as follows:
 
 ```Dockerfile
-FROM mcr.microsoft.com/playwright:focal
+FROM mcr.microsoft.com/playwright
 
 WORKDIR /root
-RUN npm install playwright@1.12.3 && ./node_modules/.bin/playwright install
+RUN npm install playwright && ./node_modules/.bin/playwright install
 
 ENV PORT 8888
 CMD ["./node_modules/.bin/playwright", "run-server", "--port", "$PORT", "--path", "/ws"]
@@ -105,15 +111,17 @@ For instant use, `npx playwright launch-server --browser chromium` generates a W
 More customization can be done by implementing JavaScript server like below:
 
 ```js
-const playwright = require('playwright')
+const playwright = require("playwright");
 
 option = {
-  channel: 'chrome-canary',
+  channel: "chrome-canary",
   headless: false,
   port: 8080,
-  wsPath: 'ws',
-}
-playwright.chromium.launchServer(option).then((server) => { console.log(server.wsEndpoint()) })
+  wsPath: "ws",
+};
+playwright.chromium.launchServer(option).then((server) => {
+  console.log(server.wsEndpoint());
+});
 ```
 
 `port` and `wsPath` would be useful for generating static WebSocket endpoint URL.
@@ -132,13 +140,12 @@ Just set an environment variable `DEBUG=1`.
 DEBUG=1 bundle exec ruby some-automation-with-playwright.rb
 ```
 
-
 ### Enable verbose logging on server
 
 Just set an environment variable `DEBUG=pw:*` or `DEBUG=pw:server`
 
 ```
-DEBUG=pw:* npx playwright run-server --port 8888 --path /ws
+DEBUG=pw:* npx playwright launch-server --browser chromium
 ```
 
 See [the official documentation](https://playwright.dev/docs/debug/#verbose-api-logs) for details.
