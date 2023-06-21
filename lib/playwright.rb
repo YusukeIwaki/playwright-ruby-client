@@ -159,8 +159,9 @@ module Playwright
       begin
         playwright = connection.initialize_playwright
         browser = playwright.send(:pre_launched_browser)
+        browser.send(:update_browser_type, playwright.chromium) # Just workaround for nil reference error.
         browser.browser_type.send(:did_launch_browser, browser)
-        browser.should_close_connection_on_close!
+        browser.send(:should_close_connection_on_close!)
         Execution.new(connection, PlaywrightApi.wrap(playwright), PlaywrightApi.wrap(browser))
       rescue
         connection.stop
