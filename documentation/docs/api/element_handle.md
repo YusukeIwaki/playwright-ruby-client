@@ -213,10 +213,11 @@ value.
 
 **Usage**
 
-```ruby
+```python sync title=example_64bcac14fcbd1a2e6d6f32164d92124a90dddbfa9277f7503be7b0a401c9cf85.py
 tweet_handle = page.query_selector(".tweet")
-tweet_handle.eval_on_selector(".like", "node => node.innerText") # => "100"
-tweet_handle.eval_on_selector(".retweets", "node => node.innerText") # => "10"
+assert tweet_handle.eval_on_selector(".like", "node => node.innerText") == "100"
+assert tweet_handle.eval_on_selector(".retweets", "node => node.innerText") == "10"
+
 ```
 
 ## eval_on_selector_all

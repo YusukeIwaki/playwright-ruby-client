@@ -43,18 +43,19 @@ puts snapshot
 
 An example of logging the focused node's name:
 
-```ruby
-def find_focused_node(node)
-  if node['focused']
-    node
-  else
-    node['children']&.find do |child|
-      find_focused_node(child)
-    end
-  end
-end
+```python sync title=example_3d67a99411b5f924d573427b6f54aff63f7241f2b810959b79948bd3b522404a.py
+def find_focused_node(node):
+    if node.get("focused"):
+        return node
+    for child in (node.get("children") or []):
+        found_node = find_focused_node(child)
+        if found_node:
+            return found_node
+    return None
 
-snapshot = page.accessibility.snapshot
+snapshot = page.accessibility.snapshot()
 node = find_focused_node(snapshot)
-puts node['name']
+if node:
+    print(node["name"])
+
 ```

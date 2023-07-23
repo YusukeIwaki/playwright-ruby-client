@@ -473,13 +473,13 @@ It can be chained to filter multiple times.
 
 **Usage**
 
-```ruby
+```python sync title=example_981a978542d75734983c5b8d6fc19f2b2e94d93d3ecce2349a55fff99918b412.py
 row_locator = page.locator("tr")
 # ...
-row_locator.
-    filter(hasText: "text in column 1").
-    filter(has: page.get_by_role("button", name: "column 2 button")).
-    screenshot
+row_locator.filter(has_text="text in column 1").filter(
+    has=page.get_by_role("button", name="column 2 button")
+).screenshot()
+
 ```
 
 ## first
@@ -977,14 +977,14 @@ Creates a locator that matches either of the two locators.
 
 Consider a scenario where you'd like to click on a "New email" button, but sometimes a security settings dialog shows up instead. In this case, you can wait for either a "New email" button, or a dialog and act accordingly.
 
-```ruby
-new_email = page.get_by_role("button", name: "New")
+```python sync title=example_180e47ad1dc80f352ad9ffc8519b25c65c17b7413febe4912e66acc198de69e7.py
+new_email = page.get_by_role("button", name="New")
 dialog = page.get_by_text("Confirm security settings")
-new_email.or(dialog).wait_for(state: 'visible')
-if dialog.visible?
-  page.get_by_role("button", name: "Dismiss").click
-end
-new_email.click
+expect(new_email.or_(dialog)).to_be_visible()
+if (dialog.is_visible()):
+  page.get_by_role("button", name="Dismiss").click()
+new_email.click()
+
 ```
 
 ## page

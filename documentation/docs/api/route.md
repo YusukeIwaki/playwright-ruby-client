@@ -30,17 +30,18 @@ Continues route's request with optional overrides.
 
 **Usage**
 
-```ruby
-def handle(route, request)
-  # override headers
-  headers = request.headers
-  headers['foo'] = 'bar' # set "foo" header
-  headers['user-agent'] = 'Unknown Browser' # modify user-agent
-  headers.delete('bar') # remove "bar" header
+```python sync title=example_7e4301435099b6132736c17a7bc117a684c61411bdf344a1e10700f86bdd293d.py
+def handle(route, request):
+    # override headers
+    headers = {
+        **request.headers,
+        "foo": "foo-value", # set "foo" header
+        "bar": None # remove "bar" header
+    }
+    route.continue_(headers=headers)
 
-  route.continue(headers: headers)
-end
-page.route("**/*", method(:handle))
+page.route("**/*", handle)
+
 ```
 
 **Details**
@@ -101,17 +102,18 @@ page.route("**/*", handle_post)
 One can also modify request while falling back to the subsequent handler, that way intermediate
 route handler can modify url, method, headers and postData of the request.
 
-```ruby
-def handle(route, request)
-  # override headers
-  headers = request.headers
-  headers['foo'] = 'bar' # set "foo" header
-  headers['user-agent'] = 'Unknown Browser' # modify user-agent
-  headers.delete('bar') # remove "bar" header
+```python sync title=example_20e6411032d6255108d5adc862d7a215cbca591255ca60fb3d91895c65229f0d.py
+def handle(route, request):
+    # override headers
+    headers = {
+        **request.headers,
+        "foo": "foo-value", # set "foo" header
+        "bar": None # remove "bar" header
+    }
+    route.fallback(headers=headers)
 
-  route.fallback(headers: headers)
-end
-page.route("**/*", method(:handle))
+page.route("**/*", handle)
+
 ```
 
 ## fetch
