@@ -1,6 +1,14 @@
 require 'spec_helper'
 
 RSpec.describe 'Page#evaluate' do
+  it 'should transfer bigint' do
+    with_page do |page|
+      expect(page.evaluate('() => 42n')).to eq(42)
+      expect(page.evaluate('(a) => a', arg: 9007199254740991)).to eq(9007199254740991)
+      expect(page.evaluate('(a) => a', arg: 9007199254740992)).to eq(9007199254740992)
+    end
+  end
+
   it 'should return undefined for non-serializable objects' do
     with_page do |page|
       expect(page.evaluate('() => function() {}')).to be_nil
