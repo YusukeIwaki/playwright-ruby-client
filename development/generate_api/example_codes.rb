@@ -1519,7 +1519,7 @@ module ExampleCodes
   end
 
   # Route#continue
-  def example_39b99a97428d536c6d26b43e024ebbd90aa62cdd9f58cc70d67e23ca6b6b1799(page:)
+  def example_7e4301435099b6132736c17a7bc117a684c61411bdf344a1e10700f86bdd293d(page:)
     def handle(route, request)
       # override headers
       headers = request.headers
@@ -1568,7 +1568,7 @@ module ExampleCodes
   end
 
   # Route#fallback
-  def example_1622b8b89837489dedec666cb29388780382f6e997246b261aed07fb60c70cd8(page:)
+  def example_20e6411032d6255108d5adc862d7a215cbca591255ca60fb3d91895c65229f0d(page:)
     def handle(route, request)
       # override headers
       headers = request.headers

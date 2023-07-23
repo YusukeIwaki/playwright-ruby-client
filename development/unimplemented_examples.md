@@ -5,38 +5,6 @@ Excample codes in API documentation is replaces with the methods defined in deve
 The examples listed below is not yet implemented, and documentation shows Python code.
 
 
-### example_7e4301435099b6132736c17a7bc117a684c61411bdf344a1e10700f86bdd293d (Route#continue)
-
-```
-def handle(route, request):
-    # override headers
-    headers = {
-        **request.headers,
-        "foo": "foo-value", # set "foo" header
-        "bar": None # remove "bar" header
-    }
-    route.continue_(headers=headers)
-
-page.route("**/*", handle)
-
-```
-
-### example_20e6411032d6255108d5adc862d7a215cbca591255ca60fb3d91895c65229f0d (Route#fallback)
-
-```
-def handle(route, request):
-    # override headers
-    headers = {
-        **request.headers,
-        "foo": "foo-value", # set "foo" header
-        "bar": None # remove "bar" header
-    }
-    route.fallback(headers=headers)
-
-page.route("**/*", handle)
-
-```
-
 ### example_49eec7966dd7a081de100e4563b110174e5e2dc4b89959cd14894097080346dc (JSHandle#get_properties)
 
 ```
