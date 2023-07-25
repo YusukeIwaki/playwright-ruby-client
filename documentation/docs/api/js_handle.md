@@ -89,13 +89,14 @@ The method returns a map with **own property names** as keys and JSHandle instan
 
 **Usage**
 
-```python sync title=example_49eec7966dd7a081de100e4563b110174e5e2dc4b89959cd14894097080346dc.py
-handle = page.evaluate_handle("({ window, document })")
-properties = handle.get_properties()
-window_handle = properties.get("window")
-document_handle = properties.get("document")
-handle.dispose()
-
+```ruby
+page.goto('https://example.com/')
+handle = page.evaluate_handle("({window, document})")
+properties = handle.properties
+puts properties
+window_handle = properties["window"]
+document_handle = properties["document"]
+handle.dispose
 ```
 
 ## get_property
