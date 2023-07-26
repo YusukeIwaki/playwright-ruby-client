@@ -1438,7 +1438,7 @@ module ExampleCodes
   def example_0c91be8bc12e1e564d14d37e5e0be8d4e56189ef1184ff34ccc0d92338ad598b(page:)
     page.content = '<form action="https://example.com/resource"><input type="submit" value="trigger request" /></form>'
     request = page.expect_request(/example.com\/resource/) do
-      page.get_by_text("trigger request").click()
+      page.get_by_text("trigger request").click
     end
     puts request.headers
 
@@ -1447,7 +1447,7 @@ module ExampleCodes
     # or with a predicate
     page.content = '<form action="https://example.com/resource"><input type="submit" value="trigger request" /></form>'
     request = page.expect_request(->(req) { req.url.start_with? 'https://example.com/resource' }) do
-      page.get_by_text("trigger request").click()
+      page.get_by_text("trigger request").click
     end
     puts request.headers
   end
@@ -1456,7 +1456,7 @@ module ExampleCodes
   def example_bdc21f273866a6ed56d91f269e9665afe7f32d277a2c27f399c1af0bcb087b28(page:)
     page.content = '<form action="https://example.com/resource"><input type="submit" value="trigger response" /></form>'
     response = page.expect_response(/example.com\/resource/) do
-      page.get_by_text("trigger response").click()
+      page.get_by_text("trigger response").click
     end
     puts response.body
     puts response.ok?
@@ -1466,7 +1466,7 @@ module ExampleCodes
     # or with a predicate
     page.content = '<form action="https://example.com/resource"><input type="submit" value="trigger response" /></form>'
     response = page.expect_response(->(res) { res.url.start_with? 'https://example.com/resource' }) do
-      page.get_by_text("trigger response").click()
+      page.get_by_text("trigger response").click
     end
     puts response.body
     puts response.ok?
@@ -1627,7 +1627,7 @@ module ExampleCodes
     # Register the engine. Selectors will be prefixed with "tag=".
     playwright.selectors.register("tag", script: tag_selector)
     playwright.chromium.launch do |browser|
-      page = browser.new_page()
+      page = browser.new_page
       page.content = '<div><button>Click me</button></div>'
 
       # Use the selector prefixed with its name.
