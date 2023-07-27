@@ -52,6 +52,10 @@ module Playwright
           return URI(hash['u'])
         end
 
+        if hash.key?('bi')
+          return hash['bi'].to_i
+        end
+
         if hash.key?('r')
           # @see https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/RegExp
           # @see https://docs.ruby-lang.org/ja/latest/class/Regexp.html

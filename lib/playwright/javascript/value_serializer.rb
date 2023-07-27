@@ -34,7 +34,11 @@ module Playwright
         when true, false
           { b: value }
         when Numeric
-          { n: value }
+          if !value.is_a?(Integer) || (-9007199254740992..9007199254740991).include?(value)
+            { n: value }
+          else
+            { bi: value.to_s }
+          end
         when String
           { s: value }
         when Time

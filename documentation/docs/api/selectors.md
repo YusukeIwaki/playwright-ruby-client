@@ -38,7 +38,7 @@ JAVASCRIPT
 # Register the engine. Selectors will be prefixed with "tag=".
 playwright.selectors.register("tag", script: tag_selector)
 playwright.chromium.launch do |browser|
-  page = browser.new_page()
+  page = browser.new_page
   page.content = '<div><button>Click me</button></div>'
 
   # Use the selector prefixed with its name.

@@ -1741,7 +1741,7 @@ Waits for the matching request and returns it. See [waiting for event](https://p
 ```ruby
 page.content = '<form action="https://example.com/resource"><input type="submit" value="trigger request" /></form>'
 request = page.expect_request(/example.com\/resource/) do
-  page.get_by_text("trigger request").click()
+  page.get_by_text("trigger request").click
 end
 puts request.headers
 
@@ -1750,7 +1750,7 @@ page.wait_for_load_state # wait for request finished.
 # or with a predicate
 page.content = '<form action="https://example.com/resource"><input type="submit" value="trigger request" /></form>'
 request = page.expect_request(->(req) { req.url.start_with? 'https://example.com/resource' }) do
-  page.get_by_text("trigger request").click()
+  page.get_by_text("trigger request").click
 end
 puts request.headers
 ```
@@ -1780,7 +1780,7 @@ Returns the matched response. See [waiting for event](https://playwright.dev/pyt
 ```ruby
 page.content = '<form action="https://example.com/resource"><input type="submit" value="trigger response" /></form>'
 response = page.expect_response(/example.com\/resource/) do
-  page.get_by_text("trigger response").click()
+  page.get_by_text("trigger response").click
 end
 puts response.body
 puts response.ok?
@@ -1790,7 +1790,7 @@ page.wait_for_load_state # wait for request finished.
 # or with a predicate
 page.content = '<form action="https://example.com/resource"><input type="submit" value="trigger response" /></form>'
 response = page.expect_response(->(res) { res.url.start_with? 'https://example.com/resource' }) do
-  page.get_by_text("trigger response").click()
+  page.get_by_text("trigger response").click
 end
 puts response.body
 puts response.ok?

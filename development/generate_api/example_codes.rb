@@ -19,7 +19,7 @@ module ExampleCodes
   end
 
   # Accessibility
-  def example_388652162f4e169aab346af9ea657dd96de9217cd390a4cae2090af952b7aebe(page:)
+  def example_3d67a99411b5f924d573427b6f54aff63f7241f2b810959b79948bd3b522404a(page:)
     def find_focused_node(node)
       if node['focused']
         node
@@ -304,7 +304,7 @@ module ExampleCodes
   end
 
   # BrowserContext#route
-  def example_ac637e238bebf237fca2ef4fd8a2ef81644eefcf862b305de633c2fabc3b4721(browser:)
+  def example_ef709e5ad2c021453ff9ed1c2faedc7f9f07043c4fa503929ba2020a557ccbdf(browser:)
     def handle_route(route, request)
       if request.post_data["my-string"]
         mocked_data = request.post_data.merge({ "my-string" => 'mocked-data'})
@@ -463,7 +463,7 @@ module ExampleCodes
   end
 
   # ElementHandle#eval_on_selector
-  def example_f6a83ec555fcf23877c11cf55f02a8c89a7fc11d3324859feda42e592e129f4f(page:)
+  def example_64bcac14fcbd1a2e6d6f32164d92124a90dddbfa9277f7503be7b0a401c9cf85(page:)
     tweet_handle = page.query_selector(".tweet")
     tweet_handle.eval_on_selector(".like", "node => node.innerText") # => "100"
     tweet_handle.eval_on_selector(".retweets", "node => node.innerText") # => "10"
@@ -718,7 +718,7 @@ module ExampleCodes
   end
 
   # JSHandle#properties
-  def example_b5cbf187e1332705618516d4be127b8091a5d1acfa9a12d382086a2b0e738909(page:)
+  def example_49eec7966dd7a081de100e4563b110174e5e2dc4b89959cd14894097080346dc(page:)
     page.goto('https://example.com/')
     handle = page.evaluate_handle("({window, document})")
     properties = handle.properties
@@ -921,7 +921,7 @@ module ExampleCodes
   end
 
   # Locator#filter
-  def example_516c962e3016789b2f0d21854daed72507a490b018b3f0213d4ae25f9ee03267(page:)
+  def example_981a978542d75734983c5b8d6fc19f2b2e94d93d3ecce2349a55fff99918b412(page:)
     row_locator = page.locator("tr")
     # ...
     row_locator.
@@ -992,7 +992,7 @@ module ExampleCodes
   end
 
   # Locator#or
-  def example_1828ac86226726cd674afe7d43e8d2bda4b1e9309c5ed1f2d57b4fd1c8024060(page:)
+  def example_180e47ad1dc80f352ad9ffc8519b25c65c17b7413febe4912e66acc198de69e7(page:)
     new_email = page.get_by_role("button", name: "New")
     dialog = page.get_by_text("Confirm security settings")
     new_email.or(dialog).wait_for(state: 'visible')
@@ -1351,7 +1351,7 @@ module ExampleCodes
   end
 
   # Page#route
-  def example_ff4fba1273c7e65f4d68b4fcdd9dc4b792bba435005f0b9e7066ca18ded750b5(pgae:)
+  def example_a0ba081a92628cce9358e983826ad7143d6757dc2780f1b53f0d2e073000409e(pgae:)
     def handle_route(route, request)
       if request.post_data["my-string"]
         mocked_data = request.post_data.merge({ "my-string" => 'mocked-data'})
@@ -1438,7 +1438,7 @@ module ExampleCodes
   def example_0c91be8bc12e1e564d14d37e5e0be8d4e56189ef1184ff34ccc0d92338ad598b(page:)
     page.content = '<form action="https://example.com/resource"><input type="submit" value="trigger request" /></form>'
     request = page.expect_request(/example.com\/resource/) do
-      page.get_by_text("trigger request").click()
+      page.get_by_text("trigger request").click
     end
     puts request.headers
 
@@ -1447,7 +1447,7 @@ module ExampleCodes
     # or with a predicate
     page.content = '<form action="https://example.com/resource"><input type="submit" value="trigger request" /></form>'
     request = page.expect_request(->(req) { req.url.start_with? 'https://example.com/resource' }) do
-      page.get_by_text("trigger request").click()
+      page.get_by_text("trigger request").click
     end
     puts request.headers
   end
@@ -1456,7 +1456,7 @@ module ExampleCodes
   def example_bdc21f273866a6ed56d91f269e9665afe7f32d277a2c27f399c1af0bcb087b28(page:)
     page.content = '<form action="https://example.com/resource"><input type="submit" value="trigger response" /></form>'
     response = page.expect_response(/example.com\/resource/) do
-      page.get_by_text("trigger response").click()
+      page.get_by_text("trigger response").click
     end
     puts response.body
     puts response.ok?
@@ -1466,7 +1466,7 @@ module ExampleCodes
     # or with a predicate
     page.content = '<form action="https://example.com/resource"><input type="submit" value="trigger response" /></form>'
     response = page.expect_response(->(res) { res.url.start_with? 'https://example.com/resource' }) do
-      page.get_by_text("trigger response").click()
+      page.get_by_text("trigger response").click
     end
     puts response.body
     puts response.ok?
@@ -1519,7 +1519,7 @@ module ExampleCodes
   end
 
   # Route#continue
-  def example_39b99a97428d536c6d26b43e024ebbd90aa62cdd9f58cc70d67e23ca6b6b1799(page:)
+  def example_7e4301435099b6132736c17a7bc117a684c61411bdf344a1e10700f86bdd293d(page:)
     def handle(route, request)
       # override headers
       headers = request.headers
@@ -1568,7 +1568,7 @@ module ExampleCodes
   end
 
   # Route#fallback
-  def example_1622b8b89837489dedec666cb29388780382f6e997246b261aed07fb60c70cd8(page:)
+  def example_20e6411032d6255108d5adc862d7a215cbca591255ca60fb3d91895c65229f0d(page:)
     def handle(route, request)
       # override headers
       headers = request.headers
@@ -1627,7 +1627,7 @@ module ExampleCodes
     # Register the engine. Selectors will be prefixed with "tag=".
     playwright.selectors.register("tag", script: tag_selector)
     playwright.chromium.launch do |browser|
-      page = browser.new_page()
+      page = browser.new_page
       page.content = '<div><button>Click me</button></div>'
 
       # Use the selector prefixed with its name.

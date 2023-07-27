@@ -118,7 +118,7 @@ RSpec.describe 'example' do
         HTML
 
         example_2e5019929403491cde0c78bed1e0e18e0c86ab423d7ac8715876c4de4814f483(page: page)
-        example_388652162f4e169aab346af9ea657dd96de9217cd390a4cae2090af952b7aebe(page: page)
+        example_3d67a99411b5f924d573427b6f54aff63f7241f2b810959b79948bd3b522404a(page: page)
       end
     end
 
@@ -255,7 +255,7 @@ RSpec.describe 'example' do
     it 'should work with JSHandle#properties' do
       with_page do |page|
         with_network_retry do
-          example_b5cbf187e1332705618516d4be127b8091a5d1acfa9a12d382086a2b0e738909(page: page)
+          example_49eec7966dd7a081de100e4563b110174e5e2dc4b89959cd14894097080346dc(page: page)
         end
       end
     end
@@ -431,7 +431,7 @@ RSpec.describe 'example' do
       end
 
       with_page do |page|
-        example_39b99a97428d536c6d26b43e024ebbd90aa62cdd9f58cc70d67e23ca6b6b1799(page: page)
+        example_7e4301435099b6132736c17a7bc117a684c61411bdf344a1e10700f86bdd293d(page: page)
         url = "#{server_cross_process_prefix}/empty2.html"
         page.content = "<a href=\"#{url}\">link</a>"
         response = page.expect_request(url) { page.click('a') }
@@ -451,7 +451,7 @@ RSpec.describe 'example' do
       end
 
       with_page do |page|
-        example_1622b8b89837489dedec666cb29388780382f6e997246b261aed07fb60c70cd8(page: page)
+        example_20e6411032d6255108d5adc862d7a215cbca591255ca60fb3d91895c65229f0d(page: page)
         url = "#{server_cross_process_prefix}/empty2.html"
         page.content = "<a href=\"#{url}\">link</a>"
         response = page.expect_request(url) { page.click('a') }
