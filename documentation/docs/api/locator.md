@@ -6,7 +6,7 @@ sidebar_position: 10
 
 
 Locators are the central piece of Playwright's auto-waiting and retry-ability. In a nutshell, locators represent
-a way to find element(s) on the page at any moment. Locator can be created with the [Page#locator](./page#locator) method.
+a way to find element(s) on the page at any moment. A locator can be created with the [Page#locator](./page#locator) method.
 
 [Learn more about locators](https://playwright.dev/python/docs/locators).
 
@@ -17,8 +17,7 @@ def all
 ```
 
 
-When locator points to a list of elements, returns array of locators, pointing
-to respective elements.
+When the locator points to a list of elements, this returns an array of locators, pointing to their respective elements.
 
 **NOTE**: [Locator#all](./locator#all) does not wait for elements to match the locator, and instead immediately returns whatever is present in the page.
 
@@ -1254,6 +1253,8 @@ Returns the [`node.textContent`](https://developer.mozilla.org/en-US/docs/Web/AP
 def type(text, delay: nil, noWaitAfter: nil, timeout: nil)
 ```
 
+
+**NOTE**: In most cases, you should use [Locator#fill](./locator#fill) instead. You only need to type characters if there is special keyboard handling on the page.
 
 Focuses the element, and then sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text.
 
