@@ -1,3 +1,5 @@
+require 'stringio'
+
 module Playwright
   define_channel_owner :Artifact do
     private def after_initialize
@@ -16,6 +18,11 @@ module Playwright
     def save_as(path)
       stream = ChannelOwners::Stream.from(@channel.send_message_to_server('saveAsStream'))
       stream.save_as(path)
+    end
+
+    def read_into_buffer
+      stream = ChannelOwners::Stream.from(@channel.send_message_to_server('stream'))
+      stream.read_all
     end
 
     def failure
