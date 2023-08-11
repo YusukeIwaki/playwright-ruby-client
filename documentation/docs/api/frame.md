@@ -956,6 +956,7 @@ def set_content(html, timeout: nil, waitUntil: nil)
 alias: `content=`
 
 
+This method internally calls [document.write()](https://developer.mozilla.org/en-US/docs/Web/API/Document/write), inheriting all its specific characteristics and behaviors.
 
 ## set_input_files
 

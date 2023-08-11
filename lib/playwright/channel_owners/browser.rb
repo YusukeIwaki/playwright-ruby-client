@@ -1,3 +1,5 @@
+require 'fileutils'
+
 module Playwright
   # @ref https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_browser.py
   define_channel_owner :Browser do
@@ -86,16 +88,23 @@ module Playwright
       params = {
         page: page&.channel,
         categories: categories,
-        path: path,
         screenshots: screenshots,
       }.compact
+      @cr_tracing_path = path
 
       @channel.send_message_to_server('startTracing', params)
     end
 
     def stop_tracing
-      encoded_binary = @channel.send_message_to_server("stopTracing")
-      return Base64.strict_decode64(encoded_binary)
+      artifact = ChannelOwners::Artifact.from(@channel.send_message_to_server("stopTracing"))
+      data = artifact.read_into_buffer
+      if @cr_tracing_path
+        File.dirname(@cr_tracing_path).tap do |dir|
+          FileUtils.mkdir_p(dir) unless File.exist?(dir)
+        end
+        File.open(@cr_tracing_path, 'wb') { |f| f.write(data) }
+      end
+      data
     end
 
     private def on_close(_ = {})
