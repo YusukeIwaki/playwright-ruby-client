@@ -43,7 +43,7 @@ module Playwright
       @channel.send_message_to_server('tracingStarted', params)
     end
 
-    def tracing_discarded(stacks_id)
+    def trace_discarded(stacks_id)
       @channel.send_message_to_server('traceDiscarded', stacksId: stacks_id)
     end
 
