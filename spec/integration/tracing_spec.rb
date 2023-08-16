@@ -185,6 +185,10 @@ RSpec.describe 'tracing' do
         trace = File.join(dir, 'trace2.zip')
         context.tracing.stop_chunk(path: trace)
       end
+
+      context.tracing.start_chunk
+      page.click('"Click"')
+      context.tracing.stop_chunk # Should stop without a path.
     end
   end
 end
