@@ -34,9 +34,8 @@ RSpec.describe 'example' do
       page.viewport_size = { width: 1280, height: 800 }
       with_network_retry { page.goto('https://github.com/') }
 
-      form = page.query_selector("form.js-site-search-form")
-      search_input = form.query_selector("input.header-search-input")
-      search_input.click
+      page.get_by_placeholder("Search or jump to...").click
+      page.locator('input[name="query-builder-test"]').click
 
       expect(page.keyboard).to be_a(::Playwright::Keyboard)
 
@@ -45,10 +44,14 @@ RSpec.describe 'example' do
         page.keyboard.press("Enter")
       }
 
-      list = page.query_selector("ul.repo-list")
-      items = list.query_selector_all("div.f4")
-      items.each do |item|
-        title = item.eval_on_selector("a", "a => a.innerText")
+      list = page.get_by_test_id('results-list').locator('.search-title')
+
+      # wait for item to appear
+      list.first.wait_for
+
+      # list them
+      list.locator('.search-title').all.each do |item|
+        title = item.text_content
         puts("==> #{title}")
       end
     end
