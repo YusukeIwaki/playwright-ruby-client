@@ -458,7 +458,7 @@ This method waits for [actionability](https://playwright.dev/python/docs/actiona
 
 If the target element is not an `<input>`, `<textarea>` or `[contenteditable]` element, this method throws an error. However, if the element is inside the `<label>` element that has an associated [control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), the control will be filled instead.
 
-To send fine-grained keyboard events, use [Locator#type](./locator#type).
+To send fine-grained keyboard events, use [Locator#press_sequentially](./locator#press_sequentially).
 
 ## filter
 
@@ -1254,26 +1254,11 @@ def type(text, delay: nil, noWaitAfter: nil, timeout: nil)
 ```
 
 
-**NOTE**: In most cases, you should use [Locator#fill](./locator#fill) instead. You only need to type characters if there is special keyboard handling on the page.
-
 Focuses the element, and then sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text.
 
 To press a special key, like `Control` or `ArrowDown`, use [Locator#press](./locator#press).
 
 **Usage**
-
-```ruby
-element.type("hello") # types instantly
-element.type("world", delay: 100) # types slower, like a user
-```
-
-An example of typing into a text field and then submitting the form:
-
-```ruby
-element = page.get_by_label("Password")
-element.type("my password")
-element.press("Enter")
-```
 
 ## uncheck
 
