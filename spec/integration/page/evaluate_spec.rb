@@ -9,6 +9,20 @@ RSpec.describe 'Page#evaluate' do
     end
   end
 
+  it 'should transfer maps' do
+    with_page do |page|
+      expect(page.evaluate('() => new Map([[1, { test: 42n }]])')).to eq({1 => { 'test' => 42 }})
+      expect(page.evaluate('(a) => a', arg: { 1 => { test: 17 } })).to eq({1 => { 'test' => 17 }})
+    end
+  end
+
+  it 'should transfer sets' do
+    with_page do |page|
+      expect(page.evaluate('() => new Set([1, { test: 42 }])')).to eq(Set.new([1, { 'test' => 42 }]))
+      expect(page.evaluate('(a) => a', arg: Set.new([1, { test: 17 }]))).to eq(Set.new([1, { 'test' => 17 }]))
+    end
+  end
+
   it 'should return undefined for non-serializable objects' do
     with_page do |page|
       expect(page.evaluate('() => function() {}')).to be_nil

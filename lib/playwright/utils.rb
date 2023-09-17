@@ -61,6 +61,10 @@ module Playwright
           end
         end
 
+        if params[:acceptDownloads] || params[:acceptDownloads] == false
+          params[:acceptDownloads] = params[:acceptDownloads] ? 'accept' : 'deny'
+        end
+
         params
       end
     end

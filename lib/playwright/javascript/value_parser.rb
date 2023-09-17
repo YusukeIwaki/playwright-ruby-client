@@ -56,6 +56,14 @@ module Playwright
           return hash['bi'].to_i
         end
 
+        if hash.key?('m')
+          return parse_hash(hash['m']).to_h
+        end
+
+        if hash.key?('se')
+          return Set.new(parse_hash(hash['se']))
+        end
+
         if hash.key?('r')
           # @see https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/RegExp
           # @see https://docs.ruby-lang.org/ja/latest/class/Regexp.html

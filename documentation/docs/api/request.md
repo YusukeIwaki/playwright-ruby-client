@@ -56,9 +56,8 @@ Returns the [Frame](./frame) that initiated this request.
 
 **Usage**
 
-```py title=example_1a49593581cd5207e8a467122ebd57b2918fb8724f8814426852556924e4c597.py
+```ruby
 frame_url = request.frame.url
-
 ```
 
 **Details**

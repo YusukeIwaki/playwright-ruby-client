@@ -5,13 +5,13 @@ module Playwright
       if error_payload['name'] == 'TimeoutError'
         TimeoutError.new(
           message: error_payload['message'],
-          stack: error_payload['stack'].split("\n"),
+          stack: error_payload['stack'],
         )
       else
         new(
           name: error_payload['name'],
           message: error_payload['message'],
-          stack: error_payload['stack'].split("\n"),
+          stack: error_payload['stack'],
         )
       end
     end
@@ -25,6 +25,8 @@ module Playwright
       @message = message
       @stack = stack
     end
+
+    attr_reader :name, :message, :stack
   end
 
   class DriverCrashedError < StandardError
@@ -37,5 +39,14 @@ module Playwright
     def initialize(message:, stack: [])
       super(name: 'TimeoutError', message: message, stack: stack)
     end
+  end
+
+  class WebError
+    def initialize(error, page)
+      @error = error
+      @page = PlaywrightApi.wrap(page)
+    end
+
+    attr_reader :error, :page
   end
 end

@@ -86,8 +86,24 @@ module Playwright
       ChannelOwners::Response.from_nullable(resp)
     end
 
+    class FramePageNotReadyError < StandardError
+      MESSAGE = [
+        'Frame for this navigation request is not available, because the request',
+        'was issued before the frame is created. You can check whether the request',
+        'is a navigation request by calling isNavigationRequest() method.',
+      ].join('\n').freeze
+
+      def initialize
+        super(MESSAGE)
+      end
+    end
+
     def frame
-      ChannelOwners::Frame.from(@initializer['frame'])
+      ChannelOwners::Frame.from(@initializer['frame']).tap do |result|
+        unless result.page
+          raise FramePageNotReadyError.new
+        end
+      end
     end
 
     def navigation_request?

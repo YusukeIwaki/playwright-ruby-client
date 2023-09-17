@@ -96,6 +96,8 @@ module Playwright
     end
 
     private def on_route(route)
+      route.send(:update_context, self)
+
       # It is not desired to use PlaywrightApi.wrap directly.
       # However it is a little difficult to define wrapper for `handler` parameter in generate_api.
       # Just a workaround...

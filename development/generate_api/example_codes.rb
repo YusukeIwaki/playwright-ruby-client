@@ -1492,6 +1492,11 @@ module ExampleCodes
     page.on("requestfailed", ->(request) { puts "#{request.url} #{request.failure}" })
   end
 
+  # Request#frame
+  def example_1a49593581cd5207e8a467122ebd57b2918fb8724f8814426852556924e4c597(request:)
+    frame_url = request.frame.url
+  end
+
   # Request#redirected_from
   def example_89568fc86bf623eef37b68c6659b1a8524647c8365bb32a7a8af63bd86111075(page:)
     response = page.goto("http://github.com")
