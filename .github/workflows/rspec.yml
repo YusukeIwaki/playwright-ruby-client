@@ -70,7 +70,7 @@ jobs:
       env:
         BROWSER: ${{ matrix.browser }}
         PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./node_modules/.bin/playwright
-      timeout-minutes: 20
+      timeout-minutes: 25
 
   integration_test_with_npm_playwright_driver_and_old_ruby:
     needs: [unit_test, generate_playwright_api]
