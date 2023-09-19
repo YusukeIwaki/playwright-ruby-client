@@ -189,6 +189,15 @@ RSpec.describe 'locator' do
       end
     end
 
+    it 'should pressSequentially' do
+      with_page do |page|
+        page.content = "<input type='text' />"
+        page.locator('input').press_sequentially('hello')
+        value = page.eval_on_selector('input', 'input => input.value')
+        expect(value).to eq('hello')
+      end
+    end
+
     it 'should return bounding box', sinatra: true do
       with_page do |page|
         page.viewport_size = { width: 500, height: 500 }

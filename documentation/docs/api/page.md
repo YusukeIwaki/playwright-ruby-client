@@ -554,7 +554,7 @@ This method waits for an element matching `selector`, waits for [actionability](
 
 If the target element is not an `<input>`, `<textarea>` or `[contenteditable]` element, this method throws an error. However, if the element is inside the `<label>` element that has an associated [control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), the control will be filled instead.
 
-To send fine-grained keyboard events, use [Page#type](./page#type).
+To send fine-grained keyboard events, use [Locator#press_sequentially](./locator#press_sequentially).
 
 ## focus
 
@@ -1518,11 +1518,6 @@ fine-grained keyboard events. To fill values in form fields, use [Page#fill](./p
 To press a special key, like `Control` or `ArrowDown`, use [Keyboard#press](./keyboard#press).
 
 **Usage**
-
-```ruby
-page.type("#mytextarea", "hello") # types instantly
-page.type("#mytextarea", "world", delay: 100) # types slower, like a user
-```
 
 ## uncheck
 

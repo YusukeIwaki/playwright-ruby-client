@@ -97,6 +97,8 @@ def press(key, delay: nil)
 ```
 
 
+**NOTE**: In most cases, you should use [Locator#press](./locator#press) instead.
+
 `key` can specify the intended
 [keyboardEvent.key](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key) value or a single character to
 generate the text for. A superset of the `key` values can be found
@@ -135,6 +137,8 @@ Shortcut for [Keyboard#down](./keyboard#down) and [Keyboard#up](./keyboard#up).
 def type(text, delay: nil)
 ```
 
+
+**NOTE**: In most cases, you should use [Locator#fill](./locator#fill) instead. You only need to press keys one by one if there is special keyboard handling on the page - in this case use [Locator#press_sequentially](./locator#press_sequentially).
 
 Sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text.
 

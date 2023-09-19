@@ -59,4 +59,39 @@ RSpec.describe 'Request' do
       expect(headers['cookie']).to eq('myCookie=myValue; myOtherCookie=myOtherValue')
     end
   end
+
+  it 'should not allow to access frame on popup main request', sinatra: true do
+    with_page do |page|
+      page.content = "<a target=_blank href='#{server_empty_page}'>click me</a>"
+      request = page.context.expect_event('request') do
+        page.get_by_text('click me').click
+      end
+
+      expect(request.navigation_request?).to eq(true)
+
+      expect { request.frame }.to raise_error(/Frame for this navigation request is not available/)
+    end
+  end
+  # it('should not allow to access frame on popup main request', async ({ page, server }) => {
+  #   await page.setContent(`<a target=_blank href="${server.EMPTY_PAGE}">click me</a>`);
+  #   const requestPromise = page.context().waitForEvent('request');
+  #   const popupPromise = page.context().waitForEvent('page');
+  #   const clicked = page.getByText('click me').click();
+  #   const request = await requestPromise;
+
+  #   expect(request.isNavigationRequest()).toBe(true);
+
+  #   let error;
+  #   try {
+  #     request.frame();
+  #   } catch (e) {
+  #     error = e;
+  #   }
+  #   expect(error.message).toContain('Frame for this navigation request is not available');
+
+  #   const response = await request.response();
+  #   await response.finished();
+  #   await popupPromise;
+  #   await clicked;
+  # });
 end

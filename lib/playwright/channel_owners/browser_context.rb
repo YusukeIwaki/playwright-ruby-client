@@ -38,6 +38,12 @@ module Playwright
       @channel.on('console', ->(params) {
         on_console_message(ChannelOwners::ConsoleMessage.from(params['message']))
       })
+      @channel.on('pageError', ->(params) {
+        on_page_error(
+          Error.parse(params['error']['error']),
+          ChannelOwners::Page.from_nullable(params['page']),
+        )
+      })
       @channel.on('dialog', ->(params) {
         on_dialog(ChannelOwners::Dialog.from(params['dialog']))
       })
@@ -97,6 +103,8 @@ module Playwright
     end
 
     private def on_route(route)
+      route.send(:update_context, self)
+
       # It is not desired to use PlaywrightApi.wrap directly.
       # However it is a little difficult to define wrapper for `handler` parameter in generate_api.
       # Just a workaround...
@@ -174,6 +182,13 @@ module Playwright
         else
           dialog.dismiss
         end
+      end
+    end
+
+    private def on_page_error(error, page)
+      emit(Events::BrowserContext::WebError, WebError.new(error, page))
+      if page
+        page.emit(Events::Page::PageError, error)
       end
     end
 

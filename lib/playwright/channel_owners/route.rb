@@ -111,7 +111,7 @@ module Playwright
     end
 
     def fetch(headers: nil, method: nil, postData: nil, url: nil, maxRedirects: nil, timeout: nil)
-      api_request_context = request.frame.page.context.request
+      api_request_context = @context.request
       api_request_context.send(:_inner_fetch,
         request,
         url,
@@ -171,6 +171,10 @@ module Playwright
     private def mime_type_for(filepath)
       mime_types = MIME::Types.type_for(filepath)
       mime_types.first.to_s || 'application/octet-stream'
+    end
+
+    private def update_context(context)
+      @context = context
     end
   end
 end

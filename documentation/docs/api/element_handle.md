@@ -259,7 +259,7 @@ This method waits for [actionability](https://playwright.dev/python/docs/actiona
 
 If the target element is not an `<input>`, `<textarea>` or `[contenteditable]` element, this method throws an error. However, if the element is inside the `<label>` element that has an associated [control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), the control will be filled instead.
 
-To send fine-grained keyboard events, use [ElementHandle#type](./element_handle#type).
+To send fine-grained keyboard events, use [Locator#press_sequentially](./locator#press_sequentially).
 
 ## focus
 
@@ -613,19 +613,6 @@ Focuses the element, and then sends a `keydown`, `keypress`/`input`, and `keyup`
 To press a special key, like `Control` or `ArrowDown`, use [ElementHandle#press](./element_handle#press).
 
 **Usage**
-
-```ruby
-element_handle.type("hello") # types instantly
-element_handle.type("world", delay: 100) # types slower, like a user
-```
-
-An example of typing into a text field and then submitting the form:
-
-```ruby
-element_handle = page.query_selector("input")
-element_handle.type("some text")
-element_handle.press("Enter")
-```
 
 ## uncheck
 

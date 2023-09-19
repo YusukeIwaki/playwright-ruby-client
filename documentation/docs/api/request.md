@@ -54,6 +54,20 @@ def frame
 
 Returns the [Frame](./frame) that initiated this request.
 
+**Usage**
+
+```ruby
+frame_url = request.frame.url
+```
+
+**Details**
+
+Note that in some cases the frame is not available, and this method will throw.
+- When request originates in the Service Worker. You can use `request.serviceWorker()` to check that.
+- When navigation request is issued before the corresponding frame is created. You can use [Request#navigation_request?](./request#navigation_request?) to check that.
+
+Here is an example that handles all the cases:
+
 ## headers
 
 ```
@@ -92,6 +106,9 @@ def navigation_request?
 
 
 Whether this request is driving frame's navigation.
+
+Some navigation requests are issued before the corresponding frame is created, and therefore
+do not have [Request#frame](./request#frame) available.
 
 ## method
 

@@ -201,7 +201,7 @@ RSpec.describe 'request interception', sinatra: true do
         end
       })
       response = page.goto("#{server_prefix}/slow", timeout: 20000)
-      expect(response.body).to eq('Error: Request timed out after 10ms')
+      expect(response.body).to eq('Request timed out after 10ms')
     end
   end
 
@@ -235,6 +235,21 @@ RSpec.describe 'request interception', sinatra: true do
       response = page.goto(server_empty_page)
       expect(response.status).to eq(200)
       expect(request_promise.value!).to eq('{"foo":"bar"}')
+    end
+  end
+
+  it 'should fulfill with redirect status', sinatra: true do
+    with_page do |page|
+      page.context.route('**/*', -> (route, _) {
+        response = page.request.fetch(route.request)
+        route.fulfill(response: response, body: 'hello')
+      })
+      page.content = "<a target=_blank href=\"#{server_empty_page}\">click me</a>"
+
+      popup = page.expect_popup do
+        page.get_by_text('click me').click
+      end
+      expect(popup.locator('body').text_content).to include('hello')
     end
   end
 end

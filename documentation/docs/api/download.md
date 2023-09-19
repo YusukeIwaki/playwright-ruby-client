@@ -10,15 +10,18 @@ sidebar_position: 10
 All the downloaded files belonging to the browser context are deleted when the
 browser context is closed.
 
-Download event is emitted once the download starts. Download path becomes available once download completes:
+Download event is emitted once the download starts. Download path becomes available once download completes.
 
-```ruby
-download = page.expect_download do
-  page.get_by_text("Download file").click
-end
+```python sync title=example_c247767083cf193df26a39a61a3a8bc19d63ed5c24db91b88c50b7d37975005d.py
+# Start waiting for the download
+with page.expect_download() as download_info:
+    # Perform the action that initiates download
+    page.get_by_text("Download file").click()
+download = download_info.value
 
-# wait for download to complete
-path = download.path
+# Wait for the download process to complete and save the downloaded file somewhere
+download.save_as("/path/to/save/at/" + download.suggested_filename)
+
 ```
 
 ## cancel
@@ -80,6 +83,13 @@ def save_as(path)
 
 Copy the download to a user-specified path. It is safe to call this method while the download
 is still in progress. Will wait for the download to finish if necessary.
+
+**Usage**
+
+```python sync title=example_66ffd4ef7286957e4294d84b8f660ff852c87af27a56b3e4dd9f84562b5ece02.py
+download.save_as("/path/to/save/at/" + download.suggested_filename)
+
+```
 
 ## suggested_filename
 

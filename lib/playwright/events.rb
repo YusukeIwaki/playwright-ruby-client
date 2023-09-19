@@ -29,6 +29,7 @@ end
     Console: 'console',
     Dialog: 'dialog',
     Page: 'page',
+    WebError: 'weberror',
     ServiceWorker: 'serviceworker',
     Request: 'request',
     Response: 'response',

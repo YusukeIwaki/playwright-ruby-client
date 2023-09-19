@@ -56,11 +56,17 @@ module Playwright
           result = []
           value.each { |v| result << serialize_value(v) }
           { a: result, id: id }
+        when Set
+          { se: serialize_value(value.to_a) }
         when Hash
-          id = @visited.log(value)
-          result = []
-          value.each { |key, v| result << { k: key, v: serialize_value(v) } }
-          { o: result, id: id }
+          if value.any? { |k, v| !k.is_a?(String) && !k.is_a?(Symbol) } # Map
+            { m: serialize_value(value.to_a) }
+          else
+            id = @visited.log(value)
+            result = []
+            value.each { |key, v| result << { k: key, v: serialize_value(v) } }
+            { o: result, id: id }
+          end
         else
           raise ArgumentError.new("Unexpected value: #{value}")
         end

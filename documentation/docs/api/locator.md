@@ -458,7 +458,7 @@ This method waits for [actionability](https://playwright.dev/python/docs/actiona
 
 If the target element is not an `<input>`, `<textarea>` or `[contenteditable]` element, this method throws an error. However, if the element is inside the `<label>` element that has an associated [control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), the control will be filled instead.
 
-To send fine-grained keyboard events, use [Locator#type](./locator#type).
+To send fine-grained keyboard events, use [Locator#press_sequentially](./locator#press_sequentially).
 
 ## filter
 
@@ -1032,6 +1032,36 @@ respective texts.
 Shortcuts such as `key: "Control+o"` or `key: "Control+Shift+T"` are supported as well. When specified with the
 modifier, modifier is pressed and being held while the subsequent key is being pressed.
 
+## press_sequentially
+
+```
+def press_sequentially(text, delay: nil, noWaitAfter: nil, timeout: nil)
+```
+
+
+**NOTE**: In most cases, you should use [Locator#fill](./locator#fill) instead. You only need to press keys one by one if there is special keyboard handling on the page.
+
+Focuses the element, and then sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text.
+
+To press a special key, like `Control` or `ArrowDown`, use [Locator#press](./locator#press).
+
+**Usage**
+
+```python sync title=example_1b7781d5527574a18d4b9812e3461203d2acc9ba7e09cbfd0ffbc4154e3f5971.py
+locator.press_sequentially("hello") # types instantly
+locator.press_sequentially("world", delay=100) # types slower, like a user
+
+```
+
+An example of typing into a text field and then submitting the form:
+
+```python sync title=example_cc0a6b9aa95b97e5c17c4b114da10a29c7f6f793e99aee1ea2703636af6e24f9.py
+locator = page.get_by_label("Password")
+locator.press_sequentially("my password")
+locator.press("Enter")
+
+```
+
 ## screenshot
 
 ```
@@ -1254,26 +1284,11 @@ def type(text, delay: nil, noWaitAfter: nil, timeout: nil)
 ```
 
 
-**NOTE**: In most cases, you should use [Locator#fill](./locator#fill) instead. You only need to type characters if there is special keyboard handling on the page.
-
 Focuses the element, and then sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text.
 
 To press a special key, like `Control` or `ArrowDown`, use [Locator#press](./locator#press).
 
 **Usage**
-
-```ruby
-element.type("hello") # types instantly
-element.type("world", delay: 100) # types slower, like a user
-```
-
-An example of typing into a text field and then submitting the form:
-
-```ruby
-element = page.get_by_label("Password")
-element.type("my password")
-element.press("Enter")
-```
 
 ## uncheck
 

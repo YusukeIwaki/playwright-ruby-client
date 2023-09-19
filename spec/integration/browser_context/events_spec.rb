@@ -150,4 +150,16 @@ RSpec.describe 'BrowserContext events' do
   #   await promise;
   #   await expect.poll(() => popup.evaluate('window.result')).toBe('hello');
   # });
+
+  it 'weberror event should work' do
+    with_page do |page|
+      error = page.context.expect_event('weberror') do
+        page.content = '<script>throw new Error("boom")</script>'
+      end
+
+      expect(error.page).to eq(page)
+      expect(error.error).to be_a(Playwright::Error)
+      expect(error.error.stack).to include('boom')
+    end
+  end
 end

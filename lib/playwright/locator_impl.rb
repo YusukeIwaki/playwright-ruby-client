@@ -446,6 +446,10 @@ module Playwright
       @frame.type(@selector, text, strict: true, delay: delay, noWaitAfter: noWaitAfter, timeout: timeout)
     end
 
+    def press_sequentially(text, delay: nil, noWaitAfter: nil, timeout: nil)
+      type(text, delay: delay, noWaitAfter: noWaitAfter, timeout: timeout)
+    end
+
     def uncheck(
           force: nil,
           noWaitAfter: nil,

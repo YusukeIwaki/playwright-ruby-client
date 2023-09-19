@@ -470,6 +470,7 @@
 * or
 * page
 * press
+* press_sequentially
 * screenshot
 * scroll_into_view_if_needed
 * select_option

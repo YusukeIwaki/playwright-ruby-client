@@ -129,17 +129,15 @@ RSpec.describe 'WebSocket', web_socket: true do
 
   it 'should reject waitForEvent on page close', sinatra: true do
     with_page do |page|
-      with_page do |page|
-        ws = page.expect_websocket do
-          page.evaluate("window.ws = new WebSocket('#{ws_url}')")
-        end
-        ws.wait_for_event('framereceived')
-        expect {
-          ws.expect_event('framesent') do
-            page.close
-          end
-        }.to raise_error(/Page closed/)
+      ws = page.expect_websocket do
+        page.evaluate("window.ws = new WebSocket('#{ws_url}')")
       end
+      ws.wait_for_event('framereceived')
+      expect {
+        ws.expect_event('framesent') do
+          page.close
+        end
+      }.to raise_error(/Page closed/)
     end
   end
 end
