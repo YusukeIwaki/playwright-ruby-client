@@ -8,15 +8,20 @@ sidebar_position: 10
 BrowserType provides methods to launch a specific browser instance or connect to an existing one. The following is a
 typical example of using Playwright to drive automation:
 
-```ruby
-chromium = playwright.chromium
-chromium.launch do |browser|
-  page = browser.new_page
-  page.goto('https://example.com/')
+```python sync title=example_2f9fbff87f35af4b76a27f54efeca3201696bbfa94ce03fee5a3df2639cc27d3.py
+from playwright.sync_api import sync_playwright, Playwright
 
-  # other actions
+def run(playwright: Playwright):
+    chromium = playwright.chromium
+    browser = chromium.launch()
+    page = browser.new_page()
+    page.goto("https://example.com")
+    # other actions...
+    browser.close()
 
-end
+with sync_playwright() as playwright:
+    run(playwright)
+
 ```
 
 ## connect_over_cdp

@@ -9,21 +9,24 @@ sidebar_position: 10
 
 An example of using [Dialog](./dialog) class:
 
-```ruby
-def handle_dialog(dialog)
-  puts "[#{dialog.type}] #{dialog.message}"
-  if dialog.message =~ /foo/
-    dialog.accept
-  else
-    dialog.dismiss
-  end
-end
+```python sync title=example_a7dcc75b7aa5544237ac3a964e9196d0445308864d3ce820f8cb8396f687b04a.py
+from playwright.sync_api import sync_playwright, Playwright
 
-page.on("dialog", method(:handle_dialog))
-page.evaluate("confirm('foo')") # will be accepted
-# => [confirm] foo
-page.evaluate("alert('bar')") # will be dismissed
-# => [alert] bar
+def handle_dialog(dialog):
+    print(dialog.message)
+    dialog.dismiss()
+
+def run(playwright: Playwright):
+    chromium = playwright.chromium
+    browser = chromium.launch()
+    page = browser.new_page()
+    page.on("dialog", handle_dialog)
+    page.evaluate("alert('1')")
+    browser.close()
+
+with sync_playwright() as playwright:
+    run(playwright)
+
 ```
 
 **NOTE**: Dialogs are dismissed automatically, unless there is a [`event: Page.dialog`] listener.

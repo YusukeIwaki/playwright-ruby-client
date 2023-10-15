@@ -8,19 +8,20 @@ sidebar_position: 10
 Playwright module provides a method to launch a browser instance. The following is a typical example of using Playwright
 to drive automation:
 
-```ruby
-require 'playwright'
+```python sync title=example_6647e5a44b0440884026a6142606dfddad75ba1e643919b015457df4ed2e198f.py
+from playwright.sync_api import sync_playwright, Playwright
 
-Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwright|
-  chromium = playwright.chromium # or "firefox" or "webkit".
-  chromium.launch do |browser|
-    page = browser.new_page
-    page.goto('https://example.com/')
+def run(playwright: Playwright):
+    chromium = playwright.chromium # or "firefox" or "webkit".
+    browser = chromium.launch()
+    page = browser.new_page()
+    page.goto("http://example.com")
+    # other actions...
+    browser.close()
 
-    # other actions
+with sync_playwright() as playwright:
+    run(playwright)
 
-  end
-end
 ```
 
 ## chromium
@@ -33,20 +34,22 @@ This object can be used to launch or connect to Chromium, returning instances of
 
 Returns a dictionary of devices to be used with [Browser#new_context](./browser#new_context) or [Browser#new_page](./browser#new_page).
 
-```ruby
-require 'playwright'
+```python sync title=example_14d627977a4ad16a605ec5472d768a3324812fa8e7c57685561408fa6601e352.py
+from playwright.sync_api import sync_playwright, Playwright
 
-Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwright|
-  iphone = playwright.devices["iPhone 6"]
-  playwright.webkit.launch do |browser|
+def run(playwright: Playwright):
+    webkit = playwright.webkit
+    iphone = playwright.devices["iPhone 6"]
+    browser = webkit.launch()
     context = browser.new_context(**iphone)
-    page = context.new_page
-    page.goto('https://example.com/')
+    page = context.new_page()
+    page.goto("http://example.com")
+    # other actions...
+    browser.close()
 
-    # other actions
+with sync_playwright() as playwright:
+    run(playwright)
 
-  end
-end
 ```
 
 ## firefox
