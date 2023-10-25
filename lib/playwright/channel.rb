@@ -30,6 +30,7 @@ module Playwright
     # @param params [Hash]
     # @return [Hash]
     def send_message_to_server_result(method, params)
+      check_not_collected
       with_logging do |metadata|
         @connection.send_message_to_server(@guid, method, params, metadata: metadata)
       end
@@ -39,6 +40,7 @@ module Playwright
     # @param params [Hash]
     # @returns [Concurrent::Promises::Future]
     def async_send_message_to_server(method, params = {})
+      check_not_collected
       with_logging do |metadata|
         @connection.async_send_message_to_server(@guid, method, params, metadata: metadata)
       end
@@ -73,6 +75,12 @@ module Playwright
           { file: loc.absolute_path || '', line: loc.lineno, function: loc.label }
         end,
       }
+    end
+
+    private def check_not_collected
+      if @object.was_collected?
+        raise "The object has been collected to prevent unbounded heap growth."
+      end
     end
   end
 end

@@ -50,13 +50,18 @@ module Playwright
       child.send(:update_parent, self)
     end
 
+    def was_collected?
+      @was_collected
+    end
+
     # used only from Connection. Not intended for public use. So keep private.
-    private def dispose!
+    private def dispose!(reason: nil)
       # Clean up from parent and connection.
       @connection.send(:delete_object_from_channel_owner, @guid)
+      @was_collected = reason == 'gc'
 
       # Dispose all children.
-      @objects.each_value { |object| object.send(:dispose!) }
+      @objects.each_value { |object| object.send(:dispose!, reason: reason) }
       @objects.clear
     end
 
