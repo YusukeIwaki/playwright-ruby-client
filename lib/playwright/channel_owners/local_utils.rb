@@ -1,5 +1,11 @@
 module Playwright
   define_channel_owner :LocalUtils do
+    def devices
+      @devices ||= @initializer['deviceDescriptors'].map do |device|
+        [device['name'], parse_device_descriptor(device['descriptor'])]
+      end.to_h
+    end
+
     # @param zip_file [String]
     def zip(params)
       @channel.send_message_to_server('zip', params)
@@ -50,6 +56,27 @@ module Playwright
     def add_stack_to_tracing_no_reply(id, stack)
       @channel.async_send_message_to_server('addStackToTracingNoReply', callData: { id: id, stack: stack })
       nil
+    end
+
+    private def parse_device_descriptor(descriptor)
+      # This return value can be passed into Browser#new_context as it is.
+      # ex:
+      # ```
+      #   iPhone = playwright.devices['iPhone 6']
+      #   context = browser.new_context(**iPhone)
+      #   page = context.new_page
+      #
+      # ```
+      {
+        userAgent: descriptor['userAgent'],
+        viewport: {
+          width: descriptor['viewport']['width'],
+          height: descriptor['viewport']['height'],
+        },
+        deviceScaleFactor: descriptor['deviceScaleFactor'],
+        isMobile: descriptor['isMobile'],
+        hasTouch: descriptor['hasTouch'],
+      }
     end
   end
 end
