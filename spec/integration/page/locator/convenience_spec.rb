@@ -19,7 +19,9 @@ RSpec.describe 'Locator' do
       page.goto("#{server_prefix}/dom.html")
       locator = page.locator('#outer')
       expect(locator.get_attribute('name')).to eq('value')
+      expect(locator['name']).to eq('value')
       expect(locator.get_attribute('foo')).to be_nil
+      expect(locator['foo']).to be_nil
     end
   end
 
