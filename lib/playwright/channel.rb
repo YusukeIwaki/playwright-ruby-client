@@ -48,7 +48,7 @@ module Playwright
 
     private def with_logging(&block)
       locations = caller_locations
-      first_api_call_location_idx = locations.index { |loc| loc.absolute_path.include?('playwright_api') }
+      first_api_call_location_idx = locations.index { |loc| loc.absolute_path&.include?('playwright_api') }
       unless first_api_call_location_idx
         return block.call(nil)
       end
