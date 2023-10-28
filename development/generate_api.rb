@@ -40,6 +40,7 @@ EXPERIMENTAL = %w[
 API_IMPLEMENTATIONS = %w[
   Accessibility
   AndroidInput
+  ConsoleMessage
   FileChooser
   Keyboard
   Mouse

@@ -181,7 +181,7 @@ module Playwright
       end
 
       if method == "__dispose__"
-        object.send(:dispose!)
+        object.send(:dispose!, reason: params["reason"])
         return
       end
 

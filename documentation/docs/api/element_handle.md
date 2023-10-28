@@ -505,13 +505,14 @@ Triggers a `change` and `input` event once all the provided options have been se
 
 **Usage**
 
-```ruby
-# single selection matching the value
-element_handle.select_option(value: "blue")
+```python sync title=example_e6bbc99e34c9f6ee73aa7d4265d34af456e6c67d185530f0a77f8064050a3ec4.py
+# Single selection matching the value or label
+handle.select_option("blue")
 # single selection matching both the label
-element_handle.select_option(label: "blue")
+handle.select_option(label="blue")
 # multiple selection
-element_handle.select_option(value: ["red", "green", "blue"])
+handle.select_option(value=["red", "green", "blue"])
+
 ```
 
 ## select_text

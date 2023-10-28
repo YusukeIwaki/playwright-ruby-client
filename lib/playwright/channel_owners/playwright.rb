@@ -25,9 +25,7 @@ module Playwright
     end
 
     def devices
-      @devices ||= @initializer['deviceDescriptors'].map do |item|
-        [item['name'], parse_device_descriptor(item['descriptor'])]
-      end.to_h
+      @connection.local_utils.devices
     end
 
     # used only from Playwright#connect_to_browser_server
@@ -43,27 +41,6 @@ module Playwright
         raise 'Malformed endpoint. Did you use Android.launchServer method?'
       end
       ::Playwright::ChannelOwners::AndroidDevice.from(@initializer['preConnectedAndroidDevice'])
-    end
-
-    private def parse_device_descriptor(descriptor)
-      # This return value can be passed into Browser#new_context as it is.
-      # ex:
-      # ```
-      #   iPhone = playwright.devices['iPhone 6']
-      #   context = browser.new_context(**iPhone)
-      #   page = context.new_page
-      #
-      # ```
-      {
-        userAgent: descriptor['userAgent'],
-        viewport: {
-          width: descriptor['viewport']['width'],
-          height: descriptor['viewport']['height'],
-        },
-        deviceScaleFactor: descriptor['deviceScaleFactor'],
-        isMobile: descriptor['isMobile'],
-        hasTouch: descriptor['hasTouch'],
-      }
     end
   end
 end

@@ -36,7 +36,7 @@ module Playwright
         on_service_worker(ChannelOwners::Worker.from(params['worker']))
       })
       @channel.on('console', ->(params) {
-        on_console_message(ChannelOwners::ConsoleMessage.from(params['message']))
+        on_console_message(ConsoleMessageImpl.new(params))
       })
       @channel.on('pageError', ->(params) {
         on_page_error(

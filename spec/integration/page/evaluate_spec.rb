@@ -10,6 +10,7 @@ RSpec.describe 'Page#evaluate' do
   end
 
   it 'should transfer maps' do
+    pending 'REMOVED functionality from Playwright 1.39.0'
     with_page do |page|
       expect(page.evaluate('() => new Map([[1, { test: 42n }]])')).to eq({1 => { 'test' => 42 }})
       expect(page.evaluate('(a) => a', arg: { 1 => { test: 17 } })).to eq({1 => { 'test' => 17 }})
@@ -17,6 +18,7 @@ RSpec.describe 'Page#evaluate' do
   end
 
   it 'should transfer sets' do
+    pending 'REMOVED functionality from Playwright 1.39.0'
     with_page do |page|
       expect(page.evaluate('() => new Set([1, { test: 42 }])')).to eq(Set.new([1, { 'test' => 42 }]))
       expect(page.evaluate('(a) => a', arg: Set.new([1, { test: 17 }]))).to eq(Set.new([1, { 'test' => 17 }]))

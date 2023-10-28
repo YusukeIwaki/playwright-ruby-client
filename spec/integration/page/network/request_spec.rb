@@ -44,6 +44,7 @@ RSpec.describe 'Request' do
   end
 
   it 'should report all cookies in one header', sinatra: true do
+    pending 'cookies cannot be set in latest chromium' if chromium?
     sinatra.get('/headers') { 'OK' }
 
     with_page do |page|
