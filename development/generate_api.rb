@@ -29,6 +29,7 @@ ALL_TYPES = %w[
     APIResponse
     APIRequestContext
     APIRequest
+    LocatorAssertions
 ]
 EXPERIMENTAL = %w[
   Android
@@ -49,6 +50,7 @@ API_IMPLEMENTATIONS = %w[
   FrameLocator
   APIRequest
   APIResponse
+  LocatorAssertions
 ]
 
 require 'bundler/setup'
