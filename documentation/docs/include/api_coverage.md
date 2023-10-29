@@ -527,6 +527,49 @@
 
 * ~~new_context~~
 
+## LocatorAssertions
+
+* not_to_be_attached
+* not_to_be_checked
+* not_to_be_disabled
+* not_to_be_editable
+* not_to_be_empty
+* not_to_be_enabled
+* not_to_be_focused
+* not_to_be_hidden
+* not_to_be_in_viewport
+* not_to_be_visible
+* not_to_contain_text
+* not_to_have_attribute
+* not_to_have_class
+* not_to_have_count
+* not_to_have_css
+* not_to_have_id
+* not_to_have_js_property
+* not_to_have_text
+* not_to_have_value
+* not_to_have_values
+* to_be_attached
+* to_be_checked
+* to_be_disabled
+* to_be_editable
+* to_be_empty
+* to_be_enabled
+* to_be_focused
+* to_be_hidden
+* to_be_in_viewport
+* to_be_visible
+* to_contain_text
+* to_have_attribute
+* to_have_class
+* to_have_count
+* to_have_css
+* to_have_id
+* to_have_js_property
+* to_have_text
+* to_have_value
+* to_have_values
+
 ## Android
 
 * ~~connect~~
