@@ -304,11 +304,7 @@ module Playwright
     end
 
     def all
-      Enumerator.new do |out|
-        count.times do |i|
-          out << nth(i)
-        end
-      end
+      count.times.map { |i| nth(i) }
     end
 
     def count
