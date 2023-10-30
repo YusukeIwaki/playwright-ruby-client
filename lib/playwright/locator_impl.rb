@@ -319,6 +319,8 @@ module Playwright
       @frame.get_attribute(@selector, name, strict: true, timeout: timeout)
     end
 
+    alias_method :[], :get_attribute
+
     def hover(
           force: nil,
           modifiers: nil,
