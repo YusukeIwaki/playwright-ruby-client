@@ -304,11 +304,7 @@ module Playwright
     end
 
     def all
-      Enumerator.new do |out|
-        count.times do |i|
-          out << nth(i)
-        end
-      end
+      count.times.map { |i| nth(i) }
     end
 
     def count
@@ -318,8 +314,6 @@ module Playwright
     def get_attribute(name, timeout: nil)
       @frame.get_attribute(@selector, name, strict: true, timeout: timeout)
     end
-
-    alias_method :[], :get_attribute
 
     def hover(
           force: nil,
