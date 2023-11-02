@@ -24,7 +24,7 @@ module Playwright
           @handles << value.channel
           { h: index }
         when nil
-          { v: 'undefined' }
+          { v: 'null' }
         when Float::NAN
           { v: 'NaN'}
         when Float::INFINITY

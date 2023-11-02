@@ -49,4 +49,6 @@ module Playwright
 
     attr_reader :error, :page
   end
+
+  class AssertionError < StandardError; end
 end
