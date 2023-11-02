@@ -7,22 +7,13 @@ sidebar_position: 10
 
 The [LocatorAssertions](./locator_assertions) class provides assertion methods that can be used to make assertions about the [Locator](./locator) state in the tests.
 
-```ruby sync title=example_eff0600f575bf375d7372280ca8e6dfc51d927ced49fbcb75408c894b9e0564e.py
-require "playwright/test"
+```python sync title=example_eff0600f575bf375d7372280ca8e6dfc51d927ced49fbcb75408c894b9e0564e.py
+from playwright.sync_api import Page, expect
 
-# Every locator assertion has a corresponding matcher. For example:
-#
-# to_be_visible => expect(my_locator).to be_visible
-# not_to_be_visible => expect(my_locator).to not_be_visible
-
-RSpec.describe "My feature", type: :feature do
-  include Playwright::Test::Matchers
-
-  it "changes the status to submitted" do
-    page.get_by_role("button").click
-    expect(page.locator(".status")).to have_text("Submitted")
-  end
-end
+def test_status_becomes_submitted(page: Page) -> None:
+    # ..
+    page.get_by_role("button").click()
+    expect(page.locator(".status")).to_have_text("Submitted")
 
 ```
 
@@ -392,10 +383,23 @@ def to_be_visible(timeout: nil, visible: nil)
 
 Ensures that [Locator](./locator) points to an [attached](https://playwright.dev/python/docs/actionability#attached) and [visible](https://playwright.dev/python/docs/actionability#visible) DOM node.
 
+To check that at least one element from the list is visible, use [Locator#first](./locator#first).
+
 **Usage**
 
-```python sync title=example_84ccd2ec31f9f00136a2931e9abb9c766eab967a6e892d3dcf90c02f14e5117f.py
+```python sync title=example_6c79cc47344706b2e463621209ddd4006848d57eb2074fb7467213756fb14752.py
+# A specific element is visible.
 expect(page.get_by_text("Welcome")).to_be_visible()
+
+# At least one item in the list is visible.
+expect(page.get_by_test_id("todo-item").first).to_be_visible()
+
+# At least one of the two elements is visible, possibly both.
+expect(
+    page.get_by_role("button", name="Sign in")
+    .or_(page.get_by_role("button", name="Sign up"))
+    .first
+).to_be_visible()
 
 ```
 

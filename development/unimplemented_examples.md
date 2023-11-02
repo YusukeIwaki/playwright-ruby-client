@@ -555,10 +555,21 @@ expect(locator).to_be_in_viewport(ratio=0.5)
 
 ```
 
-### example_84ccd2ec31f9f00136a2931e9abb9c766eab967a6e892d3dcf90c02f14e5117f (LocatorAssertions#to_be_visible)
+### example_6c79cc47344706b2e463621209ddd4006848d57eb2074fb7467213756fb14752 (LocatorAssertions#to_be_visible)
 
 ```
+# A specific element is visible.
 expect(page.get_by_text("Welcome")).to_be_visible()
+
+# At least one item in the list is visible.
+expect(page.get_by_test_id("todo-item").first).to_be_visible()
+
+# At least one of the two elements is visible, possibly both.
+expect(
+    page.get_by_role("button", name="Sign in")
+    .or_(page.get_by_role("button", name="Sign up"))
+    .first
+).to_be_visible()
 
 ```
 

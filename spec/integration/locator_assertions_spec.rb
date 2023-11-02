@@ -28,7 +28,7 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
       expect(page.locator("div#foobar")).to have_attribute("id", "foobar")
       expect(page.locator("div#foobar")).to have_attribute("id", /foobar/)
       expect(page.locator("div#foobar")).to not_have_attribute("id", "kek", timeout: 100)
-      
+
       expect {
         expect(page.locator("div#foobar")).to have_attribute("id", "koko", timeout: 100)
       }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
@@ -70,7 +70,7 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
       expect(page.locator("div.foobar")).to have_css("color", "rgb(234, 74, 90)")
       expect(page.locator("div.foobar")).to not_have_css(
         "color", "rgb(42, 42, 42)", timeout: 100)
-     
+
       expect {
         expect(page.locator("div.foobar")).to have_css(
           "color", "rgb(42, 42, 42)", timeout: 100
@@ -85,7 +85,7 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
       page.set_content("<div class=foobar id=kek>kek</div>")
       expect(page.locator("div.foobar")).to have_id("kek")
       expect(page.locator("div.foobar")).to not_have_id("top", timeout: 100)
-      
+
       expect {
         expect(page.locator("div.foobar")).to have_id("top", timeout: 100)
       }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
@@ -146,7 +146,7 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
           expect(locator).to have_js_property("foo", 1, timeout: 500)
         }
       end
-    end 
+    end
 
     it "should work with pass boolean" do
       with_page do |page|
@@ -206,6 +206,7 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
         page.goto(server_empty_page)
         page.set_content("<div id=foobar>kek</div>")
         expect(page.locator("div#foobar")).to have_text("kek")
+        expect(page.locator("div#foobar")).to not_have_text("kak")
         expect(page.locator("div#foobar")).to not_contain_text("top", timeout: 100)
 
         page.set_content("<div>Text    \n1</div><div>Text   2a</div>")
@@ -548,7 +549,7 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
           <option value="R">Red</option>
           <option value="G">Green</option>
           <option value="B">Blue</option>
-        </select> 
+        </select>
         HTML
 
         locator = page.locator("select")
@@ -624,7 +625,7 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
 
       my_checkbox.check()
       expect(my_checkbox).to be_checked(timeout: 100, checked: true)
-      
+
       expect {
         expect(my_checkbox).to be_checked(timeout: 100, checked: false)
       }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
@@ -674,7 +675,7 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
         expect(page.locator("button")).to not_be_enabled(enabled: false)
       end
     end
-    
+
     it "should work eventually" do
       with_page do |page|
         page.set_content("<button disabled>Text</button>")
@@ -685,7 +686,7 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
         JS
         expect(page.locator("button")).to be_enabled
       end
-    end 
+    end
 
     it "should work eventually with not" do
       with_page do |page|
@@ -826,6 +827,4 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
       end
     end
   end
-
-  
 end
