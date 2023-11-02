@@ -519,7 +519,7 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
           expect(locator).to have_values(["R", "G"], timeout: 500)
         rescue RSpec::Expectations::ExpectationNotMetError => e
           expect(e.full_message).to include("Locator expected to have Values '[\"R\", \"G\"]'")
-          actual_value = '{"a"=>[{"s"=>"RR"}, {"s"=>"GG"}], "id"=>1}'
+          actual_value = '["RR", "GG"]'
           expect(e.full_message).to include("Actual value #{actual_value}") # TODO: print actual value in prettier format?
         end
       end
@@ -560,7 +560,7 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
           expect(locator).to have_values(["R", "G"], timeout: 500)
         rescue RSpec::Expectations::ExpectationNotMetError => e
           expect(e.full_message).to include("Locator expected to have Values '[\"R\", \"G\"]'")
-          actual_value = '{"a"=>[{"s"=>"B"}], "id"=>1}'
+          actual_value = '["B"]'
           expect(e.full_message).to include("Actual value #{actual_value}") # TODO: print actual value in prettier format?
         end
       end
