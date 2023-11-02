@@ -486,20 +486,26 @@ module Playwright
     end
 
     def expect(expression, options)
-      if options.key? :expectedValue
+      if options.key?(:expectedValue)
         options[:expectedValue] = JavaScript::ValueSerializer
           .new(options[:expectedValue])
           .serialize
       end
 
-      @frame.channel.send_message_to_server_result(
+      result = @frame.channel.send_message_to_server_result(
         "expect",
         {
           selector: @selector,
-          expression:,
+          expression: expression,
           **options,
         }
       )
+
+      if result.key?('received')
+        result['received'] = JavaScript::ValueParser.new(result['received']).parse
+      end
+
+      result
     end
   end
 end
