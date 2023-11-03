@@ -127,9 +127,9 @@ RSpec.describe 'example' do
 
     it 'should work with BrowserContext#expose_binding' do
       with_context do |context|
-        example_fac8dd8edc4c565fc04b423141a6881aab2388e7951e425c43865ddd656ffad6(browser_context: context)
+        example_a450852d36dda88564582371af8d87bb58b1a517aac4fa60b7a58a0e41c5ceff(browser_context: context)
         example_93e847f70b01456eec429a1ebfaa6b8f5334f4c227fd73e62dd6a7facb48dbbd(browser_context: context)
-        example_3465d6b0d3caee840bd7e5ca7076e4def34af07010caca46ea35d2a536d7445d(browser_context: context)
+        example_714719de9c92e66678257180301c2512f8cd69185f53a5121b6c52194f61a871(browser_context: context)
       end
     end
 
@@ -162,7 +162,7 @@ RSpec.describe 'example' do
 
     it 'should work with Dialog' do
       with_page do |page|
-        example_c954c35627e62be69e1f138f25d7377b13e18d08039d476946217827fa95db52(page: page)
+        example_a7dcc75b7aa5544237ac3a964e9196d0445308864d3ce820f8cb8396f687b04a(page: page)
       end
     end
 
@@ -175,10 +175,22 @@ RSpec.describe 'example' do
         body('Hello world!')
       end
 
-      with_page(acceptDownloads: true) do |page|
-        page.content = "<a href=\"#{server_prefix}/download\">Download file</a>"
-        path = example_26c9f5a18a58f9976e24d83a3ae807479df5e28de9028f085615d99be2cea5a1(page: page)
-        expect(File.exist?(path)).to eq(true)
+      tmpdir = Dir.mktmpdir
+      begin
+        with_page(acceptDownloads: true) do |page|
+          page.content = "<a href=\"#{server_prefix}/download\">Download file</a>"
+          path = example_c247767083cf193df26a39a61a3a8bc19d63ed5c24db91b88c50b7d37975005d(page: page, download_dir: tmpdir)
+          expect(File.exist?(path)).to eq(true)
+
+          download = page.expect_download do
+            page.get_by_text("Download file").click
+          end
+          example_66ffd4ef7286957e4294d84b8f660ff852c87af27a56b3e4dd9f84562b5ece02(download: download, download_dir: tmpdir)
+          path = File.join(tmpdir, download.suggested_filename)
+          expect(File.exist?(path)).to eq(true)
+        end
+      ensure
+        FileUtils.remove_entry(tmpdir, true)
       end
     end
 
@@ -200,7 +212,7 @@ RSpec.describe 'example' do
 
     it 'should work with Frame' do
       with_page do |page|
-        example_a4a9e01d1e0879958d591c4bc9061574f5c035e821a94214e650d15564d77bf4(page: page)
+        example_2bc8a0187190738d8dc7b29c66ad5f9f2187fd1827455e9ceb1e9ace26aaf534(page: page)
       end
     end
 
@@ -399,7 +411,7 @@ RSpec.describe 'example' do
     it 'should work with Page#wait_for_selector' do
       with_page do |page|
         with_network_retry do
-          example_0a62ff34b0d31a64dd1597b9dff456e4139b36207d26efdec7109e278dc315a3(page: page)
+          example_903c7325fd65fcdf6f22c77fc159922a568841abce60ae1b7c54ab5837401862(page: page)
         end
       end
     end
@@ -487,7 +499,7 @@ RSpec.describe 'example' do
     it 'should work with Selector' do
       skip unless chromium?
 
-      expect(example_a1cd3939b9af300fdf06f296bb66176d84c00edb31cae728310fa823f22691f8(playwright: playwright)).to eq(1)
+      expect(example_3e739d4f0e30e20a6a698e0e17605a841c35e65e75aa3c2642f8bfc368b33f9e(playwright: playwright)).to eq(1)
     end
 
     it 'should work with Tracing' do

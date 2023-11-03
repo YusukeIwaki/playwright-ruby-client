@@ -149,7 +149,7 @@ module ExampleCodes
   end
 
   # Browser
-  def example_b8acc529feb6c35ab828780a127d7bf2c079dc7f2847ef251c4c1a33b4197bf9(playwright:)
+  def example_5d31815545511b1d8ce5dfce5b153cb5ea46a1868cee95eb211d77f33026788b(playwright:)
     firefox = playwright.firefox
     browser = firefox.launch
     begin
@@ -226,7 +226,7 @@ module ExampleCodes
   end
 
   # BrowserContext#expose_binding
-  def example_fac8dd8edc4c565fc04b423141a6881aab2388e7951e425c43865ddd656ffad6(browser_context:)
+  def example_a450852d36dda88564582371af8d87bb58b1a517aac4fa60b7a58a0e41c5ceff(browser_context:)
     browser_context.expose_binding("pageURL", ->(source) { source[:page].url })
     page = browser_context.new_page
 
@@ -266,7 +266,7 @@ module ExampleCodes
   end
 
   # BrowserContext#expose_function
-  def example_3465d6b0d3caee840bd7e5ca7076e4def34af07010caca46ea35d2a536d7445d(browser_context:)
+  def example_714719de9c92e66678257180301c2512f8cd69185f53a5121b6c52194f61a871(browser_context:)
     require 'digest'
 
     def sha256(text)
@@ -329,7 +329,7 @@ module ExampleCodes
   end
 
   # BrowserType
-  def example_554dfa8c71a3e87116c6f226d58cdb57d7993dd5df94e22c8fc74c0f83ef7b50(playwright:)
+  def example_2f9fbff87f35af4b76a27f54efeca3201696bbfa94ce03fee5a3df2639cc27d3(playwright:)
     chromium = playwright.chromium
     chromium.launch do |browser|
       page = browser.new_page
@@ -394,7 +394,7 @@ module ExampleCodes
   end
 
   # Dialog
-  def example_c954c35627e62be69e1f138f25d7377b13e18d08039d476946217827fa95db52(page:)
+  def example_a7dcc75b7aa5544237ac3a964e9196d0445308864d3ce820f8cb8396f687b04a(page:)
     def handle_dialog(dialog)
       puts "[#{dialog.type}] #{dialog.message}"
       if dialog.message =~ /foo/
@@ -412,13 +412,21 @@ module ExampleCodes
   end
 
   # Download
-  def example_26c9f5a18a58f9976e24d83a3ae807479df5e28de9028f085615d99be2cea5a1(page:)
+  def example_c247767083cf193df26a39a61a3a8bc19d63ed5c24db91b88c50b7d37975005d(page:, download_dir:)
     download = page.expect_download do
       page.get_by_text("Download file").click
     end
 
-    # wait for download to complete
-    path = download.path
+    # Wait for the download process to complete and save the downloaded file somewhere
+    path = File.join(download_dir, download.suggested_filename)
+    download.save_as(path)
+
+    path
+  end
+
+  # Download#save_as
+  def example_66ffd4ef7286957e4294d84b8f660ff852c87af27a56b3e4dd9f84562b5ece02(download:, download_dir:)
+    download.save_as(File.join(download_dir, download.suggested_filename))
   end
 
   # ElementHandle
@@ -476,7 +484,7 @@ module ExampleCodes
   end
 
   # ElementHandle#select_option
-  def example_dc2ce38846b91d234483ed8b915b785ffbd9403213279465acd6605f314fe736(element_handle:)
+  def example_e6bbc99e34c9f6ee73aa7d4265d34af456e6c67d185530f0a77f8064050a3ec4(element_handle:)
     # single selection matching the value
     element_handle.select_option(value: "blue")
     # single selection matching both the label
@@ -521,7 +529,7 @@ module ExampleCodes
   end
 
   # Frame
-  def example_a4a9e01d1e0879958d591c4bc9061574f5c035e821a94214e650d15564d77bf4(page:)
+  def example_2bc8a0187190738d8dc7b29c66ad5f9f2187fd1827455e9ceb1e9ace26aaf534(page:)
     def dump_frame_tree(frame, indent = 0)
       puts "#{' ' * indent}#{frame.name}@#{frame.url}"
       frame.child_frames.each do |child|
@@ -629,7 +637,7 @@ module ExampleCodes
   end
 
   # Frame#select_option
-  def example_230c12044664b222bf35d6163b1e415c011d87d9911a4d39648c7f601b344a31(frame:)
+  def example_3f390f340c78c42dd0c88a09b2f56575b02b163786e8cdee33581217afced6b2(frame:)
     # single selection matching the value
     frame.select_option("select#colors", value: "blue")
     # single selection matching both the label
@@ -645,7 +653,7 @@ module ExampleCodes
   end
 
   # Frame#wait_for_function
-  def example_2f82dcf15fa9338be87a4faf7fe7de3c542040924db1e1ad1c98468ec0f425ce(frame:)
+  def example_e6a8c279eb09e58e3522cb6237f5d62165b164cad0c1916720af299ffcb8dc8a(frame:)
     frame.evaluate("window.x = 0; setTimeout(() => { window.x = 100 }, 1000);")
     frame.wait_for_function("() => window.x > 0")
   end
@@ -670,7 +678,7 @@ module ExampleCodes
   end
 
   # Frame#wait_for_selector
-  def example_a5b9dd4745d45ac630e5953be1c1815ae8e8ab03399fb35f45ea77c434f17eea(page:)
+  def example_6e2a71807566cf008382d4c163ff6e71e34d7f10ef6706ad7fcaa9b70c256a66(page:)
     %w[https://google.com https://bbc.com].each do |current_url|
       page.goto(current_url, waitUntil: "domcontentloaded")
       frame = page.main_frame
@@ -1045,16 +1053,16 @@ module ExampleCodes
     page.get_by_label("Upload file").set_input_files([])
   end
 
-  # Locator#type
-  def example_fa1712c0b6ceb96fcaa74790d33f2c2eefe2bd1f06e61b78e0bb84a6f22c7961(element_handle:)
-    element.type("hello") # types instantly
-    element.type("world", delay: 100) # types slower, like a user
+  # Locator#press_sequentially
+  def example_1b7781d5527574a18d4b9812e3461203d2acc9ba7e09cbfd0ffbc4154e3f5971(element_handle:)
+    element.press_sequentially("hello") # types instantly
+    element.press_sequentially("world", delay: 100) # types slower, like a user
   end
 
-  # Locator#type
-  def example_c52737358713c715eb9607198a15d3e7533c8ca126cf61fa58d6cb31a701585b(page:)
+  # Locator#press_sequentially
+  def example_cc0a6b9aa95b97e5c17c4b114da10a29c7f6f793e99aee1ea2703636af6e24f9(page:)
     element = page.get_by_label("Password")
-    element.type("my password")
+    element.press_sequentially("my password")
     element.press("Enter")
   end
 
@@ -1087,7 +1095,7 @@ module ExampleCodes
   end
 
   # Playwright
-  def example_efc99085566bf177ec87b1bd3bb30d75b6053ec9b579a8ac8bb9f22e5942289a
+  def example_6647e5a44b0440884026a6142606dfddad75ba1e643919b015457df4ed2e198f
     require 'playwright'
 
     Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwright|
@@ -1103,7 +1111,7 @@ module ExampleCodes
   end
 
   # Playwright#devices
-  def example_2c0457a5b76f4a0471fcafd994f7bad94d04f6871480be8118d200c76e59dd72
+  def example_14d627977a4ad16a605ec5472d768a3324812fa8e7c57685561408fa6601e352
     require 'playwright'
 
     Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwright|
@@ -1120,7 +1128,7 @@ module ExampleCodes
   end
 
   # Page
-  def example_d3546d9e2ff0cfa4b0f89f4f357816699c86075dc0dc48e65634d8f0521b5cf6(playwright:)
+  def example_94e620cdbdfd41e2c9b14d561052ffa89535fc346038c4584ea4dd8520f5401c(playwright:)
     playwright.webkit.launch do |browser|
       page = browser.new_page
       page.goto('https://example.com/')
@@ -1249,7 +1257,7 @@ module ExampleCodes
   end
 
   # Page#expose_binding
-  def example_551f5963351bfd7141fa8c94f5f22c305ec1c01d617861953374e9290929a551(page:)
+  def example_4f7d99a72aaea957cc5678ed8728965338d78598d7772f47fbf23c28f0eba52d(page:)
     page.expose_binding("pageURL", ->(source) { source[:page].url })
     page.content = <<~HTML
     <script>
@@ -1284,10 +1292,10 @@ module ExampleCodes
   end
 
   # Page#expose_function
-  def example_3692cd13d12f1d501e2a5e8e6a60d335c5ad54ab3b5eb34e3cec0227106d89f0(page:)
+  def example_0f68a39bdff02a3df161c74e81cabb8a2ff1f09f0d09f6ef9b799a6f2f19a280(page:)
     require 'digest'
 
-    def sha1(text)
+    def sha256(text)
       Digest::SHA256.hexdigest(text)
     end
 
@@ -1364,7 +1372,7 @@ module ExampleCodes
   end
 
   # Page#select_option
-  def example_4b17eb65721c55859c50eb12b4ee762e65408618cf3b7d07958b68d60ea6be6c(page:)
+  def example_8260034c740933903e5a39d30a4f4e388bdffa9e82acd9a5fe1fb774752a505a(page:)
     # single selection matching the value
     page.select_option("select#colors", value: "blue")
     # single selection matching both the label
@@ -1398,7 +1406,7 @@ module ExampleCodes
   end
 
   # Page#wait_for_function
-  def example_e50869c913bec2f0a89a22ff1c438128c3c8f2e3710acb10665445cf52e3ec73(page:)
+  def example_83eed1f1f00ad73f641bf4a49f672e81c4faf1ca098a4a5070afeeabb88312f5(page:)
     page.evaluate("window.x = 0; setTimeout(() => { window.x = 100 }, 1000);")
     page.wait_for_function("() => window.x > 0")
   end
@@ -1473,7 +1481,7 @@ module ExampleCodes
   end
 
   # Page#wait_for_selector
-  def example_0a62ff34b0d31a64dd1597b9dff456e4139b36207d26efdec7109e278dc315a3(page:)
+  def example_903c7325fd65fcdf6f22c77fc159922a568841abce60ae1b7c54ab5837401862(page:)
     %w[https://google.com https://bbc.com].each do |current_url|
       page.goto(current_url, waitUntil: "domcontentloaded")
       element = page.wait_for_selector("img")
@@ -1614,8 +1622,8 @@ module ExampleCodes
     page.route("**/xhr_endpoint", ->(route, _) { route.fulfill(path: "mock_data.json") })
   end
 
-  # Selectors
-  def example_a1cd3939b9af300fdf06f296bb66176d84c00edb31cae728310fa823f22691f8(playwright:)
+  # Selectors#register
+  def example_3e739d4f0e30e20a6a698e0e17605a841c35e65e75aa3c2642f8bfc368b33f9e(playwright:)
     tag_selector = <<~JAVASCRIPT
     {
         // Returns the first element matching given selector in the root's subtree.

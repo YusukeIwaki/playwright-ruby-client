@@ -15,25 +15,16 @@ At every point of time, page exposes its current frame tree via the [Page#main_f
 
 An example of dumping frame tree:
 
-```python sync title=example_2bc8a0187190738d8dc7b29c66ad5f9f2187fd1827455e9ceb1e9ace26aaf534.py
-from playwright.sync_api import sync_playwright, Playwright
+```ruby
+def dump_frame_tree(frame, indent = 0)
+  puts "#{' ' * indent}#{frame.name}@#{frame.url}"
+  frame.child_frames.each do |child|
+    dump_frame_tree(child, indent + 2)
+  end
+end
 
-def run(playwright: Playwright):
-    firefox = playwright.firefox
-    browser = firefox.launch()
-    page = browser.new_page()
-    page.goto("https://www.theverge.com")
-    dump_frame_tree(page.main_frame, "")
-    browser.close()
-
-def dump_frame_tree(frame, indent):
-    print(indent + frame.name + '@' + frame.url)
-    for child in frame.child_frames:
-        dump_frame_tree(child, indent + "    ")
-
-with sync_playwright() as playwright:
-    run(playwright)
-
+page.goto("https://www.theverge.com")
+dump_frame_tree(page.main_frame)
 ```
 
 ## add_script_tag
@@ -920,14 +911,13 @@ Triggers a `change` and `input` event once all the provided options have been se
 
 **Usage**
 
-```python sync title=example_3f390f340c78c42dd0c88a09b2f56575b02b163786e8cdee33581217afced6b2.py
-# Single selection matching the value or label
-frame.select_option("select#colors", "blue")
+```ruby
+# single selection matching the value
+frame.select_option("select#colors", value: "blue")
 # single selection matching both the label
-frame.select_option("select#colors", label="blue")
+frame.select_option("select#colors", label: "blue")
 # multiple selection
-frame.select_option("select#colors", value=["red", "green", "blue"])
-
+frame.select_option("select#colors", value: ["red", "green", "blue"])
 ```
 
 ## set_checked
@@ -1099,20 +1089,9 @@ Returns when the `expression` returns a truthy value, returns that value.
 
 The [Frame#wait_for_function](./frame#wait_for_function) can be used to observe viewport size change:
 
-```python sync title=example_e6a8c279eb09e58e3522cb6237f5d62165b164cad0c1916720af299ffcb8dc8a.py
-from playwright.sync_api import sync_playwright, Playwright
-
-def run(playwright: Playwright):
-    webkit = playwright.webkit
-    browser = webkit.launch()
-    page = browser.new_page()
-    page.evaluate("window.x = 0; setTimeout(() => { window.x = 100 }, 1000);")
-    page.main_frame.wait_for_function("() => window.x > 0")
-    browser.close()
-
-with sync_playwright() as playwright:
-    run(playwright)
-
+```ruby
+frame.evaluate("window.x = 0; setTimeout(() => { window.x = 100 }, 1000);")
+frame.wait_for_function("() => window.x > 0")
 ```
 
 To pass an argument to the predicate of `frame.waitForFunction` function:
@@ -1188,22 +1167,13 @@ function will throw.
 
 This method works across navigations:
 
-```python sync title=example_6e2a71807566cf008382d4c163ff6e71e34d7f10ef6706ad7fcaa9b70c256a66.py
-from playwright.sync_api import sync_playwright, Playwright
-
-def run(playwright: Playwright):
-    chromium = playwright.chromium
-    browser = chromium.launch()
-    page = browser.new_page()
-    for current_url in ["https://google.com", "https://bbc.com"]:
-        page.goto(current_url, wait_until="domcontentloaded")
-        element = page.main_frame.wait_for_selector("img")
-        print("Loaded image: " + str(element.get_attribute("src")))
-    browser.close()
-
-with sync_playwright() as playwright:
-    run(playwright)
-
+```ruby
+%w[https://google.com https://bbc.com].each do |current_url|
+  page.goto(current_url, waitUntil: "domcontentloaded")
+  frame = page.main_frame
+  element = frame.wait_for_selector("img")
+  puts "Loaded image: #{element["src"]}"
+end
 ```
 
 ## wait_for_timeout

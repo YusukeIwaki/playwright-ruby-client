@@ -1071,19 +1071,17 @@ To press a special key, like `Control` or `ArrowDown`, use [Locator#press](./loc
 
 **Usage**
 
-```python sync title=example_1b7781d5527574a18d4b9812e3461203d2acc9ba7e09cbfd0ffbc4154e3f5971.py
-locator.press_sequentially("hello") # types instantly
-locator.press_sequentially("world", delay=100) # types slower, like a user
-
+```ruby
+element.press_sequentially("hello") # types instantly
+element.press_sequentially("world", delay: 100) # types slower, like a user
 ```
 
 An example of typing into a text field and then submitting the form:
 
-```python sync title=example_cc0a6b9aa95b97e5c17c4b114da10a29c7f6f793e99aee1ea2703636af6e24f9.py
-locator = page.get_by_label("Password")
-locator.press_sequentially("my password")
-locator.press("Enter")
-
+```ruby
+element = page.get_by_label("Password")
+element.press_sequentially("my password")
+element.press("Enter")
 ```
 
 ## screenshot

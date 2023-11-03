@@ -12,16 +12,16 @@ browser context is closed.
 
 Download event is emitted once the download starts. Download path becomes available once download completes.
 
-```python sync title=example_c247767083cf193df26a39a61a3a8bc19d63ed5c24db91b88c50b7d37975005d.py
-# Start waiting for the download
-with page.expect_download() as download_info:
-    # Perform the action that initiates download
-    page.get_by_text("Download file").click()
-download = download_info.value
+```ruby
+download = page.expect_download do
+  page.get_by_text("Download file").click
+end
 
 # Wait for the download process to complete and save the downloaded file somewhere
-download.save_as("/path/to/save/at/" + download.suggested_filename)
+path = File.join(download_dir, download.suggested_filename)
+download.save_as(path)
 
+path
 ```
 
 ## cancel
@@ -86,9 +86,8 @@ is still in progress. Will wait for the download to finish if necessary.
 
 **Usage**
 
-```python sync title=example_66ffd4ef7286957e4294d84b8f660ff852c87af27a56b3e4dd9f84562b5ece02.py
-download.save_as("/path/to/save/at/" + download.suggested_filename)
-
+```ruby
+download.save_as(File.join(download_dir, download.suggested_filename))
 ```
 
 ## suggested_filename
