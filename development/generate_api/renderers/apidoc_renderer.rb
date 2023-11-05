@@ -79,12 +79,23 @@ class ApidocRenderer
 
     private def method_lines
       Enumerator.new do |data|
-        @class_with_doc.methods_with_doc.each do |method_with_doc|
-          next unless method_with_doc.is_a?(ImplementedMethodWithDoc)
+        if @class_with_doc.locator_assertions?
+          @class_with_doc.methods_with_doc.each do |method_with_doc|
+            next unless method_with_doc.is_a?(ImplementedMethodWithDoc)
 
-          data << ''
-          ImplementedMethodWithDocRenderer.new(@class_with_doc, method_with_doc, @comment_converter, @example_code_converter).render_lines.each do |line|
-            data << line
+            data << ''
+            ImplementedAssertionMethodWithDocRenderer.new(@class_with_doc, method_with_doc, @comment_converter, @example_code_converter).render_lines.each do |line|
+              data << line
+            end
+          end
+        else
+          @class_with_doc.methods_with_doc.each do |method_with_doc|
+            next unless method_with_doc.is_a?(ImplementedMethodWithDoc)
+
+            data << ''
+            ImplementedMethodWithDocRenderer.new(@class_with_doc, method_with_doc, @comment_converter, @example_code_converter).render_lines.each do |line|
+              data << line
+            end
           end
         end
       end
@@ -122,32 +133,54 @@ class ApidocRenderer
           "#{@method_with_doc.method_name}(#{renderer.render_for_method_definition})"
         end
       end
+    end
 
-      class DocumentedArgsRenderer
-        def initialize(documented_args)
-          @documented_args = documented_args
+    class ImplementedAssertionMethodWithDocRenderer < ImplementedMethodWithDocRenderer
+      def render_lines
+        Enumerator.new do |data|
+          data << "## #{@method_with_doc.method_name}"
+          data << ''
+          data << '```ruby'
+          _method_name_and_args = method_name_and_args
+          if _method_name_and_args.start_with?('to_')
+            data << "expect(locator).to #{_method_name_and_args[3..-1]}"
+          elsif _method_name_and_args.start_with?('not_to_')
+            data << "expect(locator).not_to #{_method_name_and_args[7..-1]}"
+          else
+            raise "What is this? -> #{_method_name_and_args}"
+          end
+          data << '```'
+          data << ''
+          comment = @comment_converter.convert(@method_with_doc.method_comment)
+          data << @example_code_converter.convert(comment, memo: "#{@class_with_doc.class_name}##{@method_with_doc.method_name}")
+        end
+      end
+    end
+
+    class DocumentedArgsRenderer
+      def initialize(documented_args)
+        @documented_args = documented_args
+      end
+
+      def render_for_method_definition
+        args_for_method_definition = @documented_args.map do |arg|
+          case arg
+          when DocumentedMethodArgs::RequiredArg
+            arg.name
+          when DocumentedMethodArgs::OptionalArg, DocumentedMethodArgs::OptionalKwArg
+            "#{arg.name}: nil"
+          when DocumentedMethodArgs::BlockArg
+            "&block"
+          else
+            raise "What is this? -> #{arg}"
+          end
         end
 
-        def render_for_method_definition
-          args_for_method_definition = @documented_args.map do |arg|
-            case arg
-            when DocumentedMethodArgs::RequiredArg
-              arg.name
-            when DocumentedMethodArgs::OptionalArg, DocumentedMethodArgs::OptionalKwArg
-              "#{arg.name}: nil"
-            when DocumentedMethodArgs::BlockArg
-              "&block"
-            else
-              raise "What is this? -> #{arg}"
-            end
-          end
-
-          if args_for_method_definition.size >= 5
-            joined = args_for_method_definition.join(",\n      ")
-            "\n      #{joined}"
-          else
-            args_for_method_definition.join(", ")
-          end
+        if args_for_method_definition.size >= 5
+          joined = args_for_method_definition.join(",\n      ")
+          "\n      #{joined}"
+        else
+          args_for_method_definition.join(", ")
         end
       end
     end
@@ -309,6 +342,9 @@ class ApidocRenderer
 
         "if the website `http://example.com` redirects to `https://example.com`:" \
           => "if the website `http://github.com` redirects to `https://github.com`:",
+
+        "The [LocatorAssertions](./locator_assertions) class provides assertion methods that can be used to make assertions about the [Locator](./locator) state in the tests." \
+          => "The LocatorAssertions class provides assertion methods for RSpec like `expect(locator).to have_text(\"Something\")`. Note that we have to explicitly include `playwright/test` and `Playwright::Test::Matchers` for using RSpec matchers.\n\n```ruby\nrequire 'playwright/test'\n\ndescribe 'your system testing' do\n  include Playwright::Test::Matchers\n```\n\nSince the matcher comes with auto-waiting feature, we don't have to describe trivial codes waiting for elements any more :)"
       }
       convertion.inject(content) do |current, entry|
         str_from, str_to = entry

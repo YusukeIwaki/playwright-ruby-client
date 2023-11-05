@@ -377,6 +377,23 @@ RSpec.describe 'example' do
       end
     end
 
+    context 'LocatorAssertions' do
+      require 'playwright/test'
+      include Playwright::Test::Matchers
+
+      it 'should work' do
+        with_page do |page|
+          example_eff0600f575bf375d7372280ca8e6dfc51d927ced49fbcb75408c894b9e0564e(page: page)
+        end
+      end
+
+      it 'should work with #be_attached' do
+        with_page do |page|
+          example_781b6f44dd462fc3753b3e48d6888f2ef4d0794253bf6ffb4c42c76f5ec3b454(page: page)
+        end
+      end
+    end
+
     it 'should work with Page#dispatch_event' do
       with_page do |page|
         example_9220b94fd2fa381ab91448dcb551e2eb9806ad331c83454a710f4d8a280990e8(page: page)

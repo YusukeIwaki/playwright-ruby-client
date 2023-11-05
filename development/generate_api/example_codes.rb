@@ -1082,6 +1082,196 @@ module ExampleCodes
     order_sent.wait_for
   end
 
+  # LocatorAssertions
+  def example_eff0600f575bf375d7372280ca8e6dfc51d927ced49fbcb75408c894b9e0564e(page:)
+    page.content = <<~HTML
+    <div id="my_status" class="status">Pending</div>
+    <button onClick="setTimeout(() => { document.getElementById('my_status').innerText='Something Submitted!!' }, 2000)">Click me</button>
+    HTML
+
+    page.get_by_role("button").click
+    expect(page.locator(".status")).to have_text("Submitted") # auto-waiting
+  end
+
+  # LocatorAssertions#to_be_attached
+  def example_781b6f44dd462fc3753b3e48d6888f2ef4d0794253bf6ffb4c42c76f5ec3b454(page:)
+    page.content = <<~HTML
+    <div id="hidden_status" style="display: none">Pending</div>
+    <button onClick="document.getElementById('hidden_status').innerText='Hidden text'">Click me</button>
+    HTML
+
+    page.get_by_role("button").click
+    expect(page.get_by_text("Hidden text")).to be_attached
+  end
+
+  # LocatorAssertions#to_be_checked
+  def example_00a58b66eec12973ab87c0ce5004126aa1f1af5a971a9e89638669f729bbb1b6(page:)
+    locator = page.get_by_label("Subscribe to newsletter")
+    expect(locator).to be_checked
+  end
+
+  # LocatorAssertions#to_be_disabled
+  def example_fc3052bc38e6c1968f23f9185bda7f06478af4719ce96f6a49878ea7e72c9a82(page:)
+    locator = page.locator("button.submit")
+    locator.click
+    expect(locator).to be_disabled
+  end
+
+  # LocatorAssertions#to_be_editable
+  def example_a42b1e97cd0899ccd72bc4b74ab8f57c549814ca5b6d1bb912c870153d6d3f8d(page:)
+    locator = page.get_by_role("textbox")
+    expect(locator).to be_editable
+  end
+
+  # LocatorAssertions#to_be_empty
+  def example_1fb5a7ee389401cf5a6fb3ba90c5b58c42c93d43aa5e4e34d99a5c6265ce0b35(page:)
+    locator = page.locator("div.warning")
+    expect(locator).to be_empty
+  end
+
+  # LocatorAssertions#to_be_enabled
+  def example_0389b23d34a430ee418fd2138f9b8269df20fb6595f2618400e3d53b4f344a75(page:)
+    locator = page.locator("button.submit")
+    expect(locator).to be_enabled
+  end
+
+  # LocatorAssertions#to_be_focused
+  def example_9fc7c2560e0a8117bc4ba14d6133a3d9c66cf6461c29c5a74fe132dea8bd8d63(page:)
+    locator = page.get_by_role("textbox")
+    expect(locator).to be_focused
+  end
+
+  # LocatorAssertions#to_be_hidden
+  def example_55b9181de8eb71936b5e5289631fca33d2100f47f4c4e832d92c23f923779c62(page:)
+    locator = page.locator(".my-element")
+    expect(locator).to be_hidden
+  end
+
+  # LocatorAssertions#to_be_in_viewport
+  def example_7d5d5657528a32a8fb24cbf30e7bb3154cdf4c426e84e40131445a38fe8df2ee(page:)
+    locator = page.get_by_role("button")
+    # Make sure at least some part of element intersects viewport.
+    expect(locator).to be_in_viewport
+    # Make sure element is fully outside of viewport.
+    expect(locator).not_to be_in_viewport
+    # Make sure that at least half of the element intersects viewport.
+    expect(locator).to be_in_viewport(ratio: 0.5)
+  end
+
+  # LocatorAssertions#to_be_visible
+  def example_6c79cc47344706b2e463621209ddd4006848d57eb2074fb7467213756fb14752(page:)
+    # A specific element is visible.
+    expect(page.get_by_text("Welcome")).to be_visible
+
+    # At least one item in the list is visible.
+    expect(page.get_by_test_id("todo-item").first).to be_visible
+
+    # At least one of the two elements is visible, possibly both.
+    expect(
+      page.get_by_role('button', name: 'Sign in').or(page.get_by_role('button', name: 'Sign up')).first
+    ).to be_visible
+  end
+
+  # LocatorAssertions#to_contain_text
+  def example_3553a48e2a15853f4869604ef20dae14952c16abfa0570b8f02e9b74e3d84faa(page:)
+    locator = page.locator('.title')
+    expect(locator).to contain_text("substring")
+    expect(locator).to contain_text(/\d messages/)
+  end
+
+  # LocatorAssertions#to_contain_text
+  def example_fb3cde55b658aefe2e54f93e5b78d26f25cd376eaa469434631af079bb8d8a62(page:)
+    # ✓ Contains the right items in the right order
+    expect(page.locator("ul > li")).to contain_text(["Text 1", "Text 3", "Text 4"])
+
+    # ✖ Wrong order
+    expect(page.locator("ul > li")).to contain_text(["Text 3", "Text 2"])
+
+    # ✖ No item contains this text
+    expect(page.locator("ul > li")).to contain_text(["Some 33"])
+
+    # ✖ Locator points to the outer list element, not to the list items
+    expect(page.locator("ul")).to contain_text(["Text 3"])
+  end
+
+  # LocatorAssertions#to_have_attribute
+  def example_709faaa456b4775109b1fbaca74a86ac5107af5e4801ea07cb690942f1d37f88(page:)
+    locator = page.locator("input")
+    expect(locator).to have_attribute("type", "text")
+  end
+
+  # LocatorAssertions#to_have_class
+  def example_c16c6c567ee66b6d60de634c8a8a7c7c2b26f0e9ea8556e50a47d0c151935aa1(page:)
+    locator = page.locator("#component")
+    expect(locator).to have_class(/selected/)
+    expect(locator).to have_class("selected row")
+  end
+
+  # LocatorAssertions#to_have_class
+  def example_96b9affd86317eeafe4a419f6ec484d33cea4ee947297f44b7b4ebb373261f1d(page:)
+    locator = page.locator("list > .component")
+    expect(locator).to have_class(["component", "component selected", "component"])
+  end
+
+  # LocatorAssertions#to_have_count
+  def example_b3e3d5c7f2ff3a225541e57968953a77e32048daddaabe29ba84e93a1fcee84f(page:)
+    locator = page.locator("list > .component")
+    expect(locator).to have_count(3)
+  end
+
+  # LocatorAssertions#to_have_css
+  def example_12c52b928c1fac117b68573a914ce0ef9595becead95a0ee7c1f487ba1ad9010(page:)
+    locator = page.get_by_role("button")
+    expect(locator).to have_css("display", "flex")
+  end
+
+  # LocatorAssertions#to_have_id
+  def example_5a4c0b1802f0751c2e1068d831ecd499b36a7860605050ba976c2290452bbd89(page:)
+    locator = page.get_by_role("textbox")
+    expect(locator).to have_id("lastname")
+  end
+
+  # LocatorAssertions#to_have_js_property
+  def example_01cad4288f995d4b6253003eb0f4acb227e80553410cea0a8db0ab6927247d92(page:)
+    locator = page.locator(".component")
+    expect(locator).to have_js_property("loaded", true)
+  end
+
+  # LocatorAssertions#to_have_text
+  def example_4ece81163bcb1edeccd7cea8f8c6158cf794c8ef88a673e8c5350a10eaa81542(page:)
+    locator = page.locator(".title")
+    expect(locator).to have_text(/Welcome, Test User/)
+    expect(locator).to have_text(/Welcome, .*/)
+  end
+
+  # LocatorAssertions#to_have_text
+  def example_2caa32069462b536399b1e7e9ade6388ab8b83912ae46ba293cf8ed241c48e85(page:)
+    # ✓ Has the right items in the right order
+    expect(page.locator("ul > li")).to have_text(["Text 1", "Text 2", "Text 3"])
+
+    # ✖ Wrong order
+    expect(page.locator("ul > li")).to have_text(["Text 3", "Text 2", "Text 1"])
+
+    # ✖ Last item does not match
+    expect(page.locator("ul > li")).to have_text(["Text 1", "Text 2", "Text"])
+
+    # ✖ Locator points to the outer list element, not to the list items
+    expect(page.locator("ul")).to have_text(["Text 1", "Text 2", "Text 3"])
+  end
+
+  # LocatorAssertions#to_have_value
+  def example_84f23ac0426bebae60693613034771d70a26808dff53d1d476c3f5856346521a(page:)
+    locator = page.locator("input[type=number]")
+    expect(locator).to have_value(/^[0-9]$/)
+  end
+
+  # LocatorAssertions#to_have_values
+  def example_e5cce4bcdea914bbae14a3645b77f19c322038b0ef81d6ad2a1c9f5b0e21b1e9(page:)
+    locator = page.locator("id=favorite-colors")
+    locator.select_option(["R", "G"])
+    expect(locator).to have_values([/R/, /G/])
+  end
+
   # Mouse
   def example_ba01da1f358cafb4c22b792488ff2f3de4dbd82d4ee1cc4050e3f0c24a2bd7dd(page:)
     # using ‘page.mouse’ to trace a 100x100 square.

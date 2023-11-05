@@ -19,6 +19,10 @@ class UnimplementedClassWithDoc
     @doc.name
   end
 
+  def locator_assertions?
+    @doc.name == 'LocatorAssertions'
+  end
+
   def super_class_filename
     if super_class_name
       @inflector.underscore(super_class_name)
