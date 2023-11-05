@@ -5,31 +5,31 @@ sidebar_position: 10
 # LocatorAssertions
 
 
-The [LocatorAssertions](./locator_assertions) class provides assertion methods that can be used to make assertions about the [Locator](./locator) state in the tests.
+The LocatorAssertions class provides assertion methods for RSpec like `expect(locator).to have_text("Something")`. Note that we have to explicitly include `playwright/test` and `Playwright::Test::Matchers` for using RSpec matchers.
 
-```ruby sync title=example_eff0600f575bf375d7372280ca8e6dfc51d927ced49fbcb75408c894b9e0564e.py
-require "playwright/test"
+```ruby
+require 'playwright/test'
 
-# Every locator assertion has a corresponding matcher. For example:
-#
-# to_be_visible => expect(my_locator).to be_visible
-# not_to_be_visible => expect(my_locator).to not_be_visible
-
-RSpec.describe "My feature", type: :feature do
+describe 'your system testing' do
   include Playwright::Test::Matchers
+```
 
-  it "changes the status to submitted" do
-    page.get_by_role("button").click
-    expect(page.locator(".status")).to have_text("Submitted")
-  end
-end
+Since the matcher comes with auto-waiting feature, we don't have to describe trivial codes waiting for elements any more :)
 
+```ruby
+page.content = <<~HTML
+<div id="my_status" class="status">Pending</div>
+<button onClick="setTimeout(() => { document.getElementById('my_status').innerText='Something Submitted!!' }, 2000)">Click me</button>
+HTML
+
+page.get_by_role("button").click
+expect(page.locator(".status")).to have_text("Submitted") # auto-waiting
 ```
 
 ## not_to_be_attached
 
-```
-def not_to_be_attached(attached: nil, timeout: nil)
+```ruby
+expect(locator).not_to be_attached(attached: nil, timeout: nil)
 ```
 
 
@@ -37,8 +37,8 @@ The opposite of [LocatorAssertions#to_be_attached](./locator_assertions#to_be_at
 
 ## not_to_be_checked
 
-```
-def not_to_be_checked(timeout: nil)
+```ruby
+expect(locator).not_to be_checked(timeout: nil)
 ```
 
 
@@ -46,8 +46,8 @@ The opposite of [LocatorAssertions#to_be_checked](./locator_assertions#to_be_che
 
 ## not_to_be_disabled
 
-```
-def not_to_be_disabled(timeout: nil)
+```ruby
+expect(locator).not_to be_disabled(timeout: nil)
 ```
 
 
@@ -55,8 +55,8 @@ The opposite of [LocatorAssertions#to_be_disabled](./locator_assertions#to_be_di
 
 ## not_to_be_editable
 
-```
-def not_to_be_editable(editable: nil, timeout: nil)
+```ruby
+expect(locator).not_to be_editable(editable: nil, timeout: nil)
 ```
 
 
@@ -64,8 +64,8 @@ The opposite of [LocatorAssertions#to_be_editable](./locator_assertions#to_be_ed
 
 ## not_to_be_empty
 
-```
-def not_to_be_empty(timeout: nil)
+```ruby
+expect(locator).not_to be_empty(timeout: nil)
 ```
 
 
@@ -73,8 +73,8 @@ The opposite of [LocatorAssertions#to_be_empty](./locator_assertions#to_be_empty
 
 ## not_to_be_enabled
 
-```
-def not_to_be_enabled(enabled: nil, timeout: nil)
+```ruby
+expect(locator).not_to be_enabled(enabled: nil, timeout: nil)
 ```
 
 
@@ -82,8 +82,8 @@ The opposite of [LocatorAssertions#to_be_enabled](./locator_assertions#to_be_ena
 
 ## not_to_be_focused
 
-```
-def not_to_be_focused(timeout: nil)
+```ruby
+expect(locator).not_to be_focused(timeout: nil)
 ```
 
 
@@ -91,8 +91,8 @@ The opposite of [LocatorAssertions#to_be_focused](./locator_assertions#to_be_foc
 
 ## not_to_be_hidden
 
-```
-def not_to_be_hidden(timeout: nil)
+```ruby
+expect(locator).not_to be_hidden(timeout: nil)
 ```
 
 
@@ -100,8 +100,8 @@ The opposite of [LocatorAssertions#to_be_hidden](./locator_assertions#to_be_hidd
 
 ## not_to_be_in_viewport
 
-```
-def not_to_be_in_viewport(ratio: nil, timeout: nil)
+```ruby
+expect(locator).not_to be_in_viewport(ratio: nil, timeout: nil)
 ```
 
 
@@ -109,8 +109,8 @@ The opposite of [LocatorAssertions#to_be_in_viewport](./locator_assertions#to_be
 
 ## not_to_be_visible
 
-```
-def not_to_be_visible(timeout: nil, visible: nil)
+```ruby
+expect(locator).not_to be_visible(timeout: nil, visible: nil)
 ```
 
 
@@ -118,8 +118,8 @@ The opposite of [LocatorAssertions#to_be_visible](./locator_assertions#to_be_vis
 
 ## not_to_contain_text
 
-```
-def not_to_contain_text(expected, ignoreCase: nil, timeout: nil, useInnerText: nil)
+```ruby
+expect(locator).not_to contain_text(expected, ignoreCase: nil, timeout: nil, useInnerText: nil)
 ```
 
 
@@ -127,8 +127,8 @@ The opposite of [LocatorAssertions#to_contain_text](./locator_assertions#to_cont
 
 ## not_to_have_attribute
 
-```
-def not_to_have_attribute(name, value, timeout: nil)
+```ruby
+expect(locator).not_to have_attribute(name, value, timeout: nil)
 ```
 
 
@@ -136,8 +136,8 @@ The opposite of [LocatorAssertions#to_have_attribute](./locator_assertions#to_ha
 
 ## not_to_have_class
 
-```
-def not_to_have_class(expected, timeout: nil)
+```ruby
+expect(locator).not_to have_class(expected, timeout: nil)
 ```
 
 
@@ -145,8 +145,8 @@ The opposite of [LocatorAssertions#to_have_class](./locator_assertions#to_have_c
 
 ## not_to_have_count
 
-```
-def not_to_have_count(count, timeout: nil)
+```ruby
+expect(locator).not_to have_count(count, timeout: nil)
 ```
 
 
@@ -154,8 +154,8 @@ The opposite of [LocatorAssertions#to_have_count](./locator_assertions#to_have_c
 
 ## not_to_have_css
 
-```
-def not_to_have_css(name, value, timeout: nil)
+```ruby
+expect(locator).not_to have_css(name, value, timeout: nil)
 ```
 
 
@@ -163,8 +163,8 @@ The opposite of [LocatorAssertions#to_have_css](./locator_assertions#to_have_css
 
 ## not_to_have_id
 
-```
-def not_to_have_id(id, timeout: nil)
+```ruby
+expect(locator).not_to have_id(id, timeout: nil)
 ```
 
 
@@ -172,8 +172,8 @@ The opposite of [LocatorAssertions#to_have_id](./locator_assertions#to_have_id).
 
 ## not_to_have_js_property
 
-```
-def not_to_have_js_property(name, value, timeout: nil)
+```ruby
+expect(locator).not_to have_js_property(name, value, timeout: nil)
 ```
 
 
@@ -181,8 +181,8 @@ The opposite of [LocatorAssertions#to_have_js_property](./locator_assertions#to_
 
 ## not_to_have_text
 
-```
-def not_to_have_text(expected, ignoreCase: nil, timeout: nil, useInnerText: nil)
+```ruby
+expect(locator).not_to have_text(expected, ignoreCase: nil, timeout: nil, useInnerText: nil)
 ```
 
 
@@ -190,8 +190,8 @@ The opposite of [LocatorAssertions#to_have_text](./locator_assertions#to_have_te
 
 ## not_to_have_value
 
-```
-def not_to_have_value(value, timeout: nil)
+```ruby
+expect(locator).not_to have_value(value, timeout: nil)
 ```
 
 
@@ -199,8 +199,8 @@ The opposite of [LocatorAssertions#to_have_value](./locator_assertions#to_have_v
 
 ## not_to_have_values
 
-```
-def not_to_have_values(values, timeout: nil)
+```ruby
+expect(locator).not_to have_values(values, timeout: nil)
 ```
 
 
@@ -208,8 +208,8 @@ The opposite of [LocatorAssertions#to_have_values](./locator_assertions#to_have_
 
 ## to_be_attached
 
-```
-def to_be_attached(attached: nil, timeout: nil)
+```ruby
+expect(locator).to be_attached(attached: nil, timeout: nil)
 ```
 
 
@@ -217,15 +217,20 @@ Ensures that [Locator](./locator) points to an [attached](https://playwright.dev
 
 **Usage**
 
-```python sync title=example_781b6f44dd462fc3753b3e48d6888f2ef4d0794253bf6ffb4c42c76f5ec3b454.py
-expect(page.get_by_text("Hidden text")).to_be_attached()
+```ruby
+page.content = <<~HTML
+<div id="hidden_status" style="display: none">Pending</div>
+<button onClick="document.getElementById('hidden_status').innerText='Hidden text'">Click me</button>
+HTML
 
+page.get_by_role("button").click
+expect(page.get_by_text("Hidden text")).to be_attached
 ```
 
 ## to_be_checked
 
-```
-def to_be_checked(checked: nil, timeout: nil)
+```ruby
+expect(locator).to be_checked(checked: nil, timeout: nil)
 ```
 
 
@@ -233,18 +238,15 @@ Ensures the [Locator](./locator) points to a checked input.
 
 **Usage**
 
-```python sync title=example_00a58b66eec12973ab87c0ce5004126aa1f1af5a971a9e89638669f729bbb1b6.py
-from playwright.sync_api import expect
-
+```ruby
 locator = page.get_by_label("Subscribe to newsletter")
-expect(locator).to_be_checked()
-
+expect(locator).to be_checked
 ```
 
 ## to_be_disabled
 
-```
-def to_be_disabled(timeout: nil)
+```ruby
+expect(locator).to be_disabled(timeout: nil)
 ```
 
 
@@ -256,18 +258,16 @@ by the browser.
 
 **Usage**
 
-```python sync title=example_fc3052bc38e6c1968f23f9185bda7f06478af4719ce96f6a49878ea7e72c9a82.py
-from playwright.sync_api import expect
-
+```ruby
 locator = page.locator("button.submit")
-expect(locator).to_be_disabled()
-
+locator.click
+expect(locator).to be_disabled
 ```
 
 ## to_be_editable
 
-```
-def to_be_editable(editable: nil, timeout: nil)
+```ruby
+expect(locator).to be_editable(editable: nil, timeout: nil)
 ```
 
 
@@ -275,18 +275,15 @@ Ensures the [Locator](./locator) points to an editable element.
 
 **Usage**
 
-```python sync title=example_a42b1e97cd0899ccd72bc4b74ab8f57c549814ca5b6d1bb912c870153d6d3f8d.py
-from playwright.sync_api import expect
-
+```ruby
 locator = page.get_by_role("textbox")
-expect(locator).to_be_editable()
-
+expect(locator).to be_editable
 ```
 
 ## to_be_empty
 
-```
-def to_be_empty(timeout: nil)
+```ruby
+expect(locator).to be_empty(timeout: nil)
 ```
 
 
@@ -294,18 +291,15 @@ Ensures the [Locator](./locator) points to an empty editable element or to a DOM
 
 **Usage**
 
-```python sync title=example_1fb5a7ee389401cf5a6fb3ba90c5b58c42c93d43aa5e4e34d99a5c6265ce0b35.py
-from playwright.sync_api import expect
-
+```ruby
 locator = page.locator("div.warning")
-expect(locator).to_be_empty()
-
+expect(locator).to be_empty
 ```
 
 ## to_be_enabled
 
-```
-def to_be_enabled(enabled: nil, timeout: nil)
+```ruby
+expect(locator).to be_enabled(enabled: nil, timeout: nil)
 ```
 
 
@@ -313,18 +307,15 @@ Ensures the [Locator](./locator) points to an enabled element.
 
 **Usage**
 
-```python sync title=example_0389b23d34a430ee418fd2138f9b8269df20fb6595f2618400e3d53b4f344a75.py
-from playwright.sync_api import expect
-
+```ruby
 locator = page.locator("button.submit")
-expect(locator).to_be_enabled()
-
+expect(locator).to be_enabled
 ```
 
 ## to_be_focused
 
-```
-def to_be_focused(timeout: nil)
+```ruby
+expect(locator).to be_focused(timeout: nil)
 ```
 
 
@@ -332,18 +323,15 @@ Ensures the [Locator](./locator) points to a focused DOM node.
 
 **Usage**
 
-```python sync title=example_9fc7c2560e0a8117bc4ba14d6133a3d9c66cf6461c29c5a74fe132dea8bd8d63.py
-from playwright.sync_api import expect
-
+```ruby
 locator = page.get_by_role("textbox")
-expect(locator).to_be_focused()
-
+expect(locator).to be_focused
 ```
 
 ## to_be_hidden
 
-```
-def to_be_hidden(timeout: nil)
+```ruby
+expect(locator).to be_hidden(timeout: nil)
 ```
 
 
@@ -351,18 +339,15 @@ Ensures that [Locator](./locator) either does not resolve to any DOM node, or re
 
 **Usage**
 
-```python sync title=example_55b9181de8eb71936b5e5289631fca33d2100f47f4c4e832d92c23f923779c62.py
-from playwright.sync_api import expect
-
-locator = page.locator('.my-element')
-expect(locator).to_be_hidden()
-
+```ruby
+locator = page.locator(".my-element")
+expect(locator).to be_hidden
 ```
 
 ## to_be_in_viewport
 
-```
-def to_be_in_viewport(ratio: nil, timeout: nil)
+```ruby
+expect(locator).to be_in_viewport(ratio: nil, timeout: nil)
 ```
 
 
@@ -370,39 +355,46 @@ Ensures the [Locator](./locator) points to an element that intersects viewport, 
 
 **Usage**
 
-```python sync title=example_7d5d5657528a32a8fb24cbf30e7bb3154cdf4c426e84e40131445a38fe8df2ee.py
-from playwright.sync_api import expect
-
+```ruby
 locator = page.get_by_role("button")
 # Make sure at least some part of element intersects viewport.
-expect(locator).to_be_in_viewport()
+expect(locator).to be_in_viewport
 # Make sure element is fully outside of viewport.
-expect(locator).not_to_be_in_viewport()
+expect(locator).not_to be_in_viewport
 # Make sure that at least half of the element intersects viewport.
-expect(locator).to_be_in_viewport(ratio=0.5)
-
+expect(locator).to be_in_viewport(ratio: 0.5)
 ```
 
 ## to_be_visible
 
-```
-def to_be_visible(timeout: nil, visible: nil)
+```ruby
+expect(locator).to be_visible(timeout: nil, visible: nil)
 ```
 
 
 Ensures that [Locator](./locator) points to an [attached](https://playwright.dev/python/docs/actionability#attached) and [visible](https://playwright.dev/python/docs/actionability#visible) DOM node.
 
+To check that at least one element from the list is visible, use [Locator#first](./locator#first).
+
 **Usage**
 
-```python sync title=example_84ccd2ec31f9f00136a2931e9abb9c766eab967a6e892d3dcf90c02f14e5117f.py
-expect(page.get_by_text("Welcome")).to_be_visible()
+```ruby
+# A specific element is visible.
+expect(page.get_by_text("Welcome")).to be_visible
 
+# At least one item in the list is visible.
+expect(page.get_by_test_id("todo-item").first).to be_visible
+
+# At least one of the two elements is visible, possibly both.
+expect(
+  page.get_by_role('button', name: 'Sign in').or(page.get_by_role('button', name: 'Sign up')).first
+).to be_visible
 ```
 
 ## to_contain_text
 
-```
-def to_contain_text(expected, ignoreCase: nil, timeout: nil, useInnerText: nil)
+```ruby
+expect(locator).to contain_text(expected, ignoreCase: nil, timeout: nil, useInnerText: nil)
 ```
 
 
@@ -410,14 +402,10 @@ Ensures the [Locator](./locator) points to an element that contains the given te
 
 **Usage**
 
-```python sync title=example_3553a48e2a15853f4869604ef20dae14952c16abfa0570b8f02e9b74e3d84faa.py
-import re
-from playwright.sync_api import expect
-
+```ruby
 locator = page.locator('.title')
-expect(locator).to_contain_text("substring")
-expect(locator).to_contain_text(re.compile(r"\d messages"))
-
+expect(locator).to contain_text("substring")
+expect(locator).to contain_text(/\d messages/)
 ```
 
 If you pass an array as an expected value, the expectations are:
@@ -438,27 +426,24 @@ For example, consider the following list:
 
 Let's see how we can use the assertion:
 
-```python sync title=example_fb3cde55b658aefe2e54f93e5b78d26f25cd376eaa469434631af079bb8d8a62.py
-from playwright.sync_api import expect
-
+```ruby
 # ✓ Contains the right items in the right order
-expect(page.locator("ul > li")).to_contain_text(["Text 1", "Text 3", "Text 4"])
+expect(page.locator("ul > li")).to contain_text(["Text 1", "Text 3", "Text 4"])
 
 # ✖ Wrong order
-expect(page.locator("ul > li")).to_contain_text(["Text 3", "Text 2"])
+expect(page.locator("ul > li")).to contain_text(["Text 3", "Text 2"])
 
 # ✖ No item contains this text
-expect(page.locator("ul > li")).to_contain_text(["Some 33"])
+expect(page.locator("ul > li")).to contain_text(["Some 33"])
 
 # ✖ Locator points to the outer list element, not to the list items
-expect(page.locator("ul")).to_contain_text(["Text 3"])
-
+expect(page.locator("ul")).to contain_text(["Text 3"])
 ```
 
 ## to_have_attribute
 
-```
-def to_have_attribute(name, value, timeout: nil)
+```ruby
+expect(locator).to have_attribute(name, value, timeout: nil)
 ```
 
 
@@ -466,18 +451,15 @@ Ensures the [Locator](./locator) points to an element with given attribute.
 
 **Usage**
 
-```python sync title=example_709faaa456b4775109b1fbaca74a86ac5107af5e4801ea07cb690942f1d37f88.py
-from playwright.sync_api import expect
-
+```ruby
 locator = page.locator("input")
-expect(locator).to_have_attribute("type", "text")
-
+expect(locator).to have_attribute("type", "text")
 ```
 
 ## to_have_class
 
-```
-def to_have_class(expected, timeout: nil)
+```ruby
+expect(locator).to have_class(expected, timeout: nil)
 ```
 
 
@@ -490,29 +472,23 @@ or using a relaxed regular expression.
 <div class='selected row' id='component'></div>
 ```
 
-```python sync title=example_c16c6c567ee66b6d60de634c8a8a7c7c2b26f0e9ea8556e50a47d0c151935aa1.py
-from playwright.sync_api import expect
-
+```ruby
 locator = page.locator("#component")
-expect(locator).to_have_class(re.compile(r"selected"))
-expect(locator).to_have_class("selected row")
-
+expect(locator).to have_class(/selected/)
+expect(locator).to have_class("selected row")
 ```
 
 Note that if array is passed as an expected value, entire lists of elements can be asserted:
 
-```python sync title=example_96b9affd86317eeafe4a419f6ec484d33cea4ee947297f44b7b4ebb373261f1d.py
-from playwright.sync_api import expect
-
+```ruby
 locator = page.locator("list > .component")
-expect(locator).to_have_class(["component", "component selected", "component"])
-
+expect(locator).to have_class(["component", "component selected", "component"])
 ```
 
 ## to_have_count
 
-```
-def to_have_count(count, timeout: nil)
+```ruby
+expect(locator).to have_count(count, timeout: nil)
 ```
 
 
@@ -520,18 +496,15 @@ Ensures the [Locator](./locator) resolves to an exact number of DOM nodes.
 
 **Usage**
 
-```python sync title=example_b3e3d5c7f2ff3a225541e57968953a77e32048daddaabe29ba84e93a1fcee84f.py
-from playwright.sync_api import expect
-
+```ruby
 locator = page.locator("list > .component")
-expect(locator).to_have_count(3)
-
+expect(locator).to have_count(3)
 ```
 
 ## to_have_css
 
-```
-def to_have_css(name, value, timeout: nil)
+```ruby
+expect(locator).to have_css(name, value, timeout: nil)
 ```
 
 
@@ -539,18 +512,15 @@ Ensures the [Locator](./locator) resolves to an element with the given computed 
 
 **Usage**
 
-```python sync title=example_12c52b928c1fac117b68573a914ce0ef9595becead95a0ee7c1f487ba1ad9010.py
-from playwright.sync_api import expect
-
+```ruby
 locator = page.get_by_role("button")
-expect(locator).to_have_css("display", "flex")
-
+expect(locator).to have_css("display", "flex")
 ```
 
 ## to_have_id
 
-```
-def to_have_id(id, timeout: nil)
+```ruby
+expect(locator).to have_id(id, timeout: nil)
 ```
 
 
@@ -558,18 +528,15 @@ Ensures the [Locator](./locator) points to an element with the given DOM Node ID
 
 **Usage**
 
-```python sync title=example_5a4c0b1802f0751c2e1068d831ecd499b36a7860605050ba976c2290452bbd89.py
-from playwright.sync_api import expect
-
+```ruby
 locator = page.get_by_role("textbox")
-expect(locator).to_have_id("lastname")
-
+expect(locator).to have_id("lastname")
 ```
 
 ## to_have_js_property
 
-```
-def to_have_js_property(name, value, timeout: nil)
+```ruby
+expect(locator).to have_js_property(name, value, timeout: nil)
 ```
 
 
@@ -578,18 +545,15 @@ of a primitive type as well as a plain serializable JavaScript object.
 
 **Usage**
 
-```python sync title=example_01cad4288f995d4b6253003eb0f4acb227e80553410cea0a8db0ab6927247d92.py
-from playwright.sync_api import expect
-
+```ruby
 locator = page.locator(".component")
-expect(locator).to_have_js_property("loaded", True)
-
+expect(locator).to have_js_property("loaded", true)
 ```
 
 ## to_have_text
 
-```
-def to_have_text(expected, ignoreCase: nil, timeout: nil, useInnerText: nil)
+```ruby
+expect(locator).to have_text(expected, ignoreCase: nil, timeout: nil, useInnerText: nil)
 ```
 
 
@@ -597,14 +561,10 @@ Ensures the [Locator](./locator) points to an element with the given text. You c
 
 **Usage**
 
-```python sync title=example_4ece81163bcb1edeccd7cea8f8c6158cf794c8ef88a673e8c5350a10eaa81542.py
-import re
-from playwright.sync_api import expect
-
+```ruby
 locator = page.locator(".title")
-expect(locator).to_have_text(re.compile(r"Welcome, Test User"))
-expect(locator).to_have_text(re.compile(r"Welcome, .*"))
-
+expect(locator).to have_text(/Welcome, Test User/)
+expect(locator).to have_text(/Welcome, .*/)
 ```
 
 If you pass an array as an expected value, the expectations are:
@@ -624,27 +584,24 @@ For example, consider the following list:
 
 Let's see how we can use the assertion:
 
-```python sync title=example_2caa32069462b536399b1e7e9ade6388ab8b83912ae46ba293cf8ed241c48e85.py
-from playwright.sync_api import expect
-
+```ruby
 # ✓ Has the right items in the right order
-expect(page.locator("ul > li")).to_have_text(["Text 1", "Text 2", "Text 3"])
+expect(page.locator("ul > li")).to have_text(["Text 1", "Text 2", "Text 3"])
 
 # ✖ Wrong order
-expect(page.locator("ul > li")).to_have_text(["Text 3", "Text 2", "Text 1"])
+expect(page.locator("ul > li")).to have_text(["Text 3", "Text 2", "Text 1"])
 
 # ✖ Last item does not match
-expect(page.locator("ul > li")).to_have_text(["Text 1", "Text 2", "Text"])
+expect(page.locator("ul > li")).to have_text(["Text 1", "Text 2", "Text"])
 
 # ✖ Locator points to the outer list element, not to the list items
-expect(page.locator("ul")).to_have_text(["Text 1", "Text 2", "Text 3"])
-
+expect(page.locator("ul")).to have_text(["Text 1", "Text 2", "Text 3"])
 ```
 
 ## to_have_value
 
-```
-def to_have_value(value, timeout: nil)
+```ruby
+expect(locator).to have_value(value, timeout: nil)
 ```
 
 
@@ -652,19 +609,15 @@ Ensures the [Locator](./locator) points to an element with the given input value
 
 **Usage**
 
-```python sync title=example_84f23ac0426bebae60693613034771d70a26808dff53d1d476c3f5856346521a.py
-import re
-from playwright.sync_api import expect
-
+```ruby
 locator = page.locator("input[type=number]")
-expect(locator).to_have_value(re.compile(r"[0-9]"))
-
+expect(locator).to have_value(/^[0-9]$/)
 ```
 
 ## to_have_values
 
-```
-def to_have_values(values, timeout: nil)
+```ruby
+expect(locator).to have_values(values, timeout: nil)
 ```
 
 
@@ -682,12 +635,8 @@ For example, given the following element:
 </select>
 ```
 
-```python sync title=example_e5cce4bcdea914bbae14a3645b77f19c322038b0ef81d6ad2a1c9f5b0e21b1e9.py
-import re
-from playwright.sync_api import expect
-
+```ruby
 locator = page.locator("id=favorite-colors")
 locator.select_option(["R", "G"])
-expect(locator).to_have_values([re.compile(r"R"), re.compile(r"G")])
-
+expect(locator).to have_values([/R/, /G/])
 ```

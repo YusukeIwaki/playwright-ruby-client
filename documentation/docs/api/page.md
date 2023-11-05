@@ -12,21 +12,12 @@ instance might have multiple [Page](./page) instances.
 
 This example creates a page, navigates it to a URL, and then saves a screenshot:
 
-```python sync title=example_94e620cdbdfd41e2c9b14d561052ffa89535fc346038c4584ea4dd8520f5401c.py
-from playwright.sync_api import sync_playwright, Playwright
-
-def run(playwright: Playwright):
-    webkit = playwright.webkit
-    browser = webkit.launch()
-    context = browser.new_context()
-    page = context.new_page()
-    page.goto("https://example.com")
-    page.screenshot(path="screenshot.png")
-    browser.close()
-
-with sync_playwright() as playwright:
-    run(playwright)
-
+```ruby
+playwright.webkit.launch do |browser|
+  page = browser.new_page
+  page.goto('https://example.com/')
+  page.screenshot(path: 'screenshot.png')
+end
 ```
 
 The Page class emits various events (described below) which can be handled using any of Node's native
@@ -471,29 +462,18 @@ See [BrowserContext#expose_binding](./browser_context#expose_binding) for the co
 
 An example of exposing page URL to all frames in a page:
 
-```python sync title=example_4f7d99a72aaea957cc5678ed8728965338d78598d7772f47fbf23c28f0eba52d.py
-from playwright.sync_api import sync_playwright, Playwright
-
-def run(playwright: Playwright):
-    webkit = playwright.webkit
-    browser = webkit.launch(headless=false)
-    context = browser.new_context()
-    page = context.new_page()
-    page.expose_binding("pageURL", lambda source: source["page"].url)
-    page.set_content("""
-    <script>
-      async function onClick() {
-        document.querySelector('div').textContent = await window.pageURL();
-      }
-    </script>
-    <button onclick="onClick()">Click me</button>
-    <div></div>
-    """)
-    page.click("button")
-
-with sync_playwright() as playwright:
-    run(playwright)
-
+```ruby
+page.expose_binding("pageURL", ->(source) { source[:page].url })
+page.content = <<~HTML
+<script>
+  async function onClick() {
+    document.querySelector('div').textContent = await window.pageURL();
+  }
+</script>
+<button onclick="onClick()">Click me</button>
+<div></div>
+HTML
+page.locator("button").click
 ```
 
 An example of passing an element handle:
@@ -537,35 +517,24 @@ See [BrowserContext#expose_function](./browser_context#expose_function) for cont
 
 An example of adding a `sha256` function to the page:
 
-```python sync title=example_0f68a39bdff02a3df161c74e81cabb8a2ff1f09f0d09f6ef9b799a6f2f19a280.py
-import hashlib
-from playwright.sync_api import sync_playwright, Playwright
+```ruby
+require 'digest'
 
-def sha256(text):
-    m = hashlib.sha256()
-    m.update(bytes(text, "utf8"))
-    return m.hexdigest()
+def sha256(text)
+  Digest::SHA256.hexdigest(text)
+end
 
-
-def run(playwright: Playwright):
-    webkit = playwright.webkit
-    browser = webkit.launch(headless=False)
-    page = browser.new_page()
-    page.expose_function("sha256", sha256)
-    page.set_content("""
-        <script>
-          async function onClick() {
-            document.querySelector('div').textContent = await window.sha256('PLAYWRIGHT');
-          }
-        </script>
-        <button onclick="onClick()">Click me</button>
-        <div></div>
-    """)
-    page.click("button")
-
-with sync_playwright() as playwright:
-    run(playwright)
-
+page.expose_function("sha256", method(:sha256))
+page.content = <<~HTML
+<script>
+  async function onClick() {
+    document.querySelector('div').textContent = await window.sha256('PLAYWRIGHT');
+  }
+</script>
+<button onclick="onClick()">Click me</button>
+<div></div>
+HTML
+page.locator("button").click
 ```
 
 ## fill
@@ -1355,14 +1324,13 @@ Triggers a `change` and `input` event once all the provided options have been se
 
 **Usage**
 
-```python sync title=example_8260034c740933903e5a39d30a4f4e388bdffa9e82acd9a5fe1fb774752a505a.py
-# Single selection matching the value or label
-page.select_option("select#colors", "blue")
+```ruby
+# single selection matching the value
+page.select_option("select#colors", value: "blue")
 # single selection matching both the label
-page.select_option("select#colors", label="blue")
+page.select_option("select#colors", label: "blue")
 # multiple selection
-page.select_option("select#colors", value=["red", "green", "blue"])
-
+page.select_option("select#colors", value: ["red", "green", "blue"])
 ```
 
 ## set_checked
@@ -1676,20 +1644,9 @@ Returns when the `expression` returns a truthy value. It resolves to a JSHandle 
 
 The [Page#wait_for_function](./page#wait_for_function) can be used to observe viewport size change:
 
-```python sync title=example_83eed1f1f00ad73f641bf4a49f672e81c4faf1ca098a4a5070afeeabb88312f5.py
-from playwright.sync_api import sync_playwright, Playwright
-
-def run(playwright: Playwright):
-    webkit = playwright.webkit
-    browser = webkit.launch()
-    page = browser.new_page()
-    page.evaluate("window.x = 0; setTimeout(() => { window.x = 100 }, 1000);")
-    page.wait_for_function("() => window.x > 0")
-    browser.close()
-
-with sync_playwright() as playwright:
-    run(playwright)
-
+```ruby
+page.evaluate("window.x = 0; setTimeout(() => { window.x = 100 }, 1000);")
+page.wait_for_function("() => window.x > 0")
 ```
 
 To pass an argument to the predicate of [Page#wait_for_function](./page#wait_for_function) function:
@@ -1857,22 +1814,12 @@ function will throw.
 
 This method works across navigations:
 
-```python sync title=example_903c7325fd65fcdf6f22c77fc159922a568841abce60ae1b7c54ab5837401862.py
-from playwright.sync_api import sync_playwright, Playwright
-
-def run(playwright: Playwright):
-    chromium = playwright.chromium
-    browser = chromium.launch()
-    page = browser.new_page()
-    for current_url in ["https://google.com", "https://bbc.com"]:
-        page.goto(current_url, wait_until="domcontentloaded")
-        element = page.wait_for_selector("img")
-        print("Loaded image: " + str(element.get_attribute("src")))
-    browser.close()
-
-with sync_playwright() as playwright:
-    run(playwright)
-
+```ruby
+%w[https://google.com https://bbc.com].each do |current_url|
+  page.goto(current_url, waitUntil: "domcontentloaded")
+  element = page.wait_for_selector("img")
+  puts "Loaded image: #{element["src"]}"
+end
 ```
 
 ## wait_for_timeout

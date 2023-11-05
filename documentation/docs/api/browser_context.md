@@ -158,29 +158,21 @@ See [Page#expose_binding](./page#expose_binding) for page-only version.
 
 An example of exposing page URL to all frames in all pages in the context:
 
-```python sync title=example_a450852d36dda88564582371af8d87bb58b1a517aac4fa60b7a58a0e41c5ceff.py
-from playwright.sync_api import sync_playwright, Playwright
+```ruby
+browser_context.expose_binding("pageURL", ->(source) { source[:page].url })
+page = browser_context.new_page
 
-def run(playwright: Playwright):
-    webkit = playwright.webkit
-    browser = webkit.launch(headless=false)
-    context = browser.new_context()
-    context.expose_binding("pageURL", lambda source: source["page"].url)
-    page = context.new_page()
-    page.set_content("""
-    <script>
-      async function onClick() {
-        document.querySelector('div').textContent = await window.pageURL();
-      }
-    </script>
-    <button onclick="onClick()">Click me</button>
-    <div></div>
-    """)
-    page.get_by_role("button").click()
+page.content = <<~HTML
+<script>
+  async function onClick() {
+    document.querySelector('div').textContent = await window.pageURL();
+  }
+</script>
+<button onclick="onClick()">Click me</button>
+<div></div>
+HTML
 
-with sync_playwright() as playwright:
-    run(playwright)
-
+page.get_by_role("button").click
 ```
 
 An example of passing an element handle:
@@ -225,36 +217,25 @@ See [Page#expose_function](./page#expose_function) for page-only version.
 
 An example of adding a `sha256` function to all pages in the context:
 
-```python sync title=example_714719de9c92e66678257180301c2512f8cd69185f53a5121b6c52194f61a871.py
-import hashlib
-from playwright.sync_api import sync_playwright
+```ruby
+require 'digest'
 
-def sha256(text: str) -> str:
-    m = hashlib.sha256()
-    m.update(bytes(text, "utf8"))
-    return m.hexdigest()
+def sha256(text)
+  Digest::SHA256.hexdigest(text)
+end
 
-
-def run(playwright: Playwright):
-    webkit = playwright.webkit
-    browser = webkit.launch(headless=False)
-    context = browser.new_context()
-    context.expose_function("sha256", sha256)
-    page = context.new_page()
-    page.set_content("""
-        <script>
-          async function onClick() {
-            document.querySelector('div').textContent = await window.sha256('PLAYWRIGHT');
-          }
-        </script>
-        <button onclick="onClick()">Click me</button>
-        <div></div>
-    """)
-    page.get_by_role("button").click()
-
-with sync_playwright() as playwright:
-    run(playwright)
-
+browser_context.expose_function("sha256", method(:sha256))
+page = browser_context.new_page()
+page.content = <<~HTML
+<script>
+  async function onClick() {
+    document.querySelector('div').textContent = await window.sha256('PLAYWRIGHT');
+  }
+</script>
+<button onclick="onClick()">Click me</button>
+<div></div>
+HTML
+page.get_by_role("button").click
 ```
 
 ## grant_permissions

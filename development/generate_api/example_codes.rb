@@ -149,7 +149,7 @@ module ExampleCodes
   end
 
   # Browser
-  def example_b8acc529feb6c35ab828780a127d7bf2c079dc7f2847ef251c4c1a33b4197bf9(playwright:)
+  def example_5d31815545511b1d8ce5dfce5b153cb5ea46a1868cee95eb211d77f33026788b(playwright:)
     firefox = playwright.firefox
     browser = firefox.launch
     begin
@@ -226,7 +226,7 @@ module ExampleCodes
   end
 
   # BrowserContext#expose_binding
-  def example_fac8dd8edc4c565fc04b423141a6881aab2388e7951e425c43865ddd656ffad6(browser_context:)
+  def example_a450852d36dda88564582371af8d87bb58b1a517aac4fa60b7a58a0e41c5ceff(browser_context:)
     browser_context.expose_binding("pageURL", ->(source) { source[:page].url })
     page = browser_context.new_page
 
@@ -266,7 +266,7 @@ module ExampleCodes
   end
 
   # BrowserContext#expose_function
-  def example_3465d6b0d3caee840bd7e5ca7076e4def34af07010caca46ea35d2a536d7445d(browser_context:)
+  def example_714719de9c92e66678257180301c2512f8cd69185f53a5121b6c52194f61a871(browser_context:)
     require 'digest'
 
     def sha256(text)
@@ -329,7 +329,7 @@ module ExampleCodes
   end
 
   # BrowserType
-  def example_554dfa8c71a3e87116c6f226d58cdb57d7993dd5df94e22c8fc74c0f83ef7b50(playwright:)
+  def example_2f9fbff87f35af4b76a27f54efeca3201696bbfa94ce03fee5a3df2639cc27d3(playwright:)
     chromium = playwright.chromium
     chromium.launch do |browser|
       page = browser.new_page
@@ -394,7 +394,7 @@ module ExampleCodes
   end
 
   # Dialog
-  def example_c954c35627e62be69e1f138f25d7377b13e18d08039d476946217827fa95db52(page:)
+  def example_a7dcc75b7aa5544237ac3a964e9196d0445308864d3ce820f8cb8396f687b04a(page:)
     def handle_dialog(dialog)
       puts "[#{dialog.type}] #{dialog.message}"
       if dialog.message =~ /foo/
@@ -412,13 +412,21 @@ module ExampleCodes
   end
 
   # Download
-  def example_26c9f5a18a58f9976e24d83a3ae807479df5e28de9028f085615d99be2cea5a1(page:)
+  def example_c247767083cf193df26a39a61a3a8bc19d63ed5c24db91b88c50b7d37975005d(page:, download_dir:)
     download = page.expect_download do
       page.get_by_text("Download file").click
     end
 
-    # wait for download to complete
-    path = download.path
+    # Wait for the download process to complete and save the downloaded file somewhere
+    path = File.join(download_dir, download.suggested_filename)
+    download.save_as(path)
+
+    path
+  end
+
+  # Download#save_as
+  def example_66ffd4ef7286957e4294d84b8f660ff852c87af27a56b3e4dd9f84562b5ece02(download:, download_dir:)
+    download.save_as(File.join(download_dir, download.suggested_filename))
   end
 
   # ElementHandle
@@ -476,7 +484,7 @@ module ExampleCodes
   end
 
   # ElementHandle#select_option
-  def example_dc2ce38846b91d234483ed8b915b785ffbd9403213279465acd6605f314fe736(element_handle:)
+  def example_e6bbc99e34c9f6ee73aa7d4265d34af456e6c67d185530f0a77f8064050a3ec4(element_handle:)
     # single selection matching the value
     element_handle.select_option(value: "blue")
     # single selection matching both the label
@@ -521,7 +529,7 @@ module ExampleCodes
   end
 
   # Frame
-  def example_a4a9e01d1e0879958d591c4bc9061574f5c035e821a94214e650d15564d77bf4(page:)
+  def example_2bc8a0187190738d8dc7b29c66ad5f9f2187fd1827455e9ceb1e9ace26aaf534(page:)
     def dump_frame_tree(frame, indent = 0)
       puts "#{' ' * indent}#{frame.name}@#{frame.url}"
       frame.child_frames.each do |child|
@@ -629,7 +637,7 @@ module ExampleCodes
   end
 
   # Frame#select_option
-  def example_230c12044664b222bf35d6163b1e415c011d87d9911a4d39648c7f601b344a31(frame:)
+  def example_3f390f340c78c42dd0c88a09b2f56575b02b163786e8cdee33581217afced6b2(frame:)
     # single selection matching the value
     frame.select_option("select#colors", value: "blue")
     # single selection matching both the label
@@ -645,7 +653,7 @@ module ExampleCodes
   end
 
   # Frame#wait_for_function
-  def example_2f82dcf15fa9338be87a4faf7fe7de3c542040924db1e1ad1c98468ec0f425ce(frame:)
+  def example_e6a8c279eb09e58e3522cb6237f5d62165b164cad0c1916720af299ffcb8dc8a(frame:)
     frame.evaluate("window.x = 0; setTimeout(() => { window.x = 100 }, 1000);")
     frame.wait_for_function("() => window.x > 0")
   end
@@ -670,7 +678,7 @@ module ExampleCodes
   end
 
   # Frame#wait_for_selector
-  def example_a5b9dd4745d45ac630e5953be1c1815ae8e8ab03399fb35f45ea77c434f17eea(page:)
+  def example_6e2a71807566cf008382d4c163ff6e71e34d7f10ef6706ad7fcaa9b70c256a66(page:)
     %w[https://google.com https://bbc.com].each do |current_url|
       page.goto(current_url, waitUntil: "domcontentloaded")
       frame = page.main_frame
@@ -1045,16 +1053,16 @@ module ExampleCodes
     page.get_by_label("Upload file").set_input_files([])
   end
 
-  # Locator#type
-  def example_fa1712c0b6ceb96fcaa74790d33f2c2eefe2bd1f06e61b78e0bb84a6f22c7961(element_handle:)
-    element.type("hello") # types instantly
-    element.type("world", delay: 100) # types slower, like a user
+  # Locator#press_sequentially
+  def example_1b7781d5527574a18d4b9812e3461203d2acc9ba7e09cbfd0ffbc4154e3f5971(element_handle:)
+    element.press_sequentially("hello") # types instantly
+    element.press_sequentially("world", delay: 100) # types slower, like a user
   end
 
-  # Locator#type
-  def example_c52737358713c715eb9607198a15d3e7533c8ca126cf61fa58d6cb31a701585b(page:)
+  # Locator#press_sequentially
+  def example_cc0a6b9aa95b97e5c17c4b114da10a29c7f6f793e99aee1ea2703636af6e24f9(page:)
     element = page.get_by_label("Password")
-    element.type("my password")
+    element.press_sequentially("my password")
     element.press("Enter")
   end
 
@@ -1074,6 +1082,196 @@ module ExampleCodes
     order_sent.wait_for
   end
 
+  # LocatorAssertions
+  def example_eff0600f575bf375d7372280ca8e6dfc51d927ced49fbcb75408c894b9e0564e(page:)
+    page.content = <<~HTML
+    <div id="my_status" class="status">Pending</div>
+    <button onClick="setTimeout(() => { document.getElementById('my_status').innerText='Something Submitted!!' }, 2000)">Click me</button>
+    HTML
+
+    page.get_by_role("button").click
+    expect(page.locator(".status")).to have_text("Submitted") # auto-waiting
+  end
+
+  # LocatorAssertions#to_be_attached
+  def example_781b6f44dd462fc3753b3e48d6888f2ef4d0794253bf6ffb4c42c76f5ec3b454(page:)
+    page.content = <<~HTML
+    <div id="hidden_status" style="display: none">Pending</div>
+    <button onClick="document.getElementById('hidden_status').innerText='Hidden text'">Click me</button>
+    HTML
+
+    page.get_by_role("button").click
+    expect(page.get_by_text("Hidden text")).to be_attached
+  end
+
+  # LocatorAssertions#to_be_checked
+  def example_00a58b66eec12973ab87c0ce5004126aa1f1af5a971a9e89638669f729bbb1b6(page:)
+    locator = page.get_by_label("Subscribe to newsletter")
+    expect(locator).to be_checked
+  end
+
+  # LocatorAssertions#to_be_disabled
+  def example_fc3052bc38e6c1968f23f9185bda7f06478af4719ce96f6a49878ea7e72c9a82(page:)
+    locator = page.locator("button.submit")
+    locator.click
+    expect(locator).to be_disabled
+  end
+
+  # LocatorAssertions#to_be_editable
+  def example_a42b1e97cd0899ccd72bc4b74ab8f57c549814ca5b6d1bb912c870153d6d3f8d(page:)
+    locator = page.get_by_role("textbox")
+    expect(locator).to be_editable
+  end
+
+  # LocatorAssertions#to_be_empty
+  def example_1fb5a7ee389401cf5a6fb3ba90c5b58c42c93d43aa5e4e34d99a5c6265ce0b35(page:)
+    locator = page.locator("div.warning")
+    expect(locator).to be_empty
+  end
+
+  # LocatorAssertions#to_be_enabled
+  def example_0389b23d34a430ee418fd2138f9b8269df20fb6595f2618400e3d53b4f344a75(page:)
+    locator = page.locator("button.submit")
+    expect(locator).to be_enabled
+  end
+
+  # LocatorAssertions#to_be_focused
+  def example_9fc7c2560e0a8117bc4ba14d6133a3d9c66cf6461c29c5a74fe132dea8bd8d63(page:)
+    locator = page.get_by_role("textbox")
+    expect(locator).to be_focused
+  end
+
+  # LocatorAssertions#to_be_hidden
+  def example_55b9181de8eb71936b5e5289631fca33d2100f47f4c4e832d92c23f923779c62(page:)
+    locator = page.locator(".my-element")
+    expect(locator).to be_hidden
+  end
+
+  # LocatorAssertions#to_be_in_viewport
+  def example_7d5d5657528a32a8fb24cbf30e7bb3154cdf4c426e84e40131445a38fe8df2ee(page:)
+    locator = page.get_by_role("button")
+    # Make sure at least some part of element intersects viewport.
+    expect(locator).to be_in_viewport
+    # Make sure element is fully outside of viewport.
+    expect(locator).not_to be_in_viewport
+    # Make sure that at least half of the element intersects viewport.
+    expect(locator).to be_in_viewport(ratio: 0.5)
+  end
+
+  # LocatorAssertions#to_be_visible
+  def example_6c79cc47344706b2e463621209ddd4006848d57eb2074fb7467213756fb14752(page:)
+    # A specific element is visible.
+    expect(page.get_by_text("Welcome")).to be_visible
+
+    # At least one item in the list is visible.
+    expect(page.get_by_test_id("todo-item").first).to be_visible
+
+    # At least one of the two elements is visible, possibly both.
+    expect(
+      page.get_by_role('button', name: 'Sign in').or(page.get_by_role('button', name: 'Sign up')).first
+    ).to be_visible
+  end
+
+  # LocatorAssertions#to_contain_text
+  def example_3553a48e2a15853f4869604ef20dae14952c16abfa0570b8f02e9b74e3d84faa(page:)
+    locator = page.locator('.title')
+    expect(locator).to contain_text("substring")
+    expect(locator).to contain_text(/\d messages/)
+  end
+
+  # LocatorAssertions#to_contain_text
+  def example_fb3cde55b658aefe2e54f93e5b78d26f25cd376eaa469434631af079bb8d8a62(page:)
+    # ✓ Contains the right items in the right order
+    expect(page.locator("ul > li")).to contain_text(["Text 1", "Text 3", "Text 4"])
+
+    # ✖ Wrong order
+    expect(page.locator("ul > li")).to contain_text(["Text 3", "Text 2"])
+
+    # ✖ No item contains this text
+    expect(page.locator("ul > li")).to contain_text(["Some 33"])
+
+    # ✖ Locator points to the outer list element, not to the list items
+    expect(page.locator("ul")).to contain_text(["Text 3"])
+  end
+
+  # LocatorAssertions#to_have_attribute
+  def example_709faaa456b4775109b1fbaca74a86ac5107af5e4801ea07cb690942f1d37f88(page:)
+    locator = page.locator("input")
+    expect(locator).to have_attribute("type", "text")
+  end
+
+  # LocatorAssertions#to_have_class
+  def example_c16c6c567ee66b6d60de634c8a8a7c7c2b26f0e9ea8556e50a47d0c151935aa1(page:)
+    locator = page.locator("#component")
+    expect(locator).to have_class(/selected/)
+    expect(locator).to have_class("selected row")
+  end
+
+  # LocatorAssertions#to_have_class
+  def example_96b9affd86317eeafe4a419f6ec484d33cea4ee947297f44b7b4ebb373261f1d(page:)
+    locator = page.locator("list > .component")
+    expect(locator).to have_class(["component", "component selected", "component"])
+  end
+
+  # LocatorAssertions#to_have_count
+  def example_b3e3d5c7f2ff3a225541e57968953a77e32048daddaabe29ba84e93a1fcee84f(page:)
+    locator = page.locator("list > .component")
+    expect(locator).to have_count(3)
+  end
+
+  # LocatorAssertions#to_have_css
+  def example_12c52b928c1fac117b68573a914ce0ef9595becead95a0ee7c1f487ba1ad9010(page:)
+    locator = page.get_by_role("button")
+    expect(locator).to have_css("display", "flex")
+  end
+
+  # LocatorAssertions#to_have_id
+  def example_5a4c0b1802f0751c2e1068d831ecd499b36a7860605050ba976c2290452bbd89(page:)
+    locator = page.get_by_role("textbox")
+    expect(locator).to have_id("lastname")
+  end
+
+  # LocatorAssertions#to_have_js_property
+  def example_01cad4288f995d4b6253003eb0f4acb227e80553410cea0a8db0ab6927247d92(page:)
+    locator = page.locator(".component")
+    expect(locator).to have_js_property("loaded", true)
+  end
+
+  # LocatorAssertions#to_have_text
+  def example_4ece81163bcb1edeccd7cea8f8c6158cf794c8ef88a673e8c5350a10eaa81542(page:)
+    locator = page.locator(".title")
+    expect(locator).to have_text(/Welcome, Test User/)
+    expect(locator).to have_text(/Welcome, .*/)
+  end
+
+  # LocatorAssertions#to_have_text
+  def example_2caa32069462b536399b1e7e9ade6388ab8b83912ae46ba293cf8ed241c48e85(page:)
+    # ✓ Has the right items in the right order
+    expect(page.locator("ul > li")).to have_text(["Text 1", "Text 2", "Text 3"])
+
+    # ✖ Wrong order
+    expect(page.locator("ul > li")).to have_text(["Text 3", "Text 2", "Text 1"])
+
+    # ✖ Last item does not match
+    expect(page.locator("ul > li")).to have_text(["Text 1", "Text 2", "Text"])
+
+    # ✖ Locator points to the outer list element, not to the list items
+    expect(page.locator("ul")).to have_text(["Text 1", "Text 2", "Text 3"])
+  end
+
+  # LocatorAssertions#to_have_value
+  def example_84f23ac0426bebae60693613034771d70a26808dff53d1d476c3f5856346521a(page:)
+    locator = page.locator("input[type=number]")
+    expect(locator).to have_value(/^[0-9]$/)
+  end
+
+  # LocatorAssertions#to_have_values
+  def example_e5cce4bcdea914bbae14a3645b77f19c322038b0ef81d6ad2a1c9f5b0e21b1e9(page:)
+    locator = page.locator("id=favorite-colors")
+    locator.select_option(["R", "G"])
+    expect(locator).to have_values([/R/, /G/])
+  end
+
   # Mouse
   def example_ba01da1f358cafb4c22b792488ff2f3de4dbd82d4ee1cc4050e3f0c24a2bd7dd(page:)
     # using ‘page.mouse’ to trace a 100x100 square.
@@ -1087,7 +1285,7 @@ module ExampleCodes
   end
 
   # Playwright
-  def example_efc99085566bf177ec87b1bd3bb30d75b6053ec9b579a8ac8bb9f22e5942289a
+  def example_6647e5a44b0440884026a6142606dfddad75ba1e643919b015457df4ed2e198f
     require 'playwright'
 
     Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwright|
@@ -1103,7 +1301,7 @@ module ExampleCodes
   end
 
   # Playwright#devices
-  def example_2c0457a5b76f4a0471fcafd994f7bad94d04f6871480be8118d200c76e59dd72
+  def example_14d627977a4ad16a605ec5472d768a3324812fa8e7c57685561408fa6601e352
     require 'playwright'
 
     Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwright|
@@ -1120,7 +1318,7 @@ module ExampleCodes
   end
 
   # Page
-  def example_d3546d9e2ff0cfa4b0f89f4f357816699c86075dc0dc48e65634d8f0521b5cf6(playwright:)
+  def example_94e620cdbdfd41e2c9b14d561052ffa89535fc346038c4584ea4dd8520f5401c(playwright:)
     playwright.webkit.launch do |browser|
       page = browser.new_page
       page.goto('https://example.com/')
@@ -1249,7 +1447,7 @@ module ExampleCodes
   end
 
   # Page#expose_binding
-  def example_551f5963351bfd7141fa8c94f5f22c305ec1c01d617861953374e9290929a551(page:)
+  def example_4f7d99a72aaea957cc5678ed8728965338d78598d7772f47fbf23c28f0eba52d(page:)
     page.expose_binding("pageURL", ->(source) { source[:page].url })
     page.content = <<~HTML
     <script>
@@ -1284,10 +1482,10 @@ module ExampleCodes
   end
 
   # Page#expose_function
-  def example_3692cd13d12f1d501e2a5e8e6a60d335c5ad54ab3b5eb34e3cec0227106d89f0(page:)
+  def example_0f68a39bdff02a3df161c74e81cabb8a2ff1f09f0d09f6ef9b799a6f2f19a280(page:)
     require 'digest'
 
-    def sha1(text)
+    def sha256(text)
       Digest::SHA256.hexdigest(text)
     end
 
@@ -1364,7 +1562,7 @@ module ExampleCodes
   end
 
   # Page#select_option
-  def example_4b17eb65721c55859c50eb12b4ee762e65408618cf3b7d07958b68d60ea6be6c(page:)
+  def example_8260034c740933903e5a39d30a4f4e388bdffa9e82acd9a5fe1fb774752a505a(page:)
     # single selection matching the value
     page.select_option("select#colors", value: "blue")
     # single selection matching both the label
@@ -1398,7 +1596,7 @@ module ExampleCodes
   end
 
   # Page#wait_for_function
-  def example_e50869c913bec2f0a89a22ff1c438128c3c8f2e3710acb10665445cf52e3ec73(page:)
+  def example_83eed1f1f00ad73f641bf4a49f672e81c4faf1ca098a4a5070afeeabb88312f5(page:)
     page.evaluate("window.x = 0; setTimeout(() => { window.x = 100 }, 1000);")
     page.wait_for_function("() => window.x > 0")
   end
@@ -1473,7 +1671,7 @@ module ExampleCodes
   end
 
   # Page#wait_for_selector
-  def example_0a62ff34b0d31a64dd1597b9dff456e4139b36207d26efdec7109e278dc315a3(page:)
+  def example_903c7325fd65fcdf6f22c77fc159922a568841abce60ae1b7c54ab5837401862(page:)
     %w[https://google.com https://bbc.com].each do |current_url|
       page.goto(current_url, waitUntil: "domcontentloaded")
       element = page.wait_for_selector("img")
@@ -1614,8 +1812,8 @@ module ExampleCodes
     page.route("**/xhr_endpoint", ->(route, _) { route.fulfill(path: "mock_data.json") })
   end
 
-  # Selectors
-  def example_a1cd3939b9af300fdf06f296bb66176d84c00edb31cae728310fa823f22691f8(playwright:)
+  # Selectors#register
+  def example_3e739d4f0e30e20a6a698e0e17605a841c35e65e75aa3c2642f8bfc368b33f9e(playwright:)
     tag_selector = <<~JAVASCRIPT
     {
         // Returns the first element matching given selector in the root's subtree.
