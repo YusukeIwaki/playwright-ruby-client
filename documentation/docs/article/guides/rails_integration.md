@@ -33,7 +33,7 @@ end
 
 ### Update timeout
 
-Capybara sets the default value of timeout to *2 seconds*. Generally it is too short to wait for HTTP responses.
+Capybara sets the default value of timeout to _2 seconds_. Generally it is too short to wait for HTTP responses.
 
 It is recommended to set the timeout to 15-30 seconds for Playwright driver.
 
@@ -56,50 +56,50 @@ It is not mandatry. Without changing the default driver, you can still use Playw
 
 These parameters can be passed into `Capybara::Playwright::Driver.new`
 
-* `playwright_cli_executable_path`
-  * Refer [this article](./download_playwright_driver) to understand what to specify.
-* `browser_type`
-  * `:chromium` (default), `:firefox`, or `:webkit`
-* Parameters for [Playwright::BrowserType#launch](/docs/api/browser_type#launch)
-  * args
-  * channel
-    * `chrome`, `msedge`, `chrome-beta`, `chrome-dev`, `chrome-canary`, `msedge-beta`, `msedge-dev` Browser distribution channel. Read more about using [Google Chrome & Microsoft Edge](https://playwright.dev/docs/browsers#google-chrome--microsoft-edge)
-  * devtools
-  * downloadsPath
-  * env
-  * executablePath
-  * firefoxUserPrefs
-  * headless
-  * ignoreDefaultArgs
-  * proxy
-  * slowMo
-  * timeout
-* Parameters for [Playwright::Browser#new_context](/docs/api/browser#new_context)
-  * bypassCSP
-  * colorScheme
-  * deviceScaleFactor
-  * extraHTTPHeaders
-  * geolocation
-  * hasTouch
-  * httpCredentials
-  * ignoreHTTPSErrors
-  * isMobile
-  * javaScriptEnabled
-  * locale
-  * noViewport
-  * offline
-  * permissions
-  * proxy
-  * record_har_omit_content
-  * record_har_path
-  * record_video_dir
-  * record_video_size
-  * screen
-  * serviceWorkers
-  * storageState
-  * timezoneId
-  * userAgent
-  * viewport
+- `playwright_cli_executable_path`
+  - Refer [this article](./download_playwright_driver) to understand what to specify.
+- `browser_type`
+  - `:chromium` (default), `:firefox`, or `:webkit`
+- Parameters for [Playwright::BrowserType#launch](/docs/api/browser_type#launch)
+  - args
+  - channel
+    - `chrome`, `msedge`, `chrome-beta`, `chrome-dev`, `chrome-canary`, `msedge-beta`, `msedge-dev` Browser distribution channel. Read more about using [Google Chrome & Microsoft Edge](https://playwright.dev/docs/browsers#google-chrome--microsoft-edge)
+  - devtools
+  - downloadsPath
+  - env
+  - executablePath
+  - firefoxUserPrefs
+  - headless
+  - ignoreDefaultArgs
+  - proxy
+  - slowMo
+  - timeout
+- Parameters for [Playwright::Browser#new_context](/docs/api/browser#new_context)
+  - bypassCSP
+  - colorScheme
+  - deviceScaleFactor
+  - extraHTTPHeaders
+  - geolocation
+  - hasTouch
+  - httpCredentials
+  - ignoreHTTPSErrors
+  - isMobile
+  - javaScriptEnabled
+  - locale
+  - noViewport
+  - offline
+  - permissions
+  - proxy
+  - record_har_omit_content
+  - record_har_path
+  - record_video_dir
+  - record_video_size
+  - screen
+  - serviceWorkers
+  - storageState
+  - timezoneId
+  - userAgent
+  - viewport
 
 ```ruby
 driver_opts = {
@@ -119,14 +119,13 @@ driver_opts = {
 Capybara::Playwright::Driver.new(app, driver_opts)
 ```
 
-
 ## Available functions and Limitations
 
 ### Capybara DSL
 
 Most of the methods of `Capybara::Session` and `Capybara::Node::Element` are available. However the following method is not yet implemented.
 
-* `Capybara::Node::Element#drop`
+- `Capybara::Node::Element#drop`
 
 ### Playwright-native scripting
 
@@ -181,7 +180,6 @@ end
 
 For more details, refer [Recording video](./recording_video.md#using-screen-recording-from-capybara-driver)
 
-
 ### Screenshot just before teardown
 
 In addition to `Capybara::Session#save_screenshot`, capybara-playwright-driver have another method for storing last screen state just before teardown.
@@ -201,8 +199,39 @@ before do |example|
 end
 ```
 
+### Tracing for postmortem
+
+Playwright users often expect to see what happened in the browser when the test failed. `capybara-playwright-driver` provides a feature to store the trace easily.
+
+```ruby
+before do |example|
+  Capybara.current_session.driver.on_save_trace do |trace_zip_path|
+    Allure.add_attachment(
+      name: "trace - #{example.description}",
+      source: File.read(trace_zip_path),
+      type: 'application/zip',
+      test_case: true,
+    )
+  end
+end
+```
+
+This example code would attach the trace zip file to Allure report for each test case.
+
+![add trace image](https://user-images.githubusercontent.com/11763113/282307106-520d800b-67ac-4e14-98bb-75a8bbb98a1f.png)
+
+We can download and show the trace with `playwright show-trace` command.
+
+```
+npx playwright show-trace ababcdcdefef.zip
+```
+
+![show-trace image](https://user-images.githubusercontent.com/11763113/282307098-a4167c32-d5e7-4631-a3b6-62d278efbeef.png)
+
+Instead of the easy configuration using `on_save_trace`, we can also use `page.driver.start_tracing` / `page.driver.stop_tracing` or `page.driver.with_trace do { ... }` for storing the trace with detailed options. See [the PR](https://github.com/YusukeIwaki/capybara-playwright-driver/pull/66) for more details including example codes for RSpec.
+
 ### Limitations
 
-* Playwright doesn't allow clicking invisible DOM elements or moving elements. `click` sometimes doesn't work as Selenium does. See the detail in https://playwright.dev/docs/actionability/
-* `current_window.maximize` and `current_window.fullscreen` work only on headful (non-headless) mode, as selenium driver does.
-* `Capybara::Node::Element#drag_to` does not accept `html5` parameter. HTML5 drag and drop is not fully supported in Playwright.
+- Playwright doesn't allow clicking invisible DOM elements or moving elements. `click` sometimes doesn't work as Selenium does. See the detail in https://playwright.dev/docs/actionability/
+- `current_window.maximize` and `current_window.fullscreen` work only on headful (non-headless) mode, as selenium driver does.
+- `Capybara::Node::Element#drag_to` does not accept `html5` parameter. HTML5 drag and drop is not fully supported in Playwright.

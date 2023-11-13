@@ -81,7 +81,7 @@ module.exports = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} @YusukeIwaki. <p>Built with <a href="https://v2.docusaurus.io/">Docusaurus</a>.</p>`,
+      copyright: `Copyright © ${new Date().getFullYear()} @YusukeIwaki. <p>Built with <a href="https://docusaurus.io/">Docusaurus</a>.</p>`,
     },
     prism: {
       additionalLanguages: ['bash', 'ruby'],
