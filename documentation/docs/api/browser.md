@@ -31,7 +31,7 @@ Get the browser type (chromium, firefox or webkit) that the browser belongs to.
 ## close
 
 ```
-def close
+def close(reason: nil)
 ```
 
 

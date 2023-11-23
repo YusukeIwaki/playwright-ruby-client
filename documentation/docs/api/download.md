@@ -68,8 +68,7 @@ def path
 ```
 
 
-Returns path to the downloaded file in case of successful download. The method will
-wait for the download to finish if necessary. The method throws when connected remotely.
+Returns path to the downloaded file for a successful download, or throws for a failed/canceled download. The method will wait for the download to finish if necessary. The method throws when connected remotely.
 
 Note that the download's file name is a random GUID, use [Download#suggested_filename](./download#suggested_filename)
 to get suggested file name.

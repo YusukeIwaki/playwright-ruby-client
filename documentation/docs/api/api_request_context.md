@@ -85,8 +85,7 @@ def dispose
 ```
 
 
-All responses returned by [APIRequestContext#get](./api_request_context#get) and similar methods are stored in the memory, so that you can later call [APIResponse#body](./api_response#body). This method
-discards all stored responses, and makes [APIResponse#body](./api_response#body) throw "Response disposed" error.
+All responses returned by [APIRequestContext#get](./api_request_context#get) and similar methods are stored in the memory, so that you can later call [APIResponse#body](./api_response#body).This method discards all its resources, calling any method on disposed [APIRequestContext](./api_request_context) will throw an exception.
 
 ## fetch
 

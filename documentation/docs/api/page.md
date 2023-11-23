@@ -152,7 +152,7 @@ When all steps combined have not finished during the specified `timeout`, this m
 ## close
 
 ```
-def close(runBeforeUnload: nil)
+def close(reason: nil, runBeforeUnload: nil)
 ```
 
 
@@ -240,13 +240,16 @@ default.
 
 Since `eventInit` is event-specific, please refer to the events documentation for the lists of initial
 properties:
+- [DeviceMotionEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent/DeviceMotionEvent)
+- [DeviceOrientationEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent/DeviceOrientationEvent)
 - [DragEvent](https://developer.mozilla.org/en-US/docs/Web/API/DragEvent/DragEvent)
+- [Event](https://developer.mozilla.org/en-US/docs/Web/API/Event/Event)
 - [FocusEvent](https://developer.mozilla.org/en-US/docs/Web/API/FocusEvent/FocusEvent)
 - [KeyboardEvent](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/KeyboardEvent)
 - [MouseEvent](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/MouseEvent)
 - [PointerEvent](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/PointerEvent)
 - [TouchEvent](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent/TouchEvent)
-- [Event](https://developer.mozilla.org/en-US/docs/Web/API/Event/Event)
+- [WheelEvent](https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent/WheelEvent)
 
 You can also specify [JSHandle](./js_handle) as the property value if you want live objects to be passed into the event:
 
@@ -462,18 +465,29 @@ See [BrowserContext#expose_binding](./browser_context#expose_binding) for the co
 
 An example of exposing page URL to all frames in a page:
 
-```ruby
-page.expose_binding("pageURL", ->(source) { source[:page].url })
-page.content = <<~HTML
-<script>
-  async function onClick() {
-    document.querySelector('div').textContent = await window.pageURL();
-  }
-</script>
-<button onclick="onClick()">Click me</button>
-<div></div>
-HTML
-page.locator("button").click
+```python sync title=example_f32bc2194cbfc7c632c148ab34523bc5a4e3fdbdc66d7dfcf85304977a1adcbf.py
+from playwright.sync_api import sync_playwright, Playwright
+
+def run(playwright: Playwright):
+    webkit = playwright.webkit
+    browser = webkit.launch(headless=False)
+    context = browser.new_context()
+    page = context.new_page()
+    page.expose_binding("pageURL", lambda source: source["page"].url)
+    page.set_content("""
+    <script>
+      async function onClick() {
+        document.querySelector('div').textContent = await window.pageURL();
+      }
+    </script>
+    <button onclick="onClick()">Click me</button>
+    <div></div>
+    """)
+    page.click("button")
+
+with sync_playwright() as playwright:
+    run(playwright)
+
 ```
 
 An example of passing an element handle:
