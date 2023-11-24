@@ -60,7 +60,7 @@ module Playwright
         # to_be_visible => be_visible
         # not_to_be_visible => not_be_visible
         root_method_name = method_name.gsub("to_", "")
-        Matchers.define_method(root_method_name) do |*args, **kwargs| 
+        Matchers.send(:define_method, root_method_name) do |*args, **kwargs|
           Matchers::PlaywrightMatcher.new(method_name, *args, **kwargs)
         end
       end
