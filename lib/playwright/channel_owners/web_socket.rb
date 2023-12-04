@@ -33,29 +33,24 @@ module Playwright
       end
     end
 
-    class PageClosedError < StandardError
-      def initialize
-        super('Page closed')
-      end
-    end
-
     def expect_event(event, predicate: nil, timeout: nil, &block)
-      wait_helper = WaitHelper.new
-      wait_helper.reject_on_timeout(timeout || @parent.send(:timeout_settings).timeout, "Timeout while waiting for event \"#{event}\"")
+      waiter = Waiter.new(self, wait_name: "WebSocket.expect_event(#{event})")
+      timeout_value = timeout || @parent.send(:timeout_settings).timeout
+      waiter.reject_on_timeout(timeout_value, "Timeout #{timeout_value}ms exceeded while waiting for event \"#{event}\"")
 
       unless event == Events::WebSocket::Close
-        wait_helper.reject_on_event(self, Events::WebSocket::Close, SocketClosedError.new)
+        waiter.reject_on_event(self, Events::WebSocket::Close, SocketClosedError.new)
       end
 
       unless event == Events::WebSocket::Error
-        wait_helper.reject_on_event(self, Events::WebSocket::Error, SocketError.new)
+        waiter.reject_on_event(self, Events::WebSocket::Error, SocketError.new)
       end
 
-      wait_helper.reject_on_event(@parent, 'close', PageClosedError.new)
-      wait_helper.wait_for_event(self, event, predicate: predicate)
+      waiter.reject_on_event(@parent, 'close', -> { @parent.send(:close_error_with_reason) })
+      waiter.wait_for_event(self, event, predicate: predicate)
       block&.call
 
-      wait_helper.promise.value!
+      waiter.result.value!
     end
     alias_method :wait_for_event, :expect_event
 

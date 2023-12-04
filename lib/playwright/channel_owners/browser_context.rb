@@ -1,7 +1,6 @@
 module Playwright
   # @ref https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_browser_context.py
   define_channel_owner :BrowserContext do
-    include Utils::Errors::SafeCloseError
     include Utils::PrepareBrowserContextOptions
 
     attr_accessor :browser
@@ -68,6 +67,9 @@ module Playwright
           ChannelOwners::Page.from_nullable(params['page']),
         )
       })
+
+      @closed_promise = Concurrent::Promises.resolvable_future
+      @close_reason = nil
       set_event_to_subscription_mapping({
         Events::BrowserContext::Console => 'console',
         Events::BrowserContext::Dialog => 'dialog',
@@ -77,7 +79,7 @@ module Playwright
         Events::BrowserContext::RequestFailed => "requestFailed",
       })
 
-      @closed_promise = Concurrent::Promises.resolvable_future
+      @close_was_called = false
     end
 
     private def update_options(context_options:, browser_options:)
@@ -382,13 +384,17 @@ module Playwright
     end
 
     def expect_event(event, predicate: nil, timeout: nil, &block)
-      wait_helper = WaitHelper.new
-      wait_helper.reject_on_timeout(timeout || @timeout_settings.timeout, "Timeout while waiting for event \"#{event}\"")
-      wait_helper.wait_for_event(self, event, predicate: predicate)
+      waiter = Waiter.new(self, wait_name: "browser_context.expect_event(#{event})")
+      timeout_value = timeout || @timeout_settings.timeout
+      waiter.reject_on_timeout(timeout_value, "Timeout #{timeout}ms exceeded while waiting for event \"#{event}\"")
+      unless event == Events::BrowserContext::Close
+        waiter.reject_on_event(Events::BrowserContext::Close, TargetClosedError.new)
+      end
+      waiter.wait_for_event(self, event, predicate: predicate)
 
       block&.call
 
-      wait_helper.promise.value!
+      waiter.result.value!
     end
 
     private def on_close
@@ -397,7 +403,18 @@ module Playwright
       @closed_promise.fulfill(true)
     end
 
-    def close
+    def close(reason: nil)
+      return if @close_was_called
+      @close_was_called = true
+      @close_reason = reason
+
+      inner_close
+      @channel.send_message_to_server('close', { reason: reason }.compact)
+      @closed_promise.value!
+      nil
+    end
+
+    private def inner_close
       @har_recorders.each do |har_id, params|
         har = ChannelOwners::Artifact.from(@channel.send_message_to_server('harExport', harId: har_id))
         # Server side will compress artifact if content is attach or if file is .zip.
@@ -413,11 +430,6 @@ module Playwright
 
         har.delete
       end
-      @channel.send_message_to_server('close')
-      @closed_promise.value!
-      nil
-    rescue => err
-      raise unless safe_close_error?(err)
     end
 
     # REMARK: enable_debug_console is playwright-ruby-client specific method.
@@ -457,6 +469,10 @@ module Playwright
           end
         end
       end
+    end
+
+    private def effective_close_reason
+      @close_reason || @browser&.send(:close_reason)
     end
 
     def expect_console_message(predicate: nil, timeout: nil, &block)

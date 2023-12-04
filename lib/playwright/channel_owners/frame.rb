@@ -71,12 +71,24 @@ module Playwright
       ChannelOwners::Response.from_nullable(resp)
     end
 
-    private def setup_navigation_wait_helper(timeout:)
-      WaitHelper.new.tap do |helper|
-        helper.reject_on_event(@page, Events::Page::Close, AlreadyClosedError.new)
-        helper.reject_on_event(@page, Events::Page::Crash, CrashedError.new)
-        helper.reject_on_event(@page, Events::Page::FrameDetached, FrameAlreadyDetachedError.new)
-        helper.reject_on_timeout(timeout, "Timeout #{timeout}ms exceeded.")
+    class CrashedError < StandardError
+      def initialize
+        super('Navigation failed because page crashed!')
+      end
+    end
+
+    class FrameAlreadyDetachedError < StandardError
+      def initialize
+        super('Navigating frame was detached!')
+      end
+    end
+
+    private def setup_navigation_waiter(wait_name:, timeout_value:)
+      Waiter.new(page, wait_name: "frame.#{wait_name}").tap do |waiter|
+        waiter.reject_on_event(@page, Events::Page::Close, -> { @page.send(:close_error_with_reason) })
+        waiter.reject_on_event(@page, Events::Page::Crash, CrashedError.new)
+        waiter.reject_on_event(@page, Events::Page::FrameDetached, FrameAlreadyDetachedError.new, predicate: -> (frame) { frame == self })
+        waiter.reject_on_timeout(timeout_value, "Timeout #{timeout_value}ms exceeded.")
       end
     end
 
@@ -85,21 +97,30 @@ module Playwright
       option_timeout = timeout || @page.send(:timeout_settings).navigation_timeout
       time_start = Time.now
 
-      wait_helper = setup_navigation_wait_helper(timeout: option_timeout)
+      waiter = setup_navigation_waiter(wait_name: :expect_navigation, timeout_value: option_timeout)
 
+      to_url = url ? " to \"#{url}\"" : ''
+      waiter.log("waiting for navigation#{to_url} until '#{option_wait_until}'")
       predicate =
         if url
           matcher = UrlMatcher.new(url, base_url: @page.context.send(:base_url))
-          ->(event) { event['error'] || matcher.match?(event['url']) }
+          ->(event) {
+            if event['error']
+              true
+            else
+              waiter.log("  navigated to \"#{event['url']}\"")
+              matcher.match?(event['url'])
+            end
+          }
         else
           ->(_) { true }
         end
 
-      wait_helper.wait_for_event(@event_emitter, 'navigated', predicate: predicate)
+      waiter.wait_for_event(@event_emitter, 'navigated', predicate: predicate)
 
       block&.call
 
-      event = wait_helper.promise.value!
+      event = waiter.result.value!
       if event['error']
         raise event['error']
       end
@@ -135,11 +156,14 @@ module Playwright
         return
       end
 
-      wait_helper = setup_navigation_wait_helper(timeout: option_timeout)
+      waiter = setup_navigation_waiter(wait_name: :wait_for_load_state, timeout_value: option_timeout)
 
-      predicate = ->(state) { state == option_state }
-      wait_helper.wait_for_event(@event_emitter, 'loadstate', predicate: predicate)
-      wait_helper.promise.value!
+      predicate = ->(actual_state) {
+        waiter.log("\"#{actual_state}\" event fired")
+        actual_state == option_state
+      }
+      waiter.wait_for_event(@event_emitter, 'loadstate', predicate: predicate)
+      waiter.result.value!
 
       nil
     end
