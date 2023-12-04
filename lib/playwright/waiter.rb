@@ -59,6 +59,8 @@ module Playwright
 
       Concurrent::Promises.schedule(timeout_ms / 1000.0) do
         reject(TimeoutError.new(message: message))
+      end.rescue do |err|
+        puts err, err.backtrace
       end
 
       self
@@ -81,10 +83,12 @@ module Playwright
 
     private def reject(error)
       cleanup
+      klass = error.is_a?(TimeoutError) ? TimeoutError : Error
+      ex = klass.new(message: "#{error.message}#{format_log_recording(@logs)}")
       unless @result.resolved?
-        @result.reject(error)
+        @result.reject(ex)
       end
-      wait_for_event_info_after(error: error.inspect)
+      wait_for_event_info_after(error: ex)
     end
 
     # @param [Playwright::EventEmitter]
@@ -123,6 +127,18 @@ module Playwright
       rescue => err
         # ignore
       end
+    end
+
+    # @param logs [Array<String>]
+    private def format_log_recording(logs)
+      return "" if logs.empty?
+
+      header = " logs "
+      header_length = 60
+      left_length = ((header_length - header.length) / 2.0).to_i
+      right_length = header_length - header.length - left_length
+      new_line = "\n"
+      "#{new_line}#{'=' * left_length}#{header}#{'=' * right_length}#{new_line}#{logs.join(new_line)}#{new_line}#{'=' * header_length}"
     end
   end
 end

@@ -24,8 +24,8 @@ module Playwright
     # @param name [String]
     # @param message [String]
     # @param stack [Array<String>]
-    def initialize(name:, message:, stack:)
-      super("#{name}: #{message}")
+    def initialize(message:, name: nil, stack: nil)
+      super(message)
       @name = name
       @message = message
       @stack = stack
@@ -53,8 +53,9 @@ module Playwright
   end
 
   class TargetClosedError < Error
-    def initialize(message: 'Target page, context or browser has been closed', stack: [])
-      super(name: 'TargetClosedError', message: message, stack: stack)
+    def initialize(message: nil, stack: [])
+      _message = message || 'Target page, context or browser has been closed'
+      super(name: 'TargetClosedError', message: _message, stack: stack)
     end
   end
 

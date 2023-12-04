@@ -6,7 +6,7 @@ RSpec.describe Playwright::Page do
       never_resolved_promise = Concurrent::Promises.future { page.evaluate('() => new Promise(r => {})') }
       sleep_a_bit_for_race_condition
       page.close
-      expect { never_resolved_promise.value! }.to raise_error(/Target closed/)
+      expect { never_resolved_promise.value! }.to raise_error(/Target page, context or browser has been closed/)
     end
   end
 
@@ -30,8 +30,8 @@ RSpec.describe Playwright::Page do
       request_promise = Concurrent::Promises.future { page.expect_request('http://example.com/') }
       response_promise = Concurrent::Promises.future { page.expect_response('http://example.com/') }
       page.close
-      expect { request_promise.value! }.to raise_error(/Page closed/)
-      expect { response_promise.value! }.to raise_error(/Page closed/)
+      expect { request_promise.value! }.to raise_error(/Target page, context or browser has been closed/)
+      expect { response_promise.value! }.to raise_error(/Target page, context or browser has been closed/)
     end
   end
 
@@ -105,7 +105,7 @@ RSpec.describe Playwright::Page do
         page.expect_event('download') do
           page.close
         end
-      }.to raise_error(/Page closed/)
+      }.to raise_error(/Target page, context or browser has been closed/)
     end
   end
 
