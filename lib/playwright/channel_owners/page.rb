@@ -491,7 +491,8 @@ module Playwright
       @main_frame.title
     end
 
-    def close(runBeforeUnload: nil)
+    def close(runBeforeUnload: nil, reason: nil)
+      @close_reason = reason
       if @owned_context
         @owned_context.close
       else
