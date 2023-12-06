@@ -1,3 +1,5 @@
+require 'securerandom'
+
 module Playwright
   # ref: https://github.com/microsoft/playwright-python/blob/v1.40.0/playwright/_impl/_waiter.py
   # ref: https://github.com/microsoft/playwright/blob/v1.40.0/packages/playwright-core/src/client/waiter.ts

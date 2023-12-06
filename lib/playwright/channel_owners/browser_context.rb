@@ -388,7 +388,7 @@ module Playwright
       timeout_value = timeout || @timeout_settings.timeout
       waiter.reject_on_timeout(timeout_value, "Timeout #{timeout}ms exceeded while waiting for event \"#{event}\"")
       unless event == Events::BrowserContext::Close
-        waiter.reject_on_event(Events::BrowserContext::Close, TargetClosedError.new)
+        waiter.reject_on_event(self, Events::BrowserContext::Close, TargetClosedError.new)
       end
       waiter.wait_for_event(self, event, predicate: predicate)
 
