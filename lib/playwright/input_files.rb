@@ -15,7 +15,7 @@ module Playwright
 
     def as_method_and_params
       if has_large_file?
-        ['setInputFilePaths', params_for_set_input_file_paths]
+        ['setInputFiles', params_for_set_input_file_paths]
       else
         ['setInputFiles', params_for_set_input_files]
       end
@@ -40,7 +40,7 @@ module Playwright
       writable_streams = @files.map do |file|
         case file
         when String
-          writable_stream = @context.send(:create_temp_file, File.basename(file))
+          writable_stream = @context.send(:create_temp_file, file)
 
           File.open(file, 'rb') do |file|
             writable_stream.write(file)
@@ -48,7 +48,7 @@ module Playwright
 
           writable_stream.channel
         when File
-          writable_stream = @context.send(:create_temp_file, File.basename(file.path))
+          writable_stream = @context.send(:create_temp_file, file.path)
           writable_stream.write(file)
 
           writable_stream.channel
@@ -78,7 +78,7 @@ module Playwright
         end
       end
 
-      { files: file_payloads }
+      { payloads: file_payloads }
     end
 
     private def raise_argument_error

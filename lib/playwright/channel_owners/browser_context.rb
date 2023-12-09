@@ -518,10 +518,14 @@ module Playwright
     end
 
     # called from InputFiles
-    # @param name [string]
+    # @param filepath [string]
     # @return [WritableStream]
-    private def create_temp_file(name)
-      result = @channel.send_message_to_server('createTempFile', name: name)
+    private def create_temp_file(filepath)
+      result = @channel.send_message_to_server(
+        'createTempFile',
+        name: File.basename(filepath),
+        lastModifiedMs: File.mtime(filepath).to_i * 1000,
+      )
       ChannelOwners::WritableStream.from(result)
     end
   end
