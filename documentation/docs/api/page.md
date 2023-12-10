@@ -465,29 +465,18 @@ See [BrowserContext#expose_binding](./browser_context#expose_binding) for the co
 
 An example of exposing page URL to all frames in a page:
 
-```python sync title=example_f32bc2194cbfc7c632c148ab34523bc5a4e3fdbdc66d7dfcf85304977a1adcbf.py
-from playwright.sync_api import sync_playwright, Playwright
-
-def run(playwright: Playwright):
-    webkit = playwright.webkit
-    browser = webkit.launch(headless=False)
-    context = browser.new_context()
-    page = context.new_page()
-    page.expose_binding("pageURL", lambda source: source["page"].url)
-    page.set_content("""
-    <script>
-      async function onClick() {
-        document.querySelector('div').textContent = await window.pageURL();
-      }
-    </script>
-    <button onclick="onClick()">Click me</button>
-    <div></div>
-    """)
-    page.click("button")
-
-with sync_playwright() as playwright:
-    run(playwright)
-
+```ruby
+page.expose_binding("pageURL", ->(source) { source[:page].url })
+page.content = <<~HTML
+<script>
+  async function onClick() {
+    document.querySelector('div').textContent = await window.pageURL();
+  }
+</script>
+<button onclick="onClick()">Click me</button>
+<div></div>
+HTML
+page.click("button")
 ```
 
 An example of passing an element handle:

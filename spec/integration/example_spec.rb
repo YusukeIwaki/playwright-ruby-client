@@ -127,7 +127,7 @@ RSpec.describe 'example' do
 
     it 'should work with BrowserContext#expose_binding' do
       with_context do |context|
-        example_a450852d36dda88564582371af8d87bb58b1a517aac4fa60b7a58a0e41c5ceff(browser_context: context)
+        example_ba61d7312419a50eab8b67fd47e467e3b53590e7fd2ee55055fb6d12c94a61e4(browser_context: context)
         example_93e847f70b01456eec429a1ebfaa6b8f5334f4c227fd73e62dd6a7facb48dbbd(browser_context: context)
         example_714719de9c92e66678257180301c2512f8cd69185f53a5121b6c52194f61a871(browser_context: context)
       end
