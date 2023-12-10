@@ -79,7 +79,7 @@ module Playwright
       expected
     end
 
-    private def to_expected_text_values(items, match_substring = false, normalize_white_space = false, ignore_case = false)
+    private def to_expected_text_values(items, match_substring: false, normalize_white_space: false, ignore_case: false)
       return [] unless items.respond_to?(:each)
 
       items.each.with_object([]) do |item, out|
@@ -109,9 +109,9 @@ module Playwright
       if expected.respond_to?(:each)
         expected_text = to_expected_text_values(
           expected,
-          true,
-          true,
-          ignoreCase,
+          match_substring: true,
+          normalize_white_space: true,
+          ignore_case: ignoreCase,
         )
 
         expect_impl(
@@ -127,9 +127,9 @@ module Playwright
       else
         expected_text = to_expected_text_values(
           [expected],
-          true,
-          true,
-          ignoreCase
+          match_substring: true,
+          normalize_white_space: true,
+          ignore_case: ignoreCase,
         )
 
         expect_impl(
@@ -146,8 +146,8 @@ module Playwright
     end
     _define_negation :to_contain_text
 
-    def to_have_attribute(name, value, timeout: nil)
-      expected_text = to_expected_text_values([value])
+    def to_have_attribute(name, value, ignoreCase: nil, timeout: nil)
+      expected_text = to_expected_text_values([value], ignore_case: ignoreCase)
       expect_impl(
         "to.have.attribute.value",
         {
@@ -278,9 +278,9 @@ module Playwright
       if expected.respond_to?(:each)
         expected_text = to_expected_text_values(
           expected,
-          true,
-          true,
-          ignoreCase,
+          match_substring: true,
+          normalize_white_space: true,
+          ignore_case: ignoreCase,
         )
         expect_impl(
           "to.have.text.array",
@@ -295,9 +295,9 @@ module Playwright
       else
         expected_text = to_expected_text_values(
           [expected],
-          true,
-          true,
-          ignoreCase,
+          match_substring: true,
+          normalize_white_space: true,
+          ignore_case: ignoreCase,
         )
         expect_impl(
           "to.have.text",
