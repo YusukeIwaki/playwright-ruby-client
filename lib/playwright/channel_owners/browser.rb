@@ -3,17 +3,21 @@ require 'fileutils'
 module Playwright
   # @ref https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_browser.py
   define_channel_owner :Browser do
-    include Utils::Errors::SafeCloseError
+    include Utils::Errors::TargetClosedErrorMethods
     include Utils::PrepareBrowserContextOptions
 
     private def after_initialize
       @browser_type = @parent
       @connected = true
-      @closed_or_closing = false
       @should_close_connection_on_close = false
 
       @contexts = Set.new
       @channel.on('close', method(:on_close))
+      @close_reason = nil
+    end
+
+    private def close_reason
+      @close_reason
     end
 
     def contexts
@@ -63,16 +67,16 @@ module Playwright
       @browser_type = browser_type
     end
 
-    def close
-      return if @closed_or_closing
-      @closed_or_closing = true
-      @channel.send_message_to_server('close')
+    def close(reason: nil)
+      @close_reason = reason
       if @should_close_connection_on_close
         @connection.stop
+      else
+        @channel.send_message_to_server('close', { reason: reason }.compact)
       end
       nil
     rescue => err
-      raise unless safe_close_error?(err)
+      raise unless target_closed_error?(err)
     end
 
     def version

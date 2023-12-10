@@ -120,7 +120,7 @@ context.clear_permissions
 ## close
 
 ```
-def close
+def close(reason: nil)
 ```
 
 

@@ -400,6 +400,11 @@ expect(locator).to contain_text(expected, ignoreCase: nil, timeout: nil, useInne
 
 Ensures the [Locator](./locator) points to an element that contains the given text. You can use regular expressions for the value as well.
 
+**Details**
+
+When `expected` parameter is a string, Playwright will normalize whitespaces and line breaks both in the actual text and
+in the expected string before matching. When regular expression is used, the actual text is matched as is.
+
 **Usage**
 
 ```ruby
@@ -443,7 +448,7 @@ expect(page.locator("ul")).to contain_text(["Text 3"])
 ## to_have_attribute
 
 ```ruby
-expect(locator).to have_attribute(name, value, timeout: nil)
+expect(locator).to have_attribute(name, value, ignoreCase: nil, timeout: nil)
 ```
 
 
@@ -558,6 +563,11 @@ expect(locator).to have_text(expected, ignoreCase: nil, timeout: nil, useInnerTe
 
 
 Ensures the [Locator](./locator) points to an element with the given text. You can use regular expressions for the value as well.
+
+**Details**
+
+When `expected` parameter is a string, Playwright will normalize whitespaces and line breaks both in the actual text and
+in the expected string before matching. When regular expression is used, the actual text is matched as is.
 
 **Usage**
 

@@ -23,6 +23,7 @@ module Playwright
       @root_object = RootChannelOwner.new(self)
       @remote = false
       @tracing_count = 0
+      @closed_error = nil
     end
 
     attr_reader :local_utils
@@ -41,6 +42,15 @@ module Playwright
 
     def stop
       @transport.stop
+      cleanup
+    end
+
+    def cleanup(cause: nil)
+      @closed_error = cause || TargetClosedError.new
+      @callbacks.each_value do |callback|
+        callback.reject(@closed_error)
+      end
+      @callbacks.clear
     end
 
     def initialize_playwright
@@ -60,6 +70,8 @@ module Playwright
     end
 
     def async_send_message_to_server(guid, method, params, metadata: nil)
+      return if @closed_error
+
       callback = Concurrent::Promises.resolvable_future
 
       with_generated_id do |id|
@@ -130,6 +142,8 @@ module Playwright
     end
 
     def dispatch(msg)
+      return if @closed_error
+
       id = msg['id']
       if id
         callback = @callbacks.delete(id)
@@ -139,8 +153,10 @@ module Playwright
         end
 
         error = msg['error']
-        if error
-          callback.reject(::Playwright::Error.parse(error['error']))
+        if error && !msg['result']
+          parsed_error = ::Playwright::Error.parse(error['error'])
+          parsed_error.log = msg['log']
+          callback.reject(parsed_error)
         else
           result = replace_guids_with_channels(msg['result'])
           callback.fulfill(result)

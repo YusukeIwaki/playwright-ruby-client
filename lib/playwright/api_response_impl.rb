@@ -1,6 +1,6 @@
 module Playwright
   define_api_implementation :APIResponseImpl do
-    include Utils::Errors::SafeCloseError
+    include Utils::Errors::TargetClosedErrorMethods
 
     # @params context [APIRequestContext]
     # @params initializer [Hash]
@@ -50,7 +50,7 @@ module Playwright
       raise AlreadyDisposedError.new unless binary
       Base64.strict_decode64(binary)
     rescue => err
-      if safe_close_error?(err)
+      if target_closed_error?(err)
         raise AlreadyDisposedError.new
       else
         raise

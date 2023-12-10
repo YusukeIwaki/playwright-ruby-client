@@ -137,7 +137,7 @@ RSpec.describe 'WebSocket', web_socket: true do
         ws.expect_event('framesent') do
           page.close
         end
-      }.to raise_error(/Page closed/)
+      }.to raise_error(/Target page, context or browser has been closed/)
     end
   end
 end

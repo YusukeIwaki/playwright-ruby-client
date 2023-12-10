@@ -152,7 +152,7 @@ When all steps combined have not finished during the specified `timeout`, this m
 ## close
 
 ```
-def close(runBeforeUnload: nil)
+def close(reason: nil, runBeforeUnload: nil)
 ```
 
 
@@ -240,13 +240,16 @@ default.
 
 Since `eventInit` is event-specific, please refer to the events documentation for the lists of initial
 properties:
+- [DeviceMotionEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent/DeviceMotionEvent)
+- [DeviceOrientationEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent/DeviceOrientationEvent)
 - [DragEvent](https://developer.mozilla.org/en-US/docs/Web/API/DragEvent/DragEvent)
+- [Event](https://developer.mozilla.org/en-US/docs/Web/API/Event/Event)
 - [FocusEvent](https://developer.mozilla.org/en-US/docs/Web/API/FocusEvent/FocusEvent)
 - [KeyboardEvent](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/KeyboardEvent)
 - [MouseEvent](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/MouseEvent)
 - [PointerEvent](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/PointerEvent)
 - [TouchEvent](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent/TouchEvent)
-- [Event](https://developer.mozilla.org/en-US/docs/Web/API/Event/Event)
+- [WheelEvent](https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent/WheelEvent)
 
 You can also specify [JSHandle](./js_handle) as the property value if you want live objects to be passed into the event:
 
@@ -473,7 +476,7 @@ page.content = <<~HTML
 <button onclick="onClick()">Click me</button>
 <div></div>
 HTML
-page.locator("button").click
+page.click("button")
 ```
 
 An example of passing an element handle:

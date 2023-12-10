@@ -226,7 +226,7 @@ module ExampleCodes
   end
 
   # BrowserContext#expose_binding
-  def example_a450852d36dda88564582371af8d87bb58b1a517aac4fa60b7a58a0e41c5ceff(browser_context:)
+  def example_ba61d7312419a50eab8b67fd47e467e3b53590e7fd2ee55055fb6d12c94a61e4(browser_context:)
     browser_context.expose_binding("pageURL", ->(source) { source[:page].url })
     page = browser_context.new_page
 
@@ -1447,7 +1447,7 @@ module ExampleCodes
   end
 
   # Page#expose_binding
-  def example_4f7d99a72aaea957cc5678ed8728965338d78598d7772f47fbf23c28f0eba52d(page:)
+  def example_f32bc2194cbfc7c632c148ab34523bc5a4e3fdbdc66d7dfcf85304977a1adcbf(page:)
     page.expose_binding("pageURL", ->(source) { source[:page].url })
     page.content = <<~HTML
     <script>
@@ -1458,7 +1458,7 @@ module ExampleCodes
     <button onclick="onClick()">Click me</button>
     <div></div>
     HTML
-    page.locator("button").click
+    page.click("button")
   end
 
   # Page#expose_binding

@@ -7,6 +7,11 @@ module Playwright
           message: error_payload['message'],
           stack: error_payload['stack'],
         )
+      elsif error_payload['name'] == 'TargetClosedError'
+        TargetClosedError.new(
+          message: error_payload['message'],
+          stack: error_payload['stack'],
+        )
       else
         new(
           name: error_payload['name'],
@@ -19,14 +24,20 @@ module Playwright
     # @param name [String]
     # @param message [String]
     # @param stack [Array<String>]
-    def initialize(name:, message:, stack:)
-      super("#{name}: #{message}")
+    def initialize(message:, name: nil, stack: nil)
+      super(message)
       @name = name
       @message = message
       @stack = stack
     end
 
     attr_reader :name, :message, :stack
+
+    def log=(log)
+      return unless log
+      format_call_log = log.join("\n  - ")
+      @message = "#{@message}\nCall log:\n#{format_call_log}\n"
+    end
   end
 
   class DriverCrashedError < StandardError
@@ -38,6 +49,13 @@ module Playwright
   class TimeoutError < Error
     def initialize(message:, stack: [])
       super(name: 'TimeoutError', message: message, stack: stack)
+    end
+  end
+
+  class TargetClosedError < Error
+    def initialize(message: nil, stack: [])
+      _message = message || 'Target page, context or browser has been closed'
+      super(name: 'TargetClosedError', message: _message, stack: stack)
     end
   end
 

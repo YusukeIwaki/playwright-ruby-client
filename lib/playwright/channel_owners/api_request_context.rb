@@ -115,12 +115,12 @@ module Playwright
         case data
         when String
           if headers_obj&.any? { |key, value| key.downcase == 'content-type' && value == 'application/json' }
-            json_data = data
+            json_data = json_parsable?(data) ? data : data.to_json
           else
             post_data_buffer = data
           end
         when Hash, Array, Numeric, true, false
-          json_data = data
+          json_data = data.to_json
         else
           raise ArgumentError.new("Unsupported 'data' type: #{data.class}")
         end
@@ -142,7 +142,6 @@ module Playwright
       if post_data_buffer
         fetch_params[:postData] = Base64.strict_encode64(post_data_buffer)
       end
-
       fetch_params[:jsonData] = json_data
       fetch_params[:formData] = form_data
       fetch_params[:multipartData] = multipart_data
@@ -172,6 +171,16 @@ module Playwright
     private def object_to_array(hash)
       hash&.map do |key, value|
         { name: key, value: value.to_s }
+      end
+    end
+
+    private def json_parsable?(data)
+      return false unless data.is_a?(String)
+      begin
+        JSON.parse(data)
+        true
+      rescue JSON::ParserError
+        false
       end
     end
   end

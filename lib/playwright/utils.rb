@@ -70,17 +70,10 @@ module Playwright
     end
 
     module Errors
-      module SafeCloseError
+      module TargetClosedErrorMethods
         # @param err [Exception]
-        private def safe_close_error?(err)
-          return true if err.is_a?(Transport::AlreadyDisconnectedError)
-
-          [
-            'Browser has been closed',
-            'Target page, context or browser has been closed',
-          ].any? do |closed_message|
-            err.message.end_with?(closed_message)
-          end
+        private def target_closed_error?(err)
+          err.is_a?(TargetClosedError)
         end
       end
     end

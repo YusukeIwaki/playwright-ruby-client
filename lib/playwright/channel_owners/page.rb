@@ -4,7 +4,7 @@ require_relative '../locator_utils'
 module Playwright
   # @ref https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_page.py
   define_channel_owner :Page do
-    include Utils::Errors::SafeCloseError
+    include Utils::Errors::TargetClosedErrorMethods
     include LocatorUtils
     attr_writer :owned_context
 
@@ -33,10 +33,12 @@ module Playwright
       @frames = Set.new
       @frames << @main_frame
       @opener = ChannelOwners::Page.from_nullable(@initializer['opener'])
+      @close_reason = nil
 
       @channel.on('bindingCall', ->(params) { on_binding(ChannelOwners::BindingCall.from(params['binding'])) })
+      @closed_or_crashed_promise = Concurrent::Promises.resolvable_future
       @channel.once('close', ->(_) { on_close })
-      @channel.on('crash', ->(_) { emit(Events::Page::Crash) })
+      @channel.on('crash', ->(_) { on_crash })
       @channel.on('download', method(:on_download))
       @channel.on('fileChooser', ->(params) {
         chooser = FileChooserImpl.new(
@@ -147,7 +149,17 @@ module Playwright
       @closed = true
       @browser_context.send(:remove_page, self)
       @browser_context.send(:remove_background_page, self)
+      if @closed_or_crashed_promise.pending?
+        @closed_or_crashed_promise.fulfill(close_error_with_reason)
+      end
       emit(Events::Page::Close)
+    end
+
+    private def on_crash
+      if @closed_or_crashed_promise.pending?
+        @closed_or_crashed_promise.fulfill(TargetClosedError.new)
+      end
+      emit(Events::Page::Crash)
     end
 
     private def on_download(params)
@@ -479,7 +491,8 @@ module Playwright
       @main_frame.title
     end
 
-    def close(runBeforeUnload: nil)
+    def close(runBeforeUnload: nil, reason: nil)
+      @close_reason = reason
       if @owned_context
         @owned_context.close
       else
@@ -488,7 +501,7 @@ module Playwright
       end
       nil
     rescue => err
-      raise if !safe_close_error?(err) || !runBeforeUnload
+      raise if !target_closed_error?(err) || !runBeforeUnload
     end
 
     def closed?
@@ -878,34 +891,34 @@ module Playwright
       end
     end
 
-    class AlreadyClosedError < StandardError
-      def initialize
-        super('Page closed')
-      end
-    end
-
     class FrameAlreadyDetachedError < StandardError
       def initialize
         super('Navigating frame was detached!')
       end
     end
 
+    private def close_error_with_reason
+      reason = @close_reason || @browser_context.send(:effective_close_reason)
+      TargetClosedError.new(message: reason)
+    end
+
     def expect_event(event, predicate: nil, timeout: nil, &block)
-      wait_helper = WaitHelper.new
-      wait_helper.reject_on_timeout(timeout || @timeout_settings.timeout, "Timeout while waiting for event \"#{event}\"")
+      waiter = Waiter.new(self, wait_name: "Page.expect_event(#{event})")
+      timeout_value = timeout || @timeout_settings.timeout
+      waiter.reject_on_timeout(timeout_value, "Timeout #{timeout_value}ms exceeded while waiting for event \"#{event}\"")
 
       unless event == Events::Page::Crash
-        wait_helper.reject_on_event(self, Events::Page::Crash, CrashedError.new)
+        waiter.reject_on_event(self, Events::Page::Crash, CrashedError.new)
       end
 
       unless event == Events::Page::Close
-        wait_helper.reject_on_event(self, Events::Page::Close, AlreadyClosedError.new)
+        waiter.reject_on_event(self, Events::Page::Close, -> { close_error_with_reason })
       end
 
-      wait_helper.wait_for_event(self, event, predicate: predicate)
+      waiter.wait_for_event(self, event, predicate: predicate)
       block&.call
 
-      wait_helper.promise.value!
+      waiter.result.value!
     end
 
     def expect_console_message(predicate: nil, timeout: nil, &block)
