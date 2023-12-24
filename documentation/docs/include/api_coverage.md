@@ -315,7 +315,7 @@
 * title
 * type
 * uncheck
-* ~~unroute_all~~
+* unroute_all
 * unroute
 * url
 * video
@@ -369,7 +369,7 @@
 * set_geolocation
 * set_offline
 * storage_state
-* ~~unroute_all~~
+* unroute_all
 * unroute
 * expect_console_message
 * expect_event

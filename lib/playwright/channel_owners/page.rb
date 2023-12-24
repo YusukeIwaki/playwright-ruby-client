@@ -414,6 +414,11 @@ module Playwright
       update_interception_patterns
     end
 
+    def unroute_all(behavior: nil)
+      @routes.clear
+      update_interception_patterns
+    end
+
     def unroute(url, handler: nil)
       @routes.reject! do |handler_entry|
         handler_entry.same_value?(url: url, handler: handler)

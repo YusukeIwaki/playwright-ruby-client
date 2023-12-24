@@ -441,6 +441,15 @@ def storage_state(path: nil)
 
 Returns storage state for this browser context, contains current cookies and local storage snapshot.
 
+## unroute_all
+
+```
+def unroute_all(behavior: nil)
+```
+
+
+Removes all routes created with [BrowserContext#route](./browser_context#route) and [BrowserContext#route_from_har](./browser_context#route_from_har).
+
 ## unroute
 
 ```

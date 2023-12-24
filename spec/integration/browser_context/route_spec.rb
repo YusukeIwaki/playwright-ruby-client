@@ -66,6 +66,21 @@ RSpec.describe 'BrowserContext#route', sinatra: true do
     end
   end
 
+  it 'unrouteAll removes all handlers' do
+    with_context do |context|
+      context.route('**/*', -> (route, _) {
+        route.abort
+      })
+      context.route('**/empty.html', -> (route, _) {
+        route.abort
+      })
+      context.unroute_all
+      page = context.new_page
+      response = page.goto(server_empty_page)
+      expect(response.ok?).to eq(true)
+    end
+  end
+
   it 'should yield to page.route' do
     with_context do |context|
       context.route('**/empty.html', ->(route, _) {
