@@ -521,7 +521,7 @@ RSpec.describe 'example' do
 
     it 'should work with Tracing' do
       with_context do |context|
-        example_e04b4e47771d459712f345ce14b805815a7240ddf2b30b0ae0395d4f62741043(context: context)
+        example_c74a3f913c302bc9bf81146db28832bdfe33ab7721f1343efb1e207bb070abce(context: context)
       end
     end
 
