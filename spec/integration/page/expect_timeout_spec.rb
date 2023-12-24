@@ -6,7 +6,7 @@ RSpec.describe 'timeout' do
       begin
         page.wait_for_selector('#not-fount', timeout: 1)
         raise "fail"
-      rescue => err
+      rescue => error
         expect(error.name).to eq('TimeoutError')
       end
     end
