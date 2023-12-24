@@ -119,6 +119,7 @@ RSpec.describe 'example' do
           <input aria-placeholder="placeholder" value="and a value" aria-describedby="desc" />
         </body>
         HTML
+        page.locator('input').first.focus
 
         example_2e5019929403491cde0c78bed1e0e18e0c86ab423d7ac8715876c4de4814f483(page: page)
         example_3d67a99411b5f924d573427b6f54aff63f7241f2b810959b79948bd3b522404a(page: page)
