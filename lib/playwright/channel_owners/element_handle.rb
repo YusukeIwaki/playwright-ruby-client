@@ -301,6 +301,7 @@ module Playwright
         path: nil,
         quality: nil,
         scale: nil,
+        style: nil,
         timeout: nil,
         type: nil)
 
@@ -312,6 +313,7 @@ module Playwright
           path: path,
           quality: quality,
           scale: scale,
+          style: style,
           timeout: timeout,
           type: type,
         }.compact

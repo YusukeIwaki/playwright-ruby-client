@@ -457,6 +457,7 @@ module Playwright
       path: nil,
       quality: nil,
       scale: nil,
+      style: nil,
       timeout: nil,
       type: nil)
 
@@ -470,6 +471,7 @@ module Playwright
         animations: animations,
         caret: caret,
         scale: scale,
+        style: style,
         timeout: timeout,
       }.compact
       if mask.is_a?(Enumerable)
