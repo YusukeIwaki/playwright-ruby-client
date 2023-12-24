@@ -121,6 +121,30 @@ RSpec.describe 'BrowserContext#route', sinatra: true do
     expect(intercepted).to eq(%w[intercepted intercepted])
   end
 
+  it 'should work if handler with times parameter was removed from another handler' do
+    intercepted = []
+    handler = ->(route, _) {
+      intercepted << 'first'
+      route.continue
+    }
+
+    with_context do |context|
+      context.route('**/*', handler, times: 1)
+      context.route('**/*', -> (route, _) {
+        intercepted << 'second'
+        context.unroute('**/*', handler: handler)
+        route.fallback
+      })
+
+      page = context.new_page
+      page.goto(server_empty_page)
+      expect(intercepted).to contain_exactly('second')
+      intercepted = []
+      page.goto(server_empty_page)
+      expect(intercepted).to contain_exactly('second')
+    end
+  end
+
   it 'should support async handler w/ times' do
     with_context do |context|
       page = context.new_page

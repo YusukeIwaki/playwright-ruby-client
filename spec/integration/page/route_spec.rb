@@ -697,6 +697,29 @@ RSpec.describe 'Page#route', sinatra: true do
     expect(intercepted).to eq(%w[intercepted intercepted])
   end
 
+  it 'should work if handler with times parameter was removed from another handler' do
+    intercepted = []
+    handler = ->(route, _) {
+      intercepted << 'first'
+      route.continue
+    }
+
+    with_page do |page|
+      page.route('**/*', handler, times: 1)
+      page.route('**/*', -> (route, _) {
+        intercepted << 'second'
+        page.unroute('**/*', handler: handler)
+        route.fallback
+      })
+
+      page.goto(server_empty_page)
+      expect(intercepted).to contain_exactly('second')
+      intercepted = []
+      page.goto(server_empty_page)
+      expect(intercepted).to contain_exactly('second')
+    end
+  end
+
   it 'should support async handler w/ times' do
     with_page do |page|
       page.route('**/empty.html', ->(route, _) {
