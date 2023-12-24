@@ -64,6 +64,87 @@ RSpec.describe 'Page#route', sinatra: true do
     end
   end
 
+  it 'unrouteAll removes all routes' do
+    with_page do |page|
+      page.route('**/*', -> (route, _) {
+        route.abort
+      })
+      page.route('**/empty.html', -> (route, _) {
+        route.abort
+      })
+      page.unroute_all
+      response = page.goto(server_empty_page)
+      expect(response.ok?).to eq(true)
+    end
+  end
+
+  it 'unrouteAll should wait for pending handlers to complete' do
+    pending 'behavior is not implemented yet'
+    with_page do |page|
+      second_handler_called = false
+      page.route(/.*/, -> (route, _) {
+        second_handler_called = true
+        route.abort
+      })
+      route_promise = Concurrent::Promises.resolvable_future
+      route_barrier = Concurrent::Promises.resolvable_future
+      handler = -> (route, _) {
+        route_promise.fulfill(nil)
+        route_barrier.value!
+        route.fallback
+      }
+      page.route(/.*/, handler)
+
+      navigation_promise = Concurrent::Promises.future { page.goto(server_empty_page) }
+      route_promise.value!
+
+      did_unroute = false
+      unroute_promise = Concurrent::Promises.future do
+        page.unroute_all(behavior: 'wait')
+        did_unroute = true
+      end
+      sleep 0.5
+      expect(did_unroute).to eq(false)
+      route_barrier.fulfill(nil)
+      unroute_promise.value!
+      expect(did_unroute).to eq(true)
+      navigation_promise.value!
+      expect(second_handler_called).to eq(false)
+    end
+  end
+
+  it 'unrouteAll should not wait for pending handlers to complete if behavior is ignoreErrors' do
+    with_page do |page|
+      second_handler_called = false
+      page.route(/.*/, -> (route, _) {
+        second_handler_called = true
+        route.abort
+      })
+      route_promise = Concurrent::Promises.resolvable_future
+      route_barrier = Concurrent::Promises.resolvable_future
+      handler = -> (route, _) {
+        route_promise.fulfill(nil)
+        route_barrier.value!
+        raise 'Handler error'
+      }
+      page.route(/.*/, handler)
+      navigation_promise = Concurrent::Promises.future { page.goto(server_empty_page) }
+      route_promise.value!
+      did_unroute = false
+      unroute_promise = Concurrent::Promises.future do
+        page.unroute_all(behavior: 'ignoreErrors')
+        did_unroute = true
+      end
+      sleep 0.5
+      unroute_promise.value!
+      expect(did_unroute).to eq(true)
+      route_barrier.fulfill(nil)
+      navigation_promise.value!
+      # The error in the unrouted handler should be silently caught.
+      expect(second_handler_called).to eq(false)
+    end
+  end
+
   it 'should work when POST is redirected with 302' do
     with_page do |page|
       sinatra.post('/rredirect') do
@@ -695,6 +776,29 @@ RSpec.describe 'Page#route', sinatra: true do
     end
 
     expect(intercepted).to eq(%w[intercepted intercepted])
+  end
+
+  it 'should work if handler with times parameter was removed from another handler' do
+    intercepted = []
+    handler = ->(route, _) {
+      intercepted << 'first'
+      route.continue
+    }
+
+    with_page do |page|
+      page.route('**/*', handler, times: 1)
+      page.route('**/*', -> (route, _) {
+        intercepted << 'second'
+        page.unroute('**/*', handler: handler)
+        route.fallback
+      })
+
+      page.goto(server_empty_page)
+      expect(intercepted).to contain_exactly('second')
+      intercepted = []
+      page.goto(server_empty_page)
+      expect(intercepted).to contain_exactly('second')
+    end
   end
 
   it 'should support async handler w/ times' do

@@ -128,7 +128,7 @@ The opposite of [LocatorAssertions#to_contain_text](./locator_assertions#to_cont
 ## not_to_have_attribute
 
 ```ruby
-expect(locator).not_to have_attribute(name, value, timeout: nil)
+expect(locator).not_to have_attribute(name, value, ignoreCase: nil, timeout: nil)
 ```
 
 

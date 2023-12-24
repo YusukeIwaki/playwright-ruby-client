@@ -1855,16 +1855,16 @@ module ExampleCodes
   end
 
   # Tracing#start
-  def example_89f1898bef60f89ccf36656f6471cc0d2296bfd8cad633f1b8fd22ba4b4f65da(context:)
-    context.tracing.start(name: 'trace', screenshots: true, snapshots: true)
+  def example_c05d76146085d8afc519158aef621696f3458b669479d57b4560355c6b0c5ef7(context:)
+    context.tracing.start(screenshots: true, snapshots: true)
     page = context.new_page
     page.goto('https://playwright.dev')
     context.tracing.stop(path: 'trace.zip')
   end
 
   # Tracing#start_chunk
-  def example_e04b4e47771d459712f345ce14b805815a7240ddf2b30b0ae0395d4f62741043(context:)
-    context.tracing.start(name: "trace", screenshots: true, snapshots: true)
+  def example_c74a3f913c302bc9bf81146db28832bdfe33ab7721f1343efb1e207bb070abce(context:)
+    context.tracing.start(screenshots: true, snapshots: true)
     page = context.new_page
     page.goto("https://playwright.dev")
 

@@ -66,6 +66,21 @@ RSpec.describe 'BrowserContext#route', sinatra: true do
     end
   end
 
+  it 'unrouteAll removes all handlers' do
+    with_context do |context|
+      context.route('**/*', -> (route, _) {
+        route.abort
+      })
+      context.route('**/empty.html', -> (route, _) {
+        route.abort
+      })
+      context.unroute_all
+      page = context.new_page
+      response = page.goto(server_empty_page)
+      expect(response.ok?).to eq(true)
+    end
+  end
+
   it 'should yield to page.route' do
     with_context do |context|
       context.route('**/empty.html', ->(route, _) {
@@ -119,6 +134,30 @@ RSpec.describe 'BrowserContext#route', sinatra: true do
     end
 
     expect(intercepted).to eq(%w[intercepted intercepted])
+  end
+
+  it 'should work if handler with times parameter was removed from another handler' do
+    intercepted = []
+    handler = ->(route, _) {
+      intercepted << 'first'
+      route.continue
+    }
+
+    with_context do |context|
+      context.route('**/*', handler, times: 1)
+      context.route('**/*', -> (route, _) {
+        intercepted << 'second'
+        context.unroute('**/*', handler: handler)
+        route.fallback
+      })
+
+      page = context.new_page
+      page.goto(server_empty_page)
+      expect(intercepted).to contain_exactly('second')
+      intercepted = []
+      page.goto(server_empty_page)
+      expect(intercepted).to contain_exactly('second')
+    end
   end
 
   it 'should support async handler w/ times' do

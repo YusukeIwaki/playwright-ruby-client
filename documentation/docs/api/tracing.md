@@ -35,7 +35,7 @@ Start tracing.
 **Usage**
 
 ```ruby
-context.tracing.start(name: 'trace', screenshots: true, snapshots: true)
+context.tracing.start(screenshots: true, snapshots: true)
 page = context.new_page
 page.goto('https://playwright.dev')
 context.tracing.stop(path: 'trace.zip')
@@ -53,7 +53,7 @@ Start a new trace chunk. If you'd like to record multiple traces on the same [Br
 **Usage**
 
 ```ruby
-context.tracing.start(name: "trace", screenshots: true, snapshots: true)
+context.tracing.start(screenshots: true, snapshots: true)
 page = context.new_page
 page.goto("https://playwright.dev")
 

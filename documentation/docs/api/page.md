@@ -1294,6 +1294,7 @@ def screenshot(
       path: nil,
       quality: nil,
       scale: nil,
+      style: nil,
       timeout: nil,
       type: nil)
 ```
@@ -1547,6 +1548,15 @@ This method unchecks an element matching `selector` by performing the following 
 
 When all steps combined have not finished during the specified `timeout`, this method throws a
 `TimeoutError`. Passing zero timeout disables this.
+
+## unroute_all
+
+```
+def unroute_all(behavior: nil)
+```
+
+
+Removes all routes created with [Page#route](./page#route) and [Page#route_from_har](./page#route_from_har).
 
 ## unroute
 

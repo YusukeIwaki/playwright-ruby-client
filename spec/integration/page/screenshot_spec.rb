@@ -111,6 +111,64 @@ RSpec.describe 'screenshot' do
         expect(masked).not_to eq(original)
       end
     end
+
+    it 'should work when mask color is not pink #F0F' do
+      with_page do |page|
+        page.viewport_size = { width: 500, height: 500 }
+        page.goto("#{server_prefix}/grid.html")
+
+        masked = page.screenshot(
+          mask: [page.locator('div').nth(5)],
+          maskColor: '#00FF00',
+        )
+        original = page.screenshot
+        expect(masked).not_to eq(original)
+      end
+    end
+
+    it 'should hide elements based on attr' do
+      with_page do |page|
+        page.viewport_size = { width: 500, height: 500 }
+        page.goto("#{server_prefix}/grid.html")
+        page.locator('div').nth(5).evaluate("element => {
+          element.setAttribute('data-test-screenshot', 'hide');
+        }")
+        masked = page.screenshot(
+          # path: 'screenshot-style1.png',
+          style: <<~CSS
+          [data-test-screenshot="hide"] {
+            visibility: hidden;
+          }
+          CSS
+        )
+        original = page.screenshot
+        expect(masked).not_to eq(original)
+        visibility = page.locator('div').nth(5).evaluate("element => element.style.visibility")
+        expect(visibility).to eq('')
+      end
+    end
+
+    it 'should remove elements based on attr' do
+      with_page do |page|
+        page.viewport_size = { width: 500, height: 500 }
+        page.goto("#{server_prefix}/grid.html")
+        page.locator('div').nth(5).evaluate("element => {
+          element.setAttribute('data-test-screenshot', 'remove');
+        }")
+        masked = page.screenshot(
+          # path: 'screenshot-style2.png',
+          style: <<~CSS
+          [data-test-screenshot="remove"] {
+            display: none;
+          }
+          CSS
+        )
+        original = page.screenshot
+        expect(masked).not_to eq(original)
+        display = page.locator('div').nth(5).evaluate("element => element.style.display")
+        expect(display).to eq('')
+      end
+    end
   end
 
   describe 'page screenshot animations', sinatra: true do
