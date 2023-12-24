@@ -1294,6 +1294,7 @@ def screenshot(
       path: nil,
       quality: nil,
       scale: nil,
+      style: nil,
       timeout: nil,
       type: nil)
 ```
