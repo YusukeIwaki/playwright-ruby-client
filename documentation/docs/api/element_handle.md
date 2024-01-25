@@ -655,7 +655,7 @@ Returns when the element satisfies the `state`.
 Depending on the `state` parameter, this method waits for one of the [actionability](https://playwright.dev/python/docs/actionability) checks
 to pass. This method throws when the element is detached while waiting, unless waiting for the `"hidden"` state.
 - `"visible"` Wait until the element is [visible](https://playwright.dev/python/docs/actionability#visible).
-- `"hidden"` Wait until the element is [not visible](https://playwright.dev/python/docs/actionability#visible) or [not attached](https://playwright.dev/python/docs/actionability#attached). Note that waiting for hidden does not throw when the element detaches.
+- `"hidden"` Wait until the element is [not visible](https://playwright.dev/python/docs/actionability#visible) or not attached. Note that waiting for hidden does not throw when the element detaches.
 - `"stable"` Wait until the element is both [visible](https://playwright.dev/python/docs/actionability#visible) and [stable](https://playwright.dev/python/docs/actionability#stable).
 - `"enabled"` Wait until the element is [enabled](https://playwright.dev/python/docs/actionability#enabled).
 - `"disabled"` Wait until the element is [not enabled](https://playwright.dev/python/docs/actionability#enabled).

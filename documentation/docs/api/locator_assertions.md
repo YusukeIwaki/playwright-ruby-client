@@ -213,7 +213,7 @@ expect(locator).to be_attached(attached: nil, timeout: nil)
 ```
 
 
-Ensures that [Locator](./locator) points to an [attached](https://playwright.dev/python/docs/actionability#attached) DOM node.
+Ensures that [Locator](./locator) points to an element that is [connected](https://developer.mozilla.org/en-US/docs/Web/API/Node/isConnected) to a Document or a ShadowRoot.
 
 **Usage**
 
@@ -372,7 +372,7 @@ expect(locator).to be_visible(timeout: nil, visible: nil)
 ```
 
 
-Ensures that [Locator](./locator) points to an [attached](https://playwright.dev/python/docs/actionability#attached) and [visible](https://playwright.dev/python/docs/actionability#visible) DOM node.
+Ensures that [Locator](./locator) points to an attached and [visible](https://playwright.dev/python/docs/actionability#visible) DOM node.
 
 To check that at least one element from the list is visible, use [Locator#first](./locator#first).
 
@@ -398,7 +398,7 @@ expect(locator).to contain_text(expected, ignoreCase: nil, timeout: nil, useInne
 ```
 
 
-Ensures the [Locator](./locator) points to an element that contains the given text. You can use regular expressions for the value as well.
+Ensures the [Locator](./locator) points to an element that contains the given text. All nested elements will be considered when computing the text content of the element. You can use regular expressions for the value as well.
 
 **Details**
 
@@ -562,7 +562,7 @@ expect(locator).to have_text(expected, ignoreCase: nil, timeout: nil, useInnerTe
 ```
 
 
-Ensures the [Locator](./locator) points to an element with the given text. You can use regular expressions for the value as well.
+Ensures the [Locator](./locator) points to an element with the given text. All nested elements will be considered when computing the text content of the element. You can use regular expressions for the value as well.
 
 **Details**
 
