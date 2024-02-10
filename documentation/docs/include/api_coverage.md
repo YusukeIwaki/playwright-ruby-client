@@ -298,6 +298,7 @@
 * press
 * query_selector
 * query_selector_all
+* ~~add_locator_handler~~
 * reload
 * route
 * route_from_har
