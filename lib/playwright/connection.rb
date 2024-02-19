@@ -80,7 +80,9 @@ module Playwright
         @callbacks[id] = callback
 
         _metadata = {}
+        frames = []
         if metadata
+          frames = metadata[:stack]
           _metadata[:wallTime] = metadata[:wallTime]
           _metadata[:apiName] = metadata[:apiName]
           _metadata[:location] = metadata[:stack].first
@@ -104,8 +106,8 @@ module Playwright
           raise unless err.is_a?(Transport::AlreadyDisconnectedError)
         end
 
-        if @tracing_count > 0 && !metadata[:stack].empty? && guid != 'localUtils'
-          @local_utils.add_stack_to_tracing_no_reply(id, metadata[:stack])
+        if @tracing_count > 0 && !frames.empty? && guid != 'localUtils'
+          @local_utils.add_stack_to_tracing_no_reply(id, frames)
         end
       end
 
