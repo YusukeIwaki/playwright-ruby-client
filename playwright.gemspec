@@ -33,8 +33,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'faye-websocket'
   spec.add_development_dependency 'pry-byebug'
   spec.add_development_dependency 'puma'
+  spec.add_development_dependency 'rack', '< 3'
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'rubocop-rspec'
-  spec.add_development_dependency 'sinatra', '3.2.0'
+  spec.add_development_dependency 'sinatra'
 end
