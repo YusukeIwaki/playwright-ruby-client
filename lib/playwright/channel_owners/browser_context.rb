@@ -299,7 +299,7 @@ module Playwright
     def add_init_script(path: nil, script: nil)
       source =
         if path
-          File.read(path)
+          JavaScript::SourceUrl.new(File.read(path), path).to_s
         elsif script
           script
         else

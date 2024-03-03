@@ -293,7 +293,7 @@ module Playwright
         url: url,
       }.compact
       if path
-        params[:content] = "#{File.read(path)}\n//# sourceURL=#{path}"
+        params[:content] = JavaScript::SourceUrl.new(File.read(path), path).to_s
       end
       resp = @channel.send_message_to_server('addScriptTag', params)
       ChannelOwners::ElementHandle.from(resp)
