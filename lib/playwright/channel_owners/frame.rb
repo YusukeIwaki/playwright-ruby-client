@@ -163,6 +163,13 @@ module Playwright
         actual_state == option_state
       }
       waiter.wait_for_event(@event_emitter, 'loadstate', predicate: predicate)
+
+      # Sometimes event is already fired durting setup.
+      if @load_states.include?(option_state)
+        waiter.force_fulfill(option_state)
+        return
+      end
+
       waiter.result.value!
 
       nil
