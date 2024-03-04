@@ -397,7 +397,7 @@ module Playwright
     def add_init_script(path: nil, script: nil)
       source =
         if path
-          File.read(path)
+          JavaScript::SourceUrl.new(File.read(path), path).to_s
         elsif script
           script
         else
@@ -836,7 +836,9 @@ module Playwright
           preferCSSPageSize: nil,
           printBackground: nil,
           scale: nil,
-          width: nil)
+          width: nil,
+          tagged: nil,
+          outline: nil)
 
       params = {
         displayHeaderFooter: displayHeaderFooter,
@@ -851,6 +853,8 @@ module Playwright
         printBackground: printBackground,
         scale: scale,
         width: width,
+        tagged: tagged,
+        outline: outline,
       }.compact
       encoded_binary = @channel.send_message_to_server('pdf', params)
       decoded_binary = Base64.strict_decode64(encoded_binary)

@@ -75,6 +75,10 @@ module Playwright
       @registered_listeners.clear
     end
 
+    def force_fulfill(result)
+      fulfill(result)
+    end
+
     private def fulfill(result)
       cleanup
       unless @result.resolved?
