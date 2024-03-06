@@ -75,21 +75,23 @@ module Playwright
       @registered_listeners.clear
     end
 
+    def force_fulfill(result)
+      fulfill(result)
+    end
+
     private def fulfill(result)
       cleanup
-      unless @result.resolved?
-        @result.fulfill(result)
-      end
+      return if @result.resolved?
+      @result.fulfill(result)
       wait_for_event_info_after
     end
 
     private def reject(error)
       cleanup
+      return if @result.resolved?
       klass = error.is_a?(TimeoutError) ? TimeoutError : Error
       ex = klass.new(message: "#{error.message}#{format_log_recording(@logs)}")
-      unless @result.resolved?
-        @result.reject(ex)
-      end
+      @result.reject(ex)
       wait_for_event_info_after(error: ex)
     end
 
