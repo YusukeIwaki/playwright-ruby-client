@@ -86,6 +86,12 @@ module.exports = {
     prism: {
       additionalLanguages: ['bash', 'ruby'],
     },
+    algolia: {
+      appId: '00PBL1OR8R',
+      apiKey: '38d9bd4fef84d709547a1ca466ee8241',
+      indexName: 'playwright-ruby-client',
+      contextualSearch: false,
+    }
   },
   presets: [
     [
