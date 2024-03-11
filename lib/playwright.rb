@@ -181,7 +181,7 @@ module Playwright
 
     # Connects to Playwright server, launched by `npx playwright launch-server chromium` or `playwright.chromium.launchServer()`
   #
-  # Playwright.connect_to_browser_server('ws://....') do |browser|
+  # Playwright.connect_to_android_server('ws://....') do |browser|
   #   page = browser.new_page
   #   ...
   # end
