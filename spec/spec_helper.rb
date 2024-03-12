@@ -97,6 +97,10 @@ RSpec.configure do |config|
     def sleep_a_bit_for_race_condition
       sleep 0.5
     end
+
+    def remote?
+      !!ENV['PLAYWRIGHT_WS_ENDPOINT']
+    end
   end
   BROWSER_TYPES.each do |type|
     IntegrationTestCaseMethods.send(:define_method, "#{type}?") { @playwright_browser_type_param == type }

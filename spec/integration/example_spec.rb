@@ -516,11 +516,14 @@ RSpec.describe 'example' do
 
     it 'should work with Selector' do
       skip unless chromium?
+      skip if remote?
 
       expect(example_3e739d4f0e30e20a6a698e0e17605a841c35e65e75aa3c2642f8bfc368b33f9e(playwright: playwright)).to eq(1)
     end
 
     it 'should work with Tracing' do
+      pending if remote? # localUtils is not available in remote.
+
       with_context do |context|
         example_c74a3f913c302bc9bf81146db28832bdfe33ab7721f1343efb1e207bb070abce(context: context)
       end
