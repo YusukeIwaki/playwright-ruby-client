@@ -1,0 +1,34 @@
+version: 2.1
+
+jobs:
+  test:
+    docker:
+      - image: cimg/ruby:3.3.0
+      - image: mcr.microsoft.com/playwright:v1.42.1-jammy
+        command: /bin/sh -c "cd /home/pwuser ; npx --yes playwright@1.42.1 install && npx playwright@1.42.1 run-server --port 8888 --host 0.0.0.0 --path /ws"
+        environment:
+          DEBUG: "pw:*"
+        user: pwuser
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: bundle install
+      - run:
+          name: Generate API
+          command: bundle exec ruby development/generate_api.rb
+      - run:
+          name: Wait for Playwright server
+          command: dockerize -wait tcp://localhost:8888 -timeout 1m
+      - run:
+          name: Run tests
+          command: bundle exec rspec spec/integration/example_spec.rb
+          environment:
+            BROWSER: chromium
+            DEBUG: 1
+            PLAYWRIGHT_WS_ENDPOINT: ws://localhost:8888/ws?browser=chromium
+
+workflows:
+  testing:
+    jobs:
+      - test
