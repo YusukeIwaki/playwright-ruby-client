@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  test:
+  test-remote:
     docker:
       - image: cimg/ruby:3.3.0
       - image: mcr.microsoft.com/playwright:v1.42.1-jammy
@@ -31,4 +31,4 @@ jobs:
 workflows:
   testing:
     jobs:
-      - test
+      - test-remote
