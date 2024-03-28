@@ -168,13 +168,13 @@ If your environment doesn't accept installing browser or creating browser proces
 For launching Playwright server, just execute:
 
 ```
-npx playwright install && npx playwright run-server --port 8080
+npx playwright install && npx playwright run-server --port 8080 --path /ws
 ```
 
 and we can connect to the server with the code like this:
 
 ```ruby
-Playwright.connect_to_playwright_server('ws://127.0.0.1:8080') do |playwright|
+Playwright.connect_to_playwright_server('ws://127.0.0.1:8080/ws?browser=chromium') do |playwright|
   playwright.chromium.launch do |browser|
     page = browser.new_page
     page.goto('https://github.com/YusukeIwaki')

@@ -62,7 +62,7 @@ Many example uses `Playwright#create`, which internally uses Pipe (stdin/stdout)
 ```ruby {3}
 require 'playwright'
 
-Playwright.connect_to_playwright_server('wss://example.com:8888/ws') do |playwright|
+Playwright.connect_to_playwright_server('wss://example.com:8888/ws?browser=chromium') do |playwright|
   playwright.chromium.launch do |browser|
     page = browser.new_page
     page.goto('https://github.com/microsoft/playwright')
@@ -72,6 +72,8 @@ end
 ```
 
 `wss://example.com:8888/ws` is an example of endpoint URL of the Playwright server. In local development environment, it is typically `"ws://127.0.0.1:#{port}/ws"`.
+
+Note that `?browser=chromium` is important for server to determine which browser to prepare.
 
 ### Server code
 
