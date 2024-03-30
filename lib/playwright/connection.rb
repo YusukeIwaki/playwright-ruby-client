@@ -16,6 +16,9 @@ module Playwright
         end
         raise ::Playwright::DriverCrashedError.new
       end
+      @transport.on_driver_closed do
+        cleanup
+      end
 
       @objects = {} # Hash[ guid => ChannelOwner ]
       @waiting_for_object = {} # Hash[ guid => Promise<ChannelOwner> ]

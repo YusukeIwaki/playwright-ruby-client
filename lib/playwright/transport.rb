@@ -18,6 +18,10 @@ module Playwright
       @on_message = block
     end
 
+    def on_driver_closed(&block)
+      @on_driver_closed = block
+    end
+
     def on_driver_crashed(&block)
       @on_driver_crashed = block
     end
@@ -83,6 +87,7 @@ module Playwright
       end
     rescue IOError
       # disconnected by remote.
+      @on_driver_closed&.call
     end
 
     def handle_stderr
@@ -106,6 +111,7 @@ module Playwright
       end
     rescue IOError
       # disconnected by remote.
+      @on_driver_closed&.call
     end
 
     def debug_send_message(message)
