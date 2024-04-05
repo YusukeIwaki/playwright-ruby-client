@@ -15,6 +15,10 @@ module Playwright
       @on_message = block
     end
 
+    def on_driver_closed(&block)
+      @on_driver_closed = block
+    end
+
     def on_driver_crashed(&block)
       @on_driver_crashed = block
     end
@@ -76,6 +80,10 @@ module Playwright
 
       ws.start
       @ws = promise.value!
+      @ws.on_close do |reason, code|
+        puts "[WebSocketTransport] closed with code: #{code}, reason: #{reason}"
+        @on_driver_closed&.call(reason, code)
+      end
       @ws.on_error do |error|
         puts "[WebSocketTransport] error: #{error}"
         @on_driver_crashed&.call
