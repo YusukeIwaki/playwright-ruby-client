@@ -20,12 +20,13 @@ mv __driver.zip $DRIVER_DOWNLOAD_DIR/
 pushd $DRIVER_DOWNLOAD_DIR/
 unzip __driver.zip -d playwright-$DRIVER_VERSION-mac
 rm __driver.zip
-DRIVER_PATH=$(pwd)/playwright-$DRIVER_VERSION-mac/playwright.sh
+DRIVER_DIR=$(pwd)/playwright-$DRIVER_VERSION-mac
+DRIVER_PATH="$DRIVER_DIR/node $DRIVER_DIR/package/cli.js"
 popd
 
 echo "## Setting PLAYWRIGHT_CLI_EXECUTABLE_PATH($DRIVER_PATH) into .envrc"
 
-echo "export PLAYWRIGHT_CLI_EXECUTABLE_PATH=$DRIVER_PATH" > .envrc
+echo "export \"PLAYWRIGHT_CLI_EXECUTABLE_PATH=$DRIVER_PATH\"" > .envrc
 direnv allow .
 
 echo "## Updating API docs"

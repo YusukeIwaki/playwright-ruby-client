@@ -17,6 +17,17 @@ page.route("/api/**", handle_route)
 
 ```
 
+### example_dc2ddfffc781ad5e734ad6fd70abb2d97e20b9d403e8f45a0ab01a65c9a2d4f8 (BrowserContext#clear_cookies)
+
+```
+context.clear_cookies()
+context.clear_cookies(name="session-id")
+context.clear_cookies(domain="my-origin.com")
+context.clear_cookies(path="/api/v1")
+context.clear_cookies(name="session-id", domain="my-origin.com")
+
+```
+
 ### example_c78483d1434363f907c28aecef3a1c6d83c0136d98bb07c2bd326cd19e006aa9 (BrowserContext#route)
 
 ```
