@@ -304,7 +304,7 @@ module ExampleCodes
   end
 
   # BrowserContext#route
-  def example_ef709e5ad2c021453ff9ed1c2faedc7f9f07043c4fa503929ba2020a557ccbdf(browser:)
+  def example_c78483d1434363f907c28aecef3a1c6d83c0136d98bb07c2bd326cd19e006aa9(browser:)
     def handle_route(route, request)
       if request.post_data["my-string"]
         mocked_data = request.post_data.merge({ "my-string" => 'mocked-data'})
@@ -1549,7 +1549,7 @@ module ExampleCodes
   end
 
   # Page#route
-  def example_a0ba081a92628cce9358e983826ad7143d6757dc2780f1b53f0d2e073000409e(pgae:)
+  def example_0ef62eead1348f28a69716a047f3b75c979d3230569d3720d4e7bdd0a22ef647(pgae:)
     def handle_route(route, request)
       if request.post_data["my-string"]
         mocked_data = request.post_data.merge({ "my-string" => 'mocked-data'})

@@ -99,7 +99,7 @@ Removes cookies from context. Accepts optional filter.
 
 **Usage**
 
-```python sync title=example_dc2ddfffc781ad5e734ad6fd70abb2d97e20b9d403e8f45a0ab01a65c9a2d4f8.py
+```python title="example_dc2ddfffc781ad5e734ad6fd70abb2d97e20b9d403e8f45a0ab01a65c9a2d4f8.py"
 context.clear_cookies()
 context.clear_cookies(name="session-id")
 context.clear_cookies(domain="my-origin.com")
@@ -322,14 +322,16 @@ page.goto("https://example.com")
 
 It is possible to examine the request to decide the route action. For example, mocking all requests that contain some post data, and leaving all other requests as is:
 
-```python sync title=example_c78483d1434363f907c28aecef3a1c6d83c0136d98bb07c2bd326cd19e006aa9.py
-def handle_route(route: Route):
-  if ("my-string" in route.request.post_data):
-    route.fulfill(body="mocked-data")
-  else:
-    route.continue_()
-context.route("/api/**", handle_route)
-
+```ruby
+def handle_route(route, request)
+  if request.post_data["my-string"]
+    mocked_data = request.post_data.merge({ "my-string" => 'mocked-data'})
+    route.fulfill(postData: mocked_data)
+  else
+    route.continue
+  end
+end
+context.route("/api/**", method(:handle_route))
 ```
 
 Page routes (set up with [Page#route](./page#route)) take precedence over browser context routes when request matches both
