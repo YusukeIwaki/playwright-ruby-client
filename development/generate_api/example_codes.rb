@@ -709,8 +709,15 @@ module ExampleCodes
   end
 
   # FrameLocator
-  def example_12733f9ff809e08435510bc818e9a4194f9f89cbf6de5c38bfb3e1dca9e72565
+  def example_12733f9ff809e08435510bc818e9a4194f9f89cbf6de5c38bfb3e1dca9e72565(locator:)
     frame_locator = locator.frame_locator(':scope')
+  end
+
+  def example_531fc4cb90d2eb9d785a34605f887b683697b6e4962cc948171dc08166f29b79(page:)
+    frame_locator = page.frame_locator('iframe[name="embedded"]')
+    # ...
+    locator = frame_locator.owner
+    locator.get_attribute('src') # => frame1.html
   end
 
   # JSHandle
@@ -863,6 +870,14 @@ module ExampleCodes
   # Locator#click
   def example_855b70722b9c7795f29b6aa150ba7997d542adf67f9104638ca48fd680ad6d86(page:)
     page.locator("canvas").click(button: "right", modifiers: ["Shift"], position: { x: 23, y: 32 })
+  end
+
+  # Locator#content_frame
+  def example_99d1be129de3336f99b28f15a46a8dd2b7d3964ecc34483a403246820efed8de(page:)
+    locator = page.locator('iframe[name="embedded"]')
+    # ...
+    frame_locator = locator.content_frame
+    frame_locator.get_by_role("button").click
   end
 
   # Locator#count

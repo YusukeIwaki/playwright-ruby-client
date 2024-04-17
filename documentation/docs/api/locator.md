@@ -377,6 +377,28 @@ def element_handles
 
 Resolves given locator to all matching DOM elements. If there are no matching elements, returns an empty list.
 
+## content_frame
+
+```
+def content_frame
+```
+
+
+Returns a [FrameLocator](./frame_locator) object pointing to the same `iframe` as this locator.
+
+Useful when you have a [Locator](./locator) object obtained somewhere, and later on would like to interact with the content inside the frame.
+
+For a reverse operation, use [FrameLocator#owner](./frame_locator#owner).
+
+**Usage**
+
+```ruby
+locator = page.locator('iframe[name="embedded"]')
+# ...
+frame_locator = locator.content_frame
+frame_locator.get_by_role("button").click
+```
+
 ## evaluate
 
 ```

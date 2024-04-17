@@ -233,6 +233,14 @@ module Playwright
       @frame.query_selector_all(@selector)
     end
 
+    def content_frame
+      FrameLocatorImpl.new(
+        frame: @frame,
+        timeout_settings: @timeout_settings,
+        frame_selector: @selector,
+      )
+    end
+
     def filter(has: nil, hasNot: nil, hasNotText: nil, hasText: nil)
       LocatorImpl.new(
         frame: @frame,

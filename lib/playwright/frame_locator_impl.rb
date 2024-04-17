@@ -26,6 +26,14 @@ module Playwright
         hasText: hasText)
     end
 
+    def owner
+      LocatorImpl.new(
+        frame: @frame,
+        timeout_settings: @timeout_settings,
+        selector: @frame_selector,
+      )
+    end
+
     def frame_locator(selector)
       FrameLocatorImpl.new(
         frame: @frame,
