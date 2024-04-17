@@ -1,5 +1,7 @@
 module Playwright
   define_channel_owner :JSHandle do
+    include Utils::Errors::TargetClosedErrorMethods
+
     private def after_initialize
       @preview = @initializer['preview']
       @channel.on('previewUpdated', method(:on_preview_updated))
@@ -37,6 +39,8 @@ module Playwright
 
     def dispose
       @channel.send_message_to_server('dispose')
+    rescue => err
+      raise if !target_closed_error?(err)
     end
 
     def json_value
