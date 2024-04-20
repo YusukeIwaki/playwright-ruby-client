@@ -23,17 +23,17 @@ RSpec.describe 'BrowserContext#storage_state' do
 
       expect(context.storage_state['origins']).to eq([
         {
-          'origin' => 'https://www.example.com',
-          'localStorage' => [{
-            'name' => 'name1',
-            'value' => 'value1'
-          }],
-        },
-        {
           'origin' => 'https://www.domain.com',
           'localStorage' => [{
             'name' => 'name2',
             'value' => 'value2'
+          }],
+        },
+        {
+          'origin' => 'https://www.example.com',
+          'localStorage' => [{
+            'name' => 'name1',
+            'value' => 'value1'
           }],
         },
       ])
