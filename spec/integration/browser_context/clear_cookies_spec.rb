@@ -39,4 +39,140 @@ RSpec.describe 'BrowserContext#clear_cookies', sinatra: true do
       end
     end
   end
+
+  it 'should remove cookies by name' do
+    with_context do |context|
+      context.add_cookies([
+        {
+          name: 'cookie1',
+          value: '1',
+          domain: URI(server_prefix).host,
+          path: '/',
+        },
+        {
+          name: 'cookie2',
+          value: '2',
+          domain: URI(server_prefix).host,
+          path: '/',
+        }
+      ])
+      page = context.new_page
+      page.goto(server_empty_page)
+      expect(page.evaluate('document.cookie')).to eq('cookie1=1; cookie2=2')
+      context.clear_cookies(name: 'cookie1')
+      expect(page.evaluate('document.cookie')).to eq('cookie2=2')
+    end
+  end
+
+  it 'should remove cookies by name regex' do
+    with_context do |context|
+      context.add_cookies([
+        {
+          name: 'cookie1',
+          value: '1',
+          domain: URI(server_prefix).host,
+          path: '/',
+        },
+        {
+          name: 'cookie2',
+          value: '2',
+          domain: URI(server_prefix).host,
+          path: '/',
+        }
+      ])
+      page = context.new_page
+      page.goto(server_empty_page)
+      expect(page.evaluate('document.cookie')).to eq('cookie1=1; cookie2=2')
+      context.clear_cookies(name: /coo.*1/)
+      expect(page.evaluate('document.cookie')).to eq('cookie2=2')
+    end
+  end
+
+  it 'should remove cookies by domain' do
+    with_context do |context|
+      context.add_cookies([
+        {
+          name: 'cookie1',
+          value: '1',
+          domain: URI(server_prefix).host,
+          path: '/',
+        },
+        {
+          name: 'cookie2',
+          value: '2',
+          domain: URI(server_cross_process_prefix).host,
+          path: '/',
+        }
+      ])
+      page = context.new_page
+      page.goto(server_empty_page)
+      expect(page.evaluate('document.cookie')).to eq('cookie1=1')
+      page.goto("#{server_cross_process_prefix}/empty.html")
+      expect(page.evaluate('document.cookie')).to eq('cookie2=2')
+      context.clear_cookies(domain: URI(server_cross_process_prefix).host)
+      expect(page.evaluate('document.cookie')).to eq('')
+      page.goto(server_empty_page)
+      expect(page.evaluate('document.cookie')).to eq('cookie1=1')
+    end
+  end
+
+  it 'should remove cookies by path' do
+    with_context do |context|
+      context.add_cookies([
+        {
+          name: 'cookie1',
+          value: '1',
+          domain: URI(server_prefix).host,
+          path: '/api/v1',
+        },
+        {
+          name: 'cookie2',
+          value: '2',
+          domain: URI(server_prefix).host,
+          path: '/api/v2',
+        },
+        {
+          name: 'cookie3',
+          value: '3',
+          domain: URI(server_prefix).host,
+          path: '/',
+        }
+      ])
+      page = context.new_page
+      page.goto("#{server_prefix}/api/v1")
+      expect(page.evaluate('document.cookie')).to eq('cookie1=1; cookie3=3')
+      context.clear_cookies(path: '/api/v1')
+      expect(page.evaluate('document.cookie')).to eq('cookie3=3')
+      page.goto("#{server_prefix}/api/v2")
+      expect(page.evaluate('document.cookie')).to eq('cookie2=2; cookie3=3')
+      page.goto(server_empty_page)
+      expect(page.evaluate('document.cookie')).to eq('cookie3=3')
+    end
+  end
+
+  it 'should remove cookies by name and domain' do
+    with_context do |context|
+      context.add_cookies([
+        {
+          name: 'cookie1',
+          value: '1',
+          domain: URI(server_prefix).host,
+          path: '/',
+        },
+        {
+          name: 'cookie1',
+          value: '1',
+          domain: URI(server_cross_process_prefix).host,
+          path: '/',
+        }
+      ])
+      page = context.new_page
+      page.goto(server_empty_page)
+      expect(page.evaluate('document.cookie')).to eq('cookie1=1')
+      context.clear_cookies(name: 'cookie1', domain: URI(server_prefix).host)
+      expect(page.evaluate('document.cookie')).to eq('')
+      page.goto("#{server_cross_process_prefix}/empty.html")
+      expect(page.evaluate('document.cookie')).to eq('cookie1=1')
+    end
+  end
 end
