@@ -10,6 +10,7 @@ wget https://playwright.azureedge.net/builds/driver/next/playwright-$(cat develo
 
 Then, extract the driver zip file, and set `PLAYWRIGHT_CLI_EXECUTABLE_PATH`.
 
+Note that Playwright >= 1.43 doesn't include playwright.sh, and we have to set `$DRIVER_DOWNLOAD_PATH/node $DRIVER_DOWNLOAD_PATH/package/cli.js` into PLAYWRIGHT_CLI_EXECUTABLE_PATH or manually put https://github.com/microsoft/playwright/blob/v1.42.1/utils/build/run-driver-posix.sh into the root of the downloaded driver's dir.
 
 ## Create/Update API definition
 
