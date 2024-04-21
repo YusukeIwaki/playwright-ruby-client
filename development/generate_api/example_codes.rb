@@ -225,6 +225,15 @@ module ExampleCodes
     context.clear_permissions
   end
 
+  # BrowserContext#clear_cookies
+  def example_dc2ddfffc781ad5e734ad6fd70abb2d97e20b9d403e8f45a0ab01a65c9a2d4f8(context:)
+    context.clear_cookies()
+    context.clear_cookies(name: "session-id")
+    context.clear_cookies(domain: "my-origin.com")
+    context.clear_cookies(path: "/api/v1")
+    context.clear_cookies(name: "session-id", domain: "my-origin.com")
+  end
+
   # BrowserContext#expose_binding
   def example_ba61d7312419a50eab8b67fd47e467e3b53590e7fd2ee55055fb6d12c94a61e4(browser_context:)
     browser_context.expose_binding("pageURL", ->(source) { source[:page].url })
@@ -304,7 +313,7 @@ module ExampleCodes
   end
 
   # BrowserContext#route
-  def example_ef709e5ad2c021453ff9ed1c2faedc7f9f07043c4fa503929ba2020a557ccbdf(browser:)
+  def example_c78483d1434363f907c28aecef3a1c6d83c0136d98bb07c2bd326cd19e006aa9(browser:)
     def handle_route(route, request)
       if request.post_data["my-string"]
         mocked_data = request.post_data.merge({ "my-string" => 'mocked-data'})
@@ -709,8 +718,15 @@ module ExampleCodes
   end
 
   # FrameLocator
-  def example_12733f9ff809e08435510bc818e9a4194f9f89cbf6de5c38bfb3e1dca9e72565
+  def example_12733f9ff809e08435510bc818e9a4194f9f89cbf6de5c38bfb3e1dca9e72565(locator:)
     frame_locator = locator.frame_locator(':scope')
+  end
+
+  def example_531fc4cb90d2eb9d785a34605f887b683697b6e4962cc948171dc08166f29b79(page:)
+    frame_locator = page.frame_locator('iframe[name="embedded"]')
+    # ...
+    locator = frame_locator.owner
+    locator.get_attribute('src') # => frame1.html
   end
 
   # JSHandle
@@ -863,6 +879,14 @@ module ExampleCodes
   # Locator#click
   def example_855b70722b9c7795f29b6aa150ba7997d542adf67f9104638ca48fd680ad6d86(page:)
     page.locator("canvas").click(button: "right", modifiers: ["Shift"], position: { x: 23, y: 32 })
+  end
+
+  # Locator#content_frame
+  def example_99d1be129de3336f99b28f15a46a8dd2b7d3964ecc34483a403246820efed8de(page:)
+    locator = page.locator('iframe[name="embedded"]')
+    # ...
+    frame_locator = locator.content_frame
+    frame_locator.get_by_role("button").click
   end
 
   # Locator#count
@@ -1549,7 +1573,7 @@ module ExampleCodes
   end
 
   # Page#route
-  def example_a0ba081a92628cce9358e983826ad7143d6757dc2780f1b53f0d2e073000409e(pgae:)
+  def example_0ef62eead1348f28a69716a047f3b75c979d3230569d3720d4e7bdd0a22ef647(pgae:)
     def handle_route(route, request)
       if request.post_data["my-string"]
         mocked_data = request.post_data.merge({ "my-string" => 'mocked-data'})

@@ -1246,14 +1246,16 @@ page.goto("https://example.com")
 
 It is possible to examine the request to decide the route action. For example, mocking all requests that contain some post data, and leaving all other requests as is:
 
-```python sync title=example_0ef62eead1348f28a69716a047f3b75c979d3230569d3720d4e7bdd0a22ef647.py
-def handle_route(route: Route):
-  if ("my-string" in route.request.post_data):
-    route.fulfill(body="mocked-data")
-  else:
-    route.continue_()
-page.route("/api/**", handle_route)
-
+```ruby
+def handle_route(route, request)
+  if request.post_data["my-string"]
+    mocked_data = request.post_data.merge({ "my-string" => 'mocked-data'})
+    route.fulfill(postData: mocked_data)
+  else
+    route.continue
+  end
+end
+page.route("/api/**", method(:handle_route))
 ```
 
 Page routes take precedence over browser context routes (set up with [BrowserContext#route](./browser_context#route)) when request

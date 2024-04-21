@@ -1,9 +1,12 @@
 require 'spec_helper'
 
 RSpec.describe 'FrameLocator' do
+  require 'playwright/test'
+  include Playwright::Test::Matchers
+
   shared_context route: :iframe do
     before {
-      sinatra.get('/empty.html') { '<iframe src="iframe.html"></iframe>' }
+      sinatra.get('/empty.html') { '<iframe src="iframe.html" name="frame1"></iframe>' }
       sinatra.get('/iframe.html') {
         <<~HTML
         <html>
@@ -254,6 +257,28 @@ RSpec.describe 'FrameLocator' do
       expect(input2.input_value).to eq('')
       expect(input3.input_value).to eq('')
       expect(input4.input_value).to eq('')
+    end
+  end
+
+  it 'locator.contentFrame should work', sinatra: true, route: :iframe do
+    with_page do |page|
+      page.goto(server_empty_page)
+      locator = page.locator('iframe')
+      frame_locator = locator.content_frame
+      button = frame_locator.locator('button')
+      expect(button).to have_text('Hello iframe')
+      expect(button.inner_text).to eq('Hello iframe')
+      button.click
+    end
+  end
+
+  it 'frameLocator.owner should work', sinatra: true, route: :iframe do
+    with_page do |page|
+      page.goto(server_empty_page)
+      frame_locator = page.frame_locator('iframe')
+      locator = frame_locator.owner
+      expect(locator).to be_visible
+      expect(locator.get_attribute('name')).to eq('frame1')
     end
   end
 end

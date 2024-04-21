@@ -26,11 +26,11 @@ page.frame_locator('.result-frame').first.get_by_role('button').click
 
 **Converting Locator to FrameLocator**
 
-If you have a [Locator](./locator) object pointing to an `iframe` it can be converted to [FrameLocator](./frame_locator) using [`:scope`](https://developer.mozilla.org/en-US/docs/Web/CSS/:scope) CSS selector:
+If you have a [Locator](./locator) object pointing to an `iframe` it can be converted to [FrameLocator](./frame_locator) using [Locator#content_frame](./locator#content_frame).
 
-```ruby
-frame_locator = locator.frame_locator(':scope')
-```
+**Converting FrameLocator to Locator**
+
+If you have a [FrameLocator](./frame_locator) object it can be converted to [Locator](./locator) pointing to the same `iframe` using [FrameLocator#owner](./frame_locator#owner).
 
 ## first
 
@@ -305,3 +305,25 @@ def nth(index)
 
 
 Returns locator to the n-th matching frame. It's zero based, `nth(0)` selects the first frame.
+
+## owner
+
+```
+def owner
+```
+
+
+Returns a [Locator](./locator) object pointing to the same `iframe` as this frame locator.
+
+Useful when you have a [FrameLocator](./frame_locator) object obtained somewhere, and later on would like to interact with the `iframe` element.
+
+For a reverse operation, use [Locator#content_frame](./locator#content_frame).
+
+**Usage**
+
+```ruby
+frame_locator = page.frame_locator('iframe[name="embedded"]')
+# ...
+locator = frame_locator.owner
+locator.get_attribute('src') # => frame1.html
+```

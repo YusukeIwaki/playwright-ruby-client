@@ -8,6 +8,88 @@ RSpec.describe 'Request' do
     end
   end
 
+  it 'should return postData', sinatra: true do
+    with_page do |page|
+      sinatra.post('/post') { '' }
+
+      page.goto(server_empty_page)
+      request = Concurrent::Promises.resolvable_future
+      page.on('request', ->(req) {
+        request.fulfill(req)
+      })
+      page.evaluate(<<~JAVASCRIPT)
+      () => fetch('./post', { method: 'POST', body: JSON.stringify({ foo: 'bar' }) })
+      JAVASCRIPT
+      req = request.value!
+      expect(req.post_data).to eq('{"foo":"bar"}')
+    end
+  end
+
+  it 'should work with binary post data', sinatra: true do
+    with_page do |page|
+      sinatra.post('/post') { '' }
+
+      page.goto(server_empty_page)
+      request = Concurrent::Promises.resolvable_future
+      page.on('request', ->(req) {
+        request.fulfill(req)
+      })
+      page.evaluate(<<~JAVASCRIPT)
+      () => fetch('./post', { method: 'POST', body: new Uint8Array(Array.from(Array(256).keys())) })
+      JAVASCRIPT
+      req = request.value!
+      expect(req.post_data_buffer.size).to eq(256)
+      expect(req.post_data_buffer).to eq((0..255).to_a.pack('C*'))
+    end
+  end
+
+  it 'should work with binary post data and interception', sinatra: true do
+    with_page do |page|
+      sinatra.post('/post') { '' }
+
+      page.goto(server_empty_page)
+      request = Concurrent::Promises.resolvable_future
+      page.route('/post', -> (req, _) { req.continue })
+      page.on('request', ->(req) {
+        request.fulfill(req)
+      })
+      page.evaluate(<<~JAVASCRIPT)
+      () => fetch('./post', { method: 'POST', body: new Uint8Array(Array.from(Array(256).keys())) })
+      JAVASCRIPT
+      req = request.value!
+      expect(req.post_data_buffer.size).to eq(256)
+      expect(req.post_data_buffer).to eq((0..255).to_a.pack('C*'))
+    end
+  end
+
+  it 'should return parsed json post data', sinatra: true do
+    with_page do |page|
+      env = Concurrent::Promises.resolvable_future
+      sinatra.post('/post') {
+        env.fulfill(request.env)
+        ''
+      }
+
+      request = Concurrent::Promises.resolvable_future
+      page.goto(server_empty_page)
+      page.route('**/post', -> (route, request) {
+        headers = request.headers
+        headers['content-type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
+        route.continue(headers: headers, postData: request.post_data)
+      })
+      page.on('request', ->(req) {
+        request.fulfill(req)
+      })
+      page.evaluate(<<~JAVASCRIPT)
+      () => fetch('./post', { method: 'POST', body: "foo=bar" })
+      JAVASCRIPT
+      request_env = env.value!
+      expect(request_env['CONTENT_TYPE']).to eq('application/x-www-form-urlencoded; charset=UTF-8')
+      req = request.value!
+      expect(req.post_data_json).to eq({ 'foo' => 'bar' })
+    end
+  end
+
   it 'should return navigation bit when navigating to image', sinatra: true do
     with_page do |page|
       requests = []

@@ -7,27 +7,27 @@ jobs:
     name: documents updated
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 3.1
-        bundler-cache: true
-    - name: Download playwright driver
-      run: |
-        wget -O driver.zip https://playwright.azureedge.net/builds/driver/next/playwright-$(cat development/CLI_VERSION)-linux.zip || wget -O driver.zip https://playwright.azureedge.net/builds/driver/playwright-$(cat development/CLI_VERSION)-linux.zip
-        unzip driver.zip && rm driver.zip
-    - name: re-generate codes
-      run: |
-        ./playwright.sh print-api-json | jq . > development/api.json
-        find documentation/docs -name "*.md" | grep -v documentation/docs/article/ | xargs rm
-        bundle exec ruby development/generate_api.rb
-    - name: Check if api.json is updated
-      run: git diff --exit-code development/api.json
-    - name: Check if docs/ is updated
-      run: git diff --exit-code documentation/docs
-    - name: Check if docs/ is not forgot to git-add
-      run: |
-        git add -N documentation/docs
-        git diff --exit-code documentation/docs
-    - name: Check if unimplemented_examples.md is updated
-      run: git diff --exit-code development/unimplemented_examples.md
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1
+          bundler-cache: true
+      - name: Download playwright driver
+        run: |
+          wget -O driver.zip https://playwright.azureedge.net/builds/driver/next/playwright-$(cat development/CLI_VERSION)-linux.zip || wget -O driver.zip https://playwright.azureedge.net/builds/driver/playwright-$(cat development/CLI_VERSION)-linux.zip
+          unzip driver.zip && rm driver.zip
+      - name: re-generate codes
+        run: |
+          ./node ./package/cli.js print-api-json | jq . > development/api.json
+          find documentation/docs -name "*.md" | grep -v documentation/docs/article/ | xargs rm
+          bundle exec ruby development/generate_api.rb
+      - name: Check if api.json is updated
+        run: git diff --exit-code development/api.json
+      - name: Check if docs/ is updated
+        run: git diff --exit-code documentation/docs
+      - name: Check if docs/ is not forgot to git-add
+        run: |
+          git add -N documentation/docs
+          git diff --exit-code documentation/docs
+      - name: Check if unimplemented_examples.md is updated
+        run: git diff --exit-code development/unimplemented_examples.md

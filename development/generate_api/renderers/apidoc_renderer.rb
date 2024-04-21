@@ -393,7 +393,7 @@ class ApidocRenderer
           "```ruby\n#{@methods[key].rstrip}\n```"
         else
           @no_impl_examples << ["#{key} (#{memo})", $2]
-          "```#{$1} title=#{key}.py\n#{$2}\n```"
+          "```#{$1.split(" ").first} title=\"#{key}.py\"\n#{$2}\n```"
         end
       end
     end

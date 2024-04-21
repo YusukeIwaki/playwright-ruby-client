@@ -440,6 +440,7 @@
 * drag_to
 * element_handle
 * element_handles
+* content_frame
 * evaluate
 * evaluate_all
 * evaluate_handle
@@ -500,6 +501,7 @@
 * last
 * locator
 * nth
+* owner
 
 ## APIResponse
 

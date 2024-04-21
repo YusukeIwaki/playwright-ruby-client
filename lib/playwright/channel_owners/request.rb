@@ -62,7 +62,7 @@ module Playwright
       content_type = headers['content-type']
       return unless content_type
 
-      if content_type == "application/x-www-form-urlencoded"
+      if content_type.include?("application/x-www-form-urlencoded")
         URI.decode_www_form(data).to_h
       else
         JSON.parse(data)

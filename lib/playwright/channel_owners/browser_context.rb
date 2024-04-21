@@ -267,8 +267,37 @@ module Playwright
       @channel.send_message_to_server('addCookies', cookies: cookies)
     end
 
-    def clear_cookies
-      @channel.send_message_to_server('clearCookies')
+    def clear_cookies(domain: nil, name: nil, path: nil)
+      params = {}
+
+      case name
+      when String
+        params[:name] = name
+      when Regexp
+        regex = JavaScript::Regex.new(name)
+        params[:nameRegexSource] = regex.source
+        params[:nameRegexFlags] = regex.flag
+      end
+
+      case domain
+      when String
+        params[:domain] = domain
+      when Regexp
+        regex = JavaScript::Regex.new(domain)
+        params[:domainRegexSource] = regex.source
+        params[:domainRegexFlags] = regex.flag
+      end
+
+      case path
+      when String
+        params[:path] = path
+      when Regexp
+        regex = JavaScript::Regex.new(path)
+        params[:pathRegexSource] = regex.source
+        params[:pathRegexFlags] = regex.flag
+      end
+
+      @channel.send_message_to_server('clearCookies', params)
     end
 
     def grant_permissions(permissions, origin: nil)
