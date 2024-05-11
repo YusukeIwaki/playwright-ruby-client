@@ -21,11 +21,11 @@ RSpec.describe 'Page#wait_for_url' do
   end
 
   it 'should work with both domcontentloaded and load', sinatra: true do
-    css_request_queue = Queue.new
-    css_response_queue = Queue.new
+    css_request_promise = Concurrent::Promises.resolvable_future
+    css_response_promise = Concurrent::Promises.resolvable_future
     sinatra.get('/one-style.css') do
-      css_request_queue << 'done'
-      css_response_queue.pop
+      css_request_promise.fulfill(:done)
+      css_response_promise.value!
     end
 
     with_page do |page|
@@ -40,12 +40,12 @@ RSpec.describe 'Page#wait_for_url' do
       end
 
       # wait for CSS request
-      css_request_queue.pop
+      css_request_promise.value!
 
       Timeout.timeout(2) { domcontentloaded_promise.value! }
       expect(load_promise).not_to be_resolved
 
-      css_response_queue << 'done'
+      css_response_promise.fulfill(:done)
       Timeout.timeout(2) { load_promise.value! }
       Timeout.timeout(2) { navigation_promise.value! }
     end

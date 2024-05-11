@@ -37,9 +37,11 @@ module Playwright
     # @returns [Boolean]
     def emit(event, *args)
       handled = false
-      (@__event_emitter ||= {})[event.to_s]&.each do |callback|
-        perform_event_emitter_callback(event, callback, args)
-        handled = true
+      if (callbacks = (@__event_emitter ||= {})[event.to_s])
+        callbacks.dup.each do |callback|
+          perform_event_emitter_callback(event, callback, args)
+          handled = true
+        end
       end
       handled
     end

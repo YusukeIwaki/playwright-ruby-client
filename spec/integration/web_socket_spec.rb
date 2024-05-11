@@ -20,27 +20,37 @@ RSpec.describe 'WebSocket', web_socket: true do
   end
 
   it 'should emit close events', sinatra: true do
+    socket_close_promise = Concurrent::Promises.resolvable_future
+    logs = []
+
     js = <<~JAVASCRIPT
     (wsUrl) => {
-      let cb;
-      const result = new Promise(f => cb = f);
       const ws = new WebSocket(wsUrl);
-      ws.addEventListener('message', data => { ws.close(); cb(data.data); });
-      return result;
+      ws.addEventListener('open', data => { ws.close(); });
     }
     JAVASCRIPT
 
     with_page do |page|
-      ws = page.expect_websocket do
-        page.evaluate(js, arg: ws_url)
-      end
-      expect(ws.url).to eq(ws_url)
-      ws.wait_for_event('close') unless ws.closed?
-      expect(ws.closed?).to eq(true)
+      web_socket = nil
+      page.on('websocket', ->(ws) {
+        logs << "open<#{ws.url}>"
+        web_socket = ws
+        ws.on('close', ->() {
+          logs << 'close'
+          socket_close_promise.fulfill(nil)
+        })
+      })
+      page.evaluate(js, arg: ws_url)
+      socket_close_promise.value!
+      expect(logs).to eq(["open<#{ws_url}>", 'close'])
+      expect(web_socket).to be_closed
     end
   end
 
   it 'should emit frame events', sinatra: true do
+    socket_close_promise = Concurrent::Promises.resolvable_future
+    logs = []
+
     js = <<~JAVASCRIPT
     (wsUrl) => {
       let cb;
@@ -48,26 +58,29 @@ RSpec.describe 'WebSocket', web_socket: true do
       ws.addEventListener('open', () => {
         ws.send('echo-text');
       });
+      ws.addEventListener('message', () => {
+        // ws.close();
+      });
     }
     JAVASCRIPT
 
     with_page do |page|
-      sent = []
-      received = []
       page.on('websocket', ->(ws) {
-        ws.on('framesent', ->(payload) { sent << payload })
-        ws.on('framereceived', ->(payload) { received << payload })
+        logs << 'opened'
+        ws.on('framesent', ->(payload) { logs << "sent:#{payload}" })
+        ws.on('framereceived', ->(payload) { logs << "received:#{payload}" })
+        ws.on('close', ->() { logs << 'closed' ; socket_close_promise.fulfill(nil) })
       })
-      ws = page.expect_websocket do
-        page.evaluate(js, arg: ws_url)
-      end
-      ws.wait_for_event('close') unless ws.closed?
-      expect(sent).to eq(['echo-text'])
-      expect(received).to eq(['incoming', 'text'])
+      page.evaluate(js, arg: ws_url)
+      socket_close_promise.value!
+      expect(logs).to eq(['opened', 'sent:echo-text', 'received:incoming', 'received:text', 'closed'])
     end
   end
 
   it 'should emit binary frame events', sinatra: true do
+    done_promise = Concurrent::Promises.resolvable_future
+    logs = []
+
     js = <<~JAVASCRIPT
     (wsUrl) => {
       const ws = new WebSocket(wsUrl);
@@ -78,22 +91,22 @@ RSpec.describe 'WebSocket', web_socket: true do
           ws.send(binary);
           ws.send('echo-bin');
       });
+      ws.addEventListener('message', () => {
+          // ws.close();
+      });
     }
     JAVASCRIPT
 
     with_page do |page|
-      sent = []
-      received = []
       page.on('websocket', ->(ws) {
-        ws.on('framesent', ->(payload) { sent << payload })
-        ws.on('framereceived', ->(payload) { received << payload })
+        logs << 'opened'
+        ws.on('framesent', ->(payload) { logs << "sent:#{payload}" })
+        ws.on('framereceived', ->(payload) { logs << "received:#{payload}" })
+        ws.on('close', ->() { logs << 'closed' ; done_promise.fulfill(nil) })
       })
-      ws = page.expect_websocket do
-        page.evaluate(js, arg: ws_url)
-      end
-      ws.wait_for_event('close') unless ws.closed?
-      expect(sent).to eq(["\x00\x01\x02\x03\x04", "echo-bin"])
-      expect(received).to eq(["incoming", "\x04\x02"])
+      page.evaluate(js, arg: ws_url)
+      done_promise.value!
+      expect(logs).to eq(['opened', "sent:\x00\x01\x02\x03\x04", 'sent:echo-bin', 'received:incoming', "received:\x04\x02", 'closed'])
     end
   end
 
