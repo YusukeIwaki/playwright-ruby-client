@@ -49,7 +49,7 @@ module Playwright
     end
 
     def cleanup(cause: nil)
-      @closed_error = cause || TargetClosedError.new
+      @closed_error = TargetClosedError.new(message: cause)
       @callbacks.each_value do |callback|
         callback.reject(@closed_error)
       end
