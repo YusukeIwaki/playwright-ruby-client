@@ -106,9 +106,11 @@ def fetch(
 
 
 Sends HTTP(S) request and returns its response. The method will populate request cookies from the context and update
-context cookies from the response. The method will automatically follow redirects. JSON objects can be passed directly to the request.
+context cookies from the response. The method will automatically follow redirects.
 
 **Usage**
+
+JSON objects can be passed directly to the request:
 
 ```ruby
 data = {
@@ -118,20 +120,19 @@ data = {
 api_request_context.fetch("https://example.com/api/create_book", method: 'post', data: data)
 ```
 
-The common way to send file(s) in the body of a request is to encode it as form fields with `multipart/form-data` encoding. You can achieve that with Playwright API like this:
+The common way to send file(s) in the body of a request is to upload them as form fields with `multipart/form-data` encoding. Use `FormData` to construct request body and pass it to the request as `multipart` parameter:
 
-```ruby
+```python title="example_a583bf0ade385126b3b7e024ef012ccfc140e67d6b7fdf710ee1ba065ec6a80d.py"
 api_request_context.fetch(
-  "https://example.com/api/upload_script",
-  method: 'post',
-  multipart: {
-    fileField: {
-      name: "f.js",
-      mimeType: "text/javascript",
-      buffer: "console.log(2022);",
+  "https://example.com/api/uploadScript",  method="post",
+  multipart={
+    "fileField": {
+      "name": "f.js",
+      "mimeType": "text/javascript",
+      "buffer": b"console.log(2022);",
     },
-  },
-)
+  })
+
 ```
 
 ## get
@@ -252,19 +253,19 @@ form_data = {
 api_request_context.post("https://example.com/api/find_book", form: form_data)
 ```
 
-The common way to send file(s) in the body of a request is to upload them as form fields with `multipart/form-data` encoding. You can achieve that with Playwright API like this:
+The common way to send file(s) in the body of a request is to upload them as form fields with `multipart/form-data` encoding. Use `FormData` to construct request body and pass it to the request as `multipart` parameter:
 
-```ruby
+```python title="example_1e1af87a9320d43292d33275903ecf758c730b518de1ef8149d6b47e6160b0c8.py"
 api_request_context.post(
-  "https://example.com/api/upload_script",
-  multipart: {
-    fileField: {
-      name: "f.js",
-      mimeType: "text/javascript",
-      buffer: "console.log(2022);",
+  "https://example.com/api/uploadScript'",
+  multipart={
+    "fileField": {
+      "name": "f.js",
+      "mimeType": "text/javascript",
+      "buffer": b"console.log(2022);",
     },
-  },
-)
+  })
+
 ```
 
 ## put

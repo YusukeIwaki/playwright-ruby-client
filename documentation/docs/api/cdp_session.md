@@ -14,16 +14,16 @@ Useful links:
 - Documentation on DevTools Protocol can be found here: [DevTools Protocol Viewer](https://chromedevtools.github.io/devtools-protocol/).
 - Getting Started with DevTools Protocol: https://github.com/aslushnikov/getting-started-with-cdp/blob/master/README.md
 
-```ruby
+```python title="example_314a4cc521d931dff12aaf59a90d03d01ed5d1440e3dbddd57e526cb467d0450.py"
 client = page.context.new_cdp_session(page)
-client.send_message('Animation.enable')
-client.on('Animation.animationCreated', -> (_) { puts 'Animation Created' })
-response = client.send_message('Animation.getPlaybackRate')
-puts "Playback rate is #{response['playbackRate']}"
-client.send_message(
-  'Animation.setPlaybackRate',
-  params: { playbackRate: response['playbackRate'] / 2.0 },
-)
+client.send("Animation.enable")
+client.on("Animation.animationCreated", lambda: print("animation created!"))
+response = client.send("Animation.getPlaybackRate")
+print("playback rate is " + str(response["playbackRate"]))
+client.send("Animation.setPlaybackRate", {
+    "playbackRate": response["playbackRate"] / 2
+})
+
 ```
 
 ## detach
