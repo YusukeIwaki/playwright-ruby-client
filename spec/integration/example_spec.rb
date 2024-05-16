@@ -434,6 +434,23 @@ RSpec.describe 'example' do
       end
     end
 
+    context 'PageAssertions' do
+      require 'playwright/test'
+      include Playwright::Test::Matchers
+
+      it 'should work with PageAssertions' do
+        with_page do |page|
+          with_network_retry do
+            example_8bd802801208367a0779634066c3f38ec5326b1ca16fc94eb5621dca49d1f649(page: page)
+          end
+          page.goto('https://example.com/item/checkout.html')
+          example_87c22b447771ce189eebbfd6163474cb36badeb87ce402dcf88c4042335c31e9(page: page)
+          page.evaluate('() => { document.title = "Item 1: checkout" }')
+          example_b4ad3d990aa1e6825a4b5b711e89d712607aee31a03393c3cd1a9c3f6d39f124(page: page)
+        end
+      end
+    end
+
     it 'should work with Request#redirected_to', sinatra: true do
       sinatra.get('/302') do
         redirect to('/empty.html'), 302

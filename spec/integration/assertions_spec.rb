@@ -200,6 +200,25 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
     end
   end
 
+  describe '#to_have_title' do
+    it 'should work' do
+      with_page do |page|
+        page.set_content('<title>  Hello     world</title>')
+        expect(page).to have_title('Hello  world')
+
+        page.set_content('<title>  Hello     world</title>')
+        expect {
+          expect(page).to have_title('Hello', timeout: 100)
+        }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
+        begin
+          expect(page).to have_title('Hello', timeout: 100)
+        rescue RSpec::Expectations::ExpectationNotMetError => e
+          expect(e.message).to include("Page title expected to be 'Hello'")
+        end
+      end
+    end
+  end
+
   describe "#to_have_text" do
     it "should work" do
       with_page do |page|
@@ -344,6 +363,31 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
           line3</div>
         HTML
         expect(page.locator("div")).to have_text(/^line2$/m)
+      end
+    end
+  end
+
+  describe '#to_have_url' do
+    it "should work" do
+      with_page do |page|
+        page.goto("data:text/html,<div>A</div>")
+        expect(page).to have_url("data:text/html,<div>A</div>")
+
+        expect {
+          expect(page).to have_url("data:text/html,<div>B</div>", timeout: 100)
+        }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
+        begin
+          expect(page).to have_url("data:text/html,<div>B</div>", timeout: 100)
+        rescue RSpec::Expectations::ExpectationNotMetError => e
+          expect(e.full_message).to include("Page URL expected to be")
+        end
+      end
+    end
+
+    it "should ignore case" do
+      with_page do |page|
+        page.goto("data:text/html,<div>A</div>")
+        expect(page).to have_url("DATA:teXT/HTml,<div>a</div>", ignoreCase: true)
       end
     end
   end

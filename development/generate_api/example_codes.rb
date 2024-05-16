@@ -1709,6 +1709,26 @@ module ExampleCodes
     page.wait_for_url("**/target.html")
   end
 
+  # PageAssertions
+  def example_8bd802801208367a0779634066c3f38ec5326b1ca16fc94eb5621dca49d1f649(page:)
+    page.content = <<~HTML
+    <a href="https://example.com/user/login">Sign in</a>
+    HTML
+
+    page.get_by_text("Sign in").click
+    expect(page).to have_url(/.*\/login/)
+  end
+
+  # PageAssertions#to_have_title
+  def example_b4ad3d990aa1e6825a4b5b711e89d712607aee31a03393c3cd1a9c3f6d39f124(page:)
+    expect(page).to have_title(/.*checkout/)
+  end
+
+  # PageAssertions#to_have_url
+  def example_87c22b447771ce189eebbfd6163474cb36badeb87ce402dcf88c4042335c31e9(page:)
+    expect(page).to have_url(/.*checkout/)
+  end
+
   # Request#failure
   def example_5f3f4534ab17f584cfd41ca38448ce7de9490b6588e29e73116ede3cb15a25a5(page:)
     page.on("requestfailed", ->(request) { puts "#{request.url} #{request.failure}" })

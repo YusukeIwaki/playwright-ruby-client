@@ -582,6 +582,13 @@
 * to_have_value
 * to_have_values
 
+## PageAssertions
+
+* not_to_have_title
+* not_to_have_url
+* to_have_title
+* to_have_url
+
 ## Android
 
 * ~~connect~~
