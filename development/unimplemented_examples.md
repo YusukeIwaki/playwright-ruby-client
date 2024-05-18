@@ -48,3 +48,19 @@ api_request_context.post(
   })
 
 ```
+
+### example_3556aeb2bc1aa00c0367521ee2b4a2fb0cee673998e0a10236761144e782914f (LocatorAssertions#to_have_accessible_description)
+
+```
+locator = page.get_by_test_id("save-button")
+expect(locator).to_have_accessible_description("Save results to disk")
+
+```
+
+### example_cdc1bcd2e9984cee0ec60efc2993d46ed799ba2005dee2dddf365b44193f2c8e (LocatorAssertions#to_have_accessible_name)
+
+```
+locator = page.get_by_test_id("save-button")
+expect(locator).to_have_accessible_name("Save to disk")
+
+```

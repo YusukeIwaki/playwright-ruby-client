@@ -546,8 +546,8 @@
 * not_to_be_in_viewport
 * not_to_be_visible
 * not_to_contain_text
-* ~~not_to_have_accessible_description~~
-* ~~not_to_have_accessible_name~~
+* not_to_have_accessible_description
+* not_to_have_accessible_name
 * not_to_have_attribute
 * not_to_have_class
 * not_to_have_count
@@ -569,8 +569,8 @@
 * to_be_in_viewport
 * to_be_visible
 * to_contain_text
-* ~~to_have_accessible_description~~
-* ~~to_have_accessible_name~~
+* to_have_accessible_description
+* to_have_accessible_name
 * to_have_attribute
 * to_have_class
 * to_have_count

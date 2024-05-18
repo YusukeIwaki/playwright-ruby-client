@@ -125,6 +125,24 @@ expect(locator).not_to contain_text(expected, ignoreCase: nil, timeout: nil, use
 
 The opposite of [LocatorAssertions#to_contain_text](./locator_assertions#to_contain_text).
 
+## not_to_have_accessible_description
+
+```ruby
+expect(locator).not_to have_accessible_description(name, ignoreCase: nil, timeout: nil)
+```
+
+
+The opposite of [LocatorAssertions#to_have_accessible_description](./locator_assertions#to_have_accessible_description).
+
+## not_to_have_accessible_name
+
+```ruby
+expect(locator).not_to have_accessible_name(name, ignoreCase: nil, timeout: nil)
+```
+
+
+The opposite of [LocatorAssertions#to_have_accessible_name](./locator_assertions#to_have_accessible_name).
+
 ## not_to_have_attribute
 
 ```ruby
@@ -443,6 +461,40 @@ expect(page.locator("ul > li")).to contain_text(["Some 33"])
 
 # ✖ Locator points to the outer list element, not to the list items
 expect(page.locator("ul")).to contain_text(["Text 3"])
+```
+
+## to_have_accessible_description
+
+```ruby
+expect(locator).to have_accessible_description(description, ignoreCase: nil, timeout: nil)
+```
+
+
+Ensures the [Locator](./locator) points to an element with a given [accessible description](https://w3c.github.io/accname/#dfn-accessible-description).
+
+**Usage**
+
+```python title="example_3556aeb2bc1aa00c0367521ee2b4a2fb0cee673998e0a10236761144e782914f.py"
+locator = page.get_by_test_id("save-button")
+expect(locator).to_have_accessible_description("Save results to disk")
+
+```
+
+## to_have_accessible_name
+
+```ruby
+expect(locator).to have_accessible_name(name, ignoreCase: nil, timeout: nil)
+```
+
+
+Ensures the [Locator](./locator) points to an element with a given [accessible name](https://w3c.github.io/accname/#dfn-accessible-name).
+
+**Usage**
+
+```python title="example_cdc1bcd2e9984cee0ec60efc2993d46ed799ba2005dee2dddf365b44193f2c8e.py"
+locator = page.get_by_test_id("save-button")
+expect(locator).to_have_accessible_name("Save to disk")
+
 ```
 
 ## to_have_attribute

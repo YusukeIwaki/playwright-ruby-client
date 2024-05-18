@@ -21,6 +21,54 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
     end
   end
 
+  it 'should work with #to_have_accessible_name' do
+    with_page do |page|
+      page.goto(server_empty_page)
+      page.set_content("<div role=button aria-label='Hello'></div>")
+
+      div = page.locator("div")
+      expect(div).to have_accessible_name("Hello")
+      expect {
+        expect(div).to have_accessible_name("hello", timeout: 100)
+      }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
+      begin
+        expect(div).to have_accessible_name("hello", timeout: 100)
+      rescue RSpec::Expectations::ExpectationNotMetError => e
+        expect(e.message).to include("Locator expected to have accessible name 'hello'")
+      end
+      expect(div).to have_accessible_name("hello", ignoreCase: true)
+      expect(div).to have_accessible_name(/ell\w/)
+      expect {
+        expect(div).to have_accessible_name(/hello/, timeout: 100)
+      }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
+      expect(div).to have_accessible_name(/hello/, ignoreCase: true)
+    end
+  end
+
+  it 'should work with #to_have_accessible_description' do
+    with_page do |page|
+      page.goto(server_empty_page)
+      page.set_content("<div role=button aria-description='Hello'></div>")
+
+      div = page.locator("div")
+      expect(div).to have_accessible_description("Hello")
+      expect {
+        expect(div).to have_accessible_description("hello", timeout: 100)
+      }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
+      begin
+        expect(div).to have_accessible_description("hello", timeout: 100)
+      rescue RSpec::Expectations::ExpectationNotMetError => e
+        expect(e.message).to include("Locator expected to have accessible description 'hello'")
+      end
+      expect(div).to have_accessible_description("hello", ignoreCase: true)
+      expect(div).to have_accessible_description(/ell\w/)
+      expect {
+        expect(div).to have_accessible_description(/hello/, timeout: 100)
+      }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
+      expect(div).to have_accessible_description(/hello/, ignoreCase: true)
+    end
+  end
+
   it "should work with #to_have_attribute" do
     with_page do |page|
       page.goto(server_empty_page)
