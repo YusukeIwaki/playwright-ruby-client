@@ -79,7 +79,7 @@ module ExampleCodes
   end
 
   # APIRequestContext#fetch
-  def example_c5f1dfbcb296a3bc1e1e9e0216dacb2ee7c2af8685053b9e4bb44c823d82767c(api_request_context:)
+  def example_a583bf0ade385126b3b7e024ef012ccfc140e67d6b7fdf710ee1ba065ec6a80d(api_request_context:)
     api_request_context.fetch(
       "https://example.com/api/upload_script",
       method: 'post',
@@ -121,7 +121,7 @@ module ExampleCodes
   end
 
   # APIRequestContext#post
-  def example_3a940e5f148822e63981b92e0dd21748d81cdebc826935849d9fa08723fbccdc(api_request_context:)
+  def example_1e1af87a9320d43292d33275903ecf758c730b518de1ef8149d6b47e6160b0c8(api_request_context:)
     api_request_context.post(
       "https://example.com/api/upload_script",
       multipart: {

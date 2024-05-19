@@ -122,17 +122,18 @@ api_request_context.fetch("https://example.com/api/create_book", method: 'post',
 
 The common way to send file(s) in the body of a request is to upload them as form fields with `multipart/form-data` encoding. Use `FormData` to construct request body and pass it to the request as `multipart` parameter:
 
-```python title="example_a583bf0ade385126b3b7e024ef012ccfc140e67d6b7fdf710ee1ba065ec6a80d.py"
+```ruby
 api_request_context.fetch(
-  "https://example.com/api/uploadScript",  method="post",
-  multipart={
-    "fileField": {
-      "name": "f.js",
-      "mimeType": "text/javascript",
-      "buffer": b"console.log(2022);",
+  "https://example.com/api/upload_script",
+  method: 'post',
+  multipart: {
+    fileField: {
+      name: "f.js",
+      mimeType: "text/javascript",
+      buffer: "console.log(2022);",
     },
-  })
-
+  },
+)
 ```
 
 ## get
@@ -255,17 +256,17 @@ api_request_context.post("https://example.com/api/find_book", form: form_data)
 
 The common way to send file(s) in the body of a request is to upload them as form fields with `multipart/form-data` encoding. Use `FormData` to construct request body and pass it to the request as `multipart` parameter:
 
-```python title="example_1e1af87a9320d43292d33275903ecf758c730b518de1ef8149d6b47e6160b0c8.py"
+```ruby
 api_request_context.post(
-  "https://example.com/api/uploadScript'",
-  multipart={
-    "fileField": {
-      "name": "f.js",
-      "mimeType": "text/javascript",
-      "buffer": b"console.log(2022);",
+  "https://example.com/api/upload_script",
+  multipart: {
+    fileField: {
+      name: "f.js",
+      mimeType: "text/javascript",
+      buffer: "console.log(2022);",
     },
-  })
-
+  },
+)
 ```
 
 ## put
