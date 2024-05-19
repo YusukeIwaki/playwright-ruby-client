@@ -248,6 +248,28 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
     end
   end
 
+  it 'should work with #to_have_role' do
+    with_page do |page|
+      page.goto(server_empty_page)
+      page.set_content('<div role="button">Button!</div>')
+
+      div = page.locator("div")
+      expect(div).to have_role("button")
+      expect {
+        expect(div).to have_role("checkbox", timeout: 100)
+      }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
+      begin
+        expect(div).to have_role("checkbox", timeout: 100)
+      rescue RSpec::Expectations::ExpectationNotMetError => e
+        expect(e.message).to include("Locator expected to have accessible role 'checkbox'")
+      end
+
+      expect {
+        expect(div).to have_role(/button|checkbox/)
+      }.to raise_error(/must be a string/)
+    end
+  end
+
   describe '#to_have_title' do
     it 'should work' do
       with_page do |page|

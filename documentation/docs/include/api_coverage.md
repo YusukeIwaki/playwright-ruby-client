@@ -554,7 +554,7 @@
 * not_to_have_css
 * not_to_have_id
 * not_to_have_js_property
-* ~~not_to_have_role~~
+* not_to_have_role
 * not_to_have_text
 * not_to_have_value
 * not_to_have_values
@@ -577,7 +577,7 @@
 * to_have_css
 * to_have_id
 * to_have_js_property
-* ~~to_have_role~~
+* to_have_role
 * to_have_text
 * to_have_value
 * to_have_values

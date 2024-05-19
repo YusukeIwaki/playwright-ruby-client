@@ -197,6 +197,15 @@ expect(locator).not_to have_js_property(name, value, timeout: nil)
 
 The opposite of [LocatorAssertions#to_have_js_property](./locator_assertions#to_have_js_property).
 
+## not_to_have_role
+
+```ruby
+expect(locator).not_to have_role(name, timeout: nil)
+```
+
+
+The opposite of [LocatorAssertions#to_have_role](./locator_assertions#to_have_role).
+
 ## not_to_have_text
 
 ```ruby
@@ -605,6 +614,25 @@ of a primitive type as well as a plain serializable JavaScript object.
 ```ruby
 locator = page.locator(".component")
 expect(locator).to have_js_property("loaded", true)
+```
+
+## to_have_role
+
+```ruby
+expect(locator).to have_role(role, timeout: nil)
+```
+
+
+Ensures the [Locator](./locator) points to an element with a given [ARIA role](https://www.w3.org/TR/wai-aria-1.2/#roles).
+
+Note that role is matched as a string, disregarding the ARIA role hierarchy. For example, asserting  a superclass role `"checkbox"` on an element with a subclass role `"switch"` will fail.
+
+**Usage**
+
+```python title="example_c3fce4e9b467982e8547d3821d6320ddf08aef95feb7c6b38acdb2996c8df174.py"
+locator = page.get_by_test_id("save-button")
+expect(locator).to_have_role("button")
+
 ```
 
 ## to_have_text

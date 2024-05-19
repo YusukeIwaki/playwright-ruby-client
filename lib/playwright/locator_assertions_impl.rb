@@ -272,6 +272,24 @@ module Playwright
     end
     _define_negation :to_have_js_property
 
+    def to_have_role(role, timeout: nil)
+      if role.is_a?(Regexp)
+        raise ArgumentError.new('"role" argument in to_have_role must be a string')
+      end
+
+      expected_text = to_expected_text_values([role])
+      expect_impl(
+        "to.have.role",
+        {
+          expectedText: expected_text,
+          timeout: timeout,
+        },
+        role,
+        "Locator expected to have accessible role",
+      )
+    end
+    _define_negation :to_have_role
+
     def to_have_value(value, timeout: nil)
       expected_text = to_expected_text_values([value])
 

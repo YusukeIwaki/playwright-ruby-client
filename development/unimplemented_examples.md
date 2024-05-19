@@ -64,3 +64,11 @@ locator = page.get_by_test_id("save-button")
 expect(locator).to_have_accessible_name("Save to disk")
 
 ```
+
+### example_c3fce4e9b467982e8547d3821d6320ddf08aef95feb7c6b38acdb2996c8df174 (LocatorAssertions#to_have_role)
+
+```
+locator = page.get_by_test_id("save-button")
+expect(locator).to_have_role("button")
+
+```
