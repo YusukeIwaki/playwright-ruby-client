@@ -149,7 +149,7 @@ RSpec.describe 'example' do
       skip unless chromium?
 
       with_page do |page|
-        example_3a8a10e66fc750bb0e176f66b2bd2eb305c4264e4146b9725dcff57e77811b3d(page: page)
+        example_314a4cc521d931dff12aaf59a90d03d01ed5d1440e3dbddd57e526cb467d0450(page: page)
       end
     end
 
