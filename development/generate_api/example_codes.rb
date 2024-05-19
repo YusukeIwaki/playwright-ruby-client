@@ -1218,6 +1218,24 @@ module ExampleCodes
     expect(page.locator("ul")).to contain_text(["Text 3"])
   end
 
+  # LocatorAssertions#to_have_accessible_description
+  def example_3556aeb2bc1aa00c0367521ee2b4a2fb0cee673998e0a10236761144e782914f(page:)
+    locator = page.get_by_test_id("save-button")
+    expect(locator).to have_accessible_description("Save results to disk")
+  end
+
+  # LocatorAssertions#to_have_accessible_name
+  def example_cdc1bcd2e9984cee0ec60efc2993d46ed799ba2005dee2dddf365b44193f2c8e(page:)
+    locator = page.get_by_test_id("save-button")
+    expect(locator).to have_accessible_name("Save to disk")
+  end
+
+  # LocatorAssertions#to_have_role
+  def example_c3fce4e9b467982e8547d3821d6320ddf08aef95feb7c6b38acdb2996c8df174(page:)
+    locator = page.get_by_test_id("save-button")
+    expect(locator).to have_role("button")
+  end
+
   # LocatorAssertions#to_have_attribute
   def example_709faaa456b4775109b1fbaca74a86ac5107af5e4801ea07cb690942f1d37f88(page:)
     locator = page.locator("input")

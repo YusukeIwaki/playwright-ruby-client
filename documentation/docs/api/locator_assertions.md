@@ -483,10 +483,9 @@ Ensures the [Locator](./locator) points to an element with a given [accessible d
 
 **Usage**
 
-```python title="example_3556aeb2bc1aa00c0367521ee2b4a2fb0cee673998e0a10236761144e782914f.py"
+```ruby
 locator = page.get_by_test_id("save-button")
-expect(locator).to_have_accessible_description("Save results to disk")
-
+expect(locator).to have_accessible_description("Save results to disk")
 ```
 
 ## to_have_accessible_name
@@ -500,10 +499,9 @@ Ensures the [Locator](./locator) points to an element with a given [accessible n
 
 **Usage**
 
-```python title="example_cdc1bcd2e9984cee0ec60efc2993d46ed799ba2005dee2dddf365b44193f2c8e.py"
+```ruby
 locator = page.get_by_test_id("save-button")
-expect(locator).to_have_accessible_name("Save to disk")
-
+expect(locator).to have_accessible_name("Save to disk")
 ```
 
 ## to_have_attribute
@@ -629,10 +627,9 @@ Note that role is matched as a string, disregarding the ARIA role hierarchy. For
 
 **Usage**
 
-```python title="example_c3fce4e9b467982e8547d3821d6320ddf08aef95feb7c6b38acdb2996c8df174.py"
+```ruby
 locator = page.get_by_test_id("save-button")
-expect(locator).to_have_role("button")
-
+expect(locator).to have_role("button")
 ```
 
 ## to_have_text
