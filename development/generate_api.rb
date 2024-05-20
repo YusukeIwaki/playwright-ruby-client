@@ -30,6 +30,7 @@ ALL_TYPES = %w[
     APIRequestContext
     APIRequest
     LocatorAssertions
+    PageAssertions
 ]
 EXPERIMENTAL = %w[
   Android
@@ -52,6 +53,7 @@ API_IMPLEMENTATIONS = %w[
   APIRequest
   APIResponse
   LocatorAssertions
+  PageAssertions
 ]
 
 require 'bundler/setup'

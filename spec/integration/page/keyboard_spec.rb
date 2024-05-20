@@ -19,4 +19,40 @@ RSpec.describe 'page.keyboard' do
       expect(page.eval_on_selector('textarea', 'textarea => textarea.value')).to eq(text)
     end
   end
+
+  it 'should handle selectAll', sinatra: true do
+    with_page do |page|
+      page.goto("#{server_prefix}/input/textarea.html")
+      textarea = page.query_selector('textarea')
+      textarea.type('some text')
+      page.keyboard.down('ControlOrMeta')
+      page.keyboard.press('a')
+      page.keyboard.up('ControlOrMeta')
+      page.keyboard.press('Backspace')
+      expect(page.eval_on_selector('textarea', 'textarea => textarea.value')).to eq('')
+    end
+  end
+
+  it 'should be able to prevent selectAll', sinatra: true do
+    with_page do |page|
+      page.goto("#{server_prefix}/input/textarea.html")
+      textarea = page.query_selector('textarea')
+      textarea.type('some text')
+
+      page.eval_on_selector('textarea', <<~JAVASCRIPT)
+        textarea => {
+          textarea.addEventListener('keydown', event => {
+            if (event.key === 'a' && (event.metaKey || event.ctrlKey))
+              event.preventDefault();
+          }, false);
+        }
+      JAVASCRIPT
+
+      page.keyboard.down('ControlOrMeta')
+      page.keyboard.press('a')
+      page.keyboard.up('ControlOrMeta')
+      page.keyboard.press('Backspace')
+      expect(page.eval_on_selector('textarea', 'textarea => textarea.value')).to eq('some tex')
+    end
+  end
 end

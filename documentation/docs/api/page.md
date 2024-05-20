@@ -1160,7 +1160,8 @@ generate the text for. A superset of the `key` values can be found
 `F1` - `F12`, `Digit0`- `Digit9`, `KeyA`- `KeyZ`, `Backquote`, `Minus`, `Equal`, `Backslash`, `Backspace`, `Tab`,
 `Delete`, `Escape`, `ArrowDown`, `End`, `Enter`, `Home`, `Insert`, `PageDown`, `PageUp`, `ArrowRight`, `ArrowUp`, etc.
 
-Following modification shortcuts are also supported: `Shift`, `Control`, `Alt`, `Meta`, `ShiftLeft`.
+Following modification shortcuts are also supported: `Shift`, `Control`, `Alt`, `Meta`, `ShiftLeft`, `ControlOrMeta`.
+`ControlOrMeta` resolves to `Control` on Windows and Linux and to `Meta` on macOS.
 
 Holding down `Shift` will type the text that corresponds to the `key` in the upper case.
 
@@ -1227,6 +1228,8 @@ Once routing is enabled, every request matching the url pattern will stall unles
 **NOTE**: The handler will only be called for the first url if the response is a redirect.
 
 **NOTE**: [Page#route](./page#route) will not intercept requests intercepted by Service Worker. See [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using request interception by setting `Browser.newContext.serviceWorkers` to `'block'`.
+
+**NOTE**: [Page#route](./page#route) will not intercept the first request of a popup page. Use [BrowserContext#route](./browser_context#route) instead.
 
 **Usage**
 
@@ -1682,6 +1685,8 @@ Returns when the required load state has been reached.
 
 This resolves when the page reaches a required load state, `load` by default. The navigation must have been committed
 when this method is called. If current document has already reached the required state, resolves immediately.
+
+**NOTE**: Most of the time, this method is not needed because Playwright [auto-waits before every action](https://playwright.dev/python/docs/actionability).
 
 **Usage**
 

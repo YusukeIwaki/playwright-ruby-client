@@ -9,7 +9,17 @@ module Playwright
       end
 
       def call(actual, message = nil)
-        if actual.is_a?(Locator)
+        case actual
+        when Page
+          PageAssertions.new(
+            PageAssertionsImpl.new(
+              actual,
+              @timeout_settings.timeout,
+              false,
+              message,
+            )
+          )
+        when Locator
           LocatorAssertions.new(
             LocatorAssertionsImpl.new(
               actual,
@@ -52,7 +62,7 @@ module Playwright
       end
     end
 
-    ALL_ASSERTIONS = LocatorAssertions.instance_methods(false)
+    ALL_ASSERTIONS = PageAssertions.instance_methods(false) + LocatorAssertions.instance_methods(false)
 
     ALL_ASSERTIONS
       .map(&:to_s)

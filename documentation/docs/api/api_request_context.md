@@ -106,9 +106,11 @@ def fetch(
 
 
 Sends HTTP(S) request and returns its response. The method will populate request cookies from the context and update
-context cookies from the response. The method will automatically follow redirects. JSON objects can be passed directly to the request.
+context cookies from the response. The method will automatically follow redirects.
 
 **Usage**
+
+JSON objects can be passed directly to the request:
 
 ```ruby
 data = {
@@ -118,7 +120,7 @@ data = {
 api_request_context.fetch("https://example.com/api/create_book", method: 'post', data: data)
 ```
 
-The common way to send file(s) in the body of a request is to encode it as form fields with `multipart/form-data` encoding. You can achieve that with Playwright API like this:
+The common way to send file(s) in the body of a request is to upload them as form fields with `multipart/form-data` encoding. Use `FormData` to construct request body and pass it to the request as `multipart` parameter:
 
 ```ruby
 api_request_context.fetch(
@@ -252,7 +254,7 @@ form_data = {
 api_request_context.post("https://example.com/api/find_book", form: form_data)
 ```
 
-The common way to send file(s) in the body of a request is to upload them as form fields with `multipart/form-data` encoding. You can achieve that with Playwright API like this:
+The common way to send file(s) in the body of a request is to upload them as form fields with `multipart/form-data` encoding. Use `FormData` to construct request body and pass it to the request as `multipart` parameter:
 
 ```ruby
 api_request_context.post(

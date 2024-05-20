@@ -152,6 +152,23 @@ RSpec.describe 'fetch', sinatra: true do
     end
   end
 
+  it 'should support HTTPCredentials.sendImmediately' do
+    # https://github.com/microsoft/playwright/issues/30534
+
+    sinatra.use Rack::Auth::Basic do |username, password|
+      username == 'user' && password == 'pass'
+    end
+
+    with_context(httpCredentials: { username: 'user', password: 'pass', origin: server_cross_process_prefix, sendImmediately: true }) do |context|
+      response = context.request.get("#{server_cross_process_prefix}/empty.html")
+      expect(response.status).to eq(200)
+
+      # Not sent to another origin.
+      response = context.request.get("#{server_prefix}/empty.html")
+      expect(response.status).to eq(401)
+    end
+  end
+
   %i(delete get head patch post put).each do |http_method|
     it "#{http_method} should support post data" do
       promise = Concurrent::Promises.resolvable_future

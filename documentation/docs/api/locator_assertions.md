@@ -125,6 +125,24 @@ expect(locator).not_to contain_text(expected, ignoreCase: nil, timeout: nil, use
 
 The opposite of [LocatorAssertions#to_contain_text](./locator_assertions#to_contain_text).
 
+## not_to_have_accessible_description
+
+```ruby
+expect(locator).not_to have_accessible_description(name, ignoreCase: nil, timeout: nil)
+```
+
+
+The opposite of [LocatorAssertions#to_have_accessible_description](./locator_assertions#to_have_accessible_description).
+
+## not_to_have_accessible_name
+
+```ruby
+expect(locator).not_to have_accessible_name(name, ignoreCase: nil, timeout: nil)
+```
+
+
+The opposite of [LocatorAssertions#to_have_accessible_name](./locator_assertions#to_have_accessible_name).
+
 ## not_to_have_attribute
 
 ```ruby
@@ -178,6 +196,15 @@ expect(locator).not_to have_js_property(name, value, timeout: nil)
 
 
 The opposite of [LocatorAssertions#to_have_js_property](./locator_assertions#to_have_js_property).
+
+## not_to_have_role
+
+```ruby
+expect(locator).not_to have_role(name, timeout: nil)
+```
+
+
+The opposite of [LocatorAssertions#to_have_role](./locator_assertions#to_have_role).
 
 ## not_to_have_text
 
@@ -445,6 +472,38 @@ expect(page.locator("ul > li")).to contain_text(["Some 33"])
 expect(page.locator("ul")).to contain_text(["Text 3"])
 ```
 
+## to_have_accessible_description
+
+```ruby
+expect(locator).to have_accessible_description(description, ignoreCase: nil, timeout: nil)
+```
+
+
+Ensures the [Locator](./locator) points to an element with a given [accessible description](https://w3c.github.io/accname/#dfn-accessible-description).
+
+**Usage**
+
+```ruby
+locator = page.get_by_test_id("save-button")
+expect(locator).to have_accessible_description("Save results to disk")
+```
+
+## to_have_accessible_name
+
+```ruby
+expect(locator).to have_accessible_name(name, ignoreCase: nil, timeout: nil)
+```
+
+
+Ensures the [Locator](./locator) points to an element with a given [accessible name](https://w3c.github.io/accname/#dfn-accessible-name).
+
+**Usage**
+
+```ruby
+locator = page.get_by_test_id("save-button")
+expect(locator).to have_accessible_name("Save to disk")
+```
+
 ## to_have_attribute
 
 ```ruby
@@ -553,6 +612,24 @@ of a primitive type as well as a plain serializable JavaScript object.
 ```ruby
 locator = page.locator(".component")
 expect(locator).to have_js_property("loaded", true)
+```
+
+## to_have_role
+
+```ruby
+expect(locator).to have_role(role, timeout: nil)
+```
+
+
+Ensures the [Locator](./locator) points to an element with a given [ARIA role](https://www.w3.org/TR/wai-aria-1.2/#roles).
+
+Note that role is matched as a string, disregarding the ARIA role hierarchy. For example, asserting  a superclass role `"checkbox"` on an element with a subclass role `"switch"` will fail.
+
+**Usage**
+
+```ruby
+locator = page.get_by_test_id("save-button")
+expect(locator).to have_role("button")
 ```
 
 ## to_have_text

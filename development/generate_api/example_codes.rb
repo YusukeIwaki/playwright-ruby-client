@@ -79,7 +79,7 @@ module ExampleCodes
   end
 
   # APIRequestContext#fetch
-  def example_c5f1dfbcb296a3bc1e1e9e0216dacb2ee7c2af8685053b9e4bb44c823d82767c(api_request_context:)
+  def example_a583bf0ade385126b3b7e024ef012ccfc140e67d6b7fdf710ee1ba065ec6a80d(api_request_context:)
     api_request_context.fetch(
       "https://example.com/api/upload_script",
       method: 'post',
@@ -121,7 +121,7 @@ module ExampleCodes
   end
 
   # APIRequestContext#post
-  def example_3a940e5f148822e63981b92e0dd21748d81cdebc826935849d9fa08723fbccdc(api_request_context:)
+  def example_1e1af87a9320d43292d33275903ecf758c730b518de1ef8149d6b47e6160b0c8(api_request_context:)
     api_request_context.post(
       "https://example.com/api/upload_script",
       multipart: {
@@ -366,7 +366,7 @@ module ExampleCodes
   end
 
   # CDPSession
-  def example_3a8a10e66fc750bb0e176f66b2bd2eb305c4264e4146b9725dcff57e77811b3d(page:)
+  def example_314a4cc521d931dff12aaf59a90d03d01ed5d1440e3dbddd57e526cb467d0450(page:)
     client = page.context.new_cdp_session(page)
     client.send_message('Animation.enable')
     client.on('Animation.animationCreated', -> (_) { puts 'Animation Created' })
@@ -1218,6 +1218,24 @@ module ExampleCodes
     expect(page.locator("ul")).to contain_text(["Text 3"])
   end
 
+  # LocatorAssertions#to_have_accessible_description
+  def example_3556aeb2bc1aa00c0367521ee2b4a2fb0cee673998e0a10236761144e782914f(page:)
+    locator = page.get_by_test_id("save-button")
+    expect(locator).to have_accessible_description("Save results to disk")
+  end
+
+  # LocatorAssertions#to_have_accessible_name
+  def example_cdc1bcd2e9984cee0ec60efc2993d46ed799ba2005dee2dddf365b44193f2c8e(page:)
+    locator = page.get_by_test_id("save-button")
+    expect(locator).to have_accessible_name("Save to disk")
+  end
+
+  # LocatorAssertions#to_have_role
+  def example_c3fce4e9b467982e8547d3821d6320ddf08aef95feb7c6b38acdb2996c8df174(page:)
+    locator = page.get_by_test_id("save-button")
+    expect(locator).to have_role("button")
+  end
+
   # LocatorAssertions#to_have_attribute
   def example_709faaa456b4775109b1fbaca74a86ac5107af5e4801ea07cb690942f1d37f88(page:)
     locator = page.locator("input")
@@ -1707,6 +1725,26 @@ module ExampleCodes
   def example_a49b1deed2b93fe358b57bca9c4032f44b3d24436a78720421ba040aad4d661c(page:)
     page.click("a.delayed-navigation") # clicking the link will indirectly cause a navigation
     page.wait_for_url("**/target.html")
+  end
+
+  # PageAssertions
+  def example_8bd802801208367a0779634066c3f38ec5326b1ca16fc94eb5621dca49d1f649(page:)
+    page.content = <<~HTML
+    <a href="https://example.com/user/login">Sign in</a>
+    HTML
+
+    page.get_by_text("Sign in").click
+    expect(page).to have_url(/.*\/login/)
+  end
+
+  # PageAssertions#to_have_title
+  def example_b4ad3d990aa1e6825a4b5b711e89d712607aee31a03393c3cd1a9c3f6d39f124(page:)
+    expect(page).to have_title(/.*checkout/)
+  end
+
+  # PageAssertions#to_have_url
+  def example_87c22b447771ce189eebbfd6163474cb36badeb87ce402dcf88c4042335c31e9(page:)
+    expect(page).to have_url(/.*checkout/)
   end
 
   # Request#failure

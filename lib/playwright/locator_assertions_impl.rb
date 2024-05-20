@@ -146,6 +146,34 @@ module Playwright
     end
     _define_negation :to_contain_text
 
+    def to_have_accessible_name(name, ignoreCase: nil, timeout: nil)
+      expected_text = to_expected_text_values([name], ignore_case: ignoreCase)
+      expect_impl(
+        "to.have.accessible.name",
+        {
+          expectedText: expected_text,
+          timeout: timeout,
+        },
+        name,
+        "Locator expected to have accessible name"
+      )
+    end
+    _define_negation :to_have_accessible_name
+
+    def to_have_accessible_description(name, ignoreCase: nil, timeout: nil)
+      expected_text = to_expected_text_values([name], ignore_case: ignoreCase)
+      expect_impl(
+        "to.have.accessible.description",
+        {
+          expectedText: expected_text,
+          timeout: timeout,
+        },
+        name,
+        "Locator expected to have accessible description"
+      )
+    end
+    _define_negation :to_have_accessible_description
+
     def to_have_attribute(name, value, ignoreCase: nil, timeout: nil)
       expected_text = to_expected_text_values([value], ignore_case: ignoreCase)
       expect_impl(
@@ -243,6 +271,24 @@ module Playwright
       )
     end
     _define_negation :to_have_js_property
+
+    def to_have_role(role, timeout: nil)
+      if role.is_a?(Regexp)
+        raise ArgumentError.new('"role" argument in to_have_role must be a string')
+      end
+
+      expected_text = to_expected_text_values([role])
+      expect_impl(
+        "to.have.role",
+        {
+          expectedText: expected_text,
+          timeout: timeout,
+        },
+        role,
+        "Locator expected to have accessible role",
+      )
+    end
+    _define_negation :to_have_role
 
     def to_have_value(value, timeout: nil)
       expected_text = to_expected_text_values([value])
