@@ -485,6 +485,8 @@ completely visible as defined by
 Throws when `elementHandle` does not point to an element
 [connected](https://developer.mozilla.org/en-US/docs/Web/API/Node/isConnected) to a Document or a ShadowRoot.
 
+See [scrolling](https://playwright.dev/python/docs/input#scrolling) for alternative ways to scroll.
+
 ## select_option
 
 ```
@@ -566,6 +568,7 @@ alias: `input_files=`
 
 Sets the value of the file input to these file paths or files. If some of the `filePaths` are relative paths, then they
 are resolved relative to the current working directory. For empty array, clears the selected files.
+For inputs with a `[webkitdirectory]` attribute, only a single directory path is supported.
 
 This method expects [ElementHandle](./element_handle) to point to an
 [input element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input). However, if the element is inside the `<label>` element that has an associated [control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), targets the control instead.

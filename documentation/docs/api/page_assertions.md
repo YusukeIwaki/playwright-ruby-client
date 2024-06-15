@@ -28,7 +28,7 @@ The opposite of [PageAssertions#to_have_title](./page_assertions#to_have_title).
 ## not_to_have_url
 
 ```
-def not_to_have_url(urlOrRegExp, timeout: nil)
+def not_to_have_url(urlOrRegExp, ignoreCase: nil, timeout: nil)
 ```
 
 

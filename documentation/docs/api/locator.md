@@ -1162,6 +1162,8 @@ This method waits for [actionability](https://playwright.dev/python/docs/actiona
 completely visible as defined by
 [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)'s `ratio`.
 
+See [scrolling](https://playwright.dev/python/docs/input#scrolling) for alternative ways to scroll.
+
 ## select_option
 
 ```
@@ -1265,18 +1267,30 @@ alias: `input_files=`
 
 
 Upload file or multiple files into `<input type=file>`.
+For inputs with a `[webkitdirectory]` attribute, only a single directory path is supported.
 
 **Usage**
 
-```ruby
+```python title="example_eef80d0e7a868da02c471a2a562e27511ce74abc91865c1daab36b6f4835bd3c.py"
 # Select one file
 page.get_by_label("Upload file").set_input_files('myfile.pdf')
 
 # Select multiple files
 page.get_by_label("Upload files").set_input_files(['file1.txt', 'file2.txt'])
 
+# Select a directory
+page.get_by_label("Upload directory").set_input_files('mydir')
+
 # Remove all the selected files
 page.get_by_label("Upload file").set_input_files([])
+
+# Upload buffer from memory
+page.get_by_label("Upload file").set_input_files(
+    files=[
+        {"name": "test.txt", "mimeType": "text/plain", "buffer": b"this is a test"}
+    ],
+)
+
 ```
 
 **Details**

@@ -1438,6 +1438,7 @@ def set_input_files(
 
 Sets the value of the file input to these file paths or files. If some of the `filePaths` are relative paths, then they
 are resolved relative to the current working directory. For empty array, clears the selected files.
+For inputs with a `[webkitdirectory]` attribute, only a single directory path is supported.
 
 This method expects `selector` to point to an
 [input element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input). However, if the element is inside the `<label>` element that has an associated [control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), targets the control instead.
@@ -1793,23 +1794,18 @@ Returns the matched response. See [waiting for event](https://playwright.dev/pyt
 
 **Usage**
 
-```ruby
-page.content = '<form action="https://example.com/resource"><input type="submit" value="trigger response" /></form>'
-response = page.expect_response(/example.com\/resource/) do
-  page.get_by_text("trigger response").click
-end
-puts response.body
-puts response.ok?
+```python title="example_13746919ebdd1549604b1a2c4a6cc9321ba9d0728c281be6f1d10d053fc44108.py"
+with page.expect_response("https://example.com/resource") as response_info:
+    page.get_by_text("trigger response").click()
+response = response_info.value
+return response.ok
 
-page.wait_for_load_state # wait for request finished.
+# or with a lambda
+with page.expect_response(lambda response: response.url == "https://example.com" and response.status == 200 and response.request.method == "get") as response_info:
+    page.get_by_text("trigger response").click()
+response = response_info.value
+return response.ok
 
-# or with a predicate
-page.content = '<form action="https://example.com/resource"><input type="submit" value="trigger response" /></form>'
-response = page.expect_response(->(res) { res.url.start_with? 'https://example.com/resource' }) do
-  page.get_by_text("trigger response").click
-end
-puts response.body
-puts response.ok?
 ```
 
 ## wait_for_selector

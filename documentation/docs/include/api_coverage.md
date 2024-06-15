@@ -340,6 +340,7 @@
 * expect_worker
 * workers
 * ~~wait_for_event~~
+* ~~clock~~
 * accessibility
 * keyboard
 * mouse
@@ -377,6 +378,7 @@
 * expect_event
 * expect_page
 * ~~wait_for_event~~
+* ~~clock~~
 * request
 * tracing
 

@@ -81,7 +81,7 @@ context cookies from the response. The method will automatically follow redirect
 ## dispose
 
 ```
-def dispose
+def dispose(reason: nil)
 ```
 
 

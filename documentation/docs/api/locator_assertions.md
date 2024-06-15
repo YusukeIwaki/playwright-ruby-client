@@ -200,7 +200,7 @@ The opposite of [LocatorAssertions#to_have_js_property](./locator_assertions#to_
 ## not_to_have_role
 
 ```ruby
-expect(locator).not_to have_role(name, timeout: nil)
+expect(locator).not_to have_role(role, timeout: nil)
 ```
 
 
