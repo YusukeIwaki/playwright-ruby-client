@@ -152,19 +152,36 @@ RSpec.describe 'fetch', sinatra: true do
     end
   end
 
-  it 'should support HTTPCredentials.sendImmediately' do
+  it 'should support HTTPCredentials.sendImmediately for newContext' do
     # https://github.com/microsoft/playwright/issues/30534
 
     sinatra.use Rack::Auth::Basic do |username, password|
       username == 'user' && password == 'pass'
     end
 
-    with_context(httpCredentials: { username: 'user', password: 'pass', origin: server_cross_process_prefix, sendImmediately: true }) do |context|
+    with_context(httpCredentials: { username: 'user', password: 'pass', origin: server_cross_process_prefix, send: :always }) do |context|
       response = context.request.get("#{server_cross_process_prefix}/empty.html")
       expect(response.status).to eq(200)
 
       # Not sent to another origin.
       response = context.request.get("#{server_prefix}/empty.html")
+      expect(response.status).to eq(401)
+    end
+  end
+
+  it 'should support HTTPCredentials.sendImmediately for browser.newPage' do
+    # https://github.com/microsoft/playwright/issues/30534
+
+    sinatra.use Rack::Auth::Basic do |username, password|
+      username == 'user' && password == 'pass'
+    end
+
+    with_page(httpCredentials: { username: 'user', password: 'pass', origin: server_cross_process_prefix, send: :always }) do |page|
+      response = page.request.get("#{server_cross_process_prefix}/empty.html")
+      expect(response.status).to eq(200)
+
+      # Not sent to another origin.
+      response = page.request.get("#{server_prefix}/empty.html")
       expect(response.status).to eq(401)
     end
   end
