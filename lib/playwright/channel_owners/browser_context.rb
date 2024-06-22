@@ -441,7 +441,7 @@ module Playwright
       return if @close_was_called
       @close_was_called = true
       @close_reason = reason
-
+      @request.dispose(reason: reason)
       inner_close
       @channel.send_message_to_server('close', { reason: reason }.compact)
       @closed_promise.value!

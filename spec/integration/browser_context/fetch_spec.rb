@@ -402,4 +402,13 @@ RSpec.describe 'fetch', sinatra: true do
       expect(multipart['file'][:tempfile].read).to eq("var x = 10;\r\n;console.log(x);")
     end
   end
+
+  it 'should not work after context dispose', sinatra: true do
+    with_context do |context|
+      context.close(reason: 'Test ended.')
+      expect {
+        context.request.get(server_empty_page)
+      }.to raise_error(/Test ended/)
+    end
+  end
 end

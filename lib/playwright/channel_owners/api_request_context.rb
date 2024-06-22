@@ -6,7 +6,8 @@ module Playwright
       @tracing = ChannelOwners::Tracing.from(@initializer['tracing'])
     end
 
-    def dispose
+    def dispose(reason: nil)
+      @close_reason = reason
       @channel.send_message_to_server('dispose')
     end
 
@@ -92,6 +93,9 @@ module Playwright
           multipart: nil,
           params: nil,
           timeout: nil)
+      if @close_reason
+        raise TargetClosedError.new(message: @close_reason)
+      end
       if [data, form, multipart].compact.count > 1
         raise ArgumentError.new("Only one of 'data', 'form' or 'multipart' can be specified")
       end
