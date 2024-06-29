@@ -185,29 +185,6 @@ HTML
 page.get_by_role("button").click
 ```
 
-An example of passing an element handle:
-
-```ruby
-def print_text(source, element)
-  element.text_content
-end
-
-browser_context.expose_binding("clicked", method(:print_text), handle: true)
-page = browser_context.new_page
-
-page.content = <<~HTML
-<script>
-  document.addEventListener('click', async (event) => {
-    alert(await window.clicked(event.target));
-  })
-</script>
-<div>Click me</div>
-<div>Or click me</div>
-HTML
-
-page.locator('div').first.click
-```
-
 ## expose_function
 
 ```
