@@ -22,6 +22,90 @@ RSpec.describe 'Page#set_input_files' do
     end
   end
 
+  it 'should upload a folder', sinatra: true do
+    with_page do |page|
+      page.goto("#{server_prefix}/input/folderupload.html")
+      input = page.query_selector('input')
+
+      Dir.mktmpdir do |tmpdir|
+        FileUtils.mkdir_p(File.join(tmpdir, 'file-upload-test', 'sub-dir'))
+        File.write(File.join(tmpdir, 'file-upload-test', 'file1.txt'), 'file1 content')
+        File.write(File.join(tmpdir, 'file-upload-test', 'file2'), 'file2 content')
+        File.write(File.join(tmpdir, 'file-upload-test', 'sub-dir', 'really.txt'), 'sub-dir file content')
+
+        input.input_files = File.join(tmpdir, 'file-upload-test')
+
+        webkit_relative_paths = input.evaluate('e => [...e.files].map(f => f.webkitRelativePath)')
+        expect(webkit_relative_paths.size).to eq(3)
+        contents = webkit_relative_paths.map.with_index do |webkit_relative_path, i|
+          input.evaluate(<<~JAVASCRIPT, arg: i)
+          (e, i) => {
+            const reader = new FileReader();
+            const promise = new Promise(fulfill => reader.onload = fulfill);
+            reader.readAsText(e.files[i]);
+            return promise.then(() => reader.result);
+          }
+          JAVASCRIPT
+        end
+        expect(contents).to eq([
+          'file1 content',
+          'file2 content',
+          'sub-dir file content',
+        ])
+      end
+    end
+  end
+
+  it 'should upload a folder and throw for multiple directories', sinatra: true do
+    with_page do |page|
+      page.goto("#{server_prefix}/input/folderupload.html")
+      input = page.query_selector('input')
+      Dir.mktmpdir do |tmpdir|
+        FileUtils.mkdir_p(File.join(tmpdir, 'file-upload-test', 'folder1'))
+        File.write(File.join(tmpdir, 'file-upload-test', 'folder1', 'file1.txt'), 'file1 content')
+        FileUtils.mkdir_p(File.join(tmpdir, 'file-upload-test', 'folder2'))
+        File.write(File.join(tmpdir, 'file-upload-test', 'folder2', 'file2.txt'), 'file2 content')
+        expect {
+          input.input_files = [
+            File.join(tmpdir, 'file-upload-test', 'folder1'),
+            File.join(tmpdir, 'file-upload-test', 'folder2'),
+          ]
+        }.to raise_error(/Multiple directories are not supported/)
+      end
+    end
+  end
+
+  it 'should throw if a directory and files are passed', sinatra: true do
+    with_page do |page|
+      page.goto("#{server_prefix}/input/folderupload.html")
+      input = page.query_selector('input')
+      Dir.mktmpdir do |tmpdir|
+        FileUtils.mkdir_p(File.join(tmpdir, 'file-upload-test', 'folder1'))
+        File.write(File.join(tmpdir, 'file-upload-test', 'folder1', 'file1.txt'), 'file1 content')
+        expect {
+          input.input_files = [
+            File.join(tmpdir, 'file-upload-test', 'folder1'),
+            File.join(tmpdir, 'file-upload-test', 'folder1', 'file1.txt'),
+          ]
+        }.to raise_error(/File paths must be all files or a single directory/)
+      end
+    end
+  end
+
+  it 'should throw when uploading a folder in a normal file upload input', sinatra: true do
+    with_page do |page|
+      page.goto("#{server_prefix}/input/fileupload.html")
+      input = page.query_selector('input')
+      Dir.mktmpdir do |dir|
+        FileUtils.mkdir_p(File.join(dir))
+        File.write(File.join(dir, 'file1.txt'), 'file1 content')
+        expect {
+          input.input_files = dir
+        }.to raise_error(/File input does not support directories, pass individual files instead/)
+      end
+    end
+  end
+
   it 'should upload large file', sinatra: true do
     skip if webkit?
     if ENV['CI']
@@ -391,12 +475,13 @@ RSpec.describe 'Page#set_input_files' do
     end
   end
 
-  # it('should work for "webkitdirectory"', async ({page, server}) => {
-  #   await page.setContent(`<input multiple webkitdirectory type=file>`);
-  #   const [fileChooser] = await Promise.all([
-  #     page.waitForEvent('filechooser'),
-  #     page.click('input'),
-  #   ]);
-  #   expect(fileChooser.isMultiple()).toBe(true);
-  # });
+  it 'should work for "webkitdirectory"' do
+    with_page do |page|
+      page.content = '<input multiple webkitdirectory type=file>'
+      chooser = page.expect_file_chooser do
+        page.click('input')
+      end
+      expect(chooser).to be_multiple
+    end
+  end
 end

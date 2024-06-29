@@ -553,14 +553,37 @@ module Playwright
 
     # called from InputFiles
     # @param filepath [string]
-    # @return [WritableStream]
-    private def create_temp_file(filepath)
-      result = @channel.send_message_to_server(
-        'createTempFile',
-        name: File.basename(filepath),
-        lastModifiedMs: File.mtime(filepath).to_i * 1000,
-      )
-      ChannelOwners::WritableStream.from(result)
+    # @return [WritableStream, Array<WritableStream>]
+    private def create_temp_files(local_directory, files)
+      if local_directory
+        params = {
+          rootDirName: File.basename(local_directory),
+          items: files.map do |filepath|
+            {
+              name: Pathname.new(filepath).relative_path_from(Pathname.new(local_directory)).to_s,
+              lastModifiedMs: File.mtime(filepath).to_i * 1000,
+            }
+          end
+        }
+      else
+        params = {
+          items: files.map do |filepath|
+            {
+              name: File.basename(filepath),
+              lastModifiedMs: File.mtime(filepath).to_i * 1000,
+            }
+          end
+        }
+      end
+
+      result = @channel.send_message_to_server_result('createTempFiles', params)
+
+      [
+        ChannelOwners::WritableStream.from_nullable(result['rootDir']),
+        result['writableStreams'].map do |s|
+          ChannelOwners::WritableStream.from(s)
+        end,
+      ]
     end
   end
 end
