@@ -1885,6 +1885,11 @@ associated with the page.
 
 **NOTE**: This does not contain ServiceWorkers
 
+## clock
+
+
+Playwright has ability to mock clock and passage of time.
+
 ## accessibility
 
 ## keyboard

@@ -14,6 +14,7 @@ ALL_TYPES = %w[
     Frame
     Worker
     Selectors
+    Clock
     ConsoleMessage
     Dialog
     Download
@@ -42,6 +43,7 @@ EXPERIMENTAL = %w[
 API_IMPLEMENTATIONS = %w[
   Accessibility
   AndroidInput
+  Clock
   ConsoleMessage
   FileChooser
   Keyboard

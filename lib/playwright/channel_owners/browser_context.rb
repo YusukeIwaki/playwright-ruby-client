@@ -5,7 +5,7 @@ module Playwright
 
     attr_accessor :browser
     attr_writer :owner_page, :options
-    attr_reader :tracing, :request
+    attr_reader :clock, :tracing, :request
 
     private def after_initialize
       if @parent.is_a?(ChannelOwners::Browser)
@@ -22,6 +22,7 @@ module Playwright
 
       @tracing = ChannelOwners::Tracing.from(@initializer['tracing'])
       @request = ChannelOwners::APIRequestContext.from(@initializer['requestContext'])
+      @clock = ClockImpl.new(self)
       @har_recorders = {}
 
       @channel.on('bindingCall', ->(params) { on_binding(ChannelOwners::BindingCall.from(params['binding'])) })
@@ -584,6 +585,34 @@ module Playwright
           ChannelOwners::WritableStream.from(s)
         end,
       ]
+    end
+
+    private def clock_fast_forward(ticks_params)
+      @channel.send_message_to_server('clockFastForward', ticks_params)
+    end
+
+    private def clock_install(time_params)
+      @channel.send_message_to_server('clockInstall', time_params)
+    end
+
+    private def clock_pause_at(time_params)
+      @channel.send_message_to_server('clockPauseAt', time_params)
+    end
+
+    private def clock_resume
+      @channel.send_message_to_server('clockResume')
+    end
+
+    private def clock_run_for(ticks_params)
+      @channel.send_message_to_server('clockRunFor', ticks_params)
+    end
+
+    private def clock_set_fixed_time(time_params)
+      @channel.send_message_to_server('clockSetFixedTime', time_params)
+    end
+
+    private def clock_set_system_time(time_params)
+      @channel.send_message_to_server('clockSetSystemTime', time_params)
     end
   end
 end

@@ -5,6 +5,48 @@ Excample codes in API documentation is replaces with the methods defined in deve
 The examples listed below is not yet implemented, and documentation shows Python code.
 
 
+### example_aa1d7ed6650f37a2ef8a00945f0f328896eae665418b6758a9e24fcc4c7bcd83 (Clock#fast_forward)
+
+```
+page.clock.fast_forward(1000)
+page.clock.fast_forward("30:00")
+
+```
+
+### example_ce3b9a2e3e9e37774d4176926f5aa8ddf76d8c2b3ef27d8d8f82068dd3720a48 (Clock#run_for)
+
+```
+page.clock.run_for(1000);
+page.clock.run_for("30:00")
+
+```
+
+### example_e3bfa88ff84efbef1546730c2046e627141c6cd5f09c54dc2cf0e07cbb17c0b5 (Clock#pause_at)
+
+```
+page.clock.pause_at(datetime.datetime(2020, 2, 2))
+page.clock.pause_at("2020-02-02")
+
+```
+
+### example_612285ca3970e44df82608ceff6f6b9ae471b0f7860b60916bbaefd327dd2ffd (Clock#set_fixed_time)
+
+```
+page.clock.set_fixed_time(datetime.datetime.now())
+page.clock.set_fixed_time(datetime.datetime(2020, 2, 2))
+page.clock.set_fixed_time("2020-02-02")
+
+```
+
+### example_1f707241c9dfcb70391f40269feeb3e50099815e43b9742bba738b72defae04f (Clock#set_system_time)
+
+```
+page.clock.set_system_time(datetime.datetime.now())
+page.clock.set_system_time(datetime.datetime(2020, 2, 2))
+page.clock.set_system_time("2020-02-02")
+
+```
+
 ### example_13746919ebdd1549604b1a2c4a6cc9321ba9d0728c281be6f1d10d053fc44108 (Page#expect_response)
 
 ```

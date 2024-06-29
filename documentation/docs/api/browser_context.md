@@ -487,6 +487,11 @@ Performs action and waits for a new [Page](./page) to be created in the context.
 [Page](./page) value into the `predicate` function and waits for `predicate(event)` to return a truthy value.
 Will throw an error if the context closes before new [Page](./page) is created.
 
+## clock
+
+
+Playwright has ability to mock clock and passage of time.
+
 ## request
 
 
