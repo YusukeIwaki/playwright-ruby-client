@@ -36,7 +36,8 @@ module Playwright
     end
 
     private def resolve_paths_and_directory_for_input_files(files)
-      @local_files = files.filter_map do |item|
+      # filter_map is not available in Ruby < 2.7
+      @local_files = files.map do |item|
         case item
         when String
           if File.directory?(item)
@@ -57,7 +58,7 @@ module Playwright
         else
           raise ArgumentError.new('file must be a String or File or Directory.')
         end
-      end
+      end.compact
 
       if @local_directory && !@local_files.empty?
         raise ArgumentError.new('File paths must be all files or a single directory')
