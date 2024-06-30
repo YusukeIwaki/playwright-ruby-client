@@ -11,6 +11,10 @@ RSpec.describe 'Clock API' do
   end
   attr_reader :calls, :page
 
+  def wait_for_async_evaluation
+    sleep 0.20
+  end
+
   describe 'run_for' do
     before do
       page.clock.install(time: 0)
@@ -20,30 +24,35 @@ RSpec.describe 'Clock API' do
     it 'triggers immediately without specified delay' do
       page.evaluate('async () => { setTimeout(window.stub) }')
       page.clock.run_for(0)
+      wait_for_async_evaluation
       expect(calls.size).to eq(1)
     end
 
     it 'does not trigger without sufficient delay' do
       page.evaluate('async () => { setTimeout(window.stub, 100) }')
       page.clock.run_for(10)
+      wait_for_async_evaluation
       expect(calls).to be_empty
     end
 
     it 'triggers after sufficient delay' do
       page.evaluate('async () => { setTimeout(window.stub, 100) }')
       page.clock.run_for(100)
+      wait_for_async_evaluation
       expect(calls.size).to eq(1)
     end
 
     it 'triggers simultaneous timers' do
       page.evaluate('async () => { setTimeout(window.stub, 100); setTimeout(window.stub, 100) }')
       page.clock.run_for(100)
+      wait_for_async_evaluation
       expect(calls.size).to eq(2)
     end
 
     it 'triggers multiple simultaneous timers' do
       page.evaluate('async () => { setTimeout(window.stub, 100); setTimeout(window.stub, 100); setTimeout(window.stub, 99); setTimeout(window.stub, 100) }')
       page.clock.run_for(100)
+      wait_for_async_evaluation
       expect(calls.size).to eq(4)
     end
 
@@ -52,6 +61,7 @@ RSpec.describe 'Clock API' do
       page.clock.run_for(50)
       expect(calls).to be_empty
       page.clock.run_for(100)
+      wait_for_async_evaluation
       expect(calls.size).to eq(1)
     end
 
@@ -66,6 +76,7 @@ RSpec.describe 'Clock API' do
       page.evaluate('async () => { setInterval(() => { window.stub(new Date().getTime()) }, 10) }')
       page.clock.run_for(100)
 
+      wait_for_async_evaluation
       expect(calls).to eq([
         [10],
         [20],
@@ -83,18 +94,21 @@ RSpec.describe 'Clock API' do
     it 'passes 8 seconds' do
       page.evaluate('async () => { setInterval(window.stub, 4000) }')
       page.clock.run_for('08')
+      wait_for_async_evaluation
       expect(calls.size).to eq(2)
     end
 
     it 'passes 1 minute' do
       page.evaluate('async () => { setInterval(window.stub, 6000) }')
       page.clock.run_for('01:00')
+      wait_for_async_evaluation
       expect(calls.size).to eq(10)
     end
 
     it 'passes 2 hours, 34 minutes and 10 seconds' do
       page.evaluate('async () => { setInterval(window.stub, 10000) }')
       page.clock.run_for('02:34:10')
+      wait_for_async_evaluation
       expect(calls.size).to eq(925)
     end
 
@@ -127,12 +141,14 @@ RSpec.describe 'Clock API' do
     it 'pushes back execution time for skipped timers' do
       page.evaluate('async () => { setTimeout(() => { window.stub(Date.now()) }, 1000) }')
       page.clock.fast_forward(2000)
+      wait_for_async_evaluation
       expect(calls).to eq([[1000 + 2000]])
     end
 
     it 'supports string time arguments' do
       page.evaluate('async () => { setTimeout(() => { window.stub(Date.now()) }, 100000) }') # 1:40
       page.clock.fast_forward('01:50')
+      wait_for_async_evaluation
       expect(calls).to eq([[1000 + 110000]])
     end
   end
@@ -155,6 +171,7 @@ RSpec.describe 'Clock API' do
     it 'replace global setTimeout' do
       page.evaluate('async () => { setTimeout(window.stub, 1000) }')
       page.clock.run_for(1000)
+      wait_for_async_evaluation
       expect(calls.size).to eq(1)
     end
 
@@ -166,18 +183,21 @@ RSpec.describe 'Clock API' do
     it 'replace global clearTimeout' do
       page.evaluate('async () => { const to = setTimeout(window.stub, 1000); clearTimeout(to) }')
       page.clock.run_for(1000)
+      wait_for_async_evaluation
       expect(calls).to be_empty
     end
 
     it 'replace global setInterval' do
       page.evaluate('async () => { setInterval(window.stub, 500) }')
       page.clock.run_for(1000)
+      wait_for_async_evaluation
       expect(calls.size).to eq(2)
     end
 
     it 'replace global clearInterval' do
       page.evaluate('async () => { const to = setInterval(window.stub, 500); clearInterval(to) }')
       page.clock.run_for(1000)
+      wait_for_async_evaluation
       expect(calls).to be_empty
     end
 
@@ -192,6 +212,7 @@ RSpec.describe 'Clock API' do
       JAVASCRIPT
       promise = Concurrent::Promises.future { page.evaluate(js) }
       page.clock.run_for(1000)
+      wait_for_async_evaluation
       expect(promise.value!).to eq('prev' => 1000, 'next' => 2000)
     end
 
@@ -216,6 +237,7 @@ RSpec.describe 'Clock API' do
       promise = Concurrent::Promises.future { page.evaluate(javascript) }
       page.clock.run_for(1000)
       expect(page.evaluate('performance.timeOrigin')).to eq(1000)
+      wait_for_async_evaluation
       expect(promise.value!).to eq('prev' => 1000, 'next' => 2000)
     end
   end
@@ -387,8 +409,10 @@ RSpec.describe 'Clock API' do
       JAVASCRIPT
       page.evaluate(js)
       page.clock.fast_forward(1000)
+      wait_for_async_evaluation
       expect(calls).to eq([['outer']])
       page.clock.fast_forward(1)
+      wait_for_async_evaluation
       expect(calls).to eq([['outer'], ['inner']])
     end
 
@@ -406,8 +430,10 @@ RSpec.describe 'Clock API' do
       JAVASCRIPT
       page.evaluate(js)
       page.clock.run_for(1000)
+      wait_for_async_evaluation
       expect(calls).to eq([['outer']])
       page.clock.run_for(1)
+      wait_for_async_evaluation
       expect(calls).to eq([['outer'], ['inner']])
     end
 
@@ -425,8 +451,10 @@ RSpec.describe 'Clock API' do
       JAVASCRIPT
       page.evaluate(js)
       page.clock.run_for(1000)
+      wait_for_async_evaluation
       expect(calls).to eq([['outer']])
       page.clock.run_for(1)
+      wait_for_async_evaluation
       expect(calls).to eq([['outer'], ['inner']])
     end
   end
