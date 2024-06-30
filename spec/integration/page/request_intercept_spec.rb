@@ -144,7 +144,7 @@ RSpec.describe 'request interception', sinatra: true do
   end
 
   it 'should intercept multipart/form-data request body', sinatra: true do
-    pending 'https://github.com/microsoft/playwright/issues/14624'
+    pending 'https://github.com/microsoft/playwright/issues/14624' unless chromium?
     with_page do |page|
       page.goto("#{server_prefix}/input/fileupload.html")
 

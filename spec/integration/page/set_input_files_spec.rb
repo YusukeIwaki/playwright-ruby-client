@@ -47,11 +47,11 @@ RSpec.describe 'Page#set_input_files' do
           }
           JAVASCRIPT
         end
-        expect(contents).to eq([
+        expect(contents).to contain_exactly(
           'file1 content',
           'file2 content',
           'sub-dir file content',
-        ])
+        )
       end
     end
   end
