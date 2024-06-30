@@ -56,12 +56,12 @@ Returns an array of all open browser contexts. In a newly created browser, this 
 
 **Usage**
 
-```python title="example_923b47ff333a782480c31d60370a4f2d7a0970a65490cb831f51efaf67f9c07e.py"
-browser = pw.webkit.launch()
-print(len(browser.contexts)) # prints `0`
-context = browser.new_context()
-print(len(browser.contexts)) # prints `1`
-
+```ruby
+playwright.webkit.launch do |browser|
+  puts browser.contexts.count # => 0
+  context = browser.new_context
+  puts browser.contexts.count # => 1
+end
 ```
 
 ## connected?

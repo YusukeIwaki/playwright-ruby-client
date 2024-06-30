@@ -1271,7 +1271,7 @@ For inputs with a `[webkitdirectory]` attribute, only a single directory path is
 
 **Usage**
 
-```python title="example_eef80d0e7a868da02c471a2a562e27511ce74abc91865c1daab36b6f4835bd3c.py"
+```ruby
 # Select one file
 page.get_by_label("Upload file").set_input_files('myfile.pdf')
 
@@ -1283,14 +1283,6 @@ page.get_by_label("Upload directory").set_input_files('mydir')
 
 # Remove all the selected files
 page.get_by_label("Upload file").set_input_files([])
-
-# Upload buffer from memory
-page.get_by_label("Upload file").set_input_files(
-    files=[
-        {"name": "test.txt", "mimeType": "text/plain", "buffer": b"this is a test"}
-    ],
-)
-
 ```
 
 **Details**

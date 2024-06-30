@@ -22,10 +22,9 @@ reopening it later, after given time.
 
 **Usage**
 
-```python title="example_aa1d7ed6650f37a2ef8a00945f0f328896eae665418b6758a9e24fcc4c7bcd83.py"
+```ruby
 page.clock.fast_forward(1000)
 page.clock.fast_forward("30:00")
-
 ```
 
 ## install
@@ -60,10 +59,9 @@ Advance the clock, firing all the time-related callbacks.
 
 **Usage**
 
-```python title="example_ce3b9a2e3e9e37774d4176926f5aa8ddf76d8c2b3ef27d8d8f82068dd3720a48.py"
-page.clock.run_for(1000);
+```ruby
+page.clock.run_for(1000)
 page.clock.run_for("30:00")
-
 ```
 
 ## pause_at
@@ -82,10 +80,9 @@ pausing.
 
 **Usage**
 
-```python title="example_e3bfa88ff84efbef1546730c2046e627141c6cd5f09c54dc2cf0e07cbb17c0b5.py"
-page.clock.pause_at(datetime.datetime(2020, 2, 2))
+```ruby
+page.clock.pause_at(Time.parse("2020-02-02"))
 page.clock.pause_at("2020-02-02")
-
 ```
 
 ## resume
@@ -110,11 +107,15 @@ keeps all the timers running.
 
 **Usage**
 
-```python title="example_612285ca3970e44df82608ceff6f6b9ae471b0f7860b60916bbaefd327dd2ffd.py"
-page.clock.set_fixed_time(datetime.datetime.now())
-page.clock.set_fixed_time(datetime.datetime(2020, 2, 2))
+```ruby
+page.clock.set_fixed_time(Time.now)
+page.clock.set_fixed_time(Time.parse("2020-02-02"))
 page.clock.set_fixed_time("2020-02-02")
 
+# or we can use the alias
+page.clock.fixed_time = Time.now
+page.clock.fixed_time = Time.parse("2020-02-02")
+page.clock.fixed_time = "2020-02-02"
 ```
 
 ## set_system_time
@@ -129,9 +130,13 @@ Sets current system time but does not trigger any timers.
 
 **Usage**
 
-```python title="example_1f707241c9dfcb70391f40269feeb3e50099815e43b9742bba738b72defae04f.py"
-page.clock.set_system_time(datetime.datetime.now())
-page.clock.set_system_time(datetime.datetime(2020, 2, 2))
+```ruby
+page.clock.set_system_time(Time.now)
+page.clock.set_system_time(Time.parse("2020-02-02"))
 page.clock.set_system_time("2020-02-02")
 
+# or we can use the alias
+page.clock.system_time = Time.now
+page.clock.system_time = Time.parse("2020-02-02")
+page.clock.system_time = "2020-02-02"
 ```

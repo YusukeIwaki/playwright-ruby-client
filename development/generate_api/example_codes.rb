@@ -161,7 +161,7 @@ module ExampleCodes
   end
 
   # Browser#contexts
-  def example_7f9edd4a42641957d48081449ceb3c54829485d152db1cc82a82f1f21191b90c(playwright:)
+  def example_923b47ff333a782480c31d60370a4f2d7a0970a65490cb831f51efaf67f9c07e(playwright:)
     playwright.webkit.launch do |browser|
       puts browser.contexts.count # => 0
       context = browser.new_context
@@ -376,6 +376,48 @@ module ExampleCodes
       'Animation.setPlaybackRate',
       params: { playbackRate: response['playbackRate'] / 2.0 },
     )
+  end
+
+  # Clock#fast_forward
+  def example_aa1d7ed6650f37a2ef8a00945f0f328896eae665418b6758a9e24fcc4c7bcd83(page:)
+    page.clock.fast_forward(1000)
+    page.clock.fast_forward("30:00")
+  end
+
+  # Clock#run_for
+  def example_ce3b9a2e3e9e37774d4176926f5aa8ddf76d8c2b3ef27d8d8f82068dd3720a48(page:)
+    page.clock.run_for(1000)
+    page.clock.run_for("30:00")
+  end
+
+  # Clock#pause_at
+  def example_e3bfa88ff84efbef1546730c2046e627141c6cd5f09c54dc2cf0e07cbb17c0b5(page:)
+    page.clock.pause_at(Time.parse("2020-02-02"))
+    page.clock.pause_at("2020-02-02")
+  end
+
+  # Clock#set_fixed_time
+  def example_612285ca3970e44df82608ceff6f6b9ae471b0f7860b60916bbaefd327dd2ffd(page:)
+    page.clock.set_fixed_time(Time.now)
+    page.clock.set_fixed_time(Time.parse("2020-02-02"))
+    page.clock.set_fixed_time("2020-02-02")
+
+    # or we can use the alias
+    page.clock.fixed_time = Time.now
+    page.clock.fixed_time = Time.parse("2020-02-02")
+    page.clock.fixed_time = "2020-02-02"
+  end
+
+  # Clock#set_system_time
+  def example_1f707241c9dfcb70391f40269feeb3e50099815e43b9742bba738b72defae04f(page:)
+    page.clock.set_system_time(Time.now)
+    page.clock.set_system_time(Time.parse("2020-02-02"))
+    page.clock.set_system_time("2020-02-02")
+
+    # or we can use the alias
+    page.clock.system_time = Time.now
+    page.clock.system_time = Time.parse("2020-02-02")
+    page.clock.system_time = "2020-02-02"
   end
 
   # ConsoleMessage
@@ -1066,12 +1108,15 @@ module ExampleCodes
   end
 
   # Locator#set_input_files
-  def example_f1bf5c6c31c8405ce60cee9138c6d6dc6923be52e61ff8c2a3c3d28186b72282(page:)
+  def example_eef80d0e7a868da02c471a2a562e27511ce74abc91865c1daab36b6f4835bd3c(page:)
     # Select one file
     page.get_by_label("Upload file").set_input_files('myfile.pdf')
 
     # Select multiple files
     page.get_by_label("Upload files").set_input_files(['file1.txt', 'file2.txt'])
+
+    # Select a directory
+    page.get_by_label("Upload directory").set_input_files('mydir')
 
     # Remove all the selected files
     page.get_by_label("Upload file").set_input_files([])
@@ -1693,7 +1738,7 @@ module ExampleCodes
   end
 
   # Page#expect_response
-  def example_bdc21f273866a6ed56d91f269e9665afe7f32d277a2c27f399c1af0bcb087b28(page:)
+  def example_13746919ebdd1549604b1a2c4a6cc9321ba9d0728c281be6f1d10d053fc44108(page:)
     page.content = '<form action="https://example.com/resource"><input type="submit" value="trigger response" /></form>'
     response = page.expect_response(/example.com\/resource/) do
       page.get_by_text("trigger response").click

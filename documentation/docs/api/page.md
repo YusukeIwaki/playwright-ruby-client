@@ -1773,18 +1773,23 @@ Returns the matched response. See [waiting for event](https://playwright.dev/pyt
 
 **Usage**
 
-```python title="example_13746919ebdd1549604b1a2c4a6cc9321ba9d0728c281be6f1d10d053fc44108.py"
-with page.expect_response("https://example.com/resource") as response_info:
-    page.get_by_text("trigger response").click()
-response = response_info.value
-return response.ok
+```ruby
+page.content = '<form action="https://example.com/resource"><input type="submit" value="trigger response" /></form>'
+response = page.expect_response(/example.com\/resource/) do
+  page.get_by_text("trigger response").click
+end
+puts response.body
+puts response.ok?
 
-# or with a lambda
-with page.expect_response(lambda response: response.url == "https://example.com" and response.status == 200 and response.request.method == "get") as response_info:
-    page.get_by_text("trigger response").click()
-response = response_info.value
-return response.ok
+page.wait_for_load_state # wait for request finished.
 
+# or with a predicate
+page.content = '<form action="https://example.com/resource"><input type="submit" value="trigger response" /></form>'
+response = page.expect_response(->(res) { res.url.start_with? 'https://example.com/resource' }) do
+  page.get_by_text("trigger response").click
+end
+puts response.body
+puts response.ok?
 ```
 
 ## wait_for_selector
