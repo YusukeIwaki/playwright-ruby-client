@@ -185,29 +185,6 @@ HTML
 page.get_by_role("button").click
 ```
 
-An example of passing an element handle:
-
-```ruby
-def print_text(source, element)
-  element.text_content
-end
-
-browser_context.expose_binding("clicked", method(:print_text), handle: true)
-page = browser_context.new_page
-
-page.content = <<~HTML
-<script>
-  document.addEventListener('click', async (event) => {
-    alert(await window.clicked(event.target));
-  })
-</script>
-<div>Click me</div>
-<div>Or click me</div>
-HTML
-
-page.locator('div').first.click
-```
-
 ## expose_function
 
 ```
@@ -509,6 +486,11 @@ def expect_page(predicate: nil, timeout: nil, &block)
 Performs action and waits for a new [Page](./page) to be created in the context. If predicate is provided, it passes
 [Page](./page) value into the `predicate` function and waits for `predicate(event)` to return a truthy value.
 Will throw an error if the context closes before new [Page](./page) is created.
+
+## clock
+
+
+Playwright has ability to mock clock and passage of time.
 
 ## request
 

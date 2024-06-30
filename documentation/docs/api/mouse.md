@@ -78,7 +78,7 @@ def wheel(deltaX, deltaY)
 ```
 
 
-Dispatches a `wheel` event.
+Dispatches a `wheel` event. This method is usually used to manually scroll the page. See [scrolling](https://playwright.dev/python/docs/input#scrolling) for alternative ways to scroll.
 
 **NOTE**: Wheel events may cause scrolling if they are not handled, and this method does not
 wait for the scrolling to finish before returning.

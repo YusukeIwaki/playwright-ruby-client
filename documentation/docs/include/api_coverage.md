@@ -214,6 +214,16 @@
 * register
 * ~~set_test_id_attribute~~
 
+## Clock
+
+* fast_forward
+* install
+* run_for
+* pause_at
+* resume
+* set_fixed_time
+* set_system_time
+
 ## ConsoleMessage
 
 * args
@@ -340,6 +350,7 @@
 * expect_worker
 * workers
 * ~~wait_for_event~~
+* clock
 * accessibility
 * keyboard
 * mouse
@@ -377,6 +388,7 @@
 * expect_event
 * expect_page
 * ~~wait_for_event~~
+* clock
 * request
 * tracing
 

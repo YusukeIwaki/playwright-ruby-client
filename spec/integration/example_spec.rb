@@ -153,6 +153,19 @@ RSpec.describe 'example' do
       end
     end
 
+    it 'should work with Clock' do
+      skip unless chromium?
+
+      with_page do |page|
+        require 'time'
+        example_aa1d7ed6650f37a2ef8a00945f0f328896eae665418b6758a9e24fcc4c7bcd83(page: page) # fast_forward
+        example_ce3b9a2e3e9e37774d4176926f5aa8ddf76d8c2b3ef27d8d8f82068dd3720a48(page: page) # run_for
+        example_e3bfa88ff84efbef1546730c2046e627141c6cd5f09c54dc2cf0e07cbb17c0b5(page: page) # pause_at
+        example_612285ca3970e44df82608ceff6f6b9ae471b0f7860b60916bbaefd327dd2ffd(page: page) # set_fixed_time
+        example_1f707241c9dfcb70391f40269feeb3e50099815e43b9742bba738b72defae04f(page: page) # set_system_time
+      end
+    end
+
     it 'should work with ConsoleMessage' do
       skip unless chromium?
 
@@ -421,7 +434,7 @@ RSpec.describe 'example' do
     it 'should work with Page#expect_response' do
       with_page do |page|
         with_network_retry do
-          example_bdc21f273866a6ed56d91f269e9665afe7f32d277a2c27f399c1af0bcb087b28(page: page)
+          example_13746919ebdd1549604b1a2c4a6cc9321ba9d0728c281be6f1d10d053fc44108(page: page)
         end
       end
     end

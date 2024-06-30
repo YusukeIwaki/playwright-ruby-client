@@ -8,7 +8,6 @@ module Playwright
     include LocatorUtils
     attr_writer :owned_context
 
-
     private def after_initialize
       @browser_context = @parent
       @timeout_settings = TimeoutSettings.new(@browser_context.send(:_timeout_settings))
@@ -194,6 +193,10 @@ module Playwright
 
     def context
       @browser_context
+    end
+
+    def clock
+      @browser_context.clock
     end
 
     def opener

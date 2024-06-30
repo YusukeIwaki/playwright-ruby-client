@@ -5,7 +5,7 @@ module Playwright
 
     attr_accessor :browser
     attr_writer :owner_page, :options
-    attr_reader :tracing, :request
+    attr_reader :clock, :tracing, :request
 
     private def after_initialize
       if @parent.is_a?(ChannelOwners::Browser)
@@ -22,6 +22,7 @@ module Playwright
 
       @tracing = ChannelOwners::Tracing.from(@initializer['tracing'])
       @request = ChannelOwners::APIRequestContext.from(@initializer['requestContext'])
+      @clock = ClockImpl.new(self)
       @har_recorders = {}
 
       @channel.on('bindingCall', ->(params) { on_binding(ChannelOwners::BindingCall.from(params['binding'])) })
@@ -441,7 +442,7 @@ module Playwright
       return if @close_was_called
       @close_was_called = true
       @close_reason = reason
-
+      @request.dispose(reason: reason)
       inner_close
       @channel.send_message_to_server('close', { reason: reason }.compact)
       @closed_promise.value!
@@ -553,14 +554,65 @@ module Playwright
 
     # called from InputFiles
     # @param filepath [string]
-    # @return [WritableStream]
-    private def create_temp_file(filepath)
-      result = @channel.send_message_to_server(
-        'createTempFile',
-        name: File.basename(filepath),
-        lastModifiedMs: File.mtime(filepath).to_i * 1000,
-      )
-      ChannelOwners::WritableStream.from(result)
+    # @return [WritableStream, Array<WritableStream>]
+    private def create_temp_files(local_directory, files)
+      if local_directory
+        params = {
+          rootDirName: File.basename(local_directory),
+          items: files.map do |filepath|
+            {
+              name: Pathname.new(filepath).relative_path_from(Pathname.new(local_directory)).to_s,
+              lastModifiedMs: File.mtime(filepath).to_i * 1000,
+            }
+          end
+        }
+      else
+        params = {
+          items: files.map do |filepath|
+            {
+              name: File.basename(filepath),
+              lastModifiedMs: File.mtime(filepath).to_i * 1000,
+            }
+          end
+        }
+      end
+
+      result = @channel.send_message_to_server_result('createTempFiles', params)
+
+      [
+        ChannelOwners::WritableStream.from_nullable(result['rootDir']),
+        result['writableStreams'].map do |s|
+          ChannelOwners::WritableStream.from(s)
+        end,
+      ]
+    end
+
+    private def clock_fast_forward(ticks_params)
+      @channel.send_message_to_server('clockFastForward', ticks_params)
+    end
+
+    private def clock_install(time_params)
+      @channel.send_message_to_server('clockInstall', time_params)
+    end
+
+    private def clock_pause_at(time_params)
+      @channel.send_message_to_server('clockPauseAt', time_params)
+    end
+
+    private def clock_resume
+      @channel.send_message_to_server('clockResume')
+    end
+
+    private def clock_run_for(ticks_params)
+      @channel.send_message_to_server('clockRunFor', ticks_params)
+    end
+
+    private def clock_set_fixed_time(time_params)
+      @channel.send_message_to_server('clockSetFixedTime', time_params)
+    end
+
+    private def clock_set_system_time(time_params)
+      @channel.send_message_to_server('clockSetSystemTime', time_params)
     end
   end
 end

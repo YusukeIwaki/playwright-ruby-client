@@ -479,27 +479,6 @@ HTML
 page.click("button")
 ```
 
-An example of passing an element handle:
-
-```ruby
-def print_text(source, element)
-  element.text_content
-end
-
-page.expose_binding("clicked", method(:print_text), handle: true)
-page.content = <<~HTML
-<script>
-  document.addEventListener('click', async (event) => {
-    alert(await window.clicked(event.target));
-  })
-</script>
-<div>Click me</div>
-<div>Or click me</div>
-HTML
-
-page.locator('div').first.click
-```
-
 ## expose_function
 
 ```
@@ -1438,6 +1417,7 @@ def set_input_files(
 
 Sets the value of the file input to these file paths or files. If some of the `filePaths` are relative paths, then they
 are resolved relative to the current working directory. For empty array, clears the selected files.
+For inputs with a `[webkitdirectory]` attribute, only a single directory path is supported.
 
 This method expects `selector` to point to an
 [input element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input). However, if the element is inside the `<label>` element that has an associated [control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), targets the control instead.
@@ -1909,6 +1889,11 @@ This method returns all of the dedicated [WebWorkers](https://developer.mozilla.
 associated with the page.
 
 **NOTE**: This does not contain ServiceWorkers
+
+## clock
+
+
+Playwright has ability to mock clock and passage of time.
 
 ## accessibility
 
