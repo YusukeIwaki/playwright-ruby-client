@@ -37,18 +37,18 @@ require 'playwright/test'
 
 RSpec.configure do |config|
   # include web-first assertions just for feature specs.
-  config.include Playwright::RSpec::Matchers, type: :feature
+  config.include Playwright::Test::Matchers, type: :feature
 end
 ```
 
-If you want to use web-first assertions only for some specs, you can include `Playwright::RSpec::Matchers` in the spec file directly.
+If you want to use web-first assertions only for some specs, you can include `Playwright::Test::Matchers` in the spec file directly.
 
 ```ruby title=spec/system/example_spec.rb
 require 'rails_helper'
 require 'playwright/test'
 
 describe 'example' do
-  include Playwright::RSpec::Matchers
+  include Playwright::Test::Matchers
 
   it 'should work' do
     ...
