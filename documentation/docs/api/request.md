@@ -96,7 +96,7 @@ def header_value(name)
 ```
 
 
-Returns the value of the header matching the name. The name is case insensitive.
+Returns the value of the header matching the name. The name is case-insensitive.
 
 ## navigation_request?
 

@@ -120,6 +120,7 @@ page.route("**/*", method(:handle))
 def fetch(
       headers: nil,
       maxRedirects: nil,
+      maxRetries: nil,
       method: nil,
       postData: nil,
       timeout: nil,
