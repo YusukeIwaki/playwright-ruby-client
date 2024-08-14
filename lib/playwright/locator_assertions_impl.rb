@@ -99,6 +99,8 @@ module Playwright
             }
           elsif item.is_a?(Regexp)
             expected_regex(item, match_substring, normalize_white_space, ignore_case)
+          else
+            raise ArgumentError.new("Expected value provided to assertion to be a string or regex, got #{item.class}")
           end
       end
     end
