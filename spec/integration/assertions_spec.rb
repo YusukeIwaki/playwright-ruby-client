@@ -435,6 +435,16 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
         expect(page.locator("div")).to have_text(/^line2$/m)
       end
     end
+
+    it 'should fail with conprehensive error message' do
+      with_page do |page|
+        page.goto(server_empty_page)
+        page.set_content("<div>3.141592</div>")
+        expect {
+          expect(page.locator("div")).to have_text(3.14159)
+        }.to raise_error(/Expected value provided to assertion to be a string or regex/)
+      end
+    end
   end
 
   describe '#to_have_url' do
