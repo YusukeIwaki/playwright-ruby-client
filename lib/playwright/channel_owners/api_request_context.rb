@@ -49,6 +49,7 @@ module Playwright
           headers: nil,
           ignoreHTTPSErrors: nil,
           maxRedirects: nil,
+          maxRetries: nil,
           method: nil,
           multipart: nil,
           params: nil,
@@ -73,6 +74,7 @@ module Playwright
         headers: headers,
         ignoreHTTPSErrors: ignoreHTTPSErrors,
         maxRedirects: maxRedirects,
+        maxRetries: maxRetries,
         method: method,
         multipart: multipart,
         params: params,
@@ -89,6 +91,7 @@ module Playwright
           headers: nil,
           ignoreHTTPSErrors: nil,
           maxRedirects: nil,
+          maxRetries: nil,
           method: nil,
           multipart: nil,
           params: nil,
@@ -101,6 +104,9 @@ module Playwright
       end
       if maxRedirects && maxRedirects < 0
         raise ArgumentError.new("'maxRedirects' should be greater than or equal to '0'")
+      end
+      if maxRetries && maxRetries < 0
+        raise ArgumentError.new("'maxRetries' should be greater than or equal to '0'")
       end
 
       headers_obj = headers || request&.headers
@@ -153,6 +159,7 @@ module Playwright
       fetch_params[:failOnStatusCode] = failOnStatusCode
       fetch_params[:ignoreHTTPSErrors] = ignoreHTTPSErrors
       fetch_params[:maxRedirects] = maxRedirects
+      fetch_params[:maxRetries] = maxRetries
       fetch_params.compact!
       response = @channel.send_message_to_server('fetch', fetch_params)
 
