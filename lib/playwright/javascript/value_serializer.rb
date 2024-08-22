@@ -31,6 +31,22 @@ module Playwright
           { v: 'Infinity' }
         when -Float::INFINITY
           { v: '-Infinity' }
+        when ::Playwright::Error
+          {
+            e: {
+              n: value.name,
+              m: value.message,
+              s: value.stack.join("\n")
+            }
+          }
+        when StandardError
+          {
+            e: {
+              n: value.class.name,
+              m: value.message,
+              s: (value.backtrace || []).join("\n")
+            }
+          }
         when true, false
           { b: value }
         when Numeric
