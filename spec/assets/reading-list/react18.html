@@ -1,6 +1,6 @@
 <link rel=stylesheet href='./style.css'>
-<script src="./react_17.0.2.js"></script>
-<script src="./react-dom_17.0.2.js"></script>
+<script src="./react_18.1.0.js"></script>
+<script src="./react-dom_18.1.0.js"></script>
 
 <div id=root></div>
 
@@ -67,9 +67,12 @@ class BookList extends React.Component {
   }
 }
 
+const apps = [];
+
 class App extends React.Component {
   constructor(props) {
     super(props);
+    apps.push(this);
     this.mountPoint = React.createRef();
     this.state = {
       books: [
@@ -97,12 +100,14 @@ class App extends React.Component {
   }
 }
 
-window.mountApp = element => {
-  const root = ReactDOM.render(e(App, null, null), element);
-  const unmount = () => ReactDOM.unmountComponentAtNode(element);
-  return {root, unmount};
-};
-window.app = window.mountApp(document.getElementById('root'));
-window.mountNestedApp = () => window.mountApp(window.app.root.mountPoint.current);
+{
+  window.mountApp = element => {
+    const root = ReactDOM.createRoot(element);
+    root.render(e(App, null, null));
+    return root;
+  };
+  window.mountApp(document.getElementById('root'));
+  window.mountNestedApp = () => window.mountApp(apps[apps.length - 1].mountPoint.current);
+}
 
 </script>
