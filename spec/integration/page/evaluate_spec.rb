@@ -61,6 +61,52 @@ RSpec.describe 'Page#evaluate' do
     end
   end
 
+  it 'should evaluate exception' do
+    with_page do |page|
+      err = page.evaluate(<<~JAVASCRIPT)
+        () => {
+          function innerFunction() {
+            const e = new Error('error message');
+            e.name = 'foobar';
+            return e;
+          }
+          return innerFunction();
+        }
+      JAVASCRIPT
+
+      expect(err).to be_a(Playwright::Error)
+      expect(err.message).to eq('error message')
+      expect(err.name).to eq('foobar')
+      expect(err.stack.join("\n")).to include('innerFunction')
+    end
+  end
+
+  it 'should pass exception argument' do
+    with_page do |page|
+      err = page.evaluate(<<~JAVASCRIPT)
+        () => {
+          function innerFunction() {
+            const e = new Error('error message');
+            e.name = 'foobar';
+            return e;
+          }
+          return innerFunction();
+        }
+      JAVASCRIPT
+
+      js = <<~JAVASCRIPT
+        e => {
+          return { message: e.message, name: e.name, stack: e.stack };
+        }
+      JAVASCRIPT
+      received = page.evaluate(js, arg: err)
+
+      expect(received['message']).to eq('error message')
+      expect(received['name']).to eq('foobar')
+      expect(received['stack']).to include('innerFunction')
+    end
+  end
+
   it 'should evaluate date' do
     with_page do |page|
       result = page.evaluate('() => new Date("2017-09-26T00:00:00.000Z")')

@@ -163,7 +163,7 @@ RSpec.configure do |config|
   if ENV['CI']
     module PumaEventsLogSuppressing
       ACCEPT= [
-        /^\* Listening on http/,
+        /^\* Listening on (http|ssl)/,
       ]
 
       def log(str)
@@ -239,13 +239,42 @@ RSpec.configure do |config|
 
     sinatra_app.get('/_ping') { '_pong' }
 
+    if example.metadata[:tls]
+      @server_prefix = "https://localhost:#{@server_port}"
+      @server_empty_page = "#{@server_prefix}/empty.html"
+
+      base_path = File.join(__dir__, 'assets/client-certificates/server')
+      key_path = File.join(base_path, 'server_key.pem')
+      cert_path = File.join(base_path, 'server_cert.pem')
+      ca_path = File.join(base_path, 'server_cert.pem')
+      uri = URI('ssl://localhost')
+      uri.query = URI.encode_www_form(
+        key: key_path,
+        cert: cert_path,
+        ca: ca_path,
+        verify_mode: 'force_peer',
+      )
+      bind = uri.to_s
+    else
+      bind = '127.0.0.1'
+    end
+
     # Start server and wait for server ready.
     # FIXME should change port when Errno::EADDRINUSE
-    Thread.new(@server_port) { |port| sinatra_app.run!(port: port) }
+    Thread.new(@server_port) { |port| sinatra_app.run!(port: port, bind: bind) }
     Timeout.timeout(3) do
       loop do
         begin
-          Net::HTTP.get(URI("#{server_prefix}/_ping"))
+          if example.metadata[:tls]
+            Net::HTTP.start('localhost', @server_port, use_ssl: true, verify_mode: OpenSSL::SSL::VERIFY_NONE) do |http|
+              http.get('/_ping')
+            end
+          else
+            Net::HTTP.get(URI("#{server_prefix}/_ping"))
+          end
+          break
+        rescue Errno::ECONNRESET, OpenSSL::SSL::SSLError, EOFError
+          # In this case socket is connected but just SSL client cert is not provided.
           break
         rescue Errno::EADDRNOTAVAIL
           sleep 1

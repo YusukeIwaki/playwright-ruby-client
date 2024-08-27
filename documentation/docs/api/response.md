@@ -80,7 +80,7 @@ def header_value(name)
 ```
 
 
-Returns the value of the header matching the name. The name is case insensitive. If multiple headers have
+Returns the value of the header matching the name. The name is case-insensitive. If multiple headers have
 the same name (except `set-cookie`), they are returned as a list separated by `, `. For `set-cookie`, the `\n` separator is used. If no headers are found, `null` is returned.
 
 ## header_values
@@ -90,7 +90,7 @@ def header_values(name)
 ```
 
 
-Returns all values of the headers matching the name, for example `set-cookie`. The name is case insensitive.
+Returns all values of the headers matching the name, for example `set-cookie`. The name is case-insensitive.
 
 ## json
 

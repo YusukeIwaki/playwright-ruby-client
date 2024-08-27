@@ -120,6 +120,7 @@ def launch_persistent_context(
       bypassCSP: nil,
       channel: nil,
       chromiumSandbox: nil,
+      clientCertificates: nil,
       colorScheme: nil,
       deviceScaleFactor: nil,
       devtools: nil,

@@ -1,3 +1,5 @@
+require 'base64'
+
 module Playwright
   module Utils
     module PrepareBrowserContextOptions
@@ -63,6 +65,28 @@ module Playwright
 
         if params[:acceptDownloads] || params[:acceptDownloads] == false
           params[:acceptDownloads] = params[:acceptDownloads] ? 'accept' : 'deny'
+        end
+
+        if params[:clientCertificates].is_a?(Array)
+          params[:clientCertificates] = params[:clientCertificates].filter_map do |item|
+            out_record = {
+              origin: item[:origin],
+              passphrase: item[:passphrase],
+            }
+
+            { pfxPath: 'pfx', certPath: 'cert', keyPath: 'key' }.each do |key, out_key|
+              if (filepath = item[key])
+                out_record[out_key] = Base64.encode64(File.read(filepath)) rescue ''
+              elsif (value = item[out_key.to_sym])
+                out_record[out_key] = value
+              end
+            end
+
+            out_record.compact!
+            next nil if out_record.empty?
+
+            out_record
+          end
         end
 
         params

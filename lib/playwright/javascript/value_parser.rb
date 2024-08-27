@@ -56,6 +56,14 @@ module Playwright
           return hash['bi'].to_i
         end
 
+        if hash.key?('e')
+          return ::Playwright::Error.new(
+            message: hash['e']['m'],
+            name: hash['e']['n'],
+            stack: hash['e']['s'].split("\n"),
+          )
+        end
+
         if hash.key?('m')
           return parse_hash(hash['m']).to_h
         end
