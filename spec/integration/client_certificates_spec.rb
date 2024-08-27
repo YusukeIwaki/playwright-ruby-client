@@ -162,9 +162,7 @@ RSpec.describe 'client certificates', sinatra: true, tls: true do
     end
   end
 
-  it 'should fail with matching certificates in legacy pfx format' do
-    skip unless Gem::Version.new(OpenSSL::VERSION) >= Gem::Version.new('3.0.0')
-
+  it 'should fail with matching certificates in legacy pfx format', skip: ENV['CI'] do
     options = {
       ignoreHTTPSErrors: true,
       clientCertificates: [{
