@@ -45,23 +45,52 @@ RSpec.describe 'fetch', sinatra: true do
     put: :put,
   }.freeze
   %i(fetch delete get head patch post put).each do |http_method|
-    it "#{http_method} should support queryParams" do
+    it "#{http_method} should support params passed as object (Hash)" do
       promise = Concurrent::Promises.resolvable_future
       sinatra.send(SINATRA_MAP[http_method], '/empty.html') do
         promise.fulfill(params.dup)
       end
 
-      with_context do |context|
+      response = with_context do |context|
         context.request.send(
           http_method,
-          "#{server_empty_page}?p1=foo",
-          params: { p1: 'v1', парам2: 'знач2'},
+          "#{server_empty_page}?p1[]=foo",
+          params: { "p1[]": 'v1', парам2: 'знач2'},
         )
       end
 
       params = promise.value!
-      expect(params['p1']).to eq('v1')
+      expect(params['p1']).to eq(['foo', 'v1'])
       expect(params['парам2']).to eq('знач2')
+
+      response_query = URI(response.url).query
+      response_params = Rack::Utils.parse_nested_query(response_query)
+      expect(response_params['p1']).to eq(['foo', 'v1'])
+      expect(response_params['парам2']).to eq('знач2')
+    end
+
+    it "#{http_method} should support params passed as string" do
+      promise = Concurrent::Promises.resolvable_future
+      sinatra.send(SINATRA_MAP[http_method], '/empty.html') do
+        promise.fulfill(params.dup)
+      end
+
+      response = with_context do |context|
+        context.request.send(
+          http_method,
+          "#{server_empty_page}?param1[]=foo",
+          params: '?param1[]=value1&param1[]=value2&парам2=знач2',
+        )
+      end
+
+      params = promise.value!
+      expect(params['param1']).to eq(['foo', 'value1', 'value2'])
+      expect(params['парам2']).to eq('знач2')
+
+      response_query = URI(response.url).query
+      response_params = Rack::Utils.parse_nested_query(response_query)
+      expect(response_params['param1']).to eq(['foo', 'value1', 'value2'])
+      expect(response_params['парам2']).to eq('знач2')
     end
 
     it "#{http_method} should support failOnStatusCode" do
