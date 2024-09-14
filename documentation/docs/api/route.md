@@ -26,7 +26,7 @@ def continue(headers: nil, method: nil, postData: nil, url: nil)
 ```
 
 
-Continues route's request with optional overrides.
+Sends route's request to the network with optional overrides.
 
 **Usage**
 
@@ -47,6 +47,8 @@ page.route("**/*", method(:handle))
 
 Note that any overrides such as `url` or `headers` only apply to the request being routed. If this request results in a redirect, overrides will not be applied to the new redirected request. If you want to propagate a header through redirects, use the combination of [Route#fetch](./route#fetch) and [Route#fulfill](./route#fulfill) instead.
 
+[Route#continue](./route#continue) will immediately send the request to the network, other matching handlers won't be invoked. Use [Route#fallback](./route#fallback) If you want next matching handler in the chain to be invoked.
+
 ## fallback
 
 ```
@@ -54,12 +56,14 @@ def fallback(headers: nil, method: nil, postData: nil, url: nil)
 ```
 
 
+Continues route's request with optional overrides. The method is similar to [Route#continue](./route#continue) with the difference that other matching handlers will be invoked before sending the request.
+
+**Usage**
+
 When several routes match the given pattern, they run in the order opposite to their registration.
 That way the last registered route can always override all the previous ones. In the example below,
 request will be handled by the bottom-most handler first, then it'll fall back to the previous one and
 in the end will be aborted by the first registered route.
-
-**Usage**
 
 ```ruby
 page.route("**/*", -> (route,_) { route.abort })  # Runs last.
@@ -113,6 +117,8 @@ def handle(route, request)
 end
 page.route("**/*", method(:handle))
 ```
+
+Use [Route#continue](./route#continue) to immediately send the request to the network, other matching handlers won't be invoked in that case.
 
 ## fetch
 

@@ -4,7 +4,6 @@ sidebar_position: 10
 
 # Browser
 
-- extends: [EventEmitter]
 
 A Browser is created via [BrowserType#launch](./browser_type#launch). An example of using a [Browser](./browser) to create a [Page](./page):
 

@@ -4,7 +4,6 @@ sidebar_position: 10
 
 # Page
 
-- extends: [EventEmitter]
 
 Page provides methods to interact with a single tab in a [Browser](./browser), or an
 [extension background page](https://developer.chrome.com/extensions/background_pages) in Chromium. One [Browser](./browser)
