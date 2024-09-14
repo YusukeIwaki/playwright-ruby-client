@@ -4,7 +4,6 @@ sidebar_position: 10
 
 # CDPSession
 
-- extends: [EventEmitter]
 
 The [CDPSession](./cdp_session) instances are used to talk raw Chrome Devtools Protocol:
 - protocol methods can be called with `session.send_message` method.

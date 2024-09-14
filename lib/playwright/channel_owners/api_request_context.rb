@@ -1,4 +1,5 @@
 require 'base64'
+require 'cgi'
 
 module Playwright
   define_channel_owner :APIRequestContext do
@@ -112,7 +113,7 @@ module Playwright
       headers_obj = headers || request&.headers
       fetch_params = {
         url: url || request.url,
-        params: object_to_array(params),
+        params: map_params_to_array(params),
         method: method || request&.method || 'GET',
         headers: headers_obj ? HttpHeaders.new(headers_obj).as_serialized : nil,
       }
@@ -177,6 +178,27 @@ module Playwright
         mimeType: payload[:mimeType] || payload['mimeType'],
         buffer: Base64.strict_encode64(payload[:buffer] || payload['buffer'])
       }
+    end
+
+    private def map_params_to_array(params)
+      if params.is_a?(String)
+        unless params.start_with?('?')
+          raise ArgumentError.new("Query string must start with '?'")
+        end
+        query_string_to_array(params[1..-1])
+      else
+        object_to_array(params)
+      end
+    end
+
+    private def query_string_to_array(query_string)
+      params = CGI.parse(query_string)
+
+      params.map do |key, values|
+        values.map do |value|
+          { name: key, value: value }
+        end
+      end.flatten
     end
 
     private def object_to_array(hash)

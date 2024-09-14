@@ -57,7 +57,7 @@ RSpec.describe 'client certificates', sinatra: true, tls: true do
       page = context.new_page
       expect {
         page.goto(server_empty_page)
-      }.to raise_error(/net::ERR_CONNECTION_RESET|net::ERR_SOCKET_NOT_CONNECTED|The network connection was lost|Connection terminated unexpectedly/)
+      }.to raise_error(/net::ERR_EMPTY_RESPONSE|net::ERR_CONNECTION_RESET|net::ERR_SOCKET_NOT_CONNECTED|The network connection was lost|Connection terminated unexpectedly/)
     end
   end
 
@@ -155,11 +155,12 @@ RSpec.describe 'client certificates', sinatra: true, tls: true do
         passphrase: 'this-password-is-incorrect'
       }]
     }
-    with_context(**options) do |context|
-      page = context.new_page
-      page.goto(server_empty_page)
-      expect(page.content).to include('mac verify failure')
-    end
+
+    expect {
+      with_context(**options) do |context|
+        page = context.new_page
+      end
+    }.to raise_error(/mac verify failure/)
   end
 
   it 'should fail with matching certificates in legacy pfx format', skip: ENV['CI'] do
@@ -171,10 +172,10 @@ RSpec.describe 'client certificates', sinatra: true, tls: true do
         passphrase: 'secure'
       }]
     }
-    with_context(**options) do |context|
-      page = context.new_page
-      page.goto(server_empty_page)
-      expect(page.content).to include('Unsupported TLS certificate')
-    end
+    expect {
+      with_context(**options) do |context|
+        page = context.new_page
+      end
+    }.to raise_error(/Unsupported TLS certificate/)
   end
 end
