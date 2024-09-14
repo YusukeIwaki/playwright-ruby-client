@@ -37,7 +37,7 @@ The previous example uses [Dir#mktmpdir](https://docs.ruby-lang.org/ja/latest/me
 
 ## Getting video path and recorded video
 
-This is really confising for beginners, but in Playwright
+This is really confusing for beginners, but in Playwright
 
 * We can get the video path **only when page is alive (before calling BrowserContext#close or Page#close)**
 * We can acquire the completely saved video **only after calling  BrowserContext#close**
