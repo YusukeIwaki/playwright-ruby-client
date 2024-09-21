@@ -21,9 +21,30 @@ RSpec.describe 'Playwright.connect_to_browser_server' do
     end
   end
 
+  def with_context(**kwargs, &block)
+    context = @browser.new_context(**kwargs)
+    begin
+      block.call(context)
+    ensure
+      context.close
+    end
+  end
+
   it 'should work' do
     with_page do |page|
       page.goto('https://github.com/YusukeIwaki')
+    end
+  end
+
+  it 'should work with tracing' do
+    Dir.mktmpdir do |tmpdir|
+      with_context do |context|
+        context.tracing.start(screenshots: true, snapshots: true)
+        page = context.new_page
+        page.goto('https://github.com/YusukeIwaki')
+        page.screenshot(path: './YusukeIwaki.png')
+        context.tracing.stop(path: File.join(tmpdir, 'trace.zip'))
+      end
     end
   end
 end
