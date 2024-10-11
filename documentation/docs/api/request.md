@@ -13,7 +13,8 @@ Whenever the page sends a request for a network resource the following sequence 
 If request fails at some point, then instead of `'requestfinished'` event (and possibly instead of 'response' event),
 the  [`event: Page.requestFailed`] event is emitted.
 
-**NOTE**: HTTP Error responses, such as 404 or 503, are still successful responses from HTTP standpoint, so request will complete
+**NOTE**: 
+HTTP Error responses, such as 404 or 503, are still successful responses from HTTP standpoint, so request will complete
 with `'requestfinished'` event.
 
 If request gets a 'redirect' response, the request is successfully finished with the `requestfinished` event, and a new

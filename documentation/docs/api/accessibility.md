@@ -29,7 +29,8 @@ def snapshot(interestingOnly: nil, root: nil)
 Captures the current state of the accessibility tree. The returned object represents the root accessible node of the
 page.
 
-**NOTE**: The Chromium accessibility tree contains nodes that go unused on most platforms and by most screen readers. Playwright
+**NOTE**: 
+The Chromium accessibility tree contains nodes that go unused on most platforms and by most screen readers. Playwright
 will discard them as well for an easier to process tree, unless `interestingOnly` is set to `false`.
 
 **Usage**

@@ -42,7 +42,8 @@ def wait_for_event(event, predicate: nil, timeout: nil, &block)
 ```
 
 
-**NOTE**: In most cases, you should use [WebSocket#wait_for_event](./web_socket#wait_for_event).
+**NOTE**: 
+In most cases, you should use [WebSocket#wait_for_event](./web_socket#wait_for_event).
 
 Waits for given `event` to fire. If predicate is provided, it passes
 event's value into the `predicate` function and waits for `predicate(event)` to return a truthy value.

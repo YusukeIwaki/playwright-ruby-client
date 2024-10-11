@@ -122,7 +122,7 @@ data = {
 api_request_context.fetch("https://example.com/api/create_book", method: 'post', data: data)
 ```
 
-The common way to send file(s) in the body of a request is to upload them as form fields with `multipart/form-data` encoding. Use `FormData` to construct request body and pass it to the request as `multipart` parameter:
+The common way to send file(s) in the body of a request is to upload them as form fields with `multipart/form-data` encoding, by specifiying the `multipart` parameter:
 
 ```ruby
 api_request_context.fetch(

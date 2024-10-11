@@ -72,7 +72,8 @@ After the key is pressed once, subsequent calls to [Keyboard#down](./keyboard#do
 [repeat](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/repeat) set to true. To release the key, use
 [Keyboard#up](./keyboard#up).
 
-**NOTE**: Modifier keys DO influence `keyboard.down`. Holding down `Shift` will type the text in upper case.
+**NOTE**: 
+Modifier keys DO influence `keyboard.down`. Holding down `Shift` will type the text in upper case.
 
 ## insert_text
 
@@ -89,7 +90,8 @@ Dispatches only `input` event, does not emit the `keydown`, `keyup` or `keypress
 page.keyboard.insert_text("嗨")
 ```
 
-**NOTE**: Modifier keys DO NOT effect `keyboard.insertText`. Holding down `Shift` will not type the text in upper case.
+**NOTE**: 
+Modifier keys DO NOT effect `keyboard.insertText`. Holding down `Shift` will not type the text in upper case.
 
 ## press
 
@@ -98,7 +100,8 @@ def press(key, delay: nil)
 ```
 
 
-**NOTE**: In most cases, you should use [Locator#press](./locator#press) instead.
+**NOTE**: 
+In most cases, you should use [Locator#press](./locator#press) instead.
 
 `key` can specify the intended
 [keyboardEvent.key](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key) value or a single character to
@@ -140,7 +143,8 @@ def type(text, delay: nil)
 ```
 
 
-**NOTE**: In most cases, you should use [Locator#fill](./locator#fill) instead. You only need to press keys one by one if there is special keyboard handling on the page - in this case use [Locator#press_sequentially](./locator#press_sequentially).
+**NOTE**: 
+In most cases, you should use [Locator#fill](./locator#fill) instead. You only need to press keys one by one if there is special keyboard handling on the page - in this case use [Locator#press_sequentially](./locator#press_sequentially).
 
 Sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text.
 
@@ -153,9 +157,11 @@ page.keyboard.type("Hello") # types instantly
 page.keyboard.type("World", delay: 100) # types slower, like a user
 ```
 
-**NOTE**: Modifier keys DO NOT effect `keyboard.type`. Holding down `Shift` will not type the text in upper case.
+**NOTE**: 
+Modifier keys DO NOT effect `keyboard.type`. Holding down `Shift` will not type the text in upper case.
 
-**NOTE**: For characters that are not on a US keyboard, only an `input` event will be sent.
+**NOTE**: 
+For characters that are not on a US keyboard, only an `input` event will be sent.
 
 ## up
 

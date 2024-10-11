@@ -35,7 +35,8 @@ This method attaches Playwright to an existing browser instance using the Chrome
 
 The default browser context is accessible via [Browser#contexts](./browser#contexts).
 
-**NOTE**: Connecting over the Chrome DevTools Protocol is only supported for Chromium-based browsers.
+**NOTE**: 
+Connecting over the Chrome DevTools Protocol is only supported for Chromium-based browsers.
 
 **Usage**
 

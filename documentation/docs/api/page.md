@@ -62,7 +62,8 @@ An example of overriding `Math.random` before the page loads:
 page.add_init_script(path: "./preload.js")
 ```
 
-**NOTE**: The order of evaluation of multiple scripts installed via [BrowserContext#add_init_script](./browser_context#add_init_script) and
+**NOTE**: 
+The order of evaluation of multiple scripts installed via [BrowserContext#add_init_script](./browser_context#add_init_script) and
 [Page#add_init_script](./page#add_init_script) is not defined.
 
 ## add_script_tag
@@ -159,7 +160,8 @@ If `runBeforeUnload` is `false`, does not run any unload handlers and waits for 
 
 By default, `page.close()` **does not** run `beforeunload` handlers.
 
-**NOTE**: if `runBeforeUnload` is passed as true, a `beforeunload` dialog might be summoned and should be handled
+**NOTE**: 
+if `runBeforeUnload` is passed as true, a `beforeunload` dialog might be summoned and should be handled
 manually via [`event: Page.dialog`] event.
 
 ## content
@@ -206,7 +208,8 @@ This method double clicks an element matching `selector` by performing the follo
 When all steps combined have not finished during the specified `timeout`, this method throws a
 `TimeoutError`. Passing zero timeout disables this.
 
-**NOTE**: `page.dblclick()` dispatches two `click` events and a single `dblclick` event.
+**NOTE**: 
+`page.dblclick()` dispatches two `click` events and a single `dblclick` event.
 
 ## dispatch_event
 
@@ -456,7 +459,8 @@ BrowserContext, page: Page, frame: Frame }`.
 
 See [BrowserContext#expose_binding](./browser_context#expose_binding) for the context-wide version.
 
-**NOTE**: Functions installed via [Page#expose_binding](./page#expose_binding) survive navigations.
+**NOTE**: 
+Functions installed via [Page#expose_binding](./page#expose_binding) survive navigations.
 
 **Usage**
 
@@ -490,7 +494,8 @@ If the `callback` returns a [Promise](https://developer.mozilla.org/en-US/docs/W
 
 See [BrowserContext#expose_function](./browser_context#expose_function) for context-wide exposed function.
 
-**NOTE**: Functions installed via [Page#expose_function](./page#expose_function) survive navigations.
+**NOTE**: 
+Functions installed via [Page#expose_function](./page#expose_function) survive navigations.
 
 **Usage**
 
@@ -868,10 +873,12 @@ The method will not throw an error when any valid HTTP status code is returned b
 Found" and 500 "Internal Server Error".  The status code for such responses can be retrieved by calling
 [Response#status](./response#status).
 
-**NOTE**: The method either throws an error or returns a main resource response. The only exceptions are navigation to
+**NOTE**: 
+The method either throws an error or returns a main resource response. The only exceptions are navigation to
 `about:blank` or navigation to the same URL with a different hash, which would succeed and return `null`.
 
-**NOTE**: Headless mode doesn't support navigation to a PDF document. See the
+**NOTE**: 
+Headless mode doesn't support navigation to a PDF document. See the
 [upstream issue](https://bugs.chromium.org/p/chromium/issues/detail?id=761295).
 
 ## hover
@@ -1038,8 +1045,8 @@ button in the page overlay or to call `playwright.resume()` in the DevTools cons
 User can inspect selectors or perform manual steps while paused. Resume will continue running the original script from
 the place it was paused.
 
-**NOTE**: This method requires Playwright to be started in a headed mode, with a falsy `headless` value in
-the [BrowserType#launch](./browser_type#launch).
+**NOTE**: 
+This method requires Playwright to be started in a headed mode, with a falsy `headless` option.
 
 ## pdf
 
@@ -1065,12 +1072,14 @@ def pdf(
 
 Returns the PDF buffer.
 
-**NOTE**: Generating a pdf is currently only supported in Chromium headless.
+**NOTE**: 
+Generating a pdf is currently only supported in Chromium headless.
 
 `page.pdf()` generates a pdf of the page with `print` css media. To generate a pdf with `screen` media, call
 [Page#emulate_media](./page#emulate_media) before calling `page.pdf()`:
 
-**NOTE**: By default, `page.pdf()` generates a pdf with modified colors for printing. Use the
+**NOTE**: 
+By default, `page.pdf()` generates a pdf with modified colors for printing. Use the
 [`-webkit-print-color-adjust`](https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-print-color-adjust) property to
 force rendering of exact colors.
 
@@ -1109,7 +1118,8 @@ The `format` options are:
 - `A5`: 5.83in x 8.27in
 - `A6`: 4.13in x 5.83in
 
-**NOTE**: `headerTemplate` and `footerTemplate` markup have the following limitations: > 1. Script tags inside
+**NOTE**: 
+`headerTemplate` and `footerTemplate` markup have the following limitations: > 1. Script tags inside
 templates are not evaluated. > 2. Page styles are not visible inside templates.
 
 ## press
@@ -1200,11 +1210,14 @@ Routing provides the capability to modify network requests that are made by a pa
 
 Once routing is enabled, every request matching the url pattern will stall unless it's continued, fulfilled or aborted.
 
-**NOTE**: The handler will only be called for the first url if the response is a redirect.
+**NOTE**: 
+The handler will only be called for the first url if the response is a redirect.
 
-**NOTE**: [Page#route](./page#route) will not intercept requests intercepted by Service Worker. See [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using request interception by setting `Browser.newContext.serviceWorkers` to `'block'`.
+**NOTE**: 
+[Page#route](./page#route) will not intercept requests intercepted by Service Worker. See [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using request interception by setting `serviceWorkers` to `'block'`.
 
-**NOTE**: [Page#route](./page#route) will not intercept the first request of a popup page. Use [BrowserContext#route](./browser_context#route) instead.
+**NOTE**: 
+[Page#route](./page#route) will not intercept the first request of a popup page. Use [BrowserContext#route](./browser_context#route) instead.
 
 **Usage**
 
@@ -1241,7 +1254,8 @@ matches both handlers.
 
 To remove a route with its handler you can use [Page#unroute](./page#unroute).
 
-**NOTE**: Enabling routing disables http cache.
+**NOTE**: 
+Enabling routing disables http cache.
 
 ## route_from_har
 
@@ -1258,7 +1272,7 @@ def route_from_har(
 
 If specified the network requests that are made in the page will be served from the HAR file. Read more about [Replaying from HAR](https://playwright.dev/python/docs/mock#replaying-from-har).
 
-Playwright will not serve requests intercepted by Service Worker from the HAR file. See [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using request interception by setting `Browser.newContext.serviceWorkers` to `'block'`.
+Playwright will not serve requests intercepted by Service Worker from the HAR file. See [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using request interception by setting `serviceWorkers` to `'block'`.
 
 ## screenshot
 
@@ -1371,7 +1385,8 @@ This setting will change the default maximum navigation time for the following m
 - [Page#expect_navigation](./page#expect_navigation)
 - [Page#wait_for_url](./page#wait_for_url)
 
-**NOTE**: [Page#set_default_navigation_timeout](./page#set_default_navigation_timeout) takes priority over [Page#set_default_timeout](./page#set_default_timeout),
+**NOTE**: 
+[Page#set_default_navigation_timeout](./page#set_default_navigation_timeout) takes priority over [Page#set_default_timeout](./page#set_default_timeout),
 [BrowserContext#set_default_timeout](./browser_context#set_default_timeout) and [BrowserContext#set_default_navigation_timeout](./browser_context#set_default_navigation_timeout).
 
 ## set_default_timeout
@@ -1384,7 +1399,8 @@ alias: `default_timeout=`
 
 This setting will change the default maximum time for all the methods accepting `timeout` option.
 
-**NOTE**: [Page#set_default_navigation_timeout](./page#set_default_navigation_timeout) takes priority over [Page#set_default_timeout](./page#set_default_timeout).
+**NOTE**: 
+[Page#set_default_navigation_timeout](./page#set_default_navigation_timeout) takes priority over [Page#set_default_timeout](./page#set_default_timeout).
 
 ## set_extra_http_headers
 
@@ -1396,7 +1412,8 @@ alias: `extra_http_headers=`
 
 The extra HTTP headers will be sent with every request the page initiates.
 
-**NOTE**: [Page#set_extra_http_headers](./page#set_extra_http_headers) does not guarantee the order of headers in the outgoing requests.
+**NOTE**: 
+[Page#set_extra_http_headers](./page#set_extra_http_headers) does not guarantee the order of headers in the outgoing requests.
 
 ## set_input_files
 
@@ -1462,7 +1479,8 @@ This method taps an element matching `selector` by performing the following step
 When all steps combined have not finished during the specified `timeout`, this method throws a
 `TimeoutError`. Passing zero timeout disables this.
 
-**NOTE**: [Page#tap_point](./page#tap_point) the method will throw if `hasTouch` option of the browser context is false.
+**NOTE**: 
+[Page#tap_point](./page#tap_point) the method will throw if `hasTouch` option of the browser context is false.
 
 ## text_content
 
@@ -1659,7 +1677,8 @@ Returns when the required load state has been reached.
 This resolves when the page reaches a required load state, `load` by default. The navigation must have been committed
 when this method is called. If current document has already reached the required state, resolves immediately.
 
-**NOTE**: Most of the time, this method is not needed because Playwright [auto-waits before every action](https://playwright.dev/python/docs/actionability).
+**NOTE**: 
+Most of the time, this method is not needed because Playwright [auto-waits before every action](https://playwright.dev/python/docs/actionability).
 
 **Usage**
 
@@ -1702,7 +1721,8 @@ page.expect_navigation do
 end # Resolves after navigation has finished
 ```
 
-**NOTE**: Usage of the [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API) to change the URL is considered
+**NOTE**: 
+Usage of the [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API) to change the URL is considered
 a navigation.
 
 ## expect_popup
@@ -1795,7 +1815,8 @@ def wait_for_selector(selector, state: nil, strict: nil, timeout: nil)
 Returns when element specified by selector satisfies `state` option. Returns `null` if waiting for `hidden` or
 `detached`.
 
-**NOTE**: Playwright automatically waits for element to be ready before performing an action. Using
+**NOTE**: 
+Playwright automatically waits for element to be ready before performing an action. Using
 [Locator](./locator) objects and web-first assertions makes the code wait-for-selector-free.
 
 Wait for the `selector` to satisfy `state` option (either appear/disappear from dom, or become
@@ -1881,7 +1902,8 @@ def workers
 This method returns all of the dedicated [WebWorkers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API)
 associated with the page.
 
-**NOTE**: This does not contain ServiceWorkers
+**NOTE**: 
+This does not contain ServiceWorkers
 
 ## clock
 
