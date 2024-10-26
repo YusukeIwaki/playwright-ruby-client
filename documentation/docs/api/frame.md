@@ -146,8 +146,7 @@ This method double clicks an element matching `selector` by performing the follo
 When all steps combined have not finished during the specified `timeout`, this method throws a
 `TimeoutError`. Passing zero timeout disables this.
 
-**NOTE**: 
-`frame.dblclick()` dispatches two `click` events and a single `dblclick` event.
+**NOTE**: `frame.dblclick()` dispatches two `click` events and a single `dblclick` event.
 
 ## dispatch_event
 
@@ -655,12 +654,10 @@ The method will not throw an error when any valid HTTP status code is returned b
 "Not Found" and 500 "Internal Server Error".  The status code for such responses can be retrieved by calling
 [Response#status](./response#status).
 
-**NOTE**: 
-The method either throws an error or returns a main resource response. The only exceptions are navigation to
+**NOTE**: The method either throws an error or returns a main resource response. The only exceptions are navigation to
 `about:blank` or navigation to the same URL with a different hash, which would succeed and return `null`.
 
-**NOTE**: 
-Headless mode doesn't support navigation to a PDF document. See the
+**NOTE**: Headless mode doesn't support navigation to a PDF document. See the
 [upstream issue](https://bugs.chromium.org/p/chromium/issues/detail?id=761295).
 
 ## hover
@@ -809,8 +806,7 @@ Returns frame's name attribute as specified in the tag.
 
 If the name is empty, returns the id attribute instead.
 
-**NOTE**: 
-This value is calculated once when the frame is created, and will not update if the attribute is changed later.
+**NOTE**: This value is calculated once when the frame is created, and will not update if the attribute is changed later.
 
 ## page
 
@@ -871,8 +867,7 @@ def query_selector(selector, strict: nil)
 
 Returns the ElementHandle pointing to the frame element.
 
-**NOTE**: 
-The use of [ElementHandle](./element_handle) is discouraged, use [Locator](./locator) objects and web-first assertions instead.
+**NOTE**: The use of [ElementHandle](./element_handle) is discouraged, use [Locator](./locator) objects and web-first assertions instead.
 
 The method finds an element matching the specified selector within the frame. If no elements match the selector,
 returns `null`.
@@ -886,8 +881,7 @@ def query_selector_all(selector)
 
 Returns the ElementHandles pointing to the frame elements.
 
-**NOTE**: 
-The use of [ElementHandle](./element_handle) is discouraged, use [Locator](./locator) objects instead.
+**NOTE**: The use of [ElementHandle](./element_handle) is discouraged, use [Locator](./locator) objects instead.
 
 The method finds all elements matching the specified selector within the frame. If no elements match the selector,
 returns empty array.
@@ -1006,8 +1000,7 @@ This method taps an element matching `selector` by performing the following step
 When all steps combined have not finished during the specified `timeout`, this method throws a
 `TimeoutError`. Passing zero timeout disables this.
 
-**NOTE**: 
-`frame.tap()` requires that the `hasTouch` option of the browser context be set to true.
+**NOTE**: `frame.tap()` requires that the `hasTouch` option of the browser context be set to true.
 
 ## text_content
 
@@ -1118,8 +1111,7 @@ Waits for the required load state to be reached.
 This returns when the frame reaches a required load state, `load` by default. The navigation must have been committed
 when this method is called. If current document has already reached the required state, resolves immediately.
 
-**NOTE**: 
-Most of the time, this method is not needed because Playwright [auto-waits before every action](https://playwright.dev/python/docs/actionability).
+**NOTE**: Most of the time, this method is not needed because Playwright [auto-waits before every action](https://playwright.dev/python/docs/actionability).
 
 **Usage**
 
@@ -1150,8 +1142,7 @@ frame.expect_navigation do
 end # Resolves after navigation has finished
 ```
 
-**NOTE**: 
-Usage of the [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API) to change the URL is considered
+**NOTE**: Usage of the [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API) to change the URL is considered
 a navigation.
 
 ## wait_for_selector
@@ -1164,8 +1155,7 @@ def wait_for_selector(selector, state: nil, strict: nil, timeout: nil)
 Returns when element specified by selector satisfies `state` option. Returns `null` if waiting for `hidden` or
 `detached`.
 
-**NOTE**: 
-Playwright automatically waits for element to be ready before performing an action. Using
+**NOTE**: Playwright automatically waits for element to be ready before performing an action. Using
 [Locator](./locator) objects and web-first assertions make the code wait-for-selector-free.
 
 Wait for the `selector` to satisfy `state` option (either appear/disappear from dom, or become

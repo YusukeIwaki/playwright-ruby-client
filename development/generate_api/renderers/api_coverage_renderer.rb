@@ -7,6 +7,7 @@ class ApiCoverageRenderer
   end
 
   def render
+    FileUtils.mkdir_p(File.join('.', 'documentation', 'docs', 'include'))
     File.open(File.join('.', 'documentation', 'docs', 'include', 'api_coverage.md'), 'w') do |f|
       f.write("# API coverages\n")
 

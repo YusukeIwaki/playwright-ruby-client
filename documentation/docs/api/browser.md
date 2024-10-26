@@ -40,8 +40,7 @@ were opened).
 In case this browser is connected to, clears all created contexts belonging to this browser and disconnects from the
 browser server.
 
-**NOTE**: 
-This is similar to force quitting the browser. Therefore, you should call [BrowserContext#close](./browser_context#close) on any [BrowserContext](./browser_context)'s you explicitly created earlier with [Browser#new_context](./browser#new_context) **before** calling [Browser#close](./browser#close).
+**NOTE**: This is similar to force quitting the browser. Therefore, you should call [BrowserContext#close](./browser_context#close) on any [BrowserContext](./browser_context)'s you explicitly created earlier with [Browser#new_context](./browser#new_context) **before** calling [Browser#close](./browser#close).
 
 The [Browser](./browser) object itself is considered to be disposed and cannot be used anymore.
 
@@ -80,8 +79,7 @@ def new_browser_cdp_session
 ```
 
 
-**NOTE**: 
-CDP Sessions are only supported on Chromium-based browsers.
+**NOTE**: CDP Sessions are only supported on Chromium-based browsers.
 
 Returns the newly created browser session.
 
@@ -129,8 +127,7 @@ def new_context(
 
 Creates a new browser context. It won't share cookies/cache with other browser contexts.
 
-**NOTE**: 
-If directly using this method to create [BrowserContext](./browser_context)s, it is best practice to explicitly close the returned context via [BrowserContext#close](./browser_context#close) when your code is done with the [BrowserContext](./browser_context),
+**NOTE**: If directly using this method to create [BrowserContext](./browser_context)s, it is best practice to explicitly close the returned context via [BrowserContext#close](./browser_context#close) when your code is done with the [BrowserContext](./browser_context),
 and before calling [Browser#close](./browser#close). This will ensure the `context` is closed gracefully and any artifacts—like HARs and videos—are fully flushed and saved.
 
 **Usage**
@@ -201,8 +198,7 @@ def start_tracing(page: nil, categories: nil, path: nil, screenshots: nil)
 ```
 
 
-**NOTE**: 
-This API controls [Chromium Tracing](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool) which is a low-level chromium-specific debugging tool. API to control [Playwright Tracing](https://playwright.dev/python/docs/trace-viewer) could be found [here](./tracing).
+**NOTE**: This API controls [Chromium Tracing](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool) which is a low-level chromium-specific debugging tool. API to control [Playwright Tracing](https://playwright.dev/python/docs/trace-viewer) could be found [here](./tracing).
 
 You can use [Browser#start_tracing](./browser#start_tracing) and [Browser#stop_tracing](./browser#stop_tracing) to create a trace file that can
 be opened in Chrome DevTools performance panel.
@@ -225,8 +221,7 @@ def stop_tracing
 ```
 
 
-**NOTE**: 
-This API controls [Chromium Tracing](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool) which is a low-level chromium-specific debugging tool. API to control [Playwright Tracing](https://playwright.dev/python/docs/trace-viewer) could be found [here](./tracing).
+**NOTE**: This API controls [Chromium Tracing](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool) which is a low-level chromium-specific debugging tool. API to control [Playwright Tracing](https://playwright.dev/python/docs/trace-viewer) could be found [here](./tracing).
 
 Returns the buffer with trace data.
 

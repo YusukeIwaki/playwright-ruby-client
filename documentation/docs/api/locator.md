@@ -19,8 +19,7 @@ def all
 
 When the locator points to a list of elements, this returns an array of locators, pointing to their respective elements.
 
-**NOTE**: 
-[Locator#all](./locator#all) does not wait for elements to match the locator, and instead immediately returns whatever is present in the page.
+**NOTE**: [Locator#all](./locator#all) does not wait for elements to match the locator, and instead immediately returns whatever is present in the page.
 
 When the list of elements changes dynamically, [Locator#all](./locator#all) will produce unpredictable and flaky results.
 
@@ -43,8 +42,7 @@ def all_inner_texts
 
 Returns an array of `node.innerText` values for all matching nodes.
 
-**NOTE**: 
-If you need to assert text on the page, prefer [LocatorAssertions#to_have_text](./locator_assertions#to_have_text) with `useInnerText` option to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
+**NOTE**: If you need to assert text on the page, prefer [LocatorAssertions#to_have_text](./locator_assertions#to_have_text) with `useInnerText` option to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
 
 **Usage**
 
@@ -61,8 +59,7 @@ def all_text_contents
 
 Returns an array of `node.textContent` values for all matching nodes.
 
-**NOTE**: 
-If you need to assert text on the page, prefer [LocatorAssertions#to_have_text](./locator_assertions#to_have_text) to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
+**NOTE**: If you need to assert text on the page, prefer [LocatorAssertions#to_have_text](./locator_assertions#to_have_text) to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
 
 **Usage**
 
@@ -238,8 +235,7 @@ def count
 
 Returns the number of elements matching the locator.
 
-**NOTE**: 
-If you need to assert the number of elements on the page, prefer [LocatorAssertions#to_have_count](./locator_assertions#to_have_count) to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
+**NOTE**: If you need to assert the number of elements on the page, prefer [LocatorAssertions#to_have_count](./locator_assertions#to_have_count) to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
 
 **Usage**
 
@@ -276,8 +272,7 @@ If the element is detached from the DOM at any moment during the action, this me
 When all steps combined have not finished during the specified `timeout`, this method throws a
 `TimeoutError`. Passing zero timeout disables this.
 
-**NOTE**: 
-`element.dblclick()` dispatches two `click` events and a single `dblclick` event.
+**NOTE**: `element.dblclick()` dispatches two `click` events and a single `dblclick` event.
 
 ## dispatch_event
 
@@ -560,8 +555,7 @@ alias: `[]`
 
 Returns the matching element's attribute value.
 
-**NOTE**: 
-If you need to assert an element's attribute, prefer [LocatorAssertions#to_have_attribute](./locator_assertions#to_have_attribute) to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
+**NOTE**: If you need to assert an element's attribute, prefer [LocatorAssertions#to_have_attribute](./locator_assertions#to_have_attribute) to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
 
 ## get_by_alt_text
 
@@ -844,8 +838,7 @@ def inner_text(timeout: nil)
 
 Returns the [`element.innerText`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/innerText).
 
-**NOTE**: 
-If you need to assert text on the page, prefer [LocatorAssertions#to_have_text](./locator_assertions#to_have_text) with `useInnerText` option to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
+**NOTE**: If you need to assert text on the page, prefer [LocatorAssertions#to_have_text](./locator_assertions#to_have_text) with `useInnerText` option to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
 
 ## input_value
 
@@ -856,8 +849,7 @@ def input_value(timeout: nil)
 
 Returns the value for the matching `<input>` or `<textarea>` or `<select>` element.
 
-**NOTE**: 
-If you need to assert input value, prefer [LocatorAssertions#to_have_value](./locator_assertions#to_have_value) to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
+**NOTE**: If you need to assert input value, prefer [LocatorAssertions#to_have_value](./locator_assertions#to_have_value) to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
 
 **Usage**
 
@@ -878,8 +870,7 @@ def checked?(timeout: nil)
 
 Returns whether the element is checked. Throws if the element is not a checkbox or radio input.
 
-**NOTE**: 
-If you need to assert that checkbox is checked, prefer [LocatorAssertions#to_be_checked](./locator_assertions#to_be_checked) to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
+**NOTE**: If you need to assert that checkbox is checked, prefer [LocatorAssertions#to_be_checked](./locator_assertions#to_be_checked) to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
 
 **Usage**
 
@@ -896,8 +887,7 @@ def disabled?(timeout: nil)
 
 Returns whether the element is disabled, the opposite of [enabled](https://playwright.dev/python/docs/actionability#enabled).
 
-**NOTE**: 
-If you need to assert that an element is disabled, prefer [LocatorAssertions#to_be_disabled](./locator_assertions#to_be_disabled) to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
+**NOTE**: If you need to assert that an element is disabled, prefer [LocatorAssertions#to_be_disabled](./locator_assertions#to_be_disabled) to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
 
 **Usage**
 
@@ -914,8 +904,7 @@ def editable?(timeout: nil)
 
 Returns whether the element is [editable](https://playwright.dev/python/docs/actionability#editable).
 
-**NOTE**: 
-If you need to assert that an element is editable, prefer [LocatorAssertions#to_be_editable](./locator_assertions#to_be_editable) to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
+**NOTE**: If you need to assert that an element is editable, prefer [LocatorAssertions#to_be_editable](./locator_assertions#to_be_editable) to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
 
 **Usage**
 
@@ -932,8 +921,7 @@ def enabled?(timeout: nil)
 
 Returns whether the element is [enabled](https://playwright.dev/python/docs/actionability#enabled).
 
-**NOTE**: 
-If you need to assert that an element is enabled, prefer [LocatorAssertions#to_be_enabled](./locator_assertions#to_be_enabled) to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
+**NOTE**: If you need to assert that an element is enabled, prefer [LocatorAssertions#to_be_enabled](./locator_assertions#to_be_enabled) to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
 
 **Usage**
 
@@ -950,8 +938,7 @@ def hidden?(timeout: nil)
 
 Returns whether the element is hidden, the opposite of [visible](https://playwright.dev/python/docs/actionability#visible).
 
-**NOTE**: 
-If you need to assert that element is hidden, prefer [LocatorAssertions#to_be_hidden](./locator_assertions#to_be_hidden) to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
+**NOTE**: If you need to assert that element is hidden, prefer [LocatorAssertions#to_be_hidden](./locator_assertions#to_be_hidden) to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
 
 **Usage**
 
@@ -968,8 +955,7 @@ def visible?(timeout: nil)
 
 Returns whether the element is [visible](https://playwright.dev/python/docs/actionability#visible).
 
-**NOTE**: 
-If you need to assert that element is visible, prefer [LocatorAssertions#to_be_visible](./locator_assertions#to_be_visible) to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
+**NOTE**: If you need to assert that element is visible, prefer [LocatorAssertions#to_be_visible](./locator_assertions#to_be_visible) to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
 
 **Usage**
 
@@ -1102,8 +1088,7 @@ def press_sequentially(text, delay: nil, noWaitAfter: nil, timeout: nil)
 ```
 
 
-**NOTE**: 
-In most cases, you should use [Locator#fill](./locator#fill) instead. You only need to press keys one by one if there is special keyboard handling on the page.
+**NOTE**: In most cases, you should use [Locator#fill](./locator#fill) instead. You only need to press keys one by one if there is special keyboard handling on the page.
 
 Focuses the element, and then sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text.
 
@@ -1333,8 +1318,7 @@ If the element is detached from the DOM at any moment during the action, this me
 When all steps combined have not finished during the specified `timeout`, this method throws a
 `TimeoutError`. Passing zero timeout disables this.
 
-**NOTE**: 
-`element.tap()` requires that the `hasTouch` option of the browser context be set to true.
+**NOTE**: `element.tap()` requires that the `hasTouch` option of the browser context be set to true.
 
 ## text_content
 
@@ -1345,8 +1329,7 @@ def text_content(timeout: nil)
 
 Returns the [`node.textContent`](https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent).
 
-**NOTE**: 
-If you need to assert text on the page, prefer [LocatorAssertions#to_have_text](./locator_assertions#to_have_text) to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
+**NOTE**: If you need to assert text on the page, prefer [LocatorAssertions#to_have_text](./locator_assertions#to_have_text) to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
 
 ## type
 

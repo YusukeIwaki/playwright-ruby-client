@@ -26,8 +26,7 @@ page.evaluate("alert('bar')") # will be dismissed
 # => [alert] bar
 ```
 
-**NOTE**: 
-Dialogs are dismissed automatically, unless there is a [`event: Page.dialog`] listener.
+**NOTE**: Dialogs are dismissed automatically, unless there is a [`event: Page.dialog`] listener.
 When listener is present, it **must** either [Dialog#accept](./dialog#accept) or [Dialog#dismiss](./dialog#dismiss) the dialog - otherwise the page will [freeze](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop#never_blocking) waiting for the dialog, and actions like click will never finish.
 
 ## accept

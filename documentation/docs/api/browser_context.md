@@ -64,8 +64,7 @@ An example of overriding `Math.random` before the page loads:
 browser_context.add_init_script(path: "preload.js")
 ```
 
-**NOTE**: 
-The order of evaluation of multiple scripts installed via [BrowserContext#add_init_script](./browser_context#add_init_script) and
+**NOTE**: The order of evaluation of multiple scripts installed via [BrowserContext#add_init_script](./browser_context#add_init_script) and
 [Page#add_init_script](./page#add_init_script) is not defined.
 
 ## background_pages
@@ -75,8 +74,7 @@ def background_pages
 ```
 
 
-**NOTE**: 
-Background pages are only supported on Chromium-based browsers.
+**NOTE**: Background pages are only supported on Chromium-based browsers.
 
 All existing background pages in the context.
 
@@ -137,8 +135,7 @@ def close(reason: nil)
 
 Closes the browser context. All the pages that belong to the browser context will be closed.
 
-**NOTE**: 
-The default browser context cannot be closed.
+**NOTE**: The default browser context cannot be closed.
 
 ## cookies
 
@@ -244,8 +241,7 @@ def new_cdp_session(page)
 ```
 
 
-**NOTE**: 
-CDP sessions are only supported on Chromium-based browsers.
+**NOTE**: CDP sessions are only supported on Chromium-based browsers.
 
 Returns the newly created session.
 
@@ -277,8 +273,7 @@ def route(url, handler, times: nil)
 Routing provides the capability to modify network requests that are made by any page in the browser context. Once route
 is enabled, every request matching the url pattern will stall unless it's continued, fulfilled or aborted.
 
-**NOTE**: 
-[BrowserContext#route](./browser_context#route) will not intercept requests intercepted by Service Worker. See [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using request interception by setting `serviceWorkers` to `'block'`.
+**NOTE**: [BrowserContext#route](./browser_context#route) will not intercept requests intercepted by Service Worker. See [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using request interception by setting `serviceWorkers` to `'block'`.
 
 **Usage**
 
@@ -319,8 +314,7 @@ handlers.
 
 To remove a route with its handler you can use [BrowserContext#unroute](./browser_context#unroute).
 
-**NOTE**: 
-Enabling routing disables http cache.
+**NOTE**: Enabling routing disables http cache.
 
 ## route_from_har
 
@@ -346,8 +340,7 @@ def service_workers
 ```
 
 
-**NOTE**: 
-Service workers are only supported on Chromium-based browsers.
+**NOTE**: Service workers are only supported on Chromium-based browsers.
 
 All existing service workers in the context.
 
@@ -367,8 +360,7 @@ This setting will change the default maximum navigation time for the following m
 - [Page#set_content](./page#set_content)
 - [Page#expect_navigation](./page#expect_navigation)
 
-**NOTE**: 
-[Page#set_default_navigation_timeout](./page#set_default_navigation_timeout) and [Page#set_default_timeout](./page#set_default_timeout) take priority over
+**NOTE**: [Page#set_default_navigation_timeout](./page#set_default_navigation_timeout) and [Page#set_default_timeout](./page#set_default_timeout) take priority over
 [BrowserContext#set_default_navigation_timeout](./browser_context#set_default_navigation_timeout).
 
 ## set_default_timeout
@@ -381,8 +373,7 @@ alias: `default_timeout=`
 
 This setting will change the default maximum time for all the methods accepting `timeout` option.
 
-**NOTE**: 
-[Page#set_default_navigation_timeout](./page#set_default_navigation_timeout), [Page#set_default_timeout](./page#set_default_timeout) and
+**NOTE**: [Page#set_default_navigation_timeout](./page#set_default_navigation_timeout), [Page#set_default_timeout](./page#set_default_timeout) and
 [BrowserContext#set_default_navigation_timeout](./browser_context#set_default_navigation_timeout) take priority over [BrowserContext#set_default_timeout](./browser_context#set_default_timeout).
 
 ## set_extra_http_headers
@@ -397,8 +388,7 @@ The extra HTTP headers will be sent with every request initiated by any page in 
 with page-specific extra HTTP headers set with [Page#set_extra_http_headers](./page#set_extra_http_headers). If page overrides a particular
 header, page-specific header value will be used instead of the browser context header value.
 
-**NOTE**: 
-[BrowserContext#set_extra_http_headers](./browser_context#set_extra_http_headers) does not guarantee the order of headers in the outgoing requests.
+**NOTE**: [BrowserContext#set_extra_http_headers](./browser_context#set_extra_http_headers) does not guarantee the order of headers in the outgoing requests.
 
 ## set_geolocation
 
@@ -416,8 +406,7 @@ Sets the context's geolocation. Passing `null` or `undefined` emulates position 
 browser_context.geolocation = { latitude: 59.95, longitude: 30.31667 }
 ```
 
-**NOTE**: 
-Consider using [BrowserContext#grant_permissions](./browser_context#grant_permissions) to grant permissions for the browser context pages to read
+**NOTE**: Consider using [BrowserContext#grant_permissions](./browser_context#grant_permissions) to grant permissions for the browser context pages to read
 its geolocation.
 
 ## set_offline

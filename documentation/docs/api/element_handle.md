@@ -8,8 +8,7 @@ sidebar_position: 10
 
 ElementHandle represents an in-page DOM element. ElementHandles can be created with the [Page#query_selector](./page#query_selector) method.
 
-**NOTE**: 
-The use of ElementHandle is discouraged, use [Locator](./locator) objects and web-first assertions instead.
+**NOTE**: The use of ElementHandle is discouraged, use [Locator](./locator) objects and web-first assertions instead.
 
 ```ruby
 href_element = page.query_selector("a")
@@ -154,8 +153,7 @@ If the element is detached from the DOM at any moment during the action, this me
 When all steps combined have not finished during the specified `timeout`, this method throws a
 `TimeoutError`. Passing zero timeout disables this.
 
-**NOTE**: 
-`elementHandle.dblclick()` dispatches two `click` events and a single `dblclick` event.
+**NOTE**: `elementHandle.dblclick()` dispatches two `click` events and a single `dblclick` event.
 
 ## dispatch_event
 
@@ -594,8 +592,7 @@ If the element is detached from the DOM at any moment during the action, this me
 When all steps combined have not finished during the specified `timeout`, this method throws a
 `TimeoutError`. Passing zero timeout disables this.
 
-**NOTE**: 
-`elementHandle.tap()` requires that the `hasTouch` option of the browser context be set to true.
+**NOTE**: `elementHandle.tap()` requires that the `hasTouch` option of the browser context be set to true.
 
 ## text_content
 
@@ -687,5 +684,4 @@ div = page.query_selector("div")
 span = div.wait_for_selector("span", state: "attached")
 ```
 
-**NOTE**: 
-This method does not work across navigations, use [Page#wait_for_selector](./page#wait_for_selector) instead.
+**NOTE**: This method does not work across navigations, use [Page#wait_for_selector](./page#wait_for_selector) instead.
