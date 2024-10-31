@@ -8,15 +8,15 @@ module Playwright
         @timeout_settings = TimeoutSettings.new
       end
 
-      def call(actual, message = nil)
+      def call(actual, is_not)
         case actual
         when Page
           PageAssertions.new(
             PageAssertionsImpl.new(
               actual,
               @timeout_settings.timeout,
-              false,
-              message,
+              is_not,
+              nil,
             )
           )
         when Locator
@@ -24,8 +24,8 @@ module Playwright
             LocatorAssertionsImpl.new(
               actual,
               @timeout_settings.timeout,
-              false,
-              message,
+              is_not,
+              nil,
             )
           )
         else
@@ -43,7 +43,15 @@ module Playwright
         end
 
         def matches?(actual)
-          Expect.new.call(actual).send(@method, *@args, **@kwargs)
+          Expect.new.call(actual, false).send(@method, *@args, **@kwargs)
+          true
+        rescue AssertionError => e
+          @failure_message = e.full_message
+          false
+        end
+
+        def does_not_match?(actual)
+          Expect.new.call(actual, true).send(@method, *@args, **@kwargs)
           true
         rescue AssertionError => e
           @failure_message = e.full_message
@@ -54,10 +62,8 @@ module Playwright
           @failure_message
         end
 
-        # we have to invert the message again here because RSpec wants to control
-        # its own negation
         def failure_message_when_negated
-          @failure_message.gsub("expected to", "not expected to")
+          @failure_message
         end
       end
     end
