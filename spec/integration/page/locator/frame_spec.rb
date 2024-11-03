@@ -74,7 +74,7 @@ RSpec.describe 'FrameLocator' do
       page.goto(server_empty_page)
       expect {
         page.frame_locator('iframe').locator('span').click(timeout: 300)
-      }.to raise_error(/waiting for frame_locator\("iframe"\)/)
+      }.to raise_error(/waiting for locator\("iframe"\)\.content_frame\.locator/)
     end
   end
 
