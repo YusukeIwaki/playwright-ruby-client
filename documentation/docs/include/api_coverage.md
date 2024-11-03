@@ -288,6 +288,7 @@
 * get_by_title
 * go_back
 * go_forward
+* ~~request_gc~~
 * goto
 * hover
 * inner_html
@@ -313,6 +314,7 @@
 * reload
 * route
 * route_from_har
+* ~~route_web_socket~~
 * screenshot
 * select_option
 * set_checked
@@ -375,6 +377,7 @@
 * pages
 * route
 * route_from_har
+* ~~route_web_socket~~
 * service_workers
 * set_default_navigation_timeout
 * set_default_timeout

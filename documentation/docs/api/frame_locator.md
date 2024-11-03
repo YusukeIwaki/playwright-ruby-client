@@ -5,10 +5,10 @@ sidebar_position: 10
 # FrameLocator
 
 
-FrameLocator represents a view to the `iframe` on the page. It captures the logic sufficient to retrieve the `iframe` and locate elements in that iframe. FrameLocator can be created with either [Page#frame_locator](./page#frame_locator) or [Locator#frame_locator](./locator#frame_locator) method.
+FrameLocator represents a view to the `iframe` on the page. It captures the logic sufficient to retrieve the `iframe` and locate elements in that iframe. FrameLocator can be created with either [Locator#content_frame](./locator#content_frame), [Page#frame_locator](./page#frame_locator) or [Locator#frame_locator](./locator#frame_locator) method.
 
 ```ruby
-locator = page.frame_locator("my-frame").get_by_text("Submit")
+locator = page.locator("my-frame").content_frame.get_by_text("Submit")
 locator.click
 ```
 
@@ -18,10 +18,10 @@ Frame locators are strict. This means that all operations on frame locators will
 
 ```ruby
 # Throws if there are several frames in DOM:
-page.frame_locator('.result-frame').get_by_role('button').click
+page.locator('.result-frame').content_frame.get_by_role('button').click
 
 # Works because we explicitly tell locator to pick the first frame:
-page.frame_locator('.result-frame').first.get_by_role('button').click
+page.locator('.result-frame').first.content_frame.get_by_role('button').click
 ```
 
 **Converting Locator to FrameLocator**
@@ -37,6 +37,12 @@ If you have a [FrameLocator](./frame_locator) object it can be converted to [Loc
 ```
 def first
 ```
+
+:::warning
+
+Use [Locator#first](./locator#first) followed by [Locator#content_frame](./locator#content_frame) instead.
+
+:::
 
 
 Returns locator to the first matching frame.
@@ -278,6 +284,12 @@ page.get_by_title("Issues count").text_content # => "25 issues"
 def last
 ```
 
+:::warning
+
+Use [Locator#last](./locator#last) followed by [Locator#content_frame](./locator#content_frame) instead.
+
+:::
+
 
 Returns locator to the last matching frame.
 
@@ -303,6 +315,12 @@ The method finds an element matching the specified selector in the locator's sub
 def nth(index)
 ```
 
+:::warning
+
+Use [Locator#nth](./locator#nth) followed by [Locator#content_frame](./locator#content_frame) instead.
+
+:::
+
 
 Returns locator to the n-th matching frame. It's zero based, `nth(0)` selects the first frame.
 
@@ -322,7 +340,7 @@ For a reverse operation, use [Locator#content_frame](./locator#content_frame).
 **Usage**
 
 ```ruby
-frame_locator = page.frame_locator('iframe[name="embedded"]')
+frame_locator = page.locator('iframe[name="embedded"]').content_frame
 # ...
 locator = frame_locator.owner
 locator.get_attribute('src') # => frame1.html

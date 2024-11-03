@@ -1016,7 +1016,9 @@ def or(locator)
 ```
 
 
-Creates a locator that matches either of the two locators.
+Creates a locator matching all elements that match one or both of the two locators.
+
+Note that when both locators match something, the resulting locator will have multiple matches and violate [locator strictness](https://playwright.dev/python/docs/locators#strictness) guidelines.
 
 **Usage**
 
@@ -1334,6 +1336,12 @@ Returns the [`node.textContent`](https://developer.mozilla.org/en-US/docs/Web/AP
 ```
 def type(text, delay: nil, noWaitAfter: nil, timeout: nil)
 ```
+
+:::warning
+
+In most cases, you should use [Locator#fill](./locator#fill) instead. You only need to press keys one by one if there is special keyboard handling on the page - in this case use [Locator#press_sequentially](./locator#press_sequentially).
+
+:::
 
 
 Focuses the element, and then sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text.

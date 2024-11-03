@@ -231,6 +231,10 @@ class PlaywrightApiRenderer
         @method_with_doc.method_comment&.split("\n")&.each do |line|
           data << "# #{line}"
         end
+        if @method_with_doc.method_deprecated_comment
+          data << '#'
+          data << "# @deprecated #{@method_with_doc.method_deprecated_comment}"
+        end
       end
     end
 

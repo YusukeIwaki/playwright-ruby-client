@@ -1038,8 +1038,7 @@ button in the page overlay or to call `playwright.resume()` in the DevTools cons
 User can inspect selectors or perform manual steps while paused. Resume will continue running the original script from
 the place it was paused.
 
-**NOTE**: This method requires Playwright to be started in a headed mode, with a falsy `headless` value in
-the [BrowserType#launch](./browser_type#launch).
+**NOTE**: This method requires Playwright to be started in a headed mode, with a falsy `headless` option.
 
 ## pdf
 
@@ -1202,7 +1201,7 @@ Once routing is enabled, every request matching the url pattern will stall unles
 
 **NOTE**: The handler will only be called for the first url if the response is a redirect.
 
-**NOTE**: [Page#route](./page#route) will not intercept requests intercepted by Service Worker. See [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using request interception by setting `Browser.newContext.serviceWorkers` to `'block'`.
+**NOTE**: [Page#route](./page#route) will not intercept requests intercepted by Service Worker. See [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using request interception by setting `serviceWorkers` to `'block'`.
 
 **NOTE**: [Page#route](./page#route) will not intercept the first request of a popup page. Use [BrowserContext#route](./browser_context#route) instead.
 
@@ -1258,7 +1257,7 @@ def route_from_har(
 
 If specified the network requests that are made in the page will be served from the HAR file. Read more about [Replaying from HAR](https://playwright.dev/python/docs/mock#replaying-from-har).
 
-Playwright will not serve requests intercepted by Service Worker from the HAR file. See [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using request interception by setting `Browser.newContext.serviceWorkers` to `'block'`.
+Playwright will not serve requests intercepted by Service Worker from the HAR file. See [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using request interception by setting `serviceWorkers` to `'block'`.
 
 ## screenshot
 
@@ -1494,6 +1493,12 @@ def type(
       timeout: nil)
 ```
 
+:::warning
+
+In most cases, you should use [Locator#fill](./locator#fill) instead. You only need to press keys one by one if there is special keyboard handling on the page - in this case use [Locator#press_sequentially](./locator#press_sequentially).
+
+:::
+
 
 Sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text. `page.type` can be used to send
 fine-grained keyboard events. To fill values in form fields, use [Page#fill](./page#fill).
@@ -1683,6 +1688,12 @@ puts popup.title # popup is ready to use.
 ```
 def expect_navigation(timeout: nil, url: nil, waitUntil: nil, &block)
 ```
+
+:::warning
+
+This method is inherently racy, please use [Page#wait_for_url](./page#wait_for_url) instead.
+
+:::
 
 
 Waits for the main frame navigation and returns the main resource response. In case of multiple redirects, the navigation

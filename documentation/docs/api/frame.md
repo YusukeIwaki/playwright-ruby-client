@@ -1032,6 +1032,12 @@ def type(
       timeout: nil)
 ```
 
+:::warning
+
+In most cases, you should use [Locator#fill](./locator#fill) instead. You only need to press keys one by one if there is special keyboard handling on the page - in this case use [Locator#press_sequentially](./locator#press_sequentially).
+
+:::
+
 
 Sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text. `frame.type` can be used to
 send fine-grained keyboard events. To fill values in form fields, use [Frame#fill](./frame#fill).
@@ -1125,6 +1131,12 @@ frame.wait_for_load_state # the promise resolves after "load" event.
 ```
 def expect_navigation(timeout: nil, url: nil, waitUntil: nil, &block)
 ```
+
+:::warning
+
+This method is inherently racy, please use [Frame#wait_for_url](./frame#wait_for_url) instead.
+
+:::
 
 
 Waits for the frame navigation and returns the main resource response. In case of multiple redirects, the navigation

@@ -609,6 +609,12 @@ Returns the `node.textContent`.
 def type(text, delay: nil, noWaitAfter: nil, timeout: nil)
 ```
 
+:::warning
+
+In most cases, you should use [Locator#fill](./locator#fill) instead. You only need to press keys one by one if there is special keyboard handling on the page - in this case use [Locator#press_sequentially](./locator#press_sequentially).
+
+:::
+
 
 Focuses the element, and then sends a `keydown`, `keypress`/`input`, and `keyup` event for each character in the text.
 

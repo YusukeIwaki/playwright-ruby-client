@@ -745,18 +745,18 @@ module ExampleCodes
   end
 
   # FrameLocator
-  def example_4b7e4ce2b2fdb7e75c2145e4ba89216e4cbd2892caff1b05189e8729d3aa8dfb(page:)
-    locator = page.frame_locator("my-frame").get_by_text("Submit")
+  def example_388f0632ba64c07369bdd5e8fe0bfaf07d94a1b576444d4045d9787b2672e7d8(page:)
+    locator = page.locator("my-frame").content_frame.get_by_text("Submit")
     locator.click
   end
 
   # FrameLocator
-  def example_e2ea8f31994ab012b3f8cd7f5abfb4cb610286a4be96c9d4d6f1ad9f9678a0ed(page:)
+  def example_32979c158691d02e6365a178a0ac9443ee6ef2b870815f0930199e8f39c43a5f(page:)
     # Throws if there are several frames in DOM:
-    page.frame_locator('.result-frame').get_by_role('button').click
+    page.locator('.result-frame').content_frame.get_by_role('button').click
 
     # Works because we explicitly tell locator to pick the first frame:
-    page.frame_locator('.result-frame').first.get_by_role('button').click
+    page.locator('.result-frame').first.content_frame.get_by_role('button').click
   end
 
   # FrameLocator
@@ -764,8 +764,8 @@ module ExampleCodes
     frame_locator = locator.frame_locator(':scope')
   end
 
-  def example_531fc4cb90d2eb9d785a34605f887b683697b6e4962cc948171dc08166f29b79(page:)
-    frame_locator = page.frame_locator('iframe[name="embedded"]')
+  def example_a9d648fee9c328e08fc365f5f04a073d479a0b068248ac49cd10e4a0a2ce561b(page:)
+    frame_locator = page.locator('iframe[name="embedded"]').content_frame
     # ...
     locator = frame_locator.owner
     locator.get_attribute('src') # => frame1.html
