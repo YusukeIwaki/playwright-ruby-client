@@ -823,6 +823,18 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
         expect(page.locator("button")).to not_be_enabled
       end
     end
+
+    it "should work eventually when negated" do
+      with_page do |page|
+        page.set_content("<button>Text</button>")
+        page.eval_on_selector("button", <<~JS)
+          button => setTimeout(() => {
+            button.setAttribute('disabled', '')
+          }, 700)
+        JS
+        expect(page.locator("button")).not_to be_enabled
+      end
+    end
   end
 
   describe "#to_be_editable" do
@@ -948,6 +960,19 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
         JS
 
         expect(page.locator("span")).to not_be_visible
+      end
+    end
+
+    it "should work eventually when negated" do
+      with_page do |page|
+        page.set_content("<div><span>Hello</span></div>")
+        page.eval_on_selector("span", <<~JS)
+          span => setTimeout(() => {
+            span.textContent = ''
+          }, 700)
+        JS
+
+        expect(page.locator("span")).not_to be_visible
       end
     end
   end
