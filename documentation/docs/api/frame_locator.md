@@ -38,6 +38,12 @@ If you have a [FrameLocator](./frame_locator) object it can be converted to [Loc
 def first
 ```
 
+:::warning
+
+Use [Locator#first](./locator#first) followed by [Locator#content_frame](./locator#content_frame) instead.
+
+:::
+
 
 Returns locator to the first matching frame.
 
@@ -278,6 +284,12 @@ page.get_by_title("Issues count").text_content # => "25 issues"
 def last
 ```
 
+:::warning
+
+Use [Locator#last](./locator#last) followed by [Locator#content_frame](./locator#content_frame) instead.
+
+:::
+
 
 Returns locator to the last matching frame.
 
@@ -302,6 +314,12 @@ The method finds an element matching the specified selector in the locator's sub
 ```
 def nth(index)
 ```
+
+:::warning
+
+Use [Locator#nth](./locator#nth) followed by [Locator#content_frame](./locator#content_frame) instead.
+
+:::
 
 
 Returns locator to the n-th matching frame. It's zero based, `nth(0)` selects the first frame.

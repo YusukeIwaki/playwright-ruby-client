@@ -13,6 +13,11 @@ class Doc
     json_with_python_override['kind']
   end
 
+  # @returns [String|nil]
+  def deprecated_comment
+    json_with_python_override['deprecated']
+  end
+
   # @returns [String]
   def name
     langs.alias_for_python || @json['name']

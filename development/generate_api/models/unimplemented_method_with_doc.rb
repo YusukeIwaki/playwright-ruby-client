@@ -15,6 +15,11 @@ class UnimplementedMethodWithDoc
     @doc.comment_with_python_codes
   end
 
+  # @returns [String|nil]
+  def method_deprecated_comment
+    @doc.deprecated_comment
+  end
+
   def js_method_name
     @inflector.camelize_lower(@doc.name)
   end

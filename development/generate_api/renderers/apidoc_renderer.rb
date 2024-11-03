@@ -119,6 +119,16 @@ class ApidocRenderer
           if @method_with_doc.method_alias
             data << "alias: `#{@method_with_doc.method_alias}`"
           end
+
+          if @method_with_doc.method_deprecated_comment
+            data << ''
+            data << ":::warning"
+            data << ''
+            data << @comment_converter.convert(@method_with_doc.method_deprecated_comment)
+            data << ''
+            data << ":::"
+          end
+
           data << ''
           comment = @comment_converter.convert(@method_with_doc.method_comment)
           data << @example_code_converter.convert(comment, memo: "#{@class_with_doc.class_name}##{@method_with_doc.method_name}")
