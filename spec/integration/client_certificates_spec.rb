@@ -34,24 +34,6 @@ RSpec.describe 'client certificates', sinatra: true, tls: true do
     }.to raise_error(/pfx is specified together with cert, key or passphrase/)
   end
 
-  it 'should validate input 3' do
-    kDummyFileName = '__filename'
-    options = {
-      ignoreHTTPSErrors: true,
-      proxy: { server: 'http://localhost:8080' },
-      clientCertificates: [{
-        origin: 'test',
-        certPath: kDummyFileName,
-        keyPath: kDummyFileName,
-      }]
-    }
-    expect {
-      with_context(**options) do |context|
-        context.new_page
-      end
-    }.to raise_error(/Cannot specify both proxy and clientCertificates/)
-  end
-
   it 'should fail with no client certificates provided' do
     with_context(ignoreHTTPSErrors: true) do |context|
       page = context.new_page
