@@ -479,7 +479,7 @@ module Playwright
       #
       # So, launch inspector as Python app.
       # NOTE: This should be used only for Page#pause at this moment.
-      @channel.send_message_to_server('recorderSupplementEnable', language: :python)
+      @channel.send_message_to_server('enableRecorder', language: :python)
       @debug_console_enabled = true
     end
 
