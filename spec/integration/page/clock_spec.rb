@@ -308,6 +308,16 @@ RSpec.describe 'Clock API' do
   # });
 
   describe 'set_fixed_time' do
+    it 'should work' do
+      page.clock.set_fixed_time(DateTime.parse("2020-01-01T00:12:34+0900"))
+      expect(page.evaluate('() => new Date().getUTCFullYear()')).to eq(2019)
+      expect(page.evaluate('() => new Date().getUTCMonth()')).to eq(11)
+      expect(page.evaluate('() => new Date().getUTCDate()')).to eq(31)
+      expect(page.evaluate('() => new Date().getUTCHours()')).to eq(15)
+      expect(page.evaluate('() => new Date().getUTCMinutes()')).to eq(12)
+      expect(page.evaluate('() => new Date().getUTCSeconds()')).to eq(34)
+    end
+
     it 'does not fake methods' do
       page.clock.fixed_time = 0
 
