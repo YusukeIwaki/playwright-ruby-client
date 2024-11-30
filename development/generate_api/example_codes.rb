@@ -813,10 +813,13 @@ module ExampleCodes
   end
 
   # Keyboard
-  def example_2deda0786a20a28cec9e8b438078a5fc567f7c7e5cf369419ab3c4d80a319ff6
-    # on windows and linux
+  def example_df65eb1dce081c61ad27e6322e441a7713c18bd842cd9c7d5f9c685ce987a5b6
+    # RECOMMENDED
+    page.keyboard.press("ControlOrMeta+A")
+
+    # or just on windows and linux
     page.keyboard.press("Control+A")
-    # on mac_os
+    # or just on macOS
     page.keyboard.press("Meta+A")
   end
 
