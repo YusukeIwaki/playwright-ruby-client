@@ -423,6 +423,13 @@ RSpec.describe 'example' do
       end
     end
 
+    it 'should work with Page#emulate_media' do
+      with_page do |page|
+        example_df304caf6c61f6f44b3e2b0006a7e05552362a47b17c9ba227df76e918d88a5c(page: page)
+        example_8abc1c4dd851cb7563f1f6b6489ebdc31d783b4eadbb48b0bfa0cfd2a993f788(page: page)
+      end
+    end
+
     it 'should work with Page#press' do
       with_page do |page|
         with_network_retry do

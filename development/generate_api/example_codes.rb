@@ -1478,11 +1478,10 @@ module ExampleCodes
   end
 
   # Page#emulate_media
-  def example_f0479a2ee8d8f51dab94f48b7e121cade07e5026d4f602521cc6ccc47feb5a98(page:)
-    page.emulate_media(colorScheme="dark")
+  def example_8abc1c4dd851cb7563f1f6b6489ebdc31d783b4eadbb48b0bfa0cfd2a993f788(page:)
+    page.emulate_media(colorScheme: "dark")
     page.evaluate("matchMedia('(prefers-color-scheme: dark)').matches") # => true
     page.evaluate("matchMedia('(prefers-color-scheme: light)').matches") # => false
-    page.evaluate("matchMedia('(prefers-color-scheme: no-preference)').matches") # => false
   end
 
   # Page#eval_on_selector
