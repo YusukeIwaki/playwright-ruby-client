@@ -57,6 +57,14 @@ RSpec.describe 'example' do
     end
   end
 
+  it 'should enable debug console', skip: ENV['CI'] do
+    with_context do |context|
+      context.enable_debug_console!
+      page = context.new_page
+      page.goto('https://example.com')
+    end
+  end
+
   it 'should evaluate expression' do
     with_page do |page|
       expect(page.evaluate('2 + 3')).to eq(5)
