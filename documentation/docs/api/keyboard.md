@@ -33,11 +33,9 @@ page.keyboard.press("Shift+A")
 
 An example to trigger select-all with the keyboard
 
-```ruby
-# on windows and linux
-page.keyboard.press("Control+A")
-# on mac_os
-page.keyboard.press("Meta+A")
+```python title="example_df65eb1dce081c61ad27e6322e441a7713c18bd842cd9c7d5f9c685ce987a5b6.py"
+page.keyboard.press("ControlOrMeta+A")
+
 ```
 
 ## down
