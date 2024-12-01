@@ -727,3 +727,22 @@ locator = page.locator("id=favorite-colors")
 locator.select_option(["R", "G"])
 expect(locator).to have_values([/R/, /G/])
 ```
+
+## to_match_aria_snapshot
+
+```ruby
+expect(locator).to match_aria_snapshot(expected, timeout: nil)
+```
+
+
+Asserts that the target element matches the given [accessibility snapshot](https://playwright.dev/python/docs/aria-snapshots).
+
+**Usage**
+
+```ruby
+page.goto('https://demo.playwright.dev/todomvc/')
+expect(page.locator('body')).to_match_aria_snapshot(<<~YAML)
+- heading "todos"
+- textbox "What needs to be done?"
+YAML
+```

@@ -391,6 +391,13 @@ module Playwright
       end
     end
 
+    def aria_snapshot(timeout: nil)
+      @frame.channel.send_message_to_server('ariaSnapshot', {
+        selector: @selector,
+        timeout: timeout,
+      }.compact)
+    end
+
     def scroll_into_view_if_needed(timeout: nil)
       with_element(timeout: timeout) do |handle, options|
         handle.scroll_into_view_if_needed(timeout: options[:timeout])

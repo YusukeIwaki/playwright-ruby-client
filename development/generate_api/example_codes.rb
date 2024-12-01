@@ -885,6 +885,11 @@ module ExampleCodes
     button = page.get_by_role("button").and(page.get_by_title("Subscribe"))
   end
 
+  # Locator#aria_snapshot
+  def example_c78b5ad5f44bbeed51ba622f4a74e92c4c094a787563d5e856724a6848e094c7(page:)
+    page.get_by_role("link").aria_snapshot
+  end
+
   # Locator#bounding_box
   def example_09bf5cd40405b9e5cd84333743b6ef919d0714bb4da78c86404789d26ff196ae(page:)
     element = page.get_by_role("button")
@@ -1360,6 +1365,15 @@ module ExampleCodes
     locator = page.locator("id=favorite-colors")
     locator.select_option(["R", "G"])
     expect(locator).to have_values([/R/, /G/])
+  end
+
+  # LocatorAssertions#to_match_aria_snapshot
+  def example_e0bf8d0d0ca6181f89d6e14269d53e0bd13b4e5fb1d4457c443588c887ef417e(page:)
+    page.goto('https://demo.playwright.dev/todomvc/')
+    expect(page.locator('body')).to_match_aria_snapshot(<<~YAML)
+    - heading "todos"
+    - textbox "What needs to be done?"
+    YAML
   end
 
   # Mouse

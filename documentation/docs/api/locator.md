@@ -84,6 +84,49 @@ The following example finds a button with a specific title.
 button = page.get_by_role("button").and(page.get_by_title("Subscribe"))
 ```
 
+## aria_snapshot
+
+```
+def aria_snapshot(timeout: nil)
+```
+
+
+Captures the aria snapshot of the given element.
+Read more about [aria snapshots](https://playwright.dev/python/docs/aria-snapshots) and [LocatorAssertions#to_match_aria_snapshot](./locator_assertions#to_match_aria_snapshot) for the corresponding assertion.
+
+**Usage**
+
+```ruby
+page.get_by_role("link").aria_snapshot
+```
+
+**Details**
+
+This method captures the aria snapshot of the given element. The snapshot is a string that represents the state of the element and its children.
+The snapshot can be used to assert the state of the element in the test, or to compare it to state in the future.
+
+The ARIA snapshot is represented using [YAML](https://yaml.org/spec/1.2.2/) markup language:
+- The keys of the objects are the roles and optional accessible names of the elements.
+- The values are either text content or an array of child elements.
+- Generic static text can be represented with the `text` key.
+
+Below is the HTML markup and the respective ARIA snapshot:
+
+```html
+<ul aria-label="Links">
+  <li><a href="/">Home</a></li>
+  <li><a href="/about">About</a></li>
+<ul>
+```
+
+```yml
+- list "Links":
+  - listitem:
+    - link "Home"
+  - listitem:
+    - link "About"
+```
+
 ## blur
 
 ```
