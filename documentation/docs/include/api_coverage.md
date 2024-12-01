@@ -436,8 +436,8 @@
 
 * start
 * start_chunk
-* ~~group~~
-* ~~group_end~~
+* group
+* group_end
 * stop
 * stop_chunk
 

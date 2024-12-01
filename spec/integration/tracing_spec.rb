@@ -149,6 +149,28 @@ RSpec.describe 'tracing' do
     end
   end
 
+  it 'can call tracing.group/groupEnd at any time and auto-close', sinatra: true, tracing: true do
+    with_context do |context|
+      context.tracing.group('ignored')
+      context.tracing.group_end
+      context.tracing.group('ignored2')
+      context.tracing.start
+      context.tracing.group('actual')
+
+      page = context.new_page
+      page.goto(server_empty_page)
+      Dir.mktmpdir do |dir|
+        trace = File.join(dir, 'trace.zip')
+        context.tracing.stop_chunk(path: trace)
+      end
+
+      context.tracing.group('ignored3')
+      context.tracing.group_end
+      context.tracing.group_end
+      context.tracing.group_end
+    end
+  end
+
   it 'should throw when stopping without start', tracing: true do
     with_context do |context|
       Dir.mktmpdir do |dir|

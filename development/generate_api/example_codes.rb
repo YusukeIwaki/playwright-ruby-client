@@ -2002,6 +2002,19 @@ module ExampleCodes
     context.tracing.stop_chunk(path: "trace2.zip")
   end
 
+  # Tracing#group
+  def example_9bd098f4f0838dc7408dffc68bff0351714717a1fed7a909801dc263dfff2a17(context:)
+    # All actions between group and group_end
+    # will be shown in the trace viewer as a group.
+    context.tracing.group("Open Playwright.dev > API")
+
+    page = context.new_page
+    page.goto("https://playwright.dev/")
+    page.get_by_role("link", name: "API").click
+
+    context.tracing.group_end
+  end
+
   # Worker
   def example_29716fdd4471a97923a64eebeee96330ab508226a496ae8fd13f12eb07d55ee6(page:)
     def handle_worker(worker)
