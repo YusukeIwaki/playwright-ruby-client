@@ -361,6 +361,18 @@ module Playwright
     end
     _define_negation :to_have_text
 
+    def to_match_aria_snapshot(expected, timeout: nil)
+      expect_impl(
+        'to.match.aria',
+        {
+          expectedValue: expected,
+          timeout: timeout,
+        },
+        expected,
+        'Locator expected to match Aria snapshot',
+      )
+    end
+
     def to_be_attached(attached: nil, timeout: nil)
       expect_impl(
         (attached || attached.nil?) ? "to.be.attached" : "to.be.detached",

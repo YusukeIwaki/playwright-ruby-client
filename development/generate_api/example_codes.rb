@@ -813,10 +813,13 @@ module ExampleCodes
   end
 
   # Keyboard
-  def example_2deda0786a20a28cec9e8b438078a5fc567f7c7e5cf369419ab3c4d80a319ff6
-    # on windows and linux
+  def example_df65eb1dce081c61ad27e6322e441a7713c18bd842cd9c7d5f9c685ce987a5b6
+    # RECOMMENDED
+    page.keyboard.press("ControlOrMeta+A")
+
+    # or just on windows and linux
     page.keyboard.press("Control+A")
-    # on mac_os
+    # or just on macOS
     page.keyboard.press("Meta+A")
   end
 
@@ -880,6 +883,11 @@ module ExampleCodes
   # Locator#and
   def example_0174039af5c928df43c04ef148ea798c5dcc7b6fc4ce4abc3a99a300f372a104(page:)
     button = page.get_by_role("button").and(page.get_by_title("Subscribe"))
+  end
+
+  # Locator#aria_snapshot
+  def example_c78b5ad5f44bbeed51ba622f4a74e92c4c094a787563d5e856724a6848e094c7(page:)
+    page.get_by_role("link").aria_snapshot
   end
 
   # Locator#bounding_box
@@ -1359,6 +1367,15 @@ module ExampleCodes
     expect(locator).to have_values([/R/, /G/])
   end
 
+  # LocatorAssertions#to_match_aria_snapshot
+  def example_e0bf8d0d0ca6181f89d6e14269d53e0bd13b4e5fb1d4457c443588c887ef417e(page:)
+    page.goto('https://demo.playwright.dev/todomvc/')
+    expect(page.locator('body')).to_match_aria_snapshot(<<~YAML)
+    - heading "todos"
+    - textbox "What needs to be done?"
+    YAML
+  end
+
   # Mouse
   def example_ba01da1f358cafb4c22b792488ff2f3de4dbd82d4ee1cc4050e3f0c24a2bd7dd(page:)
     # using ‘page.mouse’ to trace a 100x100 square.
@@ -1475,11 +1492,10 @@ module ExampleCodes
   end
 
   # Page#emulate_media
-  def example_f0479a2ee8d8f51dab94f48b7e121cade07e5026d4f602521cc6ccc47feb5a98(page:)
-    page.emulate_media(colorScheme="dark")
+  def example_8abc1c4dd851cb7563f1f6b6489ebdc31d783b4eadbb48b0bfa0cfd2a993f788(page:)
+    page.emulate_media(colorScheme: "dark")
     page.evaluate("matchMedia('(prefers-color-scheme: dark)').matches") # => true
     page.evaluate("matchMedia('(prefers-color-scheme: light)').matches") # => false
-    page.evaluate("matchMedia('(prefers-color-scheme: no-preference)').matches") # => false
   end
 
   # Page#eval_on_selector
@@ -1984,6 +2000,19 @@ module ExampleCodes
     page.goto("http://example.com")
     # Save a second trace file with different actions.
     context.tracing.stop_chunk(path: "trace2.zip")
+  end
+
+  # Tracing#group
+  def example_9bd098f4f0838dc7408dffc68bff0351714717a1fed7a909801dc263dfff2a17(context:)
+    # All actions between group and group_end
+    # will be shown in the trace viewer as a group.
+    context.tracing.group("Open Playwright.dev > API")
+
+    page = context.new_page
+    page.goto("https://playwright.dev/")
+    page.get_by_role("link", name: "API").click
+
+    context.tracing.group_end
   end
 
   # Worker

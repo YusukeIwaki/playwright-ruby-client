@@ -68,6 +68,40 @@ page.goto("http://example.com")
 context.tracing.stop_chunk(path: "trace2.zip")
 ```
 
+## group
+
+```
+def group(name, location: nil)
+```
+
+
+**NOTE**: Use `test.step` instead when available.
+
+Creates a new group within the trace, assigning any subsequent API calls to this group, until [Tracing#group_end](./tracing#group_end) is called. Groups can be nested and will be visible in the trace viewer.
+
+**Usage**
+
+```ruby
+# All actions between group and group_end
+# will be shown in the trace viewer as a group.
+context.tracing.group("Open Playwright.dev > API")
+
+page = context.new_page
+page.goto("https://playwright.dev/")
+page.get_by_role("link", name: "API").click
+
+context.tracing.group_end
+```
+
+## group_end
+
+```
+def group_end
+```
+
+
+Closes the last group created by [Tracing#group](./tracing#group).
+
 ## stop
 
 ```

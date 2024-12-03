@@ -92,5 +92,17 @@ module Playwright
     private def update_traces_dir(traces_dir)
       @traces_dir = traces_dir
     end
+
+    def group(name, location: nil)
+      params = {
+        name: name,
+        location: location,
+      }.compact
+      @channel.send_message_to_server('tracingGroup', params)
+    end
+
+    def group_end
+      @channel.send_message_to_server('tracingGroupEnd')
+    end
   end
 end

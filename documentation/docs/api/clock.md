@@ -105,6 +105,8 @@ alias: `fixed_time=`
 Makes `Date.now` and `new Date()` return fixed fake time at all times,
 keeps all the timers running.
 
+Use this method for simple scenarios where you only need to test with a predefined time. For more advanced scenarios, use [Clock#install](./clock#install) instead. Read docs on [clock emulation](https://playwright.dev/python/docs/clock) to learn more.
+
 **Usage**
 
 ```ruby
@@ -126,7 +128,7 @@ def set_system_time(time)
 alias: `system_time=`
 
 
-Sets current system time but does not trigger any timers.
+Sets system time, but does not trigger any timers. Use this to test how the web page reacts to a time shift, for example switching from summer to winter time, or changing time zones.
 
 **Usage**
 

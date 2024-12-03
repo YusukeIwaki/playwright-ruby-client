@@ -316,10 +316,9 @@ page.evaluate("matchMedia('print').matches") # => false
 ```
 
 ```ruby
-page.emulate_media(colorScheme="dark")
+page.emulate_media(colorScheme: "dark")
 page.evaluate("matchMedia('(prefers-color-scheme: dark)').matches") # => true
 page.evaluate("matchMedia('(prefers-color-scheme: light)').matches") # => false
-page.evaluate("matchMedia('(prefers-color-scheme: no-preference)').matches") # => false
 ```
 
 ## eval_on_selector
