@@ -1,0 +1,12 @@
+{
+  "workspaceFolder": "/src",
+  "dockerComposeFile": "./compose.yml",
+  "service": "dev",
+  "containerUser": "root",
+
+  "customizations": {
+    "vscode": {
+      "extensions": ["shopify.ruby-lsp", "eamodio.gitlens"]
+    }
+  }
+}

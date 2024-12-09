@@ -1,0 +1,16 @@
+volumes:
+  asdf:
+
+services:
+  dev:
+    build:
+      dockerfile: Dockerfile
+    command: sleep infinity
+    init: true
+    environment:
+      BROWSER: chromium
+      DEBUG: 1
+      PLAYWRIGHT_CLI_EXECUTABLE_PATH: npx playwright
+    volumes:
+      - asdf:/root/.asdf/installs
+      - ../:/src
