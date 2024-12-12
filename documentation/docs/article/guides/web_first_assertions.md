@@ -2,7 +2,7 @@
 sidebar_position: 5
 ---
 
-# Web-First assertions for RSpec
+# Web-First assertions
 
 Playwright introduces clever assertions for E2E testing, so called [web-first assertions](https://playwright.dev/docs/test-assertions).
 
@@ -29,7 +29,7 @@ The spec above have 2 similar expectations. The first one is a normal assertion,
 Imagine the case that 'Hi, playwright!' is shown after loading some data from API server. In this case, the first assertion may fail because 'Hi, playwright!' is not present soon after login. On the other hand, the second assertion automatically waits for the 'Hi, playwright!' to be shown.
 
 ## Configure
-
+### RSpec
 For avoiding matcher name conflicts, web-first assertions are not loaded by default. To enable web-first assertions, we have to configure RSpec as below:
 
 ```ruby title=spec/support/web_first_assertion.rb
@@ -52,6 +52,18 @@ describe 'example' do
 
   it 'should work' do
     ...
+```
+
+### Minitest
+```ruby
+require "playwright/test"
+
+class MyTest < Minitest::Test
+  include Playwright::Test::Assertions
+
+  def test_should_work 
+    ...
+end
 ```
 
 ## Matchers
