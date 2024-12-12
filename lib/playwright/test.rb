@@ -34,6 +34,9 @@ module Playwright
       end
     end
 
+    ALL_ASSERTIONS = PageAssertions.instance_methods(false) + LocatorAssertions.instance_methods(false)
+
+    # RSpec compatible matchers
     module Matchers
       class PlaywrightMatcher
         def initialize(expectation_method, *args, **kwargs)
@@ -66,19 +69,56 @@ module Playwright
           @failure_message
         end
       end
+
+      ALL_ASSERTIONS
+        .map(&:to_s)
+        .each do |method_name|
+          # to_be_visible => be_visible
+          # not_to_be_visible => not_be_visible
+          rspec_expectation_name = method_name.gsub("to_", "")
+          define_method rspec_expectation_name do |*args, **kwargs|
+            PlaywrightMatcher.new(method_name, *args, **kwargs)
+          end
+        end 
     end
 
-    ALL_ASSERTIONS = PageAssertions.instance_methods(false) + LocatorAssertions.instance_methods(false)
-
-    ALL_ASSERTIONS
-      .map(&:to_s)
-      .each do |method_name|
-        # to_be_visible => be_visible
-        # not_to_be_visible => not_be_visible
-        root_method_name = method_name.gsub("to_", "")
-        Matchers.send(:define_method, root_method_name) do |*args, **kwargs|
-          Matchers::PlaywrightMatcher.new(method_name, *args, **kwargs)
-        end
+    # Minitest compatible assertions and expectations
+    module Assertions
+      # in the case that minitest is not installed, do nothing
+      minitest_installed = begin
+        require "minitest"
+        require "minitest/spec"
+        true
+      rescue LoadError
+        false
       end
+
+      if minitest_installed
+        ALL_ASSERTIONS
+          .map(&:to_s)
+          .each do |method_name|
+            # Minitest
+            minitest_assertion_name = method_name
+              .gsub("not_to_", "refute_")
+              .gsub("to_", "assert_")
+              .gsub("_have_", "_has_")
+              .gsub("_be_", "_")
+
+            define_method minitest_assertion_name do |actual, *args, **kwargs|
+              begin
+                Expect.new.call(actual, false).send(method_name, *args, **kwargs)
+                assert true
+              rescue AssertionError => e
+                assert false, e.full_message
+              end
+            end
+
+            minitest_expectation_name = method_name
+              .gsub("not_to_", "must_not_")
+              .gsub("to_", "must_")
+            infect_an_assertion minitest_assertion_name, minitest_expectation_name
+          end
+      end
+    end
   end
 end
