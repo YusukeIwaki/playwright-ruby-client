@@ -29,7 +29,7 @@ module Playwright
             )
           )
         else
-          raise NotImplementedError.new("Only locator assertions are currently implemented")
+          raise NotImplementedError.new("Only locator and page assertions are currently implemented")
         end
       end
     end

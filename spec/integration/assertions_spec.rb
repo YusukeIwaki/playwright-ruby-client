@@ -436,7 +436,7 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
       end
     end
 
-    it 'should fail with conprehensive error message' do
+    it 'should fail with comprehensive error message' do
       with_page do |page|
         page.goto(server_empty_page)
         page.set_content("<div>3.141592</div>")
