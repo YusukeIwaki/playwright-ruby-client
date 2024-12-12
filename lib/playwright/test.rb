@@ -116,7 +116,7 @@ module Playwright
             minitest_expectation_name = method_name
               .gsub("not_to_", "must_not_")
               .gsub("to_", "must_")
-            infect_an_assertion minitest_assertion_name, minitest_expectation_name
+            infect_an_assertion minitest_assertion_name, minitest_expectation_name, true
           end
       end
     end
