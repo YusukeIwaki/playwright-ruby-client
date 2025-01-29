@@ -383,10 +383,23 @@ module Playwright
     end
     _define_negation :to_be_attached
 
-    def to_be_checked(checked: nil, timeout: nil)
+    def to_be_checked(checked: nil, indeterminate: nil, timeout: nil)
+      expected_value = {
+        indeterminate: indeterminate,
+        checked: checked,
+      }.compact
+      checked_string =
+        if indeterminate
+          "indeterminate"
+        elsif checked
+          "checked"
+        else
+          "unchecked"
+        end
+
       expect_impl(
-        (checked || checked.nil?) ? "to.be.checked" : "to.be.unchecked",
-        { timeout: timeout },
+        "to.be.checked",
+        { timeout: timeout, expectedValue: expected_value },
         nil,
         "Locator expected to be checked"
       )

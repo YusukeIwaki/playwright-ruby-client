@@ -747,7 +747,7 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
         expect(my_checkbox).to be_checked(timeout: 100, checked: true)
       }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
 
-      my_checkbox.check()
+      my_checkbox.check
       expect(my_checkbox).to be_checked(timeout: 100, checked: true)
 
       expect {
@@ -755,6 +755,15 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
       }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
 
       expect(my_checkbox).to be_checked
+
+      page.set_content("<input type=checkbox></input>")
+      page.locator('input').evaluate("e => e.indeterminate = true")
+      locator = page.locator('input')
+      expect(locator).to be_checked(indeterminate: true)
+
+      expect {
+        expect(locator).to be_checked(indeterminate: true, checked: false)
+      }.to raise_error(/Can't assert indeterminate and checked at the same time/)
     end
   end
 
