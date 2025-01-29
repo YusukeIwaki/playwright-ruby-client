@@ -85,6 +85,17 @@ page.clock.pause_at(Time.parse("2020-02-02"))
 page.clock.pause_at("2020-02-02")
 ```
 
+For best results, install the clock before navigating the page and set it to a time slightly before the intended test time. This ensures that all timers run normally during page loading, preventing the page from getting stuck. Once the page has fully loaded, you can safely use [Clock#pause_at](./clock#pause_at) to pause the clock.
+
+```python title="example_a455277e025b97b226ec675888cebfd13b06e296accc56892e5c4ed164cfc317.py"
+# Initialize clock with some time before the test time and let the page load
+# naturally. `Date.now` will progress as the timers fire.
+page.clock.install(time=datetime.datetime(2024, 12, 10, 8, 0, 0))
+page.goto("http://localhost:3333")
+page.clock.pause_at(datetime.datetime(2024, 12, 10, 10, 0, 0))
+
+```
+
 ## resume
 
 ```

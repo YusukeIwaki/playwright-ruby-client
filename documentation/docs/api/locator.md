@@ -92,7 +92,7 @@ def aria_snapshot(timeout: nil)
 
 
 Captures the aria snapshot of the given element.
-Read more about [aria snapshots](https://playwright.dev/python/docs/aria-snapshots) and [LocatorAssertions#to_match_aria_snapshot](./locator_assertions#to_match_aria_snapshot) for the corresponding assertion.
+Read more about [aria snapshots](https://playwright.dev/python/docs/aria-snapshots) and [LocatorAssertions#to_match_aria_snapshot#1](./locator_assertions#to_match_aria_snapshot#1) for the corresponding assertion.
 
 **Usage**
 
@@ -357,10 +357,10 @@ properties:
 
 You can also specify [JSHandle](./js_handle) as the property value if you want live objects to be passed into the event:
 
-```ruby
-# note you can only create data_transfer in chromium and firefox
+```python title="example_472d69650f95db85a03c0badae236103133ca72a1e046201f323781424707f68.py"
 data_transfer = page.evaluate_handle("new DataTransfer()")
-locator.dispatch_event("dragstart", eventInit: { dataTransfer: data_transfer })
+locator.dispatch_event("#source", "dragstart", {"dataTransfer": data_transfer})
+
 ```
 
 ## drag_to
@@ -945,7 +945,7 @@ def editable?(timeout: nil)
 ```
 
 
-Returns whether the element is [editable](https://playwright.dev/python/docs/actionability#editable).
+Returns whether the element is [editable](https://playwright.dev/python/docs/actionability#editable). If the target element is not an `<input>`, `<textarea>`, `<select>`, `[contenteditable]` and does not have a role allowing `[aria-readonly]`, this method throws an error.
 
 **NOTE**: If you need to assert that an element is editable, prefer [LocatorAssertions#to_be_editable](./locator_assertions#to_be_editable) to avoid flakiness. See [assertions guide](https://playwright.dev/python/docs/test-assertions) for more details.
 
@@ -1061,20 +1061,23 @@ def or(locator)
 
 Creates a locator matching all elements that match one or both of the two locators.
 
-Note that when both locators match something, the resulting locator will have multiple matches and violate [locator strictness](https://playwright.dev/python/docs/locators#strictness) guidelines.
+Note that when both locators match something, the resulting locator will have multiple matches, potentially causing a [locator strictness](https://playwright.dev/python/docs/locators#strictness) violation.
 
 **Usage**
 
 Consider a scenario where you'd like to click on a "New email" button, but sometimes a security settings dialog shows up instead. In this case, you can wait for either a "New email" button, or a dialog and act accordingly.
 
-```ruby
-new_email = page.get_by_role("button", name: "New")
+**NOTE**: If both "New email" button and security dialog appear on screen, the "or" locator will match both of them,
+possibly throwing the ["strict mode violation" error](https://playwright.dev/python/docs/locators#strictness). In this case, you can use [Locator#first](./locator#first) to only match one of them.
+
+```python title="example_66fc739781815cb05dad77527d405e72e1cd6c2b923bd48ef47e83078363fb26.py"
+new_email = page.get_by_role("button", name="New")
 dialog = page.get_by_text("Confirm security settings")
-new_email.or(dialog).wait_for(state: 'visible')
-if dialog.visible?
-  page.get_by_role("button", name: "Dismiss").click
-end
-new_email.click
+expect(new_email.or_(dialog).first).to_be_visible()
+if (dialog.is_visible()):
+  page.get_by_role("button", name="Dismiss").click()
+new_email.click()
+
 ```
 
 ## page

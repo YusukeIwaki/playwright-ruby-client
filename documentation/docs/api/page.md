@@ -1063,8 +1063,6 @@ def pdf(
 
 Returns the PDF buffer.
 
-**NOTE**: Generating a pdf is currently only supported in Chromium headless.
-
 `page.pdf()` generates a pdf of the page with `print` css media. To generate a pdf with `screen` media, call
 [Page#emulate_media](./page#emulate_media) before calling `page.pdf()`:
 

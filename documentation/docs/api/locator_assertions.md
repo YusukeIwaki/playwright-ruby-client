@@ -257,7 +257,7 @@ expect(page.get_by_text("Hidden text")).to be_attached
 ## to_be_checked
 
 ```ruby
-expect(locator).to be_checked(checked: nil, timeout: nil)
+expect(locator).to be_checked(checked: nil, indeterminate: nil, timeout: nil)
 ```
 
 
@@ -527,22 +527,24 @@ expect(locator).to have_class(expected, timeout: nil)
 ```
 
 
-Ensures the [Locator](./locator) points to an element with given CSS classes. This needs to be a full match
-or using a relaxed regular expression.
+Ensures the [Locator](./locator) points to an element with given CSS classes. When a string is provided, it must fully match the element's `class` attribute. To match individual classes or perform partial matches, use a regular expression:
 
 **Usage**
 
 ```html
-<div class='selected row' id='component'></div>
+<div class='middle selected row' id='component'></div>
 ```
 
-```ruby
+```python title="example_7778d4f89215025560ecd192d60831f898331a0f339607a657c038207951e473.py"
+from playwright.sync_api import expect
+
 locator = page.locator("#component")
-expect(locator).to have_class(/selected/)
-expect(locator).to have_class("selected row")
+expect(locator).to_have_class(re.compile(r"(^|\\s)selected(\\s|$)"))
+expect(locator).to_have_class("middle selected row")
+
 ```
 
-Note that if array is passed as an expected value, entire lists of elements can be asserted:
+When an array is passed, the method asserts that the list of elements located matches the corresponding list of expected class values. Each element's class attribute is matched against the corresponding string or regular expression in the array:
 
 ```ruby
 locator = page.locator("list > .component")
@@ -726,23 +728,4 @@ For example, given the following element:
 locator = page.locator("id=favorite-colors")
 locator.select_option(["R", "G"])
 expect(locator).to have_values([/R/, /G/])
-```
-
-## to_match_aria_snapshot
-
-```ruby
-expect(locator).to match_aria_snapshot(expected, timeout: nil)
-```
-
-
-Asserts that the target element matches the given [accessibility snapshot](https://playwright.dev/python/docs/aria-snapshots).
-
-**Usage**
-
-```ruby
-page.goto('https://demo.playwright.dev/todomvc/')
-expect(page.locator('body')).to_match_aria_snapshot(<<~YAML)
-- heading "todos"
-- textbox "What needs to be done?"
-YAML
 ```
