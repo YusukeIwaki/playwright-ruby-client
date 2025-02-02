@@ -460,8 +460,6 @@ RSpec.describe 'ariaSnapshot' do
   end
 
   it 'should escape yaml text in text nodes' do
-    pending 'not escaped by playwright driver...'
-
     with_page do |page|
       page.content = <<~HTML
       <details>
@@ -514,8 +512,6 @@ RSpec.describe 'ariaSnapshot' do
   end
 
   it 'should escape special yaml characters' do
-    pending 'not escaped by playwright driver...'
-
     with_page do |page|
       page.content = <<~HTML
       <a href="#">@hello</a>@hello
@@ -540,8 +536,6 @@ RSpec.describe 'ariaSnapshot' do
   end
 
   it 'should escape special yaml values' do
-    pending 'not escaped by playwright driver...'
-
     with_page do |page|
       page.content = <<~HTML
       <a href="#">true</a>False
