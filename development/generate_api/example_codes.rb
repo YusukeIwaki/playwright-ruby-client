@@ -396,6 +396,15 @@ module ExampleCodes
     page.clock.pause_at("2020-02-02")
   end
 
+  # Clock#pause_at
+  def example_a455277e025b97b226ec675888cebfd13b06e296accc56892e5c4ed164cfc317(page:)
+    # Initialize clock with some time before the test time and let the page load
+    # naturally. `Date.now` will progress as the timers fire.
+    page.clock.install(Time.parse("2024-12-10T08:00:00Z"))
+    page.goto("http://localhost:3333")
+    page.clock.pause_at(Time.parse("2024-12-10T10:00:00Z"))
+  end
+
   # Clock#set_fixed_time
   def example_612285ca3970e44df82608ceff6f6b9ae471b0f7860b60916bbaefd327dd2ffd(page:)
     page.clock.set_fixed_time(Time.now)

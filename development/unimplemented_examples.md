@@ -5,17 +5,6 @@ Excample codes in API documentation is replaces with the methods defined in deve
 The examples listed below is not yet implemented, and documentation shows Python code.
 
 
-### example_a455277e025b97b226ec675888cebfd13b06e296accc56892e5c4ed164cfc317 (Clock#pause_at)
-
-```
-# Initialize clock with some time before the test time and let the page load
-# naturally. `Date.now` will progress as the timers fire.
-page.clock.install(time=datetime.datetime(2024, 12, 10, 8, 0, 0))
-page.goto("http://localhost:3333")
-page.clock.pause_at(datetime.datetime(2024, 12, 10, 10, 0, 0))
-
-```
-
 ### example_7778d4f89215025560ecd192d60831f898331a0f339607a657c038207951e473 (LocatorAssertions#to_have_class)
 
 ```
