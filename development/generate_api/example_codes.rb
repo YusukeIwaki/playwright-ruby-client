@@ -396,6 +396,15 @@ module ExampleCodes
     page.clock.pause_at("2020-02-02")
   end
 
+  # Clock#pause_at
+  def example_a455277e025b97b226ec675888cebfd13b06e296accc56892e5c4ed164cfc317(page:)
+    # Initialize clock with some time before the test time and let the page load
+    # naturally. `Date.now` will progress as the timers fire.
+    page.clock.install(Time.parse("2024-12-10T08:00:00Z"))
+    page.goto("http://localhost:3333")
+    page.clock.pause_at(Time.parse("2024-12-10T10:00:00Z"))
+  end
+
   # Clock#set_fixed_time
   def example_612285ca3970e44df82608ceff6f6b9ae471b0f7860b60916bbaefd327dd2ffd(page:)
     page.clock.set_fixed_time(Time.now)
@@ -516,7 +525,6 @@ module ExampleCodes
 
   # ElementHandle#dispatch_event
   def example_6b70ea4cf0c7ae9c82cf0ed22ab0dbbb563e2d1419b35d04aa513cf91f0856f9(page:, element_handle:)
-    # note you can only create data_transfer in chromium and firefox
     data_transfer = page.evaluate_handle("new DataTransfer()")
     element_handle.dispatch_event("dragstart", eventInit: { dataTransfer: data_transfer })
   end
@@ -599,7 +607,6 @@ module ExampleCodes
 
   # Frame#dispatch_event
   def example_5410f49339561b3cc9d91c7548c8195a570c8be704bb62f45d90c68f869d450d(frame:)
-    # note you can only create data_transfer in chromium and firefox
     data_transfer = frame.evaluate_handle("new DataTransfer()")
     frame.dispatch_event("#source", "dragstart", eventInit: { dataTransfer: data_transfer })
   end
@@ -955,8 +962,7 @@ module ExampleCodes
   end
 
   # Locator#dispatch_event
-  def example_bf805bb1858c7b8ea50d9c52704fab32064e1c26fb608232e823fe87267a07b3(page:, element_handle:)
-    # note you can only create data_transfer in chromium and firefox
+  def example_472d69650f95db85a03c0badae236103133ca72a1e046201f323781424707f68(page:, element_handle:)
     data_transfer = page.evaluate_handle("new DataTransfer()")
     locator.dispatch_event("dragstart", eventInit: { dataTransfer: data_transfer })
   end
@@ -1074,10 +1080,10 @@ module ExampleCodes
   end
 
   # Locator#or
-  def example_180e47ad1dc80f352ad9ffc8519b25c65c17b7413febe4912e66acc198de69e7(page:)
+  def example_66fc739781815cb05dad77527d405e72e1cd6c2b923bd48ef47e83078363fb26(page:)
     new_email = page.get_by_role("button", name: "New")
     dialog = page.get_by_text("Confirm security settings")
-    new_email.or(dialog).wait_for(state: 'visible')
+    new_email.or(dialog).first.wait_for(state: 'visible')
     if dialog.visible?
       page.get_by_role("button", name: "Dismiss").click
     end
@@ -1283,6 +1289,12 @@ module ExampleCodes
     expect(locator).to have_accessible_name("Save to disk")
   end
 
+  # LocatorAssertions#to_have_accessible_error_message
+  def example_39d8ae8779030809c6ad1ef8355e094f5e9f6b1bdb9ee1a6e76bf2f1bab1a8cd(page:)
+    locator = page.get_by_test_id("username-input")
+    expect(locator).to have_accessible_error_message("Username is required.")
+  end
+
   # LocatorAssertions#to_have_role
   def example_c3fce4e9b467982e8547d3821d6320ddf08aef95feb7c6b38acdb2996c8df174(page:)
     locator = page.get_by_test_id("save-button")
@@ -1296,10 +1308,10 @@ module ExampleCodes
   end
 
   # LocatorAssertions#to_have_class
-  def example_c16c6c567ee66b6d60de634c8a8a7c7c2b26f0e9ea8556e50a47d0c151935aa1(page:)
+  def example_7778d4f89215025560ecd192d60831f898331a0f339607a657c038207951e473(page:)
     locator = page.locator("#component")
-    expect(locator).to have_class(/selected/)
-    expect(locator).to have_class("selected row")
+    expect(locator).to have_class(/(^|\s)selected(\s|$)/)
+    expect(locator).to have_class("middle selected row")
   end
 
   # LocatorAssertions#to_have_class
@@ -1368,9 +1380,9 @@ module ExampleCodes
   end
 
   # LocatorAssertions#to_match_aria_snapshot
-  def example_e0bf8d0d0ca6181f89d6e14269d53e0bd13b4e5fb1d4457c443588c887ef417e(page:)
+  def example_7e42f38bd7c5b69b7f22390f6afa0f53aa155d74ad6a72b080fa2910013dc22c(page:)
     page.goto('https://demo.playwright.dev/todomvc/')
-    expect(page.locator('body')).to_match_aria_snapshot(<<~YAML)
+    expect(page.locator('body')).to match_aria_snapshot(<<~YAML)
     - heading "todos"
     - textbox "What needs to be done?"
     YAML
@@ -1460,7 +1472,6 @@ module ExampleCodes
   def example_9b4482b7243b7ce304d6ce8454395e23db30f3d1d83229242ab7bd2abd5b72e0(page:)
     page.content = '<div id="source">Drag</div>'
 
-    # note you can only create data_transfer in chromium and firefox
     data_transfer = page.evaluate_handle("new DataTransfer()")
     page.dispatch_event("#source", "dragstart", eventInit: { dataTransfer: data_transfer })
   end

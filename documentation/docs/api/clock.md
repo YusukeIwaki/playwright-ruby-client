@@ -85,6 +85,16 @@ page.clock.pause_at(Time.parse("2020-02-02"))
 page.clock.pause_at("2020-02-02")
 ```
 
+For best results, install the clock before navigating the page and set it to a time slightly before the intended test time. This ensures that all timers run normally during page loading, preventing the page from getting stuck. Once the page has fully loaded, you can safely use [Clock#pause_at](./clock#pause_at) to pause the clock.
+
+```ruby
+# Initialize clock with some time before the test time and let the page load
+# naturally. `Date.now` will progress as the timers fire.
+page.clock.install(Time.parse("2024-12-10T08:00:00Z"))
+page.goto("http://localhost:3333")
+page.clock.pause_at(Time.parse("2024-12-10T10:00:00Z"))
+```
+
 ## resume
 
 ```

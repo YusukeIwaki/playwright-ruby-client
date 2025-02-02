@@ -124,7 +124,15 @@ RSpec.describe 'Locator' do
 
   it 'editable? should work' do
     with_page do |page|
-      page.content = '<input id=input1 disabled><textarea></textarea><input id=input2>'
+      page.content = <<~HTML
+      <input id=input1 disabled>
+      <textarea></textarea>
+      <input id=input2>
+      <div contenteditable="true"></div>
+      <span id=span1 role=textbox aria-readonly=true></span>
+      <span id=span2 role=textbox></span>
+      <button>button</button>
+      HTML
 
       input1 = page.locator('#input1')
       expect(input1).not_to be_editable
@@ -136,6 +144,18 @@ RSpec.describe 'Locator' do
       expect(textarea).to be_editable
       page.eval_on_selector('textarea', 't => t.readOnly = true')
       expect(textarea).not_to be_editable
+
+      div = page.locator('div')
+      expect(div).to be_editable
+
+      span1 = page.locator('#span1')
+      expect(span1).not_to be_editable
+
+      span2 = page.locator('#span2')
+      expect(span2).to be_editable
+
+      button = page.locator('button')
+      expect { button.editable? }.to raise_error(/Element is not an <input>, <textarea>, <select> or \[contenteditable\] and does not have a role allowing \[aria-readonly\]/)
     end
   end
 

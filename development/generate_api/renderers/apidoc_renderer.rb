@@ -379,13 +379,16 @@ class ApidocRenderer
     #
     # This method uses AST and requires Ruby >= 2.6
     private def definition_for(example_method)
-      ast = RubyVM::AbstractSyntaxTree.of(example_method)
+      iseq = RubyVM::InstructionSequence.of(example_method)
+      source = File.read(iseq.absolute_path)
+      location = iseq.to_a[4][:code_location]
+      start_lineno, _start_column, end_lineno, _end_column = location
 
-      # def example_xxxx <-- ast.first_lineno ... index = ast.first_lineno-1
+      # def example_xxxx <-- start_lineno ... index = start_lineno-1
       #
-      # end <-- ast.last_lineno ... index= ast.last_lineno-1
+      # end <-- end_lineno ... index= end_lineno-1
 
-      @code_lines[ast.first_lineno..ast.last_lineno-2].map do |line|
+      @code_lines[start_lineno..end_lineno-2].map do |line|
         if line.start_with?('    ')
           line[4..-1] # remove indent
         else

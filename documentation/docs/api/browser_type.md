@@ -37,6 +37,8 @@ The default browser context is accessible via [Browser#contexts](./browser#conte
 
 **NOTE**: Connecting over the Chrome DevTools Protocol is only supported for Chromium-based browsers.
 
+**NOTE**: This connection is significantly lower fidelity than the Playwright protocol connection via [BrowserType#connect](./browser_type#connect). If you are experiencing issues or attempting to use advanced functionality, you probably want to use [BrowserType#connect](./browser_type#connect).
+
 **Usage**
 
 ```ruby

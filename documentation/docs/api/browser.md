@@ -40,7 +40,7 @@ were opened).
 In case this browser is connected to, clears all created contexts belonging to this browser and disconnects from the
 browser server.
 
-**NOTE**: This is similar to force quitting the browser. Therefore, you should call [BrowserContext#close](./browser_context#close) on any [BrowserContext](./browser_context)'s you explicitly created earlier with [Browser#new_context](./browser#new_context) **before** calling [Browser#close](./browser#close).
+**NOTE**: This is similar to force-quitting the browser. To close pages gracefully and ensure you receive page close events, call [BrowserContext#close](./browser_context#close) on any [BrowserContext](./browser_context) instances you explicitly created earlier using [Browser#new_context](./browser#new_context) **before** calling [Browser#close](./browser#close).
 
 The [Browser](./browser) object itself is considered to be disposed and cannot be used anymore.
 

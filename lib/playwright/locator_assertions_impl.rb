@@ -149,7 +149,7 @@ module Playwright
     _define_negation :to_contain_text
 
     def to_have_accessible_name(name, ignoreCase: nil, timeout: nil)
-      expected_text = to_expected_text_values([name], ignore_case: ignoreCase)
+      expected_text = to_expected_text_values([name], ignore_case: ignoreCase, normalize_white_space: true)
       expect_impl(
         "to.have.accessible.name",
         {
@@ -163,7 +163,7 @@ module Playwright
     _define_negation :to_have_accessible_name
 
     def to_have_accessible_description(name, ignoreCase: nil, timeout: nil)
-      expected_text = to_expected_text_values([name], ignore_case: ignoreCase)
+      expected_text = to_expected_text_values([name], ignore_case: ignoreCase, normalize_white_space: true)
       expect_impl(
         "to.have.accessible.description",
         {
@@ -175,6 +175,20 @@ module Playwright
       )
     end
     _define_negation :to_have_accessible_description
+
+    def to_have_accessible_error_message(errorMessage, ignoreCase: nil, timeout: nil)
+      expected_text = to_expected_text_values([errorMessage], ignore_case: ignoreCase, normalize_white_space: true)
+      expect_impl(
+        "to.have.accessible.error.message",
+        {
+          expectedText: expected_text,
+          timeout: timeout,
+        },
+        errorMessage,
+        "Locator expected to have accessible error message"
+      )
+    end
+    _define_negation :to_have_accessible_error_message
 
     def to_have_attribute(name, value, ignoreCase: nil, timeout: nil)
       expected_text = to_expected_text_values([value], ignore_case: ignoreCase)
@@ -372,6 +386,7 @@ module Playwright
         'Locator expected to match Aria snapshot',
       )
     end
+    _define_negation :to_match_aria_snapshot
 
     def to_be_attached(attached: nil, timeout: nil)
       expect_impl(
@@ -383,10 +398,23 @@ module Playwright
     end
     _define_negation :to_be_attached
 
-    def to_be_checked(checked: nil, timeout: nil)
+    def to_be_checked(checked: nil, indeterminate: nil, timeout: nil)
+      expected_value = {
+        indeterminate: indeterminate,
+        checked: checked,
+      }.compact
+      checked_string =
+        if indeterminate
+          "indeterminate"
+        elsif checked
+          "checked"
+        else
+          "unchecked"
+        end
+
       expect_impl(
-        (checked || checked.nil?) ? "to.be.checked" : "to.be.unchecked",
-        { timeout: timeout },
+        "to.be.checked",
+        { timeout: timeout, expectedValue: expected_value },
         nil,
         "Locator expected to be checked"
       )

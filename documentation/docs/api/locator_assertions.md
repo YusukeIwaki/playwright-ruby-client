@@ -134,6 +134,15 @@ expect(locator).not_to have_accessible_description(name, ignoreCase: nil, timeou
 
 The opposite of [LocatorAssertions#to_have_accessible_description](./locator_assertions#to_have_accessible_description).
 
+## not_to_have_accessible_error_message
+
+```ruby
+expect(locator).not_to have_accessible_error_message(errorMessage, ignoreCase: nil, timeout: nil)
+```
+
+
+The opposite of [LocatorAssertions#to_have_accessible_error_message](./locator_assertions#to_have_accessible_error_message).
+
 ## not_to_have_accessible_name
 
 ```ruby
@@ -233,6 +242,15 @@ expect(locator).not_to have_values(values, timeout: nil)
 
 The opposite of [LocatorAssertions#to_have_values](./locator_assertions#to_have_values).
 
+## not_to_match_aria_snapshot
+
+```ruby
+expect(locator).not_to match_aria_snapshot(expected, timeout: nil)
+```
+
+
+The opposite of [LocatorAssertions#to_match_aria_snapshot](./locator_assertions#to_match_aria_snapshot).
+
 ## to_be_attached
 
 ```ruby
@@ -257,7 +275,7 @@ expect(page.get_by_text("Hidden text")).to be_attached
 ## to_be_checked
 
 ```ruby
-expect(locator).to be_checked(checked: nil, timeout: nil)
+expect(locator).to be_checked(checked: nil, indeterminate: nil, timeout: nil)
 ```
 
 
@@ -488,6 +506,22 @@ locator = page.get_by_test_id("save-button")
 expect(locator).to have_accessible_description("Save results to disk")
 ```
 
+## to_have_accessible_error_message
+
+```ruby
+expect(locator).to have_accessible_error_message(errorMessage, ignoreCase: nil, timeout: nil)
+```
+
+
+Ensures the [Locator](./locator) points to an element with a given [aria errormessage](https://w3c.github.io/aria/#aria-errormessage).
+
+**Usage**
+
+```ruby
+locator = page.get_by_test_id("username-input")
+expect(locator).to have_accessible_error_message("Username is required.")
+```
+
 ## to_have_accessible_name
 
 ```ruby
@@ -527,22 +561,21 @@ expect(locator).to have_class(expected, timeout: nil)
 ```
 
 
-Ensures the [Locator](./locator) points to an element with given CSS classes. This needs to be a full match
-or using a relaxed regular expression.
+Ensures the [Locator](./locator) points to an element with given CSS classes. When a string is provided, it must fully match the element's `class` attribute. To match individual classes or perform partial matches, use a regular expression:
 
 **Usage**
 
 ```html
-<div class='selected row' id='component'></div>
+<div class='middle selected row' id='component'></div>
 ```
 
 ```ruby
 locator = page.locator("#component")
-expect(locator).to have_class(/selected/)
-expect(locator).to have_class("selected row")
+expect(locator).to have_class(/(^|\s)selected(\s|$)/)
+expect(locator).to have_class("middle selected row")
 ```
 
-Note that if array is passed as an expected value, entire lists of elements can be asserted:
+When an array is passed, the method asserts that the list of elements located matches the corresponding list of expected class values. Each element's class attribute is matched against the corresponding string or regular expression in the array:
 
 ```ruby
 locator = page.locator("list > .component")
@@ -741,7 +774,7 @@ Asserts that the target element matches the given [accessibility snapshot](https
 
 ```ruby
 page.goto('https://demo.playwright.dev/todomvc/')
-expect(page.locator('body')).to_match_aria_snapshot(<<~YAML)
+expect(page.locator('body')).to match_aria_snapshot(<<~YAML)
 - heading "todos"
 - textbox "What needs to be done?"
 YAML

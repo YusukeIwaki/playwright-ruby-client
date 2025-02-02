@@ -253,7 +253,6 @@ You can also specify [JSHandle](./js_handle) as the property value if you want l
 ```ruby
 page.content = '<div id="source">Drag</div>'
 
-# note you can only create data_transfer in chromium and firefox
 data_transfer = page.evaluate_handle("new DataTransfer()")
 page.dispatch_event("#source", "dragstart", eventInit: { dataTransfer: data_transfer })
 ```
@@ -1062,8 +1061,6 @@ def pdf(
 
 
 Returns the PDF buffer.
-
-**NOTE**: Generating a pdf is currently only supported in Chromium headless.
 
 `page.pdf()` generates a pdf of the page with `print` css media. To generate a pdf with `screen` media, call
 [Page#emulate_media](./page#emulate_media) before calling `page.pdf()`:

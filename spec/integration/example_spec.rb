@@ -414,6 +414,19 @@ RSpec.describe 'example' do
           example_781b6f44dd462fc3753b3e48d6888f2ef4d0794253bf6ffb4c42c76f5ec3b454(page: page)
         end
       end
+
+      it 'should work with #to_have_class' do
+        with_page do |page|
+          page.content = "<div class='middle selected row' id='component'></div>"
+          example_7778d4f89215025560ecd192d60831f898331a0f339607a657c038207951e473(page: page)
+        end
+      end
+
+      it 'should work with #match_aria_snapshot' do
+        with_page do |page|
+          example_7e42f38bd7c5b69b7f22390f6afa0f53aa155d74ad6a72b080fa2910013dc22c(page: page)
+        end
+      end
     end
 
     it 'should work with Page#dispatch_event' do

@@ -565,6 +565,7 @@
 * not_to_be_visible
 * not_to_contain_text
 * not_to_have_accessible_description
+* not_to_have_accessible_error_message
 * not_to_have_accessible_name
 * not_to_have_attribute
 * not_to_have_class
@@ -576,6 +577,7 @@
 * not_to_have_text
 * not_to_have_value
 * not_to_have_values
+* not_to_match_aria_snapshot
 * to_be_attached
 * to_be_checked
 * to_be_disabled
@@ -588,6 +590,7 @@
 * to_be_visible
 * to_contain_text
 * to_have_accessible_description
+* to_have_accessible_error_message
 * to_have_accessible_name
 * to_have_attribute
 * to_have_class

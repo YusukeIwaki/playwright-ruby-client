@@ -42,6 +42,11 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
         expect(div).to have_accessible_name(/hello/, timeout: 100)
       }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
       expect(div).to have_accessible_name(/hello/, ignoreCase: true)
+
+      page.content = <<~HTML
+      <button>foo&nbsp;bar\nbaz</button>
+      HTML
+      expect(page.locator('button')).to have_accessible_name("foo bar baz")
     end
   end
 
@@ -66,6 +71,171 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
         expect(div).to have_accessible_description(/hello/, timeout: 100)
       }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
       expect(div).to have_accessible_description(/hello/, ignoreCase: true)
+
+      page.content = <<~HTML
+      <div role="button" aria-describedby="desc"></div>
+      <span id="desc">foo&nbsp;bar\nbaz</span>
+      HTML
+
+      expect(div).to have_accessible_description("foo bar baz")
+    end
+  end
+
+  it 'should work with #to_have_accessible_error_message' do
+    with_page do |page|
+      page.content = <<~HTML
+      <form>
+        <input role="textbox" aria-invalid="true" aria-errormessage="error-message" />
+        <div id="error-message">Hello</div>
+        <div id="irrelevant-error">This should not be considered.</div>
+      </form>
+      HTML
+
+      locator = page.locator("input[role='textbox']")
+      expect(locator).to have_accessible_error_message("Hello")
+      expect(locator).not_to have_accessible_error_message("hello")
+      expect(locator).to have_accessible_error_message("hello", ignoreCase: true)
+      expect(locator).to have_accessible_error_message(/ell\w/)
+      expect(locator).not_to have_accessible_error_message(/hello/)
+      expect(locator).to have_accessible_error_message(/hello/, ignoreCase: true)
+      expect(locator).not_to have_accessible_error_message("This should not be considered.")
+    end
+  end
+
+  it 'toHaveAccessibleErrorMessage should handle multiple aria-errormessage references' do
+    with_page do |page|
+      page.content = <<~HTML
+      <form>
+        <input role="textbox" aria-invalid="true" aria-errormessage="error1 error2" />
+        <div id="error1">First error message.</div>
+        <div id="error2">Second error message.</div>
+        <div id="irrelevant-error">This should not be considered.</div>
+      </form>
+      HTML
+
+      locator = page.locator("input[role='textbox']")
+
+      expect(locator).to have_accessible_error_message("First error message. Second error message.")
+      expect(locator).to have_accessible_error_message(/first error message./i)
+      expect(locator).to have_accessible_error_message(/second error message./i)
+      expect(locator).not_to have_accessible_error_message(/This should not be considered./i)
+    end
+  end
+
+  describe 'toHaveAccessibleErrorMessage should handle aria-invalid attribute' do
+    let(:error_message_text) { 'Error message' }
+
+    def setup_page(page, aria_invalid_value)
+      aria_invalid_attr = aria_invalid_value ? "aria-invalid=\"#{aria_invalid_value}\"" : ''
+      page.content = <<~HTML
+      <form>
+        <input id="node" role="textbox" #{aria_invalid_attr} aria-errormessage="error-msg" />
+        <div id="error-msg">#{error_message_text}</div>
+      </form>
+      HTML
+      page.locator('#node')
+    end
+
+    context 'evaluated in false' do
+      it 'no aria-invalid attribute' do
+        with_page do |page|
+          locator = setup_page(page, nil)
+          expect(locator).not_to have_accessible_error_message(error_message_text)
+        end
+      end
+
+      it 'aria-invalid="false"' do
+        with_page do |page|
+          locator = setup_page(page, 'false')
+          expect(locator).not_to have_accessible_error_message(error_message_text)
+        end
+      end
+
+      it 'aria-invalid="" (empty string)' do
+        with_page do |page|
+          locator = setup_page(page, '')
+          expect(locator).not_to have_accessible_error_message(error_message_text)
+        end
+      end
+    end
+
+    context 'evaluated in true' do
+      it 'aria-invalid="true"' do
+        with_page do |page|
+          locator = setup_page(page, 'true')
+          expect(locator).to have_accessible_error_message(error_message_text)
+        end
+      end
+
+      it 'aria-invalid="foo" (unrecognized value)' do
+        with_page do |page|
+          locator = setup_page(page, 'foo')
+          expect(locator).to have_accessible_error_message(error_message_text)
+        end
+      end
+    end
+  end
+
+  describe 'toHaveAccessibleErrorMessage should handle validity state with aria-invalid' do
+    let(:error_message_text) { 'Error message' }
+
+    it 'should show error message when validity is false and aria-invalid is true' do
+      with_page do |page|
+        page.content = <<~HTML
+        <form>
+          <input id="node" role="textbox" type="number" min="1" max="100" aria-invalid="true" aria-errormessage="error-msg" />
+          <div id="error-msg">#{error_message_text}</div>
+        </form>
+        HTML
+        locator = page.locator('#node')
+        locator.fill('101')
+        expect(locator).to have_accessible_error_message(error_message_text)
+      end
+    end
+
+    it 'should show error message when validity is true and aria-invalid is true' do
+      with_page do |page|
+        page.content = <<~HTML
+        <form>
+          <input id="node" role="textbox" type="number" min="1" max="100" aria-invalid="true" aria-errormessage="error-msg" />
+          <div id="error-msg">#{error_message_text}</div>
+        </form>
+        HTML
+
+        locator = page.locator('#node')
+        locator.fill('99')
+        expect(locator).to have_accessible_error_message(error_message_text)
+      end
+    end
+
+    it 'should show error message when validity is false and aria-invalid is false' do
+      with_page do |page|
+        page.content = <<~HTML
+        <form>
+          <input id="node" role="textbox" type="number" min="1" max="100" aria-invalid="false" aria-errormessage="error-msg" />
+          <div id="error-msg">#{error_message_text}</div>
+        </form>
+        HTML
+
+        locator = page.locator('#node')
+        locator.fill('101')
+        expect(locator).to have_accessible_error_message(error_message_text)
+      end
+    end
+
+    it 'should not show error message when validity is true and aria-invalid is false' do
+      with_page do |page|
+        page.content = <<~HTML
+        <form>
+          <input id="node" role="textbox" type="number" min="1" max="100" aria-invalid="false" aria-errormessage="error-msg" />
+          <div id="error-msg">#{error_message_text}</div>
+        </form>
+        HTML
+
+        locator = page.locator('#node')
+        locator.fill('99')
+        expect(locator).not_to have_accessible_error_message(error_message_text)
+      end
     end
   end
 
@@ -747,7 +917,7 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
         expect(my_checkbox).to be_checked(timeout: 100, checked: true)
       }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
 
-      my_checkbox.check()
+      my_checkbox.check
       expect(my_checkbox).to be_checked(timeout: 100, checked: true)
 
       expect {
@@ -755,6 +925,15 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
       }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
 
       expect(my_checkbox).to be_checked
+
+      page.set_content("<input type=checkbox></input>")
+      page.locator('input').evaluate("e => e.indeterminate = true")
+      locator = page.locator('input')
+      expect(locator).to be_checked(indeterminate: true)
+
+      expect {
+        expect(locator).to be_checked(indeterminate: true, checked: false)
+      }.to raise_error(/Can't assert indeterminate and checked at the same time/)
     end
   end
 
@@ -841,12 +1020,8 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
     it "should work" do
       with_page do |page|
         page.goto(server_empty_page)
-        page.set_content("<input></input><button disabled>Text</button>")
-        expect(page.locator("button")).to not_be_editable
+        page.set_content("<input></input>")
         expect(page.locator("input")).to be_editable
-        expect {
-          expect(page.locator("button")).to be_editable(timeout: 100)
-        }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
       end
     end
 
@@ -868,6 +1043,14 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
       with_page do |page|
         page.set_content("<input></input>")
         expect(page.locator("input")).to not_be_editable(editable: false)
+      end
+    end
+
+    it 'throws' do
+      with_page do |page|
+        page.content = '<button></button>'
+        locator = page.locator('button')
+        expect { expect(locator).to be_editable }.to raise_error(/Element is not an <input>, <textarea>, <select> or \[contenteditable\] and does not have a role allowing \[aria-readonly\]/)
       end
     end
   end
