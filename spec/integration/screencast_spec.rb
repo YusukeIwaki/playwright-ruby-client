@@ -4,8 +4,7 @@ require 'chunky_png'
 require 'open3'
 require 'tmpdir'
 
-# https://github.com/microsoft/playwright/blob/master/tests/screencast.spec.ts
-# https://github.com/microsoft/playwright-python/blob/master/tests/async/test_video.py
+# https://github.com/microsoft/playwright/blob/main/tests/library/video.spec.ts
 RSpec.describe 'screencast' do
   def most_frequest_color_in_last_frame(dir, video_file)
     _, stderr, status = Open3.capture3("ffmpeg -i #{video_file} -r 25 #{video_file}-%03d.png", chdir: dir)
