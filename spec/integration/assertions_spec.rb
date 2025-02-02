@@ -1020,12 +1020,8 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
     it "should work" do
       with_page do |page|
         page.goto(server_empty_page)
-        page.set_content("<input></input><button disabled>Text</button>")
-        expect(page.locator("button")).to not_be_editable
+        page.set_content("<input></input>")
         expect(page.locator("input")).to be_editable
-        expect {
-          expect(page.locator("button")).to be_editable(timeout: 100)
-        }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
       end
     end
 
@@ -1047,6 +1043,14 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
       with_page do |page|
         page.set_content("<input></input>")
         expect(page.locator("input")).to not_be_editable(editable: false)
+      end
+    end
+
+    it 'throws' do
+      with_page do |page|
+        page.content = '<button></button>'
+        locator = page.locator('button')
+        expect { expect(locator).to be_editable }.to raise_error(/Element is not an <input>, <textarea>, <select> or \[contenteditable\] and does not have a role allowing \[aria-readonly\]/)
       end
     end
   end
