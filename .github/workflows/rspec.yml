@@ -32,7 +32,7 @@ jobs:
         ruby-version: 3.2
         bundler-cache: true
     - run: bundle exec ruby development/generate_api.rb
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: playwright_api
         path: lib/playwright_api
@@ -62,7 +62,7 @@ jobs:
         ./node_modules/.bin/playwright install ${{ matrix.browser }}
         ./node_modules/.bin/playwright install-deps
     - name: Download playwright_api codes
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: playwright_api
         path: lib/playwright_api
@@ -96,7 +96,7 @@ jobs:
         ./node_modules/.bin/playwright install chromium
         ./node_modules/.bin/playwright install-deps
     - name: Download playwright_api codes
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: playwright_api
         path: lib/playwright_api
