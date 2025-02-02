@@ -589,7 +589,7 @@
 * to_be_visible
 * to_contain_text
 * to_have_accessible_description
-* ~~to_have_accessible_error_message~~
+* to_have_accessible_error_message
 * to_have_accessible_name
 * to_have_attribute
 * to_have_class

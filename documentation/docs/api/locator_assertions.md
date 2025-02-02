@@ -488,6 +488,22 @@ locator = page.get_by_test_id("save-button")
 expect(locator).to have_accessible_description("Save results to disk")
 ```
 
+## to_have_accessible_error_message
+
+```ruby
+expect(locator).to have_accessible_error_message(errorMessage, ignoreCase: nil, timeout: nil)
+```
+
+
+Ensures the [Locator](./locator) points to an element with a given [aria errormessage](https://w3c.github.io/aria/#aria-errormessage).
+
+**Usage**
+
+```ruby
+locator = page.get_by_test_id("username-input")
+expect(locator).to have_accessible_error_message("Username is required.")
+```
+
 ## to_have_accessible_name
 
 ```ruby

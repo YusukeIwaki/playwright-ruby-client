@@ -1283,6 +1283,12 @@ module ExampleCodes
     expect(locator).to have_accessible_name("Save to disk")
   end
 
+  # LocatorAssertions#to_have_accessible_error_message
+  def example_39d8ae8779030809c6ad1ef8355e094f5e9f6b1bdb9ee1a6e76bf2f1bab1a8cd(page:)
+    locator = page.get_by_test_id("username-input")
+    expect(locator).to have_accessible_error_message("Username is required.")
+  end
+
   # LocatorAssertions#to_have_role
   def example_c3fce4e9b467982e8547d3821d6320ddf08aef95feb7c6b38acdb2996c8df174(page:)
     locator = page.get_by_test_id("save-button")

@@ -176,6 +176,19 @@ module Playwright
     end
     _define_negation :to_have_accessible_description
 
+    def to_have_accessible_error_message(errorMessage, ignoreCase: nil, timeout: nil)
+      expected_text = to_expected_text_values([errorMessage], ignore_case: ignoreCase, normalize_white_space: true)
+      expect_impl(
+        "to.have.accessible.error.message",
+        {
+          expectedText: expected_text,
+          timeout: timeout,
+        },
+        errorMessage,
+        "Locator expected to have accessible error message"
+      )
+    end
+
     def to_have_attribute(name, value, ignoreCase: nil, timeout: nil)
       expected_text = to_expected_text_values([value], ignore_case: ignoreCase)
       expect_impl(
