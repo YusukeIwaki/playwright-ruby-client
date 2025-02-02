@@ -92,7 +92,7 @@ def aria_snapshot(timeout: nil)
 
 
 Captures the aria snapshot of the given element.
-Read more about [aria snapshots](https://playwright.dev/python/docs/aria-snapshots) and [LocatorAssertions#to_match_aria_snapshot#1](./locator_assertions#to_match_aria_snapshot#1) for the corresponding assertion.
+Read more about [aria snapshots](https://playwright.dev/python/docs/aria-snapshots) and [LocatorAssertions#to_match_aria_snapshot](./locator_assertions#to_match_aria_snapshot) for the corresponding assertion.
 
 **Usage**
 

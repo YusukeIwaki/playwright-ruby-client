@@ -188,6 +188,7 @@ module Playwright
         "Locator expected to have accessible error message"
       )
     end
+    _define_negation :to_have_accessible_error_message
 
     def to_have_attribute(name, value, ignoreCase: nil, timeout: nil)
       expected_text = to_expected_text_values([value], ignore_case: ignoreCase)
@@ -385,6 +386,7 @@ module Playwright
         'Locator expected to match Aria snapshot',
       )
     end
+    _define_negation :to_match_aria_snapshot
 
     def to_be_attached(attached: nil, timeout: nil)
       expect_impl(

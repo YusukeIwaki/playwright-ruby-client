@@ -134,6 +134,15 @@ expect(locator).not_to have_accessible_description(name, ignoreCase: nil, timeou
 
 The opposite of [LocatorAssertions#to_have_accessible_description](./locator_assertions#to_have_accessible_description).
 
+## not_to_have_accessible_error_message
+
+```ruby
+expect(locator).not_to have_accessible_error_message(errorMessage, ignoreCase: nil, timeout: nil)
+```
+
+
+The opposite of [LocatorAssertions#to_have_accessible_error_message](./locator_assertions#to_have_accessible_error_message).
+
 ## not_to_have_accessible_name
 
 ```ruby
@@ -232,6 +241,15 @@ expect(locator).not_to have_values(values, timeout: nil)
 
 
 The opposite of [LocatorAssertions#to_have_values](./locator_assertions#to_have_values).
+
+## not_to_match_aria_snapshot
+
+```ruby
+expect(locator).not_to match_aria_snapshot(expected, timeout: nil)
+```
+
+
+The opposite of [LocatorAssertions#to_match_aria_snapshot](./locator_assertions#to_match_aria_snapshot).
 
 ## to_be_attached
 
@@ -744,4 +762,24 @@ For example, given the following element:
 locator = page.locator("id=favorite-colors")
 locator.select_option(["R", "G"])
 expect(locator).to have_values([/R/, /G/])
+```
+
+## to_match_aria_snapshot
+
+```ruby
+expect(locator).to match_aria_snapshot(expected, timeout: nil)
+```
+
+
+Asserts that the target element matches the given [accessibility snapshot](https://playwright.dev/python/docs/aria-snapshots).
+
+**Usage**
+
+```python title="example_7e42f38bd7c5b69b7f22390f6afa0f53aa155d74ad6a72b080fa2910013dc22c.py"
+page.goto("https://demo.playwright.dev/todomvc/")
+expect(page.locator('body')).to_match_aria_snapshot('''
+  - heading "todos"
+  - textbox "What needs to be done?"
+''')
+
 ```

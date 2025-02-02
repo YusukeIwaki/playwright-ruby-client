@@ -26,3 +26,14 @@ expect(locator).to_have_class(re.compile(r"(^|\\s)selected(\\s|$)"))
 expect(locator).to_have_class("middle selected row")
 
 ```
+
+### example_7e42f38bd7c5b69b7f22390f6afa0f53aa155d74ad6a72b080fa2910013dc22c (LocatorAssertions#to_match_aria_snapshot)
+
+```
+page.goto("https://demo.playwright.dev/todomvc/")
+expect(page.locator('body')).to_match_aria_snapshot('''
+  - heading "todos"
+  - textbox "What needs to be done?"
+''')
+
+```
