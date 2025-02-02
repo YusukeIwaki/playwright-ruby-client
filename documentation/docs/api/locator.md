@@ -357,10 +357,9 @@ properties:
 
 You can also specify [JSHandle](./js_handle) as the property value if you want live objects to be passed into the event:
 
-```python title="example_472d69650f95db85a03c0badae236103133ca72a1e046201f323781424707f68.py"
+```ruby
 data_transfer = page.evaluate_handle("new DataTransfer()")
-locator.dispatch_event("#source", "dragstart", {"dataTransfer": data_transfer})
-
+locator.dispatch_event("dragstart", eventInit: { dataTransfer: data_transfer })
 ```
 
 ## drag_to

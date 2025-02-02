@@ -192,7 +192,6 @@ properties:
 You can also specify [JSHandle](./js_handle) as the property value if you want live objects to be passed into the event:
 
 ```ruby
-# note you can only create data_transfer in chromium and firefox
 data_transfer = page.evaluate_handle("new DataTransfer()")
 element_handle.dispatch_event("dragstart", eventInit: { dataTransfer: data_transfer })
 ```

@@ -516,7 +516,6 @@ module ExampleCodes
 
   # ElementHandle#dispatch_event
   def example_6b70ea4cf0c7ae9c82cf0ed22ab0dbbb563e2d1419b35d04aa513cf91f0856f9(page:, element_handle:)
-    # note you can only create data_transfer in chromium and firefox
     data_transfer = page.evaluate_handle("new DataTransfer()")
     element_handle.dispatch_event("dragstart", eventInit: { dataTransfer: data_transfer })
   end
@@ -599,7 +598,6 @@ module ExampleCodes
 
   # Frame#dispatch_event
   def example_5410f49339561b3cc9d91c7548c8195a570c8be704bb62f45d90c68f869d450d(frame:)
-    # note you can only create data_transfer in chromium and firefox
     data_transfer = frame.evaluate_handle("new DataTransfer()")
     frame.dispatch_event("#source", "dragstart", eventInit: { dataTransfer: data_transfer })
   end
@@ -955,8 +953,7 @@ module ExampleCodes
   end
 
   # Locator#dispatch_event
-  def example_bf805bb1858c7b8ea50d9c52704fab32064e1c26fb608232e823fe87267a07b3(page:, element_handle:)
-    # note you can only create data_transfer in chromium and firefox
+  def example_472d69650f95db85a03c0badae236103133ca72a1e046201f323781424707f68(page:, element_handle:)
     data_transfer = page.evaluate_handle("new DataTransfer()")
     locator.dispatch_event("dragstart", eventInit: { dataTransfer: data_transfer })
   end
@@ -1466,7 +1463,6 @@ module ExampleCodes
   def example_9b4482b7243b7ce304d6ce8454395e23db30f3d1d83229242ab7bd2abd5b72e0(page:)
     page.content = '<div id="source">Drag</div>'
 
-    # note you can only create data_transfer in chromium and firefox
     data_transfer = page.evaluate_handle("new DataTransfer()")
     page.dispatch_event("#source", "dragstart", eventInit: { dataTransfer: data_transfer })
   end

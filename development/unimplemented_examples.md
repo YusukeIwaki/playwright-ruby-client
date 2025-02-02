@@ -16,14 +16,6 @@ page.clock.pause_at(datetime.datetime(2024, 12, 10, 10, 0, 0))
 
 ```
 
-### example_472d69650f95db85a03c0badae236103133ca72a1e046201f323781424707f68 (Locator#dispatch_event)
-
-```
-data_transfer = page.evaluate_handle("new DataTransfer()")
-locator.dispatch_event("#source", "dragstart", {"dataTransfer": data_transfer})
-
-```
-
 ### example_7778d4f89215025560ecd192d60831f898331a0f339607a657c038207951e473 (LocatorAssertions#to_have_class)
 
 ```
