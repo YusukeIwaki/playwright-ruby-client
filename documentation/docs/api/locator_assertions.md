@@ -569,13 +569,10 @@ Ensures the [Locator](./locator) points to an element with given CSS classes. Wh
 <div class='middle selected row' id='component'></div>
 ```
 
-```python title="example_7778d4f89215025560ecd192d60831f898331a0f339607a657c038207951e473.py"
-from playwright.sync_api import expect
-
+```ruby
 locator = page.locator("#component")
-expect(locator).to_have_class(re.compile(r"(^|\\s)selected(\\s|$)"))
-expect(locator).to_have_class("middle selected row")
-
+expect(locator).to have_class(/(^|\s)selected(\s|$)/)
+expect(locator).to have_class("middle selected row")
 ```
 
 When an array is passed, the method asserts that the list of elements located matches the corresponding list of expected class values. Each element's class attribute is matched against the corresponding string or regular expression in the array:
@@ -775,11 +772,10 @@ Asserts that the target element matches the given [accessibility snapshot](https
 
 **Usage**
 
-```python title="example_7e42f38bd7c5b69b7f22390f6afa0f53aa155d74ad6a72b080fa2910013dc22c.py"
-page.goto("https://demo.playwright.dev/todomvc/")
-expect(page.locator('body')).to_match_aria_snapshot('''
-  - heading "todos"
-  - textbox "What needs to be done?"
-''')
-
+```ruby
+page.goto('https://demo.playwright.dev/todomvc/')
+expect(page.locator('body')).to match_aria_snapshot(<<~YAML)
+- heading "todos"
+- textbox "What needs to be done?"
+YAML
 ```

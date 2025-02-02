@@ -1308,10 +1308,10 @@ module ExampleCodes
   end
 
   # LocatorAssertions#to_have_class
-  def example_c16c6c567ee66b6d60de634c8a8a7c7c2b26f0e9ea8556e50a47d0c151935aa1(page:)
+  def example_7778d4f89215025560ecd192d60831f898331a0f339607a657c038207951e473(page:)
     locator = page.locator("#component")
-    expect(locator).to have_class(/selected/)
-    expect(locator).to have_class("selected row")
+    expect(locator).to have_class(/(^|\s)selected(\s|$)/)
+    expect(locator).to have_class("middle selected row")
   end
 
   # LocatorAssertions#to_have_class
@@ -1380,9 +1380,9 @@ module ExampleCodes
   end
 
   # LocatorAssertions#to_match_aria_snapshot
-  def example_e0bf8d0d0ca6181f89d6e14269d53e0bd13b4e5fb1d4457c443588c887ef417e(page:)
+  def example_7e42f38bd7c5b69b7f22390f6afa0f53aa155d74ad6a72b080fa2910013dc22c(page:)
     page.goto('https://demo.playwright.dev/todomvc/')
-    expect(page.locator('body')).to_match_aria_snapshot(<<~YAML)
+    expect(page.locator('body')).to match_aria_snapshot(<<~YAML)
     - heading "todos"
     - textbox "What needs to be done?"
     YAML

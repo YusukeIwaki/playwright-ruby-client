@@ -4,25 +4,3 @@ Excample codes in API documentation is replaces with the methods defined in deve
 
 The examples listed below is not yet implemented, and documentation shows Python code.
 
-
-### example_7778d4f89215025560ecd192d60831f898331a0f339607a657c038207951e473 (LocatorAssertions#to_have_class)
-
-```
-from playwright.sync_api import expect
-
-locator = page.locator("#component")
-expect(locator).to_have_class(re.compile(r"(^|\\s)selected(\\s|$)"))
-expect(locator).to_have_class("middle selected row")
-
-```
-
-### example_7e42f38bd7c5b69b7f22390f6afa0f53aa155d74ad6a72b080fa2910013dc22c (LocatorAssertions#to_match_aria_snapshot)
-
-```
-page.goto("https://demo.playwright.dev/todomvc/")
-expect(page.locator('body')).to_match_aria_snapshot('''
-  - heading "todos"
-  - textbox "What needs to be done?"
-''')
-
-```
