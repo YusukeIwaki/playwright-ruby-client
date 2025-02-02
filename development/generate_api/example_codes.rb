@@ -1074,10 +1074,10 @@ module ExampleCodes
   end
 
   # Locator#or
-  def example_180e47ad1dc80f352ad9ffc8519b25c65c17b7413febe4912e66acc198de69e7(page:)
+  def example_66fc739781815cb05dad77527d405e72e1cd6c2b923bd48ef47e83078363fb26(page:)
     new_email = page.get_by_role("button", name: "New")
     dialog = page.get_by_text("Confirm security settings")
-    new_email.or(dialog).wait_for(state: 'visible')
+    new_email.or(dialog).first.wait_for(state: 'visible')
     if dialog.visible?
       page.get_by_role("button", name: "Dismiss").click
     end

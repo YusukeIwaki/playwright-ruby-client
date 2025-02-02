@@ -1070,14 +1070,14 @@ Consider a scenario where you'd like to click on a "New email" button, but somet
 **NOTE**: If both "New email" button and security dialog appear on screen, the "or" locator will match both of them,
 possibly throwing the ["strict mode violation" error](https://playwright.dev/python/docs/locators#strictness). In this case, you can use [Locator#first](./locator#first) to only match one of them.
 
-```python title="example_66fc739781815cb05dad77527d405e72e1cd6c2b923bd48ef47e83078363fb26.py"
-new_email = page.get_by_role("button", name="New")
+```ruby
+new_email = page.get_by_role("button", name: "New")
 dialog = page.get_by_text("Confirm security settings")
-expect(new_email.or_(dialog).first).to_be_visible()
-if (dialog.is_visible()):
-  page.get_by_role("button", name="Dismiss").click()
-new_email.click()
-
+new_email.or(dialog).first.wait_for(state: 'visible')
+if dialog.visible?
+  page.get_by_role("button", name: "Dismiss").click
+end
+new_email.click
 ```
 
 ## page
