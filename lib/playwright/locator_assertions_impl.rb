@@ -149,7 +149,7 @@ module Playwright
     _define_negation :to_contain_text
 
     def to_have_accessible_name(name, ignoreCase: nil, timeout: nil)
-      expected_text = to_expected_text_values([name], ignore_case: ignoreCase)
+      expected_text = to_expected_text_values([name], ignore_case: ignoreCase, normalize_white_space: true)
       expect_impl(
         "to.have.accessible.name",
         {
@@ -163,7 +163,7 @@ module Playwright
     _define_negation :to_have_accessible_name
 
     def to_have_accessible_description(name, ignoreCase: nil, timeout: nil)
-      expected_text = to_expected_text_values([name], ignore_case: ignoreCase)
+      expected_text = to_expected_text_values([name], ignore_case: ignoreCase, normalize_white_space: true)
       expect_impl(
         "to.have.accessible.description",
         {

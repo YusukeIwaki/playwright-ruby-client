@@ -42,6 +42,11 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
         expect(div).to have_accessible_name(/hello/, timeout: 100)
       }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
       expect(div).to have_accessible_name(/hello/, ignoreCase: true)
+
+      page.content = <<~HTML
+      <button>foo&nbsp;bar\nbaz</button>
+      HTML
+      expect(page.locator('button')).to have_accessible_name("foo bar baz")
     end
   end
 
@@ -66,6 +71,13 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
         expect(div).to have_accessible_description(/hello/, timeout: 100)
       }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
       expect(div).to have_accessible_description(/hello/, ignoreCase: true)
+
+      page.content = <<~HTML
+      <div role="button" aria-describedby="desc"></div>
+      <span id="desc">foo&nbsp;bar\nbaz</span>
+      HTML
+
+      expect(div).to have_accessible_description("foo bar baz")
     end
   end
 
