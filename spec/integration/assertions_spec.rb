@@ -1080,6 +1080,54 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
     end
   end
 
+  describe '#to_be_in_viewport' do
+    it 'should work' do
+      with_page do |page|
+        page.content = <<~HTML
+        <div id=big style="height: 10000px;"></div>
+        <div id=small>foo</div>
+        HTML
+
+        expect(page.locator('#big')).to be_in_viewport
+        expect(page.locator('#small')).not_to be_in_viewport
+        page.locator('#small').scroll_into_view_if_needed
+        expect(page.locator('#small')).to be_in_viewport
+      end
+    end
+
+    it 'should respect ratio option' do
+      with_page do |page|
+        page.content = <<~HTML
+        <style>body, div, html { padding: 0; margin: 0; }</style>
+        <div id=big style="height: 400vh;"></div>
+        HTML
+
+        expect(page.locator('div')).to be_in_viewport
+        expect(page.locator('div')).to be_in_viewport(ratio: 0.1)
+        expect(page.locator('div')).to be_in_viewport(ratio: 0.2)
+
+        expect(page.locator('div')).to be_in_viewport(ratio: 0.24)
+        # In this test, element's ratio is 0.25.
+        expect(page.locator('div')).to be_in_viewport(ratio: 0.25)
+        expect(page.locator('div')).not_to be_in_viewport(ratio: 0.26)
+        expect(page.locator('div')).not_to be_in_viewport(ratio: 0.3)
+        expect(page.locator('div')).not_to be_in_viewport(ratio: 0.7)
+        expect(page.locator('div')).not_to be_in_viewport(ratio: 0.8)
+      end
+    end
+
+    it 'should report intersection even if fully covered by other element' do
+      with_page do |page|
+        page.content = <<~HTML
+        <h1>hello</h1>
+        <div style="position: relative; height: 10000px; top: -5000px;"></div>
+        HTML
+
+        expect(page.locator('h1')).to be_in_viewport
+      end
+    end
+  end
+
   it "should work with #to_be_hidden / #to_be_visible" do
     with_page do |page|
       page.goto(server_empty_page)
