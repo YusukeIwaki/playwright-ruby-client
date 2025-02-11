@@ -466,7 +466,7 @@ module Playwright
     def to_be_in_viewport(ratio: nil, timeout: nil)
       expect_impl(
         "to.be.in.viewport",
-        { timeout: timeout, expectedNumber: ratio },
+        { timeout: timeout, expectedNumber: ratio }.compact,
         nil,
         "Locator expected to be in viewport"
       )
