@@ -8,6 +8,8 @@ sidebar_position: 10
 The Touchscreen class operates in main-frame CSS pixels relative to the top-left corner of the viewport. Methods on the
 touchscreen can only be used in browser contexts that have been initialized with `hasTouch` set to true.
 
+This class is limited to emulating tap gestures. For examples of other gestures simulated by manually dispatching touch events, see the [emulating legacy touch events](https://playwright.dev/python/docs/touch-events) page.
+
 ## tap_point
 
 ```

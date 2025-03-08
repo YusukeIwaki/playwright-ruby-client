@@ -293,7 +293,12 @@ page.drag_and_drop(
 ## emulate_media
 
 ```
-def emulate_media(colorScheme: nil, forcedColors: nil, media: nil, reducedMotion: nil)
+def emulate_media(
+      colorScheme: nil,
+      contrast: nil,
+      forcedColors: nil,
+      media: nil,
+      reducedMotion: nil)
 ```
 
 
