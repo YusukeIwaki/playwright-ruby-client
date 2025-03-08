@@ -124,6 +124,7 @@ def launch_persistent_context(
       chromiumSandbox: nil,
       clientCertificates: nil,
       colorScheme: nil,
+      contrast: nil,
       deviceScaleFactor: nil,
       devtools: nil,
       downloadsPath: nil,

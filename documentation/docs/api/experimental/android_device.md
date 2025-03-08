@@ -34,6 +34,7 @@ def launch_browser(
       baseURL: nil,
       bypassCSP: nil,
       colorScheme: nil,
+      contrast: nil,
       deviceScaleFactor: nil,
       extraHTTPHeaders: nil,
       forcedColors: nil,
