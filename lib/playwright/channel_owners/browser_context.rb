@@ -496,8 +496,8 @@ module Playwright
       @channel.send_message_to_server('pause')
     end
 
-    def storage_state(path: nil)
-      @channel.send_message_to_server_result('storageState', {}).tap do |result|
+    def storage_state(path: nil, indexedDB: nil)
+      @channel.send_message_to_server_result('storageState', { indexedDB: indexedDB }.compact).tap do |result|
         if path
           File.open(path, 'w') do |f|
             f.write(JSON.dump(result))
