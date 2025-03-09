@@ -366,9 +366,10 @@ module Playwright
       ChannelOwners::Response.from_nullable(resp)
     end
 
-    def emulate_media(colorScheme: nil, forcedColors: nil, media: nil, reducedMotion: nil)
+    def emulate_media(colorScheme: nil, contrast: nil, forcedColors: nil, media: nil, reducedMotion: nil)
       params = {
         colorScheme: no_override_if_null(colorScheme),
+        contrast: no_override_if_null(contrast),
         forcedColors: no_override_if_null(forcedColors),
         media: no_override_if_null(media),
         reducedMotion: no_override_if_null(reducedMotion),
