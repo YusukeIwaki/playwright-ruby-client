@@ -5,7 +5,7 @@ module Playwright
   define_api_implementation :LocatorImpl do
     include LocatorUtils
 
-    def initialize(frame:, timeout_settings:, selector:, has: nil, hasNot: nil, hasNotText: nil, hasText: nil)
+    def initialize(frame:, timeout_settings:, selector:, has: nil, hasNot: nil, hasNotText: nil, hasText: nil, visible: nil)
       @frame = frame
       @timeout_settings = timeout_settings
       selector_scopes = [selector]
@@ -30,6 +30,10 @@ module Playwright
           raise DifferentFrameError.new('hasNot')
         end
         selector_scopes << "internal:has-not=#{hasNot.send(:selector_json)}"
+      end
+
+      if [true, false].include?(visible)
+        selector_scopes << "visible=#{visible}"
       end
 
       @selector = selector_scopes.join(' >> ')
@@ -241,7 +245,7 @@ module Playwright
       )
     end
 
-    def filter(has: nil, hasNot: nil, hasNotText: nil, hasText: nil)
+    def filter(has: nil, hasNot: nil, hasNotText: nil, hasText: nil, visible: nil)
       LocatorImpl.new(
         frame: @frame,
         timeout_settings: @timeout_settings,
@@ -249,7 +253,9 @@ module Playwright
         has: has,
         hasNot: hasNot,
         hasNotText: hasNotText,
-        hasText: hasText)
+        hasText: hasText,
+        visible: visible,
+      )
     end
 
     def first
