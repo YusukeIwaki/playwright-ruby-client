@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'playwright/test'
 
 RSpec.describe 'locator' do
   # https://github.com/microsoft/playwright/blob/master/tests/page/locator-misc-1.spec.ts
@@ -138,6 +139,8 @@ RSpec.describe 'locator' do
 
   # https://github.com/microsoft/playwright/blob/master/tests/page/locator-misc-2.spec.ts
   example_group 'misc2' do
+    include ::Playwright::Test::Matchers
+
     it 'should press' do
       with_page do |page|
         page.content = "<input type='text' />"
@@ -229,6 +232,43 @@ RSpec.describe 'locator' do
         promise = Concurrent::Promises.future { locator.wait_for(state: :hidden) }
         page.eval_on_selector('div', "div => div.innerHTML = ''")
         promise.value!
+      end
+    end
+
+    it 'should combine visible with other selectors' do
+      with_page do |page|
+        page.content = <<~HTML
+        <div>
+          <div class="item" style="display: none">Hidden data0</div>
+          <div class="item">visible data1</div>
+          <div class="item" style="display: none">Hidden data1</div>
+          <div class="item">visible data2</div>
+          <div class="item" style="display: none">Hidden data1</div>
+          <div class="item">visible data3</div>
+        </div>
+        HTML
+        locator = page.locator('.item >> visible=true').nth(1)
+        expect(locator).to have_text('visible data2')
+        expect(page.locator('.item >> visible=true >> text=data3')).to have_text('visible data3')
+      end
+    end
+
+    it 'should support filter(visible)' do
+      with_page do |page|
+        page.content = <<~HTML
+        <div>
+          <div class="item" style="display: none">Hidden data0</div>
+          <div class="item">visible data1</div>
+          <div class="item" style="display: none">Hidden data1</div>
+          <div class="item">visible data2</div>
+          <div class="item" style="display: none">Hidden data2</div>
+          <div class="item">visible data3</div>
+        </div>
+        HTML
+        locator = page.locator('.item').filter(visible: true).nth(1)
+        expect(locator).to have_text('visible data2')
+        expect(page.locator('.item').filter(visible: true).get_by_text('data3')).to have_text('visible data3')
+        expect(page.locator('.item').filter(visible: false).get_by_text('data1')).to have_text('Hidden data1')
       end
     end
   end
