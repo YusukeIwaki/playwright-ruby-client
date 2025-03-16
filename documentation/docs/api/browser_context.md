@@ -421,11 +421,11 @@ alias: `offline=`
 ## storage_state
 
 ```
-def storage_state(path: nil)
+def storage_state(indexedDB: nil, path: nil)
 ```
 
 
-Returns storage state for this browser context, contains current cookies and local storage snapshot.
+Returns storage state for this browser context, contains current cookies, local storage snapshot and IndexedDB snapshot.
 
 ## unroute_all
 
