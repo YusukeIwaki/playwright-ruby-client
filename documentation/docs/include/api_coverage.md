@@ -563,6 +563,7 @@
 * not_to_be_hidden
 * not_to_be_in_viewport
 * not_to_be_visible
+* ~~not_to_contain_class~~
 * not_to_contain_text
 * not_to_have_accessible_description
 * not_to_have_accessible_error_message
@@ -588,6 +589,7 @@
 * to_be_hidden
 * to_be_in_viewport
 * to_be_visible
+* ~~to_contain_class~~
 * to_contain_text
 * to_have_accessible_description
 * to_have_accessible_error_message
