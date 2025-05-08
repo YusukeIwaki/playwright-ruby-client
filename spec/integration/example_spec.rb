@@ -415,6 +415,22 @@ RSpec.describe 'example' do
         end
       end
 
+      it 'should work with #be_contain_class' do
+        with_page do |page|
+          page.content = "<div class='middle selected row' id='component'></div>"
+          example_9eff64fac5f9dcf2002afc805cbc6d4a52e74ce2af2f13762aa78ad41620d143(page: page)
+
+          page.content = <<~HTML
+          <div class='list'>
+            <div class='component inactive'></div>
+            <div class='component active'></div>
+            <div class='component inactive'></div>
+          </div>
+          HTML
+          example_455090a7c2a4f6e5fb33ee5e77e3a0f64a98a60561f61a459a2dd67f9d52d065(page: page)
+        end
+      end
+
       it 'should work with #to_have_class' do
         with_page do |page|
           page.content = "<div class='middle selected row' id='component'></div>"

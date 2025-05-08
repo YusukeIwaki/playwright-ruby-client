@@ -116,6 +116,15 @@ expect(locator).not_to be_visible(timeout: nil, visible: nil)
 
 The opposite of [LocatorAssertions#to_be_visible](./locator_assertions#to_be_visible).
 
+## not_to_contain_class
+
+```ruby
+expect(locator).not_to contain_class(expected, timeout: nil)
+```
+
+
+The opposite of [LocatorAssertions#to_contain_class](./locator_assertions#to_contain_class).
+
 ## not_to_contain_text
 
 ```ruby
@@ -434,6 +443,43 @@ expect(page.get_by_test_id("todo-item").first).to be_visible
 expect(
   page.get_by_role('button', name: 'Sign in').or(page.get_by_role('button', name: 'Sign up')).first
 ).to be_visible
+```
+
+## to_contain_class
+
+```ruby
+expect(locator).to contain_class(expected, timeout: nil)
+```
+
+
+Ensures the [Locator](./locator) points to an element with given CSS classes. All classes from the asserted value, separated by spaces, must be present in the [Element.classList](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList) in any order.
+
+**Usage**
+
+```html
+<div class='middle selected row' id='component'></div>
+```
+
+```ruby
+locator = page.locator("#component")
+expect(locator).to contain_class("middle selected row")
+expect(locator).to contain_class("selected")
+expect(locator).to contain_class("row middle")
+```
+
+When an array is passed, the method asserts that the list of elements located matches the corresponding list of expected class lists. Each element's class attribute is matched against the corresponding class in the array:
+
+```html
+<div class='list'></div>
+  <div class='component inactive'></div>
+  <div class='component active'></div>
+  <div class='component inactive'></div>
+</div>
+```
+
+```ruby
+locator = page.locator(".list > .component")
+expect(locator).to contain_class(["inactive", "active", "inactive"])
 ```
 
 ## to_contain_text

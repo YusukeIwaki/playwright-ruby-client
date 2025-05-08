@@ -232,6 +232,39 @@ module Playwright
     end
     _define_negation :to_have_class
 
+    def to_contain_class(expected, timeout: nil)
+      if expected.is_a?(Enumerable)
+        if expected.any? { |e| e.is_a?(Regexp) }
+          raise ArgumentError.new('"expected" argument in toContainClass cannot contain RegExp values')
+        end
+        expected_text = to_expected_text_values(expected)
+        expect_impl(
+          "to.contain.class.array",
+          {
+            expectedText: expected_text,
+            timeout: timeout,
+          },
+          expected,
+          "Locator expected to contain class names"
+        )
+      else # Single string
+        if expected.is_a?(Regexp)
+          raise ArgumentError.new('"expected" argument in toContainClass cannot be a RegExp value')
+        end
+        expected_text = to_expected_text_values([expected])
+        expect_impl(
+          "to.contain.class",
+          {
+            expectedText: expected_text,
+            timeout: timeout,
+          },
+          expected,
+          "Locator expected to contain class"
+        )
+      end
+    end
+    _define_negation :to_contain_class
+
     def to_have_count(count, timeout: nil)
       expect_impl(
         "to.have.count",
