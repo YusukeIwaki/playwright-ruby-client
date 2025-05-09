@@ -154,6 +154,16 @@ RSpec.describe 'fetch', sinatra: true do
     end
   end
 
+  it 'should throw an error when maxRedirects is less than 0' do
+    sinatra.get('/redirect1') { redirect '/simple.json' }
+
+    with_context do |context|
+      expect {
+        context.request.get("#{server_prefix}/redirect1", maxRedirects: -1)
+      }.to raise_error(/'maxRedirects' should be greater than or equal to '0'/)
+    end
+  end
+
   it 'should work with http credentials' do
     sinatra.use Rack::Auth::Basic do |username, password|
       username == 'user' && password == 'pass'
