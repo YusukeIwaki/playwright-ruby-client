@@ -73,7 +73,8 @@ RSpec.describe 'ariaSnapshot' do
       check_and_match_snapshot(page.locator('body'), <<-SNAPSHOT)
         - list:
           - listitem:
-            - link "link"
+            - link "link":
+              - /url: about:blank
       SNAPSHOT
     end
   end
@@ -147,12 +148,13 @@ RSpec.describe 'ariaSnapshot' do
           - listitem:
             - group: Verified
           - listitem:
-            - link "Sponsor"
+            - link "Sponsor":
+              - /url: about:blank
       SNAPSHOT
     end
   end
 
-  it 'should snapshot multiline text' do
+  it 'should support multiline text' do
     with_page do |page|
       page.content = <<~HTML
       <p>
@@ -163,6 +165,12 @@ RSpec.describe 'ariaSnapshot' do
       HTML
       check_and_match_snapshot(page.locator('body'), <<-SNAPSHOT)
         - paragraph: Line 1 Line 2 Line 3
+      SNAPSHOT
+      expect(page.locator('body')).to match_aria_snapshot(<<~SNAPSHOT)
+        - paragraph: |
+              Line 1
+              Line 2
+              Line 3
       SNAPSHOT
     end
   end
@@ -200,187 +208,203 @@ RSpec.describe 'ariaSnapshot' do
     end
   end
 
-  # it('should include pseudo in text', async ({ page }) => {
-  #   await page.setContent(`
-  #     <style>
-  #       span:before {
-  #         content: 'world';
-  #       }
-  #       div:after {
-  #         content: 'bye';
-  #       }
-  #     </style>
-  #     <a href="about:blank">
-  #       <span>hello</span>
-  #       <div>hello</div>
-  #     </a>
-  #   `);
+  it 'should include pseudo in text' do
+    with_page do |page|
+      page.content = <<~HTML
+        <style>
+          span:before {
+            content: 'world';
+          }
+          div:after {
+            content: 'bye';
+          }
+        </style>
+        <a href="about:blank">
+          <span>hello</span>
+          <div>hello</div>
+        </a>
+      HTML
 
-  #   await checkAndMatchSnapshot(page.locator('body'), `
-  #     - link "worldhello hellobye"
-  #   `);
-  # });
+      check_and_match_snapshot(page.locator('body'), <<-SNAPSHOT)
+        - link "worldhello hellobye":
+          - /url: about:blank
+      SNAPSHOT
+    end
+  end
 
-  # it('should not include hidden pseudo in text', async ({ page }) => {
-  #   await page.setContent(`
-  #     <style>
-  #       span:before {
-  #         content: 'world';
-  #         display: none;
-  #       }
-  #       div:after {
-  #         content: 'bye';
-  #         visibility: hidden;
-  #       }
-  #     </style>
-  #     <a href="about:blank">
-  #       <span>hello</span>
-  #       <div>hello</div>
-  #     </a>
-  #   `);
+  it 'should not include hidden pseudo in text' do
+    with_page do |page|
+      page.content = <<~HTML
+        <style>
+          span:before {
+            content: 'world';
+            display: none;
+          }
+          div:after {
+            content: 'bye';
+            visibility: hidden;
+          }
+        </style>
+        <a href="about:blank">
+          <span>hello</span>
+          <div>hello</div>
+        </a>
+      HTML
 
-  #   await checkAndMatchSnapshot(page.locator('body'), `
-  #     - link "hello hello"
-  #   `);
-  # });
+      check_and_match_snapshot(page.locator('body'), <<-SNAPSHOT)
+        - link "hello hello":
+          - /url: about:blank
+      SNAPSHOT
+    end
+  end
 
-  # it('should include new line for block pseudo', async ({ page }) => {
-  #   await page.setContent(`
-  #     <style>
-  #       span:before {
-  #         content: 'world';
-  #         display: block;
-  #       }
-  #       div:after {
-  #         content: 'bye';
-  #         display: block;
-  #       }
-  #     </style>
-  #     <a href="about:blank">
-  #       <span>hello</span>
-  #       <div>hello</div>
-  #     </a>
-  #   `);
+  it 'should include new line for block pseudo' do
+    with_page do |page|
+      page.content = <<~HTML
+        <style>
+          span:before {
+            content: 'world';
+            display: block;
+          }
+          div:after {
+            content: 'bye';
+            display: block;
+          }
+        </style>
+        <a href="about:blank">
+          <span>hello</span>
+          <div>hello</div>
+        </a>
+      HTML
 
-  #   await checkAndMatchSnapshot(page.locator('body'), `
-  #     - link "world hello hello bye"
-  #   `);
-  # });
+      check_and_match_snapshot(page.locator('body'), <<-SNAPSHOT)
+        - link "world hello hello bye":
+          - /url: about:blank
+      SNAPSHOT
+    end
+  end
 
-  # it('should work with slots', async ({ page }) => {
-  #   // Text "foo" is assigned to the slot, should not be used twice.
-  #   await page.setContent(`
-  #     <button><div>foo</div></button>
-  #     <script>
-  #       (() => {
-  #         const container = document.querySelector('div');
-  #         const shadow = container.attachShadow({ mode: 'open' });
-  #         const slot = document.createElement('slot');
-  #         shadow.appendChild(slot);
-  #       })();
-  #     </script>
-  #   `);
-  #   await checkAndMatchSnapshot(page.locator('body'), `
-  #     - button "foo"
-  #   `);
+  it 'should work with slots' do
+    with_page do |page|
+      # Text "foo" is assigned to the slot, should not be used twice.
+      page.content = <<~HTML
+        <button><div>foo</div></button>
+        <script>
+          (() => {
+            const container = document.querySelector('div');
+            const shadow = container.attachShadow({ mode: 'open' });
+            const slot = document.createElement('slot');
+            shadow.appendChild(slot);
+          })();
+        </script>
+      HTML
+      check_and_match_snapshot(page.locator('body'), <<-SNAPSHOT)
+        - button "foo"
+      SNAPSHOT
 
-  #   // Text "foo" is assigned to the slot, should be used instead of slot content.
-  #   await page.setContent(`
-  #     <div>foo</div>
-  #     <script>
-  #       (() => {
-  #         const container = document.querySelector('div');
-  #         const shadow = container.attachShadow({ mode: 'open' });
-  #         const button = document.createElement('button');
-  #         shadow.appendChild(button);
-  #         const slot = document.createElement('slot');
-  #         button.appendChild(slot);
-  #         const span = document.createElement('span');
-  #         span.textContent = 'pre';
-  #         slot.appendChild(span);
-  #       })();
-  #     </script>
-  #   `);
-  #   await checkAndMatchSnapshot(page.locator('body'), `
-  #     - button "foo"
-  #   `);
+      # Text "foo" is assigned to the slot, should be used instead of slot content.
+      page.content = <<~HTML
+        <div>foo</div>
+        <script>
+          (() => {
+            const container = document.querySelector('div');
+            const shadow = container.attachShadow({ mode: 'open' });
+            const button = document.createElement('button');
+            shadow.appendChild(button);
+            const slot = document.createElement('slot');
+            button.appendChild(slot);
+            const span = document.createElement('span');
+            span.textContent = 'pre';
+            slot.appendChild(span);
+          })();
+        </script>
+      HTML
+      check_and_match_snapshot(page.locator('body'), <<-SNAPSHOT)
+        - button "foo"
+      SNAPSHOT
 
-  #   // Nothing is assigned to the slot, should use slot content.
-  #   await page.setContent(`
-  #     <div></div>
-  #     <script>
-  #       (() => {
-  #         const container = document.querySelector('div');
-  #         const shadow = container.attachShadow({ mode: 'open' });
-  #         const button = document.createElement('button');
-  #         shadow.appendChild(button);
-  #         const slot = document.createElement('slot');
-  #         button.appendChild(slot);
-  #         const span = document.createElement('span');
-  #         span.textContent = 'pre';
-  #         slot.appendChild(span);
-  #       })();
-  #     </script>
-  #   `);
-  #   await checkAndMatchSnapshot(page.locator('body'), `
-  #     - button "pre"
-  #   `);
-  # });
+      # Nothing is assigned to the slot, should use slot content.
+      page.content = <<~HTML
+        <div></div>
+        <script>
+          (() => {
+            const container = document.querySelector('div');
+            const shadow = container.attachShadow({ mode: 'open' });
+            const button = document.createElement('button');
+            shadow.appendChild(button);
+            const slot = document.createElement('slot');
+            button.appendChild(slot);
+            const span = document.createElement('span');
+            span.textContent = 'pre';
+            slot.appendChild(span);
+          })();
+        </script>
+      HTML
+      check_and_match_snapshot(page.locator('body'), <<-SNAPSHOT)
+        - button "pre"
+      SNAPSHOT
+    end
+  end
 
-  # it('should snapshot inner text', async ({ page }) => {
-  #   await page.setContent(`
-  #     <div role="listitem">
-  #       <div>
-  #         <div>
-  #           <span title="a.test.ts">a.test.ts</span>
-  #         </div>
-  #         <div>
-  #           <button title="Run"></button>
-  #           <button title="Show source"></button>
-  #           <button title="Watch"></button>
-  #         </div>
-  #       </div>
-  #     </div>
-  #     <div role="listitem">
-  #       <div>
-  #         <div>
-  #           <span title="snapshot">snapshot</span>
-  #         </div>
-  #         <div class="ui-mode-list-item-time">30ms</div>
-  #         <div>
-  #           <button title="Run"></button>
-  #           <button title="Show source"></button>
-  #           <button title="Watch"></button>
-  #         </div>
-  #       </div>
-  #     </div>
-  #   `);
 
-  #   await checkAndMatchSnapshot(page.locator('body'), `
-  #     - listitem:
-  #       - text: a.test.ts
-  #       - button "Run"
-  #       - button "Show source"
-  #       - button "Watch"
-  #     - listitem:
-  #       - text: snapshot 30ms
-  #       - button "Run"
-  #       - button "Show source"
-  #       - button "Watch"
-  #   `);
-  # });
+  it 'should snapshot inner text' do
+    with_page do |page|
+      page.content = <<~HTML
+        <div role="listitem">
+          <div>
+            <div>
+              <span title="a.test.ts">a.test.ts</span>
+            </div>
+            <div>
+              <button title="Run"></button>
+              <button title="Show source"></button>
+              <button title="Watch"></button>
+            </div>
+          </div>
+        </div>
+        <div role="listitem">
+          <div>
+            <div>
+              <span title="snapshot">snapshot</span>
+            </div>
+            <div class="ui-mode-list-item-time">30ms</div>
+            <div>
+              <button title="Run"></button>
+              <button title="Show source"></button>
+              <button title="Watch"></button>
+            </div>
+          </div>
+        </div>
+      HTML
 
-  # it('should include pseudo codepoints', async ({ page, server }) => {
-  #   await page.goto(server.EMPTY_PAGE);
-  #   await page.setContent(`
-  #     <link href="codicon.css" rel="stylesheet" />
-  #     <p class='codicon codicon-check'>hello</p>
-  #   `);
+      check_and_match_snapshot(page.locator('body'), <<-SNAPSHOT)
+        - listitem:
+          - text: a.test.ts
+          - button "Run"
+          - button "Show source"
+          - button "Watch"
+        - listitem:
+          - text: snapshot 30ms
+          - button "Run"
+          - button "Show source"
+          - button "Watch"
+      SNAPSHOT
+    end
+  end
 
-  #   await checkAndMatchSnapshot(page.locator('body'), `
-  #     - paragraph: \ueab2hello
-  #   `);
-  # });
+  it 'should include pseudo codepoints', sinatra: true do
+    with_page do |page|
+      page.goto(server_empty_page)
+      page.content = <<~HTML
+        <link href="codicon.css" rel="stylesheet" />
+        <p class='codicon codicon-check'>hello</p>
+      HTML
+
+      check_and_match_snapshot(page.locator('body'), <<-SNAPSHOT)
+        - paragraph: \ueab2hello
+      SNAPSHOT
+    end
+  end
 
   it 'check aria-hidden text' do
     with_page do |page|
@@ -410,40 +434,66 @@ RSpec.describe 'ariaSnapshot' do
     end
   end
 
-  # it('should treat input value as text in templates', async ({ page }) => {
-  #   await page.setContent(`
-  #     <input value='hello world'>
-  #   `);
+  it 'should treat input value as text in templates, but not for checkbox/radio/file' do
+    with_page do |page|
+      page.content = <<~HTML
+        <input value='hello world'>
+        <input type=file>
+        <input type=checkbox checked>
+        <input type=radio checked>
+      HTML
 
-  #   await checkAndMatchSnapshot(page.locator('body'), `
-  #     - textbox: hello world
-  #   `);
-  # });
+      check_and_match_snapshot(page.locator('body'), <<-SNAPSHOT)
+        - textbox: hello world
+        - button "Choose File"
+        - checkbox [checked]
+        - radio [checked]
+      SNAPSHOT
+    end
+  end
 
-  # it('should respect aria-owns', async ({ page }) => {
-  #   await page.setContent(`
-  #     <a href='about:blank' aria-owns='input p'>
-  #       <div role='region'>Link 1</div>
-  #     </a>
-  #     <a href='about:blank' aria-owns='input p'>
-  #       <div role='region'>Link 2</div>
-  #     </a>
-  #     <input id='input' value='Value'>
-  #     <p id='p'>Paragraph</p>
-  #   `);
+  it 'should not use on as checkbox value' do
+    with_page do |page|
+      page.content = <<~HTML
+        <input type='checkbox'>
+        <input type='radio'>
+      HTML
 
-  #   // - Different from Chrome DevTools which attributes ownership to the last element.
-  #   // - CDT also does not include non-owned children in accessible name.
-  #   // - Disregarding these as aria-owns can't suggest multiple parts by spec.
-  #   await checkAndMatchSnapshot(page.locator('body'), `
-  #     - link "Link 1 Value Paragraph":
-  #       - region: Link 1
-  #       - textbox: Value
-  #       - paragraph: Paragraph
-  #     - link "Link 2 Value Paragraph":
-  #       - region: Link 2
-  #   `);
-  # });
+      check_and_match_snapshot(page.locator('body'), <<-SNAPSHOT)
+        - checkbox
+        - radio
+      SNAPSHOT
+    end
+  end
+
+  it 'should respect aria-owns' do
+    with_page do |page|
+      page.content = <<~HTML
+        <a href='about:blank' aria-owns='input p'>
+          <div role='region'>Link 1</div>
+        </a>
+        <a href='about:blank' aria-owns='input p'>
+          <div role='region'>Link 2</div>
+        </a>
+        <input id='input' value='Value'>
+        <p id='p'>Paragraph</p>
+      HTML
+
+      # - Different from Chrome DevTools which attributes ownership to the last element.
+      # - CDT also does not include non-owned children in accessible name.
+      # - Disregarding these as aria-owns can't suggest multiple parts by spec.
+      check_and_match_snapshot(page.locator('body'), <<-SNAPSHOT)
+        - link "Link 1 Value Paragraph":
+          - /url: about:blank
+          - region: Link 1
+          - textbox: Value
+          - paragraph: Paragraph
+        - link "Link 2 Value Paragraph":
+          - /url: about:blank
+          - region: Link 2
+      SNAPSHOT
+    end
+  end
 
   it 'should be ok with circular ownership' do
     with_page do |page|
@@ -454,6 +504,7 @@ RSpec.describe 'ariaSnapshot' do
       HTML
       check_and_match_snapshot(page.locator('body'), <<-SNAPSHOT)
         - link "Hello":
+          - /url: about:blank
           - region: Hello
       SNAPSHOT
     end
@@ -463,7 +514,7 @@ RSpec.describe 'ariaSnapshot' do
     with_page do |page|
       page.content = <<~HTML
       <details>
-        <summary>one: <a href="#">link1</a> "two <a href="#">link2</a> 'three <a href="#">link3</a> `four</summary>
+        <summary>one: <a href="#">link1</a> "two <a href="#">link2</a> 'three <a href="#">link3</a> \`four</summary>
       </details>
       <ul>
         <a href="#">one</a>,<a href="#">two</a>
@@ -475,23 +526,64 @@ RSpec.describe 'ariaSnapshot' do
       check_and_match_snapshot(page.locator('body'), <<-SNAPSHOT)
       - group:
         - text: "one:"
-        - link "link1"
+        - link "link1":
+          - /url: "#"
         - text: "\\\"two"
-        - link "link2"
+        - link "link2":
+          - /url: "#"
         - text: "'three"
-        - link "link3"
+        - link "link3":
+          - /url: "#"
         - text: "\`four"
       - list:
-        - link "one"
+        - link "one":
+          - /url: "#"
         - text: ","
-        - link "two"
+        - link "two":
+          - /url: "#"
         - text: (
-        - link "three"
+        - link "three":
+          - /url: "#"
         - text: ") {"
-        - link "four"
+        - link "four":
+          - /url: "#"
         - text: "} ["
-        - link "five"
+        - link "five":
+          - /url: "#"
         - text: "]"
+      SNAPSHOT
+    end
+  end
+
+  it 'should normalize whitespace' do
+    with_page do |page|
+      page.content = <<~HTML
+        <details>
+          <summary> one  \n two <a href="#"> link &nbsp;\n  1 </a> </summary>
+        </details>
+        <input value='  hello   &nbsp; world '>
+        <button>hello\u00ad\u200bworld</button>
+      HTML
+
+      check_and_match_snapshot(page.locator('body'), <<-SNAPSHOT)
+        - group:
+          - text: one two
+          - link "link 1":
+            - /url: "#"
+        - textbox: hello world
+        - button "helloworld"
+      SNAPSHOT
+
+      # Weird whitespace in the template should be normalized.
+      expect(page.locator('body')).to match_aria_snapshot(<<~SNAPSHOT)
+        - group:
+          - text: |
+              one
+              two
+          - link "  link     1 ":
+            - /url: "#"
+        - textbox:        hello  world
+        - button "he\u00adlloworld\u200b"
       SNAPSHOT
     end
   end
@@ -506,6 +598,7 @@ RSpec.describe 'ariaSnapshot' do
       HTML
       check_and_match_snapshot(page.locator('body'), <<-SNAPSHOT)
         - link:
+          - /url: about:blank
           - region: #{s}
       SNAPSHOT
     end
@@ -521,15 +614,20 @@ RSpec.describe 'ariaSnapshot' do
       <a href="#">#hello</a>#hello
       HTML
       check_and_match_snapshot(page.locator('body'), <<-SNAPSHOT)
-        - link "@hello"
+        - link "@hello":
+          - /url: "#"
         - text: "@hello"
-        - link "]hello"
+        - link "]hello":
+          - /url: "#"
         - text: "]hello"
-        - link "hello"
+        - link "hello":
+          - /url: "#"
         - text: hello
-        - link "hello"
+        - link "hello":
+          - /url: "#"
         - text: hello
-        - link "#hello"
+        - link "#hello":
+          - /url: "#"
         - text: "#hello"
       SNAPSHOT
     end
@@ -549,19 +647,26 @@ RSpec.describe 'ariaSnapshot' do
       HTML
 
       check_and_match_snapshot(page.locator('body'), <<-SNAPSHOT)
-        - link "true"
+        - link "true":
+          - /url: "#"
         - text: "False"
-        - link "NO"
+        - link "NO":
+          - /url: "#"
         - text: "yes"
-        - link "y"
+        - link "y":
+          - /url: "#"
         - text: "N"
-        - link "on"
+        - link "on":
+          - /url: "#"
         - text: "Off"
-        - link "null"
+        - link "null":
+          - /url: "#"
         - text: "NULL"
-        - link "123"
+        - link "123":
+          - /url: "#"
         - text: "123"
-        - link "-1.2"
+        - link "-1.2":
+          - /url: "#"
         - text: "-1.2"
         - textbox: "555"
       SNAPSHOT
