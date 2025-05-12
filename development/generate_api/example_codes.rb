@@ -1255,6 +1255,20 @@ module ExampleCodes
     ).to be_visible
   end
 
+  # LocatorAssertions#to_contain_class
+  def example_9eff64fac5f9dcf2002afc805cbc6d4a52e74ce2af2f13762aa78ad41620d143(page:)
+    locator = page.locator("#component")
+    expect(locator).to contain_class("middle selected row")
+    expect(locator).to contain_class("selected")
+    expect(locator).to contain_class("row middle")
+  end
+
+  # LocatorAssertions#to_contain_class
+  def example_455090a7c2a4f6e5fb33ee5e77e3a0f64a98a60561f61a459a2dd67f9d52d065(page:)
+    locator = page.locator(".list > .component")
+    expect(locator).to contain_class(["inactive", "active", "inactive"])
+  end
+
   # LocatorAssertions#to_contain_text
   def example_3553a48e2a15853f4869604ef20dae14952c16abfa0570b8f02e9b74e3d84faa(page:)
     locator = page.locator('.title')

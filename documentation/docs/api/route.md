@@ -49,6 +49,8 @@ The `headers` option applies to both the routed request and any redirects it ini
 
 [Route#continue](./route#continue) will immediately send the request to the network, other matching handlers won't be invoked. Use [Route#fallback](./route#fallback) If you want next matching handler in the chain to be invoked.
 
+**NOTE**: The `Cookie` header cannot be overridden using this method. If a value is provided, it will be ignored, and the cookie will be loaded from the browser's cookie store. To set custom cookies, use [BrowserContext#add_cookies](./browser_context#add_cookies).
+
 ## fallback
 
 ```

@@ -1,27 +1,64 @@
 require 'spec_helper'
 
 RSpec.describe 'Page#evaluate' do
+  it 'should transfer arrays' do
+    with_page do |page|
+      result = page.evaluate('a => a', arg: [1, 2, 3])
+      expect(result).to eq([1, 2, 3])
+    end
+  end
+
+  it 'should transfer arrays as arrays, not objects' do
+    with_page do |page|
+      result = page.evaluate('a => Array.isArray(a)', arg: [1, 2, 3])
+      expect(result).to eq(true)
+    end
+  end
+
+  it 'should transfer typed arrays' do
+    with_page do |page|
+      typed_arrays_str = <<~JAVASCRIPT
+      new Int8Array([1, 2, 3])
+      new Uint8Array([1, 2, 3])
+      new Uint8ClampedArray([1, 2, 3])
+      new Int16Array([1, 2, 3])
+      new Uint16Array([1, 2, 3])
+      new Int32Array([1, 2, 3])
+      new Uint32Array([1, 2, 3])
+      new Float32Array([1.1, 2.2, 3.3])
+      new Float64Array([1.1, 2.2, 3.3])
+      new BigInt64Array([1n, 2n, 3n])
+      new BigUint64Array([1n, 2n, 3n])
+      JAVASCRIPT
+      typed_arrays_str = typed_arrays_str.strip.split("\n")
+
+      typed_arrays = page.evaluate(<<~JAVASCRIPT)
+      () => ([
+        new Int8Array([1, 2, 3]),
+        new Uint8Array([1, 2, 3]),
+        new Uint8ClampedArray([1, 2, 3]),
+        new Int16Array([1, 2, 3]),
+        new Uint16Array([1, 2, 3]),
+        new Int32Array([1, 2, 3]),
+        new Uint32Array([1, 2, 3]),
+        new Float32Array([1.1, 2.2, 3.3]),
+        new Float64Array([1.1, 2.2, 3.3]),
+        new BigInt64Array([1n, 2n, 3n]),
+        new BigUint64Array([1n, 2n, 3n])
+      ])
+      JAVASCRIPT
+
+      typed_arrays.zip(typed_arrays_str).each do |typed_array, typed_array_str|
+        expect(page.evaluate("() => #{typed_array_str}")).to eq(typed_array)
+      end
+    end
+  end
+
   it 'should transfer bigint' do
     with_page do |page|
       expect(page.evaluate('() => 42n')).to eq(42)
       expect(page.evaluate('(a) => a', arg: 9007199254740991)).to eq(9007199254740991)
       expect(page.evaluate('(a) => a', arg: 9007199254740992)).to eq(9007199254740992)
-    end
-  end
-
-  it 'should transfer maps' do
-    pending 'REMOVED functionality from Playwright 1.39.0'
-    with_page do |page|
-      expect(page.evaluate('() => new Map([[1, { test: 42n }]])')).to eq({1 => { 'test' => 42 }})
-      expect(page.evaluate('(a) => a', arg: { 1 => { test: 17 } })).to eq({1 => { 'test' => 17 }})
-    end
-  end
-
-  it 'should transfer sets' do
-    pending 'REMOVED functionality from Playwright 1.39.0'
-    with_page do |page|
-      expect(page.evaluate('() => new Set([1, { test: 42 }])')).to eq(Set.new([1, { 'test' => 42 }]))
-      expect(page.evaluate('(a) => a', arg: Set.new([1, { test: 17 }]))).to eq(Set.new([1, { 'test' => 17 }]))
     end
   end
 
@@ -110,8 +147,8 @@ RSpec.describe 'Page#evaluate' do
   it 'should evaluate date' do
     with_page do |page|
       result = page.evaluate('() => new Date("2017-09-26T00:00:00.000Z")')
-      expect(result).to be_a(Date)
-      expect(result).to eq(Date.parse('2017-09-26 00:00:00'))
+      expect(result).to be_a(Time)
+      expect(result).to eq(Time.parse('2017-09-26 00:00:00 UTC'))
     end
   end
 
@@ -119,8 +156,8 @@ RSpec.describe 'Page#evaluate' do
     with_page do |page|
       result_handle = page.evaluate_handle('() => new Date("2017-09-26T00:00:00.000Z")')
       date = result_handle.json_value
-      expect(date).to be_a(Date)
-      expect(date).to eq(Date.parse('2017-09-26 00:00:00'))
+      expect(date).to be_a(Time)
+      expect(date).to eq(Time.parse('2017-09-26 00:00:00 UTC'))
     end
   end
 

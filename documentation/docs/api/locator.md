@@ -87,7 +87,7 @@ button = page.get_by_role("button").and(page.get_by_title("Subscribe"))
 ## aria_snapshot
 
 ```
-def aria_snapshot(timeout: nil)
+def aria_snapshot(ref: nil, timeout: nil)
 ```
 
 

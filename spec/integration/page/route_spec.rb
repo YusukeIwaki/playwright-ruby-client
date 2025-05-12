@@ -145,6 +145,35 @@ RSpec.describe 'Page#route', sinatra: true do
     end
   end
 
+  it 'should not support ? in glob pattern', sinatra: true do
+    with_page do |page|
+      sinatra.get('/index') { 'index-no-hello' }
+      sinatra.get('/index123hello') { 'index123hello' }
+      sinatra.get('/index?hello') { 'index?hello' }
+      sinatra.get('/index1hello') { 'index1hello' }
+
+      page.route('**/index?hello', ->(route, _) {
+        route.fulfill(body: 'intercepted any character')
+      })
+
+      page.route('**/index\?hello', ->(route, _) {
+        route.fulfill(body: 'intercepted question mark')
+      })
+
+      page.goto("#{server_prefix}/index?hello")
+      expect(page.content).to include('intercepted question mark')
+
+      page.goto("#{server_prefix}/index")
+      expect(page.content).to include('index-no-hello')
+
+      page.goto("#{server_prefix}/index1hello")
+      expect(page.content).to include('index1hello')
+
+      page.goto("#{server_prefix}/index123hello")
+      expect(page.content).to include('index123hello')
+    end
+  end
+
   it 'should work when POST is redirected with 302' do
     with_page do |page|
       sinatra.post('/rredirect') do

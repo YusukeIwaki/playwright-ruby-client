@@ -268,6 +268,66 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
     end
   end
 
+  describe 'to_contain_class' do
+    it 'should pass' do
+      with_page do |page|
+        page.set_content('<div class="foo bar baz"></div>')
+        locator = page.locator('div')
+        expect(locator).to contain_class('')
+        expect(locator).to contain_class('bar')
+        expect(locator).to contain_class('baz bar')
+        expect(locator).to contain_class('  bar   foo ')
+        expect(locator).not_to contain_class('  baz   not-matching ') # Strip whitespace and match individual classes
+        expect {
+          expect(locator).to contain_class(/foo|bar/)
+        }.to raise_error(/"expected\" argument in toContainClass cannot be a RegExp value/)
+      end
+    end
+
+    it 'should pass with SVGs' do
+      with_page do |page|
+        page.set_content('<svg class="c1 c2" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"></svg>')
+        locator = page.locator('svg')
+        expect(locator).to contain_class('c1')
+        expect(locator).to contain_class('c2')
+        expect(locator).not_to contain_class('c3')
+      end
+    end
+
+    it 'should fail' do
+      with_page do |page|
+        page.set_content('<div class="bar baz"></div>')
+        locator = page.locator('div')
+        expect {
+          expect(locator).to contain_class('does-not-exist', timeout: 1000)
+        }.to raise_error(/expect with timeout 1000ms/)
+      end
+    end
+
+    it 'should pass with array' do
+      with_page do |page|
+        page.set_content('<div class="foo"></div><div class="hello bar"></div><div class="baz"></div>');
+        locator = page.locator('div')
+        expect(locator).to contain_class(['foo', 'hello', 'baz'])
+        expect {
+          expect(locator).to contain_class(['foo', 'hello', /baz/])
+        }.to raise_error(/"expected\" argument in toContainClass cannot contain RegExp values/)
+        expect(locator).not_to contain_class(['not-there', 'hello', 'baz']) # Class not there
+        expect(locator).not_to contain_class(['foo', 'hello']) # Length mismatch
+      end
+    end
+
+    it 'should fail with array' do
+      with_page do |page|
+        page.set_content('<div class="foo"></div><div class="bar"></div><div class="bar"></div>');
+        locator = page.locator('div')
+        expect {
+          expect(locator).to contain_class(['foo', 'bar', 'baz'], timeout: 1000)
+        }.to raise_error(/expect with timeout 1000ms/)
+      end
+    end
+  end
+
   it "should work with #to_have_count" do
     with_page do |page|
       page.goto(server_empty_page)

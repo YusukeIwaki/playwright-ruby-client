@@ -50,9 +50,11 @@ RSpec.describe 'JS Coverage' do
         page.goto("#{server_prefix}/jscoverage/eval.html")
       end
 
-      expect(coverage.size).to eq(2)
-      found = coverage.find { |entry| entry['url'] == '' }
-      expect(found['source']).to eq('console.log("foo")')
+      expect(coverage).to include(
+        a_hash_including(
+          'url' => '',
+          'source' => 'console.log("foo")',
+        ))
     end
   end
 

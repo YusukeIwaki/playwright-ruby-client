@@ -1,4 +1,5 @@
-require 'date'
+require 'base64'
+require 'time'
 
 module Playwright
   module JavaScript
@@ -45,7 +46,7 @@ module Playwright
         end
 
         if hash.key?('d')
-          return DateTime.parse(hash['d'])
+          return Time.parse(hash['d'])
         end
 
         if hash.key?('u')
@@ -103,6 +104,57 @@ module Playwright
 
         if hash.key?('h')
           return @handles[hash['h']]
+        end
+
+        if hash.key?('ta')
+          encoded_bytes = hash['ta']['b']
+          decoded_bytes = Base64.strict_decode64(encoded_bytes)
+          array_type = hash['ta']['k']
+
+          if array_type == 'i8'
+            word_size = 1
+            unpack_format = 'c*' # signed char
+          elsif array_type == 'ui8' || array_type == 'ui8c'
+            word_size = 1
+            unpack_format = 'C*' # unsigned char
+          elsif array_type == 'i16'
+            word_size = 2
+            unpack_format = 's<*' # signed short, little-endian
+          elsif array_type == 'ui16'
+            word_size = 2
+            unpack_format = 'S<*' # unsigned short, little-endian
+          elsif array_type == 'i32'
+            word_size = 4
+            unpack_format = 'l<*' # signed long, little-endian
+          elsif array_type == 'ui32'
+            word_size = 4
+            unpack_format = 'L<*' # unsigned long, little-endian
+          elsif array_type == 'f32'
+            word_size = 4
+            unpack_format = 'e*' # float, little-endian
+          elsif array_type == 'f64'
+            word_size = 8
+            unpack_format = 'E*' # double, little-endian
+          elsif array_type == 'bi64'
+            word_size = 8
+            unpack_format = 'q<*' # signed long long, little-endian
+          elsif array_type == 'bui64'
+            word_size = 8
+            unpack_format = 'Q<*' # unsigned long long, little-endian
+          else
+            raise ArgumentError, "Unsupported array type: #{array_type}"
+          end
+
+          byte_len = decoded_bytes.bytesize
+          if byte_len.zero?
+            return []
+          end
+
+          if byte_len % word_size != 0
+            raise ArgumentError, "Decoded bytes length #{byte_len} is not a multiple of word size #{word_size} for type #{array_type}"
+          end
+
+          return decoded_bytes.unpack(unpack_format)
         end
 
         raise ArgumentError.new("Unexpected value: #{hash}")

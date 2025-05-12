@@ -397,10 +397,11 @@ module Playwright
       end
     end
 
-    def aria_snapshot(timeout: nil)
+    def aria_snapshot(timeout: nil, ref: nil)
       @frame.channel.send_message_to_server('ariaSnapshot', {
         selector: @selector,
         timeout: timeout,
+        ref: ref,
       }.compact)
     end
 
