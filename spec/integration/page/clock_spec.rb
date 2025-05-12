@@ -380,8 +380,8 @@ RSpec.describe 'Clock API' do
       page.clock.install(time: 0)
       page.goto('data:text/html,')
       page.clock.pause_at(1000)
-      page.wait_for_timeout(1000)
-      page.clock.resume
+      # Internally wait to make sure the clock is paused and not running.
+      page.wait_for_timeout(1111)
       now = page.evaluate('Date.now()')
       expect(now).to be_between(0, 1000)
     end
@@ -466,6 +466,35 @@ RSpec.describe 'Clock API' do
       page.clock.run_for(1)
       wait_for_async_evaluation
       expect(calls).to eq([['outer'], ['inner']])
+    end
+  end
+
+  # issue: https://github.com/microsoft/playwright/issues/35362
+  it 'correctly increments Date.now()/performance.now() during blocking execution', sinatra: true do
+    with_page do |page|
+      page.clock.fixed_time = DateTime.parse('2026-01-01')
+
+      sinatra.get('/repro.html') do
+        status 200
+        headers('Content-Type' => 'text/html')
+        body <<~HTML
+          <html>
+            <body>
+              <script>
+              {
+                const start = performance.now();
+                while (performance.now() - start < 100) { }
+              }
+              console.log('done');
+              </script>
+            </body>
+          </html>
+        HTML
+      end
+
+      page.expect_event('console', predicate: ->(msg) { msg.text == 'done' }) do
+        page.goto("#{server_prefix}/repro.html")
+      end
     end
   end
 end
