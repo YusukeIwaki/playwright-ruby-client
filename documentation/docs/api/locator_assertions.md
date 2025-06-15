@@ -470,16 +470,19 @@ expect(locator).to contain_class("row middle")
 When an array is passed, the method asserts that the list of elements located matches the corresponding list of expected class lists. Each element's class attribute is matched against the corresponding class in the array:
 
 ```html
-<div class='list'></div>
+<div class='list'>
   <div class='component inactive'></div>
   <div class='component active'></div>
   <div class='component inactive'></div>
 </div>
 ```
 
-```ruby
+```python title="example_d4669942897f42b24d218b847e98fc5490f69a52e6c72d278a2781bcba67245f.py"
+from playwright.sync_api import expect
+
 locator = page.locator(".list > .component")
-expect(locator).to contain_class(["inactive", "active", "inactive"])
+await expect(locator).to_contain_class(["inactive", "active", "inactive"])
+
 ```
 
 ## to_contain_text
@@ -626,9 +629,12 @@ expect(locator).to_have_class(re.compile(r"(^|\\s)selected(\\s|$)"))
 
 When an array is passed, the method asserts that the list of elements located matches the corresponding list of expected class values. Each element's class attribute is matched against the corresponding string or regular expression in the array:
 
-```ruby
-locator = page.locator("list > .component")
-expect(locator).to have_class(["component", "component selected", "component"])
+```python title="example_aa26b270cde98bc57b4e98f69ef26ca30ac89d719799f52940ef4e8b9fb01bcd.py"
+from playwright.sync_api import expect
+
+locator = page.locator(".list > .component")
+expect(locator).to_have_class(["component", "component selected", "component"])
+
 ```
 
 ## to_have_count

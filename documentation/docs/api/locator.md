@@ -87,7 +87,7 @@ button = page.get_by_role("button").and(page.get_by_title("Subscribe"))
 ## aria_snapshot
 
 ```
-def aria_snapshot(ref: nil, timeout: nil)
+def aria_snapshot(timeout: nil)
 ```
 
 
@@ -457,6 +457,14 @@ If `expression` returns a [Promise](https://developer.mozilla.org/en-US/docs/Web
 If `expression` throws or rejects, this method throws.
 
 **Usage**
+
+Passing argument to `expression`:
+
+```python title="example_397d9396d0ac4796aa46eec83d1527a664de97335868540229391d545cf6d9d7.py"
+result = page.get_by_testid("myId").evaluate("(element, [x, y]) => element.textContent + ' ' + x * y", [7, 8])
+print(result) # prints "myId text 56"
+
+```
 
 ## evaluate_all
 
