@@ -997,6 +997,11 @@ module ExampleCodes
     tweet.evaluate("node => node.innerText") # => "10 retweets"
   end
 
+  # Locator#evaluate
+  def example_397d9396d0ac4796aa46eec83d1527a664de97335868540229391d545cf6d9d7(page:)
+    page.get_by_test_id("myId").evaluate("(element, [x, y]) => element.textContent + ' ' + x * y", arg: [7, 8]) # => "myId text 56"
+  end
+
   # Locator#evaluate_all
   def example_877178e12857c7b3ef09f6c50606489c9d9894220622379b72e1e180a2970b96(page:)
     locator = page.locator("div")
@@ -1264,7 +1269,7 @@ module ExampleCodes
   end
 
   # LocatorAssertions#to_contain_class
-  def example_455090a7c2a4f6e5fb33ee5e77e3a0f64a98a60561f61a459a2dd67f9d52d065(page:)
+  def example_d4669942897f42b24d218b847e98fc5490f69a52e6c72d278a2781bcba67245f(page:)
     locator = page.locator(".list > .component")
     expect(locator).to contain_class(["inactive", "active", "inactive"])
   end
@@ -1322,14 +1327,14 @@ module ExampleCodes
   end
 
   # LocatorAssertions#to_have_class
-  def example_7778d4f89215025560ecd192d60831f898331a0f339607a657c038207951e473(page:)
+  def example_a596f37c41d76277b59ed7eb46969c178c89770d0da91bdff20f36d438aa32cd(page:)
     locator = page.locator("#component")
     expect(locator).to have_class(/(^|\s)selected(\s|$)/)
     expect(locator).to have_class("middle selected row")
   end
 
   # LocatorAssertions#to_have_class
-  def example_96b9affd86317eeafe4a419f6ec484d33cea4ee947297f44b7b4ebb373261f1d(page:)
+  def example_aa26b270cde98bc57b4e98f69ef26ca30ac89d719799f52940ef4e8b9fb01bcd(page:)
     locator = page.locator("list > .component")
     expect(locator).to have_class(["component", "component selected", "component"])
   end
