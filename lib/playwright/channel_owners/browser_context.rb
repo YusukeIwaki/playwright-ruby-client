@@ -8,10 +8,7 @@ module Playwright
     attr_reader :clock, :tracing, :request
 
     private def after_initialize
-      if @parent.is_a?(ChannelOwners::Browser)
-        @browser = @parent
-        @browser.send(:add_context, self)
-      end
+      @options = @initializer['options']
       @pages = Set.new
       @routes = []
       @bindings = {}

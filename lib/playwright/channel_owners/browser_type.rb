@@ -13,7 +13,7 @@ module Playwright
     def launch(options, &block)
       resp = @channel.send_message_to_server('launch', options.compact)
       browser = ChannelOwners::Browser.from(resp)
-      browser.connect_to_browser_type(self, nil)
+      browser.send(:connect_to_browser_type, self, options[:tracesDir])
       return browser unless block
 
       begin
@@ -28,10 +28,10 @@ module Playwright
       prepare_browser_context_options(params)
       params['userDataDir'] = userDataDir
 
-      resp = @channel.send_message_to_server_result('launchPersistentContext', params.compact)
-      browser = ChannelOwners::Browser.from(resp['browser'])
-      browser.connect_to_browser_type(self, nil)
-      context = ChannelOwners::BrowserContext.from(resp['context'])
+      result = @channel.send_message_to_server_result('launchPersistentContext', params.compact)
+      browser = ChannelOwners::Browser.from(result['browser'])
+      browser.send(:connect_to_browser_type, self, params[:tracesDir])
+      context = ChannelOwners::BrowserContext.from(result['context'])
       return context unless block
 
       begin
@@ -57,7 +57,7 @@ module Playwright
 
       result = @channel.send_message_to_server_result('connectOverCDP', params)
       browser = ChannelOwners::Browser.from(result['browser'])
-      browser.connect_to_browser_type(self, nil)
+      browser.send(:connect_to_browser_type, self, nil)
 
       if block
         begin

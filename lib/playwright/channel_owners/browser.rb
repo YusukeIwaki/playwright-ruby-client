@@ -63,10 +63,6 @@ module Playwright
       end
     end
 
-    private def update_browser_type(browser_type)
-      @browser_type = browser_type
-    end
-
     def close(reason: nil)
       @close_reason = reason
       if @should_close_connection_on_close
@@ -111,13 +107,30 @@ module Playwright
       data
     end
 
+    # called from BrowserType
+    private def connect_to_browser_type(browser_type, traces_dir)
+      # Note: when using connect(), `browserType` is different from `this.parent`.
+      # This is why browser type is not wired up in the constructor, and instead this separate method is called later on.
+      @browser_type = browser_type
+      @traces_dir = traces_dir
+      @contexts.each do |context|
+        setup_browser_context(context)
+      end
+    end
+
     private def did_create_context(context)
       context.browser = self
       @contexts << context
+
+      # Note: when connecting to a browser, initial contexts arrive before `_browserType` is set,
+      # and will be configured later in `ConnectToBrowserType`.
+      if @browser_type
+        setup_browser_context(context)
+      end
     end
 
-    def connect_to_browser_type(browser_type, _)
-      @browser_type = browser_type
+    private def setup_browser_context(context)
+      context.tracing.send(:update_traces_dir, @traces_dir)
     end
 
     private def on_close(_ = {})
