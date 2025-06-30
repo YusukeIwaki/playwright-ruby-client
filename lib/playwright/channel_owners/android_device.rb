@@ -46,9 +46,9 @@ module Playwright
         enabled: selector[:enabled],
         focusable: selector[:focusable],
         focused: selector[:focused],
-        hasChild: selector[:hasChild] ? { selector: to_selector_channel(selector[:hasChild][:selector]) } : nil,
+        hasChild: selector[:hasChild] ? { androidSelector: to_selector_channel(selector[:hasChild][:selector]) } : nil,
         hasDescendant: selector[:hasDescendant] ? {
-          selector: to_selector_channel(selector[:hasDescendant][:selector]),
+          androidSelector: to_selector_channel(selector[:hasDescendant][:selector]),
           maxDepth: selector[:hasDescendant][:maxDepth],
         } : nil,
         longClickable: selector[:longClickable],
@@ -59,7 +59,7 @@ module Playwright
 
     def tap_on(selector, duration: nil, timeout: nil)
       params = {
-        selector: to_selector_channel(selector),
+        androidSelector: to_selector_channel(selector),
         duration: duration,
         timeout: timeout,
       }.compact
@@ -67,7 +67,7 @@ module Playwright
     end
 
     def info(selector)
-      @channel.send_message_to_server('info', selector: to_selector_channel(selector))
+      @channel.send_message_to_server('info', androidSelector: to_selector_channel(selector))
     end
 
     def screenshot(path: nil)
