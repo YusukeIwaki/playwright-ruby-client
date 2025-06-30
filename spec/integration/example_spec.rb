@@ -106,6 +106,19 @@ RSpec.describe 'example' do
     end
   end
 
+  it 'should support locator.describe' do
+    with_context do |context|
+      page = context.new_page
+      page.content = <<~HTML
+      <button>Click me</button>
+      HTML
+      context.tracing.start(screenshots: true, snapshots: true)
+      page.locator('button').click
+      page.locator('button').describe('Click me').click
+      context.tracing.stop(path: 'trace-locator.describe.zip')
+    end
+  end
+
   context 'for ExampleCodes' do
     it 'should work with Accessibility' do
       skip unless chromium?

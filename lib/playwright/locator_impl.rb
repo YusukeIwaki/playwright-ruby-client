@@ -40,7 +40,11 @@ module Playwright
     end
 
     def to_s
-      "Locator@#{@selector}"
+      if @description
+        "Locator@#{@selector} (#{@description})"
+      else
+        "Locator@#{@selector}"
+      end
     end
 
     private def to_protocol
@@ -242,6 +246,13 @@ module Playwright
         frame: @frame,
         timeout_settings: @timeout_settings,
         frame_selector: @selector,
+      )
+    end
+
+    def describe(description)
+      LocatorImpl.new(
+        frame: @frame,
+        selector: "#{@selector} >> internal:describe=#{description.to_json}",
       )
     end
 

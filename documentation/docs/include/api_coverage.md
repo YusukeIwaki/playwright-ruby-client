@@ -455,7 +455,7 @@
 * click
 * count
 * dblclick
-* ~~describe~~
+* describe
 * dispatch_event
 * drag_to
 * element_handle

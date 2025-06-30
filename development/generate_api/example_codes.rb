@@ -951,6 +951,12 @@ module ExampleCodes
     count = page.get_by_role("listitem").count
   end
 
+  # Locator#describe
+  def example_34eb5cb79f67cd9f05cfcc449a5eb55b6d5e01726d8ad62a85dfa72a6a684030(page:)
+    button = page.get_by_test_id("btn-sub").describe("Subscribe button")
+    button.click
+  end
+
   # Locator#disabled?
   def example_5c008cd1a3ece779fe8c29092643a482cd0215d5c09001cd9ef08c444ea6cdd1(page:)
     disabled = page.get_by_role("button").disabled?

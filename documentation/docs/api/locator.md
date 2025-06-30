@@ -317,6 +317,23 @@ When all steps combined have not finished during the specified `timeout`, this m
 
 **NOTE**: `element.dblclick()` dispatches two `click` events and a single `dblclick` event.
 
+## describe
+
+```
+def describe(description)
+```
+
+
+Describes the locator, description is used in the trace viewer and reports.
+Returns the locator pointing to the same element.
+
+**Usage**
+
+```ruby
+button = page.get_by_test_id("btn-sub").describe("Subscribe button")
+button.click
+```
+
 ## dispatch_event
 
 ```
