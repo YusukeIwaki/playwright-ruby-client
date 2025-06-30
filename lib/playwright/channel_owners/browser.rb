@@ -7,11 +7,11 @@ module Playwright
     include Utils::PrepareBrowserContextOptions
 
     private def after_initialize
-      @browser_type = @parent
       @connected = true
       @should_close_connection_on_close = false
 
       @contexts = Set.new
+      @channel.on('context', ->(params) { did_create_context(ChannelOwners::BrowserContext.from(params['context'])) })
       @channel.on('close', method(:on_close))
       @close_reason = nil
     end
@@ -111,13 +111,22 @@ module Playwright
       data
     end
 
+    private def did_create_context(context)
+      context.browser = self
+      @contexts << context
+    end
+
+    def connect_to_browser_type(browser_type, _)
+      @browser_type = browser_type
+    end
+
     private def on_close(_ = {})
       @connected = false
       emit(Events::Browser::Disconnected, self)
       @closed_or_closing = true
     end
 
-    # called from BrowserContext#initialize, BrowserType#connectOverCDP
+    # called from BrowserContext#initialize
     private def add_context(context)
       @contexts << context
     end
