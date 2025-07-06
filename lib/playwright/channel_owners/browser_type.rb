@@ -2,6 +2,10 @@ module Playwright
   define_channel_owner :BrowserType do
     include Utils::PrepareBrowserContextOptions
 
+    private def after_initialize
+      @timeout_settings = TimeoutSettings.new
+    end
+
     def name
       @initializer['name']
     end
@@ -11,9 +15,11 @@ module Playwright
     end
 
     def launch(options, &block)
-      resp = @channel.send_message_to_server('launch', options.compact)
+      params = options.dup
+      params[:timeout] ||= @timeout_settings.launch_timeout
+      resp = @channel.send_message_to_server('launch', params.compact)
       browser = ChannelOwners::Browser.from(resp)
-      browser.send(:connect_to_browser_type, self, options[:tracesDir])
+      browser.send(:connect_to_browser_type, self, params[:tracesDir])
       return browser unless block
 
       begin
@@ -27,6 +33,7 @@ module Playwright
       params = options.dup
       prepare_browser_context_options(params)
       params['userDataDir'] = userDataDir
+      params[:timeout] ||= @timeout_settings.launch_timeout
 
       result = @channel.send_message_to_server_result('launchPersistentContext', params.compact)
       browser = ChannelOwners::Browser.from(result['browser'])
@@ -48,7 +55,7 @@ module Playwright
         endpointURL: endpointURL,
         headers: headers,
         slowMo: slowMo,
-        timeout: timeout,
+        timeout: @timeout_settings.timeout(timeout),
       }.compact
 
       if headers

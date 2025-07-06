@@ -618,7 +618,7 @@
 
 * ~~connect~~
 * devices
-* ~~set_default_timeout~~
+* set_default_timeout
 
 ## AndroidDevice
 

@@ -5,6 +5,7 @@ module Playwright
     private def after_initialize
       @input = AndroidInputImpl.new(@channel)
       @should_close_connection_on_close = false
+      @timeout_settings = @parent.send(:_timeout_settings)
     end
 
     def should_close_connection_on_close!
@@ -61,7 +62,7 @@ module Playwright
       params = {
         androidSelector: to_selector_channel(selector),
         duration: duration,
-        timeout: timeout,
+        timeout: @timeout_settings.timeout(timeout),
       }.compact
       @channel.send_message_to_server('tap', params)
     end

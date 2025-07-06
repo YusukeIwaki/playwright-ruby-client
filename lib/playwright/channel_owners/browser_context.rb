@@ -19,6 +19,7 @@ module Playwright
 
       @tracing = ChannelOwners::Tracing.from(@initializer['tracing'])
       @request = ChannelOwners::APIRequestContext.from(@initializer['requestContext'])
+      @request.send(:_update_timeout_settings, @timeout_settings)
       @clock = ClockImpl.new(self)
       @har_recorders = {}
 
@@ -223,12 +224,10 @@ module Playwright
 
     def set_default_navigation_timeout(timeout)
       @timeout_settings.default_navigation_timeout = timeout
-      @channel.send_message_to_server('setDefaultNavigationTimeoutNoReply', timeout: timeout)
     end
 
     def set_default_timeout(timeout)
       @timeout_settings.default_timeout = timeout
-      @channel.send_message_to_server('setDefaultTimeoutNoReply', timeout: timeout)
     end
 
     def pages

@@ -4,10 +4,13 @@ module Playwright
   define_api_implementation :FrameLocatorImpl do
     include LocatorUtils
 
-    def initialize(frame:, timeout_settings:, frame_selector:)
+    def initialize(frame:, frame_selector:)
       @frame = frame
-      @timeout_settings = timeout_settings
       @frame_selector = frame_selector
+    end
+
+    private def _timeout(timeout)
+      @frame.send(:_timeout, timeout)
     end
 
     def locator(
@@ -18,7 +21,6 @@ module Playwright
       hasText: nil)
       LocatorImpl.new(
         frame: @frame,
-        timeout_settings: @timeout_settings,
         selector: "#{@frame_selector} >> internal:control=enter-frame >> #{selector}",
         has: has,
         hasNot: hasNot,
@@ -29,7 +31,6 @@ module Playwright
     def owner
       LocatorImpl.new(
         frame: @frame,
-        timeout_settings: @timeout_settings,
         selector: @frame_selector,
       )
     end
@@ -37,7 +38,6 @@ module Playwright
     def frame_locator(selector)
       FrameLocatorImpl.new(
         frame: @frame,
-        timeout_settings: @timeout_settings,
         frame_selector: "#{@frame_selector} >> internal:control=enter-frame >> #{selector}",
       )
     end
@@ -45,7 +45,6 @@ module Playwright
     def first
       FrameLocatorImpl.new(
         frame: @frame,
-        timeout_settings: @timeout_settings,
         frame_selector: "#{@frame_selector} >> nth=0",
       )
     end
@@ -53,7 +52,6 @@ module Playwright
     def last
       FrameLocatorImpl.new(
         frame: @frame,
-        timeout_settings: @timeout_settings,
         frame_selector: "#{@frame_selector} >> nth=-1",
       )
     end
@@ -61,7 +59,6 @@ module Playwright
     def nth(index)
       FrameLocatorImpl.new(
         frame: @frame,
-        timeout_settings: @timeout_settings,
         frame_selector: "#{@frame_selector} >> nth=#{index}",
       )
     end

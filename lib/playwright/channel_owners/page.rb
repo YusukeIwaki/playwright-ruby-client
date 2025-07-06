@@ -42,6 +42,7 @@ module Playwright
       @channel.on('fileChooser', ->(params) {
         chooser = FileChooserImpl.new(
                     page: self,
+                    timeout_settings: @timeout_settings,
                     element_handle: ChannelOwners::ElementHandle.from(params['element']),
                     is_multiple: params['isMultiple'])
         emit(Events::Page::FileChooser, chooser)
@@ -230,12 +231,10 @@ module Playwright
 
     def set_default_navigation_timeout(timeout)
       @timeout_settings.default_navigation_timeout = timeout
-      @channel.send_message_to_server('setDefaultNavigationTimeoutNoReply', timeout: timeout)
     end
 
     def set_default_timeout(timeout)
       @timeout_settings.default_timeout = timeout
-      @channel.send_message_to_server('setDefaultTimeoutNoReply', timeout: timeout)
     end
 
     def query_selector(selector, strict: nil)
@@ -339,7 +338,7 @@ module Playwright
 
     def reload(timeout: nil, waitUntil: nil)
       params = {
-        timeout: timeout,
+        timeout: @timeout_settings.timeout(timeout),
         waitUntil: waitUntil,
       }.compact
       resp = @channel.send_message_to_server('reload', params)
@@ -355,13 +354,13 @@ module Playwright
     end
 
     def go_back(timeout: nil, waitUntil: nil)
-      params = { timeout: timeout, waitUntil: waitUntil }.compact
+      params = { timeout: @timeout_settings.timeout(timeout), waitUntil: waitUntil }.compact
       resp = @channel.send_message_to_server('goBack', params)
       ChannelOwners::Response.from_nullable(resp)
     end
 
     def go_forward(timeout: nil, waitUntil: nil)
-      params = { timeout: timeout, waitUntil: waitUntil }.compact
+      params = { timeout: @timeout_settings.timeout(timeout), waitUntil: waitUntil }.compact
       resp = @channel.send_message_to_server('goForward', params)
       ChannelOwners::Response.from_nullable(resp)
     end
@@ -481,7 +480,7 @@ module Playwright
         caret: caret,
         scale: scale,
         style: style,
-        timeout: timeout,
+        timeout: @timeout_settings.timeout(timeout),
       }.compact
       if mask.is_a?(Enumerable)
         params[:mask] = mask.map do |locator|
@@ -1003,7 +1002,7 @@ module Playwright
     end
 
     # called from Frame with send(:timeout_settings)
-    private def timeout_settings
+    private def _timeout_settings
       @timeout_settings
     end
 
