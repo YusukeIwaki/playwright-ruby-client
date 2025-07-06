@@ -58,6 +58,7 @@ module Playwright
       })
       @channel.on('route', ->(params) { on_route(ChannelOwners::Route.from(params['route'])) })
       @channel.on('video', method(:on_video))
+      @channel.on('viewportSizeChanged', method(:on_viewport_size_changed))
       @channel.on('webSocket', ->(params) {
         emit(Events::Page::WebSocket, ChannelOwners::WebSocket.from(params['webSocket']))
       })
@@ -176,6 +177,13 @@ module Playwright
     private def on_video(params)
       artifact = ChannelOwners::Artifact.from(params['artifact'])
       video.send(:set_artifact, artifact)
+    end
+
+    private def on_viewport_size_changed(params)
+      @viewport_size = {
+        width: params['viewportSize']['width'],
+        height: params['viewportSize']['height'],
+      }
     end
 
     # @override
