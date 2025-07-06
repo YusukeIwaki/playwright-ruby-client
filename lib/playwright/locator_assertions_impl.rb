@@ -11,15 +11,15 @@ module Playwright
       end
     end
 
-    def initialize(locator, timeout, is_not, message)
+    def initialize(locator, default_expect_timeout, is_not, message)
       @locator = locator
-      @timeout = timeout
+      @default_expect_timeout = default_expect_timeout
       @is_not = is_not
       @custom_message = message
     end
 
     private def expect_impl(expression, expect_options, expected, message, title)
-      expect_options[:timeout] ||= 5000
+      expect_options[:timeout] ||= @default_expect_timeout
       expect_options[:isNot] = @is_not
       message.gsub!("expected to", "not expected to") if @is_not
       expect_options.delete(:useInnerText) if expect_options.key?(:useInnerText) && expect_options[:useInnerText].nil?
@@ -59,7 +59,7 @@ module Playwright
     private def _not # "not" is reserved in Ruby
       LocatorAssertionsImpl.new(
         @locator,
-        @timeout,
+        @default_expect_timeout,
         !@is_not,
         @message
       )

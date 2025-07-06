@@ -301,6 +301,16 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
         expect {
           expect(locator).to contain_class('does-not-exist', timeout: 1000)
         }.to raise_error(/Expect "to_contain_class" with timeout 1000ms/)
+
+        ::Playwright::Test.with_timeout(500) do
+          expect {
+            expect(locator).to contain_class('does-not-exist')
+          }.to raise_error(/Expect "to_contain_class" with timeout 500ms/)
+
+          expect {
+            expect(locator).to contain_class('does-not-exist', timeout: 400)
+          }.to raise_error(/Expect "to_contain_class" with timeout 400ms/)
+        end
       end
     end
 
