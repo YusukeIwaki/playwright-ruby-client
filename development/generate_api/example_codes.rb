@@ -1811,7 +1811,7 @@ module ExampleCodes
 
   # Page#wait_for_selector
   def example_903c7325fd65fcdf6f22c77fc159922a568841abce60ae1b7c54ab5837401862(page:)
-    %w[https://google.com https://bbc.com].each do |current_url|
+    %w[https://playwright.dev/ https://playwright-ruby-client.vercel.app/].each do |current_url|
       page.goto(current_url, waitUntil: "domcontentloaded")
       element = page.wait_for_selector("img")
       puts "Loaded image: #{element["src"]}"
