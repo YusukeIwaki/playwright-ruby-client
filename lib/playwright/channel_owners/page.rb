@@ -439,7 +439,7 @@ module Playwright
 
     def route_from_har(har, notFound: nil, update: nil, url: nil, updateContent: nil, updateMode: nil)
       if update
-        @browser_context.send(:record_into_har, har, self, notFound: notFound, url: url, updateContent: updateContent, updateMode: updateMode)
+        @browser_context.send(:record_into_har, har, self, url: url, update_content: updateContent, update_mode: updateMode)
         return
       end
 

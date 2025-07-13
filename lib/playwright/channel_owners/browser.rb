@@ -39,6 +39,13 @@ module Playwright
 
       resp = @channel.send_message_to_server('newContext', params.compact)
       context = ChannelOwners::BrowserContext.from(resp)
+      context.send(:initialize_har_from_options,
+        record_har_content: params[:record_har_content],
+        record_har_mode: params[:record_har_mode],
+        record_har_omit_content: params[:record_har_omit_content],
+        record_har_path: params[:record_har_path],
+        record_har_url_filter: params[:record_har_url_filter],
+      )
       @browser_type.send(:did_create_context, context, params)
       return context unless block
 
