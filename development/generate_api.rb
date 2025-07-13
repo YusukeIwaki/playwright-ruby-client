@@ -56,6 +56,7 @@ API_IMPLEMENTATIONS = %w[
   APIResponse
   LocatorAssertions
   PageAssertions
+  Selectors
 ]
 
 require 'bundler/setup'

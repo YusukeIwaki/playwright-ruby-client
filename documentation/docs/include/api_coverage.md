@@ -212,7 +212,7 @@
 ## Selectors
 
 * register
-* ~~set_test_id_attribute~~
+* set_test_id_attribute
 
 ## Clock
 

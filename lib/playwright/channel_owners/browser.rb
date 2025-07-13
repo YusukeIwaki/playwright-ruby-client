@@ -34,6 +34,7 @@ module Playwright
 
     def new_context(**options, &block)
       params = options.dup
+      @browser_type.send(:update_with_playwright_selectors_options, params)
       prepare_browser_context_options(params)
 
       resp = @channel.send_message_to_server('newContext', params.compact)
@@ -131,6 +132,7 @@ module Playwright
 
     private def setup_browser_context(context)
       context.tracing.send(:update_traces_dir, @traces_dir)
+      @browser_type.send(:playwright_selectors_browser_contexts) << context
     end
 
     private def on_close(_ = {})

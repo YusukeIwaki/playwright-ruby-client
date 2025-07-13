@@ -429,7 +429,10 @@ module Playwright
     end
 
     private def on_close
-      @browser&.send(:remove_context, self)
+      if @browser
+        @browser.send(:remove_context, self)
+        @browser.browser_type.send(:playwright_selectors_browser_contexts).delete(self)
+      end
       emit(Events::BrowserContext::Close)
       @closed_promise.fulfill(true)
     end
@@ -609,6 +612,15 @@ module Playwright
 
     private def clock_set_system_time(time_params)
       @channel.send_message_to_server('clockSetSystemTime', time_params)
+    end
+
+    private def register_selector_engine(selector_engine)
+      @channel.send_message_to_server('registerSelectorEngine', { selectorEngine: selector_engine })
+    end
+
+    private def set_test_id_attribute_name(test_id_attribute_name)
+      @channel.send_message_to_server('setTestIdAttributeName', { testIdAttributeName: test_id_attribute_name })
+      ::Playwright::LocatorUtils.instance_variable_set(:@test_id_attribute_name, test_id_attribute_name)
     end
   end
 end

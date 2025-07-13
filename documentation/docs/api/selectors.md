@@ -51,3 +51,13 @@ playwright.chromium.launch do |browser|
   button_count # => 1
 end
 ```
+
+## set_test_id_attribute
+
+```
+def set_test_id_attribute(attributeName)
+```
+alias: `test_id_attribute=`
+
+
+Defines custom attribute name to be used in [Page#get_by_test_id](./page#get_by_test_id). `data-testid` is used by default.

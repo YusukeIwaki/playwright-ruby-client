@@ -6,6 +6,10 @@ module Playwright
       @timeout_settings = TimeoutSettings.new
     end
 
+    private def update_playwright(playwright)
+      @playwright = playwright
+    end
+
     def name
       @initializer['name']
     end
@@ -83,6 +87,24 @@ module Playwright
 
     private def did_launch_browser(browser)
       browser.send(:update_browser_type, self)
+    end
+
+    private def update_with_playwright_selectors_options(options)
+      selectors = @playwright&.selectors
+      if selectors
+        selectors.send(:update_with_selector_options, options)
+      else
+        options
+      end
+    end
+
+    private def playwright_selectors_browser_contexts
+      selectors = @playwright&.selectors
+      if selectors
+        selectors.send(:contexts_for_selectors)
+      else
+        []
+      end
     end
   end
 end
