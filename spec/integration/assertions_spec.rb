@@ -300,7 +300,7 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
         locator = page.locator('div')
         expect {
           expect(locator).to contain_class('does-not-exist', timeout: 1000)
-        }.to raise_error(/expect with timeout 1000ms/)
+        }.to raise_error(/Expect "to_contain_class" with timeout 1000ms/)
       end
     end
 
@@ -323,7 +323,7 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
         locator = page.locator('div')
         expect {
           expect(locator).to contain_class(['foo', 'bar', 'baz'], timeout: 1000)
-        }.to raise_error(/expect with timeout 1000ms/)
+        }.to raise_error(/Expect "to_contain_class" with timeout 1000ms/)
       end
     end
   end

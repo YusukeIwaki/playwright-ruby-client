@@ -514,7 +514,7 @@ module Playwright
       @frame.highlight(@selector)
     end
 
-    def expect(expression, options)
+    def expect(expression, options, title)
       if options.key?(:expectedValue)
         options[:expectedValue] = JavaScript::ValueSerializer
           .new(options[:expectedValue])
@@ -522,8 +522,9 @@ module Playwright
       end
 
       result = @frame.channel.send_message_to_server_result(
-        "expect",
-        {
+        title, # title
+        "expect", # method
+        { # params
           selector: @selector,
           expression: expression,
           **options,

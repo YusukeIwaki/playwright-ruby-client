@@ -90,6 +90,9 @@ module Playwright
           _metadata[:apiName] = metadata[:apiName]
           _metadata[:location] = metadata[:stack].first
           _metadata[:internal] = !metadata[:apiName]
+          if metadata[:title]
+            _metadata[:title] = metadata[:title]
+          end
         end
         _metadata.compact!
 

@@ -19,13 +19,13 @@ module Playwright
       @custom_message = message
     end
 
-    private def expect_impl(expression, expect_options, expected, message)
+    private def expect_impl(expression, expect_options, expected, message, title)
       expect_options[:timeout] ||= 5000
       expect_options[:isNot] = @is_not
       message.gsub!("expected to", "not expected to") if @is_not
       expect_options.delete(:useInnerText) if expect_options.key?(:useInnerText) && expect_options[:useInnerText].nil?
 
-      result = @locator.expect(expression, expect_options)
+      result = @locator.expect(expression, expect_options, title)
 
       if result["matches"] == @is_not
         actual = result["received"]
@@ -117,7 +117,8 @@ module Playwright
           timeout: timeout,
         },
         title_or_regex,
-        "Page title expected to be"
+        "Page title expected to be",
+        'Expect "to_have_title"',
       )
     end
     _define_negation :to_have_title
@@ -141,7 +142,8 @@ module Playwright
           timeout: timeout,
         },
         expected,
-        "Page URL expected to be"
+        "Page URL expected to be",
+        'Expect "to_have_url"',
       )
     end
     _define_negation :to_have_url

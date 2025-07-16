@@ -29,9 +29,9 @@ module Playwright
     # @param method [String]
     # @param params [Hash]
     # @return [Hash]
-    def send_message_to_server_result(method, params)
+    def send_message_to_server_result(title = nil, method, params)
       check_not_collected
-      with_logging do |metadata|
+      with_logging(title) do |metadata|
         @connection.send_message_to_server(@guid, method, params, metadata: metadata)
       end
     end
@@ -46,7 +46,7 @@ module Playwright
       end
     end
 
-    private def with_logging(&block)
+    private def with_logging(title = nil, &block)
       locations = caller_locations
       first_api_call_location_idx = locations.index { |loc| loc.absolute_path&.include?('playwright_api') }
       unless first_api_call_location_idx
@@ -64,6 +64,9 @@ module Playwright
       stacks = locations
 
       metadata = build_metadata_payload_from(api_name, stacks)
+      if title
+        metadata[:title] = title
+      end
       block.call(metadata)
     end
 

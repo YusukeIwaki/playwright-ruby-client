@@ -18,13 +18,13 @@ module Playwright
       @custom_message = message
     end
 
-    private def expect_impl(expression, expect_options, expected, message)
+    private def expect_impl(expression, expect_options, expected, message, title)
       expect_options[:timeout] ||= 5000
       expect_options[:isNot] = @is_not
       message.gsub!("expected to", "not expected to") if @is_not
       expect_options.delete(:useInnerText) if expect_options.key?(:useInnerText) && expect_options[:useInnerText].nil?
 
-      result = @locator.expect(expression, expect_options)
+      result = @locator.expect(expression, expect_options, title)
 
       if result["matches"] == @is_not
         actual = result["received"]
@@ -124,7 +124,8 @@ module Playwright
             timeout: timeout,
           },
           expected,
-          "Locator expected to contain text"
+          "Locator expected to contain text",
+          'Expect "to_contain_text"',
         )
       else
         expected_text = to_expected_text_values(
@@ -142,7 +143,8 @@ module Playwright
             timeout: timeout,
           },
           expected,
-          "Locator expected to contain text"
+          "Locator expected to contain text",
+          'Expect "to_contain_text"',
         )
       end
     end
@@ -157,7 +159,8 @@ module Playwright
           timeout: timeout,
         },
         name,
-        "Locator expected to have accessible name"
+        "Locator expected to have accessible name",
+        'Expect "to_have_accessible_name"',
       )
     end
     _define_negation :to_have_accessible_name
@@ -171,7 +174,8 @@ module Playwright
           timeout: timeout,
         },
         name,
-        "Locator expected to have accessible description"
+        "Locator expected to have accessible description",
+        'Expect "to_have_accessible_description"',
       )
     end
     _define_negation :to_have_accessible_description
@@ -185,7 +189,8 @@ module Playwright
           timeout: timeout,
         },
         errorMessage,
-        "Locator expected to have accessible error message"
+        "Locator expected to have accessible error message",
+        'Expect "to_have_accessible_error_message"',
       )
     end
     _define_negation :to_have_accessible_error_message
@@ -200,7 +205,8 @@ module Playwright
           timeout: timeout,
         },
         value,
-        "Locator expected to have attribute"
+        "Locator expected to have attribute",
+        'Expect "to_have_attribute"',
       )
     end
     _define_negation :to_have_attribute
@@ -215,7 +221,8 @@ module Playwright
             timeout: timeout,
           },
           expected,
-          "Locator expected to have class"
+          "Locator expected to have class",
+          'Expect "to_have_class"',
         )
       else
         expected_text = to_expected_text_values([expected])
@@ -226,7 +233,8 @@ module Playwright
             timeout: timeout,
           },
           expected,
-          "Locator expected to have class"
+          "Locator expected to have class",
+          'Expect "to_have_class"',
         )
       end
     end
@@ -245,7 +253,8 @@ module Playwright
             timeout: timeout,
           },
           expected,
-          "Locator expected to contain class names"
+          "Locator expected to contain class names",
+          'Expect "to_contain_class"',
         )
       else # Single string
         if expected.is_a?(Regexp)
@@ -259,7 +268,8 @@ module Playwright
             timeout: timeout,
           },
           expected,
-          "Locator expected to contain class"
+          "Locator expected to contain class",
+          'Expect "to_contain_class"',
         )
       end
     end
@@ -273,7 +283,8 @@ module Playwright
           timeout: timeout,
         },
         count,
-        "Locator expected to have count"
+        "Locator expected to have count",
+        'Expect "to_have_count"',
       )
     end
     _define_negation :to_have_count
@@ -288,7 +299,8 @@ module Playwright
           timeout: timeout,
         },
         value,
-        "Locator expected to have CSS"
+        "Locator expected to have CSS",
+        'Expect "to_have_css"',
       )
     end
     _define_negation :to_have_css
@@ -302,7 +314,8 @@ module Playwright
           timeout: timeout,
         },
         id,
-        "Locator expected to have ID"
+        "Locator expected to have ID",
+        'Expect "to_have_id"',
       )
     end
     _define_negation :to_have_id
@@ -316,7 +329,8 @@ module Playwright
           timeout: timeout,
         },
         value,
-        "Locator expected to have JS Property"
+        "Locator expected to have JS Property",
+        'Expect "to_have_js_property"',
       )
     end
     _define_negation :to_have_js_property
@@ -335,6 +349,7 @@ module Playwright
         },
         role,
         "Locator expected to have accessible role",
+        'Expect "to_have_role"',
       )
     end
     _define_negation :to_have_role
@@ -349,7 +364,8 @@ module Playwright
           timeout: timeout,
         },
         value,
-        "Locator expected to have Value"
+        "Locator expected to have Value",
+        'Expect "to_have_value"',
       )
     end
     _define_negation :to_have_value
@@ -364,7 +380,8 @@ module Playwright
           timeout: timeout,
         },
         values,
-        "Locator expected to have Values"
+        "Locator expected to have Values",
+        'Expect "to_have_values"',
       )
     end
     _define_negation :to_have_values
@@ -385,7 +402,8 @@ module Playwright
             timeout: timeout,
           },
           expected,
-          "Locator expected to have text"
+          "Locator expected to have text",
+          'Expect "to_have_text"',
         )
       else
         expected_text = to_expected_text_values(
@@ -402,7 +420,8 @@ module Playwright
             timeout: timeout,
           },
           expected,
-          "Locator expected to have text"
+          "Locator expected to have text",
+          'Expect "to_have_text"',
         )
       end
     end
@@ -417,6 +436,7 @@ module Playwright
         },
         expected,
         'Locator expected to match Aria snapshot',
+        'Expect "to_match_aria_snapshot"',
       )
     end
     _define_negation :to_match_aria_snapshot
@@ -426,7 +446,8 @@ module Playwright
         (attached || attached.nil?) ? "to.be.attached" : "to.be.detached",
         { timeout: timeout },
         nil,
-        "Locator expected to be attached"
+        "Locator expected to be attached",
+        'Expect "to_be_attached"',
       )
     end
     _define_negation :to_be_attached
@@ -449,7 +470,8 @@ module Playwright
         "to.be.checked",
         { timeout: timeout, expectedValue: expected_value },
         nil,
-        "Locator expected to be checked"
+        "Locator expected to be checked",
+        'Expect "to_be_checked"',
       )
     end
     _define_negation :to_be_checked
@@ -459,7 +481,8 @@ module Playwright
         "to.be.disabled",
         { timeout: timeout },
         nil,
-        "Locator expected to be disabled"
+        "Locator expected to be disabled",
+        'Expect "to_be_disabled"',
       )
     end
     _define_negation :to_be_disabled
@@ -469,7 +492,8 @@ module Playwright
         (editable || editable.nil?) ? "to.be.editable" : "to.be.readonly",
         { timeout: timeout },
         nil,
-        "Locator expected to be editable"
+        "Locator expected to be editable",
+        'Expect "to_be_editable"',
       )
     end
     _define_negation :to_be_editable
@@ -479,7 +503,8 @@ module Playwright
         "to.be.empty",
         { timeout: timeout },
         nil,
-        "Locator expected to be empty"
+        "Locator expected to be empty",
+        'Expect "to_be_empty"',
       )
     end
     _define_negation :to_be_empty
@@ -489,7 +514,8 @@ module Playwright
         (enabled || enabled.nil?) ? "to.be.enabled" : "to.be.disabled",
         { timeout: timeout },
         nil,
-        "Locator expected to be enabled"
+        "Locator expected to be enabled",
+        'Expect "to_be_enabled"',
       )
     end
     _define_negation :to_be_enabled
@@ -499,7 +525,8 @@ module Playwright
         "to.be.hidden",
         { timeout: timeout },
         nil,
-        "Locator expected to be hidden"
+        "Locator expected to be hidden",
+        'Expect "to_be_hidden"',
       )
     end
     _define_negation :to_be_hidden
@@ -509,7 +536,8 @@ module Playwright
         (visible || visible.nil?) ? "to.be.visible" : "to.be.hidden",
         { timeout: timeout },
         nil,
-        "Locator expected to be visible"
+        "Locator expected to be visible",
+        'Expect "to_be_visible"',
       )
     end
     _define_negation :to_be_visible
@@ -519,7 +547,8 @@ module Playwright
         "to.be.focused",
         { timeout: timeout },
         nil,
-        "Locator expected to be focused"
+        "Locator expected to be focused",
+        'Expect "to_be_focused"',
       )
     end
     _define_negation :to_be_focused
@@ -529,7 +558,8 @@ module Playwright
         "to.be.in.viewport",
         { timeout: timeout, expectedNumber: ratio }.compact,
         nil,
-        "Locator expected to be in viewport"
+        "Locator expected to be in viewport",
+        'Expect "to_be_in_viewport"',
       )
     end
     _define_negation :to_be_in_viewport
