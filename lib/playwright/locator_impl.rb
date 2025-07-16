@@ -334,6 +334,12 @@ module Playwright
       @frame.get_attribute(@selector, name, strict: true, timeout: timeout)
     end
 
+    def generate_locator_string
+      with_element(timeout: nil) do |handle, _|
+        handle.channel.send_message_to_server('generateLocatorString')
+      end
+    end
+
     def hover(
           force: nil,
           modifiers: nil,
@@ -402,11 +408,10 @@ module Playwright
       end
     end
 
-    def aria_snapshot(timeout: nil, ref: nil)
+    def aria_snapshot(timeout: nil)
       @frame.channel.send_message_to_server('ariaSnapshot', {
         selector: @selector,
         timeout: _timeout(timeout),
-        ref: ref,
       }.compact)
     end
 
