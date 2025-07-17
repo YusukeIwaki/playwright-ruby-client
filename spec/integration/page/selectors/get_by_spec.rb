@@ -10,6 +10,15 @@ RSpec.describe 'Page#getBy...' do
     end
   end
 
+  it 'getByTestId should work with alias' do
+    with_page do |page|
+      page.content = '<div><div data-testid="Hello">Hello world</div></div>'
+      expect(page.get_by_testid('Hello').text_content).to include('Hello world')
+      expect(page.main_frame.get_by_testid('Hello').text_content).to include('Hello world')
+      expect(page.locator('div').get_by_testid('Hello').text_content).to include('Hello world')
+    end
+  end
+
   it 'getByTestId should escape id' do
     with_page do |page|
       page.content = "<div><div data-testid='He\"llo'>Hello world</div></div>"
