@@ -176,6 +176,7 @@ Many html elements have an implicitly [defined role](https://w3c.github.io/html-
 ```
 def get_by_test_id(testId)
 ```
+alias: `get_by_testid`
 
 
 Locate element by the test id.

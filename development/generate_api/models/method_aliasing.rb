@@ -11,6 +11,10 @@ module MethodAliasing
       end
     end
 
+    if method_name =~ /test_id/
+      aliases << method_name.gsub(/test_id/, "testid")
+    end
+
     if method_name == 'get_attribute' && method_args.requires_single?
       aliases << "[]"
     elsif method_name.start_with?('get_')
