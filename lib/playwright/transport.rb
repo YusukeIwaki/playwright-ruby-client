@@ -43,7 +43,7 @@ module Playwright
     # Terminate playwright-cli driver.
     def stop
       [@stdin, @stdout, @stderr].each { |io| io.close unless io.closed? }
-      @thread&.terminate
+      @thread&.join
     end
 
     # Start `playwright-cli run-driver`
