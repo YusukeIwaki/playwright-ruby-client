@@ -35,7 +35,7 @@ module Playwright
 
     def expect_event(event, predicate: nil, timeout: nil, &block)
       waiter = Waiter.new(self, wait_name: "WebSocket.expect_event(#{event})")
-      timeout_value = timeout || @parent.send(:timeout_settings).timeout
+      timeout_value = timeout || @parent.send(:_timeout_settings).timeout
       waiter.reject_on_timeout(timeout_value, "Timeout #{timeout_value}ms exceeded while waiting for event \"#{event}\"")
 
       unless event == Events::WebSocket::Close

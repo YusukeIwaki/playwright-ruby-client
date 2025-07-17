@@ -2,6 +2,14 @@ module Playwright
   define_channel_owner :BrowserType do
     include Utils::PrepareBrowserContextOptions
 
+    private def after_initialize
+      @timeout_settings = TimeoutSettings.new
+    end
+
+    private def update_playwright(playwright)
+      @playwright = playwright
+    end
+
     def name
       @initializer['name']
     end
@@ -11,9 +19,11 @@ module Playwright
     end
 
     def launch(options, &block)
-      resp = @channel.send_message_to_server('launch', options.compact)
+      params = options.dup
+      params[:timeout] ||= @timeout_settings.launch_timeout
+      resp = @channel.send_message_to_server('launch', params.compact)
       browser = ChannelOwners::Browser.from(resp)
-      did_launch_browser(browser)
+      browser.send(:connect_to_browser_type, self, params[:tracesDir])
       return browser unless block
 
       begin
@@ -27,10 +37,20 @@ module Playwright
       params = options.dup
       prepare_browser_context_options(params)
       params['userDataDir'] = userDataDir
+      params[:timeout] ||= @timeout_settings.launch_timeout
 
-      resp = @channel.send_message_to_server('launchPersistentContext', params.compact)
-      context = ChannelOwners::Browser.from(resp)
-      did_create_context(context, params, params)
+      result = @channel.send_message_to_server_result('launchPersistentContext', params.compact)
+      browser = ChannelOwners::Browser.from(result['browser'])
+      browser.send(:connect_to_browser_type, self, params[:tracesDir])
+      context = ChannelOwners::BrowserContext.from(result['context'])
+      context.send(:initialize_har_from_options,
+        record_har_content: params[:record_har_content],
+        record_har_mode: params[:record_har_mode],
+        record_har_omit_content: params[:record_har_omit_content],
+        record_har_path: params[:record_har_path],
+        record_har_url_filter: params[:record_har_url_filter],
+      )
+
       return context unless block
 
       begin
@@ -47,7 +67,7 @@ module Playwright
         endpointURL: endpointURL,
         headers: headers,
         slowMo: slowMo,
-        timeout: timeout,
+        timeout: @timeout_settings.timeout(timeout),
       }.compact
 
       if headers
@@ -56,12 +76,7 @@ module Playwright
 
       result = @channel.send_message_to_server_result('connectOverCDP', params)
       browser = ChannelOwners::Browser.from(result['browser'])
-      did_launch_browser(browser)
-
-      if result['defaultContext']
-        default_context = ChannelOwners::BrowserContext.from(result['defaultContext'])
-        did_create_context(default_context)
-      end
+      browser.send(:connect_to_browser_type, self, nil)
 
       if block
         begin
@@ -80,6 +95,24 @@ module Playwright
 
     private def did_launch_browser(browser)
       browser.send(:update_browser_type, self)
+    end
+
+    private def update_with_playwright_selectors_options(options)
+      selectors = @playwright&.selectors
+      if selectors
+        selectors.send(:update_with_selector_options, options)
+      else
+        options
+      end
+    end
+
+    private def playwright_selectors_browser_contexts
+      selectors = @playwright&.selectors
+      if selectors
+        selectors.send(:contexts_for_selectors)
+      else
+        []
+      end
     end
   end
 end

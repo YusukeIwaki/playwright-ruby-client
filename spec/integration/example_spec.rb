@@ -106,6 +106,19 @@ RSpec.describe 'example' do
     end
   end
 
+  it 'should support locator.describe' do
+    with_context do |context|
+      page = context.new_page
+      page.content = <<~HTML
+      <button>Click me</button>
+      HTML
+      context.tracing.start(screenshots: true, snapshots: true)
+      page.locator('button').click
+      page.locator('button').describe('Click me').click
+      context.tracing.stop(path: 'trace-locator.describe.zip')
+    end
+  end
+
   context 'for ExampleCodes' do
     it 'should work with Accessibility' do
       skip unless chromium?
@@ -375,6 +388,14 @@ RSpec.describe 'example' do
       end
     end
 
+    it 'should work with Locator#evaluate' do
+      with_page do |page|
+        page.content = "<div data-testid='myId'>myId text</div>"
+        result = example_397d9396d0ac4796aa46eec83d1527a664de97335868540229391d545cf6d9d7(page: page)
+        expect(result).to eq('myId text 56')
+      end
+    end
+
     it 'should work with Locator#evaluate_all' do
       with_page do |page|
         page.content = <<~HTML
@@ -427,14 +448,14 @@ RSpec.describe 'example' do
             <div class='component inactive'></div>
           </div>
           HTML
-          example_455090a7c2a4f6e5fb33ee5e77e3a0f64a98a60561f61a459a2dd67f9d52d065(page: page)
+          example_d4669942897f42b24d218b847e98fc5490f69a52e6c72d278a2781bcba67245f(page: page)
         end
       end
 
       it 'should work with #to_have_class' do
         with_page do |page|
           page.content = "<div class='middle selected row' id='component'></div>"
-          example_7778d4f89215025560ecd192d60831f898331a0f339607a657c038207951e473(page: page)
+          example_a596f37c41d76277b59ed7eb46969c178c89770d0da91bdff20f36d438aa32cd(page: page)
         end
       end
 

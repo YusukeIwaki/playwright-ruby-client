@@ -5,9 +5,8 @@ module Playwright
   define_api_implementation :LocatorImpl do
     include LocatorUtils
 
-    def initialize(frame:, timeout_settings:, selector:, has: nil, hasNot: nil, hasNotText: nil, hasText: nil, visible: nil)
+    def initialize(frame:, selector:, has: nil, hasNot: nil, hasNotText: nil, hasText: nil, visible: nil)
       @frame = frame
-      @timeout_settings = timeout_settings
       selector_scopes = [selector]
 
       if hasText
@@ -40,7 +39,11 @@ module Playwright
     end
 
     def to_s
-      "Locator@#{@selector}"
+      if @description
+        "Locator@#{@selector} (#{@description})"
+      else
+        "Locator@#{@selector}"
+      end
     end
 
     private def to_protocol
@@ -64,8 +67,12 @@ module Playwright
       @selector.to_json
     end
 
+    private def _timeout(timeout)
+      @frame.send(:_timeout, timeout)
+    end
+
     private def with_element(timeout: nil, &block)
-      timeout_or_default = @timeout_settings.timeout(timeout)
+      timeout_or_default = _timeout(timeout)
       start_time = Time.now
 
       handle = @frame.wait_for_selector(@selector, strict: true, state: 'attached', timeout: timeout_or_default)
@@ -213,7 +220,6 @@ module Playwright
       hasText: nil)
       LocatorImpl.new(
         frame: @frame,
-        timeout_settings: @timeout_settings,
         selector: "#{@selector} >> #{selector}",
         has: has,
         hasNot: hasNot,
@@ -224,7 +230,6 @@ module Playwright
     def frame_locator(selector)
       FrameLocatorImpl.new(
         frame: @frame,
-        timeout_settings: @timeout_settings,
         frame_selector: "#{@selector} >> #{selector}",
       )
     end
@@ -240,15 +245,20 @@ module Playwright
     def content_frame
       FrameLocatorImpl.new(
         frame: @frame,
-        timeout_settings: @timeout_settings,
         frame_selector: @selector,
+      )
+    end
+
+    def describe(description)
+      LocatorImpl.new(
+        frame: @frame,
+        selector: "#{@selector} >> internal:describe=#{description.to_json}",
       )
     end
 
     def filter(has: nil, hasNot: nil, hasNotText: nil, hasText: nil, visible: nil)
       LocatorImpl.new(
         frame: @frame,
-        timeout_settings: @timeout_settings,
         selector: @selector,
         has: has,
         hasNot: hasNot,
@@ -261,7 +271,6 @@ module Playwright
     def first
       LocatorImpl.new(
         frame: @frame,
-        timeout_settings: @timeout_settings,
         selector: "#{@selector} >> nth=0",
       )
     end
@@ -269,7 +278,6 @@ module Playwright
     def last
       LocatorImpl.new(
         frame: @frame,
-        timeout_settings: @timeout_settings,
         selector: "#{@selector} >> nth=-1",
       )
     end
@@ -277,7 +285,6 @@ module Playwright
     def nth(index)
       LocatorImpl.new(
         frame: @frame,
-        timeout_settings: @timeout_settings,
         selector: "#{@selector} >> nth=#{index}",
       )
     end
@@ -288,7 +295,6 @@ module Playwright
       end
       LocatorImpl.new(
         frame: @frame,
-        timeout_settings: @timeout_settings,
         selector: "#{@selector} >> internal:and=#{locator.send(:selector_json)}",
       )
     end
@@ -299,7 +305,6 @@ module Playwright
       end
       LocatorImpl.new(
         frame: @frame,
-        timeout_settings: @timeout_settings,
         selector: "#{@selector} >> internal:or=#{locator.send(:selector_json)}",
       )
     end
@@ -312,7 +317,7 @@ module Playwright
       params = {
         selector: @selector,
         strict: true,
-        timeout: timeout,
+        timeout: _timeout(timeout),
       }.compact
       @frame.channel.send_message_to_server('blur', params)
     end
@@ -327,6 +332,12 @@ module Playwright
 
     def get_attribute(name, timeout: nil)
       @frame.get_attribute(@selector, name, strict: true, timeout: timeout)
+    end
+
+    def generate_locator_string
+      with_element(timeout: nil) do |handle, _|
+        handle.channel.send_message_to_server('generateLocatorString')
+      end
     end
 
     def hover(
@@ -397,11 +408,10 @@ module Playwright
       end
     end
 
-    def aria_snapshot(timeout: nil, ref: nil)
+    def aria_snapshot(timeout: nil)
       @frame.channel.send_message_to_server('ariaSnapshot', {
         selector: @selector,
-        timeout: timeout,
-        ref: ref,
+        timeout: _timeout(timeout),
       }.compact)
     end
 
@@ -509,7 +519,7 @@ module Playwright
       @frame.highlight(@selector)
     end
 
-    def expect(expression, options)
+    def expect(expression, options, title)
       if options.key?(:expectedValue)
         options[:expectedValue] = JavaScript::ValueSerializer
           .new(options[:expectedValue])
@@ -517,8 +527,9 @@ module Playwright
       end
 
       result = @frame.channel.send_message_to_server_result(
-        "expect",
-        {
+        title, # title
+        "expect", # method
+        { # params
           selector: @selector,
           expression: expression,
           **options,

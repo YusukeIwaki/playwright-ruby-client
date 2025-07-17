@@ -1,15 +1,21 @@
 module Playwright
   define_channel_owner :Playwright do
     def chromium
-      @chromium ||= ::Playwright::ChannelOwners::BrowserType.from(@initializer['chromium'])
+      @chromium ||= ::Playwright::ChannelOwners::BrowserType.from(@initializer['chromium']).tap do |browser_type|
+        browser_type.send(:update_playwright, self)
+      end
     end
 
     def firefox
-      @firefox ||= ::Playwright::ChannelOwners::BrowserType.from(@initializer['firefox'])
+      @firefox ||= ::Playwright::ChannelOwners::BrowserType.from(@initializer['firefox']).tap do |browser_type|
+        browser_type.send(:update_playwright, self)
+      end
     end
 
     def webkit
-      @webkit ||= ::Playwright::ChannelOwners::BrowserType.from(@initializer['webkit'])
+      @webkit ||= ::Playwright::ChannelOwners::BrowserType.from(@initializer['webkit']).tap do |browser_type|
+        browser_type.send(:update_playwright, self)
+      end
     end
 
     def android
@@ -21,7 +27,7 @@ module Playwright
     end
 
     def selectors
-      @selectors ||= ::Playwright::ChannelOwners::Selectors.from(@initializer['selectors'])
+      @selectors ||= ::Playwright::SelectorsImpl.new
     end
 
     def devices

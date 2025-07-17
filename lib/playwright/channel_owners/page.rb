@@ -42,6 +42,7 @@ module Playwright
       @channel.on('fileChooser', ->(params) {
         chooser = FileChooserImpl.new(
                     page: self,
+                    timeout_settings: @timeout_settings,
                     element_handle: ChannelOwners::ElementHandle.from(params['element']),
                     is_multiple: params['isMultiple'])
         emit(Events::Page::FileChooser, chooser)
@@ -57,6 +58,7 @@ module Playwright
       })
       @channel.on('route', ->(params) { on_route(ChannelOwners::Route.from(params['route'])) })
       @channel.on('video', method(:on_video))
+      @channel.on('viewportSizeChanged', method(:on_viewport_size_changed))
       @channel.on('webSocket', ->(params) {
         emit(Events::Page::WebSocket, ChannelOwners::WebSocket.from(params['webSocket']))
       })
@@ -177,6 +179,13 @@ module Playwright
       video.send(:set_artifact, artifact)
     end
 
+    private def on_viewport_size_changed(params)
+      @viewport_size = {
+        width: params['viewportSize']['width'],
+        height: params['viewportSize']['height'],
+      }
+    end
+
     # @override
     private def perform_event_emitter_callback(event, callback, args)
       should_callback_async = [
@@ -230,12 +239,10 @@ module Playwright
 
     def set_default_navigation_timeout(timeout)
       @timeout_settings.default_navigation_timeout = timeout
-      @channel.send_message_to_server('setDefaultNavigationTimeoutNoReply', timeout: timeout)
     end
 
     def set_default_timeout(timeout)
       @timeout_settings.default_timeout = timeout
-      @channel.send_message_to_server('setDefaultTimeoutNoReply', timeout: timeout)
     end
 
     def query_selector(selector, strict: nil)
@@ -339,7 +346,7 @@ module Playwright
 
     def reload(timeout: nil, waitUntil: nil)
       params = {
-        timeout: timeout,
+        timeout: @timeout_settings.timeout(timeout),
         waitUntil: waitUntil,
       }.compact
       resp = @channel.send_message_to_server('reload', params)
@@ -355,13 +362,13 @@ module Playwright
     end
 
     def go_back(timeout: nil, waitUntil: nil)
-      params = { timeout: timeout, waitUntil: waitUntil }.compact
+      params = { timeout: @timeout_settings.timeout(timeout), waitUntil: waitUntil }.compact
       resp = @channel.send_message_to_server('goBack', params)
       ChannelOwners::Response.from_nullable(resp)
     end
 
     def go_forward(timeout: nil, waitUntil: nil)
-      params = { timeout: timeout, waitUntil: waitUntil }.compact
+      params = { timeout: @timeout_settings.timeout(timeout), waitUntil: waitUntil }.compact
       resp = @channel.send_message_to_server('goForward', params)
       ChannelOwners::Response.from_nullable(resp)
     end
@@ -432,7 +439,7 @@ module Playwright
 
     def route_from_har(har, notFound: nil, update: nil, url: nil, updateContent: nil, updateMode: nil)
       if update
-        @browser_context.send(:record_into_har, har, self, notFound: notFound, url: url, updateContent: updateContent, updateMode: updateMode)
+        @browser_context.send(:record_into_har, har, self, url: url, update_content: updateContent, update_mode: updateMode)
         return
       end
 
@@ -481,7 +488,7 @@ module Playwright
         caret: caret,
         scale: scale,
         style: style,
-        timeout: timeout,
+        timeout: @timeout_settings.timeout(timeout),
       }.compact
       if mask.is_a?(Enumerable)
         params[:mask] = mask.map do |locator|
@@ -875,6 +882,10 @@ module Playwright
       @video ||= Video.new(self)
     end
 
+    def snapshot_for_ai
+      @channel.send_message_to_server('snapshotForAI')
+    end
+
     def start_js_coverage(resetOnNavigation: nil, reportAnonymousScripts: nil)
       params = {
         resetOnNavigation: resetOnNavigation,
@@ -1003,7 +1014,7 @@ module Playwright
     end
 
     # called from Frame with send(:timeout_settings)
-    private def timeout_settings
+    private def _timeout_settings
       @timeout_settings
     end
 

@@ -212,7 +212,7 @@
 ## Selectors
 
 * register
-* ~~set_test_id_attribute~~
+* set_test_id_attribute
 
 ## Clock
 
@@ -455,6 +455,7 @@
 * click
 * count
 * dblclick
+* describe
 * dispatch_event
 * drag_to
 * element_handle
@@ -617,7 +618,7 @@
 
 * ~~connect~~
 * devices
-* ~~set_default_timeout~~
+* set_default_timeout
 
 ## AndroidDevice
 

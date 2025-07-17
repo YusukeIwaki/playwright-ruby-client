@@ -5,6 +5,7 @@ module Playwright
     private def after_initialize
       @input = AndroidInputImpl.new(@channel)
       @should_close_connection_on_close = false
+      @timeout_settings = @parent.send(:_timeout_settings)
     end
 
     def should_close_connection_on_close!
@@ -46,9 +47,9 @@ module Playwright
         enabled: selector[:enabled],
         focusable: selector[:focusable],
         focused: selector[:focused],
-        hasChild: selector[:hasChild] ? { selector: to_selector_channel(selector[:hasChild][:selector]) } : nil,
+        hasChild: selector[:hasChild] ? { androidSelector: to_selector_channel(selector[:hasChild][:selector]) } : nil,
         hasDescendant: selector[:hasDescendant] ? {
-          selector: to_selector_channel(selector[:hasDescendant][:selector]),
+          androidSelector: to_selector_channel(selector[:hasDescendant][:selector]),
           maxDepth: selector[:hasDescendant][:maxDepth],
         } : nil,
         longClickable: selector[:longClickable],
@@ -59,15 +60,15 @@ module Playwright
 
     def tap_on(selector, duration: nil, timeout: nil)
       params = {
-        selector: to_selector_channel(selector),
+        androidSelector: to_selector_channel(selector),
         duration: duration,
-        timeout: timeout,
+        timeout: @timeout_settings.timeout(timeout),
       }.compact
       @channel.send_message_to_server('tap', params)
     end
 
     def info(selector)
-      @channel.send_message_to_server('info', selector: to_selector_channel(selector))
+      @channel.send_message_to_server('info', androidSelector: to_selector_channel(selector))
     end
 
     def screenshot(path: nil)

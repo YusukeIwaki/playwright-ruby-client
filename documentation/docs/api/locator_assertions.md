@@ -470,7 +470,7 @@ expect(locator).to contain_class("row middle")
 When an array is passed, the method asserts that the list of elements located matches the corresponding list of expected class lists. Each element's class attribute is matched against the corresponding class in the array:
 
 ```html
-<div class='list'></div>
+<div class='list'>
   <div class='component inactive'></div>
   <div class='component active'></div>
   <div class='component inactive'></div>
@@ -615,13 +615,10 @@ Ensures the [Locator](./locator) points to an element with given CSS classes. Wh
 <div class='middle selected row' id='component'></div>
 ```
 
-```python title="example_a596f37c41d76277b59ed7eb46969c178c89770d0da91bdff20f36d438aa32cd.py"
-from playwright.sync_api import expect
-
+```ruby
 locator = page.locator("#component")
-expect(locator).to_have_class("middle selected row")
-expect(locator).to_have_class(re.compile(r"(^|\\s)selected(\\s|$)"))
-
+expect(locator).to have_class(/(^|\s)selected(\s|$)/)
+expect(locator).to have_class("middle selected row")
 ```
 
 When an array is passed, the method asserts that the list of elements located matches the corresponding list of expected class values. Each element's class attribute is matched against the corresponding string or regular expression in the array:

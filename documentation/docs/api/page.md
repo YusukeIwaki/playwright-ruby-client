@@ -1820,7 +1820,7 @@ function will throw.
 This method works across navigations:
 
 ```ruby
-%w[https://google.com https://bbc.com].each do |current_url|
+%w[https://playwright.dev/ https://playwright-ruby-client.vercel.app/].each do |current_url|
   page.goto(current_url, waitUntil: "domcontentloaded")
   element = page.wait_for_selector("img")
   puts "Loaded image: #{element["src"]}"

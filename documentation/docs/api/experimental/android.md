@@ -30,3 +30,13 @@ def devices(host: nil, omitDriverInstall: nil, port: nil)
 
 
 Returns the list of detected Android devices.
+
+## set_default_timeout
+
+```
+def set_default_timeout(timeout)
+```
+alias: `default_timeout=`
+
+
+This setting will change the default maximum time for all the methods accepting `timeout` option.

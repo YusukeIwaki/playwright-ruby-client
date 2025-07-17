@@ -1,7 +1,8 @@
 module Playwright
   define_api_implementation :FileChooserImpl do
-    def initialize(page:, element_handle:, is_multiple:)
+    def initialize(page:, timeout_settings:, element_handle:, is_multiple:)
       @page = page
+      @timeout_settings = timeout_settings
       @element_handle = element_handle
       @is_multiple = is_multiple
     end
@@ -17,7 +18,7 @@ module Playwright
     end
 
     def set_files(files, noWaitAfter: nil, timeout: nil)
-      @element_handle.set_input_files(files, noWaitAfter: noWaitAfter, timeout: timeout)
+      @element_handle.set_input_files(files, noWaitAfter: noWaitAfter, timeout: @timeout_settings.timeout(timeout))
     end
   end
 end

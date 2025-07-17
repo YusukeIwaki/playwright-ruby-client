@@ -87,7 +87,7 @@ button = page.get_by_role("button").and(page.get_by_title("Subscribe"))
 ## aria_snapshot
 
 ```
-def aria_snapshot(ref: nil, timeout: nil)
+def aria_snapshot(timeout: nil)
 ```
 
 
@@ -317,6 +317,23 @@ When all steps combined have not finished during the specified `timeout`, this m
 
 **NOTE**: `element.dblclick()` dispatches two `click` events and a single `dblclick` event.
 
+## describe
+
+```
+def describe(description)
+```
+
+
+Describes the locator, description is used in the trace viewer and reports.
+Returns the locator pointing to the same element.
+
+**Usage**
+
+```ruby
+button = page.get_by_test_id("btn-sub").describe("Subscribe button")
+button.click
+```
+
 ## dispatch_event
 
 ```
@@ -457,6 +474,12 @@ If `expression` returns a [Promise](https://developer.mozilla.org/en-US/docs/Web
 If `expression` throws or rejects, this method throws.
 
 **Usage**
+
+Passing argument to `expression`:
+
+```ruby
+page.get_by_test_id("myId").evaluate("(element, [x, y]) => element.textContent + ' ' + x * y", arg: [7, 8]) # => "myId text 56"
+```
 
 ## evaluate_all
 

@@ -8,10 +8,7 @@ module Playwright
     attr_reader :clock, :tracing, :request
 
     private def after_initialize
-      if @parent.is_a?(ChannelOwners::Browser)
-        @browser = @parent
-        @browser.send(:add_context, self)
-      end
+      @options = @initializer['options']
       @pages = Set.new
       @routes = []
       @bindings = {}
@@ -22,6 +19,7 @@ module Playwright
 
       @tracing = ChannelOwners::Tracing.from(@initializer['tracing'])
       @request = ChannelOwners::APIRequestContext.from(@initializer['requestContext'])
+      @request.send(:_update_timeout_settings, @timeout_settings)
       @clock = ClockImpl.new(self)
       @har_recorders = {}
 
@@ -83,14 +81,20 @@ module Playwright
       @close_was_called = false
     end
 
+    private def initialize_har_from_options(record_har_path:, record_har_content:, record_har_omit_content:, record_har_url_filter:, record_har_mode:)
+      return unless record_har_path
+
+      default_policy = record_har_path.end_with?('.zip') ? 'attach' : 'embed'
+      content_policy = record_har_content || (record_har_omit_content ? 'omit' : default_policy)
+      record_into_har(record_har_path, nil,
+        url: record_har_url_filter,
+        update_content: content_policy,
+        update_mode: record_har_mode || 'full',
+      )
+    end
+
     private def update_options(context_options:, browser_options:)
       @options = context_options
-      if @options[:recordHar]
-        @har_recorders[''] = {
-          path: @options[:recordHar][:path],
-          content: @options[:recordHar][:content]
-        }
-      end
       @tracing.send(:update_traces_dir, browser_options[:tracesDir])
     end
 
@@ -226,12 +230,10 @@ module Playwright
 
     def set_default_navigation_timeout(timeout)
       @timeout_settings.default_navigation_timeout = timeout
-      @channel.send_message_to_server('setDefaultNavigationTimeoutNoReply', timeout: timeout)
     end
 
     def set_default_timeout(timeout)
       @timeout_settings.default_timeout = timeout
-      @channel.send_message_to_server('setDefaultTimeoutNoReply', timeout: timeout)
     end
 
     def pages
@@ -377,25 +379,32 @@ module Playwright
       update_interception_patterns
     end
 
-    private def record_into_har(har, page, notFound:, url:, updateContent:, updateMode:)
-      params = {
-        options: prepare_record_har_options(
-          record_har_path: har,
-          record_har_content: updateContent || 'attach',
-          record_har_mode: updateMode || 'minimal',
-          record_har_url_filter: url,
-        )
+    private def record_into_har(har, page, url:, update_content:, update_mode:)
+      options = {
+        zip: har.end_with?('.zip'),
+        content: update_content || 'attach',
       }
+
+      if url.is_a?(Regexp)
+        regex = ::Playwright::JavaScript::Regex.new(url)
+        options[:urlRegexSource] = regex.source
+        options[:urlRegexFlags] = regex.flag
+      elsif url.is_a?(String)
+        options[:urlGlob] = url
+      end
+
+      params = { options: options }
       if page
         params[:page] = page.channel
       end
+
       har_id = @channel.send_message_to_server('harStart', params)
-      @har_recorders[har_id] = { path: har, content: 'attach' }
+      @har_recorders[har_id] = { path: har, content: update_content || 'attach' }
     end
 
     def route_from_har(har, notFound: nil, update: nil, updateContent: nil, updateMode: nil, url: nil)
       if update
-        record_into_har(har, nil, notFound: notFound, url: url, updateContent: updateContent, updateMode: updateMode)
+        record_into_har(har, nil, url: url, update_content: updateContent, update_mode: updateMode)
         return
       end
 
@@ -433,7 +442,10 @@ module Playwright
     end
 
     private def on_close
-      @browser&.send(:remove_context, self)
+      if @browser
+        @browser.send(:remove_context, self)
+        @browser.browser_type.send(:playwright_selectors_browser_contexts).delete(self)
+      end
       emit(Events::BrowserContext::Close)
       @closed_promise.fulfill(true)
     end
@@ -613,6 +625,15 @@ module Playwright
 
     private def clock_set_system_time(time_params)
       @channel.send_message_to_server('clockSetSystemTime', time_params)
+    end
+
+    private def register_selector_engine(selector_engine)
+      @channel.send_message_to_server('registerSelectorEngine', { selectorEngine: selector_engine })
+    end
+
+    private def set_test_id_attribute_name(test_id_attribute_name)
+      @channel.send_message_to_server('setTestIdAttributeName', { testIdAttributeName: test_id_attribute_name })
+      ::Playwright::LocatorUtils.instance_variable_set(:@test_id_attribute_name, test_id_attribute_name)
     end
   end
 end

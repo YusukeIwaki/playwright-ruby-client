@@ -1,87 +1,82 @@
 require 'spec_helper'
-require 'playwright/test'
+require "playwright/test"
+require 'yaml'
 
 RSpec.describe 'ariaSnapshot AI' do
   include Playwright::Test::Matchers
 
   it 'should generate refs' do
     with_page do |page|
-      page.content = <<~HTML
-      <button>One</button>
-      <button>Two</button>
-      <button>Three</button>
-      HTML
+      page.content = '<button>One</button><button>Two</button><button>Three</button>'
+      snapshot1 = YAML.load(page.snapshot_for_ai)
+      expect(snapshot1).to eq([
+        'generic [ref=e1]' => [
+          'button "One" [ref=e2]',
+          'button "Two" [ref=e3]',
+          'button "Three" [ref=e4]',
+        ]
+      ])
+      expect(page.locator('aria-ref=e2')).to have_text('One')
+      expect(page.locator('aria-ref=e3')).to have_text('Two')
+      expect(page.locator('aria-ref=e4')).to have_text('Three')
 
-      snapshot1 = page.locator('body').aria_snapshot(ref: true)
-      expect(snapshot1).to include('- button "One" [ref=s1e3]')
-      expect(snapshot1).to include('- button "Two" [ref=s1e4]')
-      expect(snapshot1).to include('- button "Three" [ref=s1e5]')
+      page.locator('aria-ref=e3').evaluate("e => e.textContent = 'Not Two'")
 
-      expect(page.locator('aria-ref=s1e3')).to have_text('One')
-      expect(page.locator('aria-ref=s1e4')).to have_text('Two')
-      expect(page.locator('aria-ref=s1e5')).to have_text('Three')
-
-      snapshot2 = page.locator('body').aria_snapshot(ref: true)
-      expect(snapshot2).to include('- button "One" [ref=s2e3]')
-      expect(page.locator('aria-ref=s2e3')).to have_text('One')
-
-      expect {
-        expect(page.locator('aria-ref=s1e3')).to have_text('One')
-      }.to raise_error(Playwright::Error, /Stale aria-ref, expected s2e{number}, got s1e3/)
+      snapshot2 = YAML.load(page.snapshot_for_ai)
+      expect(snapshot2).to eq([
+        'generic [ref=e1]' => [
+          'button "One" [ref=e2]',
+          'button "Not Two" [ref=e5]',
+          'button "Three" [ref=e4]',
+        ]
+      ])
     end
   end
 
   it 'should list iframes' do
     with_page do |page|
-      page.content = <<~HTML
-      <h1>Hello</h1>
-      <iframe name="foo" src="data:text/html,<h1>World</h1>">
-      HTML
-
-      snapshot1 = page.locator('body').aria_snapshot(ref: true)
+      page.content = '<h1>Hello</h1><iframe name="foo" src="data:text/html,<h1>World</h1>">'
+      snapshot1 = page.snapshot_for_ai
       expect(snapshot1).to include('- iframe')
-
       frame_snapshot = page.frame_locator('iframe').locator('body').aria_snapshot
       expect(frame_snapshot).to eq('- heading "World" [level=1]')
     end
   end
 
-  # Helper method to recursively get aria snapshot for all frames
-  def all_frame_snapshot(frame)
-    snapshot = frame.locator('body').aria_snapshot(ref: true)
-    lines = snapshot.split("\n")
-    result = []
-    lines.each do |line|
-      match = line.match(/^(\s*)- iframe \[ref=(.*)\]/)
-      unless match
-        result << line
-        next
-      end
-
-      leading_space = match[1]
-      ref_id = match[2] # Renamed from 'ref' to avoid potential conflict
-      child_frame = frame.frame_locator("aria-ref=#{ref_id}")
-      child_snapshot = all_frame_snapshot(child_frame)
-      result << (line + ':')
-      result << child_snapshot.split("\n").map { |l| "#{leading_space}  #{l}" }.join("\n")
-    end
-    result.join("\n")
-  end
-
-  it 'ref mode can be used to stitch all frame snapshots', sinatra: true do
+  it 'should stitch all frame snapshots', sinatra: true do
     with_page do |page|
       page.goto("#{server_prefix}/frames/nested-frames.html")
+      snapshot = YAML.load(page.snapshot_for_ai)
+      expect(snapshot).to eq(YAML.load(<<~YAML))
+      - generic [ref=e1]:
+        - iframe [ref=e2]:
+          - generic [ref=f1e1]:
+            - iframe [ref=f1e2]:
+              - generic [ref=f2e2]: Hi, I'm frame
+            - iframe [ref=f1e3]:
+              - generic [ref=f3e2]: Hi, I'm frame
+        - iframe [ref=e3]:
+          - generic [ref=f4e2]: Hi, I'm frame
+      YAML
 
-      expected_snapshot = <<~SNAPSHOT.strip
-  - iframe [ref=s1e3]:
-    - iframe [ref=s1e3]:
-      - text: Hi, I'm frame
-    - iframe [ref=s1e4]:
-      - text: Hi, I'm frame
-  - iframe [ref=s1e4]:
-    - text: Hi, I'm frame
-      SNAPSHOT
-      expect(all_frame_snapshot(page)).to eq(expected_snapshot)
+      href = page.locator('aria-ref=e1').evaluate('e => e.ownerDocument.defaultView.location.href')
+      expect(href).to eq("#{server_prefix}/frames/nested-frames.html")
+
+      href2 = page.locator('aria-ref=f1e2').evaluate('e => e.ownerDocument.defaultView.location.href')
+      expect(href2).to eq("#{server_prefix}/frames/two-frames.html")
+
+      href3 = page.locator('aria-ref=f3e2').evaluate('e => e.ownerDocument.defaultView.location.href')
+      expect(href3).to eq("#{server_prefix}/frames/frame.html")
+
+      locator_string = page.locator('aria-ref=e1').generate_locator_string
+      expect(locator_string).to eq("locator('body')")
+
+      locator_string2 = page.locator('aria-ref=f3e2').generate_locator_string
+      expect(locator_string2).to eq("locator('iframe[name=\"2frames\"]').contentFrame().locator('iframe[name=\"dos\"]').contentFrame().getByText('Hi, I\\'m frame')")
+
+      # Should tolerate .describe().
+      locator_string3 = page.locator('aria-ref=f2e2').describe('foo bar').generate_locator_string
+      expect(locator_string3).to eq("locator('iframe[name=\"2frames\"]').contentFrame().locator('iframe[name=\"uno\"]').contentFrame().getByText('Hi, I\\'m frame')")
     end
   end
 end

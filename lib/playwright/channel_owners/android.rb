@@ -4,6 +4,18 @@ module Playwright
       @timeout_settings = TimeoutSettings.new
     end
 
+    def set_default_navigation_timeout(timeout)
+      @timeout_settings.default_navigation_timeout = timeout
+    end
+
+    def set_default_timeout(timeout)
+      @timeout_settings.default_timeout = timeout
+    end
+
+    private def _timeout_settings
+      @timeout_settings
+    end
+
     def devices(host: nil, omitDriverInstall: nil, port: nil)
       params = { host: host, port: port, omitDriverInstall: omitDriverInstall }.compact
       resp = @channel.send_message_to_server('devices', params)

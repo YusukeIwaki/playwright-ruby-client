@@ -5,6 +5,11 @@ module Playwright
   define_channel_owner :APIRequestContext do
     private def after_initialize
       @tracing = ChannelOwners::Tracing.from(@initializer['tracing'])
+      @timeout_settings = TimeoutSettings.new
+    end
+
+    private def _update_timeout_settings(timeout_settings)
+      @timeout_settings = timeout_settings
     end
 
     def dispose(reason: nil)
@@ -156,7 +161,7 @@ module Playwright
       fetch_params[:jsonData] = json_data
       fetch_params[:formData] = form_data
       fetch_params[:multipartData] = multipart_data
-      fetch_params[:timeout] = timeout
+      fetch_params[:timeout] = @timeout_settings.timeout(timeout)
       fetch_params[:failOnStatusCode] = failOnStatusCode
       fetch_params[:ignoreHTTPSErrors] = ignoreHTTPSErrors
       fetch_params[:maxRedirects] = maxRedirects
