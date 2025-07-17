@@ -2,10 +2,28 @@ module Playwright
   # this module is responsible for running playwright assertions and integrating
   # with test frameworks.
   module Test
+    @@expect_timeout = nil
+
+    def self.expect_timeout
+      @@expect_timeout || 5000 # default timeout is 5000ms
+    end
+
+    def self.expect_timeout=(timeout)
+      @@expect_timeout = timeout
+    end
+
+    def self.with_timeout(expect_timeout, &block)
+      old_timeout = @@expect_timeout
+      @@expect_timeout = expect_timeout
+      block.call
+    ensure
+      @@expect_timeout = old_timeout
+    end
+
     # ref: https://github.com/microsoft/playwright-python/blob/main/playwright/sync_api/__init__.py#L90
     class Expect
       def initialize
-        @timeout_settings = TimeoutSettings.new
+        @default_expect_timeout = ::Playwright::Test.expect_timeout
       end
 
       def call(actual, is_not)
@@ -14,7 +32,7 @@ module Playwright
           PageAssertions.new(
             PageAssertionsImpl.new(
               actual,
-              @timeout_settings.timeout,
+              @default_expect_timeout,
               is_not,
               nil,
             )
@@ -23,7 +41,7 @@ module Playwright
           LocatorAssertions.new(
             LocatorAssertionsImpl.new(
               actual,
-              @timeout_settings.timeout,
+              @default_expect_timeout,
               is_not,
               nil,
             )
