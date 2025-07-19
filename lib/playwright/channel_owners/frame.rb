@@ -666,7 +666,7 @@ module Playwright
     end
 
     def wait_for_timeout(timeout)
-      @channel.send_message_to_server('waitForTimeout', timeout: timeout)
+      @channel.send_message_to_server('waitForTimeout', waitTimeout: timeout)
 
       nil
     end

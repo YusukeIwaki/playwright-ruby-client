@@ -512,6 +512,12 @@ RSpec.describe 'example' do
       end
     end
 
+    it 'should work with Page#wait_for_timeout' do
+      with_page do |page|
+        page.wait_for_timeout(100)
+      end
+    end
+
     context 'PageAssertions' do
       require 'playwright/test'
       include Playwright::Test::Matchers
