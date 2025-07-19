@@ -335,9 +335,7 @@ module Playwright
     end
 
     def generate_locator_string
-      with_element(timeout: nil) do |handle, _|
-        handle.channel.send_message_to_server('generateLocatorString')
-      end
+      @frame.channel.send_message_to_server('generateLocatorString', { selector: @selector })
     end
 
     def hover(
@@ -520,27 +518,7 @@ module Playwright
     end
 
     def expect(expression, options, title)
-      if options.key?(:expectedValue)
-        options[:expectedValue] = JavaScript::ValueSerializer
-          .new(options[:expectedValue])
-          .serialize
-      end
-
-      result = @frame.channel.send_message_to_server_result(
-        title, # title
-        "expect", # method
-        { # params
-          selector: @selector,
-          expression: expression,
-          **options,
-        }
-      )
-
-      if result.key?('received')
-        result['received'] = JavaScript::ValueParser.new(result['received']).parse
-      end
-
-      result
+      @frame.expect(@selector, expression, options, title)
     end
   end
 end

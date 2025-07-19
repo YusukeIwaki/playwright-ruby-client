@@ -201,7 +201,7 @@ RSpec.describe 'request interception', sinatra: true do
         end
       })
       response = page.goto("#{server_prefix}/slow", timeout: 20000)
-      expect(response.body).to eq('Request timed out after 10ms')
+      expect(response.body).to eq('Timeout 10ms exceeded.')
     end
   end
 

@@ -13,7 +13,7 @@ module Playwright
 
     def initialize(page, default_expect_timeout, is_not, message)
       @page = PlaywrightApi.unwrap(page)
-      @locator = @page.locator(":root")
+      @frame = @page.main_frame
       @default_expect_timeout = default_expect_timeout
       @is_not = is_not
       @custom_message = message
@@ -25,7 +25,7 @@ module Playwright
       message.gsub!("expected to", "not expected to") if @is_not
       expect_options.delete(:useInnerText) if expect_options.key?(:useInnerText) && expect_options[:useInnerText].nil?
 
-      result = @locator.expect(expression, expect_options, title)
+      result = @frame.expect(nil, expression, expect_options, title)
 
       if result["matches"] == @is_not
         actual = result["received"]

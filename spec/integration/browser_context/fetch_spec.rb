@@ -313,7 +313,7 @@ RSpec.describe 'fetch', sinatra: true do
     with_context do |context|
       expect {
         context.request.get("#{server_prefix}/slow", timeout: 10)
-      }.to raise_error(/Request timed out after 10ms/)
+      }.to raise_error(/Timeout 10ms exceeded/)
     end
   end
 

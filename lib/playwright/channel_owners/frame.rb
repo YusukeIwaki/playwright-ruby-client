@@ -666,7 +666,7 @@ module Playwright
     end
 
     def wait_for_timeout(timeout)
-      @channel.send_message_to_server('waitForTimeout', timeout: timeout)
+      @channel.send_message_to_server('waitForTimeout', waitTimeout: timeout)
 
       nil
     end
@@ -686,6 +686,30 @@ module Playwright
 
     def highlight(selector)
       @channel.send_message_to_server('highlight', selector: selector)
+    end
+
+    def expect(selector, expression, options, title)
+      if options.key?(:expectedValue)
+        options[:expectedValue] = JavaScript::ValueSerializer
+          .new(options[:expectedValue])
+          .serialize
+      end
+
+      result = @channel.send_message_to_server_result(
+        title, # title
+        "expect", # method
+        { # params
+          selector: selector,
+          expression: expression,
+          **options,
+        }.compact
+      )
+
+      if result.key?('received')
+        result['received'] = JavaScript::ValueParser.new(result['received']).parse
+      end
+
+      result
     end
 
     # @param page [Page]
