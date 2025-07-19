@@ -67,18 +67,20 @@ jobs:
         with:
           name: playwright_api
           path: lib/playwright_api
-      - run: bundle exec rspec spec/integration --profile 10
+      - run: |
+          rm spec/integration/example_spec.rb
+          bundle exec rspec spec/integration --profile 10
         env:
           BROWSER: ${{ matrix.browser }}
           PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./node_modules/.bin/playwright
         timeout-minutes: 25
 
-  integration_test_with_npm_playwright_driver_and_old_ruby:
+  test_example_spec:
     needs: [unit_test, generate_playwright_api]
     strategy:
       fail-fast: false
       matrix:
-        ruby_version: [2.4, 2.5, 2.6, 3.0]
+        ruby_version: [2.4, 2.5, 2.6, 2.7, 3.0, 3.1, 3.2, 3.3, 3.4]
     name: (chromium/Ruby${{ matrix.ruby_version }}) example_spec
     runs-on: ubuntu-latest
     steps:
