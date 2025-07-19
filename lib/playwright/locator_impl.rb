@@ -335,9 +335,7 @@ module Playwright
     end
 
     def generate_locator_string
-      with_element(timeout: nil) do |handle, _|
-        handle.channel.send_message_to_server('generateLocatorString')
-      end
+      @frame.channel.send_message_to_server('generateLocatorString', { selector: @selector })
     end
 
     def hover(
