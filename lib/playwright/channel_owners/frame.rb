@@ -688,6 +688,30 @@ module Playwright
       @channel.send_message_to_server('highlight', selector: selector)
     end
 
+    def expect(selector, expression, options, title)
+      if options.key?(:expectedValue)
+        options[:expectedValue] = JavaScript::ValueSerializer
+          .new(options[:expectedValue])
+          .serialize
+      end
+
+      result = @channel.send_message_to_server_result(
+        title, # title
+        "expect", # method
+        { # params
+          selector: selector,
+          expression: expression,
+          **options,
+        }.compact
+      )
+
+      if result.key?('received')
+        result['received'] = JavaScript::ValueParser.new(result['received']).parse
+      end
+
+      result
+    end
+
     # @param page [Page]
     # @note This method should be used internally. Accessed via .send method, so keep private!
     private def update_page_from_page(page)
