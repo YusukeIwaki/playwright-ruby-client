@@ -38,13 +38,14 @@ RSpec.describe 'tracing' do
       browser.start_tracing(
         page: page,
         path: output_trace_file,
-        categories: ['disabled-by-default-v8.cpu_profiler.hires'],
+        categories: ['disabled-by-default-cc.debug'],
       )
       page.goto("#{server_prefix}/grid.html")
       browser.stop_tracing
 
       trace_json = JSON.parse(File.read(output_trace_file))
-      expect(trace_json.dig('metadata', 'trace-config')).to include('disabled-by-default-v8.cpu_profiler.hires')
+      # NOTE: trace-config is deprecated as per http://crrev.com/c/6628182
+      expect(trace_json['traceEvents'].map { |e| e['cat'] }).to include('disabled-by-default-cc.debug')
     end
   end
 
