@@ -15,7 +15,7 @@ playwright.chromium.launch(headless: false) do |browser|
     # This method call should be put just after creating BrowserContext.
     context.enable_debug_console!
 
-    page = context.new_pagè
+    page = context.new_page
     page.goto('http://example.com/')
     page.pause
   end
