@@ -93,10 +93,6 @@ module Playwright
       context.send(:update_options, context_options: context_options, browser_options: browser_options)
     end
 
-    private def did_launch_browser(browser)
-      browser.send(:update_browser_type, self)
-    end
-
     private def update_with_playwright_selectors_options(options)
       selectors = @playwright&.selectors
       if selectors
