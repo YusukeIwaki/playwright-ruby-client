@@ -6,8 +6,9 @@ module Playwright
   # ref: https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_transport.py
   class WebSocketTransport
     # @param ws_endpoint [String] EndpointURL of WebSocket
-    def initialize(ws_endpoint:)
+    def initialize(ws_endpoint:, headers:)
       @ws_endpoint = ws_endpoint
+      @headers = headers
       @debug = ENV['DEBUG'].to_s == 'true' || ENV['DEBUG'].to_s == '1'
     end
 
@@ -63,6 +64,7 @@ module Playwright
       ws = WebSocketClient.new(
         url: @ws_endpoint,
         max_payload_size: 256 * 1024 * 1024, # 256MB
+        headers: @headers,
       )
       promise = Concurrent::Promises.resolvable_future
       ws.on_open do

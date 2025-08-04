@@ -62,9 +62,12 @@ module Playwright
     STATE_CLOSING = 2
     STATE_CLOSED = 3
 
-    def initialize(url:, max_payload_size:)
+    def initialize(url:, max_payload_size:, headers:)
       @impl = DriverImpl.new(url)
       @driver = ::WebSocket::Driver.client(@impl, max_length: max_payload_size)
+      headers.each do |key, value|
+        @driver.set_header(key, value)
+      end
 
       setup
     end

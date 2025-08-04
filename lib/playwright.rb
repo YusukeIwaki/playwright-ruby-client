@@ -102,14 +102,7 @@ module Playwright
     end
   end
 
-  # Connects to Playwright server, launched by `npx playwright run-server` via WebSocket transport.
-  #
-  # Playwright.connect_to_playwright_server(...) do |playwright|
-  #   browser = playwright.chromium.launch
-  #   ...
-  # end
-  #
-  # @experimental
+  # @Deprecated. Playwright >= 1.54 does not support this method.
   module_function def connect_to_playwright_server(ws_endpoint, &block)
     require 'playwright/web_socket_client'
     require 'playwright/web_socket_transport'
@@ -138,7 +131,7 @@ module Playwright
     end
   end
 
-  # Connects to Playwright server, launched by `npx playwright launch-server chromium` or `playwright.chromium.launchServer()`
+  # Connects to Playwright server, launched by `npx playwright launch-server --browser chromium` or `npx playwright run-server`
   #
   # Playwright.connect_to_browser_server('ws://....') do |browser|
   #   page = browser.new_page
@@ -146,11 +139,19 @@ module Playwright
   # end
   #
   # @experimental
-  module_function def connect_to_browser_server(ws_endpoint, &block)
+  module_function def connect_to_browser_server(ws_endpoint, browser_type: 'chromium', &block)
+    known_browser_types = ['chromium', 'firefox', 'webkit']
+    unless known_browser_types.include?(browser_type)
+      raise ArgumentError, "Unknown browser type: #{browser_type}. Known types are: #{known_browser_types.join(', ')}"
+    end
+
     require 'playwright/web_socket_client'
     require 'playwright/web_socket_transport'
 
-    transport = WebSocketTransport.new(ws_endpoint: ws_endpoint)
+    transport = WebSocketTransport.new(
+      ws_endpoint: ws_endpoint,
+      headers: { 'x-playwright-browser' => browser_type },
+    )
     connection = Connection.new(transport)
     connection.mark_as_remote
     connection.async_run
@@ -159,7 +160,7 @@ module Playwright
       begin
         playwright = connection.initialize_playwright
         browser = playwright.send(:pre_launched_browser)
-        browser.send(:connect_to_browser_type, playwright.chromium, nil) # Just workaround for nil reference error.
+        browser.send(:connect_to_browser_type, playwright.send(browser_type), nil)
         browser.send(:should_close_connection_on_close!)
         Execution.new(connection, PlaywrightApi.wrap(playwright), PlaywrightApi.wrap(browser))
       rescue
