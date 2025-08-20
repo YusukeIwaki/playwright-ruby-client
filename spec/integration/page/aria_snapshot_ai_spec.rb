@@ -68,19 +68,19 @@ RSpec.describe 'ariaSnapshot AI' do
       href3 = page.locator('aria-ref=f3e2').evaluate('e => e.ownerDocument.defaultView.location.href')
       expect(href3).to eq("#{server_prefix}/frames/frame.html")
 
-      locator_string = page.locator('aria-ref=e1').generate_locator_string
-      expect(locator_string).to eq("locator(\"body\")")
+      locator_string = page.locator('aria-ref=e1').resolve_selector
+      expect(locator_string).to eq("body")
 
-      locator_string2 = page.locator('aria-ref=f3e2').generate_locator_string
-      expect(locator_string2).to eq("locator(\"iframe[name=\\\"2frames\\\"]\").content_frame.locator(\"iframe[name=\\\"dos\\\"]\").content_frame.get_by_text(\"Hi, I'm frame\")")
+      locator_string2 = page.locator('aria-ref=f3e2').resolve_selector
+      expect(locator_string2).to eq("iframe[name=\"2frames\"] >> internal:control=enter-frame >> iframe[name=\"dos\"] >> internal:control=enter-frame >> internal:text=\"Hi, I'm frame\"i")
 
       # Should tolerate .describe().
-      locator_string3 = page.locator('aria-ref=f2e2').describe('foo bar').generate_locator_string
-      expect(locator_string3).to eq("locator(\"iframe[name=\\\"2frames\\\"]\").content_frame.locator(\"iframe[name=\\\"uno\\\"]\").content_frame.get_by_text(\"Hi, I'm frame\")")
+      locator_string3 = page.locator('aria-ref=f2e2').describe('foo bar').resolve_selector
+      expect(locator_string3).to eq("iframe[name=\"2frames\"] >> internal:control=enter-frame >> iframe[name=\"uno\"] >> internal:control=enter-frame >> internal:text=\"Hi, I'm frame\"i")
 
       expect {
-        page.locator('aria-ref=e1000').generate_locator_string
-      }.to raise_error(/No element matching locator\("aria-ref=e1000"\)/)
+        page.locator('aria-ref=e1000').resolve_selector
+      }.to raise_error(/No element matching aria-ref=e1000/)
     end
   end
 
@@ -126,6 +126,45 @@ RSpec.describe 'ariaSnapshot AI' do
       - generic [ref=e1]:
         - textbox "First input" [ref=e2]
         - textbox "Second input" [active] [ref=e3]
+      YAML
+    end
+  end
+
+  it 'return empty snapshot when iframe is not loaded', annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/pull/36710' }, sinatra: true do
+    with_page do |page|
+      page.content = <<~HTML
+        <div style="height: 5000px;">Test</div>
+        <iframe loading="lazy" src="#{server_prefix}/frame.html"></iframe>
+      HTML
+
+      # Wait for the iframe element to appear (presence, not load)
+      page.wait_for_selector('iframe')
+
+      snapshot = YAML.load(page.snapshot_for_ai(timeout: 100))
+      expect(snapshot).to eq(YAML.load(<<~YAML))
+      - generic [active] [ref=e1]:
+        - generic [ref=e2]: Test
+        - iframe [ref=e3]
+      YAML
+    end
+  end
+
+  it 'should support many properties on iframes' do
+    with_page do |page|
+      page.content = <<~HTML
+        <input id="regular-input" placeholder="Regular input">
+        <iframe style='cursor: pointer' src="data:text/html,<input id='iframe-input' placeholder='Input in iframe'/>" tabindex="0"></iframe>
+      HTML
+
+      # Focus the input inside the iframe
+      page.frame_locator('iframe').locator('#iframe-input').focus
+      input_in_iframe_focused_snapshot = YAML.load(page.snapshot_for_ai)
+
+      expect(input_in_iframe_focused_snapshot).to eq(YAML.load(<<~YAML))
+      - generic [ref=e1]:
+        - textbox "Regular input" [ref=e2]
+        - iframe [active] [ref=e3] [cursor=pointer]:
+          - textbox "Input in iframe" [active] [ref=f1e2]
       YAML
     end
   end
