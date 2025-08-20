@@ -334,8 +334,8 @@ module Playwright
       @frame.get_attribute(@selector, name, strict: true, timeout: timeout)
     end
 
-    def generate_locator_string
-      @frame.channel.send_message_to_server('generateLocatorString', { selector: @selector })
+    def resolve_selector
+      @frame.channel.send_message_to_server('resolveSelector', { selector: @selector })
     end
 
     def hover(

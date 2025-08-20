@@ -68,19 +68,19 @@ RSpec.describe 'ariaSnapshot AI' do
       href3 = page.locator('aria-ref=f3e2').evaluate('e => e.ownerDocument.defaultView.location.href')
       expect(href3).to eq("#{server_prefix}/frames/frame.html")
 
-      locator_string = page.locator('aria-ref=e1').generate_locator_string
-      expect(locator_string).to eq("locator(\"body\")")
+      locator_string = page.locator('aria-ref=e1').resolve_selector
+      expect(locator_string).to eq("body")
 
-      locator_string2 = page.locator('aria-ref=f3e2').generate_locator_string
-      expect(locator_string2).to eq("locator(\"iframe[name=\\\"2frames\\\"]\").content_frame.locator(\"iframe[name=\\\"dos\\\"]\").content_frame.get_by_text(\"Hi, I'm frame\")")
+      locator_string2 = page.locator('aria-ref=f3e2').resolve_selector
+      expect(locator_string2).to eq("iframe[name=\"2frames\"] >> internal:control=enter-frame >> iframe[name=\"dos\"] >> internal:control=enter-frame >> internal:text=\"Hi, I'm frame\"i")
 
       # Should tolerate .describe().
-      locator_string3 = page.locator('aria-ref=f2e2').describe('foo bar').generate_locator_string
-      expect(locator_string3).to eq("locator(\"iframe[name=\\\"2frames\\\"]\").content_frame.locator(\"iframe[name=\\\"uno\\\"]\").content_frame.get_by_text(\"Hi, I'm frame\")")
+      locator_string3 = page.locator('aria-ref=f2e2').describe('foo bar').resolve_selector
+      expect(locator_string3).to eq("iframe[name=\"2frames\"] >> internal:control=enter-frame >> iframe[name=\"uno\"] >> internal:control=enter-frame >> internal:text=\"Hi, I'm frame\"i")
 
       expect {
-        page.locator('aria-ref=e1000').generate_locator_string
-      }.to raise_error(/No element matching locator\("aria-ref=e1000"\)/)
+        page.locator('aria-ref=e1000').resolve_selector
+      }.to raise_error(/No element matching aria-ref=e1000/)
     end
   end
 
