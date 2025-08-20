@@ -882,8 +882,8 @@ module Playwright
       @video ||= Video.new(self)
     end
 
-    def snapshot_for_ai
-      @channel.send_message_to_server('snapshotForAI')
+    def snapshot_for_ai(timeout: nil)
+      @channel.send_message_to_server('snapshotForAI', timeout: @timeout_settings.timeout(timeout))
     end
 
     def start_js_coverage(resetOnNavigation: nil, reportAnonymousScripts: nil)
