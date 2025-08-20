@@ -148,4 +148,24 @@ RSpec.describe 'ariaSnapshot AI' do
       YAML
     end
   end
+
+  it 'should support many properties on iframes' do
+    with_page do |page|
+      page.content = <<~HTML
+        <input id="regular-input" placeholder="Regular input">
+        <iframe style='cursor: pointer' src="data:text/html,<input id='iframe-input' placeholder='Input in iframe'/>" tabindex="0"></iframe>
+      HTML
+
+      # Focus the input inside the iframe
+      page.frame_locator('iframe').locator('#iframe-input').focus
+      input_in_iframe_focused_snapshot = YAML.load(page.snapshot_for_ai)
+
+      expect(input_in_iframe_focused_snapshot).to eq(YAML.load(<<~YAML))
+      - generic [ref=e1]:
+        - textbox "Regular input" [ref=e2]
+        - iframe [active] [ref=e3] [cursor=pointer]:
+          - textbox "Input in iframe" [active] [ref=f1e2]
+      YAML
+    end
+  end
 end
