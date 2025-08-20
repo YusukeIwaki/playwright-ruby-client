@@ -129,4 +129,23 @@ RSpec.describe 'ariaSnapshot AI' do
       YAML
     end
   end
+
+  it 'return empty snapshot when iframe is not loaded', annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/pull/36710' }, sinatra: true do
+    with_page do |page|
+      page.content = <<~HTML
+        <div style="height: 5000px;">Test</div>
+        <iframe loading="lazy" src="#{server_prefix}/frame.html"></iframe>
+      HTML
+
+      # Wait for the iframe element to appear (presence, not load)
+      page.wait_for_selector('iframe')
+
+      snapshot = YAML.load(page.snapshot_for_ai(timeout: 100))
+      expect(snapshot).to eq(YAML.load(<<~YAML))
+      - generic [active] [ref=e1]:
+        - generic [ref=e2]: Test
+        - iframe [ref=e3]
+      YAML
+    end
+  end
 end
