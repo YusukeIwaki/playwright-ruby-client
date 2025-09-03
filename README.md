@@ -187,6 +187,10 @@ When `Playwright.connect_to_playwright_server` is used, playwright_cli_executabl
 
 For more detailed instraction, refer this article: https://playwright-ruby-client.vercel.app/docs/article/guides/playwright_on_alpine_linux
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and contributing guidelines.
+
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
