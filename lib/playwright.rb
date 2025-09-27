@@ -3,6 +3,8 @@
 # namespace declaration
 module Playwright; end
 
+require 'json'
+
 # concurrent-ruby
 require 'concurrent'
 
@@ -139,7 +141,7 @@ module Playwright
   # end
   #
   # @experimental
-  module_function def connect_to_browser_server(ws_endpoint, browser_type: 'chromium', &block)
+  module_function def connect_to_browser_server(ws_endpoint, browser_type: 'chromium', browser_opts: {}, &block)
     known_browser_types = ['chromium', 'firefox', 'webkit']
     unless known_browser_types.include?(browser_type)
       raise ArgumentError, "Unknown browser type: #{browser_type}. Known types are: #{known_browser_types.join(', ')}"
@@ -150,7 +152,8 @@ module Playwright
 
     transport = WebSocketTransport.new(
       ws_endpoint: ws_endpoint,
-      headers: { 'x-playwright-browser' => browser_type },
+      headers: { 'x-playwright-browser' => browser_type,
+                 'x-playwright-launch-options' => JSON.generate(browser_opts) },
     )
     connection = Connection.new(transport)
     connection.mark_as_remote
