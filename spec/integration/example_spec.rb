@@ -369,7 +369,7 @@ RSpec.describe 'example' do
           <button id="btn_ok" title='Subscribe'>OK - sub</button>
         </div>
         HTML
-        button = example_0174039af5c928df43c04ef148ea798c5dcc7b6fc4ce4abc3a99a300f372a104(page: page)
+        button = example_7d6ae130455846d212e6af9586b7115ae62437ebb62a6dfd4d3e183fb5ef663c(page: page)
         expect(button['id']).to eq('btn_ok')
       end
     end

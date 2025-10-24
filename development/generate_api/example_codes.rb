@@ -888,7 +888,7 @@ module ExampleCodes
   end
 
   # Locator#and
-  def example_0174039af5c928df43c04ef148ea798c5dcc7b6fc4ce4abc3a99a300f372a104(page:)
+  def example_7d6ae130455846d212e6af9586b7115ae62437ebb62a6dfd4d3e183fb5ef663c(page:)
     button = page.get_by_role("button").and(page.get_by_title("Subscribe"))
   end
 
