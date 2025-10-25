@@ -945,10 +945,11 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
         locator.select_option(value: ["B"])
         expect {
           expect(locator).to have_values(["R", "G"], timeout: 500)
-        }.to raise_error(Playwright::Error)
+        }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
         begin
           expect(locator).to have_values(["R", "G"], timeout: 500)
-        rescue Playwright::Error => e
+        rescue RSpec::Expectations::ExpectationNotMetError => e
+          expect(e.full_message).to include('Playwright::AssertionError')
           expect(e.full_message).to include("Error: Not a select element with a multiple attribute")
         end
       end
@@ -960,10 +961,11 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
         locator = page.locator("input")
         expect {
           expect(locator).to have_values(["R", "G"], timeout: 500)
-        }.to raise_error(Playwright::Error)
+        }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
         begin
           expect(locator).to have_values(["R", "G"], timeout: 500)
-        rescue Playwright::Error => e
+        rescue RSpec::Expectations::ExpectationNotMetError => e
+          expect(e.full_message).to include('Playwright::AssertionError')
           expect(e.full_message).to include("Error: Not a select element with a multiple attribute")
         end
       end
