@@ -149,7 +149,6 @@ module Playwright
     private def on_close
       @closed = true
       @browser_context.send(:remove_page, self)
-      @browser_context.send(:remove_background_page, self)
       if @closed_or_crashed_promise.pending?
         @closed_or_crashed_promise.fulfill(close_error_with_reason)
       end

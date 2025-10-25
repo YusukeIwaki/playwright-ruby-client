@@ -14,7 +14,6 @@ module Playwright
       @bindings = {}
       @timeout_settings = TimeoutSettings.new
       @service_workers = Set.new
-      @background_pages = Set.new
       @owner_page = nil
 
       @tracing = ChannelOwners::Tracing.from(@initializer['tracing'])
@@ -27,9 +26,6 @@ module Playwright
       @channel.once('close', ->(_) { on_close })
       @channel.on('page', ->(params) { on_page(ChannelOwners::Page.from(params['page']) )})
       @channel.on('route', ->(params) { on_route(ChannelOwners::Route.from(params['route'])) })
-      @channel.on('backgroundPage', ->(params) {
-        on_background_page(ChannelOwners::Page.from(params['page']))
-      })
       @channel.on('serviceWorker', ->(params) {
         on_service_worker(ChannelOwners::Worker.from(params['worker']))
       })
@@ -102,11 +98,6 @@ module Playwright
       @pages << page
       emit(Events::BrowserContext::Page, page)
       page.send(:emit_popup_event_from_browser_context)
-    end
-
-    private def on_background_page(page)
-      @background_pages << page
-      emit(Events::BrowserContext::BackgroundPage, page)
     end
 
     private def on_route(route)
@@ -216,7 +207,8 @@ module Playwright
     end
 
     def background_pages
-      @background_pages.to_a
+      puts '[WARNING] BrowserContext#background_pages is deprecated. Returns an empty list.'
+      []
     end
 
     def service_workers
@@ -541,10 +533,6 @@ module Playwright
     # called from Page#on_close with send(:remove_page, page), so keep private
     private def remove_page(page)
       @pages.delete(page)
-    end
-
-    private def remove_background_page(page)
-      @background_pages.delete(page)
     end
 
     private def remove_service_worker(worker)
