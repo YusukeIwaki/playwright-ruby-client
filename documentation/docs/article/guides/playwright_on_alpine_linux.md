@@ -54,6 +54,25 @@ end
 
 `wss://example.com:8888/ws` is an example of endpoint URL of the Playwright server. In local development environment, it is typically `"ws://127.0.0.1:#{port}/ws"`.
 
+We can also pass launchOptions parameters using a `launch-options` query string like this:
+
+```ruby {3-4}
+require 'json'
+
+launch_params = { headless: false }
+Playwright.connect_to_browser_server("wss://example.com:8888/ws?launch-options=#{launch_params.to_json}") do |browser|
+  page = browser.new_page
+  page.goto('https://github.com/microsoft/playwright')
+  page.screenshot(path: 'github-microsoft-playwright_headful.png')
+end
+
+Playwright.connect_to_browser_server('wss://example.com:8888/ws') do |browser|
+  page = browser.new_page
+  page.goto('https://github.com/microsoft/playwright')
+  page.screenshot(path: 'github-microsoft-playwright_headless.png')
+end
+```
+
 ### Server code
 
 With the [official Docker image](https://hub.docker.com/_/microsoft-playwright) or in the local development environment with Node.js, just execute `npx playwright install && npx playwright run-server --port $PORT --path /ws`. (`$PORT` is a port number of the server)
