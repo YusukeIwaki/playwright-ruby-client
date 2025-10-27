@@ -311,7 +311,7 @@
 * press
 * query_selector
 * query_selector_all
-* ~~requests~~
+* requests
 * ~~add_locator_handler~~
 * ~~remove_locator_handler~~
 * reload

@@ -839,6 +839,12 @@ module Playwright
       @workers.to_a
     end
 
+    def requests
+      @channel.send_message_to_server('requests').map do |req|
+        ChannelOwners::Request.from(req)
+      end
+    end
+
     def request
       @browser_context.request
     end
