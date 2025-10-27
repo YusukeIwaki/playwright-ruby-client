@@ -301,8 +301,8 @@
 * enabled?
 * hidden?
 * visible?
-* ~~console_messages~~
-* ~~page_errors~~
+* console_messages
+* page_errors
 * locator
 * main_frame
 * opener

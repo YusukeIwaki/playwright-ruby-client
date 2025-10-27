@@ -994,6 +994,24 @@ def visible?(selector, strict: nil, timeout: nil)
 
 Returns whether the element is [visible](https://playwright.dev/python/docs/actionability#visible). `selector` that does not match any elements is considered not visible.
 
+## console_messages
+
+```
+def console_messages
+```
+
+
+Returns up to (currently) 200 last console messages from this page. See [`event: Page.console`] for more details.
+
+## page_errors
+
+```
+def page_errors
+```
+
+
+Returns up to (currently) 200 last page errors from this page. See [`event: Page.pageError`] for more details.
+
 ## locator
 
 ```

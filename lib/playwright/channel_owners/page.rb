@@ -638,6 +638,20 @@ module Playwright
         timeout: timeout)
     end
 
+    def console_messages
+      messages = @channel.send_message_to_server('consoleMessages')
+      messages.map do |message|
+        ConsoleMessageImpl.new(message, self)
+      end
+    end
+
+    def page_errors
+      errors = @channel.send_message_to_server('pageErrors')
+      errors.map do |error|
+        Error.parse(error['error'])
+      end
+    end
+
     def locator(
       selector,
       has: nil,

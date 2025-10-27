@@ -80,9 +80,8 @@ Creates a locator that matches both this locator and the argument locator.
 
 The following example finds a button with a specific title.
 
-```python title="example_7d6ae130455846d212e6af9586b7115ae62437ebb62a6dfd4d3e183fb5ef663c.py"
-button = page.get_by_role("button").and_(page.get_by_title("Subscribe"))
-
+```ruby
+button = page.get_by_role("button").and(page.get_by_title("Subscribe"))
 ```
 
 ## aria_snapshot
