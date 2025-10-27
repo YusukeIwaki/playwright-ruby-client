@@ -672,4 +672,69 @@ RSpec.describe 'ariaSnapshot' do
       SNAPSHOT
     end
   end
+
+  it 'should not report textarea textContent' do
+    with_page do |page|
+      page.content = '<textarea>Before</textarea>'
+      check_and_match_snapshot(page.locator('body'), <<~SNAPSHOT)
+        - textbox: Before
+      SNAPSHOT
+
+      page.evaluate("() => { document.querySelector('textarea').value = 'After'; }")
+      check_and_match_snapshot(page.locator('body'), <<~SNAPSHOT)
+        - textbox: After
+      SNAPSHOT
+    end
+  end
+
+  it 'should not show visible children of hidden elements', annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/36296' } do
+    with_page do |page|
+      page.content = <<~HTML
+        <div style="visibility: hidden;">
+          <div style="visibility: visible;">
+            <button>Button</button>
+          </div>
+        </div>
+      HTML
+      expect(page.locator('body').aria_snapshot).to eq('')
+    end
+  end
+
+  it 'should not show unhidden children of aria-hidden elements', annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/36296' } do
+    with_page do |page|
+      page.content = <<~HTML
+        <div aria-hidden="true">
+          <div aria-hidden="false">
+            <button>Button</button>
+          </div>
+        </div>
+      HTML
+      expect(page.locator('body').aria_snapshot).to eq('')
+    end
+  end
+
+  it 'should snapshot placeholder when different from the name' do
+    with_page do |page|
+      page.content = '<input placeholder="Placeholder">'
+      check_and_match_snapshot(page.locator('body'), <<~SNAPSHOT)
+        - textbox "Placeholder"
+      SNAPSHOT
+
+      page.content = '<input placeholder="Placeholder" aria-label="Label">'
+      check_and_match_snapshot(page.locator('body'), <<~SNAPSHOT)
+        - textbox "Label":
+          - /placeholder: Placeholder
+      SNAPSHOT
+    end
+  end
+
+  it 'match values both against regex and string' do
+    with_page do |page|
+      page.content = '<a href="/auth?r=/">Log in</a>'
+      check_and_match_snapshot(page.locator('body'), <<~SNAPSHOT)
+        - link "Log in":
+          - /url: /auth?r=/
+      SNAPSHOT
+    end
+  end
 end
