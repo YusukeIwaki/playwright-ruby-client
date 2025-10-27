@@ -301,6 +301,8 @@
 * enabled?
 * hidden?
 * visible?
+* console_messages
+* page_errors
 * locator
 * main_frame
 * opener
@@ -309,6 +311,7 @@
 * press
 * query_selector
 * query_selector_all
+* requests
 * ~~add_locator_handler~~
 * ~~remove_locator_handler~~
 * reload

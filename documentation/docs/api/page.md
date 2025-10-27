@@ -994,6 +994,24 @@ def visible?(selector, strict: nil, timeout: nil)
 
 Returns whether the element is [visible](https://playwright.dev/python/docs/actionability#visible). `selector` that does not match any elements is considered not visible.
 
+## console_messages
+
+```
+def console_messages
+```
+
+
+Returns up to (currently) 200 last console messages from this page. See [`event: Page.console`] for more details.
+
+## page_errors
+
+```
+def page_errors
+```
+
+
+Returns up to (currently) 200 last page errors from this page. See [`event: Page.pageError`] for more details.
+
 ## locator
 
 ```
@@ -1178,6 +1196,19 @@ def query_selector_all(selector)
 
 The method finds all elements matching the specified selector within the page. If no elements match the selector, the
 return value resolves to `[]`.
+
+## requests
+
+```
+def requests
+```
+
+
+Returns up to (currently) 100 last network request from this page. See [`event: Page.request`] for more details.
+
+Returned requests should be accessed immediately, otherwise they might be collected to prevent unbounded memory growth as new requests come in. Once collected, retrieving most information about the request is impossible.
+
+Note that requests reported through the [`event: Page.request`] request are not collected, so there is a trade off between efficient memory usage with [Page#requests](./page#requests) and the amount of available information reported through [`event: Page.request`].
 
 ## reload
 

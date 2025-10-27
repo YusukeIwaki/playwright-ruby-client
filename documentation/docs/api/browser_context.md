@@ -73,10 +73,14 @@ browser_context.add_init_script(path: "preload.js")
 def background_pages
 ```
 
+:::warning
 
-**NOTE**: Background pages are only supported on Chromium-based browsers.
+Background pages have been removed from Chromium together with Manifest V2 extensions.
 
-All existing background pages in the context.
+:::
+
+
+Returns an empty list.
 
 ## browser
 

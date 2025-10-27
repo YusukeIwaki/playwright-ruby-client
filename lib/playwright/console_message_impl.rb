@@ -1,11 +1,12 @@
 module Playwright
   define_api_implementation :ConsoleMessageImpl do
-    def initialize(event)
+    def initialize(event, page)
       @event = event
+      @page = page
     end
 
     def page
-      @page ||= ChannelOwners::Page.from_nullable(@event['page'])
+      @page
     end
 
     def type

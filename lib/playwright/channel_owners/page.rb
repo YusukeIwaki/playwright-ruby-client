@@ -149,7 +149,6 @@ module Playwright
     private def on_close
       @closed = true
       @browser_context.send(:remove_page, self)
-      @browser_context.send(:remove_background_page, self)
       if @closed_or_crashed_promise.pending?
         @closed_or_crashed_promise.fulfill(close_error_with_reason)
       end
@@ -639,6 +638,20 @@ module Playwright
         timeout: timeout)
     end
 
+    def console_messages
+      messages = @channel.send_message_to_server('consoleMessages')
+      messages.map do |message|
+        ConsoleMessageImpl.new(message, self)
+      end
+    end
+
+    def page_errors
+      errors = @channel.send_message_to_server('pageErrors')
+      errors.map do |error|
+        Error.parse(error['error'])
+      end
+    end
+
     def locator(
       selector,
       has: nil,
@@ -824,6 +837,12 @@ module Playwright
 
     def workers
       @workers.to_a
+    end
+
+    def requests
+      @channel.send_message_to_server('requests').map do |req|
+        ChannelOwners::Request.from(req)
+      end
     end
 
     def request

@@ -50,8 +50,11 @@ module Playwright
             "\n#{message}"
           end
 
-          out = "#{out_message}\nActual value #{actual} #{log}"
-          raise AssertionError.new(out)
+        if result['errorMessage']
+          error_message = "\n#{result['errorMessage']}"
+        end
+        out = "#{out_message}\nActual value #{actual}#{error_message} #{log}"
+        raise AssertionError.new(out)
       else
         true
       end
