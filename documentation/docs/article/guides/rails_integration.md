@@ -23,13 +23,19 @@ Note that capybara-playwright-driver does not depend on Selenium. But `selenium-
 ## Register and configure Capybara driver
 
 ```rb
-Capybara.register_driver(:playwright) do |app|
+Capybara.register_driver(:customized_playwright) do |app|
   Capybara::Playwright::Driver.new(app,
     browser_type: :chromium, # :chromium (default) or :firefox, :webkit
     headless: false, # true for headless mode (default), false for headful mode.
   )
 end
 ```
+
+:::note
+
+Rails itself (since Rails 6.1) reserves the driver name `:playwright` for its built‑in integration (see [rails/rails#39987](https://github.com/rails/rails/issues/39987) and [YusukeIwaki/capybara-playwright-driver#93](https://github.com/YusukeIwaki/capybara-playwright-driver/issues/93)). **If you call `Capybara.register_driver(:playwright) { ... }` and then use `driven_by :playwright`, Rails' built‑in Playwright driver will be selected** instead of the one defined by `Capybara.register_driver(:playwright) { ... }`. Therefore, when you want to use the driver from this gem with custom options, register it with another name such as `:customized_playwright`.
+
+:::
 
 ### Update timeout
 
@@ -50,7 +56,16 @@ Capybara.default_driver = :playwright
 Capybara.javascript_driver = :playwright
 ```
 
-It is not mandatry. Without changing the default driver, you can still use Playwright driver by specifying `Capybara.current_driver = :playwright` (or `driven_by :playwright` in system spec) explicitly.
+If you registered a customized driver (e.g. `:customized_playwright` as above) and want that to be the default, set:
+
+```rb
+Capybara.default_driver = :customized_playwright
+Capybara.javascript_driver = :customized_playwright
+```
+
+Remember: choosing `:playwright` here will use Rails' built‑in driver, not the customized one from this gem.
+
+It is not mandatory. Without changing the default driver, you can still use the customized Playwright driver by specifying `Capybara.current_driver = :customized_playwright` (or `driven_by :customized_playwright` in system spec) explicitly. Use `:playwright` only if you intend to run against Rails' built‑in Playwright driver (see issues: https://github.com/YusukeIwaki/capybara-playwright-driver/issues/93, https://github.com/rails/rails/issues/39987).
 
 ### (reference) Available driver options
 
