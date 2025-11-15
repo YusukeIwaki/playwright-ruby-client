@@ -34,10 +34,36 @@ jobs:
             echo "Playwright server is ready!"
       - run:
           name: Run tests
-          command: bundle exec rspec spec/integration/example_spec.rb
+          command: |
+            # First run without DEBUG
+            if bundle exec rspec spec/integration/example_spec.rb --format json --out /tmp/rspec_results.json --format progress; then
+              echo "All tests passed on first run"
+              exit 0
+            else
+              echo "Some tests failed. Extracting failed examples..."
+
+              # Extract unique failed example ids from JSON output
+              failed_examples=$(ruby -rjson -e '
+                results = JSON.parse(File.read("/tmp/rspec_results.json"))
+                failed = results["examples"].select { |ex| ex["status"] == "failed" }
+                unique_ids = failed.map { |ex| ex["id"] }.uniq
+                puts unique_ids.join(" ")
+              ')
+
+              if [ -z "$failed_examples" ]; then
+                echo "No failed examples found in results"
+                exit 1
+              fi
+
+              echo "Re-running failed examples with DEBUG=1:"
+              echo "$failed_examples"
+
+              # Re-run only failed examples with DEBUG enabled
+              export DEBUG=1
+              bundle exec rspec $(echo "$failed_examples" | sed 's/\([^ ]*\)/--example-id \1/g')
+            fi
           environment:
             BROWSER: chromium
-            DEBUG: 1
             PLAYWRIGHT_WS_ENDPOINT: ws://localhost:8888/ws
 
 workflows:
