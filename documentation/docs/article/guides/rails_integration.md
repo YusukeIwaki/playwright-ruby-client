@@ -37,6 +37,32 @@ Rails itself (since Rails 6.1) reserves the driver name `:playwright` for its bu
 
 :::
 
+### When running Playwright in a container
+
+If Playwright is running in an independent container, with docker-compose.yaml config like this
+
+```
+  playwright: # this is our PLAYWRIGHT_HOST value
+    image: mcr.microsoft.com/playwright:v1.56.1-noble
+    command: >
+      /bin/sh -c "npx -y playwright@1.56.1 run-server --port 3000 --host 0.0.0.0 --path /ws"
+    init: true
+    restart: unless-stopped
+```
+
+Configure capybara to use the `browser_server_endpoint_url`
+
+```rb
+Capybara.register_driver(:playwright_remote) do |app|
+  Capybara::Playwright::Driver.new(
+    app,
+    browser_type: :chromium,
+    headless: true,
+    browser_server_endpoint_url: "ws://#{ENV.fetch('PLAYWRIGHT_HOST')}:3000/ws"
+  )
+end
+```
+
 ### Update timeout
 
 Capybara sets the default value of timeout to _2 seconds_. Generally it is too short to wait for HTTP responses.
