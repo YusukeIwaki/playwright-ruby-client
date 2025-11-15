@@ -3,9 +3,9 @@ version: 2.1
 jobs:
   test-remote:
     docker:
-      - image: cimg/ruby:3.3.0
-      - image: mcr.microsoft.com/playwright:v1.52.0-noble
-        command: /bin/sh -c "cd /home/pwuser ; npx --yes playwright@1.52.0 install && npx playwright@1.52.0 run-server --port 8888 --host 0.0.0.0 --path /ws"
+      - image: cimg/ruby:3.4
+      - image: mcr.microsoft.com/playwright:v1.56.1-noble
+        command: /bin/sh -c "cd /home/pwuser ; npx --yes playwright@1.56.1 install && npx playwright@1.56.1 run-server --port 8888 --host 0.0.0.0 --path /ws"
         environment:
           DEBUG: "pw:*"
         user: pwuser
