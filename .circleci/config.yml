@@ -35,32 +35,14 @@ jobs:
       - run:
           name: Run tests
           command: |
-            # First run without DEBUG
-            if bundle exec rspec spec/integration/example_spec.rb --format json --out /tmp/rspec_results.json --format progress; then
-              echo "All tests passed on first run"
+            # First run: execute all tests without DEBUG
+            if bundle exec rspec spec/integration/example_spec.rb; then
+              echo "All tests passed!"
               exit 0
             else
-              echo "Some tests failed. Extracting failed examples..."
-
-              # Extract unique failed example ids from JSON output
-              failed_examples=$(ruby -rjson -e '
-                results = JSON.parse(File.read("/tmp/rspec_results.json"))
-                failed = results["examples"].select { |ex| ex["status"] == "failed" }
-                unique_ids = failed.map { |ex| ex["id"] }.uniq
-                puts unique_ids.join(" ")
-              ')
-
-              if [ -z "$failed_examples" ]; then
-                echo "No failed examples found in results"
-                exit 1
-              fi
-
-              echo "Re-running failed examples with DEBUG=1:"
-              echo "$failed_examples"
-
-              # Re-run only failed examples with DEBUG enabled
-              export DEBUG=1
-              bundle exec rspec $(echo "$failed_examples" | sed 's/\([^ ]*\)/--example-id \1/g')
+              echo "Some tests failed. Re-running failed tests with DEBUG=1..."
+              # Second run: re-run only failed tests with DEBUG enabled
+              DEBUG=1 bundle exec rspec spec/integration/example_spec.rb --only-failures
             fi
           environment:
             BROWSER: chromium
