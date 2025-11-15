@@ -6,7 +6,7 @@ module Playwright
   # ref: https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_transport.py
   class WebSocketTransport
     # @param ws_endpoint [String] EndpointURL of WebSocket
-    def initialize(ws_endpoint:, headers:)
+    def initialize(ws_endpoint:, headers: {})
       @ws_endpoint = ws_endpoint
       @headers = headers
       @debug = ENV['DEBUG'].to_s == 'true' || ENV['DEBUG'].to_s == '1'
