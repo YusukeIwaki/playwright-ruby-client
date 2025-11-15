@@ -38,7 +38,7 @@ jobs:
           environment:
             BROWSER: chromium
             DEBUG: 1
-            PLAYWRIGHT_WS_ENDPOINT: ws://localhost:8888/ws?browser=chromium
+            PLAYWRIGHT_WS_ENDPOINT: ws://localhost:8888/ws
 
 workflows:
   testing:

@@ -104,6 +104,10 @@ module Playwright
 
   # @Deprecated. Playwright >= 1.54 does not support this method.
   module_function def connect_to_playwright_server(ws_endpoint, &block)
+    if Gem::Version.new(COMPATIBLE_PLAYWRIGHT_VERSION) >= Gem::Version.new('1.54.0')
+      raise NotImplementedError, 'connect_to_playwright_server is deprecated and not supported in Playwright >= 1.54. Use connect_to_browser_server instead.'
+    end
+
     require 'playwright/web_socket_client'
     require 'playwright/web_socket_transport'
 
