@@ -19,7 +19,19 @@ jobs:
           command: bundle exec ruby development/generate_api.rb
       - run:
           name: Wait for Playwright server
-          command: dockerize -wait tcp://localhost:8888 -timeout 1m
+          command: |
+            timeout=60
+            elapsed=0
+            while ! nc -z localhost 8888; do
+              if [ $elapsed -ge $timeout ]; then
+                echo "Timeout waiting for Playwright server"
+                exit 1
+              fi
+              echo "Waiting for Playwright server... ($elapsed/$timeout seconds)"
+              sleep 1
+              elapsed=$((elapsed + 1))
+            done
+            echo "Playwright server is ready!"
       - run:
           name: Run tests
           command: bundle exec rspec spec/integration/example_spec.rb
