@@ -39,7 +39,7 @@ Rails itself (since Rails 6.1) reserves the driver name `:playwright` for its bu
 
 ### When running Playwright in a container
 
-If Playwright is running in an independentcontainer, with docker-compose.yaml config like this
+If Playwright is running in an independent container, with docker-compose.yaml config like this
 
 ```
   playwright: # this is our PLAYWRIGHT_HOST value
