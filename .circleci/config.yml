@@ -3,9 +3,9 @@ version: 2.1
 jobs:
   test-remote:
     docker:
-      - image: cimg/ruby:3.3.0
-      - image: mcr.microsoft.com/playwright:v1.52.0-noble
-        command: /bin/sh -c "cd /home/pwuser ; npx --yes playwright@1.52.0 install && npx playwright@1.52.0 run-server --port 8888 --host 0.0.0.0 --path /ws"
+      - image: cimg/ruby:3.4
+      - image: mcr.microsoft.com/playwright:v1.56.1-noble
+        command: /bin/sh -c "cd /home/pwuser ; npx --yes playwright@1.56.1 install && npx playwright@1.56.1 run-server --port 8888 --host 0.0.0.0 --path /ws"
         environment:
           DEBUG: "pw:*"
         user: pwuser
@@ -19,14 +19,34 @@ jobs:
           command: bundle exec ruby development/generate_api.rb
       - run:
           name: Wait for Playwright server
-          command: dockerize -wait tcp://localhost:8888 -timeout 1m
+          command: |
+            timeout=60
+            elapsed=0
+            while ! nc -z localhost 8888; do
+              if [ $elapsed -ge $timeout ]; then
+                echo "Timeout waiting for Playwright server"
+                exit 1
+              fi
+              echo "Waiting for Playwright server... ($elapsed/$timeout seconds)"
+              sleep 1
+              elapsed=$((elapsed + 1))
+            done
+            echo "Playwright server is ready!"
       - run:
           name: Run tests
-          command: bundle exec rspec spec/integration/example_spec.rb
+          command: |
+            # First run: execute all tests without DEBUG
+            if bundle exec rspec spec/integration/example_spec.rb; then
+              echo "All tests passed!"
+              exit 0
+            else
+              echo "Some tests failed. Re-running failed tests with DEBUG=1..."
+              # Second run: re-run only failed tests with DEBUG enabled
+              DEBUG=1 bundle exec rspec spec/integration/example_spec.rb --only-failures
+            fi
           environment:
             BROWSER: chromium
-            DEBUG: 1
-            PLAYWRIGHT_WS_ENDPOINT: ws://localhost:8888/ws?browser=chromium
+            PLAYWRIGHT_WS_ENDPOINT: ws://localhost:8888/ws
 
 workflows:
   testing:

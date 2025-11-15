@@ -37,11 +37,21 @@ RSpec.configure do |config|
   config.around(:each, type: :integration) do |example|
     @playwright_browser_type_param = browser_type
 
-    block = ->(playwright) {
-      @playwright_playwright = playwright
-      @playwright_browser_type = playwright.send(@playwright_browser_type_param)
+    if ENV['PLAYWRIGHT_WS_ENDPOINT']
+      # For remote browser server connections (Playwright >= 1.54)
+      # The browser object is directly available, no need for playwright.chromium().launch()
+      Playwright.connect_to_browser_server(
+        ENV['PLAYWRIGHT_WS_ENDPOINT'],
+        browser_type: @playwright_browser_type_param.to_s
+      ) do |browser|
+        # Set up a mock playwright object for compatibility
+        mock_playwright = Object.new
+        mock_browser_type = Object.new
+        mock_browser_type.define_singleton_method(:launch) { |&block| block.call(browser) }
+        mock_playwright.define_singleton_method(@playwright_browser_type_param) { mock_browser_type }
 
-      @playwright_browser_type.launch do |browser|
+        @playwright_playwright = mock_playwright
+        @playwright_browser_type = mock_browser_type
         @playwright_browser = browser
 
         if ENV['CI']
@@ -51,11 +61,24 @@ RSpec.configure do |config|
           example.run
         end
       end
-    }
-
-    if ENV['PLAYWRIGHT_WS_ENDPOINT']
-      Playwright.connect_to_playwright_server(ENV['PLAYWRIGHT_WS_ENDPOINT'], &block)
     else
+      # For local Playwright connections
+      block = ->(playwright) {
+        @playwright_playwright = playwright
+        @playwright_browser_type = playwright.send(@playwright_browser_type_param)
+
+        @playwright_browser_type.launch do |browser|
+          @playwright_browser = browser
+
+          if ENV['CI']
+            # Every integration test case should spend less than 20sec, in CI.
+            Timeout.timeout(20) { example.run }
+          else
+            example.run
+          end
+        end
+      }
+
       Playwright.create(playwright_cli_executable_path: ENV['PLAYWRIGHT_CLI_EXECUTABLE_PATH'], &block)
     end
   end
