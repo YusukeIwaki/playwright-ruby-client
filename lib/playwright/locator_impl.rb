@@ -126,7 +126,8 @@ module Playwright
           noWaitAfter: nil,
           position: nil,
           timeout: nil,
-          trial: nil)
+          trial: nil,
+          steps: nil)
 
       @frame.click(@selector,
         strict: true,
@@ -138,7 +139,8 @@ module Playwright
         noWaitAfter: noWaitAfter,
         position: position,
         timeout: timeout,
-        trial: trial)
+        trial: trial,
+        steps: steps)
     end
 
     def dblclick(
@@ -149,7 +151,8 @@ module Playwright
           noWaitAfter: nil,
           position: nil,
           timeout: nil,
-          trial: nil)
+          trial: nil,
+          steps: nil)
 
       @frame.dblclick(@selector,
         strict: true,
@@ -160,7 +163,8 @@ module Playwright
         noWaitAfter: noWaitAfter,
         position: position,
         timeout: timeout,
-        trial: trial)
+        trial: trial,
+        steps: steps)
     end
 
     def dispatch_event(type, eventInit: nil, timeout: nil)
@@ -173,7 +177,8 @@ module Playwright
           sourcePosition: nil,
           targetPosition: nil,
           timeout: nil,
-          trial: nil)
+          trial: nil,
+          steps: nil)
 
       @frame.drag_and_drop(
         @selector,
@@ -185,6 +190,7 @@ module Playwright
         timeout: timeout,
         trial: trial,
         strict: true,
+        steps: steps,
       )
     end
 

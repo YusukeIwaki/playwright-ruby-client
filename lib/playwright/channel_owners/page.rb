@@ -534,7 +534,8 @@ module Playwright
           position: nil,
           strict: nil,
           timeout: nil,
-          trial: nil)
+          trial: nil,
+          steps: nil)
 
       @main_frame.click(
         selector,
@@ -548,6 +549,7 @@ module Playwright
         strict: strict,
         timeout: timeout,
         trial: trial,
+        steps: steps,
       )
     end
 
@@ -560,7 +562,8 @@ module Playwright
           strict: nil,
           targetPosition: nil,
           timeout: nil,
-          trial: nil)
+          trial: nil,
+          steps: nil)
 
       @main_frame.drag_and_drop(
         source,
@@ -571,7 +574,9 @@ module Playwright
         strict: strict,
         targetPosition: targetPosition,
         timeout: timeout,
-        trial: trial)
+        trial: trial,
+        steps: steps,
+      )
     end
 
     def dblclick(
@@ -584,7 +589,8 @@ module Playwright
           position: nil,
           strict: nil,
           timeout: nil,
-          trial: nil)
+          trial: nil,
+          steps: nil)
       @main_frame.dblclick(
         selector,
         button: button,
@@ -596,6 +602,7 @@ module Playwright
         strict: strict,
         timeout: timeout,
         trial: trial,
+        steps: steps,
       )
     end
 

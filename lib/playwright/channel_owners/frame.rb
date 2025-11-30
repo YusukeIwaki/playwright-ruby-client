@@ -337,7 +337,8 @@ module Playwright
           position: nil,
           strict: nil,
           timeout: nil,
-          trial: nil)
+          trial: nil,
+          steps: nil)
 
       params = {
         selector: selector,
@@ -351,6 +352,7 @@ module Playwright
         strict: strict,
         timeout: _timeout(timeout),
         trial: trial,
+        steps: steps,
       }.compact
       @channel.send_message_to_server('click', params)
 
@@ -366,7 +368,8 @@ module Playwright
           strict: nil,
           targetPosition: nil,
           timeout: nil,
-          trial: nil)
+          trial: nil,
+          steps: nil)
 
       params = {
         source: source,
@@ -378,6 +381,7 @@ module Playwright
         targetPosition: targetPosition,
         timeout: _timeout(timeout),
         trial: trial,
+        steps: steps,
       }.compact
       @channel.send_message_to_server('dragAndDrop', params)
 
@@ -394,7 +398,8 @@ module Playwright
           position: nil,
           strict: nil,
           timeout: nil,
-          trial: nil)
+          trial: nil,
+          steps: nil)
 
       params = {
         selector: selector,
@@ -407,6 +412,7 @@ module Playwright
         strict: strict,
         timeout: _timeout(timeout),
         trial: trial,
+        steps: steps,
       }.compact
       @channel.send_message_to_server('dblclick', params)
 
