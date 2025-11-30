@@ -235,6 +235,7 @@ def click(
       modifiers: nil,
       noWaitAfter: nil,
       position: nil,
+      steps: nil,
       timeout: nil,
       trial: nil)
 ```
@@ -296,6 +297,7 @@ def dblclick(
       modifiers: nil,
       noWaitAfter: nil,
       position: nil,
+      steps: nil,
       timeout: nil,
       trial: nil)
 ```
@@ -387,6 +389,7 @@ def drag_to(
       force: nil,
       noWaitAfter: nil,
       sourcePosition: nil,
+      steps: nil,
       targetPosition: nil,
       timeout: nil,
       trial: nil)

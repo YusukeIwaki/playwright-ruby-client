@@ -103,6 +103,7 @@ def click(
       modifiers: nil,
       noWaitAfter: nil,
       position: nil,
+      steps: nil,
       timeout: nil,
       trial: nil)
 ```
@@ -138,6 +139,7 @@ def dblclick(
       modifiers: nil,
       noWaitAfter: nil,
       position: nil,
+      steps: nil,
       timeout: nil,
       trial: nil)
 ```

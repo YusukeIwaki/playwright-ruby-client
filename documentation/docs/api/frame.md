@@ -203,6 +203,7 @@ def drag_and_drop(
       force: nil,
       noWaitAfter: nil,
       sourcePosition: nil,
+      steps: nil,
       strict: nil,
       targetPosition: nil,
       timeout: nil,
