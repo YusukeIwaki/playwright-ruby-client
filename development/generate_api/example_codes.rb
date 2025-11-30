@@ -934,6 +934,15 @@ module ExampleCodes
     button.click
   end
 
+  # Locator#description
+  def example_acca7583601685cbc8cd77ac0b9201d66e60101e36383f05be0dca492a487b1a(page:)
+    button = page.get_by_role("button").describe("Subscribe button")
+    puts button.description # => "Subscribe button"
+
+    input = page.get_by_role("textbox")
+    puts input.description # => nil
+  end
+
   # Locator#disabled?
   def example_5c008cd1a3ece779fe8c29092643a482cd0215d5c09001cd9ef08c444ea6cdd1(page:)
     disabled = page.get_by_role("button").disabled?

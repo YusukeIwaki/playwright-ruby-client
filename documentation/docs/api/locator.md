@@ -336,6 +336,25 @@ button = page.get_by_test_id("btn-sub").describe("Subscribe button")
 button.click
 ```
 
+## description
+
+```
+def description
+```
+
+
+Returns locator description previously set with [Locator#describe](./locator#describe). Returns `null` if no custom description has been set. Prefer `Locator.toString()` for a human-readable representation, as it uses the description when available.
+
+**Usage**
+
+```ruby
+button = page.get_by_role("button").describe("Subscribe button")
+puts button.description # => "Subscribe button"
+
+input = page.get_by_role("textbox")
+puts input.description # => nil
+```
+
 ## dispatch_event
 
 ```

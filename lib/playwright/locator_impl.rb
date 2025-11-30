@@ -256,6 +256,20 @@ module Playwright
       )
     end
 
+    def description
+      if @selector =~ / >> internal:describe=("(?:[^"\\]|\\.)*")$/
+        begin
+          description = JSON.parse($1)
+          if description.is_a?(String)
+            return description
+          end
+        rescue JSON::ParserError
+        end
+      end
+
+      nil
+    end
+
     def filter(has: nil, hasNot: nil, hasNotText: nil, hasText: nil, visible: nil)
       LocatorImpl.new(
         frame: @frame,

@@ -182,4 +182,88 @@ RSpec.describe 'Locator' do
       expect(page.locator('div').all_inner_texts).to eq(%w[A B C])
     end
   end
+
+  it 'should return page', sinatra: true do
+    with_page do |page|
+      page.goto("#{server_prefix}/frames/two-frames.html")
+
+      outer = page.locator('#outer')
+      expect(outer.page).to eq(page)
+
+      inner = outer.locator('#inner')
+      expect(inner.page).to eq(page)
+
+      in_frame = page.frames[1].locator('div')
+      expect(in_frame.page).to eq(page)
+    end
+  end
+
+  it 'description should return nil for locator without description' do
+    with_page do |page|
+      page.content = '<button>Submit</button>'
+      locator = page.locator('button')
+      expect(locator.description).to be_nil
+    end
+  end
+
+  it 'description should return description for locator with simple description' do
+    with_page do |page|
+      page.content = '<button>Submit</button>'
+      locator = page.locator('button').describe('Submit button')
+      expect(locator.description).to eq('Submit button')
+    end
+  end
+
+  it 'description should return description with special characters' do
+    with_page do |page|
+      page.content = '<div>Button</div>'
+      locator = page.locator('div').describe('Button with "quotes" and \'apostrophes\'')
+      expect(locator.description).to eq('Button with "quotes" and \'apostrophes\'')
+    end
+  end
+
+  it 'description should return description for chained locators' do
+    with_page do |page|
+      page.content = '<form><input></form>'
+      locator = page.locator('form').locator('input').describe('Form input field')
+      expect(locator.description).to eq('Form input field')
+    end
+  end
+
+  it 'description should return description for locator with multiple describe calls' do
+    with_page do |page|
+      page.content = <<~HTML
+      <div class="foo">
+        <button>First</button>
+      </div>
+      HTML
+
+      locator1 = page.locator('.foo').describe('First description')
+      expect(locator1.description).to eq('First description')
+
+      locator2 = locator1.locator('button').describe('Second description')
+      expect(locator2.description).to eq('Second description')
+
+      locator3 = locator2.locator('button')
+      expect(locator3.description).to be_nil
+    end
+  end
+
+  it 'to_s returns formatted locator', pending: "not implemented" do
+    with_page do |page|
+      page.content = '<button>Submit</button>'
+      locator = page.get_by_role('button', name: 'Submit')
+      expect(locator.to_s).to eq("getByRole('button', { name: 'Submit' })")
+      expect(locator.description).to be_nil
+    end
+  end
+
+  it 'to_s prefers description', pending: "not implemented" do
+    with_page do |page|
+      page.content = '<button>Submit</button>'
+      locator = page.get_by_role('button', name: 'Submit').describe('Submit button')
+      expect(locator.to_s).to eq('Submit button')
+      expect(locator.to_s).to eq(locator.description)
+    end
+  end
 end
