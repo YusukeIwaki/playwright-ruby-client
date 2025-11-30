@@ -129,9 +129,6 @@
 * wait_for_element_state
 * wait_for_selector
 
-## Accessibility
-
-
 ## FileChooser
 
 * element

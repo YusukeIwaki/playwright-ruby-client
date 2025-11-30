@@ -120,33 +120,6 @@ RSpec.describe 'example' do
   end
 
   context 'for ExampleCodes' do
-    it 'should work with Accessibility' do
-      skip unless chromium?
-
-      with_page do |page|
-        page.content = <<~HTML
-        <head>
-          <title>Accessibility Test</title>
-        </head>
-        <body>
-          <h1>Inputs</h1>
-          <input placeholder="Empty input" autofocus />
-          <input placeholder="readonly input" readonly />
-          <input placeholder="disabled input" disabled />
-          <input aria-label="Input with whitespace" value="  " />
-          <input value="value only" />
-          <input aria-placeholder="placeholder" value="and a value" />
-          <div aria-hidden="true" id="desc">This is a description!</div>
-          <input aria-placeholder="placeholder" value="and a value" aria-describedby="desc" />
-        </body>
-        HTML
-        page.locator('input').first.focus
-
-        example_2e5019929403491cde0c78bed1e0e18e0c86ab423d7ac8715876c4de4814f483(page: page)
-        example_3d67a99411b5f924d573427b6f54aff63f7241f2b810959b79948bd3b522404a(page: page)
-      end
-    end
-
     it 'should work with BrowserContext#expose_binding' do
       with_context do |context|
         example_ba61d7312419a50eab8b67fd47e467e3b53590e7fd2ee55055fb6d12c94a61e4(browser_context: context)

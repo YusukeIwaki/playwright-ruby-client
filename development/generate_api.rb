@@ -9,7 +9,6 @@ ALL_TYPES = %w[
     Touchscreen
     JSHandle
     ElementHandle
-    Accessibility
     FileChooser
     Frame
     Worker
@@ -41,7 +40,6 @@ EXPERIMENTAL = %w[
   AndroidWebView
 ]
 API_IMPLEMENTATIONS = %w[
-  Accessibility
   AndroidInput
   Clock
   ConsoleMessage

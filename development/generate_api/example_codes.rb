@@ -12,29 +12,6 @@ module ExampleCodes
     end
   end
 
-  # Accessibility
-  def example_2e5019929403491cde0c78bed1e0e18e0c86ab423d7ac8715876c4de4814f483(page:)
-    snapshot = page.accessibility.snapshot
-    puts snapshot
-  end
-
-  # Accessibility
-  def example_3d67a99411b5f924d573427b6f54aff63f7241f2b810959b79948bd3b522404a(page:)
-    def find_focused_node(node)
-      if node['focused']
-        node
-      else
-        node['children']&.find do |child|
-          find_focused_node(child)
-        end
-      end
-    end
-
-    snapshot = page.accessibility.snapshot
-    node = find_focused_node(snapshot)
-    puts node['name']
-  end
-
   # APIRequestContext
   def example_8b05a1e391492122df853bef56d8d3680ea0911e5ff2afd7e442ce0b1a3a4e10(playwright:)
     playwright.chromium.launch do |browser|
