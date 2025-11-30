@@ -899,8 +899,23 @@ module Playwright
       @video ||= Video.new(self)
     end
 
-    def snapshot_for_ai(timeout: nil)
-      @channel.send_message_to_server('snapshotForAI', timeout: @timeout_settings.timeout(timeout))
+    def snapshot_for_ai(timeout: nil, mode: nil, track: nil)
+      option_mode = mode || 'full'
+      unless ['full', 'incremental'].include?(option_mode)
+        raise ArgumentError.new("mode must be either 'full' or 'incremental'")
+      end
+
+      options = {
+        timeout: @timeout_settings.timeout(timeout),
+        mode: option_mode,
+      }
+      options[:track] = track if track
+      result = @channel.send_message_to_server_result('snapshotForAI', options)
+      if option_mode == 'full'
+        result['full']
+      elsif option_mode == 'incremental'
+        result['incremental']
+      end
     end
 
     def start_js_coverage(resetOnNavigation: nil, reportAnonymousScripts: nil)
