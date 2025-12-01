@@ -1,13 +1,12 @@
 module Playwright
   define_api_implementation :ConsoleMessageImpl do
-    def initialize(event, page)
+    def initialize(event, page, worker)
       @event = event
       @page = page
+      @worker = worker
     end
 
-    def page
-      @page
-    end
+    attr_reader :page, :worker
 
     def type
       @event['type']

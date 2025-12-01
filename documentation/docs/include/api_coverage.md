@@ -129,10 +129,6 @@
 * wait_for_element_state
 * wait_for_selector
 
-## Accessibility
-
-* snapshot
-
 ## FileChooser
 
 * element
@@ -208,6 +204,7 @@
 * evaluate
 * evaluate_handle
 * url
+* expect_event
 
 ## Selectors
 
@@ -231,6 +228,7 @@
 * page
 * text
 * type
+* worker
 
 ## Dialog
 
@@ -356,7 +354,6 @@
 * workers
 * ~~wait_for_event~~
 * clock
-* accessibility
 * keyboard
 * mouse
 * request
@@ -459,6 +456,7 @@
 * count
 * dblclick
 * describe
+* description
 * dispatch_event
 * drag_to
 * element_handle

@@ -110,7 +110,8 @@ module Playwright
             noWaitAfter: nil,
             position: nil,
             timeout: nil,
-            trial: nil)
+            trial: nil,
+            steps: nil)
 
         params = {
           button: button,
@@ -122,6 +123,7 @@ module Playwright
           position: position,
           timeout: _timeout(timeout),
           trial: trial,
+          steps: steps,
         }.compact
         @channel.send_message_to_server('click', params)
 
@@ -136,7 +138,8 @@ module Playwright
             noWaitAfter: nil,
             position: nil,
             timeout: nil,
-            trial: nil)
+            trial: nil,
+            steps: nil)
 
         params = {
           button: button,
@@ -147,6 +150,7 @@ module Playwright
           position: position,
           timeout: _timeout(timeout),
           trial: trial,
+          steps: steps,
         }.compact
         @channel.send_message_to_server('dblclick', params)
 

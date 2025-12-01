@@ -11,7 +11,6 @@ module Playwright
     private def after_initialize
       @browser_context = @parent
       @timeout_settings = TimeoutSettings.new(@browser_context.send(:_timeout_settings))
-      @accessibility = AccessibilityImpl.new(@channel)
       @keyboard = KeyboardImpl.new(@channel)
       @mouse = MouseImpl.new(@channel)
       @touchscreen = TouchscreenImpl.new(@channel)
@@ -79,7 +78,6 @@ module Playwright
     end
 
     attr_reader \
-      :accessibility,
       :keyboard,
       :mouse,
       :touchscreen,
@@ -536,7 +534,8 @@ module Playwright
           position: nil,
           strict: nil,
           timeout: nil,
-          trial: nil)
+          trial: nil,
+          steps: nil)
 
       @main_frame.click(
         selector,
@@ -550,6 +549,7 @@ module Playwright
         strict: strict,
         timeout: timeout,
         trial: trial,
+        steps: steps,
       )
     end
 
@@ -562,7 +562,8 @@ module Playwright
           strict: nil,
           targetPosition: nil,
           timeout: nil,
-          trial: nil)
+          trial: nil,
+          steps: nil)
 
       @main_frame.drag_and_drop(
         source,
@@ -573,7 +574,9 @@ module Playwright
         strict: strict,
         targetPosition: targetPosition,
         timeout: timeout,
-        trial: trial)
+        trial: trial,
+        steps: steps,
+      )
     end
 
     def dblclick(
@@ -586,7 +589,8 @@ module Playwright
           position: nil,
           strict: nil,
           timeout: nil,
-          trial: nil)
+          trial: nil,
+          steps: nil)
       @main_frame.dblclick(
         selector,
         button: button,
@@ -598,6 +602,7 @@ module Playwright
         strict: strict,
         timeout: timeout,
         trial: trial,
+        steps: steps,
       )
     end
 
@@ -641,7 +646,7 @@ module Playwright
     def console_messages
       messages = @channel.send_message_to_server('consoleMessages')
       messages.map do |message|
-        ConsoleMessageImpl.new(message, self)
+        ConsoleMessageImpl.new(message, self, nil)
       end
     end
 
@@ -901,8 +906,23 @@ module Playwright
       @video ||= Video.new(self)
     end
 
-    def snapshot_for_ai(timeout: nil)
-      @channel.send_message_to_server('snapshotForAI', timeout: @timeout_settings.timeout(timeout))
+    def snapshot_for_ai(timeout: nil, mode: nil, track: nil)
+      option_mode = mode || 'full'
+      unless ['full', 'incremental'].include?(option_mode)
+        raise ArgumentError.new("mode must be either 'full' or 'incremental'")
+      end
+
+      options = {
+        timeout: @timeout_settings.timeout(timeout),
+        mode: option_mode,
+      }
+      options[:track] = track if track
+      result = @channel.send_message_to_server_result('snapshotForAI', options)
+      if option_mode == 'full'
+        result['full']
+      elsif option_mode == 'incremental'
+        result['incremental']
+      end
     end
 
     def start_js_coverage(resetOnNavigation: nil, reportAnonymousScripts: nil)
@@ -1032,7 +1052,7 @@ module Playwright
       expect_event(Events::Page::Worker, predicate: predicate, timeout: timeout, &block)
     end
 
-    # called from Frame with send(:timeout_settings)
+    # called from Frame with send(:_timeout_settings)
     private def _timeout_settings
       @timeout_settings
     end

@@ -62,6 +62,53 @@ RSpec.describe 'Page#workers' do
     end
   end
 
+  it 'should report console event on the worker' do
+    if respond_to?(:browser_name) && respond_to?(:browser_major_version)
+      skip('needs workerScriptLoaded event') if browser_name == 'chromium' && browser_major_version.to_i < 143
+    end
+
+    with_page do |page|
+      worker = page.expect_worker do
+        page.evaluate(<<~JAVASCRIPT)
+        () => {
+          window.worker = new Worker(URL.createObjectURL(new Blob(['42'], { type: 'application/javascript' })));
+        }
+        JAVASCRIPT
+      end
+
+      worker_console = Concurrent::Promises.future { worker.expect_event('console') }
+      page_console = Concurrent::Promises.future { page.expect_event('console') }
+      context_console = Concurrent::Promises.future { page.context.expect_event('console') }
+
+      worker.evaluate("() => console.log('hello from worker')")
+
+      message1 = worker_console.value!
+      message2 = page_console.value!
+      message3 = context_console.value!
+
+      expect(message1.text).to eq('hello from worker')
+      expect(message1.text).to be(message2.text)
+      expect(message1.text).to be(message3.text)
+    end
+  end
+
+  it 'should report console event on the worker when not listening on page or context' do
+    with_page do |page|
+      worker = page.expect_worker do
+        page.evaluate(<<~JAVASCRIPT)
+        () => {
+          window.worker = new Worker(URL.createObjectURL(new Blob(['42'], { type: 'application/javascript' })));
+        }
+        JAVASCRIPT
+      end
+
+      message = worker.expect_event('console') do
+        worker.evaluate("() => console.log('hello from worker')")
+      end
+      expect(message.text).to eq('hello from worker')
+    end
+  end
+
   it 'should report errors' do
     with_page do |page|
       error = page.expect_event('pageerror') do

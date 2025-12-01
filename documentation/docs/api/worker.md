@@ -61,3 +61,23 @@ def url
 ```
 
 
+
+## expect_event
+
+```
+def expect_event(event, predicate: nil, timeout: nil, &block)
+```
+
+
+Waits for event to fire and passes its value into the predicate function.
+Returns when the predicate returns truthy value.
+Will throw an error if the page is closed before the event is fired.
+Returns the event data value.
+
+**Usage**
+
+```ruby
+message = worker.expect_event("console") do
+  worker.evaluate("console.log(42)")
+end
+```

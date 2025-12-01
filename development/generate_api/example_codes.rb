@@ -12,29 +12,6 @@ module ExampleCodes
     end
   end
 
-  # Accessibility
-  def example_2e5019929403491cde0c78bed1e0e18e0c86ab423d7ac8715876c4de4814f483(page:)
-    snapshot = page.accessibility.snapshot
-    puts snapshot
-  end
-
-  # Accessibility
-  def example_3d67a99411b5f924d573427b6f54aff63f7241f2b810959b79948bd3b522404a(page:)
-    def find_focused_node(node)
-      if node['focused']
-        node
-      else
-        node['children']&.find do |child|
-          find_focused_node(child)
-        end
-      end
-    end
-
-    snapshot = page.accessibility.snapshot
-    node = find_focused_node(snapshot)
-    puts node['name']
-  end
-
   # APIRequestContext
   def example_8b05a1e391492122df853bef56d8d3680ea0911e5ff2afd7e442ce0b1a3a4e10(playwright:)
     playwright.chromium.launch do |browser|
@@ -955,6 +932,15 @@ module ExampleCodes
   def example_34eb5cb79f67cd9f05cfcc449a5eb55b6d5e01726d8ad62a85dfa72a6a684030(page:)
     button = page.get_by_test_id("btn-sub").describe("Subscribe button")
     button.click
+  end
+
+  # Locator#description
+  def example_acca7583601685cbc8cd77ac0b9201d66e60101e36383f05be0dca492a487b1a(page:)
+    button = page.get_by_role("button").describe("Subscribe button")
+    puts button.description # => "Subscribe button"
+
+    input = page.get_by_role("textbox")
+    puts input.description # => nil
   end
 
   # Locator#disabled?
@@ -2063,6 +2049,13 @@ module ExampleCodes
     puts "current workers:"
     page.workers.each do |worker|
       puts "    #{worker.url}"
+    end
+  end
+
+  # Worker#expect_event
+  def example_85d4d6a87cca530ae1b6918f8ca3df87b1f63ca9ada54f5b89d0ea7a828df74b(worker:)
+    message = worker.expect_event("console") do
+      worker.evaluate("console.log(42)")
     end
   end
 end

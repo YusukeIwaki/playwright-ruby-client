@@ -120,33 +120,6 @@ RSpec.describe 'example' do
   end
 
   context 'for ExampleCodes' do
-    it 'should work with Accessibility' do
-      skip unless chromium?
-
-      with_page do |page|
-        page.content = <<~HTML
-        <head>
-          <title>Accessibility Test</title>
-        </head>
-        <body>
-          <h1>Inputs</h1>
-          <input placeholder="Empty input" autofocus />
-          <input placeholder="readonly input" readonly />
-          <input placeholder="disabled input" disabled />
-          <input aria-label="Input with whitespace" value="  " />
-          <input value="value only" />
-          <input aria-placeholder="placeholder" value="and a value" />
-          <div aria-hidden="true" id="desc">This is a description!</div>
-          <input aria-placeholder="placeholder" value="and a value" aria-describedby="desc" />
-        </body>
-        HTML
-        page.locator('input').first.focus
-
-        example_2e5019929403491cde0c78bed1e0e18e0c86ab423d7ac8715876c4de4814f483(page: page)
-        example_3d67a99411b5f924d573427b6f54aff63f7241f2b810959b79948bd3b522404a(page: page)
-      end
-    end
-
     it 'should work with BrowserContext#expose_binding' do
       with_context do |context|
         example_ba61d7312419a50eab8b67fd47e467e3b53590e7fd2ee55055fb6d12c94a61e4(browser_context: context)
@@ -633,21 +606,29 @@ RSpec.describe 'example' do
       end
     end
 
-    it 'should work with Worker', skip: ENV['CI'] do
+    it 'should work with Worker' do
       with_page do |page|
         worker_objs = []
-        page.expect_worker do
+        worker1 = page.expect_worker do
           worker_objs << page.evaluate_handle("() => new Worker(URL.createObjectURL(new Blob(['1'], {type: 'application/javascript'})))")
         end
 
         example_29716fdd4471a97923a64eebeee96330ab508226a496ae8fd13f12eb07d55ee6(page: page)
 
-        page.expect_worker do
+        worker2 = page.expect_worker do
           worker_objs << page.evaluate_handle("() => new Worker(URL.createObjectURL(new Blob(['2'], {type: 'application/javascript'})))")
         end
 
+        message = example_85d4d6a87cca530ae1b6918f8ca3df87b1f63ca9ada54f5b89d0ea7a828df74b(worker: worker1)
+        expect(message.text).to eq('42')
+
         expect(page.workers.size).to eq(2)
+        waitlist = [
+          Concurrent::Promises.future { worker1.expect_event('close') },
+          Concurrent::Promises.future { worker2.expect_event('close') },
+        ]
         page.evaluate('workerObjs => workerObjs.forEach(worker => worker.terminate())', arg: worker_objs)
+        Concurrent::Promises.zip(*waitlist).value!
         expect(page.workers).to be_empty
       end
     end
