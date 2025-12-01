@@ -30,7 +30,7 @@ module Playwright
         on_service_worker(ChannelOwners::Worker.from(params['worker']))
       })
       @channel.on('console', ->(params) {
-        on_console_message(ConsoleMessageImpl.new(params, ChannelOwners::Page.from_nullable(params['page'])))
+        on_console_message(ConsoleMessageImpl.new(params, ChannelOwners::Page.from_nullable(params['page']), ChannelOwners::Worker.from_nullable(params['worker'])))
       })
       @channel.on('pageError', ->(params) {
         on_page_error(
@@ -162,10 +162,13 @@ module Playwright
     end
 
     private def on_console_message(message)
-      emit(Events::BrowserContext::Console, message)
+      if (worker = message.worker)
+        worker.emit(Events::Worker::Console, message)
+      end
       if (page = message.page)
         page.emit(Events::Page::Console, message)
       end
+      emit(Events::BrowserContext::Console, message)
     end
 
     private def on_dialog(dialog)

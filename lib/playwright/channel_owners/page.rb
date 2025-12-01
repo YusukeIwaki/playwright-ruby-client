@@ -646,7 +646,7 @@ module Playwright
     def console_messages
       messages = @channel.send_message_to_server('consoleMessages')
       messages.map do |message|
-        ConsoleMessageImpl.new(message, self)
+        ConsoleMessageImpl.new(message, self, nil)
       end
     end
 
@@ -1052,7 +1052,7 @@ module Playwright
       expect_event(Events::Page::Worker, predicate: predicate, timeout: timeout, &block)
     end
 
-    # called from Frame with send(:timeout_settings)
+    # called from Frame with send(:_timeout_settings)
     private def _timeout_settings
       @timeout_settings
     end

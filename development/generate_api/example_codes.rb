@@ -2051,4 +2051,11 @@ module ExampleCodes
       puts "    #{worker.url}"
     end
   end
+
+  # Worker#expect_event
+  def example_85d4d6a87cca530ae1b6918f8ca3df87b1f63ca9ada54f5b89d0ea7a828df74b(worker:)
+    message = worker.expect_event("console") do
+      worker.evaluate("console.log(42)")
+    end
+  end
 end

@@ -74,3 +74,12 @@ def type
 ```
 
 
+
+## worker
+
+```
+def worker
+```
+
+
+The web worker or service worker that produced this console message, if any. Note that console messages from web workers also have non-null [ConsoleMessage#page](./console_message#page).

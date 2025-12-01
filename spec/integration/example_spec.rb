@@ -606,21 +606,29 @@ RSpec.describe 'example' do
       end
     end
 
-    it 'should work with Worker', skip: ENV['CI'] do
+    it 'should work with Worker' do
       with_page do |page|
         worker_objs = []
-        page.expect_worker do
+        worker1 = page.expect_worker do
           worker_objs << page.evaluate_handle("() => new Worker(URL.createObjectURL(new Blob(['1'], {type: 'application/javascript'})))")
         end
 
         example_29716fdd4471a97923a64eebeee96330ab508226a496ae8fd13f12eb07d55ee6(page: page)
 
-        page.expect_worker do
+        worker2 = page.expect_worker do
           worker_objs << page.evaluate_handle("() => new Worker(URL.createObjectURL(new Blob(['2'], {type: 'application/javascript'})))")
         end
 
+        message = example_85d4d6a87cca530ae1b6918f8ca3df87b1f63ca9ada54f5b89d0ea7a828df74b(worker: worker1)
+        expect(message.text).to eq('42')
+
         expect(page.workers.size).to eq(2)
+        waitlist = [
+          Concurrent::Promises.future { worker1.expect_event('close') },
+          Concurrent::Promises.future { worker2.expect_event('close') },
+        ]
         page.evaluate('workerObjs => workerObjs.forEach(worker => worker.terminate())', arg: worker_objs)
+        Concurrent::Promises.zip(*waitlist).value!
         expect(page.workers).to be_empty
       end
     end

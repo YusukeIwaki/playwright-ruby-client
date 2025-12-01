@@ -204,7 +204,7 @@
 * evaluate
 * evaluate_handle
 * url
-* ~~expect_event~~
+* expect_event
 
 ## Selectors
 
@@ -228,7 +228,7 @@
 * page
 * text
 * type
-* ~~worker~~
+* worker
 
 ## Dialog
 

@@ -74,6 +74,7 @@ end
 
   Worker: {
     Close: 'close',
+    Console: 'console',
   },
 
   ElectronApplication: {
