@@ -33,6 +33,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'dry-inflector'
   spec.add_development_dependency 'faye-websocket'
   spec.add_development_dependency 'pry-byebug'
+  spec.add_development_dependency 'ostruct'
   spec.add_development_dependency 'puma'
   spec.add_development_dependency 'rack', '< 3'
   spec.add_development_dependency 'rake'
