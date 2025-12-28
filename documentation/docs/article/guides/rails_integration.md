@@ -43,9 +43,9 @@ If Playwright is running in an independent container, with docker-compose.yaml c
 
 ```
   playwright: # this is our PLAYWRIGHT_HOST value
-    image: mcr.microsoft.com/playwright:v1.56.1-noble
+    image: mcr.microsoft.com/playwright:v1.57.0-noble
     command: >
-      /bin/sh -c "npx -y playwright@1.56.1 run-server --port 3000 --host 0.0.0.0 --path /ws"
+      /bin/sh -c "npx -y playwright@1.57.0 run-server --port 3000 --host 0.0.0.0 --path /ws"
     init: true
     restart: unless-stopped
 ```
