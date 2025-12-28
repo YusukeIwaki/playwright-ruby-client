@@ -1,5 +1,5 @@
 require 'base64'
-require 'cgi'
+require 'cgi/escape'
 
 module Playwright
   define_channel_owner :APIRequestContext do
@@ -197,13 +197,35 @@ module Playwright
     end
 
     private def query_string_to_array(query_string)
-      params = CGI.parse(query_string)
+      params = cgi_parse(query_string)
 
       params.map do |key, values|
         values.map do |value|
           { name: key, value: value }
         end
       end.flatten
+    end
+
+    # https://bugs.ruby-lang.org/issues/21258
+    # CGI.parse is defined in 'cgi' library.
+    # But it produces an error in Ruby 2.4 environment: undefined method `delete_prefix' for "CONTENT_LENGTH":String
+    # So we implement our own version of CGI.parse here.
+    private def cgi_parse(query)
+      # https://github.com/ruby/cgi/blob/master/lib/cgi/core.rb#L396
+      params = {}
+
+      query.split(/[&;]/).each do |pairs|
+        key, value = pairs.split('=',2).map do |v|
+          CGI.unescape(v)
+        end
+
+        next unless key
+        params[key] ||= []
+        next unless value
+        params[key] << value
+      end
+
+      params
     end
 
     private def object_to_array(hash)

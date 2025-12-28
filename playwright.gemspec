@@ -25,6 +25,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.required_ruby_version = '>= 2.4'
+  spec.add_dependency 'base64'
   spec.add_dependency 'concurrent-ruby', '>= 1.1.6'
   spec.add_dependency 'mime-types', '>= 3.0'
   spec.add_development_dependency 'bundler'
@@ -32,6 +33,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'dry-inflector'
   spec.add_development_dependency 'faye-websocket'
   spec.add_development_dependency 'pry-byebug'
+  spec.add_development_dependency 'ostruct'
   spec.add_development_dependency 'puma'
   spec.add_development_dependency 'rack', '< 3'
   spec.add_development_dependency 'rake'
