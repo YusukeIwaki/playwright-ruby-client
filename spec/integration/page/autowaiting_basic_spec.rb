@@ -3,19 +3,20 @@ require 'spec_helper'
 RSpec.describe 'autowaiting basic' do
   def init_server
     messages = []
+    mutex = Mutex.new
 
     sinatra.get('/empty.html') do
-      messages << 'route'
+      mutex.synchronize { messages << 'route' }
       headers('Content-Type' => 'text/html')
       body("<link rel='stylesheet' href='./one-style.css'>")
     end
     sinatra.post('/empty.html') do
-      messages << 'route'
+      mutex.synchronize { messages << 'route' }
       headers('Content-Type' => 'text/html')
       body("<link rel='stylesheet' href='./one-style.css'>")
     end
 
-    messages
+    [messages, mutex]
   end
 
   def await_all(futures)
@@ -23,7 +24,7 @@ RSpec.describe 'autowaiting basic' do
   end
 
   it 'should await navigation when clicking anchor', sinatra: true do
-    messages = init_server
+    messages, mutex = init_server
 
     with_page do |page|
       page.content = "<a id=\"anchor\" href=\"#{server_empty_page}\" >empty.html</a>"
@@ -32,11 +33,11 @@ RSpec.describe 'autowaiting basic' do
         Concurrent::Promises.future {
           sleep_a_bit_for_race_condition
           page.click('a')
-          messages << 'click'
+          mutex.synchronize { messages << 'click' }
         },
         Concurrent::Promises.future {
           page.expect_event('framenavigated')
-          messages << 'navigated'
+          mutex.synchronize { messages << 'navigated' }
         }
       ]
       await_all(promises)
@@ -46,7 +47,7 @@ RSpec.describe 'autowaiting basic' do
   end
 
   it 'should await cross-process navigation when clicking anchor', sinatra: true do
-    messages = init_server
+    messages, mutex = init_server
 
     with_page do |page|
       page.content = "<a href=\"#{server_cross_process_prefix}/empty.html\" >empty.html</a>"
@@ -55,11 +56,11 @@ RSpec.describe 'autowaiting basic' do
         Concurrent::Promises.future {
           sleep_a_bit_for_race_condition
           page.click('a')
-          messages << 'click'
+          mutex.synchronize { messages << 'click' }
         },
         Concurrent::Promises.future {
           page.expect_event('framenavigated')
-          messages << 'navigated'
+          mutex.synchronize { messages << 'navigated' }
         }
       ]
       await_all(promises)
@@ -69,7 +70,7 @@ RSpec.describe 'autowaiting basic' do
   end
 
   it 'should await form-get on click', sinatra: true do
-    messages = init_server
+    messages, mutex = init_server
 
     with_page do |page|
       html = <<~HTML
@@ -84,11 +85,11 @@ RSpec.describe 'autowaiting basic' do
         Concurrent::Promises.future {
           sleep_a_bit_for_race_condition
           page.click('input[type=submit]')
-          messages << 'click'
+          mutex.synchronize { messages << 'click' }
         },
         Concurrent::Promises.future {
           page.expect_event('framenavigated')
-          messages << 'navigated'
+          mutex.synchronize { messages << 'navigated' }
         }
       ]
       await_all(promises)
@@ -98,7 +99,7 @@ RSpec.describe 'autowaiting basic' do
   end
 
   it 'should await form-post on click', sinatra: true do
-    messages = init_server
+    messages, mutex = init_server
 
     with_page do |page|
       html = <<~HTML
@@ -113,11 +114,11 @@ RSpec.describe 'autowaiting basic' do
         Concurrent::Promises.future {
           sleep_a_bit_for_race_condition
           page.click('input[type=submit]')
-          messages << 'click'
+          mutex.synchronize { messages << 'click' }
         },
         Concurrent::Promises.future {
           page.expect_event('framenavigated')
-          messages << 'navigated'
+          mutex.synchronize { messages << 'navigated' }
         }
       ]
       await_all(promises)
@@ -129,7 +130,7 @@ RSpec.describe 'autowaiting basic' do
   it 'should await navigating specified target', sinatra: true do
     skip '@see https://github.com/microsoft/playwright/pull/5847/files#r596302374'
 
-    messages = init_server
+    messages, mutex = init_server
 
     with_page do |page|
       html = <<~HTML
@@ -143,11 +144,11 @@ RSpec.describe 'autowaiting basic' do
         Concurrent::Promises.future {
           sleep_a_bit_for_race_condition
           page.click('a')
-          messages << 'click'
+          mutex.synchronize { messages << 'click' }
         },
         Concurrent::Promises.future {
           page.expect_event('framenavigated')
-          messages << 'navigated'
+          mutex.synchronize { messages << 'navigated' }
         }
       ]
       await_all(promises)
@@ -182,7 +183,7 @@ RSpec.describe 'autowaiting basic' do
   end
 
   it 'should work with waitForLoadState(load)', sinatra: true do
-    messages = init_server
+    messages, mutex = init_server
 
     with_page do |page|
       page.content = "<a href=\"#{server_empty_page}\" >empty.html</a>"
@@ -192,11 +193,11 @@ RSpec.describe 'autowaiting basic' do
           sleep_a_bit_for_race_condition
           page.click('a')
           page.wait_for_load_state(state: 'load')
-          messages << 'clickload'
+          mutex.synchronize { messages << 'clickload' }
         },
         Concurrent::Promises.future {
           page.expect_event('load')
-          messages << 'load'
+          mutex.synchronize { messages << 'load' }
         }
       ]
       await_all(promises)
