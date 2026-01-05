@@ -48,7 +48,21 @@ module Playwright
 
       waiter.reject_on_event(@parent, 'close', -> { @parent.send(:close_error_with_reason) })
       waiter.wait_for_event(self, event, predicate: predicate)
+      if @closed
+        if event == Events::WebSocket::Close
+          waiter.force_fulfill(nil)
+        else
+          waiter.force_reject(SocketClosedError.new)
+        end
+      end
       block&.call
+      if @closed
+        if event == Events::WebSocket::Close
+          waiter.force_fulfill(nil)
+        else
+          waiter.force_reject(SocketClosedError.new)
+        end
+      end
 
       waiter.result.value!
     end

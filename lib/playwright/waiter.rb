@@ -79,6 +79,10 @@ module Playwright
       fulfill(result)
     end
 
+    def force_reject(error)
+      reject(error)
+    end
+
     private def fulfill(result)
       cleanup
       return if @result.resolved?
