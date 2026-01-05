@@ -113,7 +113,7 @@ module Playwright
           raise unless err.is_a?(Transport::AlreadyDisconnectedError)
         end
 
-        if @tracing_count > 0 && !frames.empty? && guid != 'localUtils'
+        if @tracing_count > 0 && !frames.empty? && guid != 'localUtils' && !remote?
           @local_utils.add_stack_to_tracing_no_reply(id, frames)
         end
       end
