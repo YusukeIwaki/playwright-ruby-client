@@ -1,8 +1,30 @@
 module Playwright
   define_channel_owner :BindingCall do
     class << self
-      def call_mutex
-        @call_mutex ||= Mutex.new
+      def call_queue
+        @call_queue ||= Queue.new
+      end
+
+      def worker_mutex
+        @worker_mutex ||= Mutex.new
+      end
+
+      def ensure_worker
+        worker_mutex.synchronize do
+          return if @worker&.alive?
+
+          @worker = Thread.new do
+            loop do
+              job = call_queue.pop
+              begin
+                job.call
+              rescue => err
+                $stderr.write("BindingCall worker error: #{err.class}: #{err.message}\n")
+                err.backtrace&.each { |line| $stderr.write("#{line}\n") }
+              end
+            end
+          end
+        end
       end
     end
 
@@ -11,13 +33,13 @@ module Playwright
     end
 
     def call_async(callback)
-      Thread.new(callback) do
-        # Binding callbacks can be fired concurrently from multiple threads.
-        # Serialize execution to preserve call order and avoid flaky interleaving.
-        self.class.call_mutex.synchronize do
-          call(callback)
-        end
-      end
+      # Binding callbacks can be fired concurrently from multiple threads.
+      # Enqueue and execute them on a single worker thread so we:
+      # - preserve the delivery order of binding calls
+      # - avoid spawning a thread per call (bursty timers create many callbacks)
+      # - keep the protocol dispatch thread unblocked
+      self.class.ensure_worker
+      self.class.call_queue << -> { call(callback) }
     end
 
     # @param callback [Proc]
