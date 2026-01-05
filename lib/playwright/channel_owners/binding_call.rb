@@ -1,11 +1,43 @@
 module Playwright
   define_channel_owner :BindingCall do
+    class << self
+      def call_mutex
+        @call_mutex ||= Mutex.new
+      end
+
+      def last_call_at
+        @last_call_at ||= 0.0
+      end
+
+      def last_call_at=(value)
+        @last_call_at = value
+      end
+    end
+
     def name
       @initializer['name']
     end
 
     def call_async(callback)
-      Thread.new(callback) { call(callback) }
+      Thread.new(callback) do
+        # NOTE: Binding callbacks can be fired concurrently from multiple threads.
+        # We only serialize the scheduling of the delay (not the callback itself)
+        # so we can enforce a minimum gap (4ms) between *start times* while still
+        # allowing the callbacks to run in parallel. This helps reduce flaky
+        # ordering issues without blocking long-running user code.
+        #
+        # Use a monotonic clock to avoid issues with wall-clock jumps.
+        self.class.call_mutex.synchronize do
+          now = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+          elapsed = now - self.class.last_call_at
+          wait = 0.004 - elapsed
+          sleep(wait) if wait > 0
+          # Record before running the callback so the interval is between
+          # scheduled start times, not completion times.
+          self.class.last_call_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+        end
+        call(callback)
+      end
     end
 
     # @param callback [Proc]
