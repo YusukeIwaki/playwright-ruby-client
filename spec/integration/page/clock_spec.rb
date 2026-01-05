@@ -11,13 +11,8 @@ RSpec.describe 'Clock API' do
   end
   attr_reader :calls, :page
 
-  def wait_for_async_evaluation(expected_size: nil, timeout: 2)
-    return sleep 0.25 unless expected_size
-
-    deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + timeout
-    until calls.size >= expected_size || Process.clock_gettime(Process::CLOCK_MONOTONIC) >= deadline
-      sleep 0.01
-    end
+  def wait_for_async_evaluation
+    sleep 0.25
   end
 
   describe 'run_for' do
@@ -113,7 +108,7 @@ RSpec.describe 'Clock API' do
     it 'passes 2 hours, 34 minutes and 10 seconds' do
       page.evaluate('async () => { setInterval(window.stub, 10000) }')
       page.clock.run_for('02:34:10')
-      wait_for_async_evaluation(expected_size: 925)
+      wait_for_async_evaluation
       expect(calls.size).to eq(925)
     end
 
