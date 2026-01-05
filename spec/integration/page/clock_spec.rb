@@ -4,7 +4,7 @@ RSpec.describe 'Clock API' do
   around do |example|
     with_page do |page|
       @calls = []
-      page.expose_function('stub', ->(*args) { @calls << args })
+      page.expose_function('stub', ->(*args) { @calls << args ; nil })
       @page = page
       example.run
     end

@@ -1,5 +1,6 @@
 require_relative './visitor_info'
 require_relative './regex'
+require 'uri'
 
 module Playwright
   module JavaScript
@@ -60,7 +61,7 @@ module Playwright
         when Time
           require 'time'
           { d: value.utc.iso8601 }
-        when URI
+        when ::URI
           { u: value.to_s }
         when Regexp
           regex_value = Regex.new(value)
