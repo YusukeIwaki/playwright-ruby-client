@@ -10,6 +10,7 @@ module Playwright
       @event = wait_name
       @channel = channel_owner.channel
       @registered_listeners = Set.new
+      @listeners_mutex = Mutex.new
       @logs = []
       wait_for_event_info_before
     end
@@ -50,8 +51,7 @@ module Playwright
           end
         end
       }
-      emitter.on(event, listener)
-      @registered_listeners << [emitter, event, listener]
+      register_listener(emitter, event, listener)
 
       self
     end
@@ -69,10 +69,12 @@ module Playwright
     end
 
     private def cleanup
-      @registered_listeners.each do |emitter, event, listener|
+      listeners = @listeners_mutex.synchronize do
+        @registered_listeners.to_a.tap { @registered_listeners.clear }
+      end
+      listeners.each do |emitter, event, listener|
         emitter.off(event, listener)
       end
-      @registered_listeners.clear
     end
 
     def force_fulfill(result)
@@ -111,10 +113,22 @@ module Playwright
           reject(err)
         end
       }
-      emitter.on(event, listener)
-      @registered_listeners << [emitter, event, listener]
+      register_listener(emitter, event, listener)
 
       self
+    end
+
+    private def register_listener(emitter, event, listener)
+      emitter.on(event, listener)
+      remove_later = false
+      @listeners_mutex.synchronize do
+        if @result.resolved?
+          remove_later = true
+        else
+          @registered_listeners << [emitter, event, listener]
+        end
+      end
+      emitter.off(event, listener) if remove_later
     end
 
     attr_reader :result
