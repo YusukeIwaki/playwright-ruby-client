@@ -107,6 +107,8 @@ RSpec.describe 'example' do
   end
 
   it 'should support locator.describe' do
+    skip if remote?
+
     with_context do |context|
       page = context.new_page
       page.content = <<~HTML

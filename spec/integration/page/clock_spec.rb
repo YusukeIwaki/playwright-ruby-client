@@ -4,7 +4,7 @@ RSpec.describe 'Clock API' do
   around do |example|
     with_page do |page|
       @calls = []
-      page.expose_function('stub', ->(*args) { @calls << args })
+      page.expose_function('stub', ->(*args) { @calls << args ; nil })
       @page = page
       example.run
     end
@@ -12,7 +12,7 @@ RSpec.describe 'Clock API' do
   attr_reader :calls, :page
 
   def wait_for_async_evaluation
-    sleep 0.20
+    sleep 0.25
   end
 
   describe 'run_for' do

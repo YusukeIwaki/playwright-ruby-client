@@ -8,6 +8,10 @@ on:
       - "documentation/**"
       - spec/integration/example_spec.rb
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
 jobs:
   unit_test:
     name: Unit test

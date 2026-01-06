@@ -3,73 +3,66 @@ require 'spec_helper'
 RSpec.describe 'autowaiting basic' do
   def init_server
     messages = []
+    mutex = Mutex.new
 
     sinatra.get('/empty.html') do
-      messages << 'route'
+      mutex.synchronize { messages << 'route' }
       headers('Content-Type' => 'text/html')
       body("<link rel='stylesheet' href='./one-style.css'>")
     end
     sinatra.post('/empty.html') do
-      messages << 'route'
+      mutex.synchronize { messages << 'route' }
       headers('Content-Type' => 'text/html')
       body("<link rel='stylesheet' href='./one-style.css'>")
     end
 
-    messages
+    [messages, mutex]
   end
 
-  def await_all(futures)
-    futures.map(&:value!)
+  def record_event(page, event, messages, mutex, label)
+    future = Concurrent::Promises.resolvable_future
+    listener = ->(*_args) {
+      mutex.synchronize { messages << label }
+      future.fulfill(nil)
+    }
+    page.on(event, listener)
+    [future, listener]
   end
 
   it 'should await navigation when clicking anchor', sinatra: true do
-    messages = init_server
+    messages, mutex = init_server
 
     with_page do |page|
       page.content = "<a id=\"anchor\" href=\"#{server_empty_page}\" >empty.html</a>"
 
-      promises = [
-        Concurrent::Promises.future {
-          sleep_a_bit_for_race_condition
-          page.click('a')
-          messages << 'click'
-        },
-        Concurrent::Promises.future {
-          page.expect_event('framenavigated')
-          messages << 'navigated'
-        }
-      ]
-      await_all(promises)
+      future, listener = record_event(page, 'framenavigated', messages, mutex, 'navigated')
+      page.click('a')
+      mutex.synchronize { messages << 'click' }
+      future.value!
+      page.off('framenavigated', listener)
     end
 
     expect(messages).to eq(%w(route navigated click))
   end
 
   it 'should await cross-process navigation when clicking anchor', sinatra: true do
-    messages = init_server
+    messages, mutex = init_server
 
     with_page do |page|
       page.content = "<a href=\"#{server_cross_process_prefix}/empty.html\" >empty.html</a>"
 
-      promises = [
-        Concurrent::Promises.future {
-          sleep_a_bit_for_race_condition
-          page.click('a')
-          messages << 'click'
-        },
-        Concurrent::Promises.future {
-          page.expect_event('framenavigated')
-          messages << 'navigated'
-        }
-      ]
-      await_all(promises)
+      future, listener = record_event(page, 'framenavigated', messages, mutex, 'navigated')
+      page.click('a')
+      mutex.synchronize { messages << 'click' }
+      future.value!
+      page.off('framenavigated', listener)
     end
 
     expect(messages).to eq(%w(route navigated click))
   end
 
   it 'should await form-get on click', sinatra: true do
-    messages = init_server
+    messages, mutex = init_server
 
     with_page do |page|
       html = <<~HTML
@@ -80,25 +73,18 @@ RSpec.describe 'autowaiting basic' do
       HTML
       page.content = html
 
-      promises = [
-        Concurrent::Promises.future {
-          sleep_a_bit_for_race_condition
-          page.click('input[type=submit]')
-          messages << 'click'
-        },
-        Concurrent::Promises.future {
-          page.expect_event('framenavigated')
-          messages << 'navigated'
-        }
-      ]
-      await_all(promises)
+      future, listener = record_event(page, 'framenavigated', messages, mutex, 'navigated')
+      page.click('input[type=submit]')
+      mutex.synchronize { messages << 'click' }
+      future.value!
+      page.off('framenavigated', listener)
     end
 
     expect(messages).to eq(%w(route navigated click))
   end
 
   it 'should await form-post on click', sinatra: true do
-    messages = init_server
+    messages, mutex = init_server
 
     with_page do |page|
       html = <<~HTML
@@ -109,18 +95,11 @@ RSpec.describe 'autowaiting basic' do
       HTML
       page.content = html
 
-      promises = [
-        Concurrent::Promises.future {
-          sleep_a_bit_for_race_condition
-          page.click('input[type=submit]')
-          messages << 'click'
-        },
-        Concurrent::Promises.future {
-          page.expect_event('framenavigated')
-          messages << 'navigated'
-        }
-      ]
-      await_all(promises)
+      future, listener = record_event(page, 'framenavigated', messages, mutex, 'navigated')
+      page.click('input[type=submit]')
+      mutex.synchronize { messages << 'click' }
+      future.value!
+      page.off('framenavigated', listener)
     end
 
     expect(messages).to eq(%w(route navigated click))
@@ -129,7 +108,7 @@ RSpec.describe 'autowaiting basic' do
   it 'should await navigating specified target', sinatra: true do
     skip '@see https://github.com/microsoft/playwright/pull/5847/files#r596302374'
 
-    messages = init_server
+    messages, mutex = init_server
 
     with_page do |page|
       html = <<~HTML
@@ -139,18 +118,11 @@ RSpec.describe 'autowaiting basic' do
       page.content = html
 
       frame = page.frame({name: 'target'})
-      promises = [
-        Concurrent::Promises.future {
-          sleep_a_bit_for_race_condition
-          page.click('a')
-          messages << 'click'
-        },
-        Concurrent::Promises.future {
-          page.expect_event('framenavigated')
-          messages << 'navigated'
-        }
-      ]
-      await_all(promises)
+      future, listener = record_event(page, 'framenavigated', messages, mutex, 'navigated')
+      page.click('a')
+      mutex.synchronize { messages << 'click' }
+      future.value!
+      page.off('framenavigated', listener)
       expect(frame.url).to eq(server_empty_page)
     end
 
@@ -182,24 +154,17 @@ RSpec.describe 'autowaiting basic' do
   end
 
   it 'should work with waitForLoadState(load)', sinatra: true do
-    messages = init_server
+    messages, mutex = init_server
 
     with_page do |page|
       page.content = "<a href=\"#{server_empty_page}\" >empty.html</a>"
 
-      promises = [
-        Concurrent::Promises.future {
-          sleep_a_bit_for_race_condition
-          page.click('a')
-          page.wait_for_load_state(state: 'load')
-          messages << 'clickload'
-        },
-        Concurrent::Promises.future {
-          page.expect_event('load')
-          messages << 'load'
-        }
-      ]
-      await_all(promises)
+      future, listener = record_event(page, 'load', messages, mutex, 'load')
+      page.click('a')
+      page.wait_for_load_state(state: 'load')
+      mutex.synchronize { messages << 'clickload' }
+      future.value!
+      page.off('load', listener)
     end
     expect(messages).to eq(%w(route load clickload))
   end

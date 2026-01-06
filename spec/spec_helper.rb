@@ -204,6 +204,10 @@ RSpec.configure do |config|
   config.around(sinatra: true) do |example|
     require 'net/http'
     require 'sinatra/base'
+    if example.metadata[:web_socket]
+      # Preload to avoid first-connection flake on WebSocket tests.
+      require 'faye/websocket'
+    end
 
     sinatra_app = Class.new(Sinatra::Base) do
       # Change the priority of static file routing.
@@ -250,7 +254,7 @@ RSpec.configure do |config|
     sinatra_app.use(WsApp) if example.metadata[:web_socket]
 
     (8000..8010).each do |server_port|
-      @ws_url = "ws://localhost:#{server_port}/ws"
+      @ws_url = "ws://127.0.0.1:#{server_port}/ws"
       @server_prefix = "http://localhost:#{server_port}"
       @server_cross_process_prefix = "http://127.0.0.1:#{server_port}"
       @server_empty_page = "#{@server_prefix}/empty.html"
