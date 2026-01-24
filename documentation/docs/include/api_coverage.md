@@ -17,6 +17,7 @@
 * redirected_to
 * resource_type
 * response
+* ~~service_worker~~
 * sizes
 * timing
 * url

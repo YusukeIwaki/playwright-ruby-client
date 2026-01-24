@@ -343,7 +343,7 @@ def description
 ```
 
 
-Returns locator description previously set with [Locator#describe](./locator#describe). Returns `null` if no custom description has been set. Prefer `Locator.toString()` for a human-readable representation, as it uses the description when available.
+Returns locator description previously set with [Locator#describe](./locator#describe). Returns `null` if no custom description has been set.
 
 **Usage**
 
