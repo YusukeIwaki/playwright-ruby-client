@@ -1274,9 +1274,9 @@ module ExampleCodes
   end
 
   # LocatorAssertions#to_contain_text
-  def example_fb3cde55b658aefe2e54f93e5b78d26f25cd376eaa469434631af079bb8d8a62(page:)
+  def example_058ee47623731ef9c43b45f6e048542e7f5f8084e66fd0a56250cdbbf6a15a69(page:)
     # ✓ Contains the right items in the right order
-    expect(page.locator("ul > li")).to contain_text(["Text 1", "Text 3", "Text 4"])
+    expect(page.locator("ul > li")).to contain_text(["Text 1", "Text 3"])
 
     # ✖ Wrong order
     expect(page.locator("ul > li")).to contain_text(["Text 3", "Text 2"])
