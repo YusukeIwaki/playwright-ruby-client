@@ -524,7 +524,7 @@ Let's see how we can use the assertion:
 
 ```ruby
 # ✓ Contains the right items in the right order
-expect(page.locator("ul > li")).to contain_text(["Text 1", "Text 3", "Text 4"])
+expect(page.locator("ul > li")).to contain_text(["Text 1", "Text 3"])
 
 # ✖ Wrong order
 expect(page.locator("ul > li")).to contain_text(["Text 3", "Text 2"])

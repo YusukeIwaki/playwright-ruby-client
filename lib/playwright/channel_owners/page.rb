@@ -98,7 +98,7 @@ module Playwright
 
     private def on_route(route)
       route.send(:update_context, self)
-
+      return if @close_was_called
       # It is not desired to use PlaywrightApi.wrap directly.
       # However it is a little difficult to define wrapper for `handler` parameter in generate_api.
       # Just a workaround...
@@ -508,6 +508,9 @@ module Playwright
 
     def close(runBeforeUnload: nil, reason: nil)
       @close_reason = reason
+      unless runBeforeUnload
+        @close_was_called = true
+      end
       if @owned_context
         @owned_context.close
       else

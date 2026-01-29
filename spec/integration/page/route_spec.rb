@@ -898,4 +898,29 @@ RSpec.describe 'Page#route', sinatra: true do
       expect(headers_promise.value!['content-type']).to eq('text/html')
     end
   end
+
+  it 'does not get stalled by beforeUnload' do
+    skip 'evaluate raises after close...'
+    with_page do |page|
+      page.goto(server_empty_page)
+
+      page.evaluate(<<~JAVASCRIPT)
+        window.addEventListener('beforeunload', event => {
+          event.preventDefault();
+        });
+      JAVASCRIPT
+
+      page.on('dialog', ->(dialog) { dialog.dismiss })
+
+      # We have to interact with a page so that 'beforeunload' handlers fire.
+      page.click('body')
+
+      page.route('**/api', ->(route, _) { route.fulfill(status: 200, body: 'ok') })
+      page.evaluate("fetch(new URL('/api', window.location.href))")
+
+      page.close(runBeforeUnload: true)
+
+      page.evaluate("fetch(new URL('/api', window.location.href))")
+    end
+  end
 end

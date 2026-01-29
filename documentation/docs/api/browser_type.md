@@ -25,6 +25,7 @@ end
 def connect_over_cdp(
       endpointURL,
       headers: nil,
+      isLocal: nil,
       slowMo: nil,
       timeout: nil,
       &block)
@@ -63,7 +64,6 @@ def launch(
       args: nil,
       channel: nil,
       chromiumSandbox: nil,
-      devtools: nil,
       downloadsPath: nil,
       env: nil,
       executablePath: nil,
@@ -126,7 +126,6 @@ def launch_persistent_context(
       colorScheme: nil,
       contrast: nil,
       deviceScaleFactor: nil,
-      devtools: nil,
       downloadsPath: nil,
       env: nil,
       executablePath: nil,
