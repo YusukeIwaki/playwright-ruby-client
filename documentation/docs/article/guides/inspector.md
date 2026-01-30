@@ -4,7 +4,7 @@ sidebar_position: 30
 
 # Playwright inspector
 
-Playwright provides an useful inspector.
+Playwright provides a useful inspector.
 https://playwright.dev/docs/inspector/
 
 ## Overview

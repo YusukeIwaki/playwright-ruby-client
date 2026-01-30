@@ -5,7 +5,7 @@ sidebar_position: 20
 # Semi-automation
 
 Playwright Browser context is isolated and not persisted by default. But we can also use persistent browser context using [BrowserType#launch_persistent_context](/docs/api/browser_type#launch_persistent_context).
-This allow us to intermediate into automation, for example
+This allows us to intervene in automation, for example
 
 * Authenticate with OAuth2 manually before automation
 * Testing a page after some chrome extensions are installed manually

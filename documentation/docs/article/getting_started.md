@@ -19,7 +19,7 @@ $ npx playwright install
 
 and then set `playwright_cli_executable_path: "npx playwright"` into `Playwright.create`.
 
-Other methods of installation is also available. See the detail in [Download Playwright driver](./guides/download_playwright_driver)
+Other methods of installation are also available. See the detail in [Download Playwright driver](./guides/download_playwright_driver)
 
 ## Enjoy with examples
 
