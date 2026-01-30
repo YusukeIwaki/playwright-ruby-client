@@ -217,7 +217,7 @@ before do |example|
 end
 ```
 
-![sceenrecord](https://user-images.githubusercontent.com/11763113/121126629-71b5f600-c863-11eb-8f88-7924ab669946.gif)
+![screenrecord](https://user-images.githubusercontent.com/11763113/121126629-71b5f600-c863-11eb-8f88-7924ab669946.gif)
 
 For more details, refer [Recording video](./recording_video.md#using-screen-recording-from-capybara-driver)
 

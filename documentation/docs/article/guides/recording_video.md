@@ -33,7 +33,7 @@ playwright.chromium.launch do |browser|
 
 Playwright puts videos on the directory specified at `record_video_dir`.
 
-The previous example uses [Dir#mktmpdir](https://docs.ruby-lang.org/ja/latest/method/Dir/s/mktmpdir.html) for storing videos into a temprary directory. Also we simply specify a relative or absolute path like `./my_videos/` or `/path/to/videos`.
+The previous example uses [Dir#mktmpdir](https://docs.ruby-lang.org/ja/latest/method/Dir/s/mktmpdir.html) for storing videos into a temporary directory. Also we simply specify a relative or absolute path like `./my_videos/` or `/path/to/videos`.
 
 ## Getting video path and recorded video
 
@@ -42,7 +42,7 @@ This is really confusing for beginners, but in Playwright
 * We can get the video path **only when page is alive (before calling BrowserContext#close or Page#close)**
 * We can acquire the completely saved video **only after calling  BrowserContext#close**
 
-So in most case, we have to store the video path in advance, and handle the saved video after BrowserContext is closed, as is shown the previous example code.
+So in most cases, we have to store the video path in advance, and handle the saved video after BrowserContext is closed, as shown in the previous example code.
 
 ### Using `video#save_as(path)`
 

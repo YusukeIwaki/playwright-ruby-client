@@ -8,7 +8,7 @@ sidebar_position: 2
 
 ## Create Playwright session
 
-In oder to launch browser, it is required to create Playwright session.
+In order to launch browser, it is required to create Playwright session.
 
 In previous examples,
 
@@ -18,7 +18,7 @@ Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwrig
 end
 ```
 
-this is the exact procedure for creating Playwright session. Choose either of method for creating the session.
+this is the exact procedure for creating Playwright session. Choose either method for creating the session.
 
 ### Define scoped Playwright session with block
 
@@ -28,13 +28,13 @@ Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwrig
 end
 ```
 
-As is described repetedly, this is the recommended way for creating Playwright session. Even when any exception happens, Playwright session is safely ended on leaving the block.
+As described repeatedly, this is the recommended way for creating a Playwright session. Even when any exception happens, Playwright session is safely ended on leaving the block.
 
 Internally `playwright run-driver` session is alive during the block.
 
 ### Define start/end of the Playwright session separately without block.
 
-Sometimes we have to define separated start/end definition. `playwright-ruby-client` also allows it.
+Sometimes we have to define separate start/end definitions. `playwright-ruby-client` also allows it.
 
 ```rb
 class SomeClass
@@ -103,7 +103,7 @@ Also we can use `Browser#new_page` to create a new window and new tab at once.
 
 ```rb
 Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwright|
-  playwright.chromium.launch(headless: false) do |browser| # Chromium task icon appers in.
+  playwright.chromium.launch(headless: false) do |browser| # Chromium task icon appears.
     context = browser.new_context # Prepare new window.
     page = context.new_page # Open new window and new tab here. (about:blank)
     page.goto('https://example.com') # Navigate to a site.
