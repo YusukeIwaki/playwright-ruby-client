@@ -21,7 +21,7 @@ module Playwright
     private def expect_impl(expression, expect_options, expected, message, title)
       expect_options[:timeout] ||= @default_expect_timeout
       expect_options[:isNot] = @is_not
-      message.gsub!("expected to", "not expected to") if @is_not
+      message = message.gsub("expected to", "not expected to") if @is_not
       expect_options.delete(:useInnerText) if expect_options.key?(:useInnerText) && expect_options[:useInnerText].nil?
 
       result = @locator.expect(expression, expect_options, title)
