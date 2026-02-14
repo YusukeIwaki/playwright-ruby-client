@@ -1,8 +1,12 @@
 require 'base64'
+require 'fileutils'
 
 module Playwright
   define_channel_owner :Stream do
     def save_as(path)
+      parent_dir = File.dirname(path)
+      FileUtils.mkdir_p(parent_dir) unless parent_dir == '.'
+
       File.open(path, 'wb') do |f|
         read_with_block do |chunk|
           f.write(chunk)

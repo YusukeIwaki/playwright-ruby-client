@@ -29,3 +29,4 @@ For detailed rules, see `CLAUDE/*.md`.
 - `CLAUDE/ci_expectations.md`
 - `CLAUDE/past_upgrade_pr_patterns.md`
 - `CLAUDE/rspec_debugging.md`
+- `CLAUDE/gem_release_flow.md`
