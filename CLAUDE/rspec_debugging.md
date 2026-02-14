@@ -19,3 +19,12 @@ rbenv exec bundle exec rspec spec/integration/page/aria_snapshot_ai_spec.rb
 ```sh
 DEBUG=1 rbenv exec bundle exec rspec spec/integration/page/aria_snapshot_ai_spec.rb
 ```
+
+## Node.js Playwright protocol log
+
+- Node.js Playwright protocol logs can be captured with `DEBUG=pw:*`.
+- This is useful when comparing behavior against the Ruby client.
+
+```sh
+DEBUG=pw:* node script.mjs 2>&1 | head -200
+```
