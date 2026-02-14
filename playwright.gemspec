@@ -17,7 +17,13 @@ Gem::Specification.new do |spec|
 
   spec.files         = Dir.chdir(File.expand_path(__dir__)) do
     `git ls-files -z`.split("\x0").reject do |f|
-      f.match(%r{^(test|spec|features)/}) || f.include?(".git") || f.include?(".circleci") || f.start_with?("development/")
+      f.match(%r{^(test|spec|features)/}) ||
+        f.include?(".git") ||
+        f.include?(".circleci") ||
+        f.start_with?("development/") ||
+        f == "AGENTS.md" ||
+        f == "CLAUDE.md" ||
+        f.match(%r{\ACLAUDE/.*\.md\z})
     end
   end + `find lib/playwright_api -name *.rb -type f`.split("\n") + `find sig -name *.rbs -type f`.split("\n")
   spec.bindir        = 'exe'
