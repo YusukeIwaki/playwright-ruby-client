@@ -598,8 +598,6 @@ RSpec.describe 'example' do
     end
 
     it 'should work with Tracing' do
-      pending if remote? # localUtils is not available in remote.
-
       with_context do |context|
         example_c74a3f913c302bc9bf81146db28832bdfe33ab7721f1343efb1e207bb070abce(context: context)
       end
