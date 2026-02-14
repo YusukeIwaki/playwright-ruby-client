@@ -23,7 +23,8 @@ module Playwright
         @is_tracing = true
         @connection.set_in_tracing(true)
       end
-      @stacks_id = @connection.local_utils.tracing_started(@traces_dir, trace_name)
+      local_utils = @connection.local_utils
+      @stacks_id = local_utils&.tracing_started(@traces_dir, trace_name)
     end
 
     def stop_chunk(path: nil)
@@ -40,20 +41,26 @@ module Playwright
         @is_tracing = false
         @connection.set_in_tracing(false)
       end
+      local_utils = @connection.local_utils
 
       unless file_path
         # Not interested in any artifacts
         @channel.send_message_to_server('tracingStopChunk', mode: 'discard')
         if @stacks_id
-          @connection.local_utils.trace_discarded(@stacks_id)
+          local_utils.trace_discarded(@stacks_id) if local_utils
         end
 
         return
       end
 
-      unless @connection.remote?
+      is_local = !@connection.remote?
+      if is_local
+        unless local_utils
+          raise 'Cannot save trace because localUtils is unavailable.'
+        end
+
         result = @channel.send_message_to_server_result('tracingStopChunk', mode: 'entries')
-        @connection.local_utils.zip(
+        local_utils.zip(
           zipFile: file_path,
           entries: result['entries'],
           stacksId: @stacks_id,
@@ -69,7 +76,7 @@ module Playwright
       # The artifact may be missing if the browser closed while stopping tracing.
       unless result['artifact']
         if @stacks_id
-          @connection.local_utils.trace_discarded(@stacks_id)
+          local_utils.trace_discarded(@stacks_id) if local_utils
         end
 
         return
@@ -80,7 +87,9 @@ module Playwright
       artifact.save_as(file_path)
       artifact.delete
 
-      @connection.local_utils.zip(
+      return unless local_utils
+
+      local_utils.zip(
         zipFile: file_path,
         entries: [],
         stacksId: @stacks_id,
