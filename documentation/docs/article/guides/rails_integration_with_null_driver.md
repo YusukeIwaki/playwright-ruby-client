@@ -85,6 +85,52 @@ describe 'example', driver: :null do
 end
 ```
 
+## Share one browser across all tests
+
+Launching a new browser for every test is slow. A better approach is to launch the browser once for the entire suite and give each test its own `BrowserContext` for isolation (fresh cookies, localStorage, and session state).
+
+The challenge is that `Playwright.create` and `playwright.chromium.launch` are block-scoped APIs — the browser shuts down when the block exits. RSpec has `before(:suite)` and `after(:suite)` but no `around(:suite)`. A `Fiber` bridges the gap: `start!` resumes the fiber until it yields the browser back, and `stop!` resumes it again so both blocks exit cleanly.
+
+```rb
+module PlaywrightBrowser
+  class << self
+    attr_reader :browser
+
+    def start!
+      @fiber = Fiber.new do
+        Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright') do |playwright|
+          playwright.chromium.launch(headless: false) do |browser|
+            Fiber.yield(browser)
+          end
+        end
+      end
+      @browser = @fiber.resume
+    end
+
+    def stop!
+      @fiber.resume
+    end
+  end
+end
+
+RSpec.configure do |config|
+  config.before(:suite) { PlaywrightBrowser.start! }
+  config.after(:suite)  { PlaywrightBrowser.stop! }
+
+  config.around(driver: :null) do |example|
+    Capybara.current_driver = :null
+    base_url = Capybara.current_session.server.base_url
+
+    browser_context = PlaywrightBrowser.browser.new_context(baseURL: base_url)
+    @playwright_page = browser_context.new_page
+    example.run
+    browser_context.close
+  end
+end
+```
+
+Each test gets a fresh `BrowserContext` (equivalent to a new incognito window), so cookies and storage never leak between tests. `browser_context.close` cleans it up after each example.
+
 ## Minitest Usage
 
 We can do something similar with the default Rails setup using Minitest. Here's the same example written with Minitest:
