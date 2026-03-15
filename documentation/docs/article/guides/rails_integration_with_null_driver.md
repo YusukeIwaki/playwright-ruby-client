@@ -121,15 +121,15 @@ RSpec.configure do |config|
     Capybara.current_driver = :null
     base_url = Capybara.current_session.server.base_url
 
-    browser_context = PlaywrightBrowser.browser.new_context(baseURL: base_url)
-    @playwright_page = browser_context.new_page
-    example.run
-    browser_context.close
+    PlaywrightBrowser.browser.new_context(baseURL: base_url) do |browser_context|
+      @playwright_page = browser_context.new_page
+      example.run
+    end
   end
 end
 ```
 
-Each test gets a fresh `BrowserContext` (equivalent to a new incognito window), so cookies and storage never leak between tests. `browser_context.close` cleans it up after each example.
+Each test gets a fresh `BrowserContext` (equivalent to a new incognito window), so cookies and storage never leak between tests. The block form of `new_context` ensures the context is always closed — even if the test raises an exception.
 
 ## Minitest Usage
 
