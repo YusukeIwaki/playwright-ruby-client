@@ -32,7 +32,9 @@ Note: Playwright 1.59 is NOT yet officially released (as of 2026-03-28). playwri
 
 | Method | Parameters Added | File |
 |---|---|---|
-| `Locator#aria_snapshot` | `depth:` (int), `mode:` ("ai"/"default") | `lib/playwright/locator_impl.rb` |
+| `Locator#aria_snapshot` | `depth:` (int), `mode:` ("ai"/"default"), `_track:` (string) | `lib/playwright/locator_impl.rb` |
+| `Page#aria_snapshot` | `depth:` (int), `mode:`, `_track:` (string) | `lib/playwright/channel_owners/page.rb` |
+| `Page#snapshot_for_ai` | `depth:` (int), `_track:` (string) | `lib/playwright/channel_owners/page.rb` |
 | `Page#console_messages` | `filter:` ("all"/"since-navigation") | `lib/playwright/channel_owners/page.rb` |
 | `Page#page_errors` | `filter:` ("all"/"since-navigation") | `lib/playwright/channel_owners/page.rb` |
 | `Tracing#start` | `live:` (bool) | `lib/playwright/channel_owners/tracing.rb` |
@@ -105,9 +107,9 @@ The 1.59 server sends new channel owner types that need stub classes to avoid `M
 
 ## Test Results
 
-- **984 examples, 0 failures, 35 pending** (screencast_spec.rb excluded)
+- **996 examples, 0 failures, 23 pending** (screencast_spec.rb excluded)
+- `spec/integration/page/aria_snapshot_ai_spec.rb`: upstream `page-aria-snapshot-ai.spec.ts` から33件を完全ポーティング。スキップなし。incremental snapshot テストも `_track` パラメータで動作確認済み。
 - `spec/integration/screencast_spec.rb` はハングする: 1.59 で Video API が変更され、`recordVideo` 使用時に Video artifact イベントが送信されなくなっている可能性あり。GA 版で Video.start/stop を実装する際に合わせて修正が必要。
-- `spec/integration/page/aria_snapshot_ai_spec.rb` の incremental snapshot テスト (12件) は skip に変更: upstream で incremental snapshot 機能が削除されたため。
 - `spec/integration/client_certificates_spec.rb` は環境依存のため無視。
 
 ---
@@ -124,5 +126,5 @@ When Playwright 1.59.0 is officially released:
    - Video.start/stop and overlay: check if upstream has finalized direction
    - PageAgent (AI agent): evaluate if API has stabilized
    - Screencast: check if protocol has been opened to non-JS
-5. **Check playwright-python backport issue** (https://github.com/microsoft/playwright-python/issues/3027) for completion status
-6. **Run full test suite** to catch any alpha->GA behavioral changes
+6. **Check playwright-python backport issue** (https://github.com/microsoft/playwright-python/issues/3027) for completion status
+7. **Run full test suite** to catch any alpha->GA behavioral changes
