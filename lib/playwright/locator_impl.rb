@@ -426,11 +426,20 @@ module Playwright
       end
     end
 
-    def aria_snapshot(timeout: nil)
+    def aria_snapshot(depth: nil, mode: nil, timeout: nil)
       @frame.channel.send_message_to_server('ariaSnapshot', {
         selector: @selector,
+        depth: depth,
+        mode: mode,
         timeout: _timeout(timeout),
       }.compact)
+    end
+
+    def normalize
+      selector = @frame.channel.send_message_to_server('resolveSelector', {
+        selector: @selector,
+      })
+      LocatorImpl.new(frame: @frame, selector: selector)
     end
 
     def scroll_into_view_if_needed(timeout: nil)

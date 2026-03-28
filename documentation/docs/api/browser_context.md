@@ -238,6 +238,15 @@ def grant_permissions(permissions, origin: nil)
 Grants specified permissions to the browser context. Only grants corresponding permissions to the given origin if
 specified.
 
+## closed?
+
+```
+def closed?
+```
+
+
+Indicates that the browser context is in the process of closing or has already been closed.
+
 ## new_cdp_session
 
 ```
@@ -430,6 +439,24 @@ def storage_state(indexedDB: nil, path: nil)
 
 
 Returns storage state for this browser context, contains current cookies, local storage snapshot and IndexedDB snapshot.
+
+## set_storage_state
+
+```
+def set_storage_state(storageState)
+```
+alias: `storage_state=`
+
+
+Clears the existing cookies, local storage and IndexedDB entries for all origins and sets the new storage state.
+
+**Usage**
+
+```python title="example_14cff998b9a76b4b421a7096cfcbcbd7500d1a0792b13de2e7596d4a34db32e7.py"
+# Load storage state from a file and apply it to the context.
+context.set_storage_state("state.json")
+
+```
 
 ## unroute_all
 

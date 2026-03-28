@@ -513,6 +513,22 @@ module Playwright
       end
     end
 
+    def set_storage_state(path: nil, cookies: nil, origins: nil)
+      params = {}
+      if path
+        state = JSON.parse(File.read(path))
+        params[:cookies] = state['cookies'] if state['cookies']
+        params[:origins] = state['origins'] if state['origins']
+      end
+      params[:cookies] = cookies if cookies
+      params[:origins] = origins if origins
+      @channel.send_message_to_server('setStorageState', params)
+    end
+
+    def closed?
+      @close_was_called
+    end
+
     private def effective_close_reason
       @close_reason || @browser&.send(:close_reason)
     end

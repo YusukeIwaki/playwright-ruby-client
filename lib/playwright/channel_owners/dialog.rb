@@ -26,7 +26,7 @@ module Playwright
     end
 
     def dismiss
-      @channel.async_send_message_to_server('dismiss')
+      @channel.async_send_message_to_server('dismiss').rescue { |_| nil }
     end
   end
 end

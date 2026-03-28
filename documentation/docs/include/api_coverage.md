@@ -17,6 +17,7 @@
 * redirected_to
 * resource_type
 * response
+* existing_response
 * ~~service_worker~~
 * sizes
 * timing
@@ -33,6 +34,7 @@
 * headers_array
 * header_value
 * header_values
+* http_version
 * json
 * ok
 * request
@@ -228,6 +230,7 @@
 * location
 * page
 * text
+* timestamp
 * type
 * worker
 
@@ -257,6 +260,7 @@
 * add_script_tag
 * add_style_tag
 * bring_to_front
+* ~~cancel_pick_locator~~
 * check
 * click
 * close
@@ -300,6 +304,8 @@
 * enabled?
 * hidden?
 * visible?
+* clear_console_messages
+* clear_page_errors
 * console_messages
 * page_errors
 * locator
@@ -307,6 +313,7 @@
 * opener
 * pause
 * pdf
+* ~~pick_locator~~
 * press
 * query_selector
 * query_selector_all
@@ -326,6 +333,7 @@
 * set_extra_http_headers
 * set_input_files
 * set_viewport_size
+* aria_snapshot
 * tap_point
 * text_content
 * title
@@ -357,6 +365,7 @@
 * clock
 * keyboard
 * mouse
+* ~~overlay~~
 * request
 * touchscreen
 
@@ -373,6 +382,7 @@
 * expose_binding
 * expose_function
 * grant_permissions
+* closed?
 * new_cdp_session
 * new_page
 * pages
@@ -386,6 +396,7 @@
 * set_geolocation
 * set_offline
 * storage_state
+* set_storage_state
 * unroute_all
 * unroute
 * expect_console_message
@@ -393,6 +404,7 @@
 * expect_page
 * ~~wait_for_event~~
 * clock
+* ~~debugger~~
 * request
 * tracing
 
@@ -492,6 +504,7 @@
 * visible?
 * last
 * locator
+* normalize
 * nth
 * or
 * page

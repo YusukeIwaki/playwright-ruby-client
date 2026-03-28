@@ -1,11 +1,12 @@
 module Playwright
   define_channel_owner :Tracing do
-    def start(name: nil, title: nil, screenshots: nil, snapshots: nil, sources: nil)
+    def start(name: nil, title: nil, screenshots: nil, snapshots: nil, sources: nil, live: nil)
       params = {
         name: name,
         screenshots: screenshots,
         snapshots: snapshots,
         sources: sources,
+        live: live,
       }.compact
       @include_sources = params[:sources] || false
       @channel.send_message_to_server('tracingStart', params)

@@ -646,18 +646,37 @@ module Playwright
         timeout: timeout)
     end
 
-    def console_messages
-      messages = @channel.send_message_to_server('consoleMessages')
+    def console_messages(filter: nil)
+      params = { filter: filter }.compact
+      messages = @channel.send_message_to_server('consoleMessages', params)
       messages.map do |message|
         ConsoleMessageImpl.new(message, self, nil)
       end
     end
 
-    def page_errors
-      errors = @channel.send_message_to_server('pageErrors')
+    def page_errors(filter: nil)
+      params = { filter: filter }.compact
+      errors = @channel.send_message_to_server('pageErrors', params)
       errors.map do |error|
         Error.parse(error['error'])
       end
+    end
+
+    def clear_console_messages
+      @channel.send_message_to_server('clearConsoleMessages')
+    end
+
+    def clear_page_errors
+      @channel.send_message_to_server('clearPageErrors')
+    end
+
+    def aria_snapshot(depth: nil, mode: nil, timeout: nil)
+      @main_frame.channel.send_message_to_server('ariaSnapshot', {
+        selector: 'body',
+        depth: depth,
+        mode: mode,
+        timeout: @timeout_settings.timeout(timeout),
+      }.compact)
     end
 
     def locator(
@@ -909,23 +928,8 @@ module Playwright
       @video ||= Video.new(self)
     end
 
-    def snapshot_for_ai(timeout: nil, mode: nil, track: nil)
-      option_mode = mode || 'full'
-      unless ['full', 'incremental'].include?(option_mode)
-        raise ArgumentError.new("mode must be either 'full' or 'incremental'")
-      end
-
-      options = {
-        timeout: @timeout_settings.timeout(timeout),
-        mode: option_mode,
-      }
-      options[:track] = track if track
-      result = @channel.send_message_to_server_result('snapshotForAI', options)
-      if option_mode == 'full'
-        result['full']
-      elsif option_mode == 'incremental'
-        result['incremental']
-      end
+    def snapshot_for_ai(timeout: nil)
+      aria_snapshot(mode: 'ai', timeout: timeout)
     end
 
     def start_js_coverage(resetOnNavigation: nil, reportAnonymousScripts: nil)

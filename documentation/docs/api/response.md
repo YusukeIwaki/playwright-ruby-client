@@ -92,6 +92,15 @@ def header_values(name)
 
 Returns all values of the headers matching the name, for example `set-cookie`. The name is case-insensitive.
 
+## http_version
+
+```
+def http_version
+```
+
+
+Returns the http version used by the response.
+
 ## json
 
 ```

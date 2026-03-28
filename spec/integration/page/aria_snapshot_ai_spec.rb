@@ -213,7 +213,7 @@ RSpec.describe 'ariaSnapshot AI' do
     end
   end
 
-  it 'should create incremental snapshots on multiple tracks' do
+  it 'should create incremental snapshots on multiple tracks', skip: 'incremental snapshots removed in 1.59' do
     with_page do |page|
       page.content = <<~HTML
         <ul>
@@ -280,7 +280,7 @@ RSpec.describe 'ariaSnapshot AI' do
     end
   end
 
-  it 'should create incremental snapshot for attribute change' do
+  it 'should create incremental snapshot for attribute change', skip: 'incremental snapshots removed in 1.59' do
     with_page do |page|
       page.content = '<button>a button</button>'
       page.evaluate("() => document.querySelector('button').focus()")
@@ -298,7 +298,7 @@ RSpec.describe 'ariaSnapshot AI' do
     end
   end
 
-  it 'should create incremental snapshot for child removal' do
+  it 'should create incremental snapshot for child removal', skip: 'incremental snapshots removed in 1.59' do
     with_page do |page|
       page.content = '<li><button>a button</button><span>some text</span></li>'
 
@@ -318,7 +318,7 @@ RSpec.describe 'ariaSnapshot AI' do
     end
   end
 
-  it 'should create incremental snapshot for child addition' do
+  it 'should create incremental snapshot for child addition', skip: 'incremental snapshots removed in 1.59' do
     with_page do |page|
       page.content = '<li><button>a button</button><span style="display:none">some text</span></li>'
 
@@ -338,7 +338,7 @@ RSpec.describe 'ariaSnapshot AI' do
     end
   end
 
-  it 'should create incremental snapshot for prop change' do
+  it 'should create incremental snapshot for prop change', skip: 'incremental snapshots removed in 1.59' do
     with_page do |page|
       page.content = '<a href="about:blank" style="cursor:pointer">a link</a>'
 
@@ -357,7 +357,7 @@ RSpec.describe 'ariaSnapshot AI' do
     end
   end
 
-  it 'should create incremental snapshot for cursor change' do
+  it 'should create incremental snapshot for cursor change', skip: 'incremental snapshots removed in 1.59' do
     with_page do |page|
       page.content = '<a href="about:blank" style="cursor:pointer">a link</a>'
 
@@ -376,7 +376,7 @@ RSpec.describe 'ariaSnapshot AI' do
     end
   end
 
-  it 'should create incremental snapshot for name change' do
+  it 'should create incremental snapshot for name change', skip: 'incremental snapshots removed in 1.59' do
     with_page do |page|
       page.content = '<button><span>a button</span></button>'
 
@@ -393,7 +393,7 @@ RSpec.describe 'ariaSnapshot AI' do
     end
   end
 
-  it 'should create incremental snapshot for text change' do
+  it 'should create incremental snapshot for text change', skip: 'incremental snapshots removed in 1.59' do
     with_page do |page|
       page.content = '<li><span>an item</span></li>'
 
@@ -410,7 +410,7 @@ RSpec.describe 'ariaSnapshot AI' do
     end
   end
 
-  it 'should produce incremental snapshot for iframes' do
+  it 'should produce incremental snapshot for iframes', skip: 'incremental snapshots removed in 1.59' do
     with_page do |page|
       page.content = <<~HTML
         <iframe srcdoc="
@@ -447,7 +447,7 @@ RSpec.describe 'ariaSnapshot AI' do
     end
   end
 
-  it 'should create multiple chunks in incremental snapshot' do
+  it 'should create multiple chunks in incremental snapshot', skip: 'incremental snapshots removed in 1.59' do
     with_page do |page|
       page.content = <<~HTML
         <ul>
@@ -496,7 +496,7 @@ RSpec.describe 'ariaSnapshot AI' do
     end
   end
 
-  it 'should not create incremental snapshots without tracks' do
+  it 'should not create incremental snapshots without tracks', skip: 'incremental snapshots removed in 1.59' do
     with_page do |page|
       page.content = <<~HTML
         <ul>
@@ -517,7 +517,7 @@ RSpec.describe 'ariaSnapshot AI' do
     end
   end
 
-  it 'should create incremental snapshot for children swap' do
+  it 'should create incremental snapshot for children swap', skip: 'incremental snapshots removed in 1.59' do
     with_page do |page|
       page.content = <<~HTML
         <ul>

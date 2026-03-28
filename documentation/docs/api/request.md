@@ -216,6 +216,19 @@ def response
 
 Returns the matching [Response](./response) object, or `null` if the response was not received due to error.
 
+## existing_response
+
+```
+def existing_response
+```
+
+
+Returns the [Response](./response) object if the response has already been received, `null` otherwise.
+
+Unlike [Request#response](./request#response), this method does not wait for the response to arrive. It returns
+immediately with the response object if the response has been received, or `null` if the response
+has not been received yet.
+
 ## sizes
 
 ```

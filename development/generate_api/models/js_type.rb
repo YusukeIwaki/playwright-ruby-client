@@ -22,6 +22,7 @@ class JsType
     'AndroidKey' => 'untyped',
     'EvaluationArgument' => 'untyped',
     'Video' => 'untyped',
+    'Disposable' => 'untyped',
   }.merge((ALL_TYPES + EXPERIMENTAL).map { |t| [t, t] }.to_h)
 
   def initialize(json)

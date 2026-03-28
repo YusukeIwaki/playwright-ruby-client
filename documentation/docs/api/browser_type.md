@@ -62,6 +62,7 @@ A path where Playwright expects to find a bundled browser executable.
 ```
 def launch(
       args: nil,
+      artifactsDir: nil,
       channel: nil,
       chromiumSandbox: nil,
       downloadsPath: nil,
@@ -118,6 +119,7 @@ def launch_persistent_context(
       userDataDir,
       acceptDownloads: nil,
       args: nil,
+      artifactsDir: nil,
       baseURL: nil,
       bypassCSP: nil,
       channel: nil,

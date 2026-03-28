@@ -86,6 +86,11 @@ module Playwright
       ChannelOwners::Response.from_nullable(resp)
     end
 
+    def existing_response
+      resp = @channel.send_message_to_server('existingResponse')
+      ChannelOwners::Response.from_nullable(resp)
+    end
+
     class FramePageNotReadyError < StandardError
       MESSAGE = [
         'Frame for this navigation request is not available, because the request',
