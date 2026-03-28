@@ -58,8 +58,10 @@ Note: Playwright 1.59 is NOT yet officially released (as of 2026-03-28). playwri
 | Change | Description | Files |
 |---|---|---|
 | `snapshotForAI` protocol removed | `Page.snapshotForAI` protocol method replaced by `Frame.ariaSnapshot(mode: 'ai')`. `snapshot_for_ai` now delegates to `aria_snapshot(mode: 'ai')` | `lib/playwright/channel_owners/page.rb` |
-| Incremental snapshots removed | `mode: 'incremental'` and `track:` parameters removed from `snapshotForAI`. Tests using incremental mode skipped with reason. | `spec/integration/page/aria_snapshot_ai_spec.rb` |
-| `Page#aria_snapshot` uses Frame protocol | Page-level `ariaSnapshot` is not a Page protocol method; implemented via `main_frame.channel` with `selector: 'body'` | `lib/playwright/channel_owners/page.rb` |
+| Incremental snapshots API changed | Old `mode: 'incremental'` / `track:` on `snapshotForAI` replaced by `_track:` parameter on `ariaSnapshot`. Client sends `track:` (not `_track:`) to protocol. `selector` and `track` are mutually exclusive. | `lib/playwright/channel_owners/page.rb`, `lib/playwright/locator_impl.rb` |
+| `Page#aria_snapshot` uses Frame protocol | Page-level `ariaSnapshot` is not a Page protocol method; implemented via `main_frame.channel` with `selector: 'body'` (omitted when `track` is specified) | `lib/playwright/channel_owners/page.rb` |
+| `ariaSnapshot` returns `result['snapshot']` | Protocol response now wraps snapshot string in `{ snapshot: ... }` object instead of returning bare string | `lib/playwright/channel_owners/page.rb`, `lib/playwright/locator_impl.rb` |
+| Test file rewritten | `aria_snapshot_ai_spec.rb` fully rewritten to match upstream `page-aria-snapshot-ai.spec.ts`. All 33 tests ported (no skips). String containment matching (`include`) used per upstream `toContainYaml`. | `spec/integration/page/aria_snapshot_ai_spec.rb` |
 
 ## Done: Bug Fixes
 

@@ -670,13 +670,19 @@ module Playwright
       @channel.send_message_to_server('clearPageErrors')
     end
 
-    def aria_snapshot(depth: nil, mode: nil, timeout: nil)
-      @main_frame.channel.send_message_to_server('ariaSnapshot', {
-        selector: 'body',
+    def aria_snapshot(depth: nil, mode: nil, timeout: nil, _track: nil)
+      params = {
         depth: depth,
         mode: mode,
         timeout: @timeout_settings.timeout(timeout),
-      }.compact)
+      }
+      if _track
+        params[:track] = _track
+      else
+        params[:selector] = 'body'
+      end
+      result = @main_frame.channel.send_message_to_server_result('ariaSnapshot', params.compact)
+      result['snapshot']
     end
 
     def locator(
@@ -928,8 +934,8 @@ module Playwright
       @video ||= Video.new(self)
     end
 
-    def snapshot_for_ai(timeout: nil)
-      aria_snapshot(mode: 'ai', timeout: timeout)
+    def snapshot_for_ai(timeout: nil, depth: nil, _track: nil)
+      aria_snapshot(mode: 'ai', timeout: timeout, depth: depth, _track: _track)
     end
 
     def start_js_coverage(resetOnNavigation: nil, reportAnonymousScripts: nil)

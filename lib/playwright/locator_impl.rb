@@ -426,13 +426,15 @@ module Playwright
       end
     end
 
-    def aria_snapshot(depth: nil, mode: nil, timeout: nil)
-      @frame.channel.send_message_to_server('ariaSnapshot', {
+    def aria_snapshot(depth: nil, mode: nil, timeout: nil, _track: nil)
+      result = @frame.channel.send_message_to_server_result('ariaSnapshot', {
         selector: @selector,
         depth: depth,
         mode: mode,
         timeout: _timeout(timeout),
+        track: _track,
       }.compact)
+      result['snapshot']
     end
 
     def normalize
