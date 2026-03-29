@@ -260,7 +260,7 @@
 * add_script_tag
 * add_style_tag
 * bring_to_front
-* ~~cancel_pick_locator~~
+* cancel_pick_locator
 * check
 * click
 * close
@@ -313,7 +313,7 @@
 * opener
 * pause
 * pdf
-* ~~pick_locator~~
+* pick_locator
 * press
 * query_selector
 * query_selector_all

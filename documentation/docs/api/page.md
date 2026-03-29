@@ -94,6 +94,16 @@ def bring_to_front
 
 Brings page to front (activates tab).
 
+## cancel_pick_locator
+
+```
+def cancel_pick_locator
+```
+
+
+Cancels an ongoing [Page#pick_locator](./page#pick_locator) call by deactivating pick locator mode.
+If no pick locator mode is active, this method is a no-op.
+
 ## check
 
 ```
@@ -1149,6 +1159,24 @@ The `format` options are:
 
 **NOTE**: `headerTemplate` and `footerTemplate` markup have the following limitations: > 1. Script tags inside
 templates are not evaluated. > 2. Page styles are not visible inside templates.
+
+## pick_locator
+
+```
+def pick_locator
+```
+
+
+Enters pick locator mode where hovering over page elements highlights them and shows the corresponding locator.
+Once the user clicks an element, the mode is deactivated and the [Locator](./locator) for the picked element is returned.
+
+**Usage**
+
+```python title="example_94b0af1a90cd7b622dbb32665a9f92156bd05b80420afe96aaa90a7f474a0399.py"
+locator = page.pick_locator()
+print(locator)
+
+```
 
 ## press
 

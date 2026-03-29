@@ -513,16 +513,19 @@ module Playwright
       end
     end
 
-    def set_storage_state(path: nil, cookies: nil, origins: nil)
-      params = {}
-      if path
-        state = JSON.parse(File.read(path))
-        params[:cookies] = state['cookies'] if state['cookies']
-        params[:origins] = state['origins'] if state['origins']
-      end
-      params[:cookies] = cookies if cookies
-      params[:origins] = origins if origins
-      @channel.send_message_to_server('setStorageState', params)
+    def set_storage_state(storageState)
+      state =
+        if storageState.is_a?(String)
+          begin
+            JSON.parse(File.read(storageState))
+          rescue StandardError => err
+            raise Error.new(message: 'Failed to read storage state from file'), cause: err
+          end
+        else
+          storageState
+        end
+
+      @channel.send_message_to_server('setStorageState', storageState: state)
     end
 
     def closed?

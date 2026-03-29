@@ -670,6 +670,10 @@ module Playwright
       @channel.send_message_to_server('clearPageErrors')
     end
 
+    def cancel_pick_locator
+      @channel.send_message_to_server('cancelPickLocator')
+    end
+
     def aria_snapshot(depth: nil, mode: nil, timeout: nil, _track: nil)
       params = {
         depth: depth,
@@ -932,6 +936,11 @@ module Playwright
     def video
       return nil unless @browser_context.send(:has_record_video_option?)
       @video ||= Video.new(self)
+    end
+
+    def pick_locator
+      result = @channel.send_message_to_server_result('pickLocator', {})
+      @main_frame.locator(result['selector'])
     end
 
     def snapshot_for_ai(timeout: nil, depth: nil, _track: nil)
