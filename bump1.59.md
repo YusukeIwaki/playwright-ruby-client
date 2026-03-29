@@ -51,9 +51,11 @@ Note: Playwright 1.59 is NOT yet officially released (as of 2026-03-28). playwri
 | `Page#clear_console_messages` | Clears stored console messages | `lib/playwright/channel_owners/page.rb` |
 | `Page#clear_page_errors` | Clears stored page errors | `lib/playwright/channel_owners/page.rb` |
 | `Page#aria_snapshot` | Page-level aria snapshot (depth, mode, timeout) | `lib/playwright/channel_owners/page.rb` |
-| `BrowserContext#set_storage_state` | Sets storage state from path or parameters | `lib/playwright/channel_owners/browser_context.rb` |
+| `BrowserContext#set_storage_state` | Sets storage state from file path or storage state object | `lib/playwright/channel_owners/browser_context.rb` |
 | `BrowserContext#closed?` | Returns whether context close was called | `lib/playwright/channel_owners/browser_context.rb` |
 | `Locator#normalize` | Returns normalized locator using best-practice selectors | `lib/playwright/locator_impl.rb` |
+| `Page#pick_locator` | Enters pick locator mode and returns the selected locator | `lib/playwright/channel_owners/page.rb` |
+| `Page#cancel_pick_locator` | Cancels an ongoing pick locator session | `lib/playwright/channel_owners/page.rb` |
 
 ## Done: Breaking Change Adaptation
 
@@ -70,6 +72,18 @@ Note: Playwright 1.59 is NOT yet officially released (as of 2026-03-28). playwri
 | Fix | Description | File |
 |---|---|---|
 | Dialog.dismiss error handling | Swallow errors (including TargetClosedError) on dismiss to prevent crashes during beforeunload dialogs | `lib/playwright/channel_owners/dialog.rb` |
+| `BrowserContext#set_storage_state` signature/serialization | Align Ruby implementation with generated API and upstream client contract: public API accepts one `storageState` argument, file paths are read client-side, and protocol receives `storageState:` | `lib/playwright/channel_owners/browser_context.rb` |
+| HAR replay duplicate `Set-Cookie` handling | Preserve multiple cookies from HAR responses by merging duplicate `Set-Cookie` headers instead of collapsing them with `to_h` | `lib/playwright/har_router.rb` |
+
+## Done: Review Follow-up Fixes
+
+After PR review, the following missing/incomplete ports were fixed:
+
+| Follow-up | Description | Files |
+|---|---|---|
+| `Page#pick_locator` / `#cancel_pick_locator` | Implemented the public Page API so generated wrappers/docs no longer expose `NotImplementedError` stubs | `lib/playwright/channel_owners/page.rb`, `documentation/docs/api/page.md`, `documentation/docs/include/api_coverage.md` |
+| `BrowserContext#set_storage_state` | Fixed the mismatch between generated API (`set_storage_state(storageState)`) and channel-owner implementation; added file-read error handling | `lib/playwright/channel_owners/browser_context.rb`, `spec/integration/browser_context/storage_state_spec.rb` |
+| HAR replay headers | Added focused unit coverage for duplicate `Set-Cookie` replay behavior | `lib/playwright/har_router.rb`, `spec/playwright/har_router_spec.rb` |
 
 ## Done: Channel Owner Stubs (prevent crashes)
 
@@ -109,6 +123,11 @@ The 1.59 server sends new channel owner types that need stub classes to avoid `M
 
 - **996 examples, 0 failures, 23 pending** (screencast_spec.rb excluded)
 - `spec/integration/page/aria_snapshot_ai_spec.rb`: upstream `page-aria-snapshot-ai.spec.ts` から33件を完全ポーティング。スキップなし。incremental snapshot テストも `_track` パラメータで動作確認済み。
+- Review follow-up unit specs passed:
+  - `spec/playwright/channel_owners/browser_context_spec.rb`
+  - `spec/playwright/channel_owners/page_spec.rb`
+  - `spec/playwright/har_router_spec.rb`
+- Added integration coverage for `BrowserContext#set_storage_state(path)` and missing-file error handling in `spec/integration/browser_context/storage_state_spec.rb`, but local execution was not possible in this environment because the Playwright driver binary (`run-driver`) was unavailable.
 - `spec/integration/screencast_spec.rb` はハングする: 1.59 で Video API が変更され、`recordVideo` 使用時に Video artifact イベントが送信されなくなっている可能性あり。GA 版で Video.start/stop を実装する際に合わせて修正が必要。
 - `spec/integration/client_certificates_spec.rb` は環境依存のため無視。
 
