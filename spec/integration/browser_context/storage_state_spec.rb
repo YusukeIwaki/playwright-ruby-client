@@ -143,6 +143,38 @@ RSpec.describe 'BrowserContext#storage_state' do
     end
   end
 
+  # https://github.com/microsoft/playwright/blob/main/tests/library/browsercontext-storage-state.spec.ts
+  it 'should replace storage state mid-context via set_storage_state' do
+    with_context do |context|
+      context.set_storage_state({
+        cookies: [],
+        origins: [{
+          origin: 'https://www.example.com',
+          localStorage: [{ name: 'name1', value: 'value1' }],
+        }],
+      })
+
+      page = context.new_page
+      page.route('**/*', ->(route, _) {
+        route.fulfill(body: '<html></html>')
+      })
+      page.goto('https://www.example.com')
+      expect(page.evaluate('window.localStorage')).to eq({ 'name1' => 'value1' })
+
+      # Replace storage state
+      context.set_storage_state({
+        cookies: [],
+        origins: [{
+          origin: 'https://www.example.com',
+          localStorage: [{ name: 'name2', value: 'value2' }],
+        }],
+      })
+      expect(context.pages.length).to eq(1)
+      page.goto('https://www.example.com')
+      expect(page.evaluate('window.localStorage')).to eq({ 'name2' => 'value2' })
+    end
+  end
+
   it 'should raise a helpful error when set_storage_state file is missing' do
     with_context do |context|
       expect {
