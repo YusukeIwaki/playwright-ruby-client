@@ -174,16 +174,16 @@ npx playwright install && npx playwright run-server --port 8080 --path /ws
 and we can connect to the server with the code like this:
 
 ```ruby
-Playwright.connect_to_playwright_server('ws://127.0.0.1:8080/ws?browser=chromium') do |playwright|
-  playwright.chromium.launch do |browser|
-    page = browser.new_page
-    page.goto('https://github.com/YusukeIwaki')
-    page.screenshot(path: './YusukeIwaki.png')
-  end
+require 'playwright'
+
+Playwright.connect_to_browser_server('wss://example.com:8888/ws') do |browser|
+  page = browser.new_page
+  page.goto('https://github.com/YusukeIwaki')
+  page.screenshot(path: './YusukeIwaki.png')
 end
 ```
 
-When `Playwright.connect_to_playwright_server` is used, playwright_cli_executable_path is not required.
+When `Playwright.connect_to_browser_server` is used, playwright_cli_executable_path is not required.
 
 For more detailed instraction, refer this article: https://playwright-ruby-client.vercel.app/docs/article/guides/playwright_on_alpine_linux
 
