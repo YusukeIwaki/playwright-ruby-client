@@ -15,4 +15,5 @@
 
 1. Review the diff to identify unmapped examples.
 2. Add conversion mappings to `development/generate_api/example_codes.rb` when needed.
+   - Methods are ordered alphabetically by `ClassName#method_name` (see source comments like `# Page#pdf`). Insert new methods in the correct position.
 3. Re-run `bundle exec ruby development/generate_api.rb`.
