@@ -81,6 +81,11 @@ module Playwright
       end
     end
 
+    def existing_response
+      resp = @channel.send_message_to_server('existingResponse')
+      ChannelOwners::Response.from_nullable(resp)
+    end
+
     def response
       resp = @channel.send_message_to_server('response')
       ChannelOwners::Response.from_nullable(resp)

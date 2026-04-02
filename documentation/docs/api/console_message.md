@@ -67,6 +67,15 @@ def text
 
 The text of the console message.
 
+## timestamp
+
+```
+def timestamp
+```
+
+
+The timestamp of the console message in milliseconds since the Unix epoch.
+
 ## type
 
 ```

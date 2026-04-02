@@ -19,6 +19,9 @@ module Playwright
           if params[:record_video_size]
             params[:recordVideo][:size] = params.delete(:record_video_size)
           end
+          if params[:record_video_show_actions]
+            params[:recordVideo][:showActions] = params.delete(:record_video_show_actions)
+          end
         end
         if params[:storageState].is_a?(String)
           params[:storageState] = JSON.parse(File.read(params[:storageState]))

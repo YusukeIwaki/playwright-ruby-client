@@ -94,6 +94,16 @@ def bring_to_front
 
 Brings page to front (activates tab).
 
+## cancel_pick_locator
+
+```
+def cancel_pick_locator
+```
+
+
+Cancels an ongoing [Page#pick_locator](./page#pick_locator) call by deactivating pick locator mode.
+If no pick locator mode is active, this method is a no-op.
+
 ## check
 
 ```
@@ -706,7 +716,7 @@ Consider the following DOM structure.
 <button>Submit</button>
 ```
 
-You can locate each element by it's implicit role:
+You can locate each element by its implicit role:
 
 ```ruby
 page.get_by_role("heading", name: "Sign up").visible? # => true
@@ -738,7 +748,7 @@ Consider the following DOM structure.
 <button data-testid="directions">Itinéraire</button>
 ```
 
-You can locate the element by it's test id:
+You can locate the element by its test id:
 
 ```ruby
 page.get_by_test_id("directions").click
@@ -995,10 +1005,28 @@ def visible?(selector, strict: nil, timeout: nil)
 
 Returns whether the element is [visible](https://playwright.dev/python/docs/actionability#visible). `selector` that does not match any elements is considered not visible.
 
+## clear_console_messages
+
+```
+def clear_console_messages
+```
+
+
+Clears all stored console messages from this page. Subsequent calls to [Page#console_messages](./page#console_messages) will only return messages logged after the clear.
+
+## clear_page_errors
+
+```
+def clear_page_errors
+```
+
+
+Clears all stored page errors from this page. Subsequent calls to [Page#page_errors](./page#page_errors) will only return errors thrown after the clear.
+
 ## console_messages
 
 ```
-def console_messages
+def console_messages(filter: nil)
 ```
 
 
@@ -1007,7 +1035,7 @@ Returns up to (currently) 200 last console messages from this page. See [`event:
 ## page_errors
 
 ```
-def page_errors
+def page_errors(filter: nil)
 ```
 
 
@@ -1131,6 +1159,24 @@ The `format` options are:
 
 **NOTE**: `headerTemplate` and `footerTemplate` markup have the following limitations: > 1. Script tags inside
 templates are not evaluated. > 2. Page styles are not visible inside templates.
+
+## pick_locator
+
+```
+def pick_locator
+```
+
+
+Enters pick locator mode where hovering over page elements highlights them and shows the corresponding locator.
+Once the user clicks an element, the mode is deactivated and the [Locator](./locator) for the picked element is returned.
+
+**Usage**
+
+```python title="example_94b0af1a90cd7b622dbb32665a9f92156bd05b80420afe96aaa90a7f474a0399.py"
+locator = page.pick_locator()
+print(locator)
+
+```
 
 ## press
 
@@ -1268,6 +1314,8 @@ def handle_route(route, request)
 end
 page.route("/api/**", method(:handle_route))
 ```
+
+If a request matches multiple registered routes, the most recently registered route takes precedence.
 
 Page routes take precedence over browser context routes (set up with [BrowserContext#route](./browser_context#route)) when request
 matches both handlers.
@@ -1471,6 +1519,15 @@ page.viewport_size = { width: 640, height: 480 }
 page.goto("https://example.com")
 ```
 
+## aria_snapshot
+
+```
+def aria_snapshot(depth: nil, mode: nil, timeout: nil)
+```
+
+
+Captures the aria snapshot of the page. Read more about [aria snapshots](https://playwright.dev/python/docs/aria-snapshots).
+
 ## tap_point
 
 ```
@@ -1600,7 +1657,7 @@ def video
 ```
 
 
-Video object associated with this page.
+Video object associated with this page. Can be used to access the video file when using the `recordVideo` context option.
 
 ## viewport_size
 
@@ -1942,5 +1999,12 @@ Playwright has ability to mock clock and passage of time.
 
 API testing helper associated with this page. This method returns the same instance as
 [BrowserContext#request](./browser_context#request) on the page's context. See [BrowserContext#request](./browser_context#request) for more details.
+
+## screencast
+
+
+`Screencast` object associated with this page.
+
+**Usage**
 
 ## touchscreen

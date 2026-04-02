@@ -87,7 +87,7 @@ button = page.get_by_role("button").and(page.get_by_title("Subscribe"))
 ## aria_snapshot
 
 ```
-def aria_snapshot(timeout: nil)
+def aria_snapshot(depth: nil, mode: nil, timeout: nil)
 ```
 
 
@@ -126,6 +126,9 @@ Below is the HTML markup and the respective ARIA snapshot:
   - listitem:
     - link "About"
 ```
+
+An AI-optimized snapshot, controlled by `mode`, is different from a default snapshot:
+1. Includes element references `[ref=e2]`. 2. Does not wait for an element matching the locator, and throws when no elements match. 3. Includes snapshots of `<iframe>`s inside the target.
 
 ## blur
 
@@ -744,7 +747,7 @@ Consider the following DOM structure.
 <button>Submit</button>
 ```
 
-You can locate each element by it's implicit role:
+You can locate each element by its implicit role:
 
 ```ruby
 page.get_by_role("heading", name: "Sign up").visible? # => true
@@ -776,7 +779,7 @@ Consider the following DOM structure.
 <button data-testid="directions">Itinéraire</button>
 ```
 
-You can locate the element by it's test id:
+You can locate the element by its test id:
 
 ```ruby
 page.get_by_test_id("directions").click
@@ -1081,6 +1084,16 @@ def locator(
 The method finds an element matching the specified selector in the locator's subtree. It also accepts filter options, similar to [Locator#filter](./locator#filter) method.
 
 [Learn more about locators](https://playwright.dev/python/docs/locators).
+
+## normalize
+
+```
+def normalize
+```
+
+
+Returns a new locator that uses best practices for referencing the matched element, prioritizing test ids,
+aria roles, and other user-facing attributes over CSS selectors. This is useful for converting implementation-detail selectors into more resilient, human-readable locators.
 
 ## nth
 

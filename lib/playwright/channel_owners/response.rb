@@ -74,6 +74,10 @@ module Playwright
       actual_headers.get_all(name)
     end
 
+    def http_version
+      @initializer['httpVersion']
+    end
+
     def server_addr
       @channel.send_message_to_server('serverAddr')
     end

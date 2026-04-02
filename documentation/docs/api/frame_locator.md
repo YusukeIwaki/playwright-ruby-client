@@ -157,7 +157,7 @@ Consider the following DOM structure.
 <button>Submit</button>
 ```
 
-You can locate each element by it's implicit role:
+You can locate each element by its implicit role:
 
 ```ruby
 page.get_by_role("heading", name: "Sign up").visible? # => true
@@ -189,7 +189,7 @@ Consider the following DOM structure.
 <button data-testid="directions">Itinéraire</button>
 ```
 
-You can locate the element by it's test id:
+You can locate the element by its test id:
 
 ```ruby
 page.get_by_test_id("directions").click

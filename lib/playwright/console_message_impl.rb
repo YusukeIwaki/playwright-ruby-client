@@ -25,5 +25,9 @@ module Playwright
     def location
       @event['location']
     end
+
+    def timestamp
+      @event['timestamp']
+    end
   end
 end

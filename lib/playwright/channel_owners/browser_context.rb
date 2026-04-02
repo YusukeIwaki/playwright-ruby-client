@@ -547,6 +547,24 @@ module Playwright
       @timeout_settings
     end
 
+    def set_storage_state(storageState)
+      payload = case storageState
+                when String
+                  begin
+                    JSON.parse(File.read(storageState))
+                  rescue => e
+                    raise ::Playwright::Error.new(message: "Failed to read storage state from '#{storageState}': #{e.message}")
+                  end
+                else
+                  storageState
+                end
+      @channel.send_message_to_server('setStorageState', storageState: payload)
+    end
+
+    def closed?
+      @close_was_called
+    end
+
     private def has_record_video_option?
       @options.key?(:recordVideo)
     end

@@ -26,6 +26,7 @@ end
 
 ```
 def start(
+      live: nil,
       name: nil,
       screenshots: nil,
       snapshots: nil,
