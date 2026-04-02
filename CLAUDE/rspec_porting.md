@@ -14,9 +14,9 @@ Do NOT write isolated unit tests with doubles, mocks, or instance_double.
 ## File naming
 
 - Match the upstream file name converted to snake_case.
-- Place under `spec/integration/` mirroring the upstream directory structure where practical.
+- Place under `spec/integration/` following the existing directory conventions of this project. Do not blindly mirror the upstream directory structure.
 - Examples:
-  - `tests/library/inspector/recorder-api.spec.ts` → `spec/integration/page/recorder_api_spec.rb`
+  - `tests/library/inspector/recorder-api.spec.ts` → `spec/integration/recorder_api_spec.rb`
   - `tests/library/browsercontext-storage-state.spec.ts` → `spec/integration/browser_context/storage_state_spec.rb`
   - `tests/library/browsercontext-har.spec.ts` → `spec/integration/browser_context/har_spec.rb`
 
