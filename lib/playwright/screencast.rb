@@ -1,3 +1,5 @@
+require 'base64'
+
 module Playwright
   class Screencast
     def initialize(page)
@@ -83,7 +85,7 @@ module Playwright
     end
 
     private def handle_screencast_frame(event)
-      @on_frame&.call(event['data'])
+      @on_frame&.call(Base64.strict_decode64(event['data']))
     end
   end
 end

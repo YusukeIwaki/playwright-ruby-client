@@ -76,7 +76,7 @@ module Playwright
     end
 
     def http_version
-      @channel.send_message_to_server('httpVersion')['value']
+      @channel.send_message_to_server('httpVersion')
     end
 
     def server_addr

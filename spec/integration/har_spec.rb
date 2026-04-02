@@ -90,4 +90,11 @@ RSpec.describe 'HAR' do
       expect(addr['port']).to eq(server_port)
     end
   end
+
+  it 'should return http version from response', sinatra: true do
+    with_page do |page|
+      response = page.goto(server_empty_page)
+      expect(response.http_version).to eq('HTTP/1.1')
+    end
+  end
 end

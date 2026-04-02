@@ -135,6 +135,8 @@ RSpec.describe 'screencast' do
       page.screencast.stop
     end
     expect(frames.length).to be > 0
+    expect(frames.first.bytes[0]).to eq(0xff)
+    expect(frames.first.bytes[1]).to eq(0xd8)
   end
 
   # it('should expose video path blank page', async ({browser, testInfo}) => {
