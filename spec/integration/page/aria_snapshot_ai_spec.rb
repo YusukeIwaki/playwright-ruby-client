@@ -333,6 +333,22 @@ RSpec.describe 'ariaSnapshot AI' do
     end
   end
 
+  it 'should auto-wait for blocking CSS', sinatra: true, pending: 'sinatra single-thread blocks the delayed CSS response' do
+    sinatra.get('/css') do
+      content_type 'text/css'
+      sleep 1
+      'body { monospace }'
+    end
+
+    with_page do |page|
+      page.set_content(<<~HTML, waitUntil: 'commit')
+        <script src="#{server_prefix}/css"></script>
+        <p>Hello World</p>
+      HTML
+      expect(snapshot_for_ai(page)).to include('Hello World')
+    end
+  end
+
   it 'should show visible children of hidden elements' do
     with_page do |page|
       page.content = <<~HTML
