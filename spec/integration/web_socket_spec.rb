@@ -128,10 +128,18 @@ RSpec.describe 'WebSocket', web_socket: true do
 
   it 'should reject waitForEvent on socket close', sinatra: true do
     with_page do |page|
+      incoming_frame = Concurrent::Promises.resolvable_future
+      page.on('websocket', ->(web_socket) {
+        web_socket.on('framereceived', ->(_) {
+          incoming_frame.fulfill(web_socket) unless incoming_frame.resolved?
+        })
+      })
+
       ws = page.expect_websocket do
         page.evaluate("window.ws = new WebSocket('#{ws_url}')")
       end
-      ws.wait_for_event('framereceived')
+      expect(incoming_frame.value!).to eq(ws)
+
       expect {
         ws.expect_event('framesent') do
           page.evaluate('window.ws.close()')
@@ -142,10 +150,18 @@ RSpec.describe 'WebSocket', web_socket: true do
 
   it 'should reject waitForEvent on page close', sinatra: true do
     with_page do |page|
+      incoming_frame = Concurrent::Promises.resolvable_future
+      page.on('websocket', ->(web_socket) {
+        web_socket.on('framereceived', ->(_) {
+          incoming_frame.fulfill(web_socket) unless incoming_frame.resolved?
+        })
+      })
+
       ws = page.expect_websocket do
         page.evaluate("window.ws = new WebSocket('#{ws_url}')")
       end
-      ws.wait_for_event('framereceived')
+      expect(incoming_frame.value!).to eq(ws)
+
       expect {
         ws.expect_event('framesent') do
           page.close
