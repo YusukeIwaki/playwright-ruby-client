@@ -26,7 +26,9 @@ module Playwright
     end
 
     def dismiss
-      @channel.async_send_message_to_server('dismiss').rescue { |_| nil }
+      @channel.send_message_to_server('dismiss')
+    rescue TargetClosedError
+      # Swallow target-closed errors for beforeunload dialogs.
     end
   end
 end

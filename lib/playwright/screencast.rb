@@ -5,47 +5,43 @@ module Playwright
       @started = false
       @save_path = nil
       @artifact = nil
-      @on_frame_listener = nil
+      @on_frame = nil
+      @page.send(:channel).on('screencastFrame', method(:handle_screencast_frame))
     end
 
-    def start(path: nil, quality: nil, &on_frame)
+    def start(path: nil, size: nil, quality: nil, &on_frame)
+      raise 'Screencast is already started' if @started
+
+      @started = true
+      @on_frame = on_frame if on_frame
+
       params = {}
-      if path
-        params[:record] = true
-        @save_path = path
-      end
+      params[:record] = true if path
+      params[:size] = size if size
       params[:quality] = quality if quality
-      if on_frame
-        params[:sendFrames] = true
-        @on_frame_listener = ->(event) {
-          on_frame.call(event['data'])
-        }
-        @page.send(:channel).on('screencastFrame', @on_frame_listener)
-      end
+      params[:sendFrames] = true if on_frame
+
       result = @page.send(:channel).send_message_to_server_result('screencastStart', params)
       if result.is_a?(Hash) && result['artifact']
         @artifact = ChannelOwners::Artifact.from(result['artifact'])
+        @save_path = path
       end
-      @started = true
-      nil
+
+      DisposableStub.new { stop }
     end
 
     def stop
       return unless @started
 
-      if @on_frame_listener
-        @page.send(:channel).off('screencastFrame', @on_frame_listener)
-        @on_frame_listener = nil
-      end
-      @page.send(:channel).send_message_to_server('screencastStop')
       @started = false
+      @on_frame = nil
+      @page.send(:channel).send_message_to_server('screencastStop')
 
       if @save_path && @artifact
         @artifact.save_as(@save_path)
-        @save_path = nil
       end
       @artifact = nil
-      nil
+      @save_path = nil
     end
 
     def show_overlay(html, duration: nil)
@@ -53,9 +49,9 @@ module Playwright
       params[:duration] = duration if duration
       result = @page.send(:channel).send_message_to_server_result('screencastShowOverlay', params)
       overlay_id = result['id'] if result.is_a?(Hash)
-      if overlay_id
-        RemoveOverlayDisposable.new(@page, overlay_id)
-      end
+      DisposableStub.new {
+        @page.send(:channel).send_message_to_server('screencastRemoveOverlay', id: overlay_id) if overlay_id
+      }
     end
 
     def show_chapter(title, description: nil, duration: nil)
@@ -71,7 +67,7 @@ module Playwright
       params[:fontSize] = fontSize if fontSize
       params[:position] = position if position
       @page.send(:channel).send_message_to_server('screencastShowActions', params)
-      nil
+      DisposableStub.new { hide_actions }
     end
 
     def hide_actions
@@ -86,17 +82,8 @@ module Playwright
       @page.send(:channel).send_message_to_server('screencastSetOverlayVisible', visible: false)
     end
 
-    class RemoveOverlayDisposable
-      def initialize(page, overlay_id)
-        @page = page
-        @overlay_id = overlay_id
-      end
-
-      def dispose
-        return unless @overlay_id
-        @page.send(:channel).send_message_to_server('screencastRemoveOverlay', id: @overlay_id)
-        @overlay_id = nil
-      end
+    private def handle_screencast_frame(event)
+      @on_frame&.call(event['data'])
     end
   end
 end

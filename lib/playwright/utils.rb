@@ -1,6 +1,22 @@
 require 'base64'
 
 module Playwright
+  class DisposableStub
+    def initialize(&block)
+      @block = block
+    end
+
+    def dispose
+      return unless @block
+
+      block = @block
+      @block = nil
+      block.call
+    rescue TargetClosedError
+      nil
+    end
+  end
+
   module Utils
     module PrepareBrowserContextOptions
       # @see https://github.com/microsoft/playwright/blob/5a2cfdbd47ed3c3deff77bb73e5fac34241f649d/src/client/browserContext.ts#L265

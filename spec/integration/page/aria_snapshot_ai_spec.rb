@@ -115,14 +115,18 @@ RSpec.describe 'ariaSnapshot AI' do
       expect(href3).to eq("#{server_prefix}/frames/frame.html")
 
       resolved = page.locator('aria-ref=e1').normalize
-      expect(resolved.to_s).to include('body')
+      expect(resolved.to_s).to eq('Locator@body')
 
       resolved2 = page.locator('aria-ref=f4e2').normalize
-      expect(resolved2.to_s).to include('iframe')
+      expect(resolved2.to_s).to eq(
+        'Locator@iframe[name="2frames"] >> internal:control=enter-frame >> iframe[name="dos"] >> internal:control=enter-frame >> internal:text="Hi, I\'m frame"i'
+      )
 
       # Should tolerate .describe().
       resolved3 = page.locator('aria-ref=f3e2').describe('foo bar').normalize
-      expect(resolved3.to_s).to include('iframe')
+      expect(resolved3.to_s).to eq(
+        'Locator@iframe[name="2frames"] >> internal:control=enter-frame >> iframe[name="uno"] >> internal:control=enter-frame >> internal:text="Hi, I\'m frame"i'
+      )
 
       expect {
         page.locator('aria-ref=e1000').normalize
@@ -325,10 +329,11 @@ RSpec.describe 'ariaSnapshot AI' do
   it 'should auto-wait for navigation', sinatra: true do
     with_page do |page|
       page.goto("#{server_prefix}/frames/frame.html")
-      # Upstream uses Promise.all([reload, snapshotForAI]) to test auto-wait.
-      # In Ruby, we reload and then take snapshot which tests the same server-side auto-wait.
-      page.reload
+      # Upstream uses Promise.all([reload, snapshotForAI]) to test concurrent auto-wait.
+      snapshot = nil
+      reload_future = Concurrent::Promises.future { page.evaluate('window.location.reload()') }
       snapshot = snapshot_for_ai(page)
+      reload_future.value!
       expect(snapshot).to include('Hi, I\'m frame')
     end
   end

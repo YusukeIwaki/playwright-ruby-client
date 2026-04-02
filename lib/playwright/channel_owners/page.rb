@@ -304,8 +304,9 @@ module Playwright
     end
 
     def expose_function(name, callback)
-      @channel.send_message_to_server('exposeBinding', name: name)
+      result = @channel.send_message_to_server_result('exposeBinding', name: name)
       @bindings[name] = ->(_source, *args) { callback.call(*args) }
+      ChannelOwners::Disposable.from(result['disposable'])
     end
 
     def expose_binding(name, callback, handle: nil)
@@ -313,8 +314,9 @@ module Playwright
         name: name,
         needsHandle: handle,
       }.compact
-      @channel.send_message_to_server('exposeBinding', params)
+      result = @channel.send_message_to_server_result('exposeBinding', params)
       @bindings[name] = callback
+      ChannelOwners::Disposable.from(result['disposable'])
     end
 
     def set_extra_http_headers(headers)
@@ -409,14 +411,15 @@ module Playwright
           raise ArgumentError.new('Either path or script parameter must be specified')
         end
 
-      @channel.send_message_to_server('addInitScript', source: source)
-      nil
+      result = @channel.send_message_to_server_result('addInitScript', source: source)
+      ChannelOwners::Disposable.from(result['disposable'])
     end
 
     def route(url, handler, times: nil)
       entry = RouteHandler.new(url, @browser_context.send(:base_url), handler, times)
       @routes.unshift(entry)
       update_interception_patterns
+      DisposableStub.new { unroute(url, handler: handler) }
     end
 
     def unroute_all(behavior: nil)

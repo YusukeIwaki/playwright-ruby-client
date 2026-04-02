@@ -333,8 +333,8 @@ module Playwright
           raise ArgumentError.new('Either path or script parameter must be specified')
         end
 
-      @channel.send_message_to_server('addInitScript', source: source)
-      nil
+      result = @channel.send_message_to_server_result('addInitScript', source: source)
+      ChannelOwners::Disposable.from(result['disposable'])
     end
 
     def expose_binding(name, callback, handle: nil)
@@ -349,17 +349,19 @@ module Playwright
         needsHandle: handle,
       }.compact
       @bindings[name] = callback
-      @channel.send_message_to_server('exposeBinding', params)
+      result = @channel.send_message_to_server_result('exposeBinding', params)
+      ChannelOwners::Disposable.from(result['disposable'])
     end
 
     def expose_function(name, callback)
-      expose_binding(name, ->(_source, *args) { callback.call(*args) }, )
+      expose_binding(name, ->(_source, *args) { callback.call(*args) })
     end
 
     def route(url, handler, times: nil)
       entry = RouteHandler.new(url, base_url, handler, times)
       @routes.unshift(entry)
       update_interception_patterns
+      DisposableStub.new { unroute(url, handler: handler) }
     end
 
     def unroute_all(behavior: nil)

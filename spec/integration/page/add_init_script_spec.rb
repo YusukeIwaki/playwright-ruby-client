@@ -45,4 +45,14 @@ RSpec.describe 'Page#add_init_script',  sinatra: true do
       expect(page.evaluate("() => window['script2']")).to eq(2)
     end
   end
+
+  it 'should return disposable that removes the init script' do
+    with_page do |page|
+      disposable = page.add_init_script(script: "window['disposedScript'] = 1")
+      disposable.dispose
+
+      page.goto("#{server_prefix}/tamperable.html")
+      expect(page.evaluate("() => window['disposedScript']")).to be_nil
+    end
+  end
 end
