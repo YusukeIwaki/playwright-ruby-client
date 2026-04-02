@@ -452,10 +452,9 @@ Clears the existing cookies, local storage and IndexedDB entries for all origins
 
 **Usage**
 
-```python title="example_14cff998b9a76b4b421a7096cfcbcbd7500d1a0792b13de2e7596d4a34db32e7.py"
+```ruby
 # Load storage state from a file and apply it to the context.
 context.set_storage_state("state.json")
-
 ```
 
 ## unroute_all

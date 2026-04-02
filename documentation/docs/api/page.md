@@ -1172,10 +1172,9 @@ Once the user clicks an element, the mode is deactivated and the [Locator](./loc
 
 **Usage**
 
-```python title="example_94b0af1a90cd7b622dbb32665a9f92156bd05b80420afe96aaa90a7f474a0399.py"
-locator = page.pick_locator()
-print(locator)
-
+```ruby
+locator = page.pick_locator
+puts locator
 ```
 
 ## press

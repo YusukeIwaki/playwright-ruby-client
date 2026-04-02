@@ -307,6 +307,12 @@ module ExampleCodes
     browser_context.geolocation = { latitude: 59.95, longitude: 30.31667 }
   end
 
+  # BrowserContext#set_storage_state
+  def example_14cff998b9a76b4b421a7096cfcbcbd7500d1a0792b13de2e7596d4a34db32e7(context:)
+    # Load storage state from a file and apply it to the context.
+    context.set_storage_state("state.json")
+  end
+
   # BrowserContext#expect_event
   def example_6619b3b87b68e56013f61689b1e1df60f6bf2950241ef796dd2dc58b7d3292c8(browser_context:, page:)
     new_page = browser_context.expect_event('page') do
@@ -1650,6 +1656,12 @@ module ExampleCodes
     page.pdf(path: "page.pdf")
   end
 
+  # Page#pick_locator
+  def example_94b0af1a90cd7b622dbb32665a9f92156bd05b80420afe96aaa90a7f474a0399(page:)
+    locator = page.pick_locator
+    puts locator
+  end
+
   # Page#press
   def example_aa4598bd7dbeb8d2f8f5c0aa3bdc84042eb396de37b49f8ff8c1ea39f080f709(page:)
     page.goto("https://keycode.info")
@@ -2058,4 +2070,5 @@ module ExampleCodes
       worker.evaluate("console.log(42)")
     end
   end
+
 end
