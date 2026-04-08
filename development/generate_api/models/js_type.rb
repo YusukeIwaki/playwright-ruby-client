@@ -21,6 +21,9 @@ class JsType
     'AndroidSelector' => 'untyped',
     'AndroidKey' => 'untyped',
     'EvaluationArgument' => 'untyped',
+    'Debugger' => 'untyped',
+    'Disposable' => 'untyped',
+    'Screencast' => 'untyped',
     'Video' => 'untyped',
   }.merge((ALL_TYPES + EXPERIMENTAL).map { |t| [t, t] }.to_h)
 

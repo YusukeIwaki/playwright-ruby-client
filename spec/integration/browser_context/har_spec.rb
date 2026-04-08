@@ -451,4 +451,63 @@ RSpec.describe 'BrowserContext.route_from_har' do
       end
     end
   end
+
+  # https://github.com/microsoft/playwright/issues/31495
+  it 'should record single set-cookie headers', sinatra: true do
+    sinatra.get('/set-single-cookie') do
+      response.headers['Content-Type'] = 'text/html'
+      response.set_cookie('first', value: 'foo', path: '/')
+      '<html></html>'
+    end
+
+    Dir.mktmpdir do |dir|
+      har_path = File.join(dir, 'har.zip')
+
+      with_context do |context|
+        context.route_from_har(har_path, update: true)
+        page = context.new_page
+        page.goto("#{server_prefix}/set-single-cookie")
+        cookie = page.evaluate('document.cookie')
+        expect(cookie).to eq('first=foo')
+      end
+
+      with_context do |context|
+        context.route_from_har(har_path, notFound: 'abort')
+        page = context.new_page
+        page.goto("#{server_prefix}/set-single-cookie")
+        cookie = page.evaluate('document.cookie')
+        expect(cookie).to eq('first=foo')
+      end
+    end
+  end
+
+  # https://github.com/microsoft/playwright/issues/31495
+  it 'should record multiple set-cookie headers', sinatra: true do
+    sinatra.get('/set-multi-cookie') do
+      response.headers['Content-Type'] = 'text/html'
+      response.set_cookie('first', value: 'foo', path: '/')
+      response.set_cookie('second', value: 'bar', path: '/')
+      '<html></html>'
+    end
+
+    Dir.mktmpdir do |dir|
+      har_path = File.join(dir, 'har.zip')
+
+      with_context do |context|
+        context.route_from_har(har_path, update: true)
+        page = context.new_page
+        page.goto("#{server_prefix}/set-multi-cookie")
+        cookie = page.evaluate('document.cookie')
+        expect(cookie.split('; ').sort.join('; ')).to eq('first=foo; second=bar')
+      end
+
+      with_context do |context|
+        context.route_from_har(har_path, notFound: 'abort')
+        page = context.new_page
+        page.goto("#{server_prefix}/set-multi-cookie")
+        cookie = page.evaluate('document.cookie')
+        expect(cookie.split('; ').sort.join('; ')).to eq('first=foo; second=bar')
+      end
+    end
+  end
 end

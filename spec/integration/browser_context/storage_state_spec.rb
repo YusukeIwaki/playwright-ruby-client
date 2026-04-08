@@ -105,6 +105,84 @@ RSpec.describe 'BrowserContext#storage_state' do
     end
   end
 
+  it 'should set storage state from a file path via set_storage_state' do
+    Dir.mktmpdir do |dir|
+      path = File.join(dir, 'storage-state.json')
+      File.write(path, JSON.dump({
+        cookies: [{
+          name: 'username',
+          value: 'John Doe',
+          domain: 'www.example.com',
+          path: '/',
+          expires: -1,
+          httpOnly: false,
+          secure: true,
+          sameSite: 'Lax',
+        }],
+        origins: [{
+          origin: 'https://www.example.com',
+          localStorage: [{
+            name: 'name1',
+            value: 'value1',
+          }],
+        }],
+      }))
+
+      with_context do |context|
+        context.set_storage_state(path)
+
+        page = context.new_page
+        page.route('**/*', ->(route, _) {
+          route.fulfill(body: '<html></html>')
+        })
+        page.goto('https://www.example.com')
+
+        expect(page.evaluate('window.localStorage')).to eq({ 'name1' => 'value1' })
+        expect(page.evaluate('document.cookie')).to eq('username=John Doe')
+      end
+    end
+  end
+
+  # https://github.com/microsoft/playwright/blob/main/tests/library/browsercontext-storage-state.spec.ts
+  it 'should replace storage state mid-context via set_storage_state' do
+    with_context do |context|
+      context.set_storage_state({
+        cookies: [],
+        origins: [{
+          origin: 'https://www.example.com',
+          localStorage: [{ name: 'name1', value: 'value1' }],
+        }],
+      })
+
+      page = context.new_page
+      page.route('**/*', ->(route, _) {
+        route.fulfill(body: '<html></html>')
+      })
+      page.goto('https://www.example.com')
+      expect(page.evaluate('window.localStorage')).to eq({ 'name1' => 'value1' })
+
+      # Replace storage state
+      context.set_storage_state({
+        cookies: [],
+        origins: [{
+          origin: 'https://www.example.com',
+          localStorage: [{ name: 'name2', value: 'value2' }],
+        }],
+      })
+      expect(context.pages.length).to eq(1)
+      page.goto('https://www.example.com')
+      expect(page.evaluate('window.localStorage')).to eq({ 'name2' => 'value2' })
+    end
+  end
+
+  it 'should raise a helpful error when set_storage_state file is missing' do
+    with_context do |context|
+      expect {
+        context.set_storage_state('/path/to/missing-storage-state.json')
+      }.to raise_error(Playwright::Error, /Failed to read storage state from/)
+    end
+  end
+
   it 'should support IndexedDB', sinatra: true do
     storage_state = nil
     with_page do |page|

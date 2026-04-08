@@ -333,8 +333,8 @@ module Playwright
           raise ArgumentError.new('Either path or script parameter must be specified')
         end
 
-      @channel.send_message_to_server('addInitScript', source: source)
-      nil
+      result = @channel.send_message_to_server_result('addInitScript', source: source)
+      ChannelOwners::Disposable.from(result['disposable'])
     end
 
     def expose_binding(name, callback, handle: nil)
@@ -349,17 +349,19 @@ module Playwright
         needsHandle: handle,
       }.compact
       @bindings[name] = callback
-      @channel.send_message_to_server('exposeBinding', params)
+      result = @channel.send_message_to_server_result('exposeBinding', params)
+      ChannelOwners::Disposable.from(result['disposable'])
     end
 
     def expose_function(name, callback)
-      expose_binding(name, ->(_source, *args) { callback.call(*args) }, )
+      expose_binding(name, ->(_source, *args) { callback.call(*args) })
     end
 
     def route(url, handler, times: nil)
       entry = RouteHandler.new(url, base_url, handler, times)
       @routes.unshift(entry)
       update_interception_patterns
+      DisposableStub.new { unroute(url, handler: handler) }
     end
 
     def unroute_all(behavior: nil)
@@ -545,6 +547,24 @@ module Playwright
     # called from Page with send(:_timeout_settings), so keep private.
     private def _timeout_settings
       @timeout_settings
+    end
+
+    def set_storage_state(storageState)
+      payload = case storageState
+                when String
+                  begin
+                    JSON.parse(File.read(storageState))
+                  rescue => e
+                    raise ::Playwright::Error.new(message: "Failed to read storage state from '#{storageState}': #{e.message}")
+                  end
+                else
+                  storageState
+                end
+      @channel.send_message_to_server('setStorageState', storageState: payload)
+    end
+
+    def closed?
+      @close_was_called
     end
 
     private def has_record_video_option?

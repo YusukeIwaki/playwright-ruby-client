@@ -81,6 +81,10 @@ module Playwright
       end
     end
 
+    def existing_response
+      @response
+    end
+
     def response
       resp = @channel.send_message_to_server('response')
       ChannelOwners::Response.from_nullable(resp)
@@ -160,6 +164,10 @@ module Playwright
       end
 
       res.send(:sizes)
+    end
+
+    private def update_response(response)
+      @response = response
     end
 
     private def update_redirected_to(request)

@@ -1,9 +1,11 @@
 module Playwright
   class Video
-    def initialize(page)
+    def initialize(page, artifact: nil)
       @page = page
       @artifact = Concurrent::Promises.resolvable_future
-      if @page.closed?
+      if artifact
+        @artifact.fulfill(artifact)
+      elsif @page.closed?
         on_page_closed
       else
         page.once('close', -> { on_page_closed })
@@ -16,9 +18,9 @@ module Playwright
       end
     end
 
-    # called only from Page#on_video via send(:set_artifact, artifact)
+    # called only from Page with send(:set_artifact, artifact)
     private def set_artifact(artifact)
-      @artifact.fulfill(artifact)
+      @artifact.fulfill(artifact) unless @artifact.resolved?
     end
 
     def path

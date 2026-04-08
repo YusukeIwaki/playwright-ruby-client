@@ -53,9 +53,10 @@ module Playwright
         # test when HAR was recorded but we'd abort it immediately.
         return if response['status'] == -1
 
+        headers = merge_har_response_headers(response['headers'])
         route.fulfill(
           status: response['status'],
-          headers: response['headers'].map { |header| [header['name'], header['value']] }.to_h,
+          headers: headers,
           body: Base64.strict_decode64(response['body']),
         )
       else
@@ -80,6 +81,20 @@ module Playwright
     def add_page_route(page)
       page.route(@url_match, method(:handle))
       page.once(Events::Page::Close, method(:dispose))
+    end
+
+    private def merge_har_response_headers(headers)
+      headers.each_with_object({}) do |header, merged|
+        name = header['name']
+        value = header['value']
+
+        if name.casecmp('set-cookie').zero?
+          key = merged.keys.find { |existing| existing.casecmp('set-cookie').zero? } || name
+          merged[key] = merged[key] ? "#{merged[key]}\n#{value}" : value
+        else
+          merged[name] = value
+        end
+      end
     end
 
     def dispose

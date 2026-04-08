@@ -1,6 +1,22 @@
 require 'base64'
 
 module Playwright
+  class DisposableStub
+    def initialize(&block)
+      @block = block
+    end
+
+    def dispose
+      return unless @block
+
+      block = @block
+      @block = nil
+      block.call
+    rescue TargetClosedError
+      nil
+    end
+  end
+
   module Utils
     module PrepareBrowserContextOptions
       # @see https://github.com/microsoft/playwright/blob/5a2cfdbd47ed3c3deff77bb73e5fac34241f649d/src/client/browserContext.ts#L265
@@ -18,6 +34,9 @@ module Playwright
           }
           if params[:record_video_size]
             params[:recordVideo][:size] = params.delete(:record_video_size)
+          end
+          if params[:record_video_show_actions]
+            params[:recordVideo][:showActions] = params.delete(:record_video_show_actions)
           end
         end
         if params[:storageState].is_a?(String)

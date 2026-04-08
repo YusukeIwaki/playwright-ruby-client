@@ -56,7 +56,9 @@ module Playwright
         emit(Events::Page::PageError, Error.parse(params['error']['error']))
       })
       @channel.on('route', ->(params) { on_route(ChannelOwners::Route.from(params['route'])) })
-      @channel.on('video', method(:on_video))
+      if @initializer['video']
+        @video_artifact = ChannelOwners::Artifact.from(@initializer['video'])
+      end
       @channel.on('viewportSizeChanged', method(:on_viewport_size_changed))
       @channel.on('webSocket', ->(params) {
         emit(Events::Page::WebSocket, ChannelOwners::WebSocket.from(params['webSocket']))
@@ -169,11 +171,6 @@ module Playwright
         artifact: artifact,
       )
       emit(Events::Page::Download, download)
-    end
-
-    private def on_video(params)
-      artifact = ChannelOwners::Artifact.from(params['artifact'])
-      video.send(:set_artifact, artifact)
     end
 
     private def on_viewport_size_changed(params)
@@ -307,8 +304,9 @@ module Playwright
     end
 
     def expose_function(name, callback)
-      @channel.send_message_to_server('exposeBinding', name: name)
+      result = @channel.send_message_to_server_result('exposeBinding', name: name)
       @bindings[name] = ->(_source, *args) { callback.call(*args) }
+      ChannelOwners::Disposable.from(result['disposable'])
     end
 
     def expose_binding(name, callback, handle: nil)
@@ -316,8 +314,9 @@ module Playwright
         name: name,
         needsHandle: handle,
       }.compact
-      @channel.send_message_to_server('exposeBinding', params)
+      result = @channel.send_message_to_server_result('exposeBinding', params)
       @bindings[name] = callback
+      ChannelOwners::Disposable.from(result['disposable'])
     end
 
     def set_extra_http_headers(headers)
@@ -412,14 +411,15 @@ module Playwright
           raise ArgumentError.new('Either path or script parameter must be specified')
         end
 
-      @channel.send_message_to_server('addInitScript', source: source)
-      nil
+      result = @channel.send_message_to_server_result('addInitScript', source: source)
+      ChannelOwners::Disposable.from(result['disposable'])
     end
 
     def route(url, handler, times: nil)
       entry = RouteHandler.new(url, @browser_context.send(:base_url), handler, times)
       @routes.unshift(entry)
       update_interception_patterns
+      DisposableStub.new { unroute(url, handler: handler) }
     end
 
     def unroute_all(behavior: nil)
@@ -646,18 +646,47 @@ module Playwright
         timeout: timeout)
     end
 
-    def console_messages
-      messages = @channel.send_message_to_server('consoleMessages')
+    def console_messages(filter: nil)
+      params = {}
+      params[:filter] = filter if filter
+      messages = @channel.send_message_to_server('consoleMessages', params)
       messages.map do |message|
         ConsoleMessageImpl.new(message, self, nil)
       end
     end
 
-    def page_errors
-      errors = @channel.send_message_to_server('pageErrors')
+    def page_errors(filter: nil)
+      params = {}
+      params[:filter] = filter if filter
+      errors = @channel.send_message_to_server('pageErrors', params)
       errors.map do |error|
         Error.parse(error['error'])
       end
+    end
+
+    def clear_console_messages
+      @channel.send_message_to_server('clearConsoleMessages')
+    end
+
+    def clear_page_errors
+      @channel.send_message_to_server('clearPageErrors')
+    end
+
+    def cancel_pick_locator
+      @channel.send_message_to_server('cancelPickLocator')
+    end
+
+    def aria_snapshot(depth: nil, mode: nil, timeout: nil, _track: nil)
+      params = { selector: 'body' }
+      params[:timeout] = @timeout_settings.timeout(timeout)
+      params[:depth] = depth if depth
+      params[:mode] = mode if mode
+      if _track
+        params.delete(:selector)
+        params[:track] = _track
+      end
+      result = @main_frame.channel.send_message_to_server_result('ariaSnapshot', params)
+      result['snapshot']
     end
 
     def locator(
@@ -904,28 +933,22 @@ module Playwright
       decoded_binary
     end
 
-    def video
-      return nil unless @browser_context.send(:has_record_video_option?)
-      @video ||= Video.new(self)
+    def screencast
+      @screencast ||= Screencast.new(self)
     end
 
-    def snapshot_for_ai(timeout: nil, mode: nil, track: nil)
-      option_mode = mode || 'full'
-      unless ['full', 'incremental'].include?(option_mode)
-        raise ArgumentError.new("mode must be either 'full' or 'incremental'")
-      end
+    def video
+      return nil unless @browser_context.send(:has_record_video_option?)
+      @video ||= Video.new(self, artifact: @video_artifact)
+    end
 
-      options = {
-        timeout: @timeout_settings.timeout(timeout),
-        mode: option_mode,
-      }
-      options[:track] = track if track
-      result = @channel.send_message_to_server_result('snapshotForAI', options)
-      if option_mode == 'full'
-        result['full']
-      elsif option_mode == 'incremental'
-        result['incremental']
-      end
+    def pick_locator
+      result = @channel.send_message_to_server_result('pickLocator', {})
+      @main_frame.locator(result['selector'])
+    end
+
+    def snapshot_for_ai(timeout: nil, depth: nil, _track: nil)
+      aria_snapshot(mode: 'ai', timeout: timeout, depth: depth, _track: _track)
     end
 
     def start_js_coverage(resetOnNavigation: nil, reportAnonymousScripts: nil)

@@ -64,6 +64,19 @@ RSpec.describe 'Page#route', sinatra: true do
     end
   end
 
+  it 'should return disposable that unroutes the handler' do
+    with_page do |page|
+      disposable = page.route('**/empty.html', ->(route, _) {
+        route.fulfill(status: 200, body: 'intercepted')
+      })
+      disposable.dispose
+
+      response = page.goto(server_empty_page)
+      expect(response).to be_ok
+      expect(response.text).not_to eq('intercepted')
+    end
+  end
+
   it 'unrouteAll removes all routes' do
     with_page do |page|
       page.route('**/*', -> (route, _) {

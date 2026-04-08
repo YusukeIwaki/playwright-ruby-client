@@ -7,6 +7,7 @@ module Playwright
     private def after_initialize
       @provisional_headers = RawHeaders.new(@initializer['headers'])
       @request = ChannelOwners::Request.from(@initializer['request'])
+      @request.send(:update_response, self)
       timing = @initializer['timing']
       @request.send(:update_timings,
         start_time: timing["startTime"],
@@ -72,6 +73,10 @@ module Playwright
 
     def header_values(name)
       actual_headers.get_all(name)
+    end
+
+    def http_version
+      @channel.send_message_to_server('httpVersion')
     end
 
     def server_addr
