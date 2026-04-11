@@ -98,10 +98,10 @@ module PlaywrightBrowser
 
     def start!
       @fiber = Fiber.new do
-        Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright') do |playwright|
-          playwright.chromium.launch(headless: false) do |browser|
-            Fiber.yield(browser)
-          end
+        Playwright.create(
+          playwright_cli_executable_path: './node_modules/.bin/playwright'
+        ) do |playwright|
+          playwright.chromium.launch(headless: false, &Fiber.method(:yield))
         end
       end
       @browser = @fiber.resume
@@ -124,12 +124,21 @@ RSpec.configure do |config|
     PlaywrightBrowser.browser.new_context(baseURL: base_url) do |browser_context|
       @playwright_page = browser_context.new_page
       example.run
+
+      if example.exception
+        path = Capybara.save_path.join(
+          "#{example.full_description.parameterize(separator: '_')}.png"
+        )
+        FileUtils.mkdir_p(path.dirname)
+        @playwright_page.screenshot(path: path, full_page: true)
+        RSpec.configuration.reporter.message("[Screenshot]: #{path}")
+      end
     end
   end
 end
 ```
 
-Each test gets a fresh `BrowserContext` (equivalent to a new incognito window), so cookies and storage never leak between tests. The block form of `new_context` ensures the context is always closed — even if the test raises an exception.
+Each test gets a fresh `BrowserContext` (equivalent to a new incognito window), so cookies and storage never leak between tests. The block form of `new_context` ensures the context is always closed — even if the test raises an exception. The screenshot helper captures the page state on failure to aid debugging.
 
 ## Minitest Usage
 
