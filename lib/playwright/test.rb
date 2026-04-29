@@ -63,19 +63,15 @@ module Playwright
           end
         end
       end
-    end
 
-    ALL_ASSERTIONS = PageAssertions.instance_methods(false) + LocatorAssertions.instance_methods(false)
-
-    ALL_ASSERTIONS
-      .map(&:to_s)
-      .each do |method_name|
+      (PageAssertions.instance_methods(false) + LocatorAssertions.instance_methods(false)).each do |method_name_sym|
         # to_be_visible => be_visible
         # not_to_be_visible => not_be_visible
-        root_method_name = method_name.gsub("to_", "")
-        Matchers.send(:define_method, root_method_name) do |*args, **kwargs|
+        method_name = method_name_sym.to_s
+        define_method(method_name.gsub("to_", "")) do |*args, **kwargs|
           Matchers::PlaywrightMatcher.new(method_name, *args, **kwargs)
         end
       end
+    end
   end
 end
