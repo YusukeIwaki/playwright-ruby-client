@@ -951,6 +951,10 @@ module Playwright
       aria_snapshot(mode: 'ai', timeout: timeout, depth: depth, _track: _track)
     end
 
+    def _assertions(timeout, is_not, message)
+      PageAssertionsImpl.new(self, timeout, is_not, message)
+    end
+
     def start_js_coverage(resetOnNavigation: nil, reportAnonymousScripts: nil)
       params = {
         resetOnNavigation: resetOnNavigation,

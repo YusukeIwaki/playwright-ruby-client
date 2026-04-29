@@ -553,6 +553,10 @@ module Playwright
       @frame.highlight(@selector)
     end
 
+    def _assertions(timeout, is_not, message)
+      LocatorAssertionsImpl.new(self, timeout, is_not, message)
+    end
+
     def expect(expression, options, title)
       @frame.expect(@selector, expression, options, title)
     end

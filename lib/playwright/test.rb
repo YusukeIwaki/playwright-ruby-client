@@ -21,37 +21,6 @@ module Playwright
     end
 
     # ref: https://github.com/microsoft/playwright-python/blob/main/playwright/sync_api/__init__.py#L90
-    class Expect
-      def initialize
-        @default_expect_timeout = ::Playwright::Test.expect_timeout
-      end
-
-      def call(actual, is_not)
-        case actual
-        when Page
-          PageAssertions.new(
-            PageAssertionsImpl.new(
-              actual,
-              @default_expect_timeout,
-              is_not,
-              nil,
-            )
-          )
-        when Locator
-          LocatorAssertions.new(
-            LocatorAssertionsImpl.new(
-              actual,
-              @default_expect_timeout,
-              is_not,
-              nil,
-            )
-          )
-        else
-          raise NotImplementedError.new("Only locator assertions are currently implemented")
-        end
-      end
-    end
-
     module Matchers
       class PlaywrightMatcher
         def initialize(expectation_method, *args, **kwargs)
@@ -61,7 +30,7 @@ module Playwright
         end
 
         def matches?(actual)
-          Expect.new.call(actual, false).send(@method, *@args, **@kwargs)
+          assertions_for(actual, false).send(@method, *@args, **@kwargs)
           true
         rescue AssertionError => e
           @failure_message = e.full_message
@@ -69,7 +38,7 @@ module Playwright
         end
 
         def does_not_match?(actual)
-          Expect.new.call(actual, true).send(@method, *@args, **@kwargs)
+          assertions_for(actual, true).send(@method, *@args, **@kwargs)
           true
         rescue AssertionError => e
           @failure_message = e.full_message
@@ -82,6 +51,16 @@ module Playwright
 
         def failure_message_when_negated
           @failure_message
+        end
+
+        private
+
+        def assertions_for(actual, is_not)
+          if actual.respond_to?(:_assertions)
+            actual._assertions(::Playwright::Test.expect_timeout, is_not, nil)
+          else
+            raise NotImplementedError.new("Only page and locator assertions are currently implemented")
+          end
         end
       end
     end
