@@ -36,6 +36,16 @@ RSpec.configure do |config|
     ENV['PWTEST_UNDER_TEST'] = original
   end
 
+  config.around(:each, playwright_server_registry: true) do |example|
+    Dir.mktmpdir do |dir|
+      original = ENV['PLAYWRIGHT_SERVER_REGISTRY']
+      ENV['PLAYWRIGHT_SERVER_REGISTRY'] = File.join(dir, 'registry')
+      example.run
+    ensure
+      ENV['PLAYWRIGHT_SERVER_REGISTRY'] = original
+    end
+  end
+
   browser_type = :chromium
   BROWSER_TYPES = %i(chromium webkit firefox)
   if BROWSER_TYPES.include?(ENV['BROWSER']&.to_sym)

@@ -61,6 +61,37 @@ module Playwright
       end
     end
 
+    def connect(endpoint, exposeNetwork: nil, headers: nil, slowMo: nil, timeout: nil, &block)
+      params = {
+        endpoint: endpoint,
+        headers: { 'x-playwright-browser' => name }.merge(headers || {}),
+        exposeNetwork: exposeNetwork,
+        slowMo: slowMo,
+        timeout: @timeout_settings.timeout(timeout),
+      }.compact
+
+      transport = JsonPipeTransport.new(@connection.local_utils, params)
+      connection = Connection.new(transport)
+      connection.mark_as_remote
+      connection.async_run
+
+      playwright = connection.initialize_playwright
+      browser = playwright.send(:pre_launched_browser)
+      browser.send(:should_close_connection_on_close!)
+      browser.send(:connect_to_browser_type, self, nil)
+
+      return browser unless block
+
+      begin
+        block.call(browser)
+      ensure
+        browser.close
+      end
+    rescue
+      connection&.stop
+      raise
+    end
+
     def connect_over_cdp(endpointURL, headers: nil, isLocal: nil, noDefaults: nil, slowMo: nil, timeout: nil, &block)
       raise 'Connecting over CDP is only supported in Chromium.' unless name == 'chromium'
 

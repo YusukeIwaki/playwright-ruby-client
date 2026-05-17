@@ -62,6 +62,11 @@ module Playwright
       nil
     end
 
+    def connect(params)
+      result = @channel.send_message_to_server_result('connect', params)
+      ChannelOwners::JsonPipe.from(result['pipe'])
+    end
+
     private def parse_device_descriptor(descriptor)
       # This return value can be passed into Browser#new_context as it is.
       # ex:

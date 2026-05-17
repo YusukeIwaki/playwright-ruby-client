@@ -87,10 +87,11 @@ module Playwright
       @initializer['version']
     end
 
-    def bind(title, host: nil, port: nil, workspaceDir: nil)
+    def bind(title, host: nil, metadata: nil, port: nil, workspaceDir: nil)
       params = {
         title: title,
         host: host,
+        metadata: metadata,
         port: port,
         workspaceDir: workspaceDir,
       }.compact
