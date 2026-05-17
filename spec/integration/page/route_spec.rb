@@ -187,6 +187,26 @@ RSpec.describe 'Page#route', sinatra: true do
     end
   end
 
+  it 'should throw on unbalanced glob braces' do
+    with_page do |page|
+      expect { page.route('{foo', ->(route, _) { route.continue }) }.
+        to raise_error(ArgumentError, /Invalid glob pattern "\{foo": unmatched '\{'/)
+      expect { page.route('}foo', ->(route, _) { route.continue }) }.
+        to raise_error(ArgumentError, /Invalid glob pattern "\}foo": unmatched '\}'/)
+      expect { page.route('http://*/foo{', ->(route, _) { route.continue }) }.
+        to raise_error(ArgumentError, /unmatched '\{'/)
+      expect { page.route('**/*.png?{', ->(route, _) { route.continue }) }.
+        to raise_error(ArgumentError, /unmatched '\{'/)
+      expect { page.route('https://example.com/{a', ->(route, _) { route.continue }) }.
+        to raise_error(ArgumentError, /unmatched '\{'/)
+      expect { page.route('{{foo}', ->(route, _) { route.continue }) }.
+        to raise_error(ArgumentError, /nested '\{' is not supported/)
+
+      expect { page.route('\{foo', ->(route, _) { route.continue }) }.not_to raise_error
+      expect { page.route('foo\}', ->(route, _) { route.continue }) }.not_to raise_error
+    end
+  end
+
   it 'should work when POST is redirected with 302' do
     with_page do |page|
       sinatra.post('/rredirect') do
