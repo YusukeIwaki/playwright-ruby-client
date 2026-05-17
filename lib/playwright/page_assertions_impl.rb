@@ -53,7 +53,7 @@ module Playwright
         if result['errorMessage']
           error_message = "\n#{result['errorMessage']}"
         end
-        out = "#{out_message}\nActual value #{actual}#{error_message} #{log}"
+        out = "#{out_message}\nActual value #{actual}#{error_message} #{log}#{aria_snapshot(result)}"
         raise AssertionError.new(out)
       else
         true
@@ -63,10 +63,17 @@ module Playwright
     private def received_actual(result)
       received = result['received']
       if received.is_a?(Hash)
-        received.key?('value') ? received['value'] : received['ariaSnapshot']
+        received['value']
       else
         received
       end
+    end
+
+    private def aria_snapshot(result)
+      aria_snapshot = result.dig('received', 'ariaSnapshot')
+      return '' unless aria_snapshot
+
+      "\nAria snapshot:\n#{aria_snapshot}\n"
     end
 
     private def _not # "not" is reserved in Ruby
