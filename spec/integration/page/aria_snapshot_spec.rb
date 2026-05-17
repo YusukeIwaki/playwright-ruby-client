@@ -32,13 +32,60 @@ RSpec.describe 'ariaSnapshot' do
     end
   end
 
-  # https://github.com/microsoft/playwright/blob/v1.60.0/tests/page/to-match-aria-snapshot.spec.ts
+  # https://github.com/microsoft/playwright/blob/release-1.60/tests/page/to-match-aria-snapshot.spec.ts
   it 'should match page' do
     with_page do |page|
       page.content = '<h1>title</h1>'
       expect(page).to match_aria_snapshot(<<~SNAPSHOT)
         - heading "title"
       SNAPSHOT
+    end
+  end
+
+  it 'should match page complex' do
+    with_page do |page|
+      page.content = <<~HTML
+        <h1>Microsoft</h1>
+        <div>Open source projects and samples from Microsoft</div>
+        <ul>
+          <li>
+            <a href="about:blank">Playwright</a>
+          </li>
+        </ul>
+      HTML
+
+      expect(page).to match_aria_snapshot(<<~SNAPSHOT)
+        - heading "Microsoft"
+        - text: Open source projects and samples from Microsoft
+        - list:
+          - listitem:
+            - link "Playwright"
+      SNAPSHOT
+    end
+  end
+
+  it 'should match page with not' do
+    with_page do |page|
+      page.content = '<h1>title</h1>'
+      expect(page).not_to match_aria_snapshot(<<~SNAPSHOT)
+        - heading "wrong"
+      SNAPSHOT
+    end
+  end
+
+  it 'should fail page with timeout' do
+    with_page do |page|
+      page.content = '<h1>title</h1>'
+
+      expect {
+        expect(page).to match_aria_snapshot(<<~SNAPSHOT, timeout: 2000)
+          - heading "wrong"
+        SNAPSHOT
+      }.to raise_error(RSpec::Expectations::ExpectationNotMetError) { |error|
+        expect(error.message).to include('Page expected to match Aria snapshot')
+        expect(error.message).to include('Expect "to_match_aria_snapshot" with timeout 2000ms')
+        expect(error.message).not_to include('Locator')
+      }
     end
   end
 
