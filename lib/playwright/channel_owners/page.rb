@@ -313,12 +313,8 @@ module Playwright
       ChannelOwners::Disposable.from(result['disposable'])
     end
 
-    def expose_binding(name, callback, handle: nil)
-      params = {
-        name: name,
-        needsHandle: handle,
-      }.compact
-      result = @channel.send_message_to_server_result('exposeBinding', params)
+    def expose_binding(name, callback)
+      result = @channel.send_message_to_server_result('exposeBinding', name: name)
       @bindings[name] = callback
       ChannelOwners::Disposable.from(result['disposable'])
     end

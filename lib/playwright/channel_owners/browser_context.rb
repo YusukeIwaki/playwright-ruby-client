@@ -337,19 +337,15 @@ module Playwright
       ChannelOwners::Disposable.from(result['disposable'])
     end
 
-    def expose_binding(name, callback, handle: nil)
+    def expose_binding(name, callback)
       if @pages.any? { |page| page.send(:has_bindings?, name) }
         raise ArgumentError.new("Function \"#{name}\" has been already registered in one of the pages")
       end
       if @bindings.key?(name)
         raise ArgumentError.new("Function \"#{name}\" has been already registered")
       end
-      params = {
-        name: name,
-        needsHandle: handle,
-      }.compact
       @bindings[name] = callback
-      result = @channel.send_message_to_server_result('exposeBinding', params)
+      result = @channel.send_message_to_server_result('exposeBinding', name: name)
       ChannelOwners::Disposable.from(result['disposable'])
     end
 

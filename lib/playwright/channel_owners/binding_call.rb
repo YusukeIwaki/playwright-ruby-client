@@ -53,15 +53,9 @@ module Playwright
         page: PlaywrightApi.wrap(frame.page),
         frame: PlaywrightApi.wrap(frame),
       }
-      args =
-        if @initializer['handle']
-          handle = ChannelOwners::ElementHandle.from(@initializer['handle'])
-          [handle]
-        else
-          @initializer['args'].map do |arg|
-            JavaScript::ValueParser.new(arg).parse
-          end
-        end
+      args = @initializer['args'].map do |arg|
+        JavaScript::ValueParser.new(arg).parse
+      end
 
       begin
         result = PlaywrightApi.unwrap(callback.call(source, *args))
