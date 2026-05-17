@@ -1,424 +1,203 @@
 require 'spec_helper'
+require_relative 'video_player_helper'
 
-require 'chunky_png'
-require 'open3'
-require 'tmpdir'
+# https://github.com/microsoft/playwright/blob/release-1.60/tests/library/screencast.spec.ts
+RSpec.describe 'screencast', sinatra: true do
+  include IntegrationVideoHelpers
 
-# https://github.com/microsoft/playwright/blob/main/tests/library/video.spec.ts
-RSpec.describe 'screencast' do
-  def most_frequest_color_in_last_frame(dir, video_file)
-    _, stderr, status = Open3.capture3("ffmpeg -i #{video_file} -r 25 #{video_file}-%03d.png", chdir: dir)
-    raise 'failed to ffmpeg' unless status.success?
+  before { skip 'screencast is not available in remote mode' if remote? }
 
-    lines = stderr.split("\n")
-    frames_line = lines.find{ |l| l.start_with?('frame=') }
-    raise "No frame data in the output:\n#{stderr}" unless frames_line
+  it 'screencast.start delivers frames via onFrame callback' do
+    context = browser.new_context(viewport: { width: 1000, height: 400 })
+    page = context.new_page
 
-    stdout, status = Open3.capture2("ls #{video_file}-*.png", chdir: dir)
-    raise 'failed to ls' unless status.success?
-    last_png_filename = stdout.split("\n").last
-
-    image = ChunkyPNG::Image.from_file(last_png_filename)
-    pixel_stat = image.pixels.each_with_object({}) do |pix, h|
-      h[pix] ||= 0
-      h[pix]+=1
-    end
-    pixel_stat.max_by(&:last).first
-  end
-
-  def almost_red?(color)
-    [
-      ChunkyPNG::Color.r(color) > 185,
-      ChunkyPNG::Color.g(color) < 70,
-      ChunkyPNG::Color.b(color) < 70,
-      ChunkyPNG::Color.a(color) == 255,
-    ].all?
-  end
-
-  it 'should capture static page' do
-    size = { width: 450, height: 240 }
-
-    Dir.mktmpdir do |dir|
-      video_file = nil
-      with_context(record_video_size: size, record_video_dir: dir) do |context|
-        page = context.new_page
-        page.evaluate("() => document.body.style.backgroundColor = 'red'")
-        sleep 1
-        video_file = page.video.path
-      end
-      expect(File.size(video_file)).to be > 100
-    end
-  end
-
-  it 'should saveAs video' do
-    size = { width: 320, height: 240 }
-
-    Dir.mktmpdir do |dir|
-      save_as_path = File.join(dir, 'my-video.webm')
-      page = nil
-      with_context(record_video_size: size, record_video_dir: dir, viewport: size) do |context|
-        page = context.new_page
-        page.evaluate("() => document.body.style.backgroundColor = 'red'")
-        sleep 1
-      end
-      page.video.save_as(save_as_path)
-      expect(File.size(save_as_path)).to be > 100
-    end
-  end
-
-  # it('saveAs should throw when no video frames', async ({browser, browserName, testInfo}) => {
-  #   const videosPath = testInfo.outputPath('');
-  #   const size = { width: 320, height: 240 };
-  #   const context = await browser.newContext({
-  #     recordVideo: {
-  #       dir: videosPath,
-  #       size
-  #     },
-  #     viewport: size,
-  #   });
-
-  #   const page = await context.newPage();
-  #   const [popup] = await Promise.all([
-  #     page.context().waitForEvent('page'),
-  #     page.evaluate(() => {
-  #       const win = window.open('about:blank');
-  #       win.close();
-  #     }),
-  #   ]);
-  #   await page.close();
-
-  #   const saveAsPath = testInfo.outputPath('my-video.webm');
-  #   const error = await popup.video().saveAs(saveAsPath).catch(e => e);
-  #   // WebKit pauses renderer before win.close() and actually writes something.
-  #   if (browserName === 'webkit')
-  #     expect(fs.existsSync(saveAsPath)).toBeTruthy();
-  #   else
-  #     expect(error.message).toContain('Page did not produce any video frames');
-  # });
-
-  it 'should delete video' do
-    size = { width: 320, height: 240 }
-
-    Dir.mktmpdir do |dir|
-      video_file = nil
-      save_as_path = File.join(dir, 'my-video.webm')
-      with_context(record_video_size: size, record_video_dir: dir, viewport: size) do |context|
-        page = context.new_page
-        Concurrent::Promises.future { page.video.delete }
-        page.evaluate("() => document.body.style.backgroundColor = 'red'")
-        video_file = page.video.path
-      end
-      expect(File.exist?(video_file)).to eq(false)
-    end
-  end
-
-  it 'should record with screencast start/stop' do
-    Dir.mktmpdir do |dir|
-      video_path = File.join(dir, 'screencast-video.webm')
-      with_page do |page|
-        page.screencast.start(path: video_path)
-        page.evaluate("() => document.body.style.backgroundColor = 'red'")
-        sleep 1
-        page.screencast.stop
-      end
-      expect(File.exist?(video_path)).to eq(true)
-      expect(File.size(video_path)).to be > 100
-    end
-  end
-
-  it 'should receive frames via screencast on_frame callback' do
     frames = []
-    with_page do |page|
-      page.screencast.start { |data| frames << data }
-      page.evaluate("() => document.body.style.backgroundColor = 'blue'")
-      sleep 1
-      page.screencast.stop
-    end
+    size = { width: 500, height: 400 }
+    page.screencast.start(size: size) { |frame| frames << frame[:data] }
+    page.goto(server_empty_page)
+    page.evaluate("() => document.body.style.backgroundColor = 'red'")
+    ensure_some_frames(page)
+    page.screencast.stop
+
     expect(frames.length).to be > 0
-    expect(frames.first.bytes[0]).to eq(0xff)
-    expect(frames.first.bytes[1]).to eq(0xd8)
+    frames.each do |frame|
+      expect(frame.bytes[0]).to eq(0xff)
+      expect(frame.bytes[1]).to eq(0xd8)
+      dimensions = jpeg_dimensions(frame)
+      expect(dimensions[:width]).to eq(500)
+      expect(dimensions[:height]).to eq(200)
+    end
+
+    context.close
   end
 
-  # it('should expose video path blank page', async ({browser, testInfo}) => {
-  #   const videosPath = testInfo.outputPath('');
-  #   const size = { width: 320, height: 240 };
-  #   const context = await browser.newContext({
-  #     recordVideo: {
-  #       dir: videosPath,
-  #       size
-  #     },
-  #     viewport: size,
-  #   });
-  #   const page = await context.newPage();
-  #   const path = await page.video()!.path();
-  #   expect(path).toContain(videosPath);
-  #   await context.close();
-  #   expect(fs.existsSync(path)).toBeTruthy();
-  # });
+  it 'onFrame receives viewport size' do
+    context = browser.new_context(viewport: { width: 1000, height: 400 })
+    page = context.new_page
 
-  # it('should expose video path blank popup', async ({browser, testInfo}) => {
-  #   const videosPath = testInfo.outputPath('');
-  #   const size = { width: 320, height: 240 };
-  #   const context = await browser.newContext({
-  #     recordVideo: {
-  #       dir: videosPath,
-  #       size
-  #     },
-  #     viewport: size,
-  #   });
-  #   const page = await context.newPage();
-  #   const [popup] = await Promise.all([
-  #     page.waitForEvent('popup'),
-  #     page.evaluate('window.open("about:blank")')
-  #   ]);
-  #   const path = await popup.video()!.path();
-  #   expect(path).toContain(videosPath);
-  #   await context.close();
-  #   expect(fs.existsSync(path)).toBeTruthy();
-  # });
+    frames = []
+    page.screencast.start(size: { width: 500, height: 400 }) do |frame|
+      frames << { viewportWidth: frame[:viewportWidth], viewportHeight: frame[:viewportHeight] }
+    end
+    page.goto(server_empty_page)
+    ensure_some_frames(page)
+    page.screencast.stop
 
-  # it('should capture navigation', async ({browser, server, testInfo}) => {
-  #   const context = await browser.newContext({
-  #     recordVideo: {
-  #       dir: testInfo.outputPath(''),
-  #       size: { width: 1280, height: 720 }
-  #     },
-  #   });
-  #   const page = await context.newPage();
+    expect(frames.length).to be > 0
+    frames.each do |frame|
+      expect(frame[:viewportWidth]).to eq(1000)
+      expect(frame[:viewportHeight]).to eq(400)
+    end
 
-  #   await page.goto(server.PREFIX + '/background-color.html#rgb(0,0,0)');
-  #   await new Promise(r => setTimeout(r, 1000));
-  #   await page.goto(server.CROSS_PROCESS_PREFIX + '/background-color.html#rgb(100,100,100)');
-  #   await new Promise(r => setTimeout(r, 1000));
-  #   await context.close();
+    context.close
+  end
 
-  #   const videoFile = await page.video().path();
-  #   const videoPlayer = new VideoPlayer(videoFile);
-  #   const duration = videoPlayer.duration;
-  #   expect(duration).toBeGreaterThan(0);
+  it 'start throws if screencast is already started' do
+    context = browser.new_context(viewport: { width: 500, height: 400 })
+    page = context.new_page
 
-  #   {
-  #     const pixels = videoPlayer.seekFirstNonEmptyFrame().data;
-  #     expectAll(pixels, almostBlack);
-  #   }
+    page.screencast.start {}
+    expect { page.screencast.start {} }.to raise_error(/Screencast is already started/)
 
-  #   {
-  #     const pixels = videoPlayer.seekLastFrame().data;
-  #     expectAll(pixels, almostGray);
-  #   }
-  # });
+    page.screencast.stop
+    context.close
+  end
 
-  # it('should capture css transformation', (test, { headful, browserName, platform }) => {
-  #   test.fixme(headful, 'Fails on headful');
-  #   test.fixme(browserName === 'webkit' && platform === 'win32', 'Fails on headful');
-  # }, async ({browser, server, testInfo}) => {
-  #   const size = { width: 320, height: 240 };
-  #   // Set viewport equal to screencast frame size to avoid scaling.
-  #   const context = await browser.newContext({
-  #     recordVideo: {
-  #       dir: testInfo.outputPath(''),
-  #       size,
-  #     },
-  #     viewport: size,
-  #   });
-  #   const page = await context.newPage();
+  it 'start allows restart with different options after stop' do
+    context = browser.new_context(viewport: { width: 500, height: 400 })
+    page = context.new_page
 
-  #   await page.goto(server.PREFIX + '/rotate-z.html');
-  #   await new Promise(r => setTimeout(r, 1000));
-  #   await context.close();
+    page.screencast.start(size: { width: 500, height: 400 }) {}
+    page.screencast.stop
+    page.screencast.start(size: { width: 320, height: 240 }) {}
+    page.screencast.stop
+    context.close
+  end
 
-  #   const videoFile = await page.video().path();
-  #   const videoPlayer = new VideoPlayer(videoFile);
-  #   const duration = videoPlayer.duration;
-  #   expect(duration).toBeGreaterThan(0);
+  it 'start returns a disposable that stops screencast' do
+    context = browser.new_context(viewport: { width: 500, height: 400 })
+    page = context.new_page
 
-  #   {
-  #     const pixels = videoPlayer.seekLastFrame({ x: 95, y: 45 }).data;
-  #     expectAll(pixels, almostRed);
-  #   }
-  # });
+    frames = []
+    page.screencast.start(size: { width: 500, height: 400 }) { |frame| frames << frame[:data] }
+    page.goto(server_empty_page)
+    page.evaluate("() => document.body.style.backgroundColor = 'red'")
+    ensure_some_frames(page)
+    page.screencast.stop
 
-  # it('should work for popups', async ({browser, testInfo, server}) => {
-  #   const videosPath = testInfo.outputPath('');
-  #   const size = { width: 450, height: 240 };
-  #   const context = await browser.newContext({
-  #     recordVideo: {
-  #       dir: videosPath,
-  #       size,
-  #     },
-  #     viewport: size,
-  #   });
+    frame_count_after_dispose = frames.length
+    expect(frame_count_after_dispose).to be > 0
 
-  #   const page = await context.newPage();
-  #   await page.goto(server.EMPTY_PAGE);
-  #   const [popup] = await Promise.all([
-  #     page.waitForEvent('popup'),
-  #     page.evaluate(() => { window.open('about:blank'); }),
-  #   ]);
-  #   await popup.evaluate(() => document.body.style.backgroundColor = 'red');
-  #   await new Promise(r => setTimeout(r, 1000));
-  #   await context.close();
+    page.evaluate("() => document.body.style.backgroundColor = 'blue'")
+    ensure_some_frames(page)
+    expect(frames.length).to eq(frame_count_after_dispose)
 
-  #   const pageVideoFile = await page.video().path();
-  #   const popupVideoFile = await popup.video().path();
-  #   expect(pageVideoFile).not.toEqual(popupVideoFile);
-  #   expectRedFrames(popupVideoFile, size);
+    context.close
+  end
 
-  #   const videoFiles = findVideos(videosPath);
-  #   expect(videoFiles.length).toBe(2);
-  # });
+  it 'start/stop twice without path creates two files in artifactsDir' do
+    Dir.mktmpdir do |dir|
+      artifacts_dir = File.join(dir, 'artifacts')
+      browser_type.launch(artifactsDir: artifacts_dir) do |launched_browser|
+        size = { width: 800, height: 800 }
+        context = launched_browser.new_context(viewport: size)
+        page = context.new_page
 
-  # it('should scale frames down to the requested size ', (test, parameters) => {
-  #   test.fixme(parameters.headful, 'Fails on headful');
-  # }, async ({browser, testInfo, server}) => {
-  #   const context = await browser.newContext({
-  #     recordVideo: {
-  #       dir: testInfo.outputPath(''),
-  #       // Set size to 1/2 of the viewport.
-  #       size: { width: 320, height: 240 },
-  #     },
-  #     viewport: {width: 640, height: 480},
-  #   });
-  #   const page = await context.newPage();
+        page.screencast.start(path: File.join(dir, 'video1.webm'), size: size)
+        page.evaluate("() => document.body.style.backgroundColor = 'red'")
+        ensure_some_frames(page)
+        page.screencast.stop
 
-  #   await page.goto(server.PREFIX + '/checkerboard.html');
-  #   // Update the picture to ensure enough frames are generated.
-  #   await page.$eval('.container', container => {
-  #     container.firstElementChild.classList.remove('red');
-  #   });
-  #   await new Promise(r => setTimeout(r, 300));
-  #   await page.$eval('.container', container => {
-  #     container.firstElementChild.classList.add('red');
-  #   });
-  #   await new Promise(r => setTimeout(r, 1000));
-  #   await context.close();
+        page.screencast.start(path: File.join(dir, 'video2.webm'), size: size)
+        page.evaluate("() => document.body.style.backgroundColor = 'blue'")
+        ensure_some_frames(page)
+        page.screencast.stop
 
-  #   const videoFile = await page.video().path();
-  #   const videoPlayer = new VideoPlayer(videoFile);
-  #   const duration = videoPlayer.duration;
-  #   expect(duration).toBeGreaterThan(0);
+        video_files = Dir[File.join(artifacts_dir, '*.webm')]
+        expect(video_files.length).to eq(2)
 
-  #   {
-  #     const pixels = videoPlayer.seekLastFrame({x: 0, y: 0}).data;
-  #     expectAll(pixels, almostRed);
-  #   }
-  #   {
-  #     const pixels = videoPlayer.seekLastFrame({x: 300, y: 0}).data;
-  #     expectAll(pixels, almostGray);
-  #   }
-  #   {
-  #     const pixels = videoPlayer.seekLastFrame({x: 0, y: 200}).data;
-  #     expectAll(pixels, almostGray);
-  #   }
-  #   {
-  #     const pixels = videoPlayer.seekLastFrame({x: 300, y: 200}).data;
-  #     expectAll(pixels, almostRed);
-  #   }
-  # });
+        context.close
+      end
+    end
+  end
 
-  # it('should use viewport scaled down to fit into 800x800 as default size', async ({browser, testInfo}) => {
-  #   const size = {width: 1600, height: 1200};
-  #   const context = await browser.newContext({
-  #     recordVideo: {
-  #       dir: testInfo.outputPath(''),
-  #     },
-  #     viewport: size,
-  #   });
+  it 'start should work when recordVideo is set' do
+    Dir.mktmpdir do |dir|
+      auto_dir = File.join(dir, 'auto')
+      manual_dir = File.join(dir, 'manual')
+      context = browser.new_context(record_video_dir: auto_dir)
+      page = context.new_page
 
-  #   const page = await context.newPage();
-  #   await new Promise(r => setTimeout(r, 1000));
-  #   await context.close();
+      page.screencast.start(path: File.join(manual_dir, 'video.webm'))
+      page.evaluate("() => document.body.style.backgroundColor = 'blue'")
+      ensure_some_frames(page)
+      page.screencast.stop
+      video_files1 = Dir[File.join(manual_dir, '*.webm')]
+      expect(video_files1.length).to eq(1)
 
-  #   const videoFile = await page.video().path();
-  #   const videoPlayer = new VideoPlayer(videoFile);
-  #   expect(videoPlayer.videoWidth).toBe(800);
-  #   expect(videoPlayer.videoHeight).toBe(600);
-  # });
+      context.close
+      video_files2 = Dir[File.join(auto_dir, '*.webm')]
+      expect(video_files2.length).to eq(1)
+    end
+  end
 
-  # it('should be 800x450 by default', async ({ browser, testInfo }) => {
-  #   const context = await browser.newContext({
-  #     recordVideo: {
-  #       dir: testInfo.outputPath(''),
-  #     },
-  #   });
+  it 'start should fail when another recording is in progress' do
+    Dir.mktmpdir do |dir|
+      with_page do |page|
+        page.screencast.start(path: File.join(dir, 'video.webm'))
+        expect {
+          page.screencast.start(path: File.join(dir, 'video2.webm'))
+        }.to raise_error(/Screencast is already started/)
+      end
+    end
+  end
 
-  #   const page = await context.newPage();
-  #   await new Promise(r => setTimeout(r, 1000));
-  #   await context.close();
+  it 'stop should not fail when no recording is in progress' do
+    context = browser.new_context
+    page = context.new_page
+    page.screencast.stop
+    context.close
+  end
 
-  #   const videoFile = await page.video().path();
-  #   const videoPlayer = new VideoPlayer(videoFile);
-  #   expect(videoPlayer.videoWidth).toBe(800);
-  #   expect(videoPlayer.videoHeight).toBe(450);
-  # });
+  it 'start should finish when page is closed' do
+    Dir.mktmpdir do |dir|
+      context = browser.new_context
+      page = context.new_page
+      video_path = File.join(dir, 'video.webm')
+      page.screencast.start(path: video_path, size: { width: 800, height: 800 })
+      page.evaluate("() => document.body.style.backgroundColor = 'red'")
+      ensure_some_frames(page)
+      page.close
+      expect { page.screencast.stop }.to raise_error(/closed/)
+      context.close
+    end
+  end
 
-  # it('should be 800x600 with null viewport', (test, { headful, browserName }) => {
-  #   test.fixme(browserName === 'firefox' && !headful, 'Fails in headless on bots');
-  # }, async ({ browser, testInfo }) => {
-  #   const context = await browser.newContext({
-  #     recordVideo: {
-  #       dir: testInfo.outputPath(''),
-  #     },
-  #     viewport: null
-  #   });
+  it 'empty video' do
+    Dir.mktmpdir do |dir|
+      size = { width: 800, height: 800 }
+      context = browser.new_context(viewport: size)
+      page = context.new_page
+      video_path = File.join(dir, 'empty-video.webm')
+      page.screencast.start(path: video_path, size: size)
+      page.screencast.stop
+      context.close
+      expect_frames(video_path, size, :almost_white?) { |color| almost_white?(color) }
+    end
+  end
 
-  #   const page = await context.newPage();
-  #   await new Promise(r => setTimeout(r, 1000));
-  #   await context.close();
-
-  #   const videoFile = await page.video().path();
-  #   const videoPlayer = new VideoPlayer(videoFile);
-  #   expect(videoPlayer.videoWidth).toBe(800);
-  #   expect(videoPlayer.videoHeight).toBe(600);
-  # });
-
-  # it('should capture static page in persistent context', async ({launchPersistent, testInfo}) => {
-  #   const size = { width: 320, height: 240 };
-  #   const { context, page } = await launchPersistent({
-  #     recordVideo: {
-  #       dir: testInfo.outputPath(''),
-  #       size,
-  #     },
-  #     viewport: size,
-  #   });
-
-  #   await page.evaluate(() => document.body.style.backgroundColor = 'red');
-  #   await new Promise(r => setTimeout(r, 1000));
-  #   await context.close();
-
-  #   const videoFile = await page.video().path();
-  #   const videoPlayer = new VideoPlayer(videoFile);
-  #   const duration = videoPlayer.duration;
-  #   expect(duration).toBeGreaterThan(0);
-
-  #   expect(videoPlayer.videoWidth).toBe(320);
-  #   expect(videoPlayer.videoHeight).toBe(240);
-
-  #   {
-  #     const pixels = videoPlayer.seekLastFrame().data;
-  #     expectAll(pixels, almostRed);
-  #   }
-  # });
-
-  # it('should emulate an iphone', (test, { browserName }) => {
-  #   test.skip(browserName === 'firefox', 'isMobile is not supported in Firefox');
-  # }, async ({contextFactory, playwright, contextOptions, testInfo}) => {
-  #   const device = playwright.devices['iPhone 6'];
-  #   const context = await contextFactory({
-  #     ...contextOptions,
-  #     ...device,
-  #     recordVideo: {
-  #       dir: testInfo.outputPath(''),
-  #     },
-  #   });
-
-  #   const page = await context.newPage();
-  #   await new Promise(r => setTimeout(r, 1000));
-  #   await context.close();
-
-  #   const videoFile = await page.video().path();
-  #   const videoPlayer = new VideoPlayer(videoFile);
-  #   expect(videoPlayer.videoWidth).toBe(374);
-  #   expect(videoPlayer.videoHeight).toBe(666);
-  # });
+  it 'start dispose stops recording' do
+    Dir.mktmpdir do |dir|
+      size = { width: 800, height: 800 }
+      context = browser.new_context(viewport: size)
+      page = context.new_page
+      video_path = File.join(dir, 'dispose-video.webm')
+      disposable = page.screencast.start(path: video_path, size: size)
+      page.evaluate("() => document.body.style.backgroundColor = 'red'")
+      ensure_some_frames(page)
+      disposable.dispose
+      expect_red_frames(video_path, size)
+      context.close
+    end
+  end
 end

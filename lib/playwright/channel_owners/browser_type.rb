@@ -43,6 +43,7 @@ module Playwright
       browser = ChannelOwners::Browser.from(result['browser'])
       browser.send(:connect_to_browser_type, self, params[:tracesDir])
       context = ChannelOwners::BrowserContext.from(result['context'])
+      context.send(:update_options, context_options: params, browser_options: params)
       context.send(:initialize_har_from_options,
         record_har_content: params[:record_har_content],
         record_har_mode: params[:record_har_mode],
