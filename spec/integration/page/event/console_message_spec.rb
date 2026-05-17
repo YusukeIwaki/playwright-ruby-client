@@ -105,4 +105,24 @@ RSpec.describe 'console message' do
       expect(messages.last(100).all? { |m| m.page == page }).to be true
     end
   end
+
+  it 'should have location for console API calls', sinatra: true do
+    with_page do |page|
+      message = page.expect_event('console') do
+        page.goto("#{server_prefix}/consolelog.html")
+      end
+
+      expect(message.type).to eq('log')
+      location = message.location
+      expect({
+        'url' => location['url'],
+        'line' => location['line'],
+        'lineNumber' => location['lineNumber'],
+      }).to eq({
+        'url' => "#{server_prefix}/consolelog.html",
+        'line' => 7,
+        'lineNumber' => 7,
+      })
+    end
+  end
 end
