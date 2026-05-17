@@ -28,6 +28,14 @@ RSpec.configure do |config|
     metadata[:type] = :integration
   end
 
+  config.around(:each, playwright_under_test: true) do |example|
+    original = ENV['PWTEST_UNDER_TEST']
+    ENV['PWTEST_UNDER_TEST'] = '1'
+    example.run
+  ensure
+    ENV['PWTEST_UNDER_TEST'] = original
+  end
+
   browser_type = :chromium
   BROWSER_TYPES = %i(chromium webkit firefox)
   if BROWSER_TYPES.include?(ENV['BROWSER']&.to_sym)
