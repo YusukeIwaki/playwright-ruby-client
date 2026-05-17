@@ -60,13 +60,28 @@ RSpec.describe 'Locator#drop' do
     end
   end
 
+  it 'should drop multiple file payloads' do
+    with_page do |page|
+      setup_dropzone(page)
+      page.locator('#dropzone').drop({
+        files: [
+          { name: 'a.txt', mimeType: 'text/plain', buffer: 'AAA' },
+          { name: 'b.txt', mimeType: 'text/plain', buffer: 'BB' },
+        ],
+      })
+
+      info = drop_info(page)
+      expect(info['files'].map { |file| [file['name'], file['text']] }).to eq([['a.txt', 'AAA'], ['b.txt', 'BB']])
+    end
+  end
+
   it 'should drop clipboard-like data' do
     with_page do |page|
       setup_dropzone(page)
       page.locator('#dropzone').drop({
         data: {
-        'text/plain' => 'hello world',
-        'text/uri-list' => 'https://example.com',
+          'text/plain' => 'hello world',
+          'text/uri-list' => 'https://example.com',
         },
       })
 
@@ -77,12 +92,35 @@ RSpec.describe 'Locator#drop' do
     end
   end
 
+  it 'should drop files and data together' do
+    with_page do |page|
+      setup_dropzone(page)
+      page.locator('#dropzone').drop({
+        files: { name: 'mix.txt', mimeType: 'text/plain', buffer: 'mix' },
+        data: { 'text/plain' => 'label' },
+      })
+
+      info = drop_info(page)
+      expect(info['files'][0]['text']).to eq('mix')
+      expect(info['data']['text/plain']).to eq('label')
+    end
+  end
+
   it 'should throw when target does not accept drop' do
     with_page do |page|
       page.content = '<div id="dropzone" style="width: 200px; height: 100px;"></div>'
       expect {
         page.locator('#dropzone').drop({ data: { 'text/plain' => 'nope' } })
       }.to raise_error(/drop target did not accept the drop/i)
+    end
+  end
+
+  it 'should throw when neither files nor data provided' do
+    with_page do |page|
+      setup_dropzone(page)
+      expect {
+        page.locator('#dropzone').drop({})
+      }.to raise_error(/At least one of "files" or "data"/)
     end
   end
 end
