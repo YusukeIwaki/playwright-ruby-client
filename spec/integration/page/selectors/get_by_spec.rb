@@ -222,10 +222,12 @@ world</label><input id=control />"
       expect(page.get_by_role('alert', description: 'doc-2025').evaluate_all('els => els.map(e => e.textContent)')).to eq(['Alert 1'])
       expect(page.get_by_role('alert', description: 'report-2026').evaluate_all('els => els.map(e => e.textContent)')).to eq(['Alert 2'])
       expect(page.get_by_role('alert', name: 'Upload successful', description: 'doc-2025').evaluate_all('els => els.map(e => e.textContent)')).to eq(['Alert 1'])
+      expect(page.get_by_role('alert', name: 'Upload successful', description: 'report-2026').evaluate_all('els => els.map(e => e.textContent)')).to eq(['Alert 2'])
       expect(page.get_by_role('alert', name: 'Invalid file', description: 'doc-2025').evaluate_all('els => els.map(e => e.textContent)')).to eq([])
       expect(page.get_by_role('alert', description: 'doc-2025', exact: true).evaluate_all('els => els.map(e => e.textContent)')).to eq([])
       expect(page.get_by_role('alert', description: 'File doc-2025.pdf was uploaded successfully', exact: true).evaluate_all('els => els.map(e => e.textContent)')).to eq(['Alert 1'])
       expect(page.get_by_role('alert', description: /report-\d+/).evaluate_all('els => els.map(e => e.textContent)')).to eq(['Alert 2'])
+      expect(page.get_by_role('alert', description: /uploaded successfully$/).evaluate_all('els => els.map(e => e.textContent)')).to eq(['Alert 1', 'Alert 2'])
     end
   end
 
@@ -240,6 +242,28 @@ world</label><input id=control />"
 
       expect(page.get_by_role('button', name: 'Submit', description: 'form data').evaluate_all('els => els.map(e => e.textContent)')).to eq(['Submit'])
       expect(page.get_by_role('button', name: 'Submit', description: 'draft').evaluate_all('els => els.map(e => e.textContent)')).to eq(['Submit'])
+    end
+  end
+
+  it 'getByRole with description via title fallback' do
+    with_page do |page|
+      page.content = <<~HTML
+        <button title="Submits the form">Submit</button>
+        <button title="Resets the form">Reset</button>
+      HTML
+
+      expect(page.get_by_role('button', description: 'Submits').evaluate_all('els => els.map(e => e.textContent)')).to eq(['Submit'])
+      expect(page.get_by_role('button', description: 'Resets').evaluate_all('els => els.map(e => e.textContent)')).to eq(['Reset'])
+    end
+  end
+
+  it 'getByRole with description whitespace normalization' do
+    with_page do |page|
+      page.content = <<~HTML
+        <div role="alert" aria-description="File  doc-2025.pdf   was uploaded   successfully">Alert</div>
+      HTML
+
+      expect(page.get_by_role('alert', description: "  doc-2025.pdf \n was  uploaded ").evaluate_all('els => els.map(e => e.textContent)')).to eq(['Alert'])
     end
   end
 end
