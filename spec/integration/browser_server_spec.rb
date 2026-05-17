@@ -53,4 +53,25 @@ RSpec.describe 'browser server', playwright_server_registry: true do
     browser2.close
     browser.unbind
   end
+
+  it 'should fire context event on remote newContext' do
+    server_info = browser.bind('default')
+    browser_a = browser_type.connect(server_info['endpoint'])
+    events = []
+    browser_a.on('context', ->(context) { events << context })
+
+    browser_b = browser_type.connect(server_info['endpoint'])
+    context_b = browser_b.new_context
+
+    Timeout.timeout(5) do
+      sleep 0.05 until events.length == 1
+    end
+    expect(browser_a.contexts).to eq([events[0]])
+    expect(events[0]).not_to eq(context_b)
+  ensure
+    context_b&.close
+    browser_b&.close
+    browser_a&.close
+    browser.unbind if server_info
+  end
 end
