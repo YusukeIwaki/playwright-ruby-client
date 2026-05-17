@@ -1842,6 +1842,15 @@ module ExampleCodes
     expect(page).to have_url(/.*checkout/)
   end
 
+  # PageAssertions#to_match_aria_snapshot
+  def example_e37f2c2c64f4ef93b5f078fcced9a2129efbeb3e855fd68d898a9176750f8757(page:)
+    page.goto("https://demo.playwright.dev/todomvc/")
+    expect(page).to match_aria_snapshot(<<~YAML)
+      - heading "todos"
+      - textbox "What needs to be done?"
+    YAML
+  end
+
   # Request#failure
   def example_5f3f4534ab17f584cfd41ca38448ce7de9490b6588e29e73116ede3cb15a25a5(page:)
     page.on("requestfailed", ->(request) { puts "#{request.url} #{request.failure}" })
@@ -2034,6 +2043,14 @@ module ExampleCodes
     page.goto("http://example.com")
     # Save a second trace file with different actions.
     context.tracing.stop_chunk(path: "trace2.zip")
+  end
+
+  # Tracing#start_har
+  def example_7e57903bfd46e2f7b1271ebcf2b4d9d9de03ad0bf43891a8e542fc359e931e71(context:)
+    context.tracing.start_har("trace.har")
+    page = context.new_page
+    page.goto("https://playwright.dev")
+    context.tracing.stop_har
   end
 
   # Tracing#group

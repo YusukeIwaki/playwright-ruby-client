@@ -77,6 +77,26 @@ page.goto("http://example.com")
 context.tracing.stop_chunk(path: "trace2.zip")
 ```
 
+## start_har
+
+```
+def start_har(path, content: nil, mode: nil, urlFilter: nil)
+```
+
+
+Start recording a HAR (HTTP Archive) of network activity in this context. The HAR file is written to disk when [Tracing#stop_har](./tracing#stop_har) is called, or when the returned `Disposable` is disposed.
+
+Only one HAR recording can be active at a time per [BrowserContext](./browser_context).
+
+**Usage**
+
+```ruby
+context.tracing.start_har("trace.har")
+page = context.new_page
+page.goto("https://playwright.dev")
+context.tracing.stop_har
+```
+
 ## group
 
 ```
@@ -128,3 +148,12 @@ def stop_chunk(path: nil)
 
 
 Stop the trace chunk. See [Tracing#start_chunk](./tracing#start_chunk) for more details about multiple trace chunks.
+
+## stop_har
+
+```
+def stop_har
+```
+
+
+Stop HAR recording and save the HAR file to the path given to [Tracing#start_har](./tracing#start_har).

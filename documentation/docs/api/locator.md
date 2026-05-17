@@ -87,7 +87,7 @@ button = page.get_by_role("button").and(page.get_by_title("Subscribe"))
 ## aria_snapshot
 
 ```
-def aria_snapshot(depth: nil, mode: nil, timeout: nil)
+def aria_snapshot(boxes: nil, depth: nil, mode: nil, timeout: nil)
 ```
 
 
@@ -441,6 +441,31 @@ source.drag_to(
 )
 ```
 
+## drop
+
+```
+def drop(payload, position: nil, timeout: nil)
+```
+
+
+Simulate an external drag-and-drop of files or clipboard-like data onto this locator.
+
+**Details**
+
+Dispatches the native `dragenter`, `dragover`, and `drop` events at the center of the
+target element with a synthetic [DataTransfer] carrying the provided files and/or data
+entries. Works cross-browser by constructing the [DataTransfer] in the page context.
+
+If the target element's `dragover` listener does not call `preventDefault()`, the target
+is considered to have rejected the drop: Playwright dispatches `dragleave` and this
+method throws.
+
+**Usage**
+
+Drop a file buffer onto an upload area:
+
+Drop plain text and a URL together:
+
 ## element_handle
 
 ```
@@ -721,6 +746,7 @@ page.get_by_placeholder("name@example.com").fill("playwright@microsoft.com")
 def get_by_role(
       role,
       checked: nil,
+      description: nil,
       disabled: nil,
       exact: nil,
       expanded: nil,
@@ -869,10 +895,19 @@ You can check the issues count after locating it by the title text:
 page.get_by_title("Issues count").text_content # => "25 issues"
 ```
 
+## hide_highlight
+
+```
+def hide_highlight
+```
+
+
+Hides the element highlight previously added by [Locator#highlight](./locator#highlight).
+
 ## highlight
 
 ```
-def highlight
+def highlight(style: nil)
 ```
 
 

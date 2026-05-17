@@ -20,6 +20,7 @@ end
   },
 
   Browser: {
+    Context: 'context',
     Disconnected: 'disconnected'
   },
 
@@ -28,7 +29,13 @@ end
     Close: 'close',
     Console: 'console',
     Dialog: 'dialog',
+    Download: 'download',
+    FrameAttached: 'frameattached',
+    FrameDetached: 'framedetached',
+    FrameNavigated: 'framenavigated',
     Page: 'page',
+    PageClose: 'pageclose',
+    PageLoad: 'pageload',
     WebError: 'weberror',
     ServiceWorker: 'serviceworker',
     Request: 'request',

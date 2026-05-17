@@ -97,4 +97,26 @@ RSpec.describe 'HAR' do
       expect(response.http_version).to eq('HTTP/1.1')
     end
   end
+
+  # https://github.com/microsoft/playwright/blob/v1.60.0/tests/library/har.spec.ts
+  describe 'tracing.startHar' do
+    it 'should record a HAR with options', sinatra: true do
+      Dir.mktmpdir do |dir|
+        har_path = File.join(dir, 'tracing.har')
+
+        with_context do |context|
+          context.tracing.start_har(har_path, mode: 'minimal', urlFilter: '**/one-style.css')
+          page = context.new_page
+          page.goto("#{server_prefix}/one-style.html")
+          context.tracing.stop_har
+        end
+
+        log = parse_har_file(har_path)
+        urls = log['entries'].map { |entry| entry['request']['url'] }
+        expect(urls).to eq(["#{server_prefix}/one-style.css"])
+        expect(log['entries'][0]['request']['bodySize']).to eq(-1)
+      end
+    end
+
+  end
 end

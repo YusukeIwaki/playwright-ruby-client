@@ -1,3 +1,4 @@
+require 'base64'
 require_relative '../locator_utils'
 
 module Playwright
@@ -47,6 +48,7 @@ module Playwright
       unless @parent_frame
         if add == 'load'
           @page&.emit(Events::Page::Load, @page)
+          @page&.context&.emit(Events::BrowserContext::PageLoad, @page)
         elsif add == 'domcontentloaded'
           @page&.emit(Events::Page::DOMContentLoaded, @page)
         end
@@ -65,6 +67,7 @@ module Playwright
 
       unless event['error']
         @page&.emit(Events::Page::FrameNavigated, self)
+        @page&.context&.emit(Events::BrowserContext::FrameNavigated, self)
       end
     end
 
@@ -388,6 +391,23 @@ module Playwright
       nil
     end
 
+    def drop(
+          selector,
+          payload,
+          position: nil,
+          strict: nil,
+          timeout: nil)
+      params = {
+        selector: selector,
+        position: position,
+        strict: strict,
+        timeout: _timeout(timeout),
+      }.compact.merge(drop_payload_params(payload))
+      @channel.send_message_to_server('drop', params)
+
+      nil
+    end
+
     def dblclick(
           selector,
           button: nil,
@@ -690,8 +710,12 @@ module Playwright
       @channel.send_message_to_server('title')
     end
 
-    def highlight(selector)
-      @channel.send_message_to_server('highlight', selector: selector)
+    def highlight(selector, style: nil)
+      @channel.send_message_to_server('highlight', { selector: selector, style: style }.compact)
+    end
+
+    def hide_highlight(selector)
+      @channel.send_message_to_server('hideHighlight', selector: selector)
     end
 
     def expect(selector, expression, options, title)
@@ -712,10 +736,72 @@ module Playwright
       )
 
       if result.key?('received')
-        result['received'] = JavaScript::ValueParser.new(result['received']).parse
+        if result['received'].is_a?(Hash) && result['received'].key?('value')
+          result['received']['value'] = JavaScript::ValueParser.new(result['received']['value']).parse
+        elsif !result['received'].is_a?(Hash)
+          result['received'] = JavaScript::ValueParser.new(result['received']).parse
+        end
       end
 
       result
+    end
+
+    private def drop_payload_params(payload)
+      unless payload.is_a?(Hash)
+        raise ArgumentError.new('payload must be a Hash')
+      end
+      unless payload.key?(:files) || payload.key?('files') || payload.key?(:data) || payload.key?('data')
+        raise ArgumentError.new('At least one of "files" or "data" must be specified')
+      end
+
+      params = {}
+      files = payload[:files] || payload['files']
+      params[:payloads] = drop_file_payloads(files) if files
+
+      data = payload[:data] || payload['data']
+      if data
+        params[:data] = data.map do |mime_type, value|
+          { mimeType: mime_type, value: value }
+        end
+      end
+
+      params
+    end
+
+    private def drop_file_payloads(files)
+      items =
+        if files.is_a?(Array)
+          files
+        else
+          [files]
+        end
+
+      if items.any? { |item| item.is_a?(String) || item.is_a?(File) }
+        unless items.all? { |item| item.is_a?(String) || item.is_a?(File) }
+          raise ArgumentError.new('File paths cannot be mixed with buffers')
+        end
+        return items.map do |item|
+          path = item.is_a?(File) ? item.path : item
+          raise ArgumentError.new('Dropping a directory is not supported - pass individual files.') if File.directory?(path)
+
+          {
+            name: File.basename(path),
+            buffer: Base64.strict_encode64(File.binread(path)),
+          }
+        end
+      end
+
+      items.map do |item|
+        unless item.is_a?(Hash)
+          raise ArgumentError.new('files must be file paths or file payload hashes')
+        end
+        buffer = item[:buffer] || item['buffer']
+        {
+          name: item[:name] || item['name'],
+          mimeType: item[:mimeType] || item['mimeType'],
+          buffer: Base64.strict_encode64(buffer),
+        }.compact
+      end
     end
 
     # @param page [Page]

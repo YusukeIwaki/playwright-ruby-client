@@ -28,7 +28,7 @@ module Playwright
       result = @frame.expect(nil, expression, expect_options, title)
 
       if result["matches"] == @is_not
-        actual = result["received"]
+        actual = received_actual(result)
 
         log =
           if result.key?("log")
@@ -60,12 +60,21 @@ module Playwright
       end
     end
 
+    private def received_actual(result)
+      received = result['received']
+      if received.is_a?(Hash)
+        received.key?('value') ? received['value'] : received['ariaSnapshot']
+      else
+        received
+      end
+    end
+
     private def _not # "not" is reserved in Ruby
       PageAssertionsImpl.new(
         @page,
         @default_expect_timeout,
         !@is_not,
-        @message
+        @custom_message
       )
     end
 
@@ -150,5 +159,19 @@ module Playwright
       )
     end
     _define_negation :to_have_url
+
+    def to_match_aria_snapshot(expected, timeout: nil)
+      expect_impl(
+        'to.match.aria',
+        {
+          expectedValue: expected,
+          timeout: timeout,
+        },
+        expected,
+        'Page expected to match Aria snapshot',
+        'Expect "to_match_aria_snapshot"',
+      )
+    end
+    _define_negation :to_match_aria_snapshot
   end
 end

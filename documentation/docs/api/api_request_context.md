@@ -8,21 +8,21 @@ sidebar_position: 10
 This API is used for the Web API testing. You can use it to trigger API endpoints, configure micro-services, prepare
 environment or the service to your e2e test.
 
-Each Playwright browser context has associated with it [APIRequestContext](./api_request_context) instance which shares cookie storage with
-the browser context and can be accessed via [BrowserContext#request](./browser_context#request) or [Page#request](./page#request).
-It is also possible to create a new APIRequestContext instance manually by calling [APIRequest#new_context](./api_request#new_context).
+Each Playwright browser context has an associated [APIRequestContext](./api_request_context), accessible via
+[BrowserContext#request](./browser_context#request) or [Page#request](./page#request) (these return the
+
+**same instance** — `page.request` is a shortcut for `page.context().request`).
+You can also create a standalone, isolated instance with [APIRequest#new_context](./api_request#new_context).
 
 **Cookie management**
 
-[APIRequestContext](./api_request_context) returned by [BrowserContext#request](./browser_context#request) and [Page#request](./page#request) shares cookie
-storage with the corresponding [BrowserContext](./browser_context). Each API request will have `Cookie` header populated with the
-values from the browser context. If the API response contains `Set-Cookie` header it will automatically update
-[BrowserContext](./browser_context) cookies and requests made from the page will pick them up. This means that if you log in using
-this API, your e2e test will be logged in and vice versa.
+The [APIRequestContext](./api_request_context) returned by [BrowserContext#request](./browser_context#request) and
 
-If you want API requests to not interfere with the browser cookies you should create a new [APIRequestContext](./api_request_context) by
-calling [APIRequest#new_context](./api_request#new_context). Such [APIRequestContext](./api_request_context) object will have its own isolated cookie
-storage.
+[Page#request](./page#request) uses the same cookie jar as its [BrowserContext](./browser_context):
+
+If you want API requests that do **not** share cookies with the browser, create an
+isolated context via [APIRequest#new_context](./api_request#new_context). Such [APIRequestContext](./api_request_context)
+object will have its own isolated cookie storage.
 
 ```ruby
 playwright.chromium.launch do |browser|
@@ -296,3 +296,5 @@ def put(
 Sends HTTP(S) [PUT](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PUT) request and returns its response.
 The method will populate request cookies from the context and update
 context cookies from the response. The method will automatically follow redirects.
+
+## tracing

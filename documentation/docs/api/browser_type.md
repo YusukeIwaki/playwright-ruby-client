@@ -26,6 +26,7 @@ def connect_over_cdp(
       endpointURL,
       headers: nil,
       isLocal: nil,
+      noDefaults: nil,
       slowMo: nil,
       timeout: nil,
       &block)

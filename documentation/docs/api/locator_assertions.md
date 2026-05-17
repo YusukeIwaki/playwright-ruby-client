@@ -647,7 +647,7 @@ expect(locator).to have_count(3)
 ## to_have_css
 
 ```ruby
-expect(locator).to have_css(name, value, timeout: nil)
+expect(locator).to have_css(name, value, pseudo: nil, timeout: nil)
 ```
 
 

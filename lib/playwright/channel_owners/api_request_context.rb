@@ -8,13 +8,17 @@ module Playwright
       @timeout_settings = TimeoutSettings.new
     end
 
+    attr_reader :tracing
+
     private def _update_timeout_settings(timeout_settings)
       @timeout_settings = timeout_settings
     end
 
     def dispose(reason: nil)
       @close_reason = reason
-      @channel.send_message_to_server('dispose')
+      @tracing.send(:export_all_hars)
+      @channel.send_message_to_server('dispose', { reason: reason }.compact)
+      @tracing.send(:reset_stack_counter)
     end
 
     def delete(url, **options)

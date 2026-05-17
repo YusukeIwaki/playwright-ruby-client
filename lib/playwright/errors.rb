@@ -60,12 +60,13 @@ module Playwright
   end
 
   class WebError
-    def initialize(error, page)
+    def initialize(error, page, location = nil)
       @error = error
       @page = PlaywrightApi.wrap(page)
+      @location = location
     end
 
-    attr_reader :error, :page
+    attr_reader :error, :page, :location
   end
 
   class AssertionError < StandardError; end

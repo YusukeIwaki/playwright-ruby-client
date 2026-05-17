@@ -293,6 +293,7 @@
 * go_forward
 * ~~request_gc~~
 * goto
+* hide_highlight
 * hover
 * inner_html
 * inner_text
@@ -422,10 +423,10 @@
 * new_browser_cdp_session
 * new_context
 * new_page
-* ~~bind~~
+* bind
 * start_tracing
 * stop_tracing
-* ~~unbind~~
+* unbind
 * version
 
 ## BrowserType
@@ -451,10 +452,12 @@
 
 * start
 * start_chunk
+* start_har
 * group
 * group_end
 * stop
 * stop_chunk
+* stop_har
 
 ## Locator
 
@@ -474,6 +477,7 @@
 * description
 * dispatch_event
 * drag_to
+* drop
 * element_handle
 * element_handles
 * content_frame
@@ -493,6 +497,7 @@
 * get_by_test_id
 * get_by_text
 * get_by_title
+* hide_highlight
 * highlight
 * hover
 * inner_html
@@ -564,6 +569,7 @@
 * post
 * put
 * ~~storage_state~~
+* tracing
 
 ## ~~APIRequest~~
 
@@ -628,59 +634,7 @@
 
 * not_to_have_title
 * not_to_have_url
+* to_match_aria_snapshot
+* not_to_match_aria_snapshot
 * to_have_title
 * to_have_url
-
-## Android
-
-* ~~connect~~
-* devices
-* set_default_timeout
-
-## AndroidDevice
-
-* close
-* ~~drag~~
-* ~~fill~~
-* ~~fling~~
-* info
-* ~~install_apk~~
-* launch_browser
-* ~~long_tap~~
-* model
-* ~~open~~
-* ~~pinch_close~~
-* ~~pinch_open~~
-* ~~press~~
-* ~~push~~
-* screenshot
-* ~~scroll~~
-* serial
-* ~~set_default_timeout~~
-* shell
-* ~~swipe~~
-* ~~tap_point~~
-* ~~wait~~
-* ~~wait_for_event~~
-* ~~web_view~~
-* ~~web_views~~
-* input
-
-## AndroidInput
-
-* drag
-* press
-* ~~swipe~~
-* tap_point
-* type
-
-## ~~AndroidSocket~~
-
-* ~~close~~
-* ~~write~~
-
-## ~~AndroidWebView~~
-
-* ~~page~~
-* ~~pid~~
-* ~~pkg~~

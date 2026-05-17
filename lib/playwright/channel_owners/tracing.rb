@@ -1,5 +1,10 @@
 module Playwright
   define_channel_owner :Tracing do
+    private def after_initialize
+      @har_recorders = {}
+      @har_id = nil
+    end
+
     def start(name: nil, title: nil, screenshots: nil, snapshots: nil, sources: nil, live: nil)
       params = {
         name: name,
@@ -38,10 +43,7 @@ module Playwright
     end
 
     private def do_stop_chunk(file_path:)
-      if @is_tracing
-        @is_tracing = false
-        @connection.set_in_tracing(false)
-      end
+      reset_stack_counter
       local_utils = @connection.local_utils
 
       unless file_path
@@ -97,6 +99,105 @@ module Playwright
         mode: 'append',
         includeSources: @include_sources,
       )
+    end
+
+    def start_har(path, content: nil, mode: nil, urlFilter: nil, resourcesDir: nil)
+      raise 'HAR recording has already been started' if @har_id
+      if resourcesDir && path.end_with?('.zip')
+        raise 'resourcesDir option is not compatible with a .zip har file'
+      end
+
+      default_content = path.end_with?('.zip') ? 'attach' : 'embed'
+      @har_id = record_into_har(path, nil,
+        url: urlFilter,
+        update_content: content || default_content,
+        update_mode: mode || 'full',
+        resources_dir: resourcesDir,
+      )
+      DisposableStub.new { stop_har }
+    end
+
+    def stop_har
+      har_id = @har_id
+      raise 'HAR recording has not been started' unless har_id
+
+      @har_id = nil
+      export_har(har_id)
+      nil
+    end
+
+    private def record_into_har(har, page, url:, update_content:, update_mode:, resources_dir: nil)
+      options = {
+        content: update_content || 'attach',
+        mode: update_mode || 'minimal',
+        harPath: har.end_with?('.zip') ? nil : har,
+        resourcesDir: resources_dir,
+      }.compact
+
+      if url.is_a?(Regexp)
+        regex = ::Playwright::JavaScript::Regex.new(url)
+        options[:urlRegexSource] = regex.source
+        options[:urlRegexFlags] = regex.flag
+      elsif url.is_a?(String)
+        options[:urlGlob] = url
+      end
+
+      params = { options: options }
+      params[:page] = page.channel if page
+
+      result = @channel.send_message_to_server_result('harStart', params)
+      har_id = result['harId'] || result[:harId]
+      @har_recorders[har_id] = { path: har, resources_dir: resources_dir }
+      har_id
+    end
+
+    private def export_har(har_id)
+      har_params = @har_recorders.delete(har_id)
+      return unless har_params
+
+      path = har_params[:path]
+      is_zip = path.end_with?('.zip')
+      local_utils = @connection.local_utils
+
+      if !@connection.remote?
+        result = @channel.send_message_to_server_result('harExport', harId: har_id, mode: 'entries')
+        return unless is_zip
+        raise 'Cannot save zipped HAR because localUtils is unavailable.' unless local_utils
+
+        local_utils.zip(
+          zipFile: path,
+          entries: result['entries'],
+          mode: 'write',
+          includeSources: false,
+        )
+        return
+      end
+
+      result = @channel.send_message_to_server_result('harExport', harId: har_id, mode: 'archive')
+      artifact = ChannelOwners::Artifact.from(result['artifact'])
+      if is_zip
+        artifact.save_as(path)
+        artifact.delete
+        return
+      end
+
+      raise 'Uncompressed har is not supported in thin clients' unless local_utils
+
+      tmp_path = "#{path}.tmp"
+      artifact.save_as(tmp_path)
+      local_utils.har_unzip(tmp_path, path, resources_dir: har_params[:resources_dir])
+      artifact.delete
+    end
+
+    private def export_all_hars
+      @har_recorders.keys.each { |har_id| export_har(har_id) }
+    end
+
+    private def reset_stack_counter
+      if @is_tracing
+        @is_tracing = false
+        @connection.set_in_tracing(false)
+      end
     end
 
     private def update_traces_dir(traces_dir)

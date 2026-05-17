@@ -37,8 +37,12 @@ module Playwright
       @channel.async_send_message_to_server('harClose', harId: har_id)
     end
 
-    def har_unzip(zip_file, har_file)
-      @channel.send_message_to_server('harUnzip', zipFile: zip_file, harFile: har_file)
+    def har_unzip(zip_file, har_file, resources_dir: nil)
+      @channel.send_message_to_server('harUnzip', {
+        zipFile: zip_file,
+        harFile: har_file,
+        resourcesDir: resources_dir,
+      }.compact)
     end
 
     def tracing_started(traces_dir, trace_name)

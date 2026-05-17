@@ -193,6 +193,15 @@ This is a convenience API that should only be used for the single-page scenarios
 testing frameworks should explicitly create [Browser#new_context](./browser#new_context) followed by the
 [BrowserContext#new_page](./browser_context#new_page) to control their exact life times.
 
+## bind
+
+```
+def bind(title, host: nil, port: nil, workspaceDir: nil)
+```
+
+
+Binds the browser to a named pipe or web socket, making it available for other clients to connect to.
+
 ## start_tracing
 
 ```
@@ -226,6 +235,15 @@ def stop_tracing
 **NOTE**: This API controls [Chromium Tracing](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool) which is a low-level chromium-specific debugging tool. API to control [Playwright Tracing](https://playwright.dev/python/docs/trace-viewer) could be found [here](./tracing).
 
 Returns the buffer with trace data.
+
+## unbind
+
+```
+def unbind
+```
+
+
+Unbinds the browser server previously bound with [Browser#bind](./browser#bind).
 
 ## version
 

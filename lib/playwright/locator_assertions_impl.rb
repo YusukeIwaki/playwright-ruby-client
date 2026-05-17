@@ -27,7 +27,7 @@ module Playwright
       result = @locator.expect(expression, expect_options, title)
 
       if result["matches"] == @is_not
-        actual = result["received"]
+        actual = received_actual(result)
 
         log =
           if result.key?("log")
@@ -59,12 +59,21 @@ module Playwright
       end
     end
 
+    private def received_actual(result)
+      received = result['received']
+      if received.is_a?(Hash)
+        received.key?('value') ? received['value'] : received['ariaSnapshot']
+      else
+        received
+      end
+    end
+
     private def _not # "not" is reserved in Ruby
       LocatorAssertionsImpl.new(
         @locator,
         @default_expect_timeout,
         !@is_not,
-        @message
+        @custom_message
       )
     end
 
@@ -292,12 +301,13 @@ module Playwright
     end
     _define_negation :to_have_count
 
-    def to_have_css(name, value, timeout: nil)
+    def to_have_css(name, value, pseudo: nil, timeout: nil)
       expected_text = to_expected_text_values([value])
       expect_impl(
         "to.have.css",
         {
           expressionArg: name,
+          pseudo: pseudo,
           expectedText: expected_text,
           timeout: timeout,
         },

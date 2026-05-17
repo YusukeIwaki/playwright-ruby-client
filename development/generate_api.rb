@@ -33,11 +33,6 @@ ALL_TYPES = %w[
     PageAssertions
 ]
 EXPERIMENTAL = %w[
-  Android
-  AndroidDevice
-  AndroidInput
-  AndroidSocket
-  AndroidWebView
 ]
 API_IMPLEMENTATIONS = %w[
   AndroidInput

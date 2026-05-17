@@ -32,6 +32,39 @@ RSpec.describe 'ariaSnapshot' do
     end
   end
 
+  # https://github.com/microsoft/playwright/blob/v1.60.0/tests/page/to-match-aria-snapshot.spec.ts
+  it 'should match page' do
+    with_page do |page|
+      page.content = '<h1>title</h1>'
+      expect(page).to match_aria_snapshot(<<~SNAPSHOT)
+        - heading "title"
+      SNAPSHOT
+    end
+  end
+
+  # https://github.com/microsoft/playwright/blob/v1.60.0/tests/page/page-aria-snapshot.spec.ts
+  it 'should snapshot with box from page' do
+    with_page do |page|
+      page.content = <<~HTML
+        <button style="position:absolute;left:100px;top:50px;width:80px;height:40px;margin:0;padding:0;border:0;">click</button>
+      HTML
+
+      expect(page.aria_snapshot(boxes: true)).to eq('- button "click" [box=100,50,80,40]')
+    end
+  end
+
+  it 'should snapshot with box from locator' do
+    with_page do |page|
+      page.content = <<~HTML
+        <div style="position:absolute;left:10px;top:20px;width:200px;height:100px;">
+          <button style="position:absolute;left:5px;top:5px;width:60px;height:30px;margin:0;padding:0;border:0;">ok</button>
+        </div>
+      HTML
+
+      expect(page.locator('div').aria_snapshot(boxes: true)).to eq('- button "ok" [box=15,25,60,30]')
+    end
+  end
+
   it 'should snapshot list' do
     with_page do |page|
       page.content = <<~HTML
