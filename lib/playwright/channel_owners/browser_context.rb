@@ -11,6 +11,7 @@ module Playwright
       @options = @initializer['options']
       @pages = Set.new
       @routes = []
+      @web_socket_routes = []
       @bindings = {}
       @timeout_settings = TimeoutSettings.new
       @service_workers = Set.new
@@ -25,6 +26,7 @@ module Playwright
       @channel.once('close', ->(_) { on_close })
       @channel.on('page', ->(params) { on_page(ChannelOwners::Page.from(params['page']) )})
       @channel.on('route', ->(params) { on_route(ChannelOwners::Route.from(params['route'])) })
+      @channel.on('webSocketRoute', ->(params) { on_web_socket_route(ChannelOwners::WebSocketRoute.from(params['webSocketRoute'])) })
       @channel.on('serviceWorker', ->(params) {
         on_service_worker(ChannelOwners::Worker.from(params['worker']))
       })
@@ -134,6 +136,17 @@ module Playwright
       end.rescue do |err|
         puts err, err.backtrace
       end
+    end
+
+    private def on_web_socket_route(route)
+      handler_entry = @web_socket_routes.find { |entry| entry.match?(route.url) }
+      if handler_entry
+        handler_entry.handle(PlaywrightApi.wrap(route))
+      else
+        route.connect_to_server
+      end
+    rescue => err
+      puts err, err.backtrace
     end
 
     private def on_binding(binding_call)
@@ -360,6 +373,12 @@ module Playwright
       DisposableStub.new { unroute(url, handler: handler) }
     end
 
+    def route_web_socket(url, handler)
+      @web_socket_routes.unshift(WebSocketRouteHandler.new(url, base_url, handler))
+      update_web_socket_interception_patterns
+      nil
+    end
+
     def unroute_all(behavior: nil)
       @routes.clear
       update_interception_patterns
@@ -395,6 +414,11 @@ module Playwright
     private def update_interception_patterns
       patterns = RouteHandler.prepare_interception_patterns(@routes)
       @channel.send_message_to_server('setNetworkInterceptionPatterns', patterns: patterns)
+    end
+
+    private def update_web_socket_interception_patterns
+      patterns = WebSocketRouteHandler.prepare_interception_patterns(@web_socket_routes)
+      @channel.send_message_to_server('setWebSocketInterceptionPatterns', patterns: patterns)
     end
 
     def expect_event(event, predicate: nil, timeout: nil, &block)
