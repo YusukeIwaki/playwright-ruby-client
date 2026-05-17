@@ -112,6 +112,14 @@ RSpec.describe 'ariaSnapshot' do
     end
   end
 
+  it 'should not include box when option is omitted' do
+    with_page do |page|
+      page.content = '<button>click</button>'
+
+      expect(page.aria_snapshot).not_to match(/\[box=/)
+    end
+  end
+
   it 'should snapshot list' do
     with_page do |page|
       page.content = <<~HTML
