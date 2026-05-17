@@ -140,5 +140,41 @@ RSpec.describe 'HAR' do
         expect(log['entries'].any? { |entry| entry['request']['url'] == "#{server_prefix}/simple.json" }).to eq(true)
       end
     end
+
+    it 'should record a HAR with resourcesDir', sinatra: true do
+      Dir.mktmpdir do |dir|
+        har_path = File.join(dir, 'tracing.har')
+        resources_dir = File.join(dir, 'har-resources')
+
+        with_context do |context|
+          context.tracing.start_har(har_path, content: 'attach', resourcesDir: resources_dir)
+          page = context.new_page
+          page.goto("#{server_prefix}/one-style.html")
+          context.tracing.stop_har
+        end
+
+        log = parse_har_file(har_path)
+        style_entry = log['entries'].find { |entry| entry['request']['url'].end_with?('/one-style.css') }
+        sha1 = style_entry.dig('response', 'content', '_file')
+        expect(sha1).to be_truthy
+
+        resource_path = File.join(resources_dir, sha1)
+        expect(File.exist?(resource_path)).to eq(true)
+        expect(File.read(resource_path)).to include('pink')
+      end
+    end
+
+    it 'should reject resourcesDir together with a .zip har file' do
+      Dir.mktmpdir do |dir|
+        with_context do |context|
+          har_path = File.join(dir, 'tracing.har.zip')
+          resources_dir = File.join(dir, 'har-resources')
+
+          expect {
+            context.tracing.start_har(har_path, content: 'attach', resourcesDir: resources_dir)
+          }.to raise_error(/resourcesDir option is not compatible with a \.zip har file/)
+        end
+      end
+    end
   end
 end
