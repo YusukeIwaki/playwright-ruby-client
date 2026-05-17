@@ -99,5 +99,46 @@ RSpec.describe 'chromium' do
       cdp_browser.close
       browser_server.close
     end
+
+    it 'should skip default overrides with noDefaults', sinatra: true do
+      sinatra.get('/download') do
+        response.headers['Content-Type'] = 'application/octet-stream'
+        response.headers['Content-Disposition'] = 'attachment; filename=file.txt'
+        'Hello world'
+      end
+
+      browser_server = browser_type.launch(args: ["--remote-debugging-port=9339"])
+      cdp_browser = nil
+      begin
+        cdp_browser = browser_type.connect_over_cdp('http://127.0.0.1:9339/', noDefaults: true)
+        default_context = cdp_browser.contexts[0]
+        page = default_context.new_page
+
+        page.content = %(<a href="#{server_prefix}/download">download</a>)
+        saw_download = false
+        page.on('download', ->(_download) { saw_download = true })
+        page.click('a')
+        page.wait_for_timeout(500)
+        expect(saw_download).to eq(false)
+      ensure
+        cdp_browser&.close
+        browser_server.close
+      end
+    end
+
+    it 'noDefaults should not affect new contexts' do
+      browser_server = browser_type.launch(args: ["--remote-debugging-port=9339"])
+      cdp_browser = nil
+      begin
+        cdp_browser = browser_type.connect_over_cdp('http://127.0.0.1:9339/', noDefaults: true)
+        new_context = cdp_browser.new_context
+        page = new_context.new_page
+        expect(page.evaluate('() => document.hasFocus()')).to eq(true)
+        new_context.close
+      ensure
+        cdp_browser&.close
+        browser_server.close
+      end
+    end
   end
 end
