@@ -34,6 +34,10 @@ module Playwright
       @connection.local_utils.devices
     end
 
+    def request
+      @request ||= APIRequestImpl.new(self)
+    end
+
     # used only from Playwright#connect_to_browser_server
     private def pre_launched_browser
       unless @initializer['preLaunchedBrowser']

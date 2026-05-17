@@ -1,10 +1,18 @@
 require 'spec_helper'
+require 'open3'
 require 'tmpdir'
 
 RSpec.describe 'HAR' do
   def parse_har_file(file)
     har = JSON.parse(File.read(file))
     har['log']
+  end
+
+  def parse_har_zip(file)
+    content, stderr, status = Open3.capture3('unzip', '-p', file, 'har.har')
+    raise "failed to read har archive:\n#{stderr}" unless status.success?
+
+    { 'har.har' => content }
   end
 
   def with_page_with_har(**options, &block)
@@ -118,5 +126,19 @@ RSpec.describe 'HAR' do
       end
     end
 
+    it 'should record a zipped HAR for APIRequestContext', sinatra: true do
+      Dir.mktmpdir do |dir|
+        request = playwright.request.new_context
+        har_path = File.join(dir, 'tracing.har.zip')
+        request.tracing.start_har(har_path, content: 'attach')
+        request.get("#{server_prefix}/simple.json")
+        request.tracing.stop_har
+        request.dispose
+
+        resources = parse_har_zip(har_path)
+        log = JSON.parse(resources['har.har'])['log']
+        expect(log['entries'].any? { |entry| entry['request']['url'] == "#{server_prefix}/simple.json" }).to eq(true)
+      end
+    end
   end
 end
