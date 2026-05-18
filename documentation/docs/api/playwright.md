@@ -54,6 +54,11 @@ end
 
 This object can be used to launch or connect to Firefox, returning instances of [Browser](./browser).
 
+## request
+
+
+Exposes API that can be used for the Web API testing.
+
 ## selectors
 
 

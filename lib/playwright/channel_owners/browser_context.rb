@@ -20,7 +20,6 @@ module Playwright
       @request = ChannelOwners::APIRequestContext.from(@initializer['requestContext'])
       @request.send(:_update_timeout_settings, @timeout_settings)
       @clock = ClockImpl.new(self)
-      @har_recorders = {}
 
       @channel.on('bindingCall', ->(params) { on_binding(ChannelOwners::BindingCall.from(params['binding'])) })
       @channel.once('close', ->(_) { on_close })
@@ -34,8 +33,9 @@ module Playwright
       })
       @channel.on('pageError', ->(params) {
         on_page_error(
-          Error.parse(params['error']['error']),
+          Error.parse(params.dig('error', 'error') || params['error']),
           ChannelOwners::Page.from_nullable(params['page']),
+          params['location'],
         )
       })
       @channel.on('dialog', ->(params) {
@@ -82,7 +82,7 @@ module Playwright
 
       default_policy = record_har_path.end_with?('.zip') ? 'attach' : 'embed'
       content_policy = record_har_content || (record_har_omit_content ? 'omit' : default_policy)
-      record_into_har(record_har_path, nil,
+      @tracing.send(:record_into_har, record_har_path, nil,
         url: record_har_url_filter,
         update_content: content_policy,
         update_mode: record_har_mode || 'full',
@@ -186,8 +186,8 @@ module Playwright
       end
     end
 
-    private def on_page_error(error, page)
-      emit(Events::BrowserContext::WebError, WebError.new(error, page))
+    private def on_page_error(error, page, location)
+      emit(Events::BrowserContext::WebError, WebError.new(error, page, location))
       if page
         page.emit(Events::Page::PageError, error)
       end
@@ -337,19 +337,15 @@ module Playwright
       ChannelOwners::Disposable.from(result['disposable'])
     end
 
-    def expose_binding(name, callback, handle: nil)
+    def expose_binding(name, callback)
       if @pages.any? { |page| page.send(:has_bindings?, name) }
         raise ArgumentError.new("Function \"#{name}\" has been already registered in one of the pages")
       end
       if @bindings.key?(name)
         raise ArgumentError.new("Function \"#{name}\" has been already registered")
       end
-      params = {
-        name: name,
-        needsHandle: handle,
-      }.compact
       @bindings[name] = callback
-      result = @channel.send_message_to_server_result('exposeBinding', params)
+      result = @channel.send_message_to_server_result('exposeBinding', name: name)
       ChannelOwners::Disposable.from(result['disposable'])
     end
 
@@ -376,32 +372,9 @@ module Playwright
       update_interception_patterns
     end
 
-    private def record_into_har(har, page, url:, update_content:, update_mode:)
-      options = {
-        zip: har.end_with?('.zip'),
-        content: update_content || 'attach',
-      }
-
-      if url.is_a?(Regexp)
-        regex = ::Playwright::JavaScript::Regex.new(url)
-        options[:urlRegexSource] = regex.source
-        options[:urlRegexFlags] = regex.flag
-      elsif url.is_a?(String)
-        options[:urlGlob] = url
-      end
-
-      params = { options: options }
-      if page
-        params[:page] = page.channel
-      end
-
-      har_id = @channel.send_message_to_server('harStart', params)
-      @har_recorders[har_id] = { path: har, content: update_content || 'attach' }
-    end
-
     def route_from_har(har, notFound: nil, update: nil, updateContent: nil, updateMode: nil, url: nil)
       if update
-        record_into_har(har, nil, url: url, update_content: updateContent, update_mode: updateMode)
+        @tracing.send(:record_into_har, har, nil, url: url, update_content: updateContent, update_mode: updateMode)
         return
       end
 
@@ -443,6 +416,7 @@ module Playwright
         @browser.send(:remove_context, self)
         @browser.browser_type.send(:playwright_selectors_browser_contexts).delete(self)
       end
+      @tracing.send(:reset_stack_counter)
       emit(Events::BrowserContext::Close)
       @closed_promise.fulfill(true)
     end
@@ -452,28 +426,10 @@ module Playwright
       @close_was_called = true
       @close_reason = reason
       @request.dispose(reason: reason)
-      inner_close
+      @tracing.send(:export_all_hars)
       @channel.send_message_to_server('close', { reason: reason }.compact)
       @closed_promise.value!
       nil
-    end
-
-    private def inner_close
-      @har_recorders.each do |har_id, params|
-        har = ChannelOwners::Artifact.from(@channel.send_message_to_server('harExport', harId: har_id))
-        # Server side will compress artifact if content is attach or if file is .zip.
-        compressed = params[:content] == "attach" || params[:path].end_with?('.zip')
-        need_comppressed = params[:path].end_with?('.zip')
-        if compressed && !need_comppressed
-          tmp_path = "#{params[:path]}.tmp"
-          har.save_as(tmp_path)
-          @connection.local_utils.har_unzip(tmp_path, params[:path])
-        else
-          har.save_as(params[:path])
-        end
-
-        har.delete
-      end
     end
 
     # REMARK: enable_debug_console is playwright-ruby-client specific method.

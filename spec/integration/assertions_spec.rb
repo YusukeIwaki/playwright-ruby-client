@@ -367,6 +367,23 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
     end
   end
 
+  # https://github.com/microsoft/playwright/blob/v1.60.0/tests/page/expect-misc.spec.ts
+  it 'should support pseudo element with #to_have_css' do
+    with_page do |page|
+      page.content = <<~HTML
+        <style>
+          #node::before {
+            color: rgb(255, 0, 0);
+            content: "Text content";
+          }
+        </style>
+        <div id=node></div>
+      HTML
+
+      expect(page.locator('#node')).to have_css('color', 'rgb(255, 0, 0)', pseudo: 'before')
+    end
+  end
+
   it "should work with #to_have_id" do
     with_page do |page|
       page.goto(server_empty_page)

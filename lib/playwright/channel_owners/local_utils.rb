@@ -37,8 +37,12 @@ module Playwright
       @channel.async_send_message_to_server('harClose', harId: har_id)
     end
 
-    def har_unzip(zip_file, har_file)
-      @channel.send_message_to_server('harUnzip', zipFile: zip_file, harFile: har_file)
+    def har_unzip(zip_file, har_file, resources_dir: nil)
+      @channel.send_message_to_server('harUnzip', {
+        zipFile: zip_file,
+        harFile: har_file,
+        resourcesDir: resources_dir,
+      }.compact)
     end
 
     def tracing_started(traces_dir, trace_name)
@@ -56,6 +60,11 @@ module Playwright
     def add_stack_to_tracing_no_reply(id, stack)
       @channel.async_send_message_to_server('addStackToTracingNoReply', callData: { id: id, stack: stack })
       nil
+    end
+
+    def connect(params)
+      result = @channel.send_message_to_server_result('connect', params)
+      ChannelOwners::JsonPipe.from(result['pipe'])
     end
 
     private def parse_device_descriptor(descriptor)

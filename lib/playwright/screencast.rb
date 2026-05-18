@@ -85,7 +85,11 @@ module Playwright
     end
 
     private def handle_screencast_frame(event)
-      @on_frame&.call(Base64.strict_decode64(event['data']))
+      @on_frame&.call({
+        data: Base64.strict_decode64(event['data']),
+        viewportWidth: event['viewportWidth'],
+        viewportHeight: event['viewportHeight'],
+      })
     end
   end
 end

@@ -457,7 +457,7 @@ result_handle.dispose
 ## expose_binding
 
 ```
-def expose_binding(name, callback, handle: nil)
+def expose_binding(name, callback)
 ```
 
 
@@ -690,6 +690,7 @@ page.get_by_placeholder("name@example.com").fill("playwright@microsoft.com")
 def get_by_role(
       role,
       checked: nil,
+      description: nil,
       disabled: nil,
       exact: nil,
       expanded: nil,
@@ -888,6 +889,15 @@ Found" and 500 "Internal Server Error".  The status code for such responses can 
 
 **NOTE**: Headless mode doesn't support navigation to a PDF document. See the
 [upstream issue](https://bugs.chromium.org/p/chromium/issues/detail?id=761295).
+
+## hide_highlight
+
+```
+def hide_highlight
+```
+
+
+Hide all locator highlight overlays previously added by [Locator#highlight](./locator#highlight) on this page.
 
 ## hover
 
@@ -1521,7 +1531,7 @@ page.goto("https://example.com")
 ## aria_snapshot
 
 ```
-def aria_snapshot(depth: nil, mode: nil, timeout: nil)
+def aria_snapshot(boxes: nil, depth: nil, mode: nil, timeout: nil)
 ```
 
 

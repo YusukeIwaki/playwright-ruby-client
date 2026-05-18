@@ -209,4 +209,61 @@ world</label><input id=control />"
       )
     end
   end
+
+  # https://github.com/microsoft/playwright/blob/v1.60.0/tests/page/selectors-get-by.spec.ts
+  it 'getByRole with description' do
+    with_page do |page|
+      page.content = <<~HTML
+        <div role="alert" aria-label="Upload successful" aria-description="File doc-2025.pdf was uploaded successfully">Alert 1</div>
+        <div role="alert" aria-label="Upload successful" aria-description="File report-2026.pdf was uploaded successfully">Alert 2</div>
+        <div role="alert" aria-label="Invalid file" aria-description="File demo.doc has an invalid file format">Alert 3</div>
+      HTML
+
+      expect(page.get_by_role('alert', description: 'doc-2025').evaluate_all('els => els.map(e => e.textContent)')).to eq(['Alert 1'])
+      expect(page.get_by_role('alert', description: 'report-2026').evaluate_all('els => els.map(e => e.textContent)')).to eq(['Alert 2'])
+      expect(page.get_by_role('alert', name: 'Upload successful', description: 'doc-2025').evaluate_all('els => els.map(e => e.textContent)')).to eq(['Alert 1'])
+      expect(page.get_by_role('alert', name: 'Upload successful', description: 'report-2026').evaluate_all('els => els.map(e => e.textContent)')).to eq(['Alert 2'])
+      expect(page.get_by_role('alert', name: 'Invalid file', description: 'doc-2025').evaluate_all('els => els.map(e => e.textContent)')).to eq([])
+      expect(page.get_by_role('alert', description: 'doc-2025', exact: true).evaluate_all('els => els.map(e => e.textContent)')).to eq([])
+      expect(page.get_by_role('alert', description: 'File doc-2025.pdf was uploaded successfully', exact: true).evaluate_all('els => els.map(e => e.textContent)')).to eq(['Alert 1'])
+      expect(page.get_by_role('alert', description: /report-\d+/).evaluate_all('els => els.map(e => e.textContent)')).to eq(['Alert 2'])
+      expect(page.get_by_role('alert', description: /uploaded successfully$/).evaluate_all('els => els.map(e => e.textContent)')).to eq(['Alert 1', 'Alert 2'])
+    end
+  end
+
+  it 'getByRole with description via aria-describedby' do
+    with_page do |page|
+      page.content = <<~HTML
+        <button aria-describedby="desc1">Submit</button>
+        <span id="desc1">Submits the form data</span>
+        <button aria-describedby="desc2">Submit</button>
+        <span id="desc2">Saves as draft</span>
+      HTML
+
+      expect(page.get_by_role('button', name: 'Submit', description: 'form data').evaluate_all('els => els.map(e => e.textContent)')).to eq(['Submit'])
+      expect(page.get_by_role('button', name: 'Submit', description: 'draft').evaluate_all('els => els.map(e => e.textContent)')).to eq(['Submit'])
+    end
+  end
+
+  it 'getByRole with description via title fallback' do
+    with_page do |page|
+      page.content = <<~HTML
+        <button title="Submits the form">Submit</button>
+        <button title="Resets the form">Reset</button>
+      HTML
+
+      expect(page.get_by_role('button', description: 'Submits').evaluate_all('els => els.map(e => e.textContent)')).to eq(['Submit'])
+      expect(page.get_by_role('button', description: 'Resets').evaluate_all('els => els.map(e => e.textContent)')).to eq(['Reset'])
+    end
+  end
+
+  it 'getByRole with description whitespace normalization' do
+    with_page do |page|
+      page.content = <<~HTML
+        <div role="alert" aria-description="File  doc-2025.pdf   was uploaded   successfully">Alert</div>
+      HTML
+
+      expect(page.get_by_role('alert', description: "  doc-2025.pdf \n was  uploaded ").evaluate_all('els => els.map(e => e.textContent)')).to eq(['Alert'])
+    end
+  end
 end

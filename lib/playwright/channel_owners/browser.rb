@@ -87,6 +87,22 @@ module Playwright
       @initializer['version']
     end
 
+    def bind(title, host: nil, metadata: nil, port: nil, workspaceDir: nil)
+      params = {
+        title: title,
+        host: host,
+        metadata: metadata,
+        port: port,
+        workspaceDir: workspaceDir,
+      }.compact
+      @channel.send_message_to_server_result('startServer', params)
+    end
+
+    def unbind
+      @channel.send_message_to_server('stopServer')
+      nil
+    end
+
     def new_browser_cdp_session
       resp = @channel.send_message_to_server('newBrowserCDPSession')
       ChannelOwners::CDPSession.from(resp)
@@ -135,6 +151,7 @@ module Playwright
       if @browser_type
         setup_browser_context(context)
       end
+      emit(Events::Browser::Context, context)
     end
 
     private def setup_browser_context(context)

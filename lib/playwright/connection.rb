@@ -213,7 +213,11 @@ module Playwright
         return
       end
 
-      object.channel.emit(method, replace_guids_with_channels(params))
+      if object.is_a?(ChannelOwners::JsonPipe) && method == 'message'
+        object.channel.emit(method, params)
+      else
+        object.channel.emit(method, replace_guids_with_channels(params))
+      end
     end
 
     def replace_channels_with_guids(payload)

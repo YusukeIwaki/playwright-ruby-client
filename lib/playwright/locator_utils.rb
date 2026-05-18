@@ -66,12 +66,14 @@ module Playwright
       props = []
 
       ex = {
+        description: -> (value) { ['description', escape_for_attribute_selector_or_regex(value, options[:exact])]},
         includeHidden: -> (value) { ['include-hidden', value.to_s] },
         name: -> (value) { ['name', escape_for_attribute_selector_or_regex(value, options[:exact])]},
       }
 
       %i[
         checked
+        description
         disabled
         selected
         expanded

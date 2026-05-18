@@ -154,7 +154,7 @@ are returned.
 ## expose_binding
 
 ```
-def expose_binding(name, callback, handle: nil)
+def expose_binding(name, callback)
 ```
 
 

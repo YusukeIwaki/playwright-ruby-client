@@ -426,11 +426,12 @@ module Playwright
       end
     end
 
-    def aria_snapshot(depth: nil, mode: nil, timeout: nil, _track: nil)
+    def aria_snapshot(boxes: nil, depth: nil, mode: nil, timeout: nil, _track: nil)
       params = {
         selector: @selector,
         timeout: _timeout(timeout),
       }
+      params[:boxes] = boxes unless boxes.nil?
       params[:depth] = depth if depth
       params[:mode] = mode if mode
       if _track
@@ -483,6 +484,14 @@ module Playwright
 
     def set_input_files(files, noWaitAfter: nil, timeout: nil)
       @frame.set_input_files(@selector, files, strict: true, noWaitAfter: noWaitAfter, timeout: timeout)
+    end
+
+    def drop(payload, position: nil, timeout: nil)
+      @frame.drop(@selector,
+        payload,
+        strict: true,
+        position: position,
+        timeout: timeout)
     end
 
     def tap_point(
@@ -549,8 +558,13 @@ module Playwright
       @frame.eval_on_selector_all(@selector, "ee => ee.map(e => e.textContent || '')")
     end
 
-    def highlight
-      @frame.highlight(@selector)
+    def highlight(style: nil)
+      @frame.highlight(@selector, style: style)
+      DisposableStub.new { hide_highlight }
+    end
+
+    def hide_highlight
+      @frame.hide_highlight(@selector)
     end
 
     def _assertions(timeout, is_not, message)

@@ -23,7 +23,16 @@ module Playwright
     end
 
     def location
-      @event['location']
+      location = @event['location']
+      return location unless location
+
+      {
+        'url' => location['url'],
+        'line' => location['lineNumber'],
+        'column' => location['columnNumber'],
+        'lineNumber' => location['lineNumber'],
+        'columnNumber' => location['columnNumber'],
+      }
     end
 
     def timestamp

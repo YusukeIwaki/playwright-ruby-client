@@ -34,6 +34,34 @@ def not_to_have_url(urlOrRegExp, ignoreCase: nil, timeout: nil)
 
 The opposite of [PageAssertions#to_have_url](./page_assertions#to_have_url).
 
+## to_match_aria_snapshot
+
+```
+def to_match_aria_snapshot(expected, timeout: nil)
+```
+
+
+Asserts that the page body matches the given [accessibility snapshot](https://playwright.dev/python/docs/aria-snapshots).
+
+**Usage**
+
+```ruby
+page.goto("https://demo.playwright.dev/todomvc/")
+expect(page).to match_aria_snapshot(<<~YAML)
+  - heading "todos"
+  - textbox "What needs to be done?"
+YAML
+```
+
+## not_to_match_aria_snapshot
+
+```
+def not_to_match_aria_snapshot(expected, timeout: nil)
+```
+
+
+The opposite of [PageAssertions#to_match_aria_snapshot](./page_assertions#to_match_aria_snapshot).
+
 ## to_have_title
 
 ```

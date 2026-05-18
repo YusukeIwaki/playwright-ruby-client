@@ -65,20 +65,6 @@ RSpec.describe 'expose function' do
     end
   end
 
-  it 'exposeBindingHandle should work' do
-    with_context do |context|
-      target = nil
-      context.expose_binding('logme', ->(source, t) {
-        target = t
-        17
-      }, handle: true)
-      page = context.new_page
-      result = page.evaluate('async () => window["logme"]({ foo: 42})')
-      expect(target.evaluate('x => x.foo')).to eq(42)
-      expect(result).to eq(17)
-    end
-  end
-
   # it('should work with CSP', async ({ page, context, server }) => {
   #   server.setCSP('/empty.html', 'default-src "self"');
   #   await page.goto(server.EMPTY_PAGE);

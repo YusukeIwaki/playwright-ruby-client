@@ -131,6 +131,7 @@ page.get_by_placeholder("name@example.com").fill("playwright@microsoft.com")
 def get_by_role(
       role,
       checked: nil,
+      description: nil,
       disabled: nil,
       exact: nil,
       expanded: nil,

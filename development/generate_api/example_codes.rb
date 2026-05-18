@@ -229,28 +229,6 @@ module ExampleCodes
     page.get_by_role("button").click
   end
 
-  # BrowserContext#expose_binding
-  def example_93e847f70b01456eec429a1ebfaa6b8f5334f4c227fd73e62dd6a7facb48dbbd(browser_context:)
-    def print_text(source, element)
-      element.text_content
-    end
-
-    browser_context.expose_binding("clicked", method(:print_text), handle: true)
-    page = browser_context.new_page
-
-    page.content = <<~HTML
-    <script>
-      document.addEventListener('click', async (event) => {
-        alert(await window.clicked(event.target));
-      })
-    </script>
-    <div>Click me</div>
-    <div>Or click me</div>
-    HTML
-
-    page.locator('div').first.click
-  end
-
   # BrowserContext#expose_function
   def example_714719de9c92e66678257180301c2512f8cd69185f53a5121b6c52194f61a871(browser_context:)
     require 'digest'
@@ -300,6 +278,16 @@ module ExampleCodes
       end
     end
     context.route("/api/**", method(:handle_route))
+  end
+
+  # BrowserContext#route_web_socket
+  def example_c12ed032f0af1b7a7cf2c2d9e1c17fedc9f67b8099f9be9a01dc17c3fb248e22(context:)
+    context.route_web_socket("/ws", ->(ws) {
+      server = ws.connect_to_server
+      ws.on_message(->(message) {
+        server.send(message) unless message == "to-be-blocked"
+      })
+    })
   end
 
   # BrowserContext#set_geolocation
@@ -1592,26 +1580,6 @@ module ExampleCodes
     page.click("button")
   end
 
-  # Page#expose_binding
-  def example_6534a792e99e05b5644cea6e5b77ca5d864675a3012f447f0f8318c4fa6a6a54(page:)
-    def print_text(source, element)
-      element.text_content
-    end
-
-    page.expose_binding("clicked", method(:print_text), handle: true)
-    page.content = <<~HTML
-    <script>
-      document.addEventListener('click', async (event) => {
-        alert(await window.clicked(event.target));
-      })
-    </script>
-    <div>Click me</div>
-    <div>Or click me</div>
-    HTML
-
-    page.locator('div').first.click
-  end
-
   # Page#expose_function
   def example_0f68a39bdff02a3df161c74e81cabb8a2ff1f09f0d09f6ef9b799a6f2f19a280(page:)
     require 'digest'
@@ -1696,6 +1664,15 @@ module ExampleCodes
       end
     end
     page.route("/api/**", method(:handle_route))
+  end
+
+  # Page#route_web_socket
+  def example_da7853bcdfef1ef21ee140a11f31640f341fc26d90b054eacf674c79a8c7c605(page:)
+    page.route_web_socket("/ws", ->(ws) {
+      ws.on_message(->(message) {
+        ws.send("response") if message == "request"
+      })
+    })
   end
 
   # Page#select_option
@@ -1840,6 +1817,15 @@ module ExampleCodes
   # PageAssertions#to_have_url
   def example_87c22b447771ce189eebbfd6163474cb36badeb87ce402dcf88c4042335c31e9(page:)
     expect(page).to have_url(/.*checkout/)
+  end
+
+  # PageAssertions#to_match_aria_snapshot
+  def example_e37f2c2c64f4ef93b5f078fcced9a2129efbeb3e855fd68d898a9176750f8757(page:)
+    page.goto("https://demo.playwright.dev/todomvc/")
+    expect(page).to match_aria_snapshot(<<~YAML)
+      - heading "todos"
+      - textbox "What needs to be done?"
+    YAML
   end
 
   # Request#failure
@@ -2034,6 +2020,14 @@ module ExampleCodes
     page.goto("http://example.com")
     # Save a second trace file with different actions.
     context.tracing.stop_chunk(path: "trace2.zip")
+  end
+
+  # Tracing#start_har
+  def example_7e57903bfd46e2f7b1271ebcf2b4d9d9de03ad0bf43891a8e542fc359e931e71(context:)
+    context.tracing.start_har("trace.har")
+    page = context.new_page
+    page.goto("https://playwright.dev")
+    context.tracing.stop_har
   end
 
   # Tracing#group

@@ -53,7 +53,7 @@ module Playwright
         on_frame_detached(ChannelOwners::Frame.from(params['frame']))
       })
       @channel.on('pageError', ->(params) {
-        emit(Events::Page::PageError, Error.parse(params['error']['error']))
+        emit(Events::Page::PageError, Error.parse(params.dig('error', 'error') || params['error']))
       })
       @channel.on('route', ->(params) { on_route(ChannelOwners::Route.from(params['route'])) })
       if @initializer['video']
@@ -90,12 +90,14 @@ module Playwright
       frame.send(:update_page_from_page, self)
       @frames << frame
       emit(Events::Page::FrameAttached, frame)
+      @browser_context.emit(Events::BrowserContext::FrameAttached, frame)
     end
 
     private def on_frame_detached(frame)
       @frames.delete(frame)
       frame.detached = true
       emit(Events::Page::FrameDetached, frame)
+      @browser_context.emit(Events::BrowserContext::FrameDetached, frame)
     end
 
     private def on_route(route)
@@ -153,6 +155,7 @@ module Playwright
         @closed_or_crashed_promise.fulfill(close_error_with_reason)
       end
       emit(Events::Page::Close)
+      @browser_context.emit(Events::BrowserContext::PageClose, self)
     end
 
     private def on_crash
@@ -171,6 +174,7 @@ module Playwright
         artifact: artifact,
       )
       emit(Events::Page::Download, download)
+      @browser_context.emit(Events::BrowserContext::Download, download)
     end
 
     private def on_viewport_size_changed(params)
@@ -309,12 +313,8 @@ module Playwright
       ChannelOwners::Disposable.from(result['disposable'])
     end
 
-    def expose_binding(name, callback, handle: nil)
-      params = {
-        name: name,
-        needsHandle: handle,
-      }.compact
-      result = @channel.send_message_to_server_result('exposeBinding', params)
+    def expose_binding(name, callback)
+      result = @channel.send_message_to_server_result('exposeBinding', name: name)
       @bindings[name] = callback
       ChannelOwners::Disposable.from(result['disposable'])
     end
@@ -436,7 +436,7 @@ module Playwright
 
     def route_from_har(har, notFound: nil, update: nil, url: nil, updateContent: nil, updateMode: nil)
       if update
-        @browser_context.send(:record_into_har, har, self, url: url, update_content: updateContent, update_mode: updateMode)
+        @browser_context.tracing.send(:record_into_har, har, self, url: url, update_content: updateContent, update_mode: updateMode)
         return
       end
 
@@ -676,9 +676,14 @@ module Playwright
       @channel.send_message_to_server('cancelPickLocator')
     end
 
-    def aria_snapshot(depth: nil, mode: nil, timeout: nil, _track: nil)
+    def hide_highlight
+      @channel.send_message_to_server('hideHighlight')
+    end
+
+    def aria_snapshot(boxes: nil, depth: nil, mode: nil, timeout: nil, _track: nil)
       params = { selector: 'body' }
       params[:timeout] = @timeout_settings.timeout(timeout)
+      params[:boxes] = boxes unless boxes.nil?
       params[:depth] = depth if depth
       params[:mode] = mode if mode
       if _track
@@ -947,8 +952,8 @@ module Playwright
       @main_frame.locator(result['selector'])
     end
 
-    def snapshot_for_ai(timeout: nil, depth: nil, _track: nil)
-      aria_snapshot(mode: 'ai', timeout: timeout, depth: depth, _track: _track)
+    def snapshot_for_ai(timeout: nil, depth: nil, boxes: nil, _track: nil)
+      aria_snapshot(mode: 'ai', timeout: timeout, depth: depth, boxes: boxes, _track: _track)
     end
 
     def _assertions(timeout, is_not, message)

@@ -21,6 +21,7 @@ class JsType
     'AndroidSelector' => 'untyped',
     'AndroidKey' => 'untyped',
     'EvaluationArgument' => 'untyped',
+    'FormData' => 'untyped',
     'Debugger' => 'untyped',
     'Disposable' => 'untyped',
     'Screencast' => 'untyped',

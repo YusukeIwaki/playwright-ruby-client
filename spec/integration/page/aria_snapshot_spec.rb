@@ -32,6 +32,94 @@ RSpec.describe 'ariaSnapshot' do
     end
   end
 
+  # https://github.com/microsoft/playwright/blob/release-1.60/tests/page/to-match-aria-snapshot.spec.ts
+  it 'should match page' do
+    with_page do |page|
+      page.content = '<h1>title</h1>'
+      expect(page).to match_aria_snapshot(<<~SNAPSHOT)
+        - heading "title"
+      SNAPSHOT
+    end
+  end
+
+  it 'should match page complex' do
+    with_page do |page|
+      page.content = <<~HTML
+        <h1>Microsoft</h1>
+        <div>Open source projects and samples from Microsoft</div>
+        <ul>
+          <li>
+            <a href="about:blank">Playwright</a>
+          </li>
+        </ul>
+      HTML
+
+      expect(page).to match_aria_snapshot(<<~SNAPSHOT)
+        - heading "Microsoft"
+        - text: Open source projects and samples from Microsoft
+        - list:
+          - listitem:
+            - link "Playwright"
+      SNAPSHOT
+    end
+  end
+
+  it 'should match page with not' do
+    with_page do |page|
+      page.content = '<h1>title</h1>'
+      expect(page).not_to match_aria_snapshot(<<~SNAPSHOT)
+        - heading "wrong"
+      SNAPSHOT
+    end
+  end
+
+  it 'should fail page with timeout' do
+    with_page do |page|
+      page.content = '<h1>title</h1>'
+
+      expect {
+        expect(page).to match_aria_snapshot(<<~SNAPSHOT, timeout: 2000)
+          - heading "wrong"
+        SNAPSHOT
+      }.to raise_error(RSpec::Expectations::ExpectationNotMetError) { |error|
+        expect(error.message).to include('Page expected to match Aria snapshot')
+        expect(error.message).to include('Expect "to_match_aria_snapshot" with timeout 2000ms')
+        expect(error.message).not_to include('Locator')
+      }
+    end
+  end
+
+  # https://github.com/microsoft/playwright/blob/v1.60.0/tests/page/page-aria-snapshot.spec.ts
+  it 'should snapshot with box from page' do
+    with_page do |page|
+      page.content = <<~HTML
+        <button style="position:absolute;left:100px;top:50px;width:80px;height:40px;margin:0;padding:0;border:0;">click</button>
+      HTML
+
+      expect(page.aria_snapshot(boxes: true)).to eq('- button "click" [box=100,50,80,40]')
+    end
+  end
+
+  it 'should snapshot with box from locator' do
+    with_page do |page|
+      page.content = <<~HTML
+        <div style="position:absolute;left:10px;top:20px;width:200px;height:100px;">
+          <button style="position:absolute;left:5px;top:5px;width:60px;height:30px;margin:0;padding:0;border:0;">ok</button>
+        </div>
+      HTML
+
+      expect(page.locator('div').aria_snapshot(boxes: true)).to eq('- button "ok" [box=15,25,60,30]')
+    end
+  end
+
+  it 'should not include box when option is omitted' do
+    with_page do |page|
+      page.content = '<button>click</button>'
+
+      expect(page.aria_snapshot).not_to match(/\[box=/)
+    end
+  end
+
   it 'should snapshot list' do
     with_page do |page|
       page.content = <<~HTML

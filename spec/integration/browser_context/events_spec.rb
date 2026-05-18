@@ -162,4 +162,114 @@ RSpec.describe 'BrowserContext events' do
       expect(error.error.stack).to include('boom')
     end
   end
+
+  it 'weberror event should include location', sinatra: true do
+    sinatra.get('/error.js') do
+      response.headers['Content-Type'] = 'application/javascript'
+      "\n" + <<~JAVASCRIPT
+        function foo() {
+          throw new Error('boom');
+        }
+        foo();
+      JAVASCRIPT
+    end
+
+    sinatra.get('/error.html') do
+      response.headers['Content-Type'] = 'text/html'
+      '<script src="/error.js"></script>'
+    end
+
+    with_page do |page|
+      error = page.context.expect_event('weberror') do
+        page.goto("#{server_prefix}/error.html")
+      end
+
+      expect(error.location['url']).to eq("#{server_prefix}/error.js")
+      expect(error.location['line']).to eq(2)
+      expect(error.location['column']).to be > 0
+    end
+  end
+
+  it 'pageload event should work @smoke', sinatra: true do
+    with_page do |page|
+      event_page = page.context.expect_event('pageload') do
+        page.goto(server_empty_page)
+      end
+      expect(event_page).to eq(page)
+    end
+  end
+
+  it 'framenavigated event should work @smoke', sinatra: true do
+    with_page do |page|
+      frame = page.context.expect_event('framenavigated') do
+        page.goto(server_empty_page)
+      end
+      expect(frame).to eq(page.main_frame)
+      expect(frame.url).to eq(server_empty_page)
+    end
+  end
+
+  it 'pageclose event should work @smoke' do
+    with_context do |context|
+      page = context.new_page
+      closed = context.expect_event('pageclose') do
+        page.close
+      end
+      expect(closed).to eq(page)
+    end
+  end
+
+  it 'frameattached event should work @smoke', sinatra: true do
+    with_page do |page|
+      page.goto(server_empty_page)
+      frame = page.context.expect_event('frameattached') do
+        page.evaluate(<<~JAVASCRIPT)
+          () => {
+            const iframe = document.createElement('iframe');
+            iframe.src = 'about:blank';
+            document.body.appendChild(iframe);
+          }
+        JAVASCRIPT
+      end
+      expect(frame.parent_frame).to eq(page.main_frame)
+    end
+  end
+
+  it 'framedetached event should work @smoke', sinatra: true do
+    with_page do |page|
+      page.goto(server_empty_page)
+      page.evaluate(<<~JAVASCRIPT)
+        () => {
+          const iframe = document.createElement('iframe');
+          iframe.id = 'x';
+          iframe.src = 'about:blank';
+          document.body.appendChild(iframe);
+        }
+      JAVASCRIPT
+      page.wait_for_selector('iframe')
+
+      frame = page.context.expect_event('framedetached') do
+        page.evaluate("() => document.getElementById('x').remove()")
+      end
+      expect(frame.parent_frame).to eq(page.main_frame)
+    end
+  end
+
+  it 'download event should work @smoke', sinatra: true do
+    sinatra.get('/download') do
+      response.headers['Content-Type'] = 'application/octet-stream'
+      response.headers['Content-Disposition'] = 'attachment; filename=file.txt'
+      'Hello world'
+    end
+
+    with_page(acceptDownloads: true) do |page|
+      page.content = %(<a href="#{server_prefix}/download">download</a>)
+      download = page.context.expect_event('download') do
+        page.click('a')
+      end
+
+      expect(download.suggested_filename).to eq('file.txt')
+      expect(download.page).to eq(page)
+    end
+  end
 end
