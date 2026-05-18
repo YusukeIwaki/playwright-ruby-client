@@ -302,6 +302,16 @@ module ExampleCodes
     context.route("/api/**", method(:handle_route))
   end
 
+  # BrowserContext#route_web_socket
+  def example_c12ed032f0af1b7a7cf2c2d9e1c17fedc9f67b8099f9be9a01dc17c3fb248e22(context:)
+    context.route_web_socket("/ws", ->(ws) {
+      server = ws.connect_to_server
+      ws.on_message(->(message) {
+        server.send(message) unless message == "to-be-blocked"
+      })
+    })
+  end
+
   # BrowserContext#set_geolocation
   def example_12142bb78171e322de3049ac91a332da192d99461076da67614b9520b7cd0c6f(browser_context:)
     browser_context.geolocation = { latitude: 59.95, longitude: 30.31667 }
@@ -1696,6 +1706,15 @@ module ExampleCodes
       end
     end
     page.route("/api/**", method(:handle_route))
+  end
+
+  # Page#route_web_socket
+  def example_da7853bcdfef1ef21ee140a11f31640f341fc26d90b054eacf674c79a8c7c605(page:)
+    page.route_web_socket("/ws", ->(ws) {
+      ws.on_message(->(message) {
+        ws.send("response") if message == "request"
+      })
+    })
   end
 
   # Page#select_option

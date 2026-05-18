@@ -19,6 +19,23 @@ chromium.launch do |browser|
 end
 ```
 
+## connect
+
+```
+def connect(
+      endpoint,
+      exposeNetwork: nil,
+      headers: nil,
+      slowMo: nil,
+      timeout: nil,
+      &block)
+```
+
+
+This method attaches Playwright to an existing browser instance created via `BrowserType.launchServer` in Node.js.
+
+**NOTE**: The major and minor version of the Playwright instance that connects needs to match the version of Playwright that launches the browser (1.2.3 → is compatible with 1.2.x).
+
 ## connect_over_cdp
 
 ```

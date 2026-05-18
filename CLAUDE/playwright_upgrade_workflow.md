@@ -23,6 +23,8 @@ Standard process for `Update Playwright driver to 1.xx.x` tasks.
 - `rm lib/playwright_api/*.rb`
 - `find documentation/docs -name "*.md" | grep -v documentation/docs/article/ | xargs rm`
 - `bundle exec ruby development/generate_api.rb`
+- If `development/unimplemented_examples.md` changes, handle it before moving on.
+  Follow `CLAUDE/unimplemented_examples.md`.
 
 5. Update tests first
 - Add/update `spec/` changes that represent upstream behavior differences.
