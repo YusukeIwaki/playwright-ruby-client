@@ -67,9 +67,10 @@ end
 
 module IntegrationVideoHelpers
   def ensure_some_frames(page)
-    5.times do
+    100.times do
       page.evaluate('() => new Promise(f => requestAnimationFrame(() => requestAnimationFrame(f)))')
     end
+    page.screenshot
   end
 
   def find_videos(video_dir)
