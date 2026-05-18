@@ -229,28 +229,6 @@ module ExampleCodes
     page.get_by_role("button").click
   end
 
-  # BrowserContext#expose_binding
-  def example_93e847f70b01456eec429a1ebfaa6b8f5334f4c227fd73e62dd6a7facb48dbbd(browser_context:)
-    def print_text(source, element)
-      element.text_content
-    end
-
-    browser_context.expose_binding("clicked", method(:print_text), handle: true)
-    page = browser_context.new_page
-
-    page.content = <<~HTML
-    <script>
-      document.addEventListener('click', async (event) => {
-        alert(await window.clicked(event.target));
-      })
-    </script>
-    <div>Click me</div>
-    <div>Or click me</div>
-    HTML
-
-    page.locator('div').first.click
-  end
-
   # BrowserContext#expose_function
   def example_714719de9c92e66678257180301c2512f8cd69185f53a5121b6c52194f61a871(browser_context:)
     require 'digest'
@@ -1600,26 +1578,6 @@ module ExampleCodes
     <div></div>
     HTML
     page.click("button")
-  end
-
-  # Page#expose_binding
-  def example_6534a792e99e05b5644cea6e5b77ca5d864675a3012f447f0f8318c4fa6a6a54(page:)
-    def print_text(source, element)
-      element.text_content
-    end
-
-    page.expose_binding("clicked", method(:print_text), handle: true)
-    page.content = <<~HTML
-    <script>
-      document.addEventListener('click', async (event) => {
-        alert(await window.clicked(event.target));
-      })
-    </script>
-    <div>Click me</div>
-    <div>Or click me</div>
-    HTML
-
-    page.locator('div').first.click
   end
 
   # Page#expose_function
