@@ -9,6 +9,7 @@ Standard process for `Update Playwright driver to 1.xx.x` tasks.
 1. Update versions
 - `development/CLI_VERSION`
 - `lib/playwright/version.rb` (`VERSION`, `COMPATIBLE_PLAYWRIGHT_VERSION`)
+- `.circleci/config.yml` remote Playwright server image and `npx playwright@...` version
 
 2. Review upstream Playwright PRs
 - Follow `CLAUDE/upstream_pr_review.md`.
