@@ -324,7 +324,7 @@
 * reload
 * route
 * route_from_har
-* route_web_socket
+* ~~route_web_socket~~
 * screenshot
 * select_option
 * set_checked
@@ -389,7 +389,7 @@
 * pages
 * route
 * route_from_har
-* route_web_socket
+* ~~route_web_socket~~
 * service_workers
 * set_default_navigation_timeout
 * set_default_timeout

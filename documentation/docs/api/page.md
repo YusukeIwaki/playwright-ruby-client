@@ -1350,29 +1350,6 @@ If specified the network requests that are made in the page will be served from 
 
 Playwright will not serve requests intercepted by Service Worker from the HAR file. See [this](https://github.com/microsoft/playwright/issues/1090) issue. We recommend disabling Service Workers when using request interception by setting `serviceWorkers` to `'block'`.
 
-## route_web_socket
-
-```
-def route_web_socket(url, handler)
-```
-
-
-This method allows to modify websocket connections that are made by the page.
-
-Note that only [WebSocket](./web_socket)s created after this method was called will be routed. It is recommended to call this method before navigating the page.
-
-**Usage**
-
-Below is an example of a simple mock that responds to a single message. See `WebSocketRoute` for more details and examples.
-
-```ruby
-page.route_web_socket("/ws", ->(ws) {
-  ws.on_message(->(message) {
-    ws.send("response") if message == "request"
-  })
-})
-```
-
 ## screenshot
 
 ```

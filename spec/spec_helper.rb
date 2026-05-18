@@ -29,20 +29,24 @@ RSpec.configure do |config|
   end
 
   config.around(:each, playwright_under_test: true) do |example|
-    original = ENV['PWTEST_UNDER_TEST']
-    ENV['PWTEST_UNDER_TEST'] = '1'
-    example.run
-  ensure
-    ENV['PWTEST_UNDER_TEST'] = original
+    begin
+      original = ENV['PWTEST_UNDER_TEST']
+      ENV['PWTEST_UNDER_TEST'] = '1'
+      example.run
+    ensure
+      ENV['PWTEST_UNDER_TEST'] = original
+    end
   end
 
   config.around(:each, playwright_server_registry: true) do |example|
     Dir.mktmpdir do |dir|
-      original = ENV['PLAYWRIGHT_SERVER_REGISTRY']
-      ENV['PLAYWRIGHT_SERVER_REGISTRY'] = File.join(dir, 'registry')
-      example.run
-    ensure
-      ENV['PLAYWRIGHT_SERVER_REGISTRY'] = original
+      begin
+        original = ENV['PLAYWRIGHT_SERVER_REGISTRY']
+        ENV['PLAYWRIGHT_SERVER_REGISTRY'] = File.join(dir, 'registry')
+        example.run
+      ensure
+        ENV['PLAYWRIGHT_SERVER_REGISTRY'] = original
+      end
     end
   end
 

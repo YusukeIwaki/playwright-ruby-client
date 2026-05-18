@@ -142,6 +142,7 @@ RSpec.describe 'HAR' do
     end
 
     it 'should record a HAR with resourcesDir', sinatra: true do
+      pending 'resourcesDir is JS only at this moment'
       Dir.mktmpdir do |dir|
         har_path = File.join(dir, 'tracing.har')
         resources_dir = File.join(dir, 'har-resources')
@@ -165,6 +166,7 @@ RSpec.describe 'HAR' do
     end
 
     it 'should reject resourcesDir together with a .zip har file' do
+      pending 'resourcesDir is JS only at this moment'
       Dir.mktmpdir do |dir|
         with_context do |context|
           har_path = File.join(dir, 'tracing.har.zip')

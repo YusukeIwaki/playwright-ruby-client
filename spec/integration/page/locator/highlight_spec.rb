@@ -33,7 +33,8 @@ RSpec.describe 'Locator highlight', playwright_under_test: true do
           backgroundColor: el.style.backgroundColor,
         })
       JAVASCRIPT
-      expect(style['outline']).to eq('rgb(255, 0, 0) solid 3px')
+      expected_outline = webkit? ? '3px solid rgb(255, 0, 0)' : 'rgb(255, 0, 0) solid 3px'
+      expect(style['outline']).to eq(expected_outline)
       expect(style['backgroundColor']).to eq('rgba(0, 255, 0, 0.25)')
     end
   end

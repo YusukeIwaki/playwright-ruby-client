@@ -75,31 +75,4 @@ module Playwright
       handlers.map(&:as_pattern).compact
     end
   end
-
-  class WebSocketRouteHandler
-    # @param url [String|Regexp]
-    # @param base_url [String|nil]
-    # @param handler [Proc]
-    def initialize(url, base_url, handler)
-      @url_matcher = UrlMatcher.new(url, base_url: base_url)
-      @handler = handler
-    end
-
-    def as_pattern
-      @url_matcher.as_pattern
-    end
-
-    def match?(url)
-      @url_matcher.match?(url)
-    end
-
-    def handle(route)
-      @handler.call(route)
-      route.send(:after_handle)
-    end
-
-    def self.prepare_interception_patterns(handlers)
-      handlers.map(&:as_pattern).compact
-    end
-  end
 end
