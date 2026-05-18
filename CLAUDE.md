@@ -24,6 +24,9 @@ For detailed rules, see `CLAUDE/*.md`.
 7. Confirm RSpec execution mode (critical).
 - Run RSpec via `rbenv exec`.
 - On failure, rerun with `DEBUG=1` and inspect protocol logs.
+8. Confirm Ruby 2.4 compatibility for example specs.
+- `spec/integration/example_spec.rb` runs in CI as `(chromium/Ruby2.4) example_spec`.
+- Keep code used by `example_spec.rb`, including examples in `development/generate_api/example_codes.rb`, compatible with Ruby 2.4 syntax.
 
 ## Topic Docs
 
