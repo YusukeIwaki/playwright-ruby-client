@@ -608,8 +608,8 @@ module ExampleCodes
   end
 
   # Frame#evaluate
-  def example_6ebfd0a9a1f3cb61410f494ffc34a17f5c6d57280326d077fca3b0a18aef7834(frame:)
-    body_handle = frame.query_selector("body")
+  def example_1bdfda7bbd1869b76e70522b88e85bad065d776b0171cc78caa6283a04ac4153(frame:)
+    body_handle = frame.evaluate_handle("document.body")
     html = frame.evaluate("([body, suffix]) => body.innerHTML + suffix", arg: [body_handle, "hello"])
     body_handle.dispose
   end
@@ -618,6 +618,19 @@ module ExampleCodes
   def example_a1c8e837e826079359d01d6f7eecc64092a45d8c74280d23ee9039c379132c51(frame:)
     a_window_handle = frame.evaluate_handle("Promise.resolve(window)")
     a_window_handle # handle for the window object.
+  end
+
+  # Frame#evaluate_handle
+  def example_77cd1d8e4b3ca6967cf6c3e87ce390ce884619e33a3620d8d7de9df3a4bb54ed(frame:)
+    a_handle = frame.evaluate_handle("document") # handle for the "document"
+  end
+
+  # Frame#evaluate_handle
+  def example_65c46bc1d1d437510c902d3817be49384affcbc2c03f26a1a4bc0ed1808a2baf(frame:)
+    a_handle = frame.evaluate_handle("document.body")
+    result_handle = frame.evaluate_handle("body => body.innerHTML", arg: a_handle)
+    puts result_handle.json_value
+    result_handle.dispose
   end
 
   # Frame#frame_element
@@ -1540,8 +1553,8 @@ module ExampleCodes
   end
 
   # Page#evaluate
-  def example_b49ac8565a94d1273fd47819ad9090736deb02feb0aea4a9eb35c68c66f22502(page:)
-    body_handle = page.query_selector("body")
+  def example_e879414b6822d8233c3c7db9c10d5c7c8f597093eaf6397b3cbbe48c68131307(page:)
+    body_handle = page.evaluate_handle("document.body")
     html = page.evaluate("([body, suffix]) => body.innerHTML + suffix", arg: [body_handle, "hello"])
     body_handle.dispose
   end

@@ -31,10 +31,13 @@ module Playwright
       @stack = stack
     end
 
-    attr_reader :name, :message, :stack
+    attr_reader :name, :message, :stack, :raw_log
+    # Error details for `expect` failures (received value, timedOut, customErrorMessage).
+    attr_accessor :details
 
     def log=(log)
       return unless log
+      @raw_log = log
       format_call_log = log.join("\n  - ")
       @message = "#{@message}\nCall log:\n#{format_call_log}\n"
     end

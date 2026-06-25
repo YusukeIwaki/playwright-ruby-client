@@ -92,11 +92,12 @@ module Playwright
       raise
     end
 
-    def connect_over_cdp(endpointURL, headers: nil, isLocal: nil, noDefaults: nil, slowMo: nil, timeout: nil, &block)
+    def connect_over_cdp(endpointURL, artifactsDir: nil, headers: nil, isLocal: nil, noDefaults: nil, slowMo: nil, timeout: nil, &block)
       raise 'Connecting over CDP is only supported in Chromium.' unless name == 'chromium'
 
       params = {
         endpointURL: endpointURL,
+        artifactsDir: artifactsDir,
         headers: headers,
         isLocal: isLocal,
         noDefaults: noDefaults,

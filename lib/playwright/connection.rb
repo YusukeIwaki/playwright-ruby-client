@@ -168,6 +168,7 @@ module Playwright
         if error && !msg['result']
           parsed_error = ::Playwright::Error.parse(error['error'])
           parsed_error.log = msg['log']
+          parsed_error.details = msg['errorDetails']
           callback.reject(parsed_error)
         else
           result = replace_guids_with_channels(msg['result'])

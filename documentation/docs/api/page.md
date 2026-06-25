@@ -413,7 +413,7 @@ puts page.evaluate("1 + #{x}") # => "11"
 [ElementHandle](./element_handle) instances can be passed as an argument to the [Page#evaluate](./page#evaluate):
 
 ```ruby
-body_handle = page.query_selector("body")
+body_handle = page.evaluate_handle("document.body")
 html = page.evaluate("([body, suffix]) => body.innerHTML + suffix", arg: [body_handle, "hello"])
 body_handle.dispose
 ```
@@ -1561,7 +1561,7 @@ This method taps an element matching `selector` by performing the following step
 When all steps combined have not finished during the specified `timeout`, this method throws a
 `TimeoutError`. Passing zero timeout disables this.
 
-**NOTE**: [Page#tap_point](./page#tap_point) the method will throw if `hasTouch` option of the browser context is false.
+**NOTE**: [Page#tap_point](./page#tap_point) will throw if the `hasTouch` option of the browser context is false.
 
 ## text_content
 

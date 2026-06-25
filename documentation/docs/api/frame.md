@@ -291,7 +291,7 @@ puts frame.evaluate("1 + #{x}") # => "11"
 [ElementHandle](./element_handle) instances can be passed as an argument to the [Frame#evaluate](./frame#evaluate):
 
 ```ruby
-body_handle = frame.query_selector("body")
+body_handle = frame.evaluate_handle("document.body")
 html = frame.evaluate("([body, suffix]) => body.innerHTML + suffix", arg: [body_handle, "hello"])
 body_handle.dispose
 ```
@@ -321,14 +321,14 @@ a_window_handle # handle for the window object.
 A string can also be passed in instead of a function.
 
 ```ruby
-a_handle = page.evaluate_handle("document") # handle for the "document"
+a_handle = frame.evaluate_handle("document") # handle for the "document"
 ```
 
 [JSHandle](./js_handle) instances can be passed as an argument to the [Frame#evaluate_handle](./frame#evaluate_handle):
 
 ```ruby
-body_handle = page.evaluate_handle("document.body")
-result_handle = page.evaluate_handle("body => body.innerHTML", arg: body_handle)
+a_handle = frame.evaluate_handle("document.body")
+result_handle = frame.evaluate_handle("body => body.innerHTML", arg: a_handle)
 puts result_handle.json_value
 result_handle.dispose
 ```
