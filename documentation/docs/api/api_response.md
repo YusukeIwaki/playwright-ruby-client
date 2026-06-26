@@ -77,6 +77,24 @@ def ok
 
 Contains a boolean stating whether the response was successful (status in the range 200-299) or not.
 
+## security_details
+
+```
+def security_details
+```
+
+
+Returns SSL and other security information. Resolves to `null` for non-HTTPS responses. For redirected requests, returns the information for the last request in the redirect chain.
+
+## server_addr
+
+```
+def server_addr
+```
+
+
+Returns the IP address and port of the server. Resolves to `null` if the server address is not available. For redirected requests, returns the information for the last request in the redirect chain.
+
 ## status
 
 ```

@@ -39,6 +39,14 @@ module Playwright
       @headers.headers_array
     end
 
+    def security_details
+      @initializer['securityDetails']
+    end
+
+    def server_addr
+      @initializer['serverAddr']
+    end
+
     class AlreadyDisposedError < StandardError
       def initialize
         super('Response has been disposed')
