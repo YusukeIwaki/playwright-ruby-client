@@ -424,6 +424,59 @@ module ExampleCodes
     msg.args[2].json_value # => { 'foo' => 'bar' }
   end
 
+  # Credentials
+  def example_4b16944216ee5acfa4843ff0db2b6c1e50de625c9530e06362459de4998c5245(browser:)
+    context = browser.new_context
+
+    # A passkey your backend already provisioned for a test user.
+    context.credentials.create(
+      "example.com",
+      id: known_credential_id, # base64url
+      userHandle: known_user_handle, # base64url
+      privateKey: known_private_key, # base64url PKCS#8 (DER)
+      publicKey: known_public_key, # base64url SPKI (DER)
+    )
+    context.credentials.install
+
+    page = context.new_page
+    page.goto("https://example.com/login")
+    # The page's navigator.credentials.get() is answered with the seeded passkey.
+  end
+
+  # Credentials
+  def example_a56dcffc601af859fb6f2992dd574a0d97b9a8e42aeba15d308be51411ede1ce(browser:)
+    # setup test: let the app register a passkey, then save it.
+    context = browser.new_context
+    context.credentials.install
+
+    page = context.new_page
+    page.goto("https://example.com/register")
+    page.get_by_role("button", name: "Create a passkey").click
+
+    # Read back the passkey the page registered - it includes the private key.
+    credential = context.credentials.get(rpId: "example.com").first
+    File.write("playwright/.auth/passkey.json", JSON.generate(credential))
+  end
+
+  # Credentials
+  def example_4418a8e24419f983d07a8957cbd2f580f7aced3efc4f94457f8c263bb197c482(browser:)
+    # later test: seed the captured passkey so the app starts already enrolled.
+    credential = JSON.parse(File.read("playwright/.auth/passkey.json"))
+    context = browser.new_context
+    context.credentials.create(
+      credential["rpId"],
+      id: credential["id"],
+      userHandle: credential["userHandle"],
+      privateKey: credential["privateKey"],
+      publicKey: credential["publicKey"],
+    )
+    context.credentials.install
+
+    page = context.new_page
+    page.goto("https://example.com/login")
+    # navigator.credentials.get() resolves the captured passkey - already signed in.
+  end
+
   # Dialog
   def example_a7dcc75b7aa5544237ac3a964e9196d0445308864d3ce820f8cb8396f687b04a(page:)
     def handle_dialog(dialog)

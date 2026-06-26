@@ -521,6 +521,12 @@ Will throw an error if the context closes before new [Page](./page) is created.
 
 Playwright has ability to mock clock and passage of time.
 
+## credentials
+
+
+Virtual WebAuthn authenticator for this context. Lets tests seed credentials and intercept
+`navigator.credentials.create()` / `navigator.credentials.get()` ceremonies.
+
 ## request
 
 

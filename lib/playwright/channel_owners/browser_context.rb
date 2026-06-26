@@ -5,7 +5,7 @@ module Playwright
 
     attr_accessor :browser
     attr_writer :owner_page, :options
-    attr_reader :clock, :tracing, :request
+    attr_reader :clock, :tracing, :request, :credentials
 
     private def after_initialize
       @options = @initializer['options']
@@ -20,6 +20,7 @@ module Playwright
       @request = ChannelOwners::APIRequestContext.from(@initializer['requestContext'])
       @request.send(:_update_timeout_settings, @timeout_settings)
       @clock = ClockImpl.new(self)
+      @credentials = CredentialsImpl.new(self)
 
       @channel.on('bindingCall', ->(params) { on_binding(ChannelOwners::BindingCall.from(params['binding'])) })
       @channel.once('close', ->(_) { on_close })

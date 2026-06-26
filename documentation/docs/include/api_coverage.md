@@ -407,7 +407,7 @@
 * expect_page
 * ~~wait_for_event~~
 * clock
-* ~~credentials~~
+* credentials
 * ~~debugger~~
 * request
 * tracing
@@ -651,3 +651,10 @@
 * set_item
 * remove_item
 * clear
+
+## Credentials
+
+* install
+* create
+* delete
+* get
