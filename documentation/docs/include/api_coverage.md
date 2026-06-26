@@ -365,8 +365,8 @@
 * ~~wait_for_event~~
 * clock
 * keyboard
-* ~~local_storage~~
-* ~~session_storage~~
+* local_storage
+* session_storage
 * mouse
 * request
 * screencast
@@ -643,3 +643,11 @@
 * not_to_match_aria_snapshot
 * to_have_title
 * to_have_url
+
+## WebStorage
+
+* items
+* get_item
+* set_item
+* remove_item
+* clear

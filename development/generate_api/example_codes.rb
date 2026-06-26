@@ -2056,6 +2056,16 @@ module ExampleCodes
     context.tracing.group_end
   end
 
+  # WebStorage
+  def example_c19b80815d7452be0cbc5e027c2e78e36e8be59deaa35efa1d703aae54aa40f8(page:)
+    page.goto("https://example.com")
+    page.local_storage.set_item("token", "abc")
+    token = page.local_storage.get_item("token")
+    all = page.local_storage.items
+    page.local_storage.remove_item("token")
+    page.local_storage.clear
+  end
+
   # Worker
   def example_29716fdd4471a97923a64eebeee96330ab508226a496ae8fd13f12eb07d55ee6(page:)
     def handle_worker(worker)

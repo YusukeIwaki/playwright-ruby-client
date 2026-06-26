@@ -2001,6 +2001,16 @@ Playwright has ability to mock clock and passage of time.
 
 ## keyboard
 
+## local_storage
+
+
+Provides access to the page's `localStorage` for the current origin. See [WebStorage](./web_storage).
+
+## session_storage
+
+
+Provides access to the page's `sessionStorage` for the current origin. See [WebStorage](./web_storage).
+
 ## mouse
 
 ## request

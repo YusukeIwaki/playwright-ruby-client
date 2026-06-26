@@ -31,6 +31,7 @@ ALL_TYPES = %w[
     APIRequest
     LocatorAssertions
     PageAssertions
+    WebStorage
 ]
 EXPERIMENTAL = %w[
 ]
@@ -50,6 +51,7 @@ API_IMPLEMENTATIONS = %w[
   LocatorAssertions
   PageAssertions
   Selectors
+  WebStorage
 ]
 
 require 'bundler/setup'
