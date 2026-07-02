@@ -89,6 +89,26 @@ $ bundle exec ruby main.rb
 ==> MarketSquare/robotframework-browser
 ```
 
+### Custom Firefox binary
+
+`playwright.firefox.launch` accepts the same `executablePath` and `firefoxUserPrefs` options as
+the other bindings, so a custom Firefox build works too:
+
+```ruby
+require 'playwright'
+
+Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright') do |playwright|
+  playwright.firefox.launch(executablePath: '/path/to/firefox', firefoxUserPrefs: {}) do |browser|
+    page = browser.new_page
+    page.goto('https://example.com')
+  end
+end
+```
+
+Useful with a build like [invisible_playwright](https://github.com/feder-cr/invisible_playwright),
+patched at the source level for a realistic fingerprint, for sessions that hit bot detection on
+the default Chromium path.
+
 ### Android browser automation
 
 ```ruby
