@@ -365,6 +365,8 @@
 * ~~wait_for_event~~
 * clock
 * keyboard
+* local_storage
+* session_storage
 * mouse
 * request
 * screencast
@@ -405,6 +407,7 @@
 * expect_page
 * ~~wait_for_event~~
 * clock
+* credentials
 * ~~debugger~~
 * request
 * tracing
@@ -553,6 +556,8 @@
 * headers_array
 * json
 * ok
+* security_details
+* server_addr
 * status
 * status_text
 * text
@@ -638,3 +643,18 @@
 * not_to_match_aria_snapshot
 * to_have_title
 * to_have_url
+
+## WebStorage
+
+* items
+* get_item
+* set_item
+* remove_item
+* clear
+
+## Credentials
+
+* install
+* create
+* delete
+* get

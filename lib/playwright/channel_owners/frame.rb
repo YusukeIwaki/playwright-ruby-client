@@ -725,25 +725,44 @@ module Playwright
           .serialize
       end
 
-      result = @channel.send_message_to_server_result(
-        title, # title
-        "expect", # method
-        { # params
-          selector: selector,
-          expression: expression,
-          **options,
-        }.compact
-      )
+      is_not = options[:isNot] || false
 
-      if result.key?('received')
-        if result['received'].is_a?(Hash) && result['received'].key?('value')
-          result['received']['value'] = JavaScript::ValueParser.new(result['received']['value']).parse
-        elsif !result['received'].is_a?(Hash)
-          result['received'] = JavaScript::ValueParser.new(result['received']).parse
+      # Since Playwright 1.61, the `expect` command resolves on a successful
+      # match and rejects with FrameExpectErrorDetails on a mismatch/timeout.
+      begin
+        @channel.send_message_to_server_result(
+          title, # title
+          "expect", # method
+          { # params
+            selector: selector,
+            expression: expression,
+            **options,
+          }.compact
+        )
+        { 'matches' => !is_not }
+      rescue ::Playwright::Error => err
+        details = err.details || {}
+        received = details['received']
+        if received.is_a?(Hash)
+          received = received.dup
+          if received.key?('value')
+            received['value'] = JavaScript::ValueParser.new(received['value']).parse
+          end
         end
-      end
 
-      result
+        error_message =
+          if details['customErrorMessage']
+            "Error: #{details['customErrorMessage']}"
+          end
+
+        {
+          'matches' => is_not,
+          'received' => received,
+          'log' => err.raw_log,
+          'timedOut' => details['timedOut'],
+          'errorMessage' => error_message,
+        }.compact
+      end
     end
 
     private def drop_payload_params(payload)

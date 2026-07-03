@@ -424,6 +424,59 @@ module ExampleCodes
     msg.args[2].json_value # => { 'foo' => 'bar' }
   end
 
+  # Credentials
+  def example_4b16944216ee5acfa4843ff0db2b6c1e50de625c9530e06362459de4998c5245(browser:)
+    context = browser.new_context
+
+    # A passkey your backend already provisioned for a test user.
+    context.credentials.create(
+      "example.com",
+      id: known_credential_id, # base64url
+      userHandle: known_user_handle, # base64url
+      privateKey: known_private_key, # base64url PKCS#8 (DER)
+      publicKey: known_public_key, # base64url SPKI (DER)
+    )
+    context.credentials.install
+
+    page = context.new_page
+    page.goto("https://example.com/login")
+    # The page's navigator.credentials.get() is answered with the seeded passkey.
+  end
+
+  # Credentials
+  def example_a56dcffc601af859fb6f2992dd574a0d97b9a8e42aeba15d308be51411ede1ce(browser:)
+    # setup test: let the app register a passkey, then save it.
+    context = browser.new_context
+    context.credentials.install
+
+    page = context.new_page
+    page.goto("https://example.com/register")
+    page.get_by_role("button", name: "Create a passkey").click
+
+    # Read back the passkey the page registered - it includes the private key.
+    credential = context.credentials.get(rpId: "example.com").first
+    File.write("playwright/.auth/passkey.json", JSON.generate(credential))
+  end
+
+  # Credentials
+  def example_4418a8e24419f983d07a8957cbd2f580f7aced3efc4f94457f8c263bb197c482(browser:)
+    # later test: seed the captured passkey so the app starts already enrolled.
+    credential = JSON.parse(File.read("playwright/.auth/passkey.json"))
+    context = browser.new_context
+    context.credentials.create(
+      credential["rpId"],
+      id: credential["id"],
+      userHandle: credential["userHandle"],
+      privateKey: credential["privateKey"],
+      publicKey: credential["publicKey"],
+    )
+    context.credentials.install
+
+    page = context.new_page
+    page.goto("https://example.com/login")
+    # navigator.credentials.get() resolves the captured passkey - already signed in.
+  end
+
   # Dialog
   def example_a7dcc75b7aa5544237ac3a964e9196d0445308864d3ce820f8cb8396f687b04a(page:)
     def handle_dialog(dialog)
@@ -608,8 +661,8 @@ module ExampleCodes
   end
 
   # Frame#evaluate
-  def example_6ebfd0a9a1f3cb61410f494ffc34a17f5c6d57280326d077fca3b0a18aef7834(frame:)
-    body_handle = frame.query_selector("body")
+  def example_1bdfda7bbd1869b76e70522b88e85bad065d776b0171cc78caa6283a04ac4153(frame:)
+    body_handle = frame.evaluate_handle("document.body")
     html = frame.evaluate("([body, suffix]) => body.innerHTML + suffix", arg: [body_handle, "hello"])
     body_handle.dispose
   end
@@ -618,6 +671,19 @@ module ExampleCodes
   def example_a1c8e837e826079359d01d6f7eecc64092a45d8c74280d23ee9039c379132c51(frame:)
     a_window_handle = frame.evaluate_handle("Promise.resolve(window)")
     a_window_handle # handle for the window object.
+  end
+
+  # Frame#evaluate_handle
+  def example_77cd1d8e4b3ca6967cf6c3e87ce390ce884619e33a3620d8d7de9df3a4bb54ed(frame:)
+    a_handle = frame.evaluate_handle("document") # handle for the "document"
+  end
+
+  # Frame#evaluate_handle
+  def example_65c46bc1d1d437510c902d3817be49384affcbc2c03f26a1a4bc0ed1808a2baf(frame:)
+    a_handle = frame.evaluate_handle("document.body")
+    result_handle = frame.evaluate_handle("body => body.innerHTML", arg: a_handle)
+    puts result_handle.json_value
+    result_handle.dispose
   end
 
   # Frame#frame_element
@@ -1540,8 +1606,8 @@ module ExampleCodes
   end
 
   # Page#evaluate
-  def example_b49ac8565a94d1273fd47819ad9090736deb02feb0aea4a9eb35c68c66f22502(page:)
-    body_handle = page.query_selector("body")
+  def example_e879414b6822d8233c3c7db9c10d5c7c8f597093eaf6397b3cbbe48c68131307(page:)
+    body_handle = page.evaluate_handle("document.body")
     html = page.evaluate("([body, suffix]) => body.innerHTML + suffix", arg: [body_handle, "hello"])
     body_handle.dispose
   end
@@ -2041,6 +2107,16 @@ module ExampleCodes
     page.get_by_role("link", name: "API").click
 
     context.tracing.group_end
+  end
+
+  # WebStorage
+  def example_c19b80815d7452be0cbc5e027c2e78e36e8be59deaa35efa1d703aae54aa40f8(page:)
+    page.goto("https://example.com")
+    page.local_storage.set_item("token", "abc")
+    token = page.local_storage.get_item("token")
+    all = page.local_storage.items
+    page.local_storage.remove_item("token")
+    page.local_storage.clear
   end
 
   # Worker

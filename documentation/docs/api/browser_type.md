@@ -41,6 +41,7 @@ This method attaches Playwright to an existing browser instance created via `Bro
 ```
 def connect_over_cdp(
       endpointURL,
+      artifactsDir: nil,
       headers: nil,
       isLocal: nil,
       noDefaults: nil,

@@ -86,6 +86,14 @@ module Playwright
       :viewport_size,
       :main_frame
 
+    def local_storage
+      @local_storage ||= WebStorageImpl.new(self, 'local')
+    end
+
+    def session_storage
+      @session_storage ||= WebStorageImpl.new(self, 'session')
+    end
+
     private def on_frame_attached(frame)
       frame.send(:update_page_from_page, self)
       @frames << frame

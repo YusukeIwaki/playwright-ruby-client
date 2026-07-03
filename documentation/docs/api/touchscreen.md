@@ -19,4 +19,4 @@ def tap_point(x, y)
 
 Dispatches a `touchstart` and `touchend` event with a single touch at the position (`x`,`y`).
 
-**NOTE**: [Page#tap_point](./page#tap_point) the method will throw if `hasTouch` option of the browser context is false.
+**NOTE**: [Touchscreen#tap_point](./touchscreen#tap_point) will throw if the `hasTouch` option of the browser context is false.
