@@ -23,6 +23,13 @@ RSpec.describe 'ariaSnapshot' do
     expect(locator).to match_aria_snapshot(snapshot)
   end
 
+  def failure_message
+    yield
+    raise 'Expected assertion to fail'
+  rescue RSpec::Expectations::ExpectationNotMetError => err
+    err.message
+  end
+
   it 'should snapshot' do
     with_page do |page|
       page.content = '<h1>title</h1>'
@@ -550,6 +557,46 @@ RSpec.describe 'ariaSnapshot' do
       check_and_match_snapshot(page.locator('body'), <<-SNAPSHOT)
         - checkbox
         - radio
+      SNAPSHOT
+    end
+  end
+
+  it 'invalid attribute', annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/34839' } do
+    with_page do |page|
+      page.content = <<~HTML
+        <input type="text" aria-label="Email" aria-invalid="true" value="not-an-email">
+        <input type="text" aria-label="Name" value="Alice">
+      HTML
+
+      expect(page).to match_aria_snapshot(<<~SNAPSHOT)
+        - textbox "Email" [invalid]: not-an-email
+        - textbox "Name": Alice
+      SNAPSHOT
+
+      expect(page).to match_aria_snapshot(<<~SNAPSHOT)
+        - textbox "Email" [invalid=true]: not-an-email
+        - textbox "Name" [invalid=false]: Alice
+      SNAPSHOT
+
+      page.content = <<~HTML
+        <input type="text" aria-label="Bio" aria-invalid="grammar">
+        <input type="text" aria-label="Note" aria-invalid="spelling">
+      HTML
+      expect(page).to match_aria_snapshot(<<~SNAPSHOT)
+        - textbox "Bio" [invalid=grammar]
+        - textbox "Note" [invalid=spelling]
+      SNAPSHOT
+
+      message = failure_message do
+        expect(page).to match_aria_snapshot(<<~SNAPSHOT, timeout: 1)
+          - textbox "Bio" [invalid]
+        SNAPSHOT
+      end
+      expect(message).to include('[invalid=grammar]')
+
+      page.content = '<input type="text" aria-label="Zip" aria-invalid="garbage">'
+      expect(page).to match_aria_snapshot(<<~SNAPSHOT)
+        - textbox "Zip" [invalid]
       SNAPSHOT
     end
   end

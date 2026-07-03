@@ -37,7 +37,11 @@ RSpec.describe 'screencast', sinatra: true do
 
     frames = []
     page.screencast.start(size: { width: 500, height: 400 }) do |frame|
-      frames << { viewportWidth: frame[:viewportWidth], viewportHeight: frame[:viewportHeight] }
+      frames << {
+        timestamp: frame[:timestamp],
+        viewportWidth: frame[:viewportWidth],
+        viewportHeight: frame[:viewportHeight],
+      }
     end
     page.goto(server_empty_page)
     ensure_some_frames(page)
@@ -47,6 +51,7 @@ RSpec.describe 'screencast', sinatra: true do
     frames.each do |frame|
       expect(frame[:viewportWidth]).to eq(1000)
       expect(frame[:viewportHeight]).to eq(400)
+      expect(frame[:timestamp]).to be_a(Numeric)
     end
 
     context.close

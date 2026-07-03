@@ -521,13 +521,15 @@ module Playwright
       end
       if @owned_context
         @owned_context.close
+      elsif runBeforeUnload
+        @channel.send_message_to_server('runBeforeUnload')
       else
-        options = { runBeforeUnload: runBeforeUnload }.compact
+        options = { reason: reason }.compact
         @channel.send_message_to_server('close', options)
       end
       nil
     rescue => err
-      raise if !target_closed_error?(err) || !runBeforeUnload
+      raise if !target_closed_error?(err) || runBeforeUnload
     end
 
     def closed?
