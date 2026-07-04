@@ -74,14 +74,18 @@ module Playwright
     end
 
     def async_send_message_to_server(guid, method, params, metadata: nil)
+      if method == '__waitInfo__' && @closed_error
+        return Concurrent::Promises.fulfilled_future(nil)
+      end
       return if @closed_error
 
       callback = Concurrent::Promises.resolvable_future
+      fire_and_forget = method == '__waitInfo__'
 
       with_generated_id do |id|
         # register callback promise object first.
         # @see https://github.com/YusukeIwaki/puppeteer-ruby/pull/34
-        @callbacks_mutex.synchronize { @callbacks[id] = callback }
+        @callbacks_mutex.synchronize { @callbacks[id] = callback } unless fire_and_forget
 
         _metadata = {}
         frames = []
@@ -112,6 +116,7 @@ module Playwright
           callback.reject(err)
           raise unless err.is_a?(Transport::AlreadyDisconnectedError)
         end
+        callback.fulfill(nil) if fire_and_forget
 
         if @tracing_count > 0 && !frames.empty? && guid != 'localUtils' && !remote?
           @local_utils.add_stack_to_tracing_no_reply(id, frames)

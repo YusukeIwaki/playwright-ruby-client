@@ -12,33 +12,14 @@ module Playwright
       @registered_listeners = Set.new
       @listeners_mutex = Mutex.new
       @logs = []
-      wait_for_event_info_before
+      send_wait_info(waitId: @wait_id, phase: 'before', event: @event)
     end
 
-    private def wait_for_event_info_before
-      @channel.async_send_message_to_server(
-        "waitForEventInfo",
-        {
-          "info": {
-            "waitId": @wait_id,
-            "phase": "before",
-            "event": @event,
-          }
-        },
-      )
-    end
-
-    private def wait_for_event_info_after(error: nil)
-      @channel.async_send_message_to_server(
-        "waitForEventInfo",
-        {
-          "info": {
-            "waitId": @wait_id,
-            "phase": "after",
-            "error": error,
-          }.compact,
-        },
-      )
+    private def send_wait_info(params)
+      @channel.async_send_message_to_server('__waitInfo__', params.compact)
+    rescue
+      # Fire-and-forget. The server intentionally does not reply and this must
+      # not affect the API call that is being waited for.
     end
 
     def reject_on_event(emitter, event, error_or_proc, predicate: nil)
@@ -89,7 +70,7 @@ module Playwright
       cleanup
       return if @result.resolved?
       @result.fulfill(result)
-      wait_for_event_info_after
+      send_wait_info(waitId: @wait_id, phase: 'after')
     end
 
     private def reject(error)
@@ -98,7 +79,7 @@ module Playwright
       klass = error.is_a?(TimeoutError) ? TimeoutError : Error
       ex = klass.new(message: "#{error.message}#{format_log_recording(@logs)}")
       @result.reject(ex)
-      wait_for_event_info_after(error: ex)
+      send_wait_info(waitId: @wait_id, phase: 'after', error: ex.message)
     end
 
     # @param [Playwright::EventEmitter]
@@ -135,20 +116,7 @@ module Playwright
 
     def log(message)
       @logs << message
-      begin
-        @channel.async_send_message_to_server(
-          "waitForEventInfo",
-          {
-            "info": {
-              "waitId": @wait_id,
-              "phase": "log",
-              "message": message,
-            },
-          },
-        )
-      rescue => err
-        # ignore
-      end
+      send_wait_info(waitId: @wait_id, phase: 'log', message: message)
     end
 
     # @param logs [Array<String>]

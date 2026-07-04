@@ -42,7 +42,14 @@ RSpec.describe 'APIResponse#server_addr / #security_details', sinatra: true do
           response = context.request.get(server_empty_page)
           details = response.security_details
           expect(details).not_to be_nil
-          expect(details.keys).to include('protocol', 'subjectName', 'issuer', 'validFrom', 'validTo')
+          expect(details['protocol']).to match(/\ATLSv1\.[23]\z/)
+          expect(details['subjectName']).to be_a(String)
+          expect(details['subjectName']).not_to be_empty
+          expect(details['issuer']).to be_a(String)
+          expect(details['issuer']).not_to be_empty
+          expect(details['validFrom']).to be_a(Integer)
+          expect(details['validTo']).to be_a(Integer)
+          expect(details['validFrom']).to be < details['validTo']
         end
       end
     end

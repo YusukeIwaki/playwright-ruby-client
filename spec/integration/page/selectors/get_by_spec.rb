@@ -19,6 +19,41 @@ RSpec.describe 'Page#getBy...' do
     end
   end
 
+  it 'getByTestId with custom testId should work' do
+    with_page do |page|
+      begin
+        page.content = '<div><div data-my-custom-testid="Hello">Hello world</div></div>'
+        playwright.selectors.set_test_id_attribute('data-my-custom-testid')
+        expect(page.get_by_test_id('Hello').text_content).to include('Hello world')
+        expect(page.main_frame.get_by_test_id('Hello').text_content).to include('Hello world')
+        expect(page.locator('div').get_by_test_id('Hello').text_content).to include('Hello world')
+      ensure
+        playwright.selectors.set_test_id_attribute('data-testid')
+      end
+    end
+  end
+
+  it 'getByTestId with comma-separated testIdAttributes should match any' do
+    with_page do |page|
+      begin
+        page.content = <<~HTML
+          <section>
+            <div data-pw="Hello">first</div>
+            <div data-ti="Hello">second</div>
+            <div data-testid="Hello">third</div>
+          </section>
+        HTML
+        playwright.selectors.set_test_id_attribute('data-pw,data-ti')
+        expect(page.get_by_test_id('Hello').count).to eq(2)
+        expect(page.get_by_test_id('Hello').all_text_contents).to eq(['first', 'second'])
+        expect(page.main_frame.get_by_test_id('Hello').count).to eq(2)
+        expect(page.locator('section').get_by_test_id('Hello').count).to eq(2)
+      ensure
+        playwright.selectors.set_test_id_attribute('data-testid')
+      end
+    end
+  end
+
   it 'getByTestId should escape id' do
     with_page do |page|
       page.content = "<div><div data-testid='He\"llo'>Hello world</div></div>"

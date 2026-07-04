@@ -41,11 +41,15 @@ RSpec.configure do |config|
   config.around(:each, playwright_server_registry: true) do |example|
     Dir.mktmpdir do |dir|
       begin
-        original = ENV['PLAYWRIGHT_SERVER_REGISTRY']
-        ENV['PLAYWRIGHT_SERVER_REGISTRY'] = File.join(dir, 'registry')
+        original = ENV['PWTEST_SERVER_REGISTRY']
+        original_legacy = ENV['PLAYWRIGHT_SERVER_REGISTRY']
+        registry_dir = File.join(dir, 'registry')
+        ENV['PWTEST_SERVER_REGISTRY'] = registry_dir
+        ENV['PLAYWRIGHT_SERVER_REGISTRY'] = registry_dir
         example.run
       ensure
-        ENV['PLAYWRIGHT_SERVER_REGISTRY'] = original
+        ENV['PWTEST_SERVER_REGISTRY'] = original
+        ENV['PLAYWRIGHT_SERVER_REGISTRY'] = original_legacy
       end
     end
   end

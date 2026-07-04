@@ -9,7 +9,7 @@ RSpec.describe 'browser server', playwright_server_registry: true do
 
   it 'should start and stop pipe server' do
     server_info = browser.bind('default')
-    expect(server_info['endpoint']).to match(/browser@/)
+    expect(server_info['endpoint']).to match(/browser-/)
 
     browser2 = browser_type.connect(server_info['endpoint'])
     page = browser2.new_page
@@ -23,7 +23,7 @@ RSpec.describe 'browser server', playwright_server_registry: true do
   it 'should write descriptor on start and remove on stop' do
     server_info = browser.bind('my-title')
 
-    registry_dir = ENV.fetch('PLAYWRIGHT_SERVER_REGISTRY')
+    registry_dir = ENV.fetch('PWTEST_SERVER_REGISTRY')
     file_name = Dir.children(registry_dir).first
     file = File.join(registry_dir, file_name)
 

@@ -39,7 +39,15 @@ module Playwright
     end
 
     private def get_by_test_id_selector(test_id_attribute_name, test_id)
-      "internal:testid=[#{test_id_attribute_name}=#{escape_for_attribute_selector_or_regex(test_id, true)}]"
+      "internal:testid=[#{encode_test_id_attribute_name(test_id_attribute_name)}=#{escape_for_attribute_selector_or_regex(test_id, true)}]"
+    end
+
+    private def encode_test_id_attribute_name(test_id_attribute_name)
+      if test_id_attribute_name.include?(',')
+        JSON.generate(test_id_attribute_name)
+      else
+        test_id_attribute_name
+      end
     end
 
     private def get_by_label_selector(text, exact:)

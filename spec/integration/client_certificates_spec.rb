@@ -47,7 +47,7 @@ RSpec.describe 'client certificates', sinatra: true, tls: true do
     File.join(__dir__, '../', 'assets', path)
   end
 
-  it 'should throw with untrusted client certs' do
+  it 'should fail with self-signed client certificates' do
     options = {
       ignoreHTTPSErrors: true,
       clientCertificates: [{
@@ -58,9 +58,13 @@ RSpec.describe 'client certificates', sinatra: true, tls: true do
     }
     with_context(**options) do |context|
       page = context.new_page
-      expect {
-        page.goto(server_empty_page)
-      }.to raise_error(/net::ERR_EMPTY_RESPONSE|The network connection was lost|Connection terminated unexpectedly/)
+      begin
+        response = page.goto(server_empty_page)
+        expect(response.status).to eq(503)
+        expect(page.content).to match(/self-signed certificate|Playwright client-certificate error/)
+      rescue Playwright::Error => err
+        expect(err.message).to match(/net::ERR_EMPTY_RESPONSE|The network connection was lost|Connection terminated unexpectedly/)
+      end
     end
   end
 

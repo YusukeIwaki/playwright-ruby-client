@@ -63,11 +63,12 @@ module Playwright
       @page.send(:channel).send_message_to_server('screencastChapter', params)
     end
 
-    def show_actions(duration: nil, fontSize: nil, position: nil)
+    def show_actions(duration: nil, fontSize: nil, position: nil, cursor: nil)
       params = {}
       params[:duration] = duration if duration
       params[:fontSize] = fontSize if fontSize
       params[:position] = position if position
+      params[:cursor] = cursor if cursor
       @page.send(:channel).send_message_to_server('screencastShowActions', params)
       DisposableStub.new { hide_actions }
     end
@@ -87,6 +88,7 @@ module Playwright
     private def handle_screencast_frame(event)
       @on_frame&.call({
         data: Base64.strict_decode64(event['data']),
+        timestamp: event['timestamp'],
         viewportWidth: event['viewportWidth'],
         viewportHeight: event['viewportHeight'],
       })
