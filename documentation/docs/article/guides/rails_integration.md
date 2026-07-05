@@ -276,3 +276,71 @@ Instead of the easy configuration using `on_save_trace`, we can also use `page.d
 - Playwright doesn't allow clicking invisible DOM elements or moving elements. `click` sometimes doesn't work as Selenium does. See the detail in https://playwright.dev/docs/actionability/
 - `current_window.maximize` and `current_window.fullscreen` work only on headful (non-headless) mode, as selenium driver does.
 - `Capybara::Node::Element#drag_to` does not accept `html5` parameter. HTML5 drag and drop is not fully supported in Playwright.
+
+#### Selenium migration incompatibilities
+
+Some Selenium-backed Capybara behavior depends on WebDriver implementation details or accepts patterns outside Capybara's documented API. `capybara-playwright-driver` does not try to emulate these Selenium-specific behaviors when they conflict with Playwright's actionability, dialog, or rendered text model.
+
+##### Modal dialogs must be handled before the action that opens them
+
+Use Capybara's block-oriented modal API:
+
+```ruby
+accept_alert('message') do
+  click_button 'Open alert'
+end
+
+accept_confirm('Are you sure?') do
+  click_button 'Delete'
+end
+```
+
+Selenium-backed Capybara may sometimes handle an already-open modal after the action has returned:
+
+```ruby
+click_button 'Delete'
+accept_confirm('Are you sure?')
+```
+
+This pattern is not portable to Playwright. In Playwright, the action that opens a JavaScript dialog does not complete until the dialog is handled, so the driver cannot wait for later Ruby code to call `accept_alert`, `accept_confirm`, or another modal helper.
+
+Wrap the action that opens the dialog in `accept_alert`, `accept_confirm`, `dismiss_confirm`, `accept_prompt`, or `dismiss_prompt`.
+
+##### Clicking a disabled element waits for actionability
+
+Selenium-backed Capybara may return from a second click on an already-disabled button without changing the page. Playwright waits for the element to become actionable, then times out. This is expected Playwright behavior, and commonly appears in migration work around double-submit prevention tests.
+
+Instead of attempting a second click on a disabled control, assert the disabled state and the expected result:
+
+```ruby
+expect(button).to be_disabled
+expect(page).to have_text('submitted')
+```
+
+Alternatively, assert the relevant server or client state directly.
+
+##### Visible text follows rendered `innerText` behavior
+
+When a `<br>` is hidden with CSS, Selenium-backed Capybara may still preserve a newline in text extraction. Playwright follows the browser's rendered `innerText` behavior: a hidden `<br>` does not create a rendered line break.
+
+For example:
+
+```html
+<p>not submitted.<br class="hidden">click submit.</p>
+```
+
+If the `<br>` is hidden with `display: none`, Playwright-style visible text is:
+
+```ruby
+"not submitted.click submit."
+```
+
+not:
+
+```ruby
+"not submitted.\nclick submit."
+```
+
+Avoid newline-sensitive expectations around responsive or hidden line break elements, or assert the browser-rendered text that users actually see.
+
+These examples are not exhaustive. If you find another Capybara/Selenium migration incompatibility, please open an issue at [capybara-playwright-driver issues](https://github.com/YusukeIwaki/capybara-playwright-driver/issues) with the reproduction HTML and the Ruby/Capybara code that reproduces it.
