@@ -1,5 +1,6 @@
 ---
 sidebar_position: 2
+description: Launch Chromium, Firefox, or WebKit from Ruby and configure browser launch options.
 ---
 
 # Launch Browser

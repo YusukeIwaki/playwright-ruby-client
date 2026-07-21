@@ -1,5 +1,6 @@
 ---
 sidebar_position: 4
+description: Use native Playwright APIs in Rails system tests while retaining Capybara only for test server lifecycle management.
 ---
 
 # Use Capybara without DSL

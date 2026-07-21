@@ -9,6 +9,37 @@ module.exports = {
   favicon: 'img/playwright-logo.svg',
   organizationName: 'YusukeIwaki', // Usually your GitHub org/user name.
   projectName: 'playwright-ruby-client', // Usually your repo name.
+  plugins: [
+    [
+      'docusaurus-plugin-llms',
+      {
+        generateLLMsTxt: true,
+        generateLLMsFullTxt: false,
+        generateMarkdownFiles: true,
+        docsDir: 'docs',
+        title: 'playwright-ruby-client',
+        description: 'Ruby client for Playwright, including API reference and integration guides.',
+        rootContent: `This is a community-maintained Ruby client for Playwright.
+
+Important usage notes:
+- The gem does not include the Playwright driver or its downloader. Install a compatible Playwright package separately and pass its CLI path to \`Playwright.create\`.
+- Determine the compatible Playwright version from \`Playwright::COMPATIBLE_PLAYWRIGHT_VERSION\`; do not assume the newest npm package is compatible.
+- Use playwright-ruby-client for native Playwright APIs. Use capybara-playwright-driver when compatibility with the Capybara DSL is more important.
+- Prefer the Ruby examples and signatures in this documentation over examples for other Playwright language bindings.`,
+        includeOrder: [
+          'article/getting_started.md',
+          'article/guides/**/*.md',
+          'api/playwright.md',
+          'api/**/*.md',
+          'article/api_coverage.mdx',
+        ],
+        includeUnmatchedLast: true,
+        ignoreFiles: ['include/**'],
+        excludeImports: true,
+        removeDuplicateHeadings: true,
+      },
+    ],
+  ],
   themeConfig: {
     image: 'img/playwright-ruby-client.png',
     navbar: {
