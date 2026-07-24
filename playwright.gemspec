@@ -14,6 +14,11 @@ Gem::Specification.new do |spec|
   spec.summary       = "The Ruby binding of playwright driver #{Playwright::COMPATIBLE_PLAYWRIGHT_VERSION}"
   spec.homepage      = 'https://github.com/YusukeIwaki/playwright-ruby-client'
   spec.license       = 'MIT'
+  spec.metadata      = {
+    'documentation_uri' => 'https://playwright-ruby-client.vercel.app/docs/article/getting_started',
+    'source_code_uri' => spec.homepage,
+    'bug_tracker_uri' => "#{spec.homepage}/issues",
+  }
 
   spec.files         = Dir.chdir(File.expand_path(__dir__)) do
     `git ls-files -z`.split("\x0").reject do |f|

@@ -1,5 +1,6 @@
 ---
 sidebar_position: 0
+description: Install playwright-ruby-client with a compatible Playwright driver and run a first Ruby browser automation script.
 ---
 
 # Getting started
