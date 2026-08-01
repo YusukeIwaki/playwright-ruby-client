@@ -22,7 +22,7 @@ module.exports = {
         rootContent: `This is a community-maintained Ruby client for Playwright.
 
 Important usage notes:
-- The gem does not include the Playwright driver or its downloader. Install a compatible Playwright package separately and pass its CLI path to \`Playwright.create\`.
+- The gem does not include Node.js or Playwright. Install the compatible \`playwright-core\` npm package separately and pass \`node_modules/.bin/playwright-core\` to \`Playwright.create\`.
 - Determine the compatible Playwright version from \`Playwright::COMPATIBLE_PLAYWRIGHT_VERSION\`; do not assume the newest npm package is compatible.
 - Use playwright-ruby-client for native Playwright APIs. Use capybara-playwright-driver when compatibility with the Capybara DSL is more important.
 - Prefer the Ruby examples and signatures in this documentation over examples for other Playwright language bindings.`,

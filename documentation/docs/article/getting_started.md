@@ -12,15 +12,17 @@ gem 'playwright-ruby-client'
 Add the line above and then `bundle install`.
 
 
-Since `playwright-ruby-client` doesn't include Playwright driver nor its downloader, **we have to install Playwright in advance**
+Since `playwright-ruby-client` doesn't include Playwright, **we have to install Node.js and a compatible `playwright-core` version in advance**.
 
 ```shell
-$ npx playwright install
+$ PLAYWRIGHT_CLI_VERSION=$(bundle exec ruby -e 'require "playwright/version"; puts Playwright::COMPATIBLE_PLAYWRIGHT_VERSION')
+$ npm install "playwright-core@$PLAYWRIGHT_CLI_VERSION"
+$ ./node_modules/.bin/playwright-core install
 ```
 
-and then set `playwright_cli_executable_path: "npx playwright"` into `Playwright.create`.
+Then set `playwright_cli_executable_path: './node_modules/.bin/playwright-core'` in `Playwright.create`.
 
-Other methods of installation are also available. See the detail in [Download Playwright driver](./guides/download_playwright_driver)
+See [Install Playwright CLI](./guides/download_playwright_driver) for details.
 
 ## Enjoy with examples
 
@@ -31,7 +33,7 @@ Navigate pages with `page.goto(url)` and save the screenshot with `page.screensh
 ```rb {6-7}
 require 'playwright'
 
-Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwright|
+Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright-core') do |playwright|
   playwright.chromium.launch(headless: false) do |browser|
     page = browser.new_page
     page.goto('https://github.com/YusukeIwaki')
@@ -53,7 +55,7 @@ Extract data from a site.
 ```rb {12-14,17-21}
 require 'playwright'
 
-Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwright|
+Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright-core') do |playwright|
   playwright.chromium.launch(headless: false) do |browser|
     page = browser.new_page
     page.goto('https://github.com/')
@@ -97,7 +99,7 @@ As an experimental feature, we can automate Chrome for Android.
 ```rb
 require 'playwright'
 
-Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwright|
+Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright-core') do |playwright|
   devices = playwright.android.devices
   unless devices.empty?
     device = devices.last
@@ -131,11 +133,9 @@ end
 We have to download android-driver for Playwright in advance.
 
 ```shell
-$ wget https://github.com/microsoft/playwright/raw/master/bin/android-driver-target.apk -O /path/to/playwright-driver/package/bin/android-driver-target.apk
-$ wget https://github.com/microsoft/playwright/raw/master/bin/android-driver.apk -O /path/to/playwright-driver/package/bin/android-driver.apk
+$ wget https://github.com/microsoft/playwright/raw/master/bin/android-driver-target.apk -O ./node_modules/playwright-core/bin/android-driver-target.apk
+$ wget https://github.com/microsoft/playwright/raw/master/bin/android-driver.apk -O ./node_modules/playwright-core/bin/android-driver.apk
 ```
-
-(If you downloaded Playwright via npm, replace /path/to/playwright-driver/package/ with ./node_modules/playwright/ above.)
 
 ```rb
 require 'playwright'

@@ -1475,7 +1475,7 @@ module ExampleCodes
   def example_6647e5a44b0440884026a6142606dfddad75ba1e643919b015457df4ed2e198f
     require 'playwright'
 
-    Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwright|
+    Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright-core') do |playwright|
       chromium = playwright.chromium # or "firefox" or "webkit".
       chromium.launch do |browser|
         page = browser.new_page
@@ -1491,7 +1491,7 @@ module ExampleCodes
   def example_14d627977a4ad16a605ec5472d768a3324812fa8e7c57685561408fa6601e352
     require 'playwright'
 
-    Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwright|
+    Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright-core') do |playwright|
       iphone = playwright.devices["iPhone 6"]
       playwright.webkit.launch do |browser|
         context = browser.new_context(**iphone)

@@ -12,6 +12,7 @@ Checked paths:
 
 ## Practical implication
 
+- If the Playwright version changes, run `development/generate_api_json.sh` before regenerating artifacts.
 - If API-related code changes, regenerate artifacts before finishing.
 - If you open a PR without regeneration, `check.yml` will likely fail.
 

@@ -14,13 +14,14 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 22
-      - name: Install playwright driver via npx
+      - name: Install playwright-core via npm
         run: |
-          npx playwright@next install chromium
-          npx playwright@next install-deps chromium
+          npm install playwright-core@next
+          ./node_modules/.bin/playwright-core install chromium
+          ./node_modules/.bin/playwright-core install-deps chromium
       - run: bundle exec ruby development/generate_api.rb
       - name: Check example
         run: bundle exec rspec spec/integration/example_spec.rb
         env:
-          PLAYWRIGHT_CLI_EXECUTABLE_PATH: npx playwright@next
+          PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./node_modules/.bin/playwright-core
         timeout-minutes: 5

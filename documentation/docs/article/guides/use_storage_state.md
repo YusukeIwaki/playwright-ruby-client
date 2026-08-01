@@ -24,7 +24,7 @@ require 'pry'
 
 force_login = !File.exist?('github_state.json')
 
-Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwright|
+Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright-core') do |playwright|
   if force_login
     # Use headful mode for manual operation.
     playwright.chromium.launch(headless: false, channel: 'chrome') do |browser|

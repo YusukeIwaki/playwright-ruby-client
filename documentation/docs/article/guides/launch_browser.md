@@ -14,7 +14,7 @@ In order to launch browser, it is required to create Playwright session.
 In previous examples,
 
 ```rb
-Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwright|
+Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright-core') do |playwright|
   # Play with `playwright` here
 end
 ```
@@ -24,7 +24,7 @@ this is the exact procedure for creating Playwright session. Choose either metho
 ### Define scoped Playwright session with block
 
 ```rb
-Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwright|
+Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright-core') do |playwright|
   # Play with `playwright` here
 end
 ```
@@ -42,7 +42,7 @@ class SomeClass
 
   def start_playwright
     # Start Playwright driver (runs `playwright run-driver` internally)
-    @playwright_exec = Playwright.create(playwright_cli_executable_path: 'npx playwright')
+    @playwright_exec = Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright-core')
   end
 
   def stop_playwright!
@@ -103,7 +103,7 @@ Use `Browser#new_context` to prepare a new browser window and use `BrowserContex
 Also we can use `Browser#new_page` to create a new window and new tab at once.
 
 ```rb
-Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwright|
+Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright-core') do |playwright|
   playwright.chromium.launch(headless: false) do |browser| # Chromium task icon appears.
     context = browser.new_context # Prepare new window.
     page = context.new_page # Open new window and new tab here. (about:blank)

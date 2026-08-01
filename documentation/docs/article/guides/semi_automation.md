@@ -54,7 +54,7 @@ We have to enable it for installing Chrome extension, by passing these 3 paramet
 require 'playwright'
 require 'pry'
 
-Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright') do |playwright|
+Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright-core') do |playwright|
   launch_params = {
     acceptDownloads: true,
     channel: 'chrome',
