@@ -11,7 +11,7 @@ to drive automation:
 ```ruby
 require 'playwright'
 
-Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwright|
+Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright-core') do |playwright|
   chromium = playwright.chromium # or "firefox" or "webkit".
   chromium.launch do |browser|
     page = browser.new_page
@@ -36,7 +36,7 @@ Returns a dictionary of devices to be used with [Browser#new_context](./browser#
 ```ruby
 require 'playwright'
 
-Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwright|
+Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright-core') do |playwright|
   iphone = playwright.devices["iPhone 6"]
   playwright.webkit.launch do |browser|
     context = browser.new_context(**iphone)

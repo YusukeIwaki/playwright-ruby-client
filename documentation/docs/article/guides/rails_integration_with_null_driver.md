@@ -57,7 +57,7 @@ RSpec.configure do |config|
     # Rails server is launched here, at the first time of accessing Capybara.current_session.server
     base_url = Capybara.current_session.server.base_url
 
-    Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright') do |playwright|
+    Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright-core') do |playwright|
       # pass any option for Playwright#launch and Browser#new_page as you prefer.
       playwright.chromium.launch(headless: false) do |browser|
         @playwright_page = browser.new_page(baseURL: base_url)
@@ -99,7 +99,7 @@ module PlaywrightBrowser
 
     def start!
       @fiber = Fiber.new do
-        Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright') do |playwright|
+        Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright-core') do |playwright|
           playwright.chromium.launch(headless: false) do |browser|
             Fiber.yield(browser)
           end
@@ -153,7 +153,7 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   driven_by :null
 
   def self.playwright
-    @playwright ||= Playwright.create(playwright_cli_executable_path: Rails.root.join("node_modules/.bin/playwright"))
+    @playwright ||= Playwright.create(playwright_cli_executable_path: Rails.root.join("node_modules/.bin/playwright-core"))
   end
   
   def before_setup

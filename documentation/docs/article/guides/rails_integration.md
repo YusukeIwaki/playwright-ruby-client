@@ -45,7 +45,7 @@ If Playwright is running in an independent container, with docker-compose.yaml c
   playwright: # this is our PLAYWRIGHT_HOST value
     image: mcr.microsoft.com/playwright:v1.57.0-noble
     command: >
-      /bin/sh -c "npx -y playwright@1.57.0 run-server --port 3000 --host 0.0.0.0 --path /ws"
+      /bin/sh -c "npm install --no-save playwright-core@1.57.0 && ./node_modules/.bin/playwright-core run-server --port 3000 --host 0.0.0.0 --path /ws"
     init: true
     restart: unless-stopped
 ```
@@ -144,8 +144,8 @@ These parameters can be passed into `Capybara::Playwright::Driver.new`
 
 ```ruby
 driver_opts = {
-  # `playwright` command path.
-  playwright_cli_executable_path: './node_modules/.bin/playwright',
+  # `playwright-core` command path.
+  playwright_cli_executable_path: './node_modules/.bin/playwright-core',
 
   # Use firefox for testing.
   browser_type: :firefox,
@@ -264,7 +264,7 @@ This example code would attach the trace zip file to Allure report for each test
 We can download and show the trace with `playwright show-trace` command.
 
 ```
-npx playwright show-trace ababcdcdefef.zip
+./node_modules/.bin/playwright-core show-trace ababcdcdefef.zip
 ```
 
 ![show-trace image](https://user-images.githubusercontent.com/11763113/282307098-a4167c32-d5e7-4631-a3b6-62d278efbeef.png)

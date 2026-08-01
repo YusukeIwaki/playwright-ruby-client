@@ -41,7 +41,7 @@ jobs:
           name: playwright_api
           path: lib/playwright_api
 
-  integration_test_with_npm_playwright_driver:
+  integration_test_with_npm_playwright_core:
     needs: [unit_test, generate_playwright_api]
     strategy:
       fail-fast: false
@@ -59,12 +59,12 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 22
-      - name: setup ${{ matrix.version }} playwright via npm install
+      - name: Set up playwright-core via npm install
         run: |
           export PLAYWRIGHT_CLI_VERSION=$(bundle exec ruby -e 'puts Playwright::COMPATIBLE_PLAYWRIGHT_VERSION.strip')
-          npm install playwright@${PLAYWRIGHT_CLI_VERSION} || npm install playwright@next
-          ./node_modules/.bin/playwright install ${{ matrix.browser }}
-          ./node_modules/.bin/playwright install-deps
+          npm install playwright-core@${PLAYWRIGHT_CLI_VERSION}
+          ./node_modules/.bin/playwright-core install ${{ matrix.browser }}
+          ./node_modules/.bin/playwright-core install-deps
           sudo apt-get install -y ffmpeg
       - name: Download playwright_api codes
         uses: actions/download-artifact@v4
@@ -76,7 +76,7 @@ jobs:
           bundle exec rspec spec/integration --profile 10
         env:
           BROWSER: ${{ matrix.browser }}
-          PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./node_modules/.bin/playwright
+          PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./node_modules/.bin/playwright-core
         timeout-minutes: 25
 
   test_example_spec:
@@ -96,12 +96,12 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 22
-      - name: setup ${{ matrix.version }} playwright via npm install
+      - name: Set up playwright-core via npm install
         run: |
           export PLAYWRIGHT_CLI_VERSION=$(bundle exec ruby -e 'puts Playwright::COMPATIBLE_PLAYWRIGHT_VERSION.strip')
-          npm install playwright@${PLAYWRIGHT_CLI_VERSION} || npm install playwright@next
-          ./node_modules/.bin/playwright install chromium
-          ./node_modules/.bin/playwright install-deps
+          npm install playwright-core@${PLAYWRIGHT_CLI_VERSION}
+          ./node_modules/.bin/playwright-core install chromium
+          ./node_modules/.bin/playwright-core install-deps
       - name: Download playwright_api codes
         uses: actions/download-artifact@v4
         with:
@@ -110,5 +110,5 @@ jobs:
       - run: bundle exec rspec spec/integration/example_spec.rb
         env:
           BROWSER: chromium
-          PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./node_modules/.bin/playwright
+          PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./node_modules/.bin/playwright-core
         timeout-minutes: 10

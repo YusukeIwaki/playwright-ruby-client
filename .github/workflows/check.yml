@@ -12,13 +12,12 @@ jobs:
         with:
           ruby-version: 3.4
           bundler-cache: true
-      - name: Download playwright driver
-        run: |
-          wget -O driver.zip https://playwright.azureedge.net/builds/driver/next/playwright-$(cat development/CLI_VERSION)-linux.zip || wget -O driver.zip https://playwright.azureedge.net/builds/driver/playwright-$(cat development/CLI_VERSION)-linux.zip
-          unzip driver.zip && rm driver.zip
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 22
       - name: re-generate codes
         run: |
-          ./node ./package/cli.js print-api-json | jq . > development/api.json
+          ./development/generate_api_json.sh
           find documentation/docs -name "*.md" | grep -v documentation/docs/article/ | xargs rm
           bundle exec ruby development/generate_api.rb
       - name: Check if api.json is updated

@@ -5,7 +5,7 @@ jobs:
     docker:
       - image: cimg/ruby:3.4
       - image: mcr.microsoft.com/playwright:v1.61.1-noble
-        command: /bin/sh -c "cd /home/pwuser ; npx --yes playwright@1.61.1 install && npx playwright@1.61.1 run-server --port 8888 --host 0.0.0.0 --path /ws"
+        command: /bin/sh -c "cd /home/pwuser && npm install --no-save playwright-core@1.61.1 && ./node_modules/.bin/playwright-core install && ./node_modules/.bin/playwright-core run-server --port 8888 --host 0.0.0.0 --path /ws"
         environment:
           DEBUG: "pw:*"
         user: pwuser

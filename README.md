@@ -12,25 +12,22 @@ gem 'playwright-ruby-client'
 
 and then 'bundle install'.
 
-Since playwright-ruby-client doesn't include the playwright driver, **we have to install [playwright](https://github.com/microsoft/playwright) in advance**.
+Since playwright-ruby-client doesn't include Playwright, **we have to install Node.js and a compatible version of [playwright-core](https://www.npmjs.com/package/playwright-core) in advance**.
 
+```sh
+PLAYWRIGHT_CLI_VERSION=$(bundle exec ruby -e 'require "playwright/version"; puts Playwright::COMPATIBLE_PLAYWRIGHT_VERSION')
+npm install "playwright-core@$PLAYWRIGHT_CLI_VERSION"
+./node_modules/.bin/playwright-core install
 ```
-npm install playwright
-./node_modules/.bin/playwright install
-```
 
-And set `playwright_cli_executable_path: './node_modules/.bin/playwright'`
-
-**Prefer playwrighting without Node.js?**
-
-Instead of npm, you can also directly download playwright driver from playwright.azureedge.net/builds/. The URL can be easily detected from [here](https://github.com/microsoft/playwright-python/blob/cb5409934629adaabc0cff1891080de2052fa778/setup.py#L73-L77)
+And set `playwright_cli_executable_path: './node_modules/.bin/playwright-core'`.
 
 ### Capture a site
 
 ```ruby
 require 'playwright'
 
-Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright') do |playwright|
+Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright-core') do |playwright|
   playwright.chromium.launch(headless: false) do |browser|
     page = browser.new_page
     page.goto('https://github.com/YusukeIwaki')
@@ -46,7 +43,7 @@ end
 ```ruby
 require 'playwright'
 
-Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright') do |playwright|
+Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright-core') do |playwright|
   playwright.chromium.launch(headless: false) do |browser|
     page = browser.new_page
     page.goto('https://github.com/')
@@ -94,7 +91,7 @@ $ bundle exec ruby main.rb
 ```ruby
 require 'playwright'
 
-Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright') do |playwright|
+Playwright.create(playwright_cli_executable_path: './node_modules/.bin/playwright-core') do |playwright|
   devices = playwright.android.devices
   unless devices.empty?
     device = devices.last
@@ -128,11 +125,9 @@ end
 We have to download android-driver for Playwright in advance.
 
 ```
-wget https://github.com/microsoft/playwright/raw/master/bin/android-driver-target.apk -O /path/to/playwright-driver/package/bin/android-driver-target.apk
-wget https://github.com/microsoft/playwright/raw/master/bin/android-driver.apk -O /path/to/playwright-driver/package/bin/android-driver.apk
+wget https://github.com/microsoft/playwright/raw/master/bin/android-driver-target.apk -O ./node_modules/playwright-core/bin/android-driver-target.apk
+wget https://github.com/microsoft/playwright/raw/master/bin/android-driver.apk -O ./node_modules/playwright-core/bin/android-driver.apk
 ```
-
-(If you downloaded Playwright via npm, replace `/path/to/playwright-driver/package/` with `./node_modules/playwright/` above.)
 
 ```ruby
 require 'playwright'
@@ -168,7 +163,7 @@ If your environment doesn't accept installing browser or creating browser proces
 For launching Playwright server, just execute:
 
 ```
-npx playwright install && npx playwright run-server --port 8080 --path /ws
+./node_modules/.bin/playwright-core install && ./node_modules/.bin/playwright-core run-server --port 8080 --path /ws
 ```
 
 and we can connect to the server with the code like this:

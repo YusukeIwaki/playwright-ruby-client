@@ -35,7 +35,7 @@ Playwright server is running on a container of [official Docker image](https://h
 
 ![overview](https://user-images.githubusercontent.com/11763113/124934448-ad4d0700-e03f-11eb-942e-b9f3282bb703.png)
 
-- Server can be launched with `npx playwright run-server` CLI command.
+- Server can be launched with the `playwright-core run-server` CLI command.
 - Client can connect to server with [BrowserType#connect](https://playwright.dev/docs/api/class-browsertype#browser-type-connect). In playwright-ruby-client, `BrowserType#connect` and not implemented yet and use `Playwright#connect_to_browser_server()` instead.
 
 ### Client code
@@ -75,7 +75,7 @@ end
 
 ### Server code
 
-With the [official Docker image](https://hub.docker.com/_/microsoft-playwright) or in the local development environment with Node.js, just execute `npx playwright install && npx playwright run-server --port $PORT --path /ws`. (`$PORT` is a port number of the server)
+With the [official Docker image](https://hub.docker.com/_/microsoft-playwright) or in the local development environment with Node.js, install a matching `playwright-core` package and use its local CLI. (`$PORT` is a port number of the server.)
 
 If custom Docker image is preferred, build it as follows:
 
@@ -83,10 +83,11 @@ If custom Docker image is preferred, build it as follows:
 FROM mcr.microsoft.com/playwright
 
 WORKDIR /root
-RUN npm install playwright && ./node_modules/.bin/playwright install
+ARG PLAYWRIGHT_CORE_VERSION=1.61.1
+RUN npm install "playwright-core@$PLAYWRIGHT_CORE_VERSION" && ./node_modules/.bin/playwright-core install
 
 ENV PORT 8888
-CMD ["./node_modules/.bin/playwright", "run-server", "--port", "$PORT", "--path", "/ws"]
+CMD ["./node_modules/.bin/playwright-core", "run-server", "--port", "$PORT", "--path", "/ws"]
 ```
 
 ## Debugging for connection
@@ -106,7 +107,7 @@ DEBUG=1 bundle exec ruby some-automation-with-playwright.rb
 Just set an environment variable `DEBUG=pw:*` or `DEBUG=pw:server`
 
 ```
-DEBUG=pw:* npx playwright run-server --browser chromium
+DEBUG=pw:* ./node_modules/.bin/playwright-core run-server --browser chromium
 ```
 
 See [the official documentation](https://playwright.dev/docs/debug/#verbose-api-logs) for details.
