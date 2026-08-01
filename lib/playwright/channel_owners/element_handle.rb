@@ -1,4 +1,5 @@
 require_relative './js_handle'
+require_relative '../screenshot_utils'
 
 module Playwright
   module ChannelOwners
@@ -86,6 +87,7 @@ module Playwright
             modifiers: nil,
             noWaitAfter: nil,
             position: nil,
+            scroll: nil,
             timeout: nil,
             trial: nil)
         params = {
@@ -93,6 +95,7 @@ module Playwright
           modifiers: modifiers,
           noWaitAfter: noWaitAfter,
           position: position,
+          scroll: scroll,
           timeout: _timeout(timeout),
           trial: trial,
         }.compact
@@ -109,6 +112,7 @@ module Playwright
             modifiers: nil,
             noWaitAfter: nil,
             position: nil,
+            scroll: nil,
             timeout: nil,
             trial: nil,
             steps: nil)
@@ -121,6 +125,7 @@ module Playwright
           modifiers: modifiers,
           noWaitAfter: noWaitAfter,
           position: position,
+          scroll: scroll,
           timeout: _timeout(timeout),
           trial: trial,
           steps: steps,
@@ -137,6 +142,7 @@ module Playwright
             modifiers: nil,
             noWaitAfter: nil,
             position: nil,
+            scroll: nil,
             timeout: nil,
             trial: nil,
             steps: nil)
@@ -148,6 +154,7 @@ module Playwright
           modifiers: modifiers,
           noWaitAfter: noWaitAfter,
           position: position,
+          scroll: scroll,
           timeout: _timeout(timeout),
           trial: trial,
           steps: steps,
@@ -180,6 +187,7 @@ module Playwright
             modifiers: nil,
             noWaitAfter: nil,
             position: nil,
+            scroll: nil,
             timeout: nil,
             trial: nil)
 
@@ -188,6 +196,7 @@ module Playwright
           modifiers: modifiers,
           noWaitAfter: noWaitAfter,
           position: position,
+          scroll: scroll,
           timeout: _timeout(timeout),
           trial: trial,
         }.compact
@@ -263,11 +272,12 @@ module Playwright
         nil
       end
 
-      def check(force: nil, noWaitAfter: nil, position: nil, timeout: nil, trial: nil)
+      def check(force: nil, noWaitAfter: nil, position: nil, scroll: nil, timeout: nil, trial: nil)
         params = {
           force: force,
           noWaitAfter:  noWaitAfter,
           position: position,
+          scroll: scroll,
           timeout: _timeout(timeout),
           trial: trial,
         }.compact
@@ -276,11 +286,12 @@ module Playwright
         nil
       end
 
-      def uncheck(force: nil, noWaitAfter: nil, position: nil, timeout: nil, trial: nil)
+      def uncheck(force: nil, noWaitAfter: nil, position: nil, scroll: nil, timeout: nil, trial: nil)
         params = {
           force: force,
           noWaitAfter:  noWaitAfter,
           position: position,
+          scroll: scroll,
           timeout: _timeout(timeout),
           trial: trial,
         }.compact
@@ -319,12 +330,11 @@ module Playwright
           caret: caret,
           maskColor: maskColor,
           omitBackground: omitBackground,
-          path: path,
           quality: quality,
           scale: scale,
           style: style,
           timeout: _timeout(timeout),
-          type: type,
+          type: ScreenshotUtils.determine_type(path: path, type: type),
         }.compact
         if mask.is_a?(Enumerable)
           params[:mask] = mask.map do |locator|

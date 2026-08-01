@@ -169,4 +169,47 @@ RSpec.describe 'BrowserContext#credentials (WebAuthn virtual authenticator)', si
       context.close
     end
   end
+
+  # https://github.com/microsoft/playwright/blob/v1.62.1/tests/library/browsercontext-webauthn.spec.ts
+  it 'should reuse a page-created credential via the storageState option' do
+    setup_context = browser.new_context
+    context = nil
+    begin
+      # Setup context: the app registers a passkey via navigator.credentials.create().
+      setup_context.credentials.install
+      setup_page = setup_context.new_page
+      setup_page.goto(server_empty_page)
+
+      created_id = setup_page.evaluate(<<~JS, arg: { rpId: hostname })
+        async ({ rpId }) => {
+          const challenge = crypto.getRandomValues(new Uint8Array(32));
+          const created = await navigator.credentials.create({
+            publicKey: {
+              challenge,
+              rp: { id: rpId, name: 'Test RP' },
+              user: { id: new Uint8Array([1, 2, 3, 4]), name: 'u', displayName: 'User' },
+              pubKeyCredParams: [{ type: 'public-key', alg: -7 }],
+              authenticatorSelection: { residentKey: 'required', userVerification: 'preferred' },
+            },
+          });
+          return created.id;
+        }
+      JS
+
+      # Capture the passkey as part of the storage state.
+      storage_state = setup_context.storage_state(credentials: true)
+
+      # A context created from the storage state has the authenticator installed and signs in with
+      # the captured passkey - without calling install() again.
+      context = browser.new_context(storageState: storage_state)
+      page = context.new_page
+      page.goto(server_empty_page)
+
+      got_id = page.evaluate(GET_ASSERTION_JS, arg: { rpId: hostname, credentialId: nil })
+      expect(got_id['id']).to eq(created_id)
+    ensure
+      setup_context.close
+      context&.close
+    end
+  end
 end

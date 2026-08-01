@@ -531,6 +531,7 @@
 * type
 * uncheck
 * wait_for
+* wait_for_function
 
 ## FrameLocator
 
@@ -561,6 +562,7 @@
 * status
 * status_text
 * text
+* timing
 * url
 
 ## APIRequestContext

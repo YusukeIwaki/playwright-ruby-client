@@ -30,7 +30,7 @@ module Playwright
         end
 
         def matches?(actual)
-          assertions_for(actual, false).send(@method, *@args, **@kwargs)
+          call_assertion(actual, false)
           true
         rescue AssertionError => e
           @failure_message = e.full_message
@@ -38,7 +38,7 @@ module Playwright
         end
 
         def does_not_match?(actual)
-          assertions_for(actual, true).send(@method, *@args, **@kwargs)
+          call_assertion(actual, true)
           true
         rescue AssertionError => e
           @failure_message = e.full_message
@@ -54,6 +54,16 @@ module Playwright
         end
 
         private
+
+        def call_assertion(actual, is_not)
+          args = @args
+          kwargs = @kwargs
+          if ['to_have_attribute', 'not_to_have_attribute'].include?(@method) && args.length == 2 && !kwargs.key?(:value)
+            args = [args.first]
+            kwargs = kwargs.merge(value: @args.last)
+          end
+          assertions_for(actual, is_not).send(@method, *args, **kwargs)
+        end
 
         def assertions_for(actual, is_not)
           if actual.respond_to?(:_assertions)

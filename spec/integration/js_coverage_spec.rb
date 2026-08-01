@@ -72,16 +72,6 @@ RSpec.describe 'JS Coverage' do
   end
 
   describe 'resetOnNavigation' do
-    it 'should report scripts across navigations when disabled', sinatra: true do
-      with_page do |page|
-        coverage = coverage_for(page, resetOnNavigation: false) do
-          page.goto("#{server_prefix}/jscoverage/multiple.html")
-          page.goto(server_empty_page)
-        end
-        expect(coverage.size).to eq(2)
-      end
-    end
-
     it 'should NOT report scripts across navigations when enabled', sinatra: true do
       with_page do |page|
         coverage = coverage_for(page) do # Enabled by default

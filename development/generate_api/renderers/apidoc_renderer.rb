@@ -22,7 +22,7 @@ class ApidocRenderer
         end
       File.open(filepath, 'w') do |f|
         renderer.render_lines.each do |line|
-          f.write(line)
+          f.write(line.gsub(/[ \t]+$/, '').rstrip)
           f.write("\n")
         end
       end

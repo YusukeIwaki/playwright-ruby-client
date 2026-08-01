@@ -59,6 +59,8 @@ The default browser context is accessible via [Browser#contexts](./browser#conte
 
 **NOTE**: This connection is significantly lower fidelity than the Playwright protocol connection via [BrowserType#connect](./browser_type#connect). If you are experiencing issues or attempting to use advanced functionality, you probably want to use [BrowserType#connect](./browser_type#connect).
 
+**NOTE**: Playwright maintains a curated list of arguments for launching the browser. If you launch the browser without Playwright and do not pass the exact same arguments, some of Playwright functionality may be broken upon connecting to the browser.
+
 **Usage**
 
 ```ruby

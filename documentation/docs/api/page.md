@@ -112,6 +112,7 @@ def check(
       force: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       strict: nil,
       timeout: nil,
       trial: nil)
@@ -141,6 +142,7 @@ def click(
       modifiers: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       strict: nil,
       timeout: nil,
       trial: nil)
@@ -201,6 +203,7 @@ def dblclick(
       modifiers: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       strict: nil,
       timeout: nil,
       trial: nil)
@@ -275,6 +278,7 @@ def drag_and_drop(
       target,
       force: nil,
       noWaitAfter: nil,
+      scroll: nil,
       sourcePosition: nil,
       steps: nil,
       strict: nil,
@@ -851,6 +855,9 @@ last redirect. If cannot go back, returns `null`.
 
 Navigate to the previous page in history.
 
+**NOTE**: **Testing Back/Forward Cache (BFCache) is not supported.**
+By default, Playwright disables the Back/Forward Cache across all browsers. Even if explicitly enabled, Playwright's internal state relies on network-level navigation events. Because BFCache restores unfreeze the DOM without firing these events, using `page.goBack()` or `page.goForward()` to trigger a BFCache restore will result in timeouts and a desynchronized [Page](./page) state.
+
 ## go_forward
 
 ```
@@ -862,6 +869,9 @@ Returns the main resource response. In case of multiple redirects, the navigatio
 last redirect. If cannot go forward, returns `null`.
 
 Navigate to the next page in history.
+
+**NOTE**: **Testing Back/Forward Cache (BFCache) is not supported.**
+By default, Playwright disables the Back/Forward Cache across all browsers. Even if explicitly enabled, Playwright's internal state relies on network-level navigation events. Because BFCache restores unfreeze the DOM without firing these events, using `page.goBack()` or `page.goForward()` to trigger a BFCache restore will result in timeouts and a desynchronized [Page](./page) state.
 
 ## goto
 
@@ -908,6 +918,7 @@ def hover(
       modifiers: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       strict: nil,
       timeout: nil,
       trial: nil)
@@ -1416,6 +1427,7 @@ def set_checked(
       force: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       strict: nil,
       timeout: nil,
       trial: nil)
@@ -1546,6 +1558,7 @@ def tap_point(
       modifiers: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       strict: nil,
       timeout: nil,
       trial: nil)
@@ -1615,6 +1628,7 @@ def uncheck(
       force: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       strict: nil,
       timeout: nil,
       trial: nil)

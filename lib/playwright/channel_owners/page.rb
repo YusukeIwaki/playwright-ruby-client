@@ -1,5 +1,6 @@
 require 'base64'
 require_relative '../locator_utils'
+require_relative '../screenshot_utils'
 
 module Playwright
   # @ref https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_page.py
@@ -483,7 +484,7 @@ module Playwright
       type: nil)
 
       params = {
-        type: type,
+        type: ScreenshotUtils.determine_type(path: path, type: type),
         quality: quality,
         fullPage: fullPage,
         clip: clip,
@@ -545,6 +546,7 @@ module Playwright
           modifiers: nil,
           noWaitAfter: nil,
           position: nil,
+          scroll: nil,
           strict: nil,
           timeout: nil,
           trial: nil,
@@ -559,6 +561,7 @@ module Playwright
         modifiers: modifiers,
         noWaitAfter: noWaitAfter,
         position: position,
+        scroll: scroll,
         strict: strict,
         timeout: timeout,
         trial: trial,
@@ -571,6 +574,7 @@ module Playwright
           target,
           force: nil,
           noWaitAfter: nil,
+          scroll: nil,
           sourcePosition: nil,
           strict: nil,
           targetPosition: nil,
@@ -583,6 +587,7 @@ module Playwright
         target,
         force: force,
         noWaitAfter: noWaitAfter,
+        scroll: scroll,
         sourcePosition: sourcePosition,
         strict: strict,
         targetPosition: targetPosition,
@@ -600,6 +605,7 @@ module Playwright
           modifiers: nil,
           noWaitAfter: nil,
           position: nil,
+          scroll: nil,
           strict: nil,
           timeout: nil,
           trial: nil,
@@ -612,6 +618,7 @@ module Playwright
         modifiers: modifiers,
         noWaitAfter: noWaitAfter,
         position: position,
+        scroll: scroll,
         strict: strict,
         timeout: timeout,
         trial: trial,
@@ -625,6 +632,7 @@ module Playwright
           modifiers: nil,
           noWaitAfter: nil,
           position: nil,
+          scroll: nil,
           strict: nil,
           timeout: nil,
           trial: nil)
@@ -634,6 +642,7 @@ module Playwright
         modifiers: modifiers,
         noWaitAfter: noWaitAfter,
         position: position,
+        scroll: scroll,
         strict: strict,
         timeout: timeout,
         trial: trial,
@@ -690,16 +699,12 @@ module Playwright
       @channel.send_message_to_server('hideHighlight')
     end
 
-    def aria_snapshot(boxes: nil, depth: nil, mode: nil, timeout: nil, _track: nil)
+    def aria_snapshot(boxes: nil, depth: nil, mode: nil, timeout: nil)
       params = { selector: 'body' }
       params[:timeout] = @timeout_settings.timeout(timeout)
       params[:boxes] = boxes unless boxes.nil?
       params[:depth] = depth if depth
       params[:mode] = mode if mode
-      if _track
-        params.delete(:selector)
-        params[:track] = _track
-      end
       result = @main_frame.channel.send_message_to_server_result('ariaSnapshot', params)
       result['snapshot']
     end
@@ -748,6 +753,7 @@ module Playwright
           modifiers: nil,
           noWaitAfter: nil,
           position: nil,
+          scroll: nil,
           strict: nil,
           timeout: nil,
           trial: nil)
@@ -757,6 +763,7 @@ module Playwright
         modifiers: modifiers,
         noWaitAfter: noWaitAfter,
         position: position,
+        scroll: scroll,
         strict: strict,
         timeout: timeout,
         trial: trial,
@@ -838,6 +845,7 @@ module Playwright
       force: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       strict: nil,
       timeout: nil,
       trial: nil)
@@ -847,6 +855,7 @@ module Playwright
         force: force,
         noWaitAfter: noWaitAfter,
         position: position,
+        scroll: scroll,
         strict: strict,
         timeout: timeout,
         trial: trial)
@@ -857,6 +866,7 @@ module Playwright
       force: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       strict: nil,
       timeout: nil,
       trial: nil)
@@ -866,6 +876,7 @@ module Playwright
         force: force,
         noWaitAfter: noWaitAfter,
         position: position,
+        scroll: scroll,
         strict: strict,
         timeout: timeout,
         trial: trial)
@@ -962,8 +973,8 @@ module Playwright
       @main_frame.locator(result['selector'])
     end
 
-    def snapshot_for_ai(timeout: nil, depth: nil, boxes: nil, _track: nil)
-      aria_snapshot(mode: 'ai', timeout: timeout, depth: depth, boxes: boxes, _track: _track)
+    def snapshot_for_ai(timeout: nil, depth: nil, boxes: nil)
+      aria_snapshot(mode: 'ai', timeout: timeout, depth: depth, boxes: boxes)
     end
 
     def _assertions(timeout, is_not, message)

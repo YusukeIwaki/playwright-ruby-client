@@ -31,6 +31,63 @@ RSpec.describe 'screencast', sinatra: true do
     context.close
   end
 
+  # https://github.com/microsoft/playwright/blob/v1.62.1/tests/library/screencast.spec.ts
+  it 'applies backpressure while async onFrame callback is pending' do
+    context = browser.new_context(viewport: { width: 500, height: 400 })
+    page = context.new_page
+    release_callback = Concurrent::Promises.resolvable_future
+    first_frame_received = Concurrent::Promises.resolvable_future
+    mutex = Mutex.new
+    frame_count = 0
+    last_frame_timestamp = nil
+
+    begin
+      page.screencast.start do
+        first = false
+        mutex.synchronize do
+          frame_count += 1
+          last_frame_timestamp = Time.now
+          first = frame_count == 1
+        end
+        first_frame_received.fulfill(nil) if first
+        release_callback.value!
+      end
+
+      page.goto(server_empty_page)
+      page.evaluate(<<~JAVASCRIPT)
+        () => {
+          const animate = () => {
+            document.body.style.backgroundColor = document.body.style.backgroundColor === 'red' ? 'blue' : 'red';
+            requestAnimationFrame(animate);
+          };
+          requestAnimationFrame(animate);
+        }
+      JAVASCRIPT
+
+      first_frame_received.value!
+      Timeout.timeout(30) do
+        sleep 0.05 until mutex.synchronize { Time.now - last_frame_timestamp > 1 }
+      end
+      frames_while_blocked, last_timestamp = mutex.synchronize { [frame_count, last_frame_timestamp] }
+      expect(Time.now - last_timestamp).to be > 1
+      ensure_some_frames(page)
+      expect(mutex.synchronize { frame_count }).to eq(frames_while_blocked)
+
+      release_callback.fulfill(nil)
+      Timeout.timeout(30) do
+        loop do
+          page.evaluate("() => document.body.style.backgroundColor = document.body.style.backgroundColor === 'red' ? 'blue' : 'red'")
+          ensure_some_frames(page)
+          break if mutex.synchronize { frame_count } > frames_while_blocked
+        end
+      end
+    ensure
+      release_callback.fulfill(nil) unless release_callback.resolved?
+      page.screencast.stop
+      context.close
+    end
+  end
+
   it 'onFrame receives viewport size' do
     context = browser.new_context(viewport: { width: 1000, height: 400 })
     page = context.new_page

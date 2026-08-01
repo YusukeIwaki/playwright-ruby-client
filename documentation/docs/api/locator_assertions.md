@@ -164,7 +164,7 @@ The opposite of [LocatorAssertions#to_have_accessible_name](./locator_assertions
 ## not_to_have_attribute
 
 ```ruby
-expect(locator).not_to have_attribute(name, value, ignoreCase: nil, timeout: nil)
+expect(locator).not_to have_attribute(name, value: nil, ignoreCase: nil, timeout: nil)
 ```
 
 
@@ -587,7 +587,7 @@ expect(locator).to have_accessible_name("Save to disk")
 ## to_have_attribute
 
 ```ruby
-expect(locator).to have_attribute(name, value, ignoreCase: nil, timeout: nil)
+expect(locator).to have_attribute(name, value: nil, ignoreCase: nil, timeout: nil)
 ```
 
 
@@ -598,6 +598,8 @@ Ensures the [Locator](./locator) points to an element with given attribute.
 ```ruby
 locator = page.locator("input")
 expect(locator).to have_attribute("type", "text")
+expect(locator).to have_attribute("disabled")
+expect(locator).not_to have_attribute("readonly")
 ```
 
 ## to_have_class

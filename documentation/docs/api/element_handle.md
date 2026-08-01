@@ -75,6 +75,7 @@ def check(
       force: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       timeout: nil,
       trial: nil)
 ```
@@ -103,6 +104,7 @@ def click(
       modifiers: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       steps: nil,
       timeout: nil,
       trial: nil)
@@ -139,6 +141,7 @@ def dblclick(
       modifiers: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       steps: nil,
       timeout: nil,
       trial: nil)
@@ -290,6 +293,7 @@ def hover(
       modifiers: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       timeout: nil,
       trial: nil)
 ```
@@ -538,6 +542,7 @@ def set_checked(
       force: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       timeout: nil,
       trial: nil)
 ```
@@ -578,6 +583,7 @@ def tap_point(
       modifiers: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       timeout: nil,
       trial: nil)
 ```
@@ -630,6 +636,7 @@ def uncheck(
       force: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       timeout: nil,
       trial: nil)
 ```

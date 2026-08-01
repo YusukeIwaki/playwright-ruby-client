@@ -1373,9 +1373,11 @@ module ExampleCodes
   end
 
   # LocatorAssertions#to_have_attribute
-  def example_709faaa456b4775109b1fbaca74a86ac5107af5e4801ea07cb690942f1d37f88(page:)
+  def example_2f3867cf8063e06f958e46cc5ebe673fd4054eff5435b49c98a3048b978c0613(page:)
     locator = page.locator("input")
     expect(locator).to have_attribute("type", "text")
+    expect(locator).to have_attribute("disabled")
+    expect(locator).not_to have_attribute("readonly")
   end
 
   # LocatorAssertions#to_have_class

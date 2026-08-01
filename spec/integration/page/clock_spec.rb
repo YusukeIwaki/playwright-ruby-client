@@ -386,6 +386,16 @@ RSpec.describe 'Clock API' do
       expect(now).to be_between(0, 1000)
     end
 
+    # https://github.com/microsoft/playwright/blob/v1.62.1/tests/library/page-clock.spec.ts
+    it 'should reject an invalid target time with an active requestAnimationFrame loop' do
+      page.clock.install
+      page.set_content('<script>function tick() { requestAnimationFrame(tick); } requestAnimationFrame(tick);</script>')
+      invalid_time = page.evaluate('() => Date.now()') * 1_000_000
+      expect {
+        page.clock.pause_at(invalid_time)
+      }.to raise_error(/Invalid date: #{invalid_time}/)
+    end
+
     it 'should pause and fastForward' do
       page.clock.install(time: 0)
       page.goto('data:text/html,')

@@ -105,6 +105,7 @@ module Playwright
           force: nil,
           noWaitAfter: nil,
           position: nil,
+          scroll: nil,
           timeout: nil,
           trial: nil)
 
@@ -113,6 +114,7 @@ module Playwright
         force: force,
         noWaitAfter: noWaitAfter,
         position: position,
+        scroll: scroll,
         timeout: timeout,
         trial: trial)
     end
@@ -125,6 +127,7 @@ module Playwright
           modifiers: nil,
           noWaitAfter: nil,
           position: nil,
+          scroll: nil,
           timeout: nil,
           trial: nil,
           steps: nil)
@@ -138,6 +141,7 @@ module Playwright
         modifiers: modifiers,
         noWaitAfter: noWaitAfter,
         position: position,
+        scroll: scroll,
         timeout: timeout,
         trial: trial,
         steps: steps)
@@ -150,6 +154,7 @@ module Playwright
           modifiers: nil,
           noWaitAfter: nil,
           position: nil,
+          scroll: nil,
           timeout: nil,
           trial: nil,
           steps: nil)
@@ -162,6 +167,7 @@ module Playwright
         modifiers: modifiers,
         noWaitAfter: noWaitAfter,
         position: position,
+        scroll: scroll,
         timeout: timeout,
         trial: trial,
         steps: steps)
@@ -174,6 +180,7 @@ module Playwright
     def drag_to(target,
           force: nil,
           noWaitAfter: nil,
+          scroll: nil,
           sourcePosition: nil,
           targetPosition: nil,
           timeout: nil,
@@ -185,6 +192,7 @@ module Playwright
         target.instance_variable_get(:@selector),
         force: force,
         noWaitAfter: noWaitAfter,
+        scroll: scroll,
         sourcePosition: sourcePosition,
         targetPosition: targetPosition,
         timeout: timeout,
@@ -363,6 +371,7 @@ module Playwright
           modifiers: nil,
           noWaitAfter: nil,
           position: nil,
+          scroll: nil,
           timeout: nil,
           trial: nil)
       @frame.hover(@selector,
@@ -371,6 +380,7 @@ module Playwright
         modifiers: modifiers,
         noWaitAfter: noWaitAfter,
         position: position,
+        scroll: scroll,
         timeout: timeout,
         trial: trial)
     end
@@ -426,7 +436,7 @@ module Playwright
       end
     end
 
-    def aria_snapshot(boxes: nil, depth: nil, mode: nil, timeout: nil, _track: nil)
+    def aria_snapshot(boxes: nil, depth: nil, mode: nil, timeout: nil)
       params = {
         selector: @selector,
         timeout: _timeout(timeout),
@@ -434,10 +444,6 @@ module Playwright
       params[:boxes] = boxes unless boxes.nil?
       params[:depth] = depth if depth
       params[:mode] = mode if mode
-      if _track
-        params.delete(:selector)
-        params[:track] = _track
-      end
       result = @frame.channel.send_message_to_server_result('ariaSnapshot', params.compact)
       result['snapshot']
     end
@@ -499,6 +505,7 @@ module Playwright
           modifiers: nil,
           noWaitAfter: nil,
           position: nil,
+          scroll: nil,
           timeout: nil,
           trial: nil)
       @frame.tap_point(@selector,
@@ -507,6 +514,7 @@ module Playwright
         modifiers: modifiers,
         noWaitAfter: noWaitAfter,
         position: position,
+        scroll: scroll,
         timeout: timeout,
         trial: trial)
     end
@@ -527,6 +535,7 @@ module Playwright
           force: nil,
           noWaitAfter: nil,
           position: nil,
+          scroll: nil,
           timeout: nil,
           trial: nil)
       @frame.uncheck(@selector,
@@ -534,8 +543,22 @@ module Playwright
         force: force,
         noWaitAfter: noWaitAfter,
         position: position,
+        scroll: scroll,
         timeout: timeout,
         trial: trial)
+    end
+
+    def wait_for_function(expression, arg: nil, timeout: nil)
+      @frame.channel.send_message_to_server(
+        'waitForFunction',
+        selector: @selector,
+        strict: true,
+        expression: expression,
+        isFunction: true,
+        arg: JavaScript::ValueSerializer.new(arg).serialize,
+        timeout: _timeout(timeout),
+      )
+      nil
     end
 
     def wait_for(state: nil, timeout: nil)
