@@ -122,6 +122,18 @@ def text
 
 Returns the text representation of response body.
 
+## timing
+
+```
+def timing
+```
+
+
+Returns resource timing information for given response. For redirected requests, returns the information for the last
+request in the redirect chain. When the response is served [from the HAR file](https://playwright.dev/python/docs/mock#replaying-from-har), timing
+information is not available and all the values are -1. Find more information at
+[Resource Timing API](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming).
+
 ## url
 
 ```

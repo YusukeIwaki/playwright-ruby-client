@@ -9,7 +9,7 @@ sidebar_position: 10
 register passkeys and answer `navigator.credentials.create()` / `navigator.credentials.get()`
 ceremonies in the page, without a real authenticator or hardware security key.
 
-There are two common ways to use it:
+There are three common ways to use it:
 
 **Usage: seed a known credential**
 
@@ -31,7 +31,7 @@ page.goto("https://example.com/login")
 # The page's navigator.credentials.get() is answered with the seeded passkey.
 ```
 
-**Usage: capture a passkey, then reuse it**
+**Usage: capture a credential, then reuse it**
 
 ```ruby
 # setup test: let the app register a passkey, then save it.
@@ -64,6 +64,10 @@ page = context.new_page
 page.goto("https://example.com/login")
 # navigator.credentials.get() resolves the captured passkey - already signed in.
 ```
+
+**Usage: save credentials in the storage state, restore later**
+
+See [authentication guide](https://playwright.dev/python/docs/auth) for examples of using saving and resotring the storage state.
 
 **Defaults**
 

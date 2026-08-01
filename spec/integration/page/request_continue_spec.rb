@@ -37,4 +37,19 @@ RSpec.describe 'request#continue' do
       expect(promise.value!).to eq('file content')
     end
   end
+
+  # https://github.com/microsoft/playwright/blob/v1.62.1/tests/page/page-request-continue.spec.ts
+  it 'postData should return empty string when overriding body with empty string', sinatra: true do
+    with_page do |page|
+      page.goto(server_empty_page)
+      page.route('**/*', ->(route, _) { route.continue(postData: '') })
+
+      request = page.expect_request('**') do
+        page.evaluate(<<~JAVASCRIPT, arg: { url: "#{server_prefix}/sleep.zzz" })
+          ({ url }) => fetch(url, { method: 'POST', body: 'original' })
+        JAVASCRIPT
+      end
+      expect(request.post_data).to eq('')
+    end
+  end
 end

@@ -47,6 +47,22 @@ module Playwright
       @initializer['serverAddr']
     end
 
+    def timing
+      response_end = @initializer['responseEndTiming']
+      {
+        'startTime' => -1,
+        'domainLookupStart' => -1,
+        'domainLookupEnd' => -1,
+        'connectStart' => -1,
+        'secureConnectionStart' => -1,
+        'connectEnd' => -1,
+        'requestStart' => -1,
+        'responseStart' => -1,
+      }.merge(@initializer['timing'] || {}).merge(
+        'responseEnd' => response_end.nil? ? -1 : response_end,
+      )
+    end
+
     class AlreadyDisposedError < StandardError
       def initialize
         super('Response has been disposed')

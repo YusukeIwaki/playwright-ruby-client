@@ -277,4 +277,64 @@ RSpec.describe 'BrowserContext#storage_state' do
       expect(context.storage_state).to eq('cookies' => [], 'origins' => [])
     end
   end
+
+  # https://github.com/microsoft/playwright/blob/v1.62.1/tests/library/browsercontext-storage-state.spec.ts
+  it 'should round-trip WebAuthn credentials with storageState' do
+    context = browser.new_context
+    context2 = nil
+    begin
+      credential = context.credentials.create('localhost')
+
+      # Credentials are opt-in, omitted by default.
+      expect(context.storage_state).to eq('cookies' => [], 'origins' => [])
+
+      storage_state = context.storage_state(credentials: true)
+      expect(storage_state).to eq(
+        'cookies' => [],
+        'origins' => [],
+        'credentials' => [credential],
+      )
+
+      # A fresh context seeded from the storage state holds the same credential and round-trips equal.
+      context2 = browser.new_context(storageState: storage_state)
+      expect(context2.credentials.get).to eq([credential])
+      expect(context2.storage_state(credentials: true)).to eq(storage_state)
+    ensure
+      context.close
+      context2&.close
+    end
+  end
+
+  # https://github.com/microsoft/playwright/blob/v1.62.1/tests/library/browsercontext-storage-state.spec.ts
+  it 'setStorageState should replace credentials' do
+    ctx_a = browser.new_context
+    ctx_b = browser.new_context
+    context = nil
+    begin
+      cred_a = ctx_a.credentials.create('a.example.com')
+      state_a = ctx_a.storage_state(credentials: true)
+
+      cred_b = ctx_b.credentials.create('b.example.com')
+      state_b = ctx_b.storage_state(credentials: true)
+
+      context = browser.new_context(storageState: state_a)
+      expect(context.credentials.get).to eq([cred_a])
+
+      # Replacing the storage state swaps in the new credentials.
+      context.set_storage_state(state_b)
+      expect(context.credentials.get).to eq([cred_b])
+
+      # A storage state without credentials clears them.
+      context.set_storage_state('cookies' => [], 'origins' => [])
+      expect(context.credentials.get).to eq([])
+
+      # Credentials can be installed again afterwards.
+      context.set_storage_state(state_a)
+      expect(context.credentials.get).to eq([cred_a])
+    ensure
+      ctx_a.close
+      ctx_b.close
+      context&.close
+    end
+  end
 end

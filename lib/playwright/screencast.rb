@@ -86,12 +86,26 @@ module Playwright
     end
 
     private def handle_screencast_frame(event)
-      @on_frame&.call({
-        data: Base64.strict_decode64(event['data']),
-        timestamp: event['timestamp'],
-        viewportWidth: event['viewportWidth'],
-        viewportHeight: event['viewportHeight'],
-      })
+      on_frame = @on_frame
+      Thread.new do
+        begin
+          on_frame&.call({
+            data: Base64.strict_decode64(event['data']),
+            timestamp: event['timestamp'],
+            viewportWidth: event['viewportWidth'],
+            viewportHeight: event['viewportHeight'],
+          })
+        ensure
+          begin
+            @page.send(:channel).async_send_message_to_server(
+              'screencastFrameAck',
+              frameId: event['frameId'],
+            )
+          rescue Transport::AlreadyDisconnectedError
+            # The page or driver may close while a callback is running.
+          end
+        end
+      end
     end
   end
 end

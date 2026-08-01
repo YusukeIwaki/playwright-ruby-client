@@ -187,6 +187,35 @@ RSpec.describe 'Page#route', sinatra: true do
     end
   end
 
+  # https://github.com/microsoft/playwright/blob/v1.62.1/tests/page/interception.spec.ts
+  it 'should work with glob' do
+    cases = [
+      ['http://example.com/path', 'http://example.com:80/path'],
+      ['https://example.com/path', 'https://example.com:443/path'],
+      ['http://example.com:8080/path', 'http://example.com:8080/path'],
+      ['http://localhost/', 'http://localhost:80/**'],
+      ['http://example.com/foo%20bar', 'http://example.com/foo bar'],
+      ['http://xn--mnchen-3ya.de/', 'http://münchen.de/'],
+    ]
+
+    with_page do |page|
+      # Keep a failed match from reaching the network.
+      page.route('**/*', ->(route, _) { route.abort })
+
+      cases.each do |target_url, glob|
+        intercepted = false
+        handler = ->(route, _) {
+          intercepted = true
+          route.fulfill(status: 200, contentType: 'text/html', body: 'intercepted')
+        }
+        page.route(glob, handler)
+        page.goto(target_url)
+        expect(intercepted).to eq(true)
+        page.unroute(glob, handler: handler)
+      end
+    end
+  end
+
   it 'should throw on unbalanced glob braces' do
     with_page do |page|
       expect { page.route('{foo', ->(route, _) { route.continue }) }.

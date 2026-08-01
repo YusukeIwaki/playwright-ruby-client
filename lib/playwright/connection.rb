@@ -87,6 +87,13 @@ module Playwright
         # @see https://github.com/YusukeIwaki/puppeteer-ruby/pull/34
         @callbacks_mutex.synchronize { @callbacks[id] = callback } unless fire_and_forget
 
+        wire_params = params.dup
+        timeout = if wire_params.key?(:timeout)
+                    wire_params.delete(:timeout)
+                  elsif wire_params.key?('timeout')
+                    wire_params.delete('timeout')
+                  end
+
         _metadata = {}
         frames = []
         if metadata
@@ -99,13 +106,14 @@ module Playwright
             _metadata[:title] = metadata[:title]
           end
         end
+        _metadata[:timeout] = timeout unless timeout.nil?
         _metadata.compact!
 
         message = {
           id: id,
           guid: guid,
           method: method,
-          params: replace_channels_with_guids(params),
+          params: replace_channels_with_guids(wire_params),
           metadata: _metadata,
         }
 

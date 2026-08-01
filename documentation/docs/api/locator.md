@@ -179,6 +179,7 @@ def check(
       force: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       timeout: nil,
       trial: nil)
 ```
@@ -238,6 +239,7 @@ def click(
       modifiers: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       steps: nil,
       timeout: nil,
       trial: nil)
@@ -300,6 +302,7 @@ def dblclick(
       modifiers: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       steps: nil,
       timeout: nil,
       trial: nil)
@@ -410,6 +413,7 @@ def drag_to(
       target,
       force: nil,
       noWaitAfter: nil,
+      scroll: nil,
       sourcePosition: nil,
       steps: nil,
       targetPosition: nil,
@@ -921,6 +925,7 @@ def hover(
       modifiers: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       timeout: nil,
       trial: nil)
 ```
@@ -1367,6 +1372,7 @@ def set_checked(
       force: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       timeout: nil,
       trial: nil)
 ```
@@ -1438,6 +1444,7 @@ def tap_point(
       modifiers: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       timeout: nil,
       trial: nil)
 ```
@@ -1496,6 +1503,7 @@ def uncheck(
       force: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       timeout: nil,
       trial: nil)
 ```
@@ -1541,3 +1549,24 @@ If target element already satisfies the condition, the method returns immediatel
 order_sent = page.locator("#order-sent")
 order_sent.wait_for
 ```
+
+## wait_for_function
+
+```
+def wait_for_function(expression, arg: nil, timeout: nil)
+```
+
+
+Returns when `expression` returns a truthy value, called with the matching element as a first argument, and `arg` as a second argument.
+
+This is a generic way to wait for an element to reach a custom condition without asserting it. The locator is re-resolved on each retry, so it tolerates the element being re-rendered while waiting.
+
+If `expression` returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), this method will wait for the promise to resolve before checking its value.
+
+If `expression` throws or rejects, this method throws.
+
+**Usage**
+
+Wait for an attribute to appear:
+
+Passing argument to `expression`:

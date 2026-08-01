@@ -58,6 +58,7 @@ def check(
       force: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       strict: nil,
       timeout: nil,
       trial: nil)
@@ -95,6 +96,7 @@ def click(
       modifiers: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       strict: nil,
       timeout: nil,
       trial: nil)
@@ -131,6 +133,7 @@ def dblclick(
       modifiers: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       strict: nil,
       timeout: nil,
       trial: nil)
@@ -202,6 +205,7 @@ def drag_and_drop(
       target,
       force: nil,
       noWaitAfter: nil,
+      scroll: nil,
       sourcePosition: nil,
       steps: nil,
       strict: nil,
@@ -671,6 +675,7 @@ def hover(
       modifiers: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       strict: nil,
       timeout: nil,
       trial: nil)
@@ -932,6 +937,7 @@ def set_checked(
       force: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       strict: nil,
       timeout: nil,
       trial: nil)
@@ -987,6 +993,7 @@ def tap_point(
       modifiers: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       strict: nil,
       timeout: nil,
       trial: nil)
@@ -1056,6 +1063,7 @@ def uncheck(
       force: nil,
       noWaitAfter: nil,
       position: nil,
+      scroll: nil,
       strict: nil,
       timeout: nil,
       trial: nil)

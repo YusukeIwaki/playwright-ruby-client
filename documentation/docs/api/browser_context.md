@@ -434,11 +434,11 @@ alias: `offline=`
 ## storage_state
 
 ```
-def storage_state(indexedDB: nil, path: nil)
+def storage_state(credentials: nil, indexedDB: nil, path: nil)
 ```
 
 
-Returns storage state for this browser context, contains current cookies, local storage snapshot and IndexedDB snapshot.
+Returns storage state for this browser context, contains current cookies, local storage snapshot, IndexedDB snapshot and virtual WebAuthn credentials.
 
 ## set_storage_state
 
@@ -448,7 +448,9 @@ def set_storage_state(storageState)
 alias: `storage_state=`
 
 
-Clears the existing cookies, local storage and IndexedDB entries for all origins and sets the new storage state.
+Clears the existing cookies, local storage, IndexedDB entries and virtual WebAuthn credentials, and sets the new storage
+state. When the storage state contains credentials, the virtual WebAuthn authenticator is installed (equivalent to
+[Credentials#install](./credentials#install)), preventing all real authenticators from working in this context.
 
 **Usage**
 

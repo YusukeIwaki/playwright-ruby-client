@@ -253,6 +253,28 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
     end
   end
 
+  # https://github.com/microsoft/playwright/blob/v1.62.1/tests/page/expect-misc.spec.ts
+  it 'should match attribute without value' do
+    with_page do |page|
+      page.set_content('<div checked id=node>Text content</div>')
+      locator = page.locator('#node')
+      expect(locator).to have_attribute('id')
+      expect(locator).to have_attribute('checked')
+      expect(locator).not_to have_attribute('open')
+    end
+  end
+
+  # https://github.com/microsoft/playwright/blob/v1.62.1/tests/page/expect-misc.spec.ts
+  it 'should support boolean attribute with options' do
+    with_page do |page|
+      page.set_content('<div checked id=node>Text content</div>')
+      locator = page.locator('#node')
+      expect(locator).to have_attribute('id', timeout: 5000)
+      expect(locator).to have_attribute('checked', timeout: 5000)
+      expect(locator).not_to have_attribute('open', timeout: 5000)
+    end
+  end
+
   it "should work with #to_have_class" do
     with_page do |page|
       page.goto(server_empty_page)
