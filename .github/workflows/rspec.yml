@@ -41,7 +41,7 @@ jobs:
           name: playwright_api
           path: lib/playwright_api
 
-  integration_test_with_npm_playwright_core:
+  integration_test_with_bun_playwright_core:
     needs: [unit_test, generate_playwright_api]
     strategy:
       fail-fast: false
@@ -56,15 +56,16 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby_version }}
           bundler-cache: true
-      - uses: actions/setup-node@v3
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version: 22
-      - name: Set up playwright-core via npm install
+          bun-version: 1.4.0
+      - name: Set up playwright-core via Bun
         run: |
           export PLAYWRIGHT_CLI_VERSION=$(bundle exec ruby -e 'puts Playwright::COMPATIBLE_PLAYWRIGHT_VERSION.strip')
-          npm install playwright-core@${PLAYWRIGHT_CLI_VERSION}
-          ./node_modules/.bin/playwright-core install ${{ matrix.browser }}
-          ./node_modules/.bin/playwright-core install-deps
+          bun upgrade --canary
+          bun add --no-save playwright-core@${PLAYWRIGHT_CLI_VERSION}
+          bun run --bun playwright-core install ${{ matrix.browser }}
+          bun run --bun playwright-core install-deps
           sudo apt-get install -y ffmpeg
       - name: Download playwright_api codes
         uses: actions/download-artifact@v4
@@ -76,7 +77,7 @@ jobs:
           bundle exec rspec spec/integration --profile 10
         env:
           BROWSER: ${{ matrix.browser }}
-          PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./node_modules/.bin/playwright-core
+          PLAYWRIGHT_CLI_EXECUTABLE_PATH: bun run --bun ./node_modules/.bin/playwright-core
         timeout-minutes: 25
 
   test_example_spec:
@@ -93,15 +94,16 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby_version }}
           bundler-cache: true
-      - uses: actions/setup-node@v3
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version: 22
-      - name: Set up playwright-core via npm install
+          bun-version: 1.4.0
+      - name: Set up playwright-core via Bun
         run: |
           export PLAYWRIGHT_CLI_VERSION=$(bundle exec ruby -e 'puts Playwright::COMPATIBLE_PLAYWRIGHT_VERSION.strip')
-          npm install playwright-core@${PLAYWRIGHT_CLI_VERSION}
-          ./node_modules/.bin/playwright-core install chromium
-          ./node_modules/.bin/playwright-core install-deps
+          bun upgrade --canary
+          bun add --no-save playwright-core@${PLAYWRIGHT_CLI_VERSION}
+          bun run --bun playwright-core install chromium
+          bun run --bun playwright-core install-deps
       - name: Download playwright_api codes
         uses: actions/download-artifact@v4
         with:
@@ -110,5 +112,5 @@ jobs:
       - run: bundle exec rspec spec/integration/example_spec.rb
         env:
           BROWSER: chromium
-          PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./node_modules/.bin/playwright-core
+          PLAYWRIGHT_CLI_EXECUTABLE_PATH: bun run --bun ./node_modules/.bin/playwright-core
         timeout-minutes: 10

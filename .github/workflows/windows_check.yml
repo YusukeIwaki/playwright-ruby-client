@@ -11,17 +11,17 @@ jobs:
         with:
           ruby-version: 3.4
           bundler-cache: true
-      - uses: actions/setup-node@v3
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version: 22
-      - name: Install playwright-core via npm
+          bun-version: 1.4.0
+      - name: Install playwright-core via Bun
         run: |
-          npm install playwright-core@next
-          ./node_modules/.bin/playwright-core install chromium
-          ./node_modules/.bin/playwright-core install-deps chromium
+          bun add --no-save playwright-core@next
+          bun run --bun playwright-core install chromium
+          bun run --bun playwright-core install-deps chromium
       - run: bundle exec ruby development/generate_api.rb
       - name: Check example
         run: bundle exec rspec spec/integration/example_spec.rb
         env:
-          PLAYWRIGHT_CLI_EXECUTABLE_PATH: ./node_modules/.bin/playwright-core
+          PLAYWRIGHT_CLI_EXECUTABLE_PATH: bun run --bun ./node_modules/.bin/playwright-core
         timeout-minutes: 5
