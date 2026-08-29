@@ -62,6 +62,7 @@ jobs:
       - name: Set up playwright-core via Bun
         run: |
           export PLAYWRIGHT_CLI_VERSION=$(bundle exec ruby -e 'puts Playwright::COMPATIBLE_PLAYWRIGHT_VERSION.strip')
+          bun upgrade --canary
           bun add --no-save playwright-core@${PLAYWRIGHT_CLI_VERSION}
           bun run --bun playwright-core install ${{ matrix.browser }}
           bun run --bun playwright-core install-deps
@@ -99,6 +100,7 @@ jobs:
       - name: Set up playwright-core via Bun
         run: |
           export PLAYWRIGHT_CLI_VERSION=$(bundle exec ruby -e 'puts Playwright::COMPATIBLE_PLAYWRIGHT_VERSION.strip')
+          bun upgrade --canary
           bun add --no-save playwright-core@${PLAYWRIGHT_CLI_VERSION}
           bun run --bun playwright-core install chromium
           bun run --bun playwright-core install-deps
