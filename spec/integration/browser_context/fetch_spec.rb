@@ -191,6 +191,20 @@ RSpec.describe 'fetch', sinatra: true do
     end
   end
 
+  # https://github.com/microsoft/playwright/blob/v1.63.0/tests/library/browsercontext-fetch.spec.ts
+  it 'should support multiple httpCredentials' do
+    sinatra.use Rack::Auth::Basic do |username, password|
+      username == 'user1' && password == 'pass1'
+    end
+    with_context(httpCredentials: [
+      { username: 'user1', password: 'pass1', origin: server_prefix },
+      { username: 'user2', password: 'pass2', origin: server_cross_process_prefix },
+    ]) do |context|
+      expect(context.request.get(server_empty_page).status).to eq(200)
+      expect(context.request.get("#{server_cross_process_prefix}/empty.html").status).to eq(401)
+    end
+  end
+
   it 'should support HTTPCredentials.sendImmediately for newContext' do
     # https://github.com/microsoft/playwright/issues/30534
 

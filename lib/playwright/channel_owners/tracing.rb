@@ -5,15 +5,16 @@ module Playwright
       @har_id = nil
     end
 
-    def start(name: nil, title: nil, screenshots: nil, snapshots: nil, sources: nil, live: nil)
+    def start(name: nil, title: nil, screenshots: nil, snapshots: nil, ariaSnapshots: nil, screenSnapshots: nil, sources: nil, live: nil)
       params = {
         name: name,
-        screenshots: screenshots,
-        snapshots: snapshots,
-        sources: sources,
+        screencast: screenshots,
+        snapshotDom: snapshots,
+        snapshotAria: ariaSnapshots,
+        snapshotScreen: screenSnapshots,
         live: live,
       }.compact
-      @include_sources = params[:sources] || false
+      @include_sources = sources || false
       @channel.send_message_to_server('tracingStart', params)
       trace_name = @channel.send_message_to_server('tracingStartChunk', { title: title, name: name }.compact)
       start_collecting_stacks(trace_name)
@@ -38,19 +39,43 @@ module Playwright
     end
 
     def stop(path: nil)
-      do_stop_chunk(file_path: path)
+      save_error = nil
+      begin
+        do_stop_chunk(file_path: path)
+      rescue => error
+        save_error = error
+      end
       @channel.send_message_to_server('tracingStop')
+      raise save_error if save_error
     end
 
     private def do_stop_chunk(file_path:)
       reset_stack_counter
+      stacks_id = @stacks_id
+      @stacks_id = nil
+      begin
+        save_chunk(file_path: file_path, stacks_id: stacks_id)
+      rescue
+        # Release the session even if saving fails so subsequent traces start fresh.
+        if stacks_id
+          begin
+            @connection.local_utils&.trace_discarded(stacks_id)
+          rescue
+            # Preserve the error from saving the trace.
+          end
+        end
+        raise
+      end
+    end
+
+    private def save_chunk(file_path:, stacks_id:)
       local_utils = @connection.local_utils
 
       unless file_path
         # Not interested in any artifacts
         @channel.send_message_to_server('tracingStopChunk', mode: 'discard')
-        if @stacks_id
-          local_utils.trace_discarded(@stacks_id) if local_utils
+        if stacks_id
+          local_utils.trace_discarded(stacks_id) if local_utils
         end
 
         return
@@ -66,7 +91,7 @@ module Playwright
         local_utils.zip(
           zipFile: file_path,
           entries: result['entries'],
-          stacksId: @stacks_id,
+          stacksId: stacks_id,
           mode: 'write',
           includeSources: @include_sources,
         )
@@ -78,8 +103,8 @@ module Playwright
       result = @channel.send_message_to_server_result('tracingStopChunk', mode: 'archive')
       # The artifact may be missing if the browser closed while stopping tracing.
       unless result['artifact']
-        if @stacks_id
-          local_utils.trace_discarded(@stacks_id) if local_utils
+        if stacks_id
+          local_utils.trace_discarded(stacks_id) if local_utils
         end
 
         return
@@ -87,7 +112,12 @@ module Playwright
 
       # Save trace to the final local file.
       artifact = ChannelOwners::Artifact.from(result['artifact'])
-      artifact.save_as(file_path)
+      begin
+        artifact.save_as(file_path)
+      rescue
+        artifact.delete rescue nil
+        raise
+      end
       artifact.delete
 
       return unless local_utils
@@ -95,7 +125,7 @@ module Playwright
       local_utils.zip(
         zipFile: file_path,
         entries: [],
-        stacksId: @stacks_id,
+        stacksId: stacks_id,
         mode: 'append',
         includeSources: @include_sources,
       )

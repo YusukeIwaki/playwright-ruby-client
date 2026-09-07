@@ -530,6 +530,7 @@
 * text_content
 * type
 * uncheck
+* visible
 * wait_for
 * wait_for_function
 

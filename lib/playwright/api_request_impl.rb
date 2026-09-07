@@ -3,6 +3,8 @@ require 'json'
 
 module Playwright
   define_api_implementation :APIRequestImpl do
+    include Utils::PrepareHttpCredentials
+
     def initialize(playwright)
       @playwright = playwright
     end
@@ -24,7 +26,7 @@ module Playwright
         clientCertificates: prepare_client_certificates(clientCertificates),
         extraHTTPHeaders: extraHTTPHeaders ? HttpHeaders.new(extraHTTPHeaders).as_serialized : nil,
         failOnStatusCode: failOnStatusCode,
-        httpCredentials: httpCredentials,
+        httpCredentials: prepare_http_credentials(httpCredentials),
         ignoreHTTPSErrors: ignoreHTTPSErrors,
         maxRedirects: maxRedirects,
         proxy: proxy,

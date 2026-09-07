@@ -24,6 +24,26 @@ page.locator('.result-frame').content_frame.get_by_role('button').click
 page.locator('.result-frame').first.content_frame.get_by_role('button').click
 ```
 
+**Any frame**
+
+Calling [Page#frame_locator](./page#frame_locator) or [Frame#frame_locator](./frame#frame_locator) without a selector creates a frame locator that
+starts the search in any frame of the subtree - so that you don't
+need to locate the iframe first.
+
+```ruby
+# Finds the button in any frame on the page:
+page.frame_locator.get_by_role('button').click
+
+# Finds the iframe anywhere on the page and clicks the button inside it:
+page.frame_locator.locator('#my-frame').content_frame.get_by_role('button').click
+```
+
+Only the start of the search is affected - the rest of the locator is resolved inside a single frame, just like any
+other locator. Following the strictness rules above, an error is thrown when elements are matched in multiple frames.
+
+Such a frame locator does not point to a particular `iframe`, so [FrameLocator#owner](./frame_locator#owner),
+[FrameLocator#first](./frame_locator#first), [FrameLocator#last](./frame_locator#last) and [FrameLocator#nth](./frame_locator#nth) are not supported on it.
+
 **Converting Locator to FrameLocator**
 
 If you have a [Locator](./locator) object pointing to an `iframe` it can be converted to [FrameLocator](./frame_locator) using [Locator#content_frame](./locator#content_frame).

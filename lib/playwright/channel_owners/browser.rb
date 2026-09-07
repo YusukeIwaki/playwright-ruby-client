@@ -156,6 +156,7 @@ module Playwright
 
     private def setup_browser_context(context)
       context.tracing.send(:update_traces_dir, @traces_dir)
+      context.request.tracing.send(:update_traces_dir, @traces_dir)
       @browser_type.send(:playwright_selectors_browser_contexts) << context
     end
 

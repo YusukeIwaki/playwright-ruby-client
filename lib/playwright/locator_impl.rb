@@ -296,6 +296,10 @@ module Playwright
       )
     end
 
+    def visible
+      filter(visible: true)
+    end
+
     def first
       LocatorImpl.new(
         frame: @frame,

@@ -1,6 +1,19 @@
 require 'spec_helper'
 
 RSpec.describe 'default browser context' do
+  # https://github.com/microsoft/playwright/blob/v1.63.0/tests/library/defaultbrowsercontext-1.spec.ts
+  it 'should support httpCredentials option', sinatra: true do
+    skip 'Persistent contexts require a local browser type' if remote?
+    sinatra.use Rack::Auth::Basic do |username, password|
+      username == 'user' && password == 'pass'
+    end
+    Dir.mktmpdir do |dir|
+      browser_type.launch_persistent_context(dir, httpCredentials: { username: 'user', password: 'pass' }) do |context|
+        expect(context.pages.first.goto("#{server_prefix}/playground.html").status).to eq(200)
+      end
+    end
+  end
+
   # https://github.com/microsoft/playwright/blob/master/tests/defaultbrowsercontext-2.spec.ts
   it 'should accept userDataDir' do
     Dir.mktmpdir do |tmpdir|

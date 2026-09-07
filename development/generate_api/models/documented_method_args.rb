@@ -43,6 +43,12 @@ class DocumentedMethodArgs
     end
   end
 
+  class OptionalPositionalArg < OptionalArg
+    def options?
+      false
+    end
+  end
+
   class OptionalKwArg
     def initialize(doc)
       @doc = doc
@@ -63,7 +69,8 @@ class DocumentedMethodArgs
   # @param inflector [Dry::Inflector]
   # @param arg_docs [Array<ArgDoc>]
   # @param with_block [Boolean]
-  def initialize(inflector, arg_docs, with_block: false)
+  # @param optional_positional_args [Array<String>] Optional arguments that preserve the implementation's positional API.
+  def initialize(inflector, arg_docs, with_block: false, optional_positional_args: [])
     @inflector = inflector
 
     # Some API definitions have preceding "options = {}" before python's optional parameters (ex: ElementHandle#select_option)
@@ -72,6 +79,8 @@ class DocumentedMethodArgs
     @args = arg_docs.each_with_object([]) do |arg_doc, args|
       if arg_doc.required?
         args << RequiredArg.new(arg_doc)
+      elsif optional_positional_args.include?(arg_doc.name)
+        args << OptionalPositionalArg.new(arg_doc)
       elsif !arg_doc.langs.only_python?
         ruby_optional_args << OptionalArg.new(arg_doc)
       else

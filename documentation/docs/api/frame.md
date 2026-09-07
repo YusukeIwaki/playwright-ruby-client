@@ -391,12 +391,16 @@ puts frame == content_frame # => true
 ## frame_locator
 
 ```
-def frame_locator(selector)
+def frame_locator(selector = nil)
 ```
 
 
 When working with iframes, you can create a frame locator that will enter the iframe and allow selecting elements
 in that iframe.
+
+When called without `selector`, the search starts in this frame or in any of the iframes inside it,
+so that you don't need to locate each iframe first. Note that the rest of the locator is resolved inside a single
+frame, just like any other locator. If it matches elements inside multiple frames, an error is thrown.
 
 **Usage**
 
@@ -404,6 +408,13 @@ Following snippet locates element with text "Submit" in the iframe with id `my-f
 
 ```ruby
 locator = frame.frame_locator("#my-iframe").get_by_text("Submit")
+locator.click
+```
+
+Following snippet locates a button, either in the frame or in one of the iframes inside it:
+
+```ruby
+locator = frame.frame_locator.get_by_role('button')
 locator.click
 ```
 

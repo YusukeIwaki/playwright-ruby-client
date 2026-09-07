@@ -42,6 +42,11 @@ module Playwright
       @channel.on('dialog', ->(params) {
         on_dialog(ChannelOwners::Dialog.from(params['dialog']))
       })
+      @channel.on('dialogClosed', ->(params) {
+        dialog = ChannelOwners::Dialog.from(params['dialog'])
+        emit(Events::BrowserContext::DialogClosed, dialog)
+        dialog.page&.emit(Events::Page::DialogClosed, dialog)
+      })
       @channel.on('request', ->(params) {
         on_request(
           ChannelOwners::Request.from(params['request']),
@@ -69,6 +74,7 @@ module Playwright
       set_event_to_subscription_mapping({
         Events::BrowserContext::Console => 'console',
         Events::BrowserContext::Dialog => 'dialog',
+        Events::BrowserContext::DialogClosed => 'dialogClosed',
         Events::BrowserContext::Request => "request",
         Events::BrowserContext::Response => "response",
         Events::BrowserContext::RequestFinished => "requestFinished",
@@ -93,6 +99,7 @@ module Playwright
     private def update_options(context_options:, browser_options:)
       @options = context_options
       @tracing.send(:update_traces_dir, browser_options[:tracesDir])
+      @request.tracing.send(:update_traces_dir, browser_options[:tracesDir])
     end
 
     private def on_page(page)
@@ -418,6 +425,7 @@ module Playwright
         @browser.browser_type.send(:playwright_selectors_browser_contexts).delete(self)
       end
       @tracing.send(:reset_stack_counter)
+      @request.tracing.send(:reset_stack_counter)
       emit(Events::BrowserContext::Close)
       @closed_promise.fulfill(true)
     end
@@ -427,9 +435,15 @@ module Playwright
       @close_was_called = true
       @close_reason = reason
       @request.dispose(reason: reason)
-      @tracing.send(:export_all_hars)
+      har_error = nil
+      begin
+        @tracing.send(:export_all_hars)
+      rescue => error
+        har_error = error
+      end
       @channel.send_message_to_server('close', { reason: reason }.compact)
       @closed_promise.value!
+      raise har_error if har_error
       nil
     end
 
@@ -462,9 +476,10 @@ module Playwright
       @channel.send_message_to_server('pause')
     end
 
-    def storage_state(path: nil, indexedDB: nil, credentials: nil)
+    def storage_state(path: nil, indexedDB: nil, opfs: nil, credentials: nil)
       params = {
         indexedDB: indexedDB,
+        opfs: opfs,
         credentials: credentials,
       }.compact
       @channel.send_message_to_server_result('storageState', params).tap do |result|

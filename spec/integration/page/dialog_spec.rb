@@ -1,6 +1,42 @@
 require 'spec_helper'
 
 RSpec.describe 'dialog' do
+  # https://github.com/microsoft/playwright/blob/v1.63.0/tests/page/page-dialog.spec.ts
+  it 'should fire dialogclosed when dialog is accepted' do
+    with_page do |page|
+      closed = []
+      context_closed = []
+      page.on('dialogclosed', ->(dialog) { closed << dialog })
+      page.context.on('dialogclosed', ->(dialog) { context_closed << dialog })
+      opened = nil
+      page.on('dialog', ->(dialog) { opened = dialog; dialog.accept })
+      page.evaluate("() => alert('yo')")
+      2.times { page.evaluate('() => 1') }
+      expect(closed).to eq([opened])
+      expect(context_closed).to eq([opened])
+    end
+  end
+
+  it 'should fire dialogclosed when dialog is dismissed' do
+    with_page do |page|
+      page.on('dialog', ->(dialog) { dialog.dismiss })
+      dialog = page.expect_event('dialogclosed') do
+        page.evaluate("() => confirm('boolean?')")
+      end
+      expect(dialog.type).to eq('confirm')
+      expect(dialog.message).to eq('boolean?')
+    end
+  end
+
+  it 'should fire dialogclosed for auto-dismissed dialogs' do
+    with_page do |page|
+      dialog = page.context.expect_event('dialogclosed') do
+        page.evaluate("() => alert('yo')")
+      end
+      expect(dialog.message).to eq('yo')
+    end
+  end
+
   it 'should fire' do
     with_page do |page|
       dialog_promise = Concurrent::Promises.resolvable_future
