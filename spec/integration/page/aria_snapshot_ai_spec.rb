@@ -51,7 +51,7 @@ RSpec.describe 'ariaSnapshot AI' do
       snapshot1 = snapshot_for_ai(page)
       expect(snapshot1).to include('- iframe')
 
-      frame_snapshot = page.frame_locator('iframe').locator('body').aria_snapshot
+      frame_snapshot = page.frame_locator(selector: 'iframe').locator('body').aria_snapshot
       expect(frame_snapshot).to eq('- heading "World" [level=1]')
     end
   end
@@ -418,7 +418,7 @@ RSpec.describe 'ariaSnapshot AI' do
         <iframe src="data:text/html,<input id='iframe-input' placeholder='Input in iframe'>" tabindex="0"></iframe>
       HTML
 
-      page.frame_locator('iframe').locator('#iframe-input').focus
+      page.frame_locator(selector: 'iframe').locator('#iframe-input').focus
       snapshot = snapshot_for_ai(page)
 
       expect(snapshot).to include(unshift(<<~YAML))
@@ -455,7 +455,7 @@ RSpec.describe 'ariaSnapshot AI' do
         <iframe style='cursor: pointer' src="data:text/html,<input id='iframe-input' placeholder='Input in iframe'/>" tabindex="0"></iframe>
       HTML
 
-      page.frame_locator('iframe').locator('#iframe-input').focus
+      page.frame_locator(selector: 'iframe').locator('#iframe-input').focus
       snapshot = snapshot_for_ai(page)
 
       expect(snapshot).to include(unshift(<<~YAML))

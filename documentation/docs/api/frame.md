@@ -391,7 +391,7 @@ puts frame == content_frame # => true
 ## frame_locator
 
 ```
-def frame_locator(selector = nil)
+def frame_locator(selector: nil)
 ```
 
 
@@ -407,7 +407,7 @@ frame, just like any other locator. If it matches elements inside multiple frame
 Following snippet locates element with text "Submit" in the iframe with id `my-frame`, like `<iframe id="my-frame">`:
 
 ```ruby
-locator = frame.frame_locator("#my-iframe").get_by_text("Submit")
+locator = frame.frame_locator(selector: "#my-iframe").get_by_text("Submit")
 locator.click
 ```
 

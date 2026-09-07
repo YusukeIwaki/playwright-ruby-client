@@ -177,8 +177,6 @@ class ApidocRenderer
           case arg
           when DocumentedMethodArgs::RequiredArg
             arg.name
-          when DocumentedMethodArgs::OptionalPositionalArg
-            "#{arg.name} = nil"
           when DocumentedMethodArgs::OptionalArg, DocumentedMethodArgs::OptionalKwArg
             "#{arg.name}: nil"
           when DocumentedMethodArgs::BlockArg

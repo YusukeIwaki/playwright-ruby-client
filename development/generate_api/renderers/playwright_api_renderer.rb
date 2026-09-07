@@ -339,8 +339,6 @@ class PlaywrightApiRenderer
         case arg
         when DocumentedMethodArgs::RequiredArg
           arg.name
-        when DocumentedMethodArgs::OptionalPositionalArg
-          "#{arg.name} = nil"
         when DocumentedMethodArgs::OptionalArg, DocumentedMethodArgs::OptionalKwArg
           "#{arg.name}: nil"
         when DocumentedMethodArgs::BlockArg
@@ -361,7 +359,7 @@ class PlaywrightApiRenderer
     def render_for_method_call
       args_for_method_call = @documented_args.map do |arg|
         case arg
-        when DocumentedMethodArgs::RequiredArg, DocumentedMethodArgs::OptionalPositionalArg
+        when DocumentedMethodArgs::RequiredArg
           "unwrap_impl(#{arg.name})"
         when DocumentedMethodArgs::OptionalArg, DocumentedMethodArgs::OptionalKwArg
           "#{arg.name}: unwrap_impl(#{arg.name})"

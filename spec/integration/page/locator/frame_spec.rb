@@ -42,7 +42,7 @@ RSpec.describe 'FrameLocator' do
   it 'should work for iframe', sinatra: true, route: :iframe do
     with_page do |page|
       page.goto(server_empty_page)
-      button = page.frame_locator('iframe').locator('button')
+      button = page.frame_locator(selector: 'iframe').locator('button')
       button.wait_for
       expect(button.inner_text).to eq('Hello iframe')
       button.click
@@ -52,7 +52,7 @@ RSpec.describe 'FrameLocator' do
   it 'should work for nested iframe', sinatra: true, route: :iframe do
     with_page do |page|
       page.goto(server_empty_page)
-      button = page.frame_locator('iframe').frame_locator('iframe').locator('button')
+      button = page.frame_locator(selector: 'iframe').frame_locator('iframe').locator('button')
       button.wait_for
       expect(button.inner_text).to eq('Hello nested iframe')
       button.click
@@ -62,9 +62,9 @@ RSpec.describe 'FrameLocator' do
   it 'should work for $ and $$', sinatra: true, route: :iframe do
     with_page do |page|
       page.goto(server_empty_page)
-      locator = page.frame_locator('iframe').locator('button')
+      locator = page.frame_locator(selector: 'iframe').locator('button')
       expect(locator.inner_text).to eq('Hello iframe')
-      spans = page.frame_locator('iframe').locator('span')
+      spans = page.frame_locator(selector: 'iframe').locator('span')
       expect(spans.count).to eq(2)
     end
   end
@@ -73,7 +73,7 @@ RSpec.describe 'FrameLocator' do
     with_page do |page|
       page.goto(server_empty_page)
       expect {
-        page.frame_locator('iframe').locator('span').click(timeout: 300)
+        page.frame_locator(selector: 'iframe').locator('span').click(timeout: 300)
       }.to raise_error(/waiting for locator\("iframe"\)\.content_frame\.locator/)
     end
   end
@@ -84,7 +84,7 @@ RSpec.describe 'FrameLocator' do
         page.goto(server_empty_page)
       }
       Timeout.timeout(2) {
-        page.frame_locator('iframe').locator('button').click
+        page.frame_locator(selector: 'iframe').locator('button').click
       }
     end
   end
@@ -96,7 +96,7 @@ RSpec.describe 'FrameLocator' do
         page.eval_on_selector('iframe', 'e => e.remove()')
       }
       Timeout.timeout(2) {
-        page.frame_locator('iframe').locator('button').wait_for(state: :hidden)
+        page.frame_locator(selector: 'iframe').locator('button').wait_for(state: :hidden)
       }
     end
   end
@@ -105,7 +105,7 @@ RSpec.describe 'FrameLocator' do
     with_page do |page|
       page.goto(server_empty_page)
       Timeout.timeout(2) {
-        page.frame_locator('iframe').locator('span').wait_for(state: :hidden)
+        page.frame_locator(selector: 'iframe').locator('span').wait_for(state: :hidden)
       }
     end
   end
@@ -115,7 +115,7 @@ RSpec.describe 'FrameLocator' do
     with_page do |page|
       page.goto(server_empty_page)
       puts page.eval_on_selector_all('iframe >> control=enter-frame >> span', 'el => el.length')
-      expect(page.frame_locator('iframe').locator('span').count).to eq(0)
+      expect(page.frame_locator(selector: 'iframe').locator('span').count).to eq(0)
     end
   end
 
@@ -141,7 +141,7 @@ RSpec.describe 'FrameLocator' do
       end
 
       # Click in iframe
-      button = page.frame_locator('iframe').locator('button')
+      button = page.frame_locator(selector: 'iframe').locator('button')
       promises = Concurrent::Promises.zip(
         Concurrent::Promises.future(button, &:click),
         Concurrent::Promises.future(button, &:inner_text),
@@ -154,7 +154,7 @@ RSpec.describe 'FrameLocator' do
   it 'waitFor should survive frame reattach', sinatra: true, route: :iframe do
     with_page do |page|
       page.goto(server_empty_page)
-      button = page.frame_locator('iframe').locator('button:has-text("Hello nested iframe")')
+      button = page.frame_locator(selector: 'iframe').locator('button:has-text("Hello nested iframe")')
       promise = Concurrent::Promises.future(button, &:wait_for)
       page.locator('iframe').evaluate('e => e.remove()')
       page.evaluate(<<~JAVASCRIPT)
@@ -173,7 +173,7 @@ RSpec.describe 'FrameLocator' do
   it 'click should survive frame reattach', sinatra: true, route: :iframe do
     with_page do |page|
       page.goto(server_empty_page)
-      button = page.frame_locator('iframe').locator('button:has-text("Hello nested iframe")')
+      button = page.frame_locator(selector: 'iframe').locator('button:has-text("Hello nested iframe")')
       promise = Concurrent::Promises.future(button, &:click)
       page.locator('iframe').evaluate('e => e.remove()')
       page.evaluate(<<~JAVASCRIPT)
@@ -192,7 +192,7 @@ RSpec.describe 'FrameLocator' do
   it 'click should survive iframe navigation', sinatra: true, route: :iframe do
     with_page do |page|
       page.goto(server_empty_page)
-      button = page.frame_locator('iframe').locator('button:has-text("Hello nested iframe")')
+      button = page.frame_locator(selector: 'iframe').locator('button:has-text("Hello nested iframe")')
       promise = Concurrent::Promises.future(button, &:click)
       page.locator('iframe').evaluate("e => e.src = 'iframe-2.html'")
       Timeout.timeout(2) do
@@ -204,7 +204,7 @@ RSpec.describe 'FrameLocator' do
   it 'should non work for non-frame' do
     with_page do |page|
       page.content = '<div></div>'
-      expect { page.frame_locator('div').locator('button').wait_for }.to raise_error(/<iframe> was expected/)
+      expect { page.frame_locator(selector: 'div').locator('button').wait_for }.to raise_error(/<iframe> was expected/)
     end
   end
 
@@ -241,17 +241,17 @@ RSpec.describe 'FrameLocator' do
   it 'get_by coverage', sinatra: true, route: :iframe do
     with_page do |page|
       page.goto(server_empty_page)
-      button1 = page.frame_locator('iframe').get_by_role('button')
-      button2 = page.frame_locator('iframe').get_by_text('Hello')
-      button3 = page.frame_locator('iframe').get_by_test_id('buttonId')
+      button1 = page.frame_locator(selector: 'iframe').get_by_role('button')
+      button2 = page.frame_locator(selector: 'iframe').get_by_text('Hello')
+      button3 = page.frame_locator(selector: 'iframe').get_by_test_id('buttonId')
       expect(button1.text_content).to include('Hello iframe')
       expect(button2.text_content).to include('Hello iframe')
       expect(button3.text_content).to include('Hello iframe')
 
-      input1 = page.frame_locator('iframe').get_by_label('Name')
-      input2 = page.frame_locator('iframe').get_by_placeholder('Placeholder')
-      input3 = page.frame_locator('iframe').get_by_alt_text('Alternative')
-      input4 = page.frame_locator('iframe').get_by_title('Title')
+      input1 = page.frame_locator(selector: 'iframe').get_by_label('Name')
+      input2 = page.frame_locator(selector: 'iframe').get_by_placeholder('Placeholder')
+      input3 = page.frame_locator(selector: 'iframe').get_by_alt_text('Alternative')
+      input4 = page.frame_locator(selector: 'iframe').get_by_title('Title')
 
       expect(input1.input_value).to eq('')
       expect(input2.input_value).to eq('')
@@ -275,7 +275,7 @@ RSpec.describe 'FrameLocator' do
   it 'frameLocator.owner should work', sinatra: true, route: :iframe do
     with_page do |page|
       page.goto(server_empty_page)
-      frame_locator = page.frame_locator('iframe')
+      frame_locator = page.frame_locator(selector: 'iframe')
       locator = frame_locator.owner
       expect(locator).to be_visible
       expect(locator.get_attribute('name')).to eq('frame1')

@@ -168,8 +168,6 @@ class RbsRenderer
           case arg
           when DocumentedMethodArgs::RequiredArg
             "#{arg.js_type.ruby_signature} #{RESERVED_NAME_MAP[arg.name] || arg.name}"
-          when DocumentedMethodArgs::OptionalPositionalArg
-            "?#{arg.js_type.ruby_signature} #{RESERVED_NAME_MAP[arg.name] || arg.name}"
           when DocumentedMethodArgs::OptionalArg, DocumentedMethodArgs::OptionalKwArg
             "?#{arg.name}: #{arg.js_type.ruby_signature}"
           when DocumentedMethodArgs::BlockArg

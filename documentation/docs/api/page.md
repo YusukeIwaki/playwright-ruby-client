@@ -585,7 +585,7 @@ frame = page.frame(url: /.*domain.*/)
 ## frame_locator
 
 ```
-def frame_locator(selector = nil)
+def frame_locator(selector: nil)
 ```
 
 
@@ -602,7 +602,7 @@ Following snippet locates element with text "Submit" in the iframe with id `my-f
 like `<iframe id="my-frame">`:
 
 ```ruby
-locator = page.frame_locator("#my-iframe").get_by_text("Submit")
+locator = page.frame_locator(selector: "#my-iframe").get_by_text("Submit")
 locator.click
 ```
 

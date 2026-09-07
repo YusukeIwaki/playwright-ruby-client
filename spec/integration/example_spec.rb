@@ -642,7 +642,7 @@ RSpec.describe 'Playwright 1.63 examples' do
       page.content = <<~HTML
         <iframe id="my-frame" srcdoc="<button onclick='window.clicks = (window.clicks || 0) + 1'>Click</button>"></iframe>
       HTML
-      page.frame_locator('#my-frame').get_by_role('button').wait_for
+      page.main_frame.frame_locator(selector: '#my-frame').get_by_role('button').wait_for
       example_b5fadfd47db49d4381a9f484bc41745d0c9f176fce56203a73bafb17ca54c20a(frame: page.main_frame)
       example_baa3371b838c7b85056072b30bb30405debbc593119cd8cb214052f338aca062(page: page)
       example_9ee987e2edbb4979dd4f859118075cceed3d3105cf612152e5a3a722c19b0c5b(page: page)

@@ -32,12 +32,7 @@ class ImplementedMethodWithDoc
   end
 
   def method_args
-    @method_args ||= DocumentedMethodArgs.new(
-      @inflector,
-      @doc.arg_docs,
-      with_block: has_block?,
-      optional_positional_args: @method.parameters.select { |kind, _| kind == :opt }.map { |_, name| name.to_s },
-    )
+    @method_args ||= DocumentedMethodArgs.new(@inflector, @doc.arg_docs, with_block: has_block?)
   end
 
   def has_block?
