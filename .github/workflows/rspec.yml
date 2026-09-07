@@ -58,11 +58,10 @@ jobs:
           bundler-cache: true
       - uses: oven-sh/setup-bun@v2
         with:
-          bun-version: 1.4.0
+          bun-version: 1.4.2
       - name: Set up playwright-core via Bun
         run: |
           export PLAYWRIGHT_CLI_VERSION=$(bundle exec ruby -e 'puts Playwright::COMPATIBLE_PLAYWRIGHT_VERSION.strip')
-          bun upgrade --canary
           bun add --no-save playwright-core@${PLAYWRIGHT_CLI_VERSION}
           bun run --bun playwright-core install ${{ matrix.browser }}
           bun run --bun playwright-core install-deps
@@ -96,11 +95,10 @@ jobs:
           bundler-cache: true
       - uses: oven-sh/setup-bun@v2
         with:
-          bun-version: 1.4.0
+          bun-version: 1.4.2
       - name: Set up playwright-core via Bun
         run: |
           export PLAYWRIGHT_CLI_VERSION=$(bundle exec ruby -e 'puts Playwright::COMPATIBLE_PLAYWRIGHT_VERSION.strip')
-          bun upgrade --canary
           bun add --no-save playwright-core@${PLAYWRIGHT_CLI_VERSION}
           bun run --bun playwright-core install chromium
           bun run --bun playwright-core install-deps

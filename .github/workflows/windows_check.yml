@@ -13,7 +13,7 @@ jobs:
           bundler-cache: true
       - uses: oven-sh/setup-bun@v2
         with:
-          bun-version: 1.4.0
+          bun-version: 1.4.2
       - name: Install playwright-core via Bun
         run: |
           bun add --no-save playwright-core@next
