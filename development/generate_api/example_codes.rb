@@ -699,6 +699,12 @@ module ExampleCodes
     locator.click
   end
 
+  # Frame#frame_locator
+  def example_b5fadfd47db49d4381a9f484bc41745d0c9f176fce56203a73bafb17ca54c20a(frame:)
+    locator = frame.frame_locator.get_by_role('button')
+    locator.click
+  end
+
   # Frame#get_by_alt_text
   def example_40a7d124045a4f729e0deddcfb511b9232ada7f16e0caa4e07ea083c2bfd3c16(page:)
     page.get_by_alt_text("Playwright logo").click
@@ -813,6 +819,15 @@ module ExampleCodes
     # ...
     locator = frame_locator.owner
     locator.get_attribute('src') # => frame1.html
+  end
+
+  # FrameLocator
+  def example_9ee987e2edbb4979dd4f859118075cceed3d3105cf612152e5a3a722c19b0c5b(page:)
+    # Finds the button in any frame on the page:
+    page.frame_locator.get_by_role('button').click
+
+    # Finds the iframe anywhere on the page and clicks the button inside it:
+    page.frame_locator.locator('#my-frame').content_frame.get_by_role('button').click
   end
 
   # JSHandle
@@ -1209,6 +1224,11 @@ module ExampleCodes
   # Locator#uncheck
   def example_ead0dc91ccaf4d3de1e28cccdadfacb0e75c79ffcfb8fc5a2b55afa736870fa6(page:)
     page.get_by_role("checkbox").uncheck
+  end
+
+  # Locator#visible
+  def example_29b5672d77ce36156e932588ac4f0254f2e2fc3c9ab5e527734d84a5101772a6(page:)
+    page.locator('button').visible.click
   end
 
   # Locator#visible?
@@ -1682,6 +1702,12 @@ module ExampleCodes
   # Page#frame_locator
   def example_e2abd82db97f2a0531855941d4ae70ef68fe8f844318e7a474d14a217dfd2595(page:)
     locator = page.frame_locator("#my-iframe").get_by_text("Submit")
+    locator.click
+  end
+
+  # Page#frame_locator
+  def example_baa3371b838c7b85056072b30bb30405debbc593119cd8cb214052f338aca062(page:)
+    locator = page.frame_locator.get_by_role('button')
     locator.click
   end
 

@@ -26,9 +26,11 @@ end
 
 ```
 def start(
+      ariaSnapshots: nil,
       live: nil,
       name: nil,
       screenshots: nil,
+      screenSnapshots: nil,
       snapshots: nil,
       sources: nil,
       title: nil)
@@ -86,7 +88,7 @@ def start_har(path, content: nil, mode: nil, urlFilter: nil)
 
 Start recording a HAR (HTTP Archive) of network activity in this context. The HAR file is written to disk when [Tracing#stop_har](./tracing#stop_har) is called, or when the returned `Disposable` is disposed.
 
-Only one HAR recording can be active at a time per [BrowserContext](./browser_context).
+Only one HAR recording can be active at a time per [Tracing](./tracing) instance.
 
 **Usage**
 

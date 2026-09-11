@@ -75,7 +75,8 @@ module Playwright
         wallTime: (Time.now.to_f * 1000).to_i,
         apiName: api_name,
         stack: stacks.map do |loc|
-          { file: loc.absolute_path || '', line: loc.lineno, function: loc.label }
+          # Ruby backtraces do not provide a column, but the trace protocol requires one.
+          { file: loc.absolute_path || '', line: loc.lineno, column: 0, function: loc.label }
         end,
       }
     end

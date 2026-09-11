@@ -83,7 +83,7 @@ If custom Docker image is preferred, build it as follows:
 FROM mcr.microsoft.com/playwright
 
 WORKDIR /root
-ARG PLAYWRIGHT_CORE_VERSION=1.62.1
+ARG PLAYWRIGHT_CORE_VERSION=1.63.0
 RUN npm install "playwright-core@$PLAYWRIGHT_CORE_VERSION" && ./node_modules/.bin/playwright-core install
 
 ENV PORT 8888

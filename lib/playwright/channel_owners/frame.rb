@@ -506,8 +506,8 @@ module Playwright
         hasText: hasText)
     end
 
-    def frame_locator(selector)
-      FrameLocatorImpl.new(frame: self, frame_selector: selector)
+    def frame_locator(selector = nil)
+      FrameLocatorImpl.new(frame: self, frame_selector: selector || 'internal:control=any-frame')
     end
 
     def focus(selector, strict: nil, timeout: nil)

@@ -215,3 +215,163 @@ RSpec.describe 'tracing' do
     end
   end
 end
+
+# https://github.com/microsoft/playwright/blob/v1.63.0/tests/library/tracing.spec.ts
+RSpec.describe 'tracing snapshots and failure recovery', sinatra: true do
+  require 'open3'
+  require 'chunky_png'
+
+  def read_trace(path)
+    names, error, status = Open3.capture3('unzip', '-Z1', path)
+    raise error unless status.success?
+    resources = names.lines.map(&:strip).reject { |name| name.end_with?('/') }.to_h do |name|
+      content, error, status = Open3.capture3('unzip', '-p', path, name)
+      raise error unless status.success?
+      [name, content]
+    end
+    events = resources.select { |name, _| name.end_with?('.trace', '.network') }.values.flat_map do |data|
+      data.lines.reject { |line| line.strip.empty? }.map { |line| JSON.parse(line) }
+    end
+    [events, resources]
+  end
+
+  it 'should not collect action screenshots and aria snapshots by default' do
+    with_context do |context|
+      context.tracing.start(snapshots: true)
+      page = context.new_page
+      page.goto("#{server_prefix}/input/button.html")
+      page.click('button')
+      Dir.mktmpdir do |dir|
+        path = File.join(dir, 'trace.zip')
+        context.tracing.stop(path: path)
+        events, = read_trace(path)
+        expect(events.map { |event| event['type'] }).not_to include('screenshot', 'aria-snapshot')
+        expect(events.map { |event| event['type'] }).to include('frame-snapshot', 'resource-snapshot')
+      end
+    end
+  end
+
+  it 'should collect action screenshots' do
+    with_context do |context|
+      context.tracing.start(screenSnapshots: true)
+      page = context.new_page
+      page.goto("#{server_prefix}/input/button.html")
+      page.click('button')
+      Dir.mktmpdir do |dir|
+        path = File.join(dir, 'trace.zip')
+        context.tracing.stop(path: path)
+        events, resources = read_trace(path)
+        call_id = events.find { |event| event['type'] == 'before' && event['method'] == 'click' }['callId']
+        screenshots = events.select { |event| event['type'] == 'screenshot' && event['callId'] == call_id }
+        expect(screenshots.map { |event| event['phase'] }).to eq(%w[before action after])
+        screenshots.each do |event|
+          expect(event['file']).to eq("screenshots/#{call_id}-#{event['phase']}.png")
+          expect(ChunkyPNG::Image.from_blob(resources[event['file']]).width).to be > 0
+        end
+      end
+    end
+  end
+
+  it 'should collect aria snapshots' do
+    with_context do |context|
+      context.tracing.start(ariaSnapshots: true)
+      page = context.new_page
+      page.goto("#{server_prefix}/input/button.html")
+      page.click('button')
+      Dir.mktmpdir do |dir|
+        path = File.join(dir, 'trace.zip')
+        context.tracing.stop(path: path)
+        events, resources = read_trace(path)
+        call_id = events.find { |event| event['type'] == 'before' && event['method'] == 'click' }['callId']
+        snapshots = events.select { |event| event['type'] == 'aria-snapshot' && event['callId'] == call_id }
+        expect(snapshots.map { |event| event['phase'] }).to eq(%w[before action after])
+        has_button = lambda do |nodes|
+          nodes.any? do |node|
+            node.is_a?(Hash) && ((node['role'] == 'button' && node['name'] == 'Click target') || has_button.call(node['children'] || []))
+          end
+        end
+        snapshots.each do |event|
+          expect(event['file']).to eq("aria/#{call_id}-#{event['phase']}.json")
+          expect(has_button.call(JSON.parse(resources[event['file']]))).to eq(true)
+        end
+      end
+    end
+  end
+
+  it 'should record context API request trace independently' do
+    sinatra.post('/simple.json') do
+      content_type :json
+      '{"foo":"bar"}'
+    end
+    with_context do |context|
+      expect(context.request.tracing).not_to eq(context.tracing)
+      context.tracing.start(snapshots: true)
+      context.request.tracing.start(snapshots: true)
+      page = context.new_page
+      page.goto("#{server_prefix}/one-style.html")
+      api_url = "#{server_prefix}/simple.json"
+      page.request.post(api_url, data: { foo: 'bar' })
+      Dir.mktmpdir do |dir|
+        browser_path = File.join(dir, 'browser.zip')
+        api_path = File.join(dir, 'api.zip')
+        context.tracing.stop(path: browser_path)
+        context.request.tracing.stop(path: api_path)
+        browser_events, = read_trace(browser_path)
+        api_events, api_resources = read_trace(api_path)
+        browser_urls = browser_events.select { |event| event['type'] == 'resource-snapshot' }.map { |event| event.dig('snapshot', 'request', 'url') }
+        expect(browser_urls).to include("#{server_prefix}/one-style.html")
+        expect(browser_urls).not_to include(api_url)
+        requests = api_events.select { |event| event['type'] == 'resource-snapshot' }
+        expect(requests.map { |event| event.dig('snapshot', 'request', 'url') }).to eq([api_url])
+        expect(requests.first['snapshot']['_apiRequestRef']).to match(/^request-context@/)
+        api_action = api_events.find { |event| event['type'] == 'before' && event['method'] == 'fetch' }
+        expect(api_action).not_to be_nil
+        expect(api_events.any? { |event| event['type'] == 'before' && event['method'] == 'goto' }).to eq(false)
+        unless remote?
+          stacks = JSON.parse(api_resources.fetch('trace.stacks'))
+          call_stack = stacks['stacks'].find { |id, _| "call@#{id}" == api_action['callId'] }
+          expect(call_stack).not_to be_nil
+          first_frame = call_stack[1].first
+          expect(stacks['files'][first_frame[0]]).to eq(File.expand_path(__FILE__))
+          expect(first_frame[2]).to eq(0)
+        end
+      end
+    end
+  end
+
+  it 'should recover tracing after a failed stop' do
+    with_context do |context|
+      Dir.mktmpdir do |dir|
+        blocker = File.join(dir, 'blocker')
+        File.write(blocker, '')
+        context.tracing.start
+        expect { context.tracing.stop(path: File.join(blocker, 'trace.zip')) }.to raise_error(/ENOTDIR|ENOENT|EEXIST|Not a directory|File exists/)
+        context.tracing.start
+        page = context.new_page
+        page.goto("#{server_prefix}/input/button.html")
+        page.click('button')
+        path = File.join(dir, 'trace.zip')
+        context.tracing.stop(path: path)
+        events, = read_trace(path)
+        expect(events.first['type']).to eq('context-options')
+        expect(events.any? { |event| event['type'] == 'before' && event['method'] == 'click' }).to eq(true)
+      end
+    end
+  end
+
+  it 'should release the stack session when saving the trace fails' do
+    skip 'Remote clients do not own a local stack session' if remote?
+    with_context do |context|
+      context.tracing.start
+      stacks_id = Playwright::PlaywrightApi.unwrap(context.tracing).instance_variable_get(:@stacks_id)
+      stacks_dir = File.dirname(stacks_id)
+      expect(File.directory?(stacks_dir)).to eq(true)
+      Dir.mktmpdir do |dir|
+        blocker = File.join(dir, 'blocker')
+        File.write(blocker, '')
+        expect { context.tracing.stop(path: File.join(blocker, 'trace.zip')) }.to raise_error(/ENOTDIR|ENOENT|EEXIST/)
+        expect(File.exist?(stacks_dir)).to eq(false)
+      end
+    end
+  end
+end

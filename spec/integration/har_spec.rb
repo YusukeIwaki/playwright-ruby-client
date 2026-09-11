@@ -180,3 +180,56 @@ RSpec.describe 'HAR' do
     end
   end
 end
+
+# https://github.com/microsoft/playwright/blob/v1.63.0/tests/library/har.spec.ts
+RSpec.describe 'HAR context lifecycle', sinatra: true do
+  it 'should close the context when saving the har fails' do
+    Dir.mktmpdir do |dir|
+      blocker = File.join(dir, 'not-a-directory')
+      File.write(blocker, 'data')
+      context = browser.new_context(record_har_path: File.join(blocker, 'test.har'))
+      page = context.new_page
+      page.goto(server_empty_page)
+      closed = Concurrent::Promises.resolvable_future
+      context.on('close', -> { closed.fulfill(true) })
+      expect { context.close }.to raise_error(/ENOTDIR|ENOENT|EEXIST/)
+      expect(closed.value!(5)).to eq(true)
+      context.close
+    end
+  end
+
+  it 'should exclude API request' do
+    Dir.mktmpdir do |dir|
+      path = File.join(dir, 'browser.har')
+      with_context(record_har_path: path) do |context|
+        page = context.new_page
+        page.goto(server_empty_page)
+        page.request.get("#{server_prefix}/simple.json")
+      end
+      urls = JSON.parse(File.read(path))['log']['entries'].map { |entry| entry['request']['url'] }
+      expect(urls).to eq([server_empty_page])
+    end
+  end
+
+  it 'should record a HAR for a context APIRequestContext' do
+    sinatra.post('/simple.json') do
+      content_type :json
+      '{"foo":"bar"}'
+    end
+    Dir.mktmpdir do |dir|
+      path = File.join(dir, 'request.har')
+      with_context do |context|
+        context.request.tracing.start_har(path)
+        page = context.new_page
+        page.goto(server_empty_page)
+        context.request.post("#{server_prefix}/simple.json", data: { foo: 'bar' })
+        context.request.tracing.stop_har
+      end
+      entries = JSON.parse(File.read(path))['log']['entries']
+      expect(entries.size).to eq(1)
+      expect(entries.first['request']['url']).to eq("#{server_prefix}/simple.json")
+      expect(entries.first['request']['method']).to eq('POST')
+      expect(entries.first['response']['status']).to eq(200)
+    end
+  end
+end

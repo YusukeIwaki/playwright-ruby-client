@@ -13,6 +13,21 @@ module Playwright
       @frame.send(:_timeout, timeout)
     end
 
+    private def child_selector(selector)
+      if @frame_selector == 'internal:control=any-frame'
+        "#{@frame_selector} >> #{selector}"
+      else
+        "#{@frame_selector} >> internal:control=enter-frame >> #{selector}"
+      end
+    end
+
+    private def nth_selector(index)
+      if @frame_selector == 'internal:control=any-frame'
+        raise 'Selecting the nth frame is not allowed on frameLocator().'
+      end
+      "#{@frame_selector} >> nth=#{index}"
+    end
+
     def locator(
       selector,
       has: nil,
@@ -21,7 +36,7 @@ module Playwright
       hasText: nil)
       LocatorImpl.new(
         frame: @frame,
-        selector: "#{@frame_selector} >> internal:control=enter-frame >> #{selector}",
+        selector: child_selector(selector),
         has: has,
         hasNot: hasNot,
         hasNotText: hasNotText,
@@ -38,28 +53,28 @@ module Playwright
     def frame_locator(selector)
       FrameLocatorImpl.new(
         frame: @frame,
-        frame_selector: "#{@frame_selector} >> internal:control=enter-frame >> #{selector}",
+        frame_selector: child_selector(selector),
       )
     end
 
     def first
       FrameLocatorImpl.new(
         frame: @frame,
-        frame_selector: "#{@frame_selector} >> nth=0",
+        frame_selector: nth_selector(0),
       )
     end
 
     def last
       FrameLocatorImpl.new(
         frame: @frame,
-        frame_selector: "#{@frame_selector} >> nth=-1",
+        frame_selector: nth_selector(-1),
       )
     end
 
     def nth(index)
       FrameLocatorImpl.new(
         frame: @frame,
-        frame_selector: "#{@frame_selector} >> nth=#{index}",
+        frame_selector: nth_selector(index),
       )
     end
   end

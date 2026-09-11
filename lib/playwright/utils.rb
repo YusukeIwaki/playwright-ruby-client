@@ -18,9 +18,21 @@ module Playwright
   end
 
   module Utils
+    module PrepareHttpCredentials
+      private def prepare_http_credentials(credentials)
+        return nil unless credentials
+
+        list = credentials.is_a?(Array) ? credentials : [credentials]
+        list.empty? ? nil : list
+      end
+    end
+
     module PrepareBrowserContextOptions
+      include PrepareHttpCredentials
+
       # @see https://github.com/microsoft/playwright/blob/5a2cfdbd47ed3c3deff77bb73e5fac34241f649d/src/client/browserContext.ts#L265
       private def prepare_browser_context_options(params)
+        params[:httpCredentials] = prepare_http_credentials(params[:httpCredentials])
         if params[:noViewport] == 0
           params.delete(:noViewport)
           params[:noDefaultViewport] = true

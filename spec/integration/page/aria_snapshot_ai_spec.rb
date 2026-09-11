@@ -571,4 +571,103 @@ RSpec.describe 'ariaSnapshot AI' do
       YAML
     end
   end
+
+  # https://github.com/microsoft/playwright/blob/v1.63.0/tests/page/page-aria-snapshot-ai.spec.ts
+  it 'should keep the name when the contributing wrapper collapses into repeating text' do
+    with_page do |page|
+      page.content = <<~HTML
+        <button>
+          <span>
+            <span>
+              <svg focusable="false" tabindex="-1" aria-hidden="true" viewBox="0 0 448 512">
+                <path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"/>
+              </svg>
+            </span>
+            <span>Add New Item</span>
+          </span>
+        </button>
+      HTML
+      snapshot = snapshot_for_ai(page)
+      expect(snapshot).to include(unshift(<<~YAML))
+        - button "Add New Item" [ref=e2]
+      YAML
+    end
+  end
+
+  it 'should omit images without an accessible name' do
+    with_page do |page|
+      page.content = <<~HTML
+        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=">
+        <img alt="A cat" src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=">
+        <img style="cursor: pointer" src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=">
+      HTML
+      snapshot = snapshot_for_ai(page)
+      expect(snapshot).to include(unshift(<<~YAML))
+        - generic [active] [ref=e1]:
+          - img "A cat" [ref=e3]
+          - img [ref=e4] [cursor=pointer]
+      YAML
+      expect(snapshot).not_to include('[ref=e2]')
+    end
+  end
+
+  it 'should keep icon-only clickable elements' do
+    with_page do |page|
+      page.content = <<~HTML
+        <div style="cursor: pointer" aria-haspopup="true"><i><svg viewBox="0 0 1024 1024"><use xlink:href="#icon"></use></svg></i></div>
+        <img style="cursor: pointer" src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=">
+        <a style="cursor: pointer" href="/target"><svg viewBox="0 0 1024 1024"><use xlink:href="#icon"></use></svg></a>
+        <div onclick="void 0"><svg viewBox="0 0 1024 1024"><use xlink:href="#icon"></use></svg></div>
+      HTML
+      snapshot = snapshot_for_ai(page)
+      expect(snapshot).to include(unshift(<<~YAML))
+        - generic [active] [ref=e1]:
+          - generic [ref=e2] [cursor=pointer]
+          - img [ref=e5] [cursor=pointer]
+          - link [ref=e6] [cursor=pointer]:
+            - /url: /target
+      YAML
+    end
+  end
+
+  it 'should annotate aria-hidden elements' do
+    with_page do |page|
+      page.content = <<~HTML
+        <h2>Visible heading</h2>
+        <div aria-hidden="true">
+          <h1>Hidden heading</h1>
+          <p>Hidden content</p>
+        </div>
+        <h2>After hidden</h2>
+      HTML
+      snapshot = snapshot_for_ai(page)
+      expect(snapshot).to include(unshift(<<~YAML))
+        - generic [active] [ref=e1]:
+          - heading "Visible heading" [level=2] [ref=e2]
+          - generic [aria-hidden] [ref=e3]:
+            - heading [level=1] [ref=e4]: Hidden heading
+            - paragraph [ref=e5]: Hidden content
+          - heading "After hidden" [level=2] [ref=e6]
+      YAML
+      expect(page.locator('body').aria_snapshot).not_to include('Hidden content')
+    end
+  end
+
+  it 'should only annotate the top element in a hidden subtree' do
+    with_page do |page|
+      page.content = <<~HTML
+        <div aria-hidden="true">
+          <h1>Heading</h1>
+          <p>Paragraph</p>
+        </div>
+      HTML
+      snapshot = snapshot_for_ai(page)
+      expect(snapshot).to include(unshift(<<~YAML))
+        - generic [aria-hidden] [ref=e2]:
+          - heading [level=1] [ref=e3]: Heading
+          - paragraph [ref=e4]: Paragraph
+      YAML
+    end
+  end
+
 end

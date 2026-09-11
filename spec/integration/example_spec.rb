@@ -633,3 +633,28 @@ RSpec.describe 'example' do
     end
   end
 end
+
+RSpec.describe 'Playwright 1.63 examples' do
+  include ExampleCodes
+
+  it 'locates buttons across frames' do
+    with_page do |page|
+      page.content = <<~HTML
+        <iframe id="my-frame" srcdoc="<button onclick='window.clicks = (window.clicks || 0) + 1'>Click</button>"></iframe>
+      HTML
+      page.frame_locator('#my-frame').get_by_role('button').wait_for
+      example_b5fadfd47db49d4381a9f484bc41745d0c9f176fce56203a73bafb17ca54c20a(frame: page.main_frame)
+      example_baa3371b838c7b85056072b30bb30405debbc593119cd8cb214052f338aca062(page: page)
+      example_9ee987e2edbb4979dd4f859118075cceed3d3105cf612152e5a3a722c19b0c5b(page: page)
+      expect(page.frames.last.evaluate('window.clicks')).to eq(4)
+    end
+  end
+
+  it 'locates only visible buttons' do
+    with_page do |page|
+      page.content = '<button hidden>Hidden</button><button onclick="window.clicked = true">Visible</button>'
+      example_29b5672d77ce36156e932588ac4f0254f2e2fc3c9ab5e527734d84a5101772a6(page: page)
+      expect(page.evaluate('window.clicked')).to eq(true)
+    end
+  end
+end

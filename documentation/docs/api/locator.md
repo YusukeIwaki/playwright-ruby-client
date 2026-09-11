@@ -1531,6 +1531,34 @@ If the element is detached from the DOM at any moment during the action, this me
 When all steps combined have not finished during the specified `timeout`, this method throws a
 `TimeoutError`. Passing zero timeout disables this.
 
+## visible
+
+```
+def visible
+```
+
+
+Returns a locator that matches only [visible](https://playwright.dev/python/docs/actionability#visible) elements, ignoring the invisible ones. This is the recommended way to distinguish elements by visibility, as opposed to the `:visible` CSS pseudo-class.
+
+Note that visibility is checked every time the locator is used, and not at the moment of the [Locator#visible](./locator#visible) call.
+
+**Usage**
+
+Consider a page with two buttons, the first invisible and the second visible.
+
+```html
+<button style='display: none'>Invisible</button>
+<button>Visible</button>
+```
+
+This will only find the second button, because it is visible, and then click it.
+
+```ruby
+page.locator('button').visible.click
+```
+
+To match invisible elements instead, use [Locator#filter](./locator#filter) with the `visible` option set to `false`.
+
 ## wait_for
 
 ```

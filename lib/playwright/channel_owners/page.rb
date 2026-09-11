@@ -72,6 +72,7 @@ module Playwright
       set_event_to_subscription_mapping({
         Events::Page::Console => "console",
         Events::Page::Dialog => "dialog",
+        Events::Page::DialogClosed => "dialogClosed",
         Events::Page::Request => "request",
         Events::Page::Response => "response",
         Events::Page::RequestFinished => "requestFinished",
@@ -723,7 +724,7 @@ module Playwright
         hasText: hasText)
     end
 
-    def frame_locator(selector)
+    def frame_locator(selector = nil)
       @main_frame.frame_locator(selector)
     end
 

@@ -353,114 +353,228 @@
                   "since": "v1.16",
                   "name": "httpCredentials",
                   "type": {
-                    "name": "Object",
-                    "properties": [
+                    "name": "",
+                    "union": [
                       {
-                        "kind": "property",
-                        "langs": {},
-                        "since": "v1.16",
-                        "name": "username",
-                        "type": {
-                          "name": "string",
-                          "expression": "[string]"
-                        },
-                        "spec": [
+                        "name": "Object",
+                        "properties": [
                           {
-                            "type": "text",
-                            "text": ""
-                          }
-                        ],
-                        "required": true,
-                        "comment": "",
-                        "async": false,
-                        "alias": "username",
-                        "overloadIndex": 0
-                      },
-                      {
-                        "kind": "property",
-                        "langs": {},
-                        "since": "v1.16",
-                        "name": "password",
-                        "type": {
-                          "name": "string",
-                          "expression": "[string]"
-                        },
-                        "spec": [
-                          {
-                            "type": "text",
-                            "text": ""
-                          }
-                        ],
-                        "required": true,
-                        "comment": "",
-                        "async": false,
-                        "alias": "password",
-                        "overloadIndex": 0
-                      },
-                      {
-                        "kind": "property",
-                        "langs": {},
-                        "since": "v1.16",
-                        "name": "origin",
-                        "type": {
-                          "name": "string",
-                          "expression": "[string]"
-                        },
-                        "spec": [
-                          {
-                            "type": "text",
-                            "text": "Restrain sending http credentials on specific origin (scheme://host:port)."
-                          }
-                        ],
-                        "required": false,
-                        "comment": "Restrain sending http credentials on specific origin (scheme://host:port).",
-                        "async": false,
-                        "alias": "origin",
-                        "overloadIndex": 0
-                      },
-                      {
-                        "kind": "property",
-                        "langs": {},
-                        "since": "v1.16",
-                        "name": "send",
-                        "type": {
-                          "name": "HttpCredentialsSend",
-                          "union": [
-                            {
-                              "name": "\"unauthorized\""
+                            "kind": "property",
+                            "langs": {},
+                            "since": "v1.16",
+                            "name": "username",
+                            "type": {
+                              "name": "string",
+                              "expression": "[string]"
                             },
-                            {
-                              "name": "\"always\""
-                            }
-                          ],
-                          "expression": "[HttpCredentialsSend]<\"unauthorized\"|\"always\">"
-                        },
-                        "spec": [
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": ""
+                              }
+                            ],
+                            "required": true,
+                            "comment": "",
+                            "async": false,
+                            "alias": "username",
+                            "overloadIndex": 0
+                          },
                           {
-                            "type": "text",
-                            "text": "This option only applies to the requests sent from corresponding `APIRequestContext` and does not affect requests sent from the browser. `'always'` - `Authorization` header with basic authentication credentials will be sent with the each API request. `'unauthorized` - the credentials are only sent when 401 (Unauthorized) response with `WWW-Authenticate` header is received. Defaults to `'unauthorized'`."
+                            "kind": "property",
+                            "langs": {},
+                            "since": "v1.16",
+                            "name": "password",
+                            "type": {
+                              "name": "string",
+                              "expression": "[string]"
+                            },
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": ""
+                              }
+                            ],
+                            "required": true,
+                            "comment": "",
+                            "async": false,
+                            "alias": "password",
+                            "overloadIndex": 0
+                          },
+                          {
+                            "kind": "property",
+                            "langs": {},
+                            "since": "v1.16",
+                            "name": "origin",
+                            "type": {
+                              "name": "string",
+                              "expression": "[string]"
+                            },
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": "Restrain sending http credentials on specific origin (scheme://host:port)."
+                              }
+                            ],
+                            "required": false,
+                            "comment": "Restrain sending http credentials on specific origin (scheme://host:port).",
+                            "async": false,
+                            "alias": "origin",
+                            "overloadIndex": 0
+                          },
+                          {
+                            "kind": "property",
+                            "langs": {},
+                            "since": "v1.16",
+                            "name": "send",
+                            "type": {
+                              "name": "HttpCredentialsSend",
+                              "union": [
+                                {
+                                  "name": "\"unauthorized\""
+                                },
+                                {
+                                  "name": "\"always\""
+                                }
+                              ],
+                              "expression": "[HttpCredentialsSend]<\"unauthorized\"|\"always\">"
+                            },
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": "This option only applies to the requests sent from corresponding `APIRequestContext` and does not affect requests sent from the browser. `'always'` - `Authorization` header with basic authentication credentials will be sent with the each API request. `'unauthorized` - the credentials are only sent when 401 (Unauthorized) response with `WWW-Authenticate` header is received. Defaults to `'unauthorized'`."
+                              }
+                            ],
+                            "required": false,
+                            "comment": "This option only applies to the requests sent from corresponding `APIRequestContext` and does not affect requests\nsent from the browser. `'always'` - `Authorization` header with basic authentication credentials will be sent with\nthe each API request. `'unauthorized` - the credentials are only sent when 401 (Unauthorized) response with\n`WWW-Authenticate` header is received. Defaults to `'unauthorized'`.",
+                            "async": false,
+                            "alias": "send",
+                            "overloadIndex": 0
                           }
                         ],
-                        "required": false,
-                        "comment": "This option only applies to the requests sent from corresponding `APIRequestContext` and does not affect requests\nsent from the browser. `'always'` - `Authorization` header with basic authentication credentials will be sent with\nthe each API request. `'unauthorized` - the credentials are only sent when 401 (Unauthorized) response with\n`WWW-Authenticate` header is received. Defaults to `'unauthorized'`.",
-                        "async": false,
-                        "alias": "send",
-                        "overloadIndex": 0
+                        "langAliases": {
+                          "default": "HttpCredentials"
+                        }
+                      },
+                      {
+                        "name": "Array",
+                        "templates": [
+                          {
+                            "name": "Object",
+                            "properties": [
+                              {
+                                "kind": "property",
+                                "langs": {},
+                                "since": "v1.16",
+                                "name": "username",
+                                "type": {
+                                  "name": "string",
+                                  "expression": "[string]"
+                                },
+                                "spec": [
+                                  {
+                                    "type": "text",
+                                    "text": ""
+                                  }
+                                ],
+                                "required": true,
+                                "comment": "",
+                                "async": false,
+                                "alias": "username",
+                                "overloadIndex": 0
+                              },
+                              {
+                                "kind": "property",
+                                "langs": {},
+                                "since": "v1.16",
+                                "name": "password",
+                                "type": {
+                                  "name": "string",
+                                  "expression": "[string]"
+                                },
+                                "spec": [
+                                  {
+                                    "type": "text",
+                                    "text": ""
+                                  }
+                                ],
+                                "required": true,
+                                "comment": "",
+                                "async": false,
+                                "alias": "password",
+                                "overloadIndex": 0
+                              },
+                              {
+                                "kind": "property",
+                                "langs": {},
+                                "since": "v1.16",
+                                "name": "origin",
+                                "type": {
+                                  "name": "string",
+                                  "expression": "[string]"
+                                },
+                                "spec": [
+                                  {
+                                    "type": "text",
+                                    "text": "Restrain sending http credentials on specific origin (scheme://host:port)."
+                                  }
+                                ],
+                                "required": false,
+                                "comment": "Restrain sending http credentials on specific origin (scheme://host:port).",
+                                "async": false,
+                                "alias": "origin",
+                                "overloadIndex": 0
+                              },
+                              {
+                                "kind": "property",
+                                "langs": {},
+                                "since": "v1.16",
+                                "name": "send",
+                                "type": {
+                                  "name": "HttpCredentialsSend",
+                                  "union": [
+                                    {
+                                      "name": "\"unauthorized\""
+                                    },
+                                    {
+                                      "name": "\"always\""
+                                    }
+                                  ],
+                                  "expression": "[HttpCredentialsSend]<\"unauthorized\"|\"always\">"
+                                },
+                                "spec": [
+                                  {
+                                    "type": "text",
+                                    "text": "This option only applies to the requests sent from corresponding `APIRequestContext` and does not affect requests sent from the browser. `'always'` - `Authorization` header with basic authentication credentials will be sent with the each API request. `'unauthorized` - the credentials are only sent when 401 (Unauthorized) response with `WWW-Authenticate` header is received. Defaults to `'unauthorized'`."
+                                  }
+                                ],
+                                "required": false,
+                                "comment": "This option only applies to the requests sent from corresponding `APIRequestContext` and does not affect requests\nsent from the browser. `'always'` - `Authorization` header with basic authentication credentials will be sent with\nthe each API request. `'unauthorized` - the credentials are only sent when 401 (Unauthorized) response with\n`WWW-Authenticate` header is received. Defaults to `'unauthorized'`.",
+                                "async": false,
+                                "alias": "send",
+                                "overloadIndex": 0
+                              }
+                            ],
+                            "langAliases": {
+                              "default": "HttpCredentials"
+                            }
+                          }
+                        ]
                       }
                     ],
-                    "expression": "[Object]",
-                    "langAliases": {
-                      "default": "HttpCredentials"
-                    }
+                    "expression": "[Object]|[Array]<[Object]>"
                   },
                   "spec": [
                     {
                       "type": "text",
                       "text": "Credentials for [HTTP authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication).↵If no origin is specified, the username and password are sent to any servers upon unauthorized responses."
+                    },
+                    {
+                      "type": "text",
+                      "text": "Pass an array to use different credentials for different origins. The first entry that matches the request origin is used, and entries with no origin match any request."
                     }
                   ],
                   "required": false,
-                  "comment": "Credentials for [HTTP authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication). If no\norigin is specified, the username and password are sent to any servers upon unauthorized responses.",
+                  "comment": "Credentials for [HTTP authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication). If no\norigin is specified, the username and password are sent to any servers upon unauthorized responses.\n\nPass an array to use different credentials for different origins. The first entry that matches the request origin\nis used, and entries with no origin match any request.",
                   "async": false,
                   "alias": "httpCredentials",
                   "overloadIndex": 0
@@ -9649,6 +9763,27 @@
                 {
                   "kind": "property",
                   "langs": {},
+                  "since": "v1.63",
+                  "name": "opfs",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "boolean"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Set to `true` to include the origin private file system in the storage state snapshot."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Set to `true` to include the origin private file system in the storage state snapshot.",
+                  "async": false,
+                  "alias": "opfs",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
                   "since": "v1.16",
                   "name": "path",
                   "type": {
@@ -9686,9 +9821,14 @@
           "name": "Tracing",
           "expression": "[Tracing]"
         },
-        "spec": [],
+        "spec": [
+          {
+            "type": "text",
+            "text": "Tracing recorder for requests made through this API request context."
+          }
+        ],
         "required": true,
-        "comment": "",
+        "comment": "Tracing recorder for requests made through this API request context.",
         "async": false,
         "alias": "tracing",
         "overloadIndex": 0,
@@ -12004,114 +12144,228 @@
                   "since": "v1.8",
                   "name": "httpCredentials",
                   "type": {
-                    "name": "Object",
-                    "properties": [
+                    "name": "",
+                    "union": [
                       {
-                        "kind": "property",
-                        "langs": {},
-                        "since": "v1.8",
-                        "name": "username",
-                        "type": {
-                          "name": "string",
-                          "expression": "[string]"
-                        },
-                        "spec": [
+                        "name": "Object",
+                        "properties": [
                           {
-                            "type": "text",
-                            "text": ""
-                          }
-                        ],
-                        "required": true,
-                        "comment": "",
-                        "async": false,
-                        "alias": "username",
-                        "overloadIndex": 0
-                      },
-                      {
-                        "kind": "property",
-                        "langs": {},
-                        "since": "v1.8",
-                        "name": "password",
-                        "type": {
-                          "name": "string",
-                          "expression": "[string]"
-                        },
-                        "spec": [
-                          {
-                            "type": "text",
-                            "text": ""
-                          }
-                        ],
-                        "required": true,
-                        "comment": "",
-                        "async": false,
-                        "alias": "password",
-                        "overloadIndex": 0
-                      },
-                      {
-                        "kind": "property",
-                        "langs": {},
-                        "since": "v1.8",
-                        "name": "origin",
-                        "type": {
-                          "name": "string",
-                          "expression": "[string]"
-                        },
-                        "spec": [
-                          {
-                            "type": "text",
-                            "text": "Restrain sending http credentials on specific origin (scheme://host:port)."
-                          }
-                        ],
-                        "required": false,
-                        "comment": "Restrain sending http credentials on specific origin (scheme://host:port).",
-                        "async": false,
-                        "alias": "origin",
-                        "overloadIndex": 0
-                      },
-                      {
-                        "kind": "property",
-                        "langs": {},
-                        "since": "v1.8",
-                        "name": "send",
-                        "type": {
-                          "name": "HttpCredentialsSend",
-                          "union": [
-                            {
-                              "name": "\"unauthorized\""
+                            "kind": "property",
+                            "langs": {},
+                            "since": "v1.8",
+                            "name": "username",
+                            "type": {
+                              "name": "string",
+                              "expression": "[string]"
                             },
-                            {
-                              "name": "\"always\""
-                            }
-                          ],
-                          "expression": "[HttpCredentialsSend]<\"unauthorized\"|\"always\">"
-                        },
-                        "spec": [
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": ""
+                              }
+                            ],
+                            "required": true,
+                            "comment": "",
+                            "async": false,
+                            "alias": "username",
+                            "overloadIndex": 0
+                          },
                           {
-                            "type": "text",
-                            "text": "This option only applies to the requests sent from corresponding `APIRequestContext` and does not affect requests sent from the browser. `'always'` - `Authorization` header with basic authentication credentials will be sent with the each API request. `'unauthorized` - the credentials are only sent when 401 (Unauthorized) response with `WWW-Authenticate` header is received. Defaults to `'unauthorized'`."
+                            "kind": "property",
+                            "langs": {},
+                            "since": "v1.8",
+                            "name": "password",
+                            "type": {
+                              "name": "string",
+                              "expression": "[string]"
+                            },
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": ""
+                              }
+                            ],
+                            "required": true,
+                            "comment": "",
+                            "async": false,
+                            "alias": "password",
+                            "overloadIndex": 0
+                          },
+                          {
+                            "kind": "property",
+                            "langs": {},
+                            "since": "v1.8",
+                            "name": "origin",
+                            "type": {
+                              "name": "string",
+                              "expression": "[string]"
+                            },
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": "Restrain sending http credentials on specific origin (scheme://host:port)."
+                              }
+                            ],
+                            "required": false,
+                            "comment": "Restrain sending http credentials on specific origin (scheme://host:port).",
+                            "async": false,
+                            "alias": "origin",
+                            "overloadIndex": 0
+                          },
+                          {
+                            "kind": "property",
+                            "langs": {},
+                            "since": "v1.8",
+                            "name": "send",
+                            "type": {
+                              "name": "HttpCredentialsSend",
+                              "union": [
+                                {
+                                  "name": "\"unauthorized\""
+                                },
+                                {
+                                  "name": "\"always\""
+                                }
+                              ],
+                              "expression": "[HttpCredentialsSend]<\"unauthorized\"|\"always\">"
+                            },
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": "This option only applies to the requests sent from corresponding `APIRequestContext` and does not affect requests sent from the browser. `'always'` - `Authorization` header with basic authentication credentials will be sent with the each API request. `'unauthorized` - the credentials are only sent when 401 (Unauthorized) response with `WWW-Authenticate` header is received. Defaults to `'unauthorized'`."
+                              }
+                            ],
+                            "required": false,
+                            "comment": "This option only applies to the requests sent from corresponding `APIRequestContext` and does not affect requests\nsent from the browser. `'always'` - `Authorization` header with basic authentication credentials will be sent with\nthe each API request. `'unauthorized` - the credentials are only sent when 401 (Unauthorized) response with\n`WWW-Authenticate` header is received. Defaults to `'unauthorized'`.",
+                            "async": false,
+                            "alias": "send",
+                            "overloadIndex": 0
                           }
                         ],
-                        "required": false,
-                        "comment": "This option only applies to the requests sent from corresponding `APIRequestContext` and does not affect requests\nsent from the browser. `'always'` - `Authorization` header with basic authentication credentials will be sent with\nthe each API request. `'unauthorized` - the credentials are only sent when 401 (Unauthorized) response with\n`WWW-Authenticate` header is received. Defaults to `'unauthorized'`.",
-                        "async": false,
-                        "alias": "send",
-                        "overloadIndex": 0
+                        "langAliases": {
+                          "default": "HttpCredentials"
+                        }
+                      },
+                      {
+                        "name": "Array",
+                        "templates": [
+                          {
+                            "name": "Object",
+                            "properties": [
+                              {
+                                "kind": "property",
+                                "langs": {},
+                                "since": "v1.8",
+                                "name": "username",
+                                "type": {
+                                  "name": "string",
+                                  "expression": "[string]"
+                                },
+                                "spec": [
+                                  {
+                                    "type": "text",
+                                    "text": ""
+                                  }
+                                ],
+                                "required": true,
+                                "comment": "",
+                                "async": false,
+                                "alias": "username",
+                                "overloadIndex": 0
+                              },
+                              {
+                                "kind": "property",
+                                "langs": {},
+                                "since": "v1.8",
+                                "name": "password",
+                                "type": {
+                                  "name": "string",
+                                  "expression": "[string]"
+                                },
+                                "spec": [
+                                  {
+                                    "type": "text",
+                                    "text": ""
+                                  }
+                                ],
+                                "required": true,
+                                "comment": "",
+                                "async": false,
+                                "alias": "password",
+                                "overloadIndex": 0
+                              },
+                              {
+                                "kind": "property",
+                                "langs": {},
+                                "since": "v1.8",
+                                "name": "origin",
+                                "type": {
+                                  "name": "string",
+                                  "expression": "[string]"
+                                },
+                                "spec": [
+                                  {
+                                    "type": "text",
+                                    "text": "Restrain sending http credentials on specific origin (scheme://host:port)."
+                                  }
+                                ],
+                                "required": false,
+                                "comment": "Restrain sending http credentials on specific origin (scheme://host:port).",
+                                "async": false,
+                                "alias": "origin",
+                                "overloadIndex": 0
+                              },
+                              {
+                                "kind": "property",
+                                "langs": {},
+                                "since": "v1.8",
+                                "name": "send",
+                                "type": {
+                                  "name": "HttpCredentialsSend",
+                                  "union": [
+                                    {
+                                      "name": "\"unauthorized\""
+                                    },
+                                    {
+                                      "name": "\"always\""
+                                    }
+                                  ],
+                                  "expression": "[HttpCredentialsSend]<\"unauthorized\"|\"always\">"
+                                },
+                                "spec": [
+                                  {
+                                    "type": "text",
+                                    "text": "This option only applies to the requests sent from corresponding `APIRequestContext` and does not affect requests sent from the browser. `'always'` - `Authorization` header with basic authentication credentials will be sent with the each API request. `'unauthorized` - the credentials are only sent when 401 (Unauthorized) response with `WWW-Authenticate` header is received. Defaults to `'unauthorized'`."
+                                  }
+                                ],
+                                "required": false,
+                                "comment": "This option only applies to the requests sent from corresponding `APIRequestContext` and does not affect requests\nsent from the browser. `'always'` - `Authorization` header with basic authentication credentials will be sent with\nthe each API request. `'unauthorized` - the credentials are only sent when 401 (Unauthorized) response with\n`WWW-Authenticate` header is received. Defaults to `'unauthorized'`.",
+                                "async": false,
+                                "alias": "send",
+                                "overloadIndex": 0
+                              }
+                            ],
+                            "langAliases": {
+                              "default": "HttpCredentials"
+                            }
+                          }
+                        ]
                       }
                     ],
-                    "expression": "[Object]",
-                    "langAliases": {
-                      "default": "HttpCredentials"
-                    }
+                    "expression": "[Object]|[Array]<[Object]>"
                   },
                   "spec": [
                     {
                       "type": "text",
                       "text": "Credentials for [HTTP authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication).↵If no origin is specified, the username and password are sent to any servers upon unauthorized responses."
+                    },
+                    {
+                      "type": "text",
+                      "text": "Pass an array to use different credentials for different origins. The first entry that matches the request origin is used, and entries with no origin match any request."
                     }
                   ],
                   "required": false,
-                  "comment": "Credentials for [HTTP authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication). If no\norigin is specified, the username and password are sent to any servers upon unauthorized responses.",
+                  "comment": "Credentials for [HTTP authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication). If no\norigin is specified, the username and password are sent to any servers upon unauthorized responses.\n\nPass an array to use different credentials for different origins. The first entry that matches the request origin\nis used, and entries with no origin match any request.",
                   "async": false,
                   "alias": "httpCredentials",
                   "overloadIndex": 0
@@ -14841,114 +15095,228 @@
                   "since": "v1.8",
                   "name": "httpCredentials",
                   "type": {
-                    "name": "Object",
-                    "properties": [
+                    "name": "",
+                    "union": [
                       {
-                        "kind": "property",
-                        "langs": {},
-                        "since": "v1.8",
-                        "name": "username",
-                        "type": {
-                          "name": "string",
-                          "expression": "[string]"
-                        },
-                        "spec": [
+                        "name": "Object",
+                        "properties": [
                           {
-                            "type": "text",
-                            "text": ""
-                          }
-                        ],
-                        "required": true,
-                        "comment": "",
-                        "async": false,
-                        "alias": "username",
-                        "overloadIndex": 0
-                      },
-                      {
-                        "kind": "property",
-                        "langs": {},
-                        "since": "v1.8",
-                        "name": "password",
-                        "type": {
-                          "name": "string",
-                          "expression": "[string]"
-                        },
-                        "spec": [
-                          {
-                            "type": "text",
-                            "text": ""
-                          }
-                        ],
-                        "required": true,
-                        "comment": "",
-                        "async": false,
-                        "alias": "password",
-                        "overloadIndex": 0
-                      },
-                      {
-                        "kind": "property",
-                        "langs": {},
-                        "since": "v1.8",
-                        "name": "origin",
-                        "type": {
-                          "name": "string",
-                          "expression": "[string]"
-                        },
-                        "spec": [
-                          {
-                            "type": "text",
-                            "text": "Restrain sending http credentials on specific origin (scheme://host:port)."
-                          }
-                        ],
-                        "required": false,
-                        "comment": "Restrain sending http credentials on specific origin (scheme://host:port).",
-                        "async": false,
-                        "alias": "origin",
-                        "overloadIndex": 0
-                      },
-                      {
-                        "kind": "property",
-                        "langs": {},
-                        "since": "v1.8",
-                        "name": "send",
-                        "type": {
-                          "name": "HttpCredentialsSend",
-                          "union": [
-                            {
-                              "name": "\"unauthorized\""
+                            "kind": "property",
+                            "langs": {},
+                            "since": "v1.8",
+                            "name": "username",
+                            "type": {
+                              "name": "string",
+                              "expression": "[string]"
                             },
-                            {
-                              "name": "\"always\""
-                            }
-                          ],
-                          "expression": "[HttpCredentialsSend]<\"unauthorized\"|\"always\">"
-                        },
-                        "spec": [
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": ""
+                              }
+                            ],
+                            "required": true,
+                            "comment": "",
+                            "async": false,
+                            "alias": "username",
+                            "overloadIndex": 0
+                          },
                           {
-                            "type": "text",
-                            "text": "This option only applies to the requests sent from corresponding `APIRequestContext` and does not affect requests sent from the browser. `'always'` - `Authorization` header with basic authentication credentials will be sent with the each API request. `'unauthorized` - the credentials are only sent when 401 (Unauthorized) response with `WWW-Authenticate` header is received. Defaults to `'unauthorized'`."
+                            "kind": "property",
+                            "langs": {},
+                            "since": "v1.8",
+                            "name": "password",
+                            "type": {
+                              "name": "string",
+                              "expression": "[string]"
+                            },
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": ""
+                              }
+                            ],
+                            "required": true,
+                            "comment": "",
+                            "async": false,
+                            "alias": "password",
+                            "overloadIndex": 0
+                          },
+                          {
+                            "kind": "property",
+                            "langs": {},
+                            "since": "v1.8",
+                            "name": "origin",
+                            "type": {
+                              "name": "string",
+                              "expression": "[string]"
+                            },
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": "Restrain sending http credentials on specific origin (scheme://host:port)."
+                              }
+                            ],
+                            "required": false,
+                            "comment": "Restrain sending http credentials on specific origin (scheme://host:port).",
+                            "async": false,
+                            "alias": "origin",
+                            "overloadIndex": 0
+                          },
+                          {
+                            "kind": "property",
+                            "langs": {},
+                            "since": "v1.8",
+                            "name": "send",
+                            "type": {
+                              "name": "HttpCredentialsSend",
+                              "union": [
+                                {
+                                  "name": "\"unauthorized\""
+                                },
+                                {
+                                  "name": "\"always\""
+                                }
+                              ],
+                              "expression": "[HttpCredentialsSend]<\"unauthorized\"|\"always\">"
+                            },
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": "This option only applies to the requests sent from corresponding `APIRequestContext` and does not affect requests sent from the browser. `'always'` - `Authorization` header with basic authentication credentials will be sent with the each API request. `'unauthorized` - the credentials are only sent when 401 (Unauthorized) response with `WWW-Authenticate` header is received. Defaults to `'unauthorized'`."
+                              }
+                            ],
+                            "required": false,
+                            "comment": "This option only applies to the requests sent from corresponding `APIRequestContext` and does not affect requests\nsent from the browser. `'always'` - `Authorization` header with basic authentication credentials will be sent with\nthe each API request. `'unauthorized` - the credentials are only sent when 401 (Unauthorized) response with\n`WWW-Authenticate` header is received. Defaults to `'unauthorized'`.",
+                            "async": false,
+                            "alias": "send",
+                            "overloadIndex": 0
                           }
                         ],
-                        "required": false,
-                        "comment": "This option only applies to the requests sent from corresponding `APIRequestContext` and does not affect requests\nsent from the browser. `'always'` - `Authorization` header with basic authentication credentials will be sent with\nthe each API request. `'unauthorized` - the credentials are only sent when 401 (Unauthorized) response with\n`WWW-Authenticate` header is received. Defaults to `'unauthorized'`.",
-                        "async": false,
-                        "alias": "send",
-                        "overloadIndex": 0
+                        "langAliases": {
+                          "default": "HttpCredentials"
+                        }
+                      },
+                      {
+                        "name": "Array",
+                        "templates": [
+                          {
+                            "name": "Object",
+                            "properties": [
+                              {
+                                "kind": "property",
+                                "langs": {},
+                                "since": "v1.8",
+                                "name": "username",
+                                "type": {
+                                  "name": "string",
+                                  "expression": "[string]"
+                                },
+                                "spec": [
+                                  {
+                                    "type": "text",
+                                    "text": ""
+                                  }
+                                ],
+                                "required": true,
+                                "comment": "",
+                                "async": false,
+                                "alias": "username",
+                                "overloadIndex": 0
+                              },
+                              {
+                                "kind": "property",
+                                "langs": {},
+                                "since": "v1.8",
+                                "name": "password",
+                                "type": {
+                                  "name": "string",
+                                  "expression": "[string]"
+                                },
+                                "spec": [
+                                  {
+                                    "type": "text",
+                                    "text": ""
+                                  }
+                                ],
+                                "required": true,
+                                "comment": "",
+                                "async": false,
+                                "alias": "password",
+                                "overloadIndex": 0
+                              },
+                              {
+                                "kind": "property",
+                                "langs": {},
+                                "since": "v1.8",
+                                "name": "origin",
+                                "type": {
+                                  "name": "string",
+                                  "expression": "[string]"
+                                },
+                                "spec": [
+                                  {
+                                    "type": "text",
+                                    "text": "Restrain sending http credentials on specific origin (scheme://host:port)."
+                                  }
+                                ],
+                                "required": false,
+                                "comment": "Restrain sending http credentials on specific origin (scheme://host:port).",
+                                "async": false,
+                                "alias": "origin",
+                                "overloadIndex": 0
+                              },
+                              {
+                                "kind": "property",
+                                "langs": {},
+                                "since": "v1.8",
+                                "name": "send",
+                                "type": {
+                                  "name": "HttpCredentialsSend",
+                                  "union": [
+                                    {
+                                      "name": "\"unauthorized\""
+                                    },
+                                    {
+                                      "name": "\"always\""
+                                    }
+                                  ],
+                                  "expression": "[HttpCredentialsSend]<\"unauthorized\"|\"always\">"
+                                },
+                                "spec": [
+                                  {
+                                    "type": "text",
+                                    "text": "This option only applies to the requests sent from corresponding `APIRequestContext` and does not affect requests sent from the browser. `'always'` - `Authorization` header with basic authentication credentials will be sent with the each API request. `'unauthorized` - the credentials are only sent when 401 (Unauthorized) response with `WWW-Authenticate` header is received. Defaults to `'unauthorized'`."
+                                  }
+                                ],
+                                "required": false,
+                                "comment": "This option only applies to the requests sent from corresponding `APIRequestContext` and does not affect requests\nsent from the browser. `'always'` - `Authorization` header with basic authentication credentials will be sent with\nthe each API request. `'unauthorized` - the credentials are only sent when 401 (Unauthorized) response with\n`WWW-Authenticate` header is received. Defaults to `'unauthorized'`.",
+                                "async": false,
+                                "alias": "send",
+                                "overloadIndex": 0
+                              }
+                            ],
+                            "langAliases": {
+                              "default": "HttpCredentials"
+                            }
+                          }
+                        ]
                       }
                     ],
-                    "expression": "[Object]",
-                    "langAliases": {
-                      "default": "HttpCredentials"
-                    }
+                    "expression": "[Object]|[Array]<[Object]>"
                   },
                   "spec": [
                     {
                       "type": "text",
                       "text": "Credentials for [HTTP authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication).↵If no origin is specified, the username and password are sent to any servers upon unauthorized responses."
+                    },
+                    {
+                      "type": "text",
+                      "text": "Pass an array to use different credentials for different origins. The first entry that matches the request origin is used, and entries with no origin match any request."
                     }
                   ],
                   "required": false,
-                  "comment": "Credentials for [HTTP authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication). If no\norigin is specified, the username and password are sent to any servers upon unauthorized responses.",
+                  "comment": "Credentials for [HTTP authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication). If no\norigin is specified, the username and password are sent to any servers upon unauthorized responses.\n\nPass an array to use different credentials for different origins. The first entry that matches the request origin\nis used, and entries with no origin match any request.",
                   "async": false,
                   "alias": "httpCredentials",
                   "overloadIndex": 0
@@ -17878,6 +18246,28 @@
         "comment": "Emitted when a JavaScript dialog appears, such as `alert`, `prompt`, `confirm` or `beforeunload`. Listener **must**\neither [`method: Dialog.accept`] or [`method: Dialog.dismiss`] the dialog - otherwise the page will\n[freeze](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop#never_blocking) waiting for the dialog,\nand actions like click will never finish.\n\n**Usage**\n\n```js\ncontext.on('dialog', dialog => {\n  dialog.accept();\n});\n```\n\n```java\ncontext.onDialog(dialog -> {\n  dialog.accept();\n});\n```\n\n```python\ncontext.on(\"dialog\", lambda dialog: dialog.accept())\n```\n\n```csharp\nContext.Dialog += async (_, dialog) =>\n{\n    await dialog.AcceptAsync();\n};\n```\n\n**NOTE** When no [`event: Page.dialog`] or [`event: BrowserContext.dialog`] listeners are present, all dialogs are\nautomatically dismissed.\n",
         "async": false,
         "alias": "dialog",
+        "overloadIndex": 0,
+        "args": []
+      },
+      {
+        "kind": "event",
+        "langs": {},
+        "since": "v1.63",
+        "name": "dialogClosed",
+        "type": {
+          "name": "Dialog",
+          "expression": "[Dialog]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Emitted when a JavaScript dialog in any page belonging to this context has been closed, either by [`method: Dialog.accept`], by [`method: Dialog.dismiss`], or manually by the user in the headed browser."
+          }
+        ],
+        "required": true,
+        "comment": "Emitted when a JavaScript dialog in any page belonging to this context has been closed, either by\n[`method: Dialog.accept`], by [`method: Dialog.dismiss`], or manually by the user in the headed browser.",
+        "async": false,
+        "alias": "dialogClosed",
         "overloadIndex": 0,
         "args": []
       },
@@ -21850,14 +22240,28 @@
           "overrides": {}
         },
         "since": "v1.8",
-        "deprecated": "Browsers may cache credentials after successful authentication. Create a new browser context instead.",
         "name": "setHTTPCredentials",
         "type": {
           "name": "void"
         },
-        "spec": [],
+        "spec": [
+          {
+            "type": "text",
+            "text": "Sets the credentials for HTTP authentication for this browser context."
+          },
+          {
+            "type": "note",
+            "noteType": "note",
+            "children": [
+              {
+                "type": "text",
+                "text": "Browsers may cache credentials per origin after a successful authentication, so changing credentials for an origin that has already been authenticated may have no effect."
+              }
+            ]
+          }
+        ],
         "required": true,
-        "comment": "",
+        "comment": "Sets the credentials for HTTP authentication for this browser context.\n\n**NOTE** Browsers may cache credentials per origin after a successful authentication, so changing credentials for\nan origin that has already been authenticated may have no effect.\n",
         "async": true,
         "alias": "setHTTPCredentials",
         "overloadIndex": 0,
@@ -21917,15 +22321,114 @@
                       "async": false,
                       "alias": "password",
                       "overloadIndex": 0
+                    },
+                    {
+                      "kind": "property",
+                      "langs": {},
+                      "since": "v1.8",
+                      "name": "origin",
+                      "type": {
+                        "name": "string",
+                        "expression": "[string]"
+                      },
+                      "spec": [
+                        {
+                          "type": "text",
+                          "text": "Restrain sending http credentials on specific origin (scheme://host:port)."
+                        }
+                      ],
+                      "required": false,
+                      "comment": "Restrain sending http credentials on specific origin (scheme://host:port).",
+                      "async": false,
+                      "alias": "origin",
+                      "overloadIndex": 0
+                    }
+                  ]
+                },
+                {
+                  "name": "Array",
+                  "templates": [
+                    {
+                      "name": "Object",
+                      "properties": [
+                        {
+                          "kind": "property",
+                          "langs": {},
+                          "since": "v1.8",
+                          "name": "username",
+                          "type": {
+                            "name": "string",
+                            "expression": "[string]"
+                          },
+                          "spec": [
+                            {
+                              "type": "text",
+                              "text": ""
+                            }
+                          ],
+                          "required": true,
+                          "comment": "",
+                          "async": false,
+                          "alias": "username",
+                          "overloadIndex": 0
+                        },
+                        {
+                          "kind": "property",
+                          "langs": {},
+                          "since": "v1.8",
+                          "name": "password",
+                          "type": {
+                            "name": "string",
+                            "expression": "[string]"
+                          },
+                          "spec": [
+                            {
+                              "type": "text",
+                              "text": ""
+                            }
+                          ],
+                          "required": true,
+                          "comment": "",
+                          "async": false,
+                          "alias": "password",
+                          "overloadIndex": 0
+                        },
+                        {
+                          "kind": "property",
+                          "langs": {},
+                          "since": "v1.8",
+                          "name": "origin",
+                          "type": {
+                            "name": "string",
+                            "expression": "[string]"
+                          },
+                          "spec": [
+                            {
+                              "type": "text",
+                              "text": "Restrain sending http credentials on specific origin (scheme://host:port)."
+                            }
+                          ],
+                          "required": false,
+                          "comment": "Restrain sending http credentials on specific origin (scheme://host:port).",
+                          "async": false,
+                          "alias": "origin",
+                          "overloadIndex": 0
+                        }
+                      ]
                     }
                   ]
                 }
               ],
-              "expression": "[null]|[Object]"
+              "expression": "[null]|[Object]|[Array]<[Object]>"
             },
-            "spec": [],
+            "spec": [
+              {
+                "type": "text",
+                "text": "Pass an array to use different credentials for different origins. The first entry that matches the request origin is used, and entries with no origin match any request."
+              }
+            ],
             "required": true,
-            "comment": "",
+            "comment": "Pass an array to use different credentials for different origins. The first entry that matches the request origin\nis used, and entries with no origin match any request.",
             "async": false,
             "alias": "httpCredentials",
             "overloadIndex": 0
@@ -22321,11 +22824,11 @@
         "spec": [
           {
             "type": "text",
-            "text": "Returns storage state for this browser context, contains current cookies, local storage snapshot, IndexedDB snapshot and virtual WebAuthn credentials."
+            "text": "Returns storage state for this browser context, contains current cookies, local storage snapshot, IndexedDB snapshot, origin private file system snapshot and virtual WebAuthn credentials."
           }
         ],
         "required": true,
-        "comment": "Returns storage state for this browser context, contains current cookies, local storage snapshot, IndexedDB\nsnapshot and virtual WebAuthn credentials.",
+        "comment": "Returns storage state for this browser context, contains current cookies, local storage snapshot, IndexedDB\nsnapshot, origin private file system snapshot and virtual WebAuthn credentials.",
         "async": true,
         "alias": "storageState",
         "overloadIndex": 0,
@@ -22383,6 +22886,37 @@
                 {
                   "kind": "property",
                   "langs": {},
+                  "since": "v1.63",
+                  "name": "opfs",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "boolean"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Set to `true` to include the [origin private file system](https://developer.mozilla.org/en-US/docs/Web/API/File_System_API/Origin_private_file_system)↵in the storage state snapshot."
+                    },
+                    {
+                      "type": "note",
+                      "noteType": "note",
+                      "children": [
+                        {
+                          "type": "text",
+                          "text": "OPFS is currently not supported in ephemeral WebKit contexts."
+                        }
+                      ]
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Set to `true` to include the\n[origin private file system](https://developer.mozilla.org/en-US/docs/Web/API/File_System_API/Origin_private_file_system)\nin the storage state snapshot.\n\n**NOTE** OPFS is currently not supported in ephemeral WebKit contexts.\n",
+                  "async": false,
+                  "alias": "opfs",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
                   "since": "v1.8",
                   "name": "path",
                   "type": {
@@ -22422,7 +22956,7 @@
         "spec": [
           {
             "type": "text",
-            "text": "Clears the existing cookies, local storage, IndexedDB entries and virtual WebAuthn credentials, and sets the new storage↵state. When the storage state contains credentials, the virtual WebAuthn authenticator is installed (equivalent to↵[`method: Credentials.install`]), preventing all real authenticators from working in this context."
+            "text": "Clears the existing cookies, local storage, IndexedDB entries, origin private file system entries and virtual WebAuthn credentials, and sets the new storage↵state. When the storage state contains credentials, the virtual WebAuthn authenticator is installed (equivalent to↵[`method: Credentials.install`]), preventing all real authenticators from working in this context."
           },
           {
             "type": "text",
@@ -22470,7 +23004,7 @@
           }
         ],
         "required": true,
-        "comment": "Clears the existing cookies, local storage, IndexedDB entries and virtual WebAuthn credentials, and sets the new\nstorage state. When the storage state contains credentials, the virtual WebAuthn authenticator is installed\n(equivalent to [`method: Credentials.install`]), preventing all real authenticators from working in this context.\n\n**Usage**\n\n```js\n// Load storage state from a file and apply it to the context.\nawait context.setStorageState('state.json');\n```\n\n```java\n// Load storage state from a file and apply it to the context.\ncontext.setStorageState(Paths.get(\"state.json\"));\n```\n\n```py\n# Load storage state from a file and apply it to the context.\nawait context.set_storage_state(\"state.json\")\n```\n\n```py\n# Load storage state from a file and apply it to the context.\ncontext.set_storage_state(\"state.json\")\n```\n\n```csharp\n// Load storage state from a file and apply it to the context.\nawait context.SetStorageStateAsync(\"state.json\");\n```\n",
+        "comment": "Clears the existing cookies, local storage, IndexedDB entries, origin private file system entries and virtual\nWebAuthn credentials, and sets the new storage state. When the storage state contains credentials, the virtual\nWebAuthn authenticator is installed (equivalent to [`method: Credentials.install`]), preventing all real\nauthenticators from working in this context.\n\n**Usage**\n\n```js\n// Load storage state from a file and apply it to the context.\nawait context.setStorageState('state.json');\n```\n\n```java\n// Load storage state from a file and apply it to the context.\ncontext.setStorageState(Paths.get(\"state.json\"));\n```\n\n```py\n# Load storage state from a file and apply it to the context.\nawait context.set_storage_state(\"state.json\")\n```\n\n```py\n# Load storage state from a file and apply it to the context.\ncontext.set_storage_state(\"state.json\")\n```\n\n```csharp\n// Load storage state from a file and apply it to the context.\nawait context.SetStorageStateAsync(\"state.json\");\n```\n",
         "async": true,
         "alias": "setStorageState",
         "overloadIndex": 0,
@@ -27058,114 +27592,228 @@
                   "since": "v1.8",
                   "name": "httpCredentials",
                   "type": {
-                    "name": "Object",
-                    "properties": [
+                    "name": "",
+                    "union": [
                       {
-                        "kind": "property",
-                        "langs": {},
-                        "since": "v1.8",
-                        "name": "username",
-                        "type": {
-                          "name": "string",
-                          "expression": "[string]"
-                        },
-                        "spec": [
+                        "name": "Object",
+                        "properties": [
                           {
-                            "type": "text",
-                            "text": ""
-                          }
-                        ],
-                        "required": true,
-                        "comment": "",
-                        "async": false,
-                        "alias": "username",
-                        "overloadIndex": 0
-                      },
-                      {
-                        "kind": "property",
-                        "langs": {},
-                        "since": "v1.8",
-                        "name": "password",
-                        "type": {
-                          "name": "string",
-                          "expression": "[string]"
-                        },
-                        "spec": [
-                          {
-                            "type": "text",
-                            "text": ""
-                          }
-                        ],
-                        "required": true,
-                        "comment": "",
-                        "async": false,
-                        "alias": "password",
-                        "overloadIndex": 0
-                      },
-                      {
-                        "kind": "property",
-                        "langs": {},
-                        "since": "v1.8",
-                        "name": "origin",
-                        "type": {
-                          "name": "string",
-                          "expression": "[string]"
-                        },
-                        "spec": [
-                          {
-                            "type": "text",
-                            "text": "Restrain sending http credentials on specific origin (scheme://host:port)."
-                          }
-                        ],
-                        "required": false,
-                        "comment": "Restrain sending http credentials on specific origin (scheme://host:port).",
-                        "async": false,
-                        "alias": "origin",
-                        "overloadIndex": 0
-                      },
-                      {
-                        "kind": "property",
-                        "langs": {},
-                        "since": "v1.8",
-                        "name": "send",
-                        "type": {
-                          "name": "HttpCredentialsSend",
-                          "union": [
-                            {
-                              "name": "\"unauthorized\""
+                            "kind": "property",
+                            "langs": {},
+                            "since": "v1.8",
+                            "name": "username",
+                            "type": {
+                              "name": "string",
+                              "expression": "[string]"
                             },
-                            {
-                              "name": "\"always\""
-                            }
-                          ],
-                          "expression": "[HttpCredentialsSend]<\"unauthorized\"|\"always\">"
-                        },
-                        "spec": [
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": ""
+                              }
+                            ],
+                            "required": true,
+                            "comment": "",
+                            "async": false,
+                            "alias": "username",
+                            "overloadIndex": 0
+                          },
                           {
-                            "type": "text",
-                            "text": "This option only applies to the requests sent from corresponding `APIRequestContext` and does not affect requests sent from the browser. `'always'` - `Authorization` header with basic authentication credentials will be sent with the each API request. `'unauthorized` - the credentials are only sent when 401 (Unauthorized) response with `WWW-Authenticate` header is received. Defaults to `'unauthorized'`."
+                            "kind": "property",
+                            "langs": {},
+                            "since": "v1.8",
+                            "name": "password",
+                            "type": {
+                              "name": "string",
+                              "expression": "[string]"
+                            },
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": ""
+                              }
+                            ],
+                            "required": true,
+                            "comment": "",
+                            "async": false,
+                            "alias": "password",
+                            "overloadIndex": 0
+                          },
+                          {
+                            "kind": "property",
+                            "langs": {},
+                            "since": "v1.8",
+                            "name": "origin",
+                            "type": {
+                              "name": "string",
+                              "expression": "[string]"
+                            },
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": "Restrain sending http credentials on specific origin (scheme://host:port)."
+                              }
+                            ],
+                            "required": false,
+                            "comment": "Restrain sending http credentials on specific origin (scheme://host:port).",
+                            "async": false,
+                            "alias": "origin",
+                            "overloadIndex": 0
+                          },
+                          {
+                            "kind": "property",
+                            "langs": {},
+                            "since": "v1.8",
+                            "name": "send",
+                            "type": {
+                              "name": "HttpCredentialsSend",
+                              "union": [
+                                {
+                                  "name": "\"unauthorized\""
+                                },
+                                {
+                                  "name": "\"always\""
+                                }
+                              ],
+                              "expression": "[HttpCredentialsSend]<\"unauthorized\"|\"always\">"
+                            },
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": "This option only applies to the requests sent from corresponding `APIRequestContext` and does not affect requests sent from the browser. `'always'` - `Authorization` header with basic authentication credentials will be sent with the each API request. `'unauthorized` - the credentials are only sent when 401 (Unauthorized) response with `WWW-Authenticate` header is received. Defaults to `'unauthorized'`."
+                              }
+                            ],
+                            "required": false,
+                            "comment": "This option only applies to the requests sent from corresponding `APIRequestContext` and does not affect requests\nsent from the browser. `'always'` - `Authorization` header with basic authentication credentials will be sent with\nthe each API request. `'unauthorized` - the credentials are only sent when 401 (Unauthorized) response with\n`WWW-Authenticate` header is received. Defaults to `'unauthorized'`.",
+                            "async": false,
+                            "alias": "send",
+                            "overloadIndex": 0
                           }
                         ],
-                        "required": false,
-                        "comment": "This option only applies to the requests sent from corresponding `APIRequestContext` and does not affect requests\nsent from the browser. `'always'` - `Authorization` header with basic authentication credentials will be sent with\nthe each API request. `'unauthorized` - the credentials are only sent when 401 (Unauthorized) response with\n`WWW-Authenticate` header is received. Defaults to `'unauthorized'`.",
-                        "async": false,
-                        "alias": "send",
-                        "overloadIndex": 0
+                        "langAliases": {
+                          "default": "HttpCredentials"
+                        }
+                      },
+                      {
+                        "name": "Array",
+                        "templates": [
+                          {
+                            "name": "Object",
+                            "properties": [
+                              {
+                                "kind": "property",
+                                "langs": {},
+                                "since": "v1.8",
+                                "name": "username",
+                                "type": {
+                                  "name": "string",
+                                  "expression": "[string]"
+                                },
+                                "spec": [
+                                  {
+                                    "type": "text",
+                                    "text": ""
+                                  }
+                                ],
+                                "required": true,
+                                "comment": "",
+                                "async": false,
+                                "alias": "username",
+                                "overloadIndex": 0
+                              },
+                              {
+                                "kind": "property",
+                                "langs": {},
+                                "since": "v1.8",
+                                "name": "password",
+                                "type": {
+                                  "name": "string",
+                                  "expression": "[string]"
+                                },
+                                "spec": [
+                                  {
+                                    "type": "text",
+                                    "text": ""
+                                  }
+                                ],
+                                "required": true,
+                                "comment": "",
+                                "async": false,
+                                "alias": "password",
+                                "overloadIndex": 0
+                              },
+                              {
+                                "kind": "property",
+                                "langs": {},
+                                "since": "v1.8",
+                                "name": "origin",
+                                "type": {
+                                  "name": "string",
+                                  "expression": "[string]"
+                                },
+                                "spec": [
+                                  {
+                                    "type": "text",
+                                    "text": "Restrain sending http credentials on specific origin (scheme://host:port)."
+                                  }
+                                ],
+                                "required": false,
+                                "comment": "Restrain sending http credentials on specific origin (scheme://host:port).",
+                                "async": false,
+                                "alias": "origin",
+                                "overloadIndex": 0
+                              },
+                              {
+                                "kind": "property",
+                                "langs": {},
+                                "since": "v1.8",
+                                "name": "send",
+                                "type": {
+                                  "name": "HttpCredentialsSend",
+                                  "union": [
+                                    {
+                                      "name": "\"unauthorized\""
+                                    },
+                                    {
+                                      "name": "\"always\""
+                                    }
+                                  ],
+                                  "expression": "[HttpCredentialsSend]<\"unauthorized\"|\"always\">"
+                                },
+                                "spec": [
+                                  {
+                                    "type": "text",
+                                    "text": "This option only applies to the requests sent from corresponding `APIRequestContext` and does not affect requests sent from the browser. `'always'` - `Authorization` header with basic authentication credentials will be sent with the each API request. `'unauthorized` - the credentials are only sent when 401 (Unauthorized) response with `WWW-Authenticate` header is received. Defaults to `'unauthorized'`."
+                                  }
+                                ],
+                                "required": false,
+                                "comment": "This option only applies to the requests sent from corresponding `APIRequestContext` and does not affect requests\nsent from the browser. `'always'` - `Authorization` header with basic authentication credentials will be sent with\nthe each API request. `'unauthorized` - the credentials are only sent when 401 (Unauthorized) response with\n`WWW-Authenticate` header is received. Defaults to `'unauthorized'`.",
+                                "async": false,
+                                "alias": "send",
+                                "overloadIndex": 0
+                              }
+                            ],
+                            "langAliases": {
+                              "default": "HttpCredentials"
+                            }
+                          }
+                        ]
                       }
                     ],
-                    "expression": "[Object]",
-                    "langAliases": {
-                      "default": "HttpCredentials"
-                    }
+                    "expression": "[Object]|[Array]<[Object]>"
                   },
                   "spec": [
                     {
                       "type": "text",
                       "text": "Credentials for [HTTP authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication).↵If no origin is specified, the username and password are sent to any servers upon unauthorized responses."
+                    },
+                    {
+                      "type": "text",
+                      "text": "Pass an array to use different credentials for different origins. The first entry that matches the request origin is used, and entries with no origin match any request."
                     }
                   ],
                   "required": false,
-                  "comment": "Credentials for [HTTP authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication). If no\norigin is specified, the username and password are sent to any servers upon unauthorized responses.",
+                  "comment": "Credentials for [HTTP authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication). If no\norigin is specified, the username and password are sent to any servers upon unauthorized responses.\n\nPass an array to use different credentials for different origins. The first entry that matches the request origin\nis used, and entries with no origin match any request.",
                   "async": false,
                   "alias": "httpCredentials",
                   "overloadIndex": 0
@@ -46745,6 +47393,10 @@
           },
           {
             "type": "text",
+            "text": "When called without `selector`, the search starts in this frame or in any of the iframes inside it,↵so that you don't need to locate each iframe first. Note that the rest of the locator is resolved inside a single↵frame, just like any other locator. If it matches elements inside multiple frames, an error is thrown."
+          },
+          {
+            "type": "text",
             "text": "**Usage**"
           },
           {
@@ -46790,10 +47442,54 @@
               "await locator.ClickAsync();"
             ],
             "codeLang": "csharp"
+          },
+          {
+            "type": "text",
+            "text": "Following snippet locates a button, either in the frame or in one of the iframes inside it:"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "const locator = frame.frameLocator().getByRole('button');",
+              "await locator.click();"
+            ],
+            "codeLang": "js"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "Locator locator = frame.frameLocator().getByRole(AriaRole.BUTTON);",
+              "locator.click();"
+            ],
+            "codeLang": "java"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "locator = frame.frame_locator().get_by_role(\"button\")",
+              "await locator.click()"
+            ],
+            "codeLang": "python async"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "locator = frame.frame_locator().get_by_role(\"button\")",
+              "locator.click()"
+            ],
+            "codeLang": "python sync"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "var locator = frame.FrameLocator().GetByRole(AriaRole.Button);",
+              "await locator.ClickAsync();"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "When working with iframes, you can create a frame locator that will enter the iframe and allow selecting elements\nin that iframe.\n\n**Usage**\n\nFollowing snippet locates element with text \"Submit\" in the iframe with id `my-frame`, like `<iframe\nid=\"my-frame\">`:\n\n```js\nconst locator = frame.frameLocator('#my-iframe').getByText('Submit');\nawait locator.click();\n```\n\n```java\nLocator locator = frame.frameLocator(\"#my-iframe\").getByText(\"Submit\");\nlocator.click();\n```\n\n```py\nlocator = frame.frame_locator(\"#my-iframe\").get_by_text(\"Submit\")\nawait locator.click()\n```\n\n```py\nlocator = frame.frame_locator(\"#my-iframe\").get_by_text(\"Submit\")\nlocator.click()\n```\n\n```csharp\nvar locator = frame.FrameLocator(\"#my-iframe\").GetByText(\"Submit\");\nawait locator.ClickAsync();\n```\n",
+        "comment": "When working with iframes, you can create a frame locator that will enter the iframe and allow selecting elements\nin that iframe.\n\nWhen called without `selector`, the search starts in this frame or in any of the iframes inside it, so that you\ndon't need to locate each iframe first. Note that the rest of the locator is resolved inside a single frame, just\nlike any other locator. If it matches elements inside multiple frames, an error is thrown.\n\n**Usage**\n\nFollowing snippet locates element with text \"Submit\" in the iframe with id `my-frame`, like `<iframe\nid=\"my-frame\">`:\n\n```js\nconst locator = frame.frameLocator('#my-iframe').getByText('Submit');\nawait locator.click();\n```\n\n```java\nLocator locator = frame.frameLocator(\"#my-iframe\").getByText(\"Submit\");\nlocator.click();\n```\n\n```py\nlocator = frame.frame_locator(\"#my-iframe\").get_by_text(\"Submit\")\nawait locator.click()\n```\n\n```py\nlocator = frame.frame_locator(\"#my-iframe\").get_by_text(\"Submit\")\nlocator.click()\n```\n\n```csharp\nvar locator = frame.FrameLocator(\"#my-iframe\").GetByText(\"Submit\");\nawait locator.ClickAsync();\n```\n\nFollowing snippet locates a button, either in the frame or in one of the iframes inside it:\n\n```js\nconst locator = frame.frameLocator().getByRole('button');\nawait locator.click();\n```\n\n```java\nLocator locator = frame.frameLocator().getByRole(AriaRole.BUTTON);\nlocator.click();\n```\n\n```py\nlocator = frame.frame_locator().get_by_role(\"button\")\nawait locator.click()\n```\n\n```py\nlocator = frame.frame_locator().get_by_role(\"button\")\nlocator.click()\n```\n\n```csharp\nvar locator = frame.FrameLocator().GetByRole(AriaRole.Button);\nawait locator.ClickAsync();\n```\n",
         "async": false,
         "alias": "frameLocator",
         "overloadIndex": 0,
@@ -46810,11 +47506,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to use when resolving DOM element."
+                "text": "A selector that matches the frame element. When not specified, locator is matched in this frame or in any of the iframes inside it."
               }
             ],
-            "required": true,
-            "comment": "A selector to use when resolving DOM element.",
+            "required": false,
+            "comment": "A selector that matches the frame element. When not specified, locator is matched in this frame or in any of the\niframes inside it.",
             "async": false,
             "alias": "selector",
             "overloadIndex": 0
@@ -56196,6 +56892,77 @@
       },
       {
         "type": "text",
+        "text": "**Any frame**"
+      },
+      {
+        "type": "text",
+        "text": "Calling [`method: Page.frameLocator`] or [`method: Frame.frameLocator`] without a selector creates a frame locator that↵starts the search in any frame of the subtree - so that you don't↵need to locate the iframe first."
+      },
+      {
+        "type": "code",
+        "lines": [
+          "// Finds the button in any frame on the page:",
+          "await page.frameLocator().getByRole('button').click();",
+          "",
+          "// Finds the iframe with id \"my-frame\" anywhere on the page, and clicks the button inside it:",
+          "await page.frameLocator().locator('#my-frame').contentFrame().getByRole('button').click();"
+        ],
+        "codeLang": "js"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "// Finds the button in any frame on the page:",
+          "page.frameLocator().getByRole(AriaRole.BUTTON).click();",
+          "",
+          "// Finds the iframe with id \"my-frame\" anywhere on the page, and clicks the button inside it:",
+          "page.frameLocator().locator(\"#my-frame\").contentFrame().getByRole(AriaRole.BUTTON).click();"
+        ],
+        "codeLang": "java"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "# Finds the button in any frame on the page:",
+          "await page.frame_locator().get_by_role(\"button\").click()",
+          "",
+          "# Finds the iframe with id \"my-frame\" anywhere on the page, and clicks the button inside it:",
+          "await page.frame_locator().locator(\"#my-frame\").content_frame.get_by_role(\"button\").click()"
+        ],
+        "codeLang": "python async"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "# Finds the button in any frame on the page:",
+          "page.frame_locator().get_by_role(\"button\").click()",
+          "",
+          "# Finds the iframe with id \"my-frame\" anywhere on the page, and clicks the button inside it:",
+          "page.frame_locator().locator(\"#my-frame\").content_frame.get_by_role(\"button\").click()"
+        ],
+        "codeLang": "python sync"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "// Finds the button in any frame on the page:",
+          "await page.FrameLocator().GetByRole(AriaRole.Button).ClickAsync();",
+          "",
+          "// Finds the iframe with id \"my-frame\" anywhere on the page, and clicks the button inside it:",
+          "await page.FrameLocator().Locator(\"#my-frame\").ContentFrame.GetByRole(AriaRole.Button).ClickAsync();"
+        ],
+        "codeLang": "csharp"
+      },
+      {
+        "type": "text",
+        "text": "Only the start of the search is affected - the rest of the locator is resolved inside a single frame, just like any↵other locator. Following the strictness rules above, an error is thrown when elements are matched in multiple frames."
+      },
+      {
+        "type": "text",
+        "text": "Such a frame locator does not point to a particular `iframe`, so [`method: FrameLocator.owner`],↵[`method: FrameLocator.first`], [`method: FrameLocator.last`] and [`method: FrameLocator.nth`] are not supported on it."
+      },
+      {
+        "type": "text",
         "text": "**Converting Locator to FrameLocator**"
       },
       {
@@ -56212,7 +56979,7 @@
       }
     ],
     "langs": {},
-    "comment": "FrameLocator represents a view to the `iframe` on the page. It captures the logic sufficient to retrieve the\n`iframe` and locate elements in that iframe. FrameLocator can be created with either\n[`method: Locator.contentFrame`], [`method: Page.frameLocator`] or [`method: Locator.frameLocator`] method.\n\n```js\nconst locator = page.locator('#my-frame').contentFrame().getByText('Submit');\nawait locator.click();\n```\n\n```java\nLocator locator = page.locator(\"#my-frame\").contentFrame().getByText(\"Submit\");\nlocator.click();\n```\n\n```py\nlocator = page.locator(\"#my-frame\").content_frame.get_by_text(\"Submit\")\nawait locator.click()\n```\n\n```py\nlocator = page.locator(\"my-frame\").content_frame.get_by_text(\"Submit\")\nlocator.click()\n```\n\n```csharp\nvar locator = page.Locator(\"#my-frame\").ContentFrame.GetByText(\"Submit\");\nawait locator.ClickAsync();\n```\n\n**Strictness**\n\nFrame locators are strict. This means that all operations on frame locators will throw if more than one element\nmatches a given selector.\n\n```js\n// Throws if there are several frames in DOM:\nawait page.locator('.result-frame').contentFrame().getByRole('button').click();\n\n// Works because we explicitly tell locator to pick the first frame:\nawait page.locator('.result-frame').contentFrame().first().getByRole('button').click();\n```\n\n```py\n# Throws if there are several frames in DOM:\nawait page.locator('.result-frame').content_frame.get_by_role('button').click()\n\n# Works because we explicitly tell locator to pick the first frame:\nawait page.locator('.result-frame').first.content_frame.get_by_role('button').click()\n```\n\n```py\n# Throws if there are several frames in DOM:\npage.locator('.result-frame').content_frame.get_by_role('button').click()\n\n# Works because we explicitly tell locator to pick the first frame:\npage.locator('.result-frame').first.content_frame.get_by_role('button').click()\n```\n\n```java\n// Throws if there are several frames in DOM:\npage.locator(\".result-frame\").contentFrame().getByRole(AriaRole.BUTTON).click();\n\n// Works because we explicitly tell locator to pick the first frame:\npage.locator(\".result-frame\").first().contentFrame().getByRole(AriaRole.BUTTON).click();\n```\n\n```csharp\n// Throws if there are several frames in DOM:\nawait page.Locator(\".result-frame\").ContentFrame.GetByRole(AriaRole.Button).ClickAsync();\n\n// Works because we explicitly tell locator to pick the first frame:\nawait page.Locator(\".result-frame\").First.ContentFrame.getByRole(AriaRole.Button).ClickAsync();\n```\n\n**Converting Locator to FrameLocator**\n\nIf you have a `Locator` object pointing to an `iframe` it can be converted to `FrameLocator` using\n[`method: Locator.contentFrame`].\n\n**Converting FrameLocator to Locator**\n\nIf you have a `FrameLocator` object it can be converted to `Locator` pointing to the same `iframe` using\n[`method: FrameLocator.owner`].",
+    "comment": "FrameLocator represents a view to the `iframe` on the page. It captures the logic sufficient to retrieve the\n`iframe` and locate elements in that iframe. FrameLocator can be created with either\n[`method: Locator.contentFrame`], [`method: Page.frameLocator`] or [`method: Locator.frameLocator`] method.\n\n```js\nconst locator = page.locator('#my-frame').contentFrame().getByText('Submit');\nawait locator.click();\n```\n\n```java\nLocator locator = page.locator(\"#my-frame\").contentFrame().getByText(\"Submit\");\nlocator.click();\n```\n\n```py\nlocator = page.locator(\"#my-frame\").content_frame.get_by_text(\"Submit\")\nawait locator.click()\n```\n\n```py\nlocator = page.locator(\"my-frame\").content_frame.get_by_text(\"Submit\")\nlocator.click()\n```\n\n```csharp\nvar locator = page.Locator(\"#my-frame\").ContentFrame.GetByText(\"Submit\");\nawait locator.ClickAsync();\n```\n\n**Strictness**\n\nFrame locators are strict. This means that all operations on frame locators will throw if more than one element\nmatches a given selector.\n\n```js\n// Throws if there are several frames in DOM:\nawait page.locator('.result-frame').contentFrame().getByRole('button').click();\n\n// Works because we explicitly tell locator to pick the first frame:\nawait page.locator('.result-frame').contentFrame().first().getByRole('button').click();\n```\n\n```py\n# Throws if there are several frames in DOM:\nawait page.locator('.result-frame').content_frame.get_by_role('button').click()\n\n# Works because we explicitly tell locator to pick the first frame:\nawait page.locator('.result-frame').first.content_frame.get_by_role('button').click()\n```\n\n```py\n# Throws if there are several frames in DOM:\npage.locator('.result-frame').content_frame.get_by_role('button').click()\n\n# Works because we explicitly tell locator to pick the first frame:\npage.locator('.result-frame').first.content_frame.get_by_role('button').click()\n```\n\n```java\n// Throws if there are several frames in DOM:\npage.locator(\".result-frame\").contentFrame().getByRole(AriaRole.BUTTON).click();\n\n// Works because we explicitly tell locator to pick the first frame:\npage.locator(\".result-frame\").first().contentFrame().getByRole(AriaRole.BUTTON).click();\n```\n\n```csharp\n// Throws if there are several frames in DOM:\nawait page.Locator(\".result-frame\").ContentFrame.GetByRole(AriaRole.Button).ClickAsync();\n\n// Works because we explicitly tell locator to pick the first frame:\nawait page.Locator(\".result-frame\").First.ContentFrame.getByRole(AriaRole.Button).ClickAsync();\n```\n\n**Any frame**\n\nCalling [`method: Page.frameLocator`] or [`method: Frame.frameLocator`] without a selector creates a frame locator\nthat starts the search in any frame of the subtree - so that you don't need to locate the iframe first.\n\n```js\n// Finds the button in any frame on the page:\nawait page.frameLocator().getByRole('button').click();\n\n// Finds the iframe with id \"my-frame\" anywhere on the page, and clicks the button inside it:\nawait page.frameLocator().locator('#my-frame').contentFrame().getByRole('button').click();\n```\n\n```java\n// Finds the button in any frame on the page:\npage.frameLocator().getByRole(AriaRole.BUTTON).click();\n\n// Finds the iframe with id \"my-frame\" anywhere on the page, and clicks the button inside it:\npage.frameLocator().locator(\"#my-frame\").contentFrame().getByRole(AriaRole.BUTTON).click();\n```\n\n```py\n# Finds the button in any frame on the page:\nawait page.frame_locator().get_by_role(\"button\").click()\n\n# Finds the iframe with id \"my-frame\" anywhere on the page, and clicks the button inside it:\nawait page.frame_locator().locator(\"#my-frame\").content_frame.get_by_role(\"button\").click()\n```\n\n```py\n# Finds the button in any frame on the page:\npage.frame_locator().get_by_role(\"button\").click()\n\n# Finds the iframe with id \"my-frame\" anywhere on the page, and clicks the button inside it:\npage.frame_locator().locator(\"#my-frame\").content_frame.get_by_role(\"button\").click()\n```\n\n```csharp\n// Finds the button in any frame on the page:\nawait page.FrameLocator().GetByRole(AriaRole.Button).ClickAsync();\n\n// Finds the iframe with id \"my-frame\" anywhere on the page, and clicks the button inside it:\nawait page.FrameLocator().Locator(\"#my-frame\").ContentFrame.GetByRole(AriaRole.Button).ClickAsync();\n```\n\nOnly the start of the search is affected - the rest of the locator is resolved inside a single frame, just like any\nother locator. Following the strictness rules above, an error is thrown when elements are matched in multiple\nframes.\n\nSuch a frame locator does not point to a particular `iframe`, so [`method: FrameLocator.owner`],\n[`method: FrameLocator.first`], [`method: FrameLocator.last`] and [`method: FrameLocator.nth`] are not supported on\nit.\n\n**Converting Locator to FrameLocator**\n\nIf you have a `Locator` object pointing to an `iframe` it can be converted to `FrameLocator` using\n[`method: Locator.contentFrame`].\n\n**Converting FrameLocator to Locator**\n\nIf you have a `FrameLocator` object it can be converted to `Locator` pointing to the same `iframe` using\n[`method: FrameLocator.owner`].",
     "since": "v1.17",
     "members": [
       {
@@ -62359,6 +63126,273 @@
       },
       {
         "kind": "method",
+        "langs": {
+          "only": [
+            "js"
+          ],
+          "aliases": {},
+          "types": {},
+          "overrides": {}
+        },
+        "since": "v1.63",
+        "name": "ariaSnapshotJSON",
+        "type": {
+          "name": "Serializable",
+          "expression": "[Serializable]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Captures the aria snapshot of the given element as a free form JSON object."
+          },
+          {
+            "type": "text",
+            "text": "**Usage**"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "await page.getByRole('list').ariaSnapshotJSON();"
+            ],
+            "codeLang": "js"
+          },
+          {
+            "type": "text",
+            "text": "**Details**"
+          },
+          {
+            "type": "text",
+            "text": "This method returns the same tree as [`method: Locator.ariaSnapshot`], serialized as a JSON value instead of YAML markup.↵The result is a list of nodes, each node being an object with the following properties:"
+          },
+          {
+            "type": "li",
+            "text": "`role` Aria role of the element, or `\"text\"` for a static text fragment.",
+            "liType": "bullet"
+          },
+          {
+            "type": "li",
+            "text": "`name` Accessible name of the element, if any.",
+            "liType": "bullet"
+          },
+          {
+            "type": "li",
+            "text": "`text` Text content of the element when it is the only child, or the content of a static text fragment.",
+            "liType": "bullet"
+          },
+          {
+            "type": "li",
+            "text": "`children` Child nodes and text fragments.",
+            "liType": "bullet"
+          },
+          {
+            "type": "li",
+            "text": "Boolean and value properties for element state flags: `checked`, `disabled`, `expanded`, `active`, `invalid`, `level`, `pressed` and `selected`.",
+            "liType": "bullet"
+          },
+          {
+            "type": "li",
+            "text": "Additional element properties, for example `url` for links and `placeholder` for text boxes.",
+            "liType": "bullet"
+          },
+          {
+            "type": "li",
+            "text": "`ref` Element reference for AI-optimized snapshots.",
+            "liType": "bullet"
+          },
+          {
+            "type": "li",
+            "text": "`cursor` Set to `\"pointer\"` for clickable elements in AI-optimized snapshots.",
+            "liType": "bullet"
+          },
+          {
+            "type": "li",
+            "text": "`box` Bounding box of the element when `boxes` is set.",
+            "liType": "bullet"
+          }
+        ],
+        "required": true,
+        "comment": "Captures the aria snapshot of the given element as a free form JSON object.\n\n**Usage**\n\n```js\nawait page.getByRole('list').ariaSnapshotJSON();\n```\n\n**Details**\n\nThis method returns the same tree as [`method: Locator.ariaSnapshot`], serialized as a JSON value instead of YAML\nmarkup. The result is a list of nodes, each node being an object with the following properties:\n- `role` Aria role of the element, or `\"text\"` for a static text fragment.\n- `name` Accessible name of the element, if any.\n- `text` Text content of the element when it is the only child, or the content of a static text fragment.\n- `children` Child nodes and text fragments.\n- Boolean and value properties for element state flags: `checked`, `disabled`, `expanded`, `active`, `invalid`,\n  `level`, `pressed` and `selected`.\n- Additional element properties, for example `url` for links and `placeholder` for text boxes.\n- `ref` Element reference for AI-optimized snapshots.\n- `cursor` Set to `\"pointer\"` for clickable elements in AI-optimized snapshots.\n- `box` Bounding box of the element when `boxes` is set.",
+        "async": true,
+        "alias": "ariaSnapshotJSON",
+        "overloadIndex": 0,
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "since": "v1.63",
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "since": "v1.63",
+                  "name": "boxes",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "When `true`, includes each element's bounding box as a `box` property with `x`, `y`, `width` and `height`. Coordinates are↵relative to the viewport, in CSS pixels, as returned by [`Element.getBoundingClientRect()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect).↵Defaults to `false`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "When `true`, includes each element's bounding box as a `box` property with `x`, `y`, `width` and `height`.\nCoordinates are relative to the viewport, in CSS pixels, as returned by\n[`Element.getBoundingClientRect()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect).\nDefaults to `false`.",
+                  "async": false,
+                  "alias": "boxes",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "since": "v1.63",
+                  "name": "depth",
+                  "type": {
+                    "name": "int",
+                    "expression": "[int]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "When specified, limits the depth of the snapshot."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "When specified, limits the depth of the snapshot.",
+                  "async": false,
+                  "alias": "depth",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "since": "v1.63",
+                  "name": "mode",
+                  "type": {
+                    "name": "AriaSnapshotMode",
+                    "union": [
+                      {
+                        "name": "\"ai\""
+                      },
+                      {
+                        "name": "\"default\""
+                      }
+                    ],
+                    "expression": "[AriaSnapshotMode]<\"ai\"|\"default\">"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "When set to `\"ai\"`, returns a snapshot optimized for AI consumption. Defaults to `\"default\"`. See details in [`method: Locator.ariaSnapshot`]."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "When set to `\"ai\"`, returns a snapshot optimized for AI consumption. Defaults to `\"default\"`. See details in\n[`method: Locator.ariaSnapshot`].",
+                  "async": false,
+                  "alias": "mode",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.62",
+                  "name": "signal",
+                  "type": {
+                    "name": "AbortSignal",
+                    "expression": "[AbortSignal]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Allows to cancel the operation using an [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal). If the signal is aborted, the operation will be aborted and throw an error.↵Note that providing a signal does not disable the default timeout, which can be changed using [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`]; pass `timeout: 0` to disable the timeout entirely."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Allows to cancel the operation using an\n[`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal). If the signal is aborted, the\noperation will be aborted and throw an error. Note that providing a signal does not disable the default timeout,\nwhich can be changed using [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`]; pass\n`timeout: 0` to disable the timeout entirely.",
+                  "async": false,
+                  "alias": "signal",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "python",
+                      "java",
+                      "csharp"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.63",
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Maximum time in milliseconds. Defaults to `30000` (30 seconds). Pass `0` to disable timeout. The default value can be changed by↵using the [`method: BrowserContext.setDefaultTimeout`] or↵[`method: Page.setDefaultTimeout`] methods."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Maximum time in milliseconds. Defaults to `30000` (30 seconds). Pass `0` to disable timeout. The default value can\nbe changed by using the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods.",
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.63",
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Maximum time in milliseconds. Defaults to `0` - no timeout. The default value can be changed via `actionTimeout` option in the config, or by using the [`method: BrowserContext.setDefaultTimeout`] or↵[`method: Page.setDefaultTimeout`] methods."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Maximum time in milliseconds. Defaults to `0` - no timeout. The default value can be changed via `actionTimeout`\noption in the config, or by using the [`method: BrowserContext.setDefaultTimeout`] or\n[`method: Page.setDefaultTimeout`] methods.",
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "async": false,
+            "alias": "options",
+            "overloadIndex": 0
+          }
+        ]
+      },
+      {
+        "kind": "method",
         "langs": {},
         "since": "v1.28",
         "name": "blur",
@@ -67354,11 +68388,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Only matches visible or invisible elements."
+                      "text": "Only matches visible or invisible elements. Prefer the [`method: Locator.visible`] shortcut when matching only visible elements."
                     }
                   ],
                   "required": false,
-                  "comment": "Only matches visible or invisible elements.",
+                  "comment": "Only matches visible or invisible elements. Prefer the [`method: Locator.visible`] shortcut when matching only\nvisible elements.",
                   "async": false,
                   "alias": "visible",
                   "overloadIndex": 0
@@ -71327,13 +72361,13 @@
           {
             "type": "code",
             "lines": [
-              "var banana = await page.GetByRole(AriaRole.Listitem).Last(1);"
+              "var banana = page.GetByRole(AriaRole.Listitem).Last;"
             ],
             "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "Returns locator to the last matching element.\n\n**Usage**\n\n```js\nconst banana = await page.getByRole('listitem').last();\n```\n\n```py\nbanana = await page.get_by_role(\"listitem\").last\n```\n\n```py\nbanana = page.get_by_role(\"listitem\").last\n```\n\n```java\nLocator banana = page.getByRole(AriaRole.LISTITEM).last();\n```\n\n```csharp\nvar banana = await page.GetByRole(AriaRole.Listitem).Last(1);\n```\n",
+        "comment": "Returns locator to the last matching element.\n\n**Usage**\n\n```js\nconst banana = await page.getByRole('listitem').last();\n```\n\n```py\nbanana = await page.get_by_role(\"listitem\").last\n```\n\n```py\nbanana = page.get_by_role(\"listitem\").last\n```\n\n```java\nLocator banana = page.getByRole(AriaRole.LISTITEM).last();\n```\n\n```csharp\nvar banana = page.GetByRole(AriaRole.Listitem).Last;\n```\n",
         "async": false,
         "alias": "last",
         "overloadIndex": 0,
@@ -75692,6 +76726,91 @@
             "overloadIndex": 0
           }
         ]
+      },
+      {
+        "kind": "method",
+        "langs": {},
+        "since": "v1.63",
+        "name": "visible",
+        "type": {
+          "name": "Locator",
+          "expression": "[Locator]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Returns a locator that matches only [visible](../actionability.md#visible) elements, ignoring the invisible ones. This is the recommended way to distinguish elements by visibility, as opposed to the `:visible` CSS pseudo-class."
+          },
+          {
+            "type": "text",
+            "text": "Note that visibility is checked every time the locator is used, and not at the moment of the [`method: Locator.visible`] call."
+          },
+          {
+            "type": "text",
+            "text": "**Usage**"
+          },
+          {
+            "type": "text",
+            "text": "Consider a page with two buttons, the first invisible and the second visible."
+          },
+          {
+            "type": "code",
+            "lines": [
+              "<button style='display: none'>Invisible</button>",
+              "<button>Visible</button>"
+            ],
+            "codeLang": "html"
+          },
+          {
+            "type": "text",
+            "text": "This will only find the second button, because it is visible, and then click it."
+          },
+          {
+            "type": "code",
+            "lines": [
+              "await page.locator('button').visible().click();"
+            ],
+            "codeLang": "js"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "page.locator(\"button\").visible().click();"
+            ],
+            "codeLang": "java"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "await page.locator(\"button\").visible.click()"
+            ],
+            "codeLang": "python async"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "page.locator(\"button\").visible.click()"
+            ],
+            "codeLang": "python sync"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "await page.Locator(\"button\").Visible.ClickAsync();"
+            ],
+            "codeLang": "csharp"
+          },
+          {
+            "type": "text",
+            "text": "To match invisible elements instead, use [`method: Locator.filter`] with the `visible` option set to `false`."
+          }
+        ],
+        "required": true,
+        "comment": "Returns a locator that matches only [visible](../actionability.md#visible) elements, ignoring the invisible ones.\nThis is the recommended way to distinguish elements by visibility, as opposed to the `:visible` CSS pseudo-class.\n\nNote that visibility is checked every time the locator is used, and not at the moment of the\n[`method: Locator.visible`] call.\n\n**Usage**\n\nConsider a page with two buttons, the first invisible and the second visible.\n\n```html\n<button style='display: none'>Invisible</button>\n<button>Visible</button>\n```\n\nThis will only find the second button, because it is visible, and then click it.\n\n```js\nawait page.locator('button').visible().click();\n```\n\n```java\npage.locator(\"button\").visible().click();\n```\n\n```py\nawait page.locator(\"button\").visible.click()\n```\n\n```py\npage.locator(\"button\").visible.click()\n```\n\n```csharp\nawait page.Locator(\"button\").Visible.ClickAsync();\n```\n\nTo match invisible elements instead, use [`method: Locator.filter`] with the `visible` option set to `false`.",
+        "async": false,
+        "alias": "visible",
+        "overloadIndex": 0,
+        "args": []
       },
       {
         "kind": "method",
@@ -88975,6 +90094,28 @@
       {
         "kind": "event",
         "langs": {},
+        "since": "v1.63",
+        "name": "dialogClosed",
+        "type": {
+          "name": "Dialog",
+          "expression": "[Dialog]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Emitted when a JavaScript dialog has been closed, either by [`method: Dialog.accept`], by [`method: Dialog.dismiss`], or manually by the user in the headed browser."
+          }
+        ],
+        "required": true,
+        "comment": "Emitted when a JavaScript dialog has been closed, either by [`method: Dialog.accept`], by\n[`method: Dialog.dismiss`], or manually by the user in the headed browser.",
+        "async": false,
+        "alias": "dialogClosed",
+        "overloadIndex": 0,
+        "args": []
+      },
+      {
+        "kind": "event",
+        "langs": {},
         "since": "v1.9",
         "name": "DOMContentLoaded",
         "type": {
@@ -95443,6 +96584,10 @@
           },
           {
             "type": "text",
+            "text": "When called without `selector`, the search starts in any frame on the page - the main frame or any of↵the iframes - so that you don't need to locate each iframe first. Note that the rest of the locator is resolved↵inside a single frame, just like any other locator. If it matches elements inside multiple frames, an error is thrown."
+          },
+          {
+            "type": "text",
             "text": "**Usage**"
           },
           {
@@ -95488,10 +96633,54 @@
               "await locator.ClickAsync();"
             ],
             "codeLang": "csharp"
+          },
+          {
+            "type": "text",
+            "text": "Following snippet locates a button, either in the main frame or in one of the iframes:"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "const locator = page.frameLocator().getByRole('button');",
+              "await locator.click();"
+            ],
+            "codeLang": "js"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "Locator locator = page.frameLocator().getByRole(AriaRole.BUTTON);",
+              "locator.click();"
+            ],
+            "codeLang": "java"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "locator = page.frame_locator().get_by_role(\"button\")",
+              "await locator.click()"
+            ],
+            "codeLang": "python async"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "locator = page.frame_locator().get_by_role(\"button\")",
+              "locator.click()"
+            ],
+            "codeLang": "python sync"
+          },
+          {
+            "type": "code",
+            "lines": [
+              "var locator = page.FrameLocator().GetByRole(AriaRole.Button);",
+              "await locator.ClickAsync();"
+            ],
+            "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "When working with iframes, you can create a frame locator that will enter the iframe and allow selecting elements\nin that iframe.\n\n**Usage**\n\nFollowing snippet locates element with text \"Submit\" in the iframe with id `my-frame`, like `<iframe\nid=\"my-frame\">`:\n\n```js\nconst locator = page.frameLocator('#my-iframe').getByText('Submit');\nawait locator.click();\n```\n\n```java\nLocator locator = page.frameLocator(\"#my-iframe\").getByText(\"Submit\");\nlocator.click();\n```\n\n```py\nlocator = page.frame_locator(\"#my-iframe\").get_by_text(\"Submit\")\nawait locator.click()\n```\n\n```py\nlocator = page.frame_locator(\"#my-iframe\").get_by_text(\"Submit\")\nlocator.click()\n```\n\n```csharp\nvar locator = page.FrameLocator(\"#my-iframe\").GetByText(\"Submit\");\nawait locator.ClickAsync();\n```\n",
+        "comment": "When working with iframes, you can create a frame locator that will enter the iframe and allow selecting elements\nin that iframe.\n\nWhen called without `selector`, the search starts in any frame on the page - the main frame or any of the iframes -\nso that you don't need to locate each iframe first. Note that the rest of the locator is resolved inside a single\nframe, just like any other locator. If it matches elements inside multiple frames, an error is thrown.\n\n**Usage**\n\nFollowing snippet locates element with text \"Submit\" in the iframe with id `my-frame`, like `<iframe\nid=\"my-frame\">`:\n\n```js\nconst locator = page.frameLocator('#my-iframe').getByText('Submit');\nawait locator.click();\n```\n\n```java\nLocator locator = page.frameLocator(\"#my-iframe\").getByText(\"Submit\");\nlocator.click();\n```\n\n```py\nlocator = page.frame_locator(\"#my-iframe\").get_by_text(\"Submit\")\nawait locator.click()\n```\n\n```py\nlocator = page.frame_locator(\"#my-iframe\").get_by_text(\"Submit\")\nlocator.click()\n```\n\n```csharp\nvar locator = page.FrameLocator(\"#my-iframe\").GetByText(\"Submit\");\nawait locator.ClickAsync();\n```\n\nFollowing snippet locates a button, either in the main frame or in one of the iframes:\n\n```js\nconst locator = page.frameLocator().getByRole('button');\nawait locator.click();\n```\n\n```java\nLocator locator = page.frameLocator().getByRole(AriaRole.BUTTON);\nlocator.click();\n```\n\n```py\nlocator = page.frame_locator().get_by_role(\"button\")\nawait locator.click()\n```\n\n```py\nlocator = page.frame_locator().get_by_role(\"button\")\nlocator.click()\n```\n\n```csharp\nvar locator = page.FrameLocator().GetByRole(AriaRole.Button);\nawait locator.ClickAsync();\n```\n",
         "async": false,
         "alias": "frameLocator",
         "overloadIndex": 0,
@@ -95508,11 +96697,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "A selector to use when resolving DOM element."
+                "text": "A selector that matches the frame element. When not specified, locator is matched in any frame on the page."
               }
             ],
-            "required": true,
-            "comment": "A selector to use when resolving DOM element.",
+            "required": false,
+            "comment": "A selector that matches the frame element. When not specified, locator is matched in any frame on the page.",
             "async": false,
             "alias": "selector",
             "overloadIndex": 0
@@ -97386,13 +98575,13 @@
             "children": [
               {
                 "type": "text",
-                "text": "**Testing Back/Forward Cache (BFCache) is not supported.** ↵By default, Playwright disables the Back/Forward Cache across all browsers. Even if explicitly enabled, Playwright's internal state relies on network-level navigation events. Because BFCache restores unfreeze the DOM without firing these events, using `page.goBack()` or `page.goForward()` to trigger a BFCache restore will result in timeouts and a desynchronized `Page` state."
+                "text": "**Testing Back/Forward Cache (BFCache) is not supported.**↵By default, Playwright disables the Back/Forward Cache across all browsers. Even if explicitly enabled, Playwright's internal state relies on network-level navigation events. Because BFCache restores unfreeze the DOM without firing these events, using `page.goBack()` or `page.goForward()` to trigger a BFCache restore will result in timeouts and a desynchronized `Page` state."
               }
             ]
           }
         ],
         "required": true,
-        "comment": "Returns the main resource response. In case of multiple redirects, the navigation will resolve with the response of\nthe last redirect. If cannot go back, returns `null`.\n\nNavigate to the previous page in history.\n\n**NOTE** **Testing Back/Forward Cache (BFCache) is not supported.**  By default, Playwright disables the\nBack/Forward Cache across all browsers. Even if explicitly enabled, Playwright's internal state relies on\nnetwork-level navigation events. Because BFCache restores unfreeze the DOM without firing these events, using\n`page.goBack()` or `page.goForward()` to trigger a BFCache restore will result in timeouts and a desynchronized\n`Page` state.\n",
+        "comment": "Returns the main resource response. In case of multiple redirects, the navigation will resolve with the response of\nthe last redirect. If cannot go back, returns `null`.\n\nNavigate to the previous page in history.\n\n**NOTE** **Testing Back/Forward Cache (BFCache) is not supported.** By default, Playwright disables the\nBack/Forward Cache across all browsers. Even if explicitly enabled, Playwright's internal state relies on\nnetwork-level navigation events. Because BFCache restores unfreeze the DOM without firing these events, using\n`page.goBack()` or `page.goForward()` to trigger a BFCache restore will result in timeouts and a desynchronized\n`Page` state.\n",
         "async": true,
         "alias": "goBack",
         "overloadIndex": 0,
@@ -97588,13 +98777,13 @@
             "children": [
               {
                 "type": "text",
-                "text": "**Testing Back/Forward Cache (BFCache) is not supported.** ↵By default, Playwright disables the Back/Forward Cache across all browsers. Even if explicitly enabled, Playwright's internal state relies on network-level navigation events. Because BFCache restores unfreeze the DOM without firing these events, using `page.goBack()` or `page.goForward()` to trigger a BFCache restore will result in timeouts and a desynchronized `Page` state."
+                "text": "**Testing Back/Forward Cache (BFCache) is not supported.**↵By default, Playwright disables the Back/Forward Cache across all browsers. Even if explicitly enabled, Playwright's internal state relies on network-level navigation events. Because BFCache restores unfreeze the DOM without firing these events, using `page.goBack()` or `page.goForward()` to trigger a BFCache restore will result in timeouts and a desynchronized `Page` state."
               }
             ]
           }
         ],
         "required": true,
-        "comment": "Returns the main resource response. In case of multiple redirects, the navigation will resolve with the response of\nthe last redirect. If cannot go forward, returns `null`.\n\nNavigate to the next page in history.\n\n**NOTE** **Testing Back/Forward Cache (BFCache) is not supported.**  By default, Playwright disables the\nBack/Forward Cache across all browsers. Even if explicitly enabled, Playwright's internal state relies on\nnetwork-level navigation events. Because BFCache restores unfreeze the DOM without firing these events, using\n`page.goBack()` or `page.goForward()` to trigger a BFCache restore will result in timeouts and a desynchronized\n`Page` state.\n",
+        "comment": "Returns the main resource response. In case of multiple redirects, the navigation will resolve with the response of\nthe last redirect. If cannot go forward, returns `null`.\n\nNavigate to the next page in history.\n\n**NOTE** **Testing Back/Forward Cache (BFCache) is not supported.** By default, Playwright disables the\nBack/Forward Cache across all browsers. Even if explicitly enabled, Playwright's internal state relies on\nnetwork-level navigation events. Because BFCache restores unfreeze the DOM without firing these events, using\n`page.goBack()` or `page.goForward()` to trigger a BFCache restore will result in timeouts and a desynchronized\n`Page` state.\n",
         "async": true,
         "alias": "goForward",
         "overloadIndex": 0,
@@ -106775,6 +107964,209 @@
                     "overrides": {}
                   },
                   "since": "v1.59",
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Maximum time in milliseconds. Defaults to `0` - no timeout. The default value can be changed via `actionTimeout` option in the config, or by using the [`method: BrowserContext.setDefaultTimeout`] or↵[`method: Page.setDefaultTimeout`] methods."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Maximum time in milliseconds. Defaults to `0` - no timeout. The default value can be changed via `actionTimeout`\noption in the config, or by using the [`method: BrowserContext.setDefaultTimeout`] or\n[`method: Page.setDefaultTimeout`] methods.",
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "async": false,
+            "alias": "options",
+            "overloadIndex": 0
+          }
+        ]
+      },
+      {
+        "kind": "method",
+        "langs": {
+          "only": [
+            "js"
+          ],
+          "aliases": {},
+          "types": {},
+          "overrides": {}
+        },
+        "since": "v1.63",
+        "name": "ariaSnapshotJSON",
+        "type": {
+          "name": "Serializable",
+          "expression": "[Serializable]"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Captures the aria snapshot of the page as a free form JSON object.↵Returns the same tree as [`method: Page.ariaSnapshot`], serialized as a JSON value instead of YAML markup.↵See [`method: Locator.ariaSnapshotJSON`] for the details of the format."
+          }
+        ],
+        "required": true,
+        "comment": "Captures the aria snapshot of the page as a free form JSON object. Returns the same tree as\n[`method: Page.ariaSnapshot`], serialized as a JSON value instead of YAML markup. See\n[`method: Locator.ariaSnapshotJSON`] for the details of the format.",
+        "async": true,
+        "alias": "ariaSnapshotJSON",
+        "overloadIndex": 0,
+        "args": [
+          {
+            "kind": "property",
+            "langs": {},
+            "since": "v1.63",
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "since": "v1.63",
+                  "name": "boxes",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "When `true`, includes each element's bounding box as a `box` property with `x`, `y`, `width` and `height`. Coordinates are↵relative to the viewport, in CSS pixels, as returned by [`Element.getBoundingClientRect()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect).↵Defaults to `false`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "When `true`, includes each element's bounding box as a `box` property with `x`, `y`, `width` and `height`.\nCoordinates are relative to the viewport, in CSS pixels, as returned by\n[`Element.getBoundingClientRect()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect).\nDefaults to `false`.",
+                  "async": false,
+                  "alias": "boxes",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "since": "v1.63",
+                  "name": "depth",
+                  "type": {
+                    "name": "int",
+                    "expression": "[int]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "When specified, limits the depth of the snapshot."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "When specified, limits the depth of the snapshot.",
+                  "async": false,
+                  "alias": "depth",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "since": "v1.63",
+                  "name": "mode",
+                  "type": {
+                    "name": "AriaSnapshotMode",
+                    "union": [
+                      {
+                        "name": "\"ai\""
+                      },
+                      {
+                        "name": "\"default\""
+                      }
+                    ],
+                    "expression": "[AriaSnapshotMode]<\"ai\"|\"default\">"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "When set to `\"ai\"`, returns a snapshot optimized for AI consumption: including element references like `[ref=e2]` and snapshots of `<iframe>`s. Defaults to `\"default\"`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "When set to `\"ai\"`, returns a snapshot optimized for AI consumption: including element references like `[ref=e2]`\nand snapshots of `<iframe>`s. Defaults to `\"default\"`.",
+                  "async": false,
+                  "alias": "mode",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.62",
+                  "name": "signal",
+                  "type": {
+                    "name": "AbortSignal",
+                    "expression": "[AbortSignal]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Allows to cancel the operation using an [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal). If the signal is aborted, the operation will be aborted and throw an error.↵Note that providing a signal does not disable the default timeout, which can be changed using [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`]; pass `timeout: 0` to disable the timeout entirely."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Allows to cancel the operation using an\n[`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal). If the signal is aborted, the\noperation will be aborted and throw an error. Note that providing a signal does not disable the default timeout,\nwhich can be changed using [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`]; pass\n`timeout: 0` to disable the timeout entirely.",
+                  "async": false,
+                  "alias": "signal",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "python",
+                      "java",
+                      "csharp"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.63",
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Maximum time in milliseconds. Defaults to `30000` (30 seconds). Pass `0` to disable timeout. The default value can be changed by↵using the [`method: BrowserContext.setDefaultTimeout`] or↵[`method: Page.setDefaultTimeout`] methods."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Maximum time in milliseconds. Defaults to `30000` (30 seconds). Pass `0` to disable timeout. The default value can\nbe changed by using the [`method: BrowserContext.setDefaultTimeout`] or [`method: Page.setDefaultTimeout`] methods.",
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.63",
                   "name": "timeout",
                   "type": {
                     "name": "float",
@@ -123493,6 +124885,36 @@
               "properties": [
                 {
                   "kind": "property",
+                  "langs": {
+                    "only": [
+                      "java",
+                      "python",
+                      "csharp"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.63",
+                  "name": "ariaSnapshots",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Whether to capture aria snapshot of the page on every action."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Whether to capture aria snapshot of the page on every action.",
+                  "async": false,
+                  "alias": "ariaSnapshots",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
                   "langs": {},
                   "since": "v1.59",
                   "name": "live",
@@ -123556,7 +124978,147 @@
                 },
                 {
                   "kind": "property",
-                  "langs": {},
+                  "langs": {
+                    "only": [
+                      "java",
+                      "python",
+                      "csharp"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.63",
+                  "name": "screenSnapshots",
+                  "type": {
+                    "name": "boolean",
+                    "expression": "[boolean]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Whether to capture a screenshot of the page on every action."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Whether to capture a screenshot of the page on every action.",
+                  "async": false,
+                  "alias": "screenSnapshots",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.12",
+                  "name": "snapshots",
+                  "type": {
+                    "name": "",
+                    "union": [
+                      {
+                        "name": "boolean"
+                      },
+                      {
+                        "name": "Object",
+                        "properties": [
+                          {
+                            "kind": "property",
+                            "langs": {},
+                            "since": "v1.12",
+                            "name": "dom",
+                            "type": {
+                              "name": "boolean",
+                              "expression": "[boolean]"
+                            },
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": "Capture DOM snapshot on every action and record network activity. Optional."
+                              }
+                            ],
+                            "required": false,
+                            "comment": "Capture DOM snapshot on every action and record network activity. Optional.",
+                            "async": false,
+                            "alias": "dom",
+                            "overloadIndex": 0
+                          },
+                          {
+                            "kind": "property",
+                            "langs": {},
+                            "since": "v1.12",
+                            "name": "aria",
+                            "type": {
+                              "name": "boolean",
+                              "expression": "[boolean]"
+                            },
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": "Capture aria snapshot of the page on every action. Optional."
+                              }
+                            ],
+                            "required": false,
+                            "comment": "Capture aria snapshot of the page on every action. Optional.",
+                            "async": false,
+                            "alias": "aria",
+                            "overloadIndex": 0
+                          },
+                          {
+                            "kind": "property",
+                            "langs": {},
+                            "since": "v1.12",
+                            "name": "screen",
+                            "type": {
+                              "name": "boolean",
+                              "expression": "[boolean]"
+                            },
+                            "spec": [
+                              {
+                                "type": "text",
+                                "text": "Capture a screenshot of the page on every action. Optional."
+                              }
+                            ],
+                            "required": false,
+                            "comment": "Capture a screenshot of the page on every action. Optional.",
+                            "async": false,
+                            "alias": "screen",
+                            "overloadIndex": 0
+                          }
+                        ]
+                      }
+                    ],
+                    "expression": "[boolean]|[Object]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Which snapshots to capture on every action. Passing `true` is a shortcut for `{ dom: true }`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Which snapshots to capture on every action. Passing `true` is a shortcut for `{ dom: true }`.",
+                  "async": false,
+                  "alias": "snapshots",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "java",
+                      "python",
+                      "csharp"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
                   "since": "v1.12",
                   "name": "snapshots",
                   "type": {
@@ -123566,21 +125128,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "If this option is true tracing will"
-                    },
-                    {
-                      "type": "li",
-                      "text": "capture DOM snapshot on every action",
-                      "liType": "bullet"
-                    },
-                    {
-                      "type": "li",
-                      "text": "record network activity",
-                      "liType": "bullet"
+                      "text": "Whether to capture DOM snapshot and record network activity on every action."
                     }
                   ],
                   "required": false,
-                  "comment": "If this option is true tracing will\n- capture DOM snapshot on every action\n- record network activity",
+                  "comment": "Whether to capture DOM snapshot and record network activity on every action.",
                   "async": false,
                   "alias": "snapshots",
                   "overloadIndex": 0
@@ -123886,7 +125438,7 @@
           },
           {
             "type": "text",
-            "text": "Only one HAR recording can be active at a time per `BrowserContext`."
+            "text": "Only one HAR recording can be active at a time per `Tracing` instance."
           },
           {
             "type": "text",
@@ -123944,7 +125496,7 @@
           }
         ],
         "required": true,
-        "comment": "Start recording a HAR (HTTP Archive) of network activity in this context. The HAR file is written to disk when\n[`method: Tracing.stopHar`] is called, or when the returned `Disposable` is disposed.\n\nOnly one HAR recording can be active at a time per `BrowserContext`.\n\n**Usage**\n\n```js\nawait context.tracing.startHar('trace.har');\nconst page = await context.newPage();\nawait page.goto('https://playwright.dev');\nawait context.tracing.stopHar();\n```\n\n```java\ncontext.tracing().startHar(Paths.get(\"trace.har\"));\nPage page = context.newPage();\npage.navigate(\"https://playwright.dev\");\ncontext.tracing().stopHar();\n```\n\n```py\nawait context.tracing.start_har(\"trace.har\")\npage = await context.new_page()\nawait page.goto(\"https://playwright.dev\")\nawait context.tracing.stop_har()\n```\n\n```py\ncontext.tracing.start_har(\"trace.har\")\npage = context.new_page()\npage.goto(\"https://playwright.dev\")\ncontext.tracing.stop_har()\n```\n\n```csharp\nawait context.Tracing.StartHarAsync(\"trace.har\");\nvar page = await context.NewPageAsync();\nawait page.GotoAsync(\"https://playwright.dev\");\nawait context.Tracing.StopHarAsync();\n```\n",
+        "comment": "Start recording a HAR (HTTP Archive) of network activity in this context. The HAR file is written to disk when\n[`method: Tracing.stopHar`] is called, or when the returned `Disposable` is disposed.\n\nOnly one HAR recording can be active at a time per `Tracing` instance.\n\n**Usage**\n\n```js\nawait context.tracing.startHar('trace.har');\nconst page = await context.newPage();\nawait page.goto('https://playwright.dev');\nawait context.tracing.stopHar();\n```\n\n```java\ncontext.tracing().startHar(Paths.get(\"trace.har\"));\nPage page = context.newPage();\npage.navigate(\"https://playwright.dev\");\ncontext.tracing().stopHar();\n```\n\n```py\nawait context.tracing.start_har(\"trace.har\")\npage = await context.new_page()\nawait page.goto(\"https://playwright.dev\")\nawait context.tracing.stop_har()\n```\n\n```py\ncontext.tracing.start_har(\"trace.har\")\npage = context.new_page()\npage.goto(\"https://playwright.dev\")\ncontext.tracing.stop_har()\n```\n\n```csharp\nawait context.Tracing.StartHarAsync(\"trace.har\");\nvar page = await context.NewPageAsync();\nawait page.GotoAsync(\"https://playwright.dev\");\nawait context.Tracing.StopHarAsync();\n```\n",
         "async": true,
         "alias": "startHar",
         "overloadIndex": 0,

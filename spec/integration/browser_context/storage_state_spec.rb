@@ -338,3 +338,157 @@ RSpec.describe 'BrowserContext#storage_state' do
     end
   end
 end
+
+# https://github.com/microsoft/playwright/blob/v1.63.0/tests/library/browsercontext-storage-state.spec.ts
+RSpec.describe 'OPFS storage state', sinatra: true do
+  it 'should round-trip OPFS' do
+    skip 'OPFS is unavailable in non-persistent WebKit contexts' if webkit?
+    with_context do |context|
+      page = context.new_page
+      page.goto(server_empty_page)
+      page.evaluate(<<~JS)
+        async () => {
+          const root = await navigator.storage.getDirectory();
+          const nested = await root.getDirectoryHandle('nested', { create: true });
+          await nested.getDirectoryHandle('empty', { create: true });
+          const binary = await nested.getFileHandle('data.bin', { create: true });
+          const binaryWritable = await binary.createWritable();
+          await binaryWritable.write(new Uint8Array([0, 1, 2, 255]));
+          await binaryWritable.close();
+          const text = await root.getFileHandle('hello.txt', { create: true });
+          const textWritable = await text.createWritable();
+          await textWritable.write('Hello, world!');
+          await textWritable.close();
+        }
+      JS
+      expect(context.storage_state).to eq({ 'cookies' => [], 'origins' => [] })
+      Dir.mktmpdir do |dir|
+        path = File.join(dir, 'storage-state.json')
+        state = context.storage_state(path: path, opfs: true)
+        expect(state['origins']).to eq([{
+          'origin' => server_prefix,
+          'localStorage' => [],
+          'opfs' => [
+            { 'path' => 'hello.txt', 'type' => 'file', 'base64' => 'SGVsbG8sIHdvcmxkIQ==' },
+            { 'path' => 'nested', 'type' => 'directory' },
+            { 'path' => 'nested/data.bin', 'type' => 'file', 'base64' => 'AAEC/w==' },
+            { 'path' => 'nested/empty', 'type' => 'directory' },
+          ],
+        }])
+        expect(JSON.parse(File.read(path))).to eq(state)
+        # APIRequestContext#storage_state is not yet implemented by this Ruby client.
+        check_context = lambda do |restored|
+          expect(restored.storage_state(opfs: true)).to eq(state)
+          check_page = restored.new_page
+          check_page.goto(server_empty_page)
+          result = check_page.evaluate(<<~JS)
+            async () => {
+              const root = await navigator.storage.getDirectory();
+              const hello = await (await root.getFileHandle('hello.txt')).getFile();
+              const nested = await root.getDirectoryHandle('nested');
+              const data = await (await nested.getFileHandle('data.bin')).getFile();
+              const empty = await nested.getDirectoryHandle('empty');
+              const emptyEntries = [];
+              for await (const name of empty.keys()) emptyEntries.push(name);
+              return { text: await hello.text(), bytes: [...new Uint8Array(await data.arrayBuffer())], empty: emptyEntries };
+            }
+          JS
+          expect(result).to eq({ 'text' => 'Hello, world!', 'bytes' => [0, 1, 2, 255], 'empty' => [] })
+        end
+        with_context(storageState: path) { |restored| check_context.call(restored) }
+        with_context do |restored|
+          stale_page = restored.new_page
+          stale_page.goto(server_empty_page)
+          stale_page.evaluate(<<~JS)
+            async () => {
+              const root = await navigator.storage.getDirectory();
+              await root.getFileHandle('stale.txt', { create: true });
+            }
+          JS
+          restored.set_storage_state(state)
+          check_context.call(restored)
+        end
+      end
+    end
+  end
+
+  it 'should round-trip OPFS in a persistent WebKit context' do
+    skip unless webkit?
+    skip 'Persistent contexts require a local browser type' if remote?
+    Dir.mktmpdir do |dir|
+      browser_type.launch_persistent_context(dir) do |context|
+        page = context.pages.first
+        page.goto(server_empty_page)
+        page.evaluate(<<~JS)
+          async () => {
+            const root = await navigator.storage.getDirectory();
+            await root.getDirectoryHandle('empty', { create: true });
+            const file = await root.getFileHandle('hello.txt', { create: true });
+            const writable = await file.createWritable();
+            await writable.write('Hello, world!');
+            await writable.close();
+          }
+        JS
+        state = context.storage_state(opfs: true)
+        expect(state['origins']).to eq([{
+          'origin' => server_prefix,
+          'localStorage' => [],
+          'opfs' => [
+            { 'path' => 'empty', 'type' => 'directory' },
+            { 'path' => 'hello.txt', 'type' => 'file', 'base64' => 'SGVsbG8sIHdvcmxkIQ==' },
+          ],
+        }])
+        page.evaluate(<<~JS)
+          async () => {
+            const root = await navigator.storage.getDirectory();
+            await root.removeEntry('empty', { recursive: true });
+            await root.removeEntry('hello.txt');
+            await root.getFileHandle('stale.txt', { create: true });
+          }
+        JS
+        context.set_storage_state(state)
+        expect(context.storage_state(opfs: true)).to eq(state)
+      end
+    end
+  end
+end
+
+# https://github.com/microsoft/playwright/blob/v1.63.0/tests/library/browsercontext-storage-state.spec.ts
+RSpec.describe 'IndexedDB connection cleanup', sinatra: true do
+  it 'should not leave IndexedDB connections open' do
+    with_context do |context|
+      page = context.new_page
+      page.goto("#{server_prefix}/empty.html")
+      page.evaluate(<<~JS)
+        async () => {
+          const openRequest = indexedDB.open('db', 1);
+          openRequest.onupgradeneeded = () => openRequest.result.createObjectStore('store');
+          await new Promise((resolve, reject) => {
+            openRequest.onsuccess = () => {
+              const db = openRequest.result;
+              const transaction = db.transaction('store', 'readwrite');
+              transaction.objectStore('store').put('value', 'key');
+              transaction.oncomplete = () => {
+                db.close();
+                resolve();
+              };
+              transaction.onerror = () => reject(transaction.error);
+            };
+            openRequest.onerror = () => reject(openRequest.error);
+          });
+        }
+      JS
+      state = context.storage_state(indexedDB: true)
+      page.evaluate(<<~JS)
+        () => new Promise((resolve, reject) => {
+          const request = indexedDB.deleteDatabase('db');
+          request.onsuccess = () => resolve();
+          request.onerror = () => reject(request.error);
+          request.onblocked = () => reject(new Error('deleteDatabase was blocked'));
+        })
+      JS
+      context.set_storage_state(state)
+      expect(context.storage_state(indexedDB: true)).to eq(state)
+    end
+  end
+end

@@ -298,3 +298,6 @@ The method will populate request cookies from the context and update
 context cookies from the response. The method will automatically follow redirects.
 
 ## tracing
+
+
+Tracing recorder for requests made through this API request context.

@@ -290,6 +290,7 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
     end
   end
 
+  # https://github.com/microsoft/playwright/blob/v1.63.0/tests/page/expect-misc.spec.ts
   describe 'to_contain_class' do
     it 'should pass' do
       with_page do |page|
@@ -322,16 +323,16 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
         locator = page.locator('div')
         expect {
           expect(locator).to contain_class('does-not-exist', timeout: 1000)
-        }.to raise_error(/Expect "to_contain_class" with timeout 1000ms/)
+        }.to raise_error(/Expect "to_contain_class" locator\("div"\) with timeout 1000ms/)
 
         ::Playwright::Test.with_timeout(500) do
           expect {
             expect(locator).to contain_class('does-not-exist')
-          }.to raise_error(/Expect "to_contain_class" with timeout 500ms/)
+          }.to raise_error(/Expect "to_contain_class" locator\("div"\) with timeout 500ms/)
 
           expect {
             expect(locator).to contain_class('does-not-exist', timeout: 400)
-          }.to raise_error(/Expect "to_contain_class" with timeout 400ms/)
+          }.to raise_error(/Expect "to_contain_class" locator\("div"\) with timeout 400ms/)
         end
       end
     end
@@ -355,7 +356,7 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
         locator = page.locator('div')
         expect {
           expect(locator).to contain_class(['foo', 'bar', 'baz'], timeout: 1000)
-        }.to raise_error(/Expect "to_contain_class" with timeout 1000ms/)
+        }.to raise_error(/Expect "to_contain_class" locator\("div"\) with timeout 1000ms/)
       end
     end
   end
