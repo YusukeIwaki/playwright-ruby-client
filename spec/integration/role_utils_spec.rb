@@ -14,10 +14,15 @@ RSpec.describe 'role utils' do
         <input type="checkbox" id="c1">
         <h1><input type="search" value="Foo bar"></h1>
       HTML
-      # Assert through public role/name selectors instead of upstream's injected helper.
-      expect(page.get_by_role('button', name: 'Query')).to have_count(2)
-      expect(page.get_by_role('checkbox', name: 'Flash the screen 5 times.')).to have_id('c1')
-      expect(page.get_by_role('heading', name: 'Foo bar')).to have_count(1)
+      # Assert each element's role and exact accessible name through public APIs.
+      expect(page.locator('#b1')).to have_role('button')
+      expect(page.locator('#b1')).to have_accessible_name('Query')
+      expect(page.locator('#b2')).to have_role('button')
+      expect(page.locator('#b2')).to have_accessible_name('Query')
+      expect(page.locator('#c1')).to have_role('checkbox')
+      expect(page.locator('#c1')).to have_accessible_name('Flash the screen 5 times.')
+      expect(page.locator('h1')).to have_role('heading')
+      expect(page.locator('h1')).to have_accessible_name('Foo bar')
     end
   end
 end
