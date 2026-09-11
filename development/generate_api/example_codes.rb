@@ -695,7 +695,7 @@ module ExampleCodes
 
   # Frame#frame_locator
   def example_7c9cfab83defacca7518fb1e95efb47bdd2a9ba0e6be836e973be19d8b4c4cb7(frame:)
-    locator = frame.frame_locator(selector: "#my-iframe").get_by_text("Submit")
+    locator = frame.frame_locator("#my-iframe").get_by_text("Submit")
     locator.click
   end
 
@@ -1127,7 +1127,7 @@ module ExampleCodes
 
   # Locator#frame_locator
   def example_0ec60e5949820a3a318c7e05ea06b826218f2d79a94f8d599a29c8b07b2c1e63(page:)
-    locator = page.frame_locator(selector: "iframe").get_by_text("Submit")
+    locator = page.frame_locator("iframe").get_by_text("Submit")
     locator.click
   end
 
@@ -1701,7 +1701,7 @@ module ExampleCodes
 
   # Page#frame_locator
   def example_e2abd82db97f2a0531855941d4ae70ef68fe8f844318e7a474d14a217dfd2595(page:)
-    locator = page.frame_locator(selector: "#my-iframe").get_by_text("Submit")
+    locator = page.frame_locator("#my-iframe").get_by_text("Submit")
     locator.click
   end
 

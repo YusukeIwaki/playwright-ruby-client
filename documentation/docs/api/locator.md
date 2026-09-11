@@ -660,7 +660,7 @@ in that iframe:
 **Usage**
 
 ```ruby
-locator = page.frame_locator(selector: "iframe").get_by_text("Submit")
+locator = page.frame_locator("iframe").get_by_text("Submit")
 locator.click
 ```
 

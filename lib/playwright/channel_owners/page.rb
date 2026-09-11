@@ -724,8 +724,8 @@ module Playwright
         hasText: hasText)
     end
 
-    def frame_locator(selector: nil)
-      @main_frame.frame_locator(selector: selector)
+    def frame_locator(selector = nil)
+      @main_frame.frame_locator(selector)
     end
 
     def focus(selector, strict: nil, timeout: nil)

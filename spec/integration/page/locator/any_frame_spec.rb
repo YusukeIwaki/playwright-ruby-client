@@ -497,7 +497,7 @@ RSpec.describe 'FrameLocator across frames', sinatra: true do
       route_page(page, "b.html", "<div class=\"classname\">first</div><button>second</button>")
       page.goto(server_empty_page)
       wait_for_frames(page, 3)
-      expect(page.frame_locator.frame_locator('#f').locator('.classname').or(page.frame_locator(selector: '#f').get_by_role('button'))).to have_text(['first', 'second'])
+      expect(page.frame_locator.frame_locator('#f').locator('.classname').or(page.frame_locator('#f').get_by_role('button'))).to have_text(['first', 'second'])
     end
   end
 
