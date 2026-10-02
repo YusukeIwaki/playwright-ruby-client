@@ -13,9 +13,11 @@ jobs:
           bundler-cache: true
       - uses: oven-sh/setup-bun@v2
         with:
-          bun-version: 1.4.2
+          bun-version: canary
       - name: Install playwright-core via Bun
         run: |
+          bun --version
+          bun --revision
           bun add --no-save playwright-core@next
           bun run --bun playwright-core install chromium
           bun run --bun playwright-core install-deps chromium
