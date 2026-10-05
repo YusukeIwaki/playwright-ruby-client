@@ -77,7 +77,10 @@ module Playwright
       if method == '__waitInfo__' && @closed_error
         return Concurrent::Promises.fulfilled_future(nil)
       end
-      return if @closed_error
+      # After the driver is gone, fail fast with the close error instead of
+      # returning nil (which would blow up with NoMethodError on .value!).
+      # ref: https://github.com/YusukeIwaki/playwright-ruby-client/issues/392
+      return Concurrent::Promises.rejected_future(@closed_error) if @closed_error
 
       callback = Concurrent::Promises.resolvable_future
       fire_and_forget = method == '__waitInfo__'

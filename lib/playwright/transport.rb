@@ -32,10 +32,15 @@ module Playwright
     def send_message(message)
       debug_send_message(message) if @debug
       msg = JSON.dump(message)
-      @mutex.synchronize {
-        @stdin.write([msg.bytes.length].pack('V')) # unsigned 32bit, little endian, real byte size instead of chars
-        @stdin.write(msg) # write UTF-8 in binary mode as byte stream
-      }
+      # Build the whole frame (4-byte little-endian length header + JSON payload) in a
+      # single buffer, and write it at once. Two separate writes can be torn by an
+      # asynchronous exception (e.g. Timeout::Error from Timeout.timeout, delivered via
+      # Thread#raise), which crashes the driver with a JSON parse error.
+      # ref: https://github.com/YusukeIwaki/playwright-ruby-client/issues/392
+      frame = [msg.bytesize].pack('V') + msg.b # unsigned 32bit, little endian, real byte size instead of chars
+      Thread.handle_interrupt(Object => :never) do
+        @mutex.synchronize { @stdin.write(frame) } # write UTF-8 in binary mode as byte stream
+      end
     rescue Errno::EPIPE, IOError
       raise AlreadyDisconnectedError.new('send_message failed')
     end
@@ -85,6 +90,10 @@ module Playwright
         debug_recv_message(obj) if @debug
         @on_message&.call(obj)
       end
+      # exited the loop on clean EOF. The driver is gone, so reject pending
+      # callbacks instead of hanging forever on promises that will never resolve.
+      # ref: https://github.com/YusukeIwaki/playwright-ruby-client/issues/392
+      @on_driver_closed&.call
     rescue IOError
       # disconnected by remote.
       @on_driver_closed&.call
@@ -92,6 +101,9 @@ module Playwright
 
     def handle_stderr
       while err = @stderr.read
+        # IO#read without length on a pipe returns "" (not nil) at EOF.
+        # Bail out instead of spinning forever on empty reads.
+        break if err.empty?
         # sometimed driver crashes with the error below.
         # --------
         # undefined:1
@@ -103,7 +115,11 @@ module Playwright
         #     at Transport.transport.onmessage (/home/runner/work/playwright-ruby-client/playwright-ruby-client/node_modules/playwright/lib/cli/driver.js:42:73)
         #     at Immediate.<anonymous> (/home/runner/work/playwright-ruby-client/playwright-ruby-client/node_modules/playwright/lib/protocol/transport.js:74:26)
         #     at processImmediate (internal/timers.js:461:21)
-        if err.include?('undefined:1')
+        #
+        # Node >= 16 prints '<anonymous_script>:1' instead of 'undefined:1'.
+        # ref: https://github.com/YusukeIwaki/playwright-ruby-client/issues/392
+        if err.include?('undefined:1') || err.include?('<anonymous_script>:1') ||
+            err.include?('is not valid JSON')
           @on_driver_crashed&.call
           break
         end
