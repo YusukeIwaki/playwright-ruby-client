@@ -33,6 +33,7 @@ ALL_TYPES = %w[
     PageAssertions
     WebStorage
     Credentials
+    WebMCP
 ]
 EXPERIMENTAL = %w[
 ]
@@ -54,6 +55,7 @@ API_IMPLEMENTATIONS = %w[
   Selectors
   WebStorage
   Credentials
+  WebMCP
 ]
 
 require 'bundler/setup'

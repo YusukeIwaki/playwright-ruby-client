@@ -266,4 +266,22 @@ RSpec.describe 'video', sinatra: true do
       expect(video_player.video_height).to eq(600)
     end
   end
+
+  # https://github.com/microsoft/playwright/blob/release-1.64/tests/library/video.spec.ts
+  it 'should record video with the requested fps' do
+    Dir.mktmpdir do |dir|
+      context = browser.new_context(record_video_dir: dir, record_video_fps: 60)
+      page = context.new_page
+      ensure_some_frames(page)
+      context.close
+      expect(IntegrationVideoPlayer.new(page.video.path).fps).to eq(60)
+    end
+  end
+
+  it 'should throw on invalid fps' do
+    Dir.mktmpdir do |dir|
+      expect { browser.new_context(record_video_dir: dir, record_video_fps: 0) }.to raise_error(/"recordVideo.fps" must be a positive number, got 0/)
+    end
+  end
+
 end

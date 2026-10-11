@@ -50,4 +50,28 @@ RSpec.describe 'APIRequest credentials', sinatra: true do
       request.dispose
     end
   end
+
+  # https://github.com/microsoft/playwright/blob/release-1.64/tests/library/global-fetch.spec.ts
+  it 'should expose node error code on network errors' do
+    # A TCP reset is the Ruby equivalent of the upstream socket.resetAndDestroy().
+    tcp_server = TCPServer.new('127.0.0.1', 0)
+    server_thread = Thread.new do
+      socket = tcp_server.accept
+      socket.readpartial(4096)
+      socket.setsockopt(Socket::SOL_SOCKET, Socket::SO_LINGER, [1, 0].pack('ii'))
+      socket.close
+    end
+    request = playwright.request.new_context
+    begin
+      expect { request.get("http://127.0.0.1:#{tcp_server.addr[1]}/reset", maxRetries: 0) }.to raise_error { |error|
+        expect(error.message).to include('ECONNRESET')
+        expect(error.code).to eq('ECONNRESET')
+      }
+    ensure
+      request.dispose
+      tcp_server.close
+      server_thread.join
+    end
+  end
+
 end

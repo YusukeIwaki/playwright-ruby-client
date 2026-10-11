@@ -18,6 +18,23 @@ module Playwright
   end
 
   module Utils
+    module ClearCookiesParameters
+      private def clear_cookies_params(domain:, name:, path:)
+        params = {}
+        { domain: domain, name: name, path: path }.each do |key, value|
+          case value
+          when String
+            params[key] = value
+          when Regexp
+            regex = JavaScript::Regex.new(value)
+            params["#{key}RegexSource".to_sym] = regex.source
+            params["#{key}RegexFlags".to_sym] = regex.flag
+          end
+        end
+        params
+      end
+    end
+
     module PrepareHttpCredentials
       private def prepare_http_credentials(credentials)
         return nil unless credentials
@@ -46,6 +63,9 @@ module Playwright
           }
           if params[:record_video_size]
             params[:recordVideo][:size] = params.delete(:record_video_size)
+          end
+          unless params[:record_video_fps].nil?
+            params[:recordVideo][:fps] = params.delete(:record_video_fps)
           end
           if params[:record_video_show_actions]
             params[:recordVideo][:showActions] = params.delete(:record_video_show_actions)

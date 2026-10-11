@@ -177,6 +177,7 @@ def launch_persistent_context(
       record_har_path: nil,
       record_har_url_filter: nil,
       record_video_dir: nil,
+      record_video_fps: nil,
       record_video_size: nil,
       reducedMotion: nil,
       screen: nil,

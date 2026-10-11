@@ -24,6 +24,7 @@ module Playwright
       @waiting_for_object = {} # Hash[ guid => Promise<ChannelOwner> ]
       @callbacks = {} # Hash [ guid => Promise<ChannelOwner> ]
       @callbacks_mutex = Mutex.new
+      @call_id_prefix = Array.new(4) { ('a'..'z').to_a.sample }.join
       @root_object = RootChannelOwner.new(self)
       @remote = false
       @tracing_count = 0
@@ -153,7 +154,7 @@ module Playwright
         @last_id ||= 0
         @last_id += 1
       end
-      block.call(id)
+      block.call("#{@call_id_prefix}@#{id}")
     end
 
     # @param guid [String]

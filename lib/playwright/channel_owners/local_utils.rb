@@ -62,6 +62,11 @@ module Playwright
       nil
     end
 
+    def as_locator_description(selector)
+      # Ruby uses the Python SDK language for upstream code generation and the inspector.
+      @channel.send_message_to_server('asLocatorDescription', selector: selector, sdkLanguage: 'python')
+    end
+
     def connect(params)
       result = @channel.send_message_to_server_result('connect', params)
       ChannelOwners::JsonPipe.from(result['pipe'])

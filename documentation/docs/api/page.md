@@ -177,7 +177,7 @@ manually via [`event: Page.dialog`] event.
 ## content
 
 ```
-def content
+def content(includeShadow: nil)
 ```
 
 
@@ -697,6 +697,30 @@ You can fill the input after locating it by the placeholder text:
 
 ```ruby
 page.get_by_placeholder("name@example.com").fill("playwright@microsoft.com")
+```
+
+## get_by_ref
+
+```
+def get_by_ref(ref)
+```
+
+
+Locate element by its aria ref. Refs like `[ref=e2]` are reported by [Page#aria_snapshot](./page#aria_snapshot) when called with
+the `"ai"` mode, and resolve against the latest snapshot taken in the element's frame.
+
+**Usage**
+
+Consider the following aria snapshot.
+
+```yaml
+- button "Submit" [ref=e2]
+```
+
+You can locate the button by its ref:
+
+```ruby
+page.get_by_ref("e2").click
 ```
 
 ## get_by_role
@@ -2052,3 +2076,10 @@ API testing helper associated with this page. This method returns the same insta
 **Usage**
 
 ## touchscreen
+
+## webmcp
+
+
+Tools that the main frame registers through the experimental [WebMCP](./web_mcp) browser API. Shortcut for [Frame#webmcp](./frame#webmcp) of [Page#main_frame](./page#main_frame), see [WebMCP](./web_mcp) for details.
+
+**Usage**

@@ -5,8 +5,9 @@ module Playwright
   define_api_implementation :LocatorImpl do
     include LocatorUtils
 
-    def initialize(frame:, selector:, has: nil, hasNot: nil, hasNotText: nil, hasText: nil, visible: nil)
+    def initialize(frame:, selector:, has: nil, hasNot: nil, hasNotText: nil, hasText: nil, visible: nil, locator_code: nil)
       @frame = frame
+      @locator_code = locator_code
       selector_scopes = [selector]
 
       if hasText
@@ -39,11 +40,18 @@ module Playwright
     end
 
     def to_s
-      if @description
-        "Locator@#{@selector} (#{@description})"
-      else
-        "Locator@#{@selector}"
-      end
+      custom_description = description
+      return custom_description if custom_description
+      return @locator_code if @locator_code
+
+      local_utils = @frame.instance_variable_get(:@connection).local_utils
+      return "Locator@#{@selector}" unless local_utils
+
+      local_utils.as_locator_description(@selector)
+    end
+
+    def within(locator)
+      locator.locator(self)
     end
 
     private def to_protocol
@@ -232,6 +240,11 @@ module Playwright
       hasNot: nil,
       hasNotText: nil,
       hasText: nil)
+      if selector.is_a?(LocatorImpl)
+        raise ArgumentError, 'Locators must belong to the same frame.' unless same_frame?(selector)
+
+        selector = "internal:chain=#{selector.send(:selector_json)}"
+      end
       LocatorImpl.new(
         frame: @frame,
         selector: "#{@selector} >> #{selector}",
@@ -453,10 +466,11 @@ module Playwright
     end
 
     def normalize
-      resolved_selector = @frame.channel.send_message_to_server('resolveSelector', { selector: @selector })
+      result = @frame.channel.send_message_to_server_result('resolveSelector', { selector: @selector, sdkLanguage: 'python' })
       LocatorImpl.new(
         frame: @frame,
-        selector: resolved_selector,
+        selector: result['resolvedSelector'],
+        locator_code: result['locatorCode'],
       )
     end
 

@@ -1135,6 +1135,26 @@ def normalize
 Returns a new locator that uses best practices for referencing the matched element, prioritizing test ids,
 aria roles, and other user-facing attributes over CSS selectors. This is useful for converting implementation-detail selectors into more resilient, human-readable locators.
 
+**Usage**
+
+An agent can pick an element by its ref from an [Page#aria_snapshot](./page#aria_snapshot) taken in the `"ai"` mode. Refs only
+work for the latest snapshot. Normalize the ref locator and convert it to a string to get resilient locator code
+in your language, the same way `codegen` does.
+
+Consider the following aria snapshot.
+
+```yaml
+- button "Submit" [ref=e2]
+```
+
+You can turn the ref into locator code:
+
+```ruby
+normalized = page.get_by_ref("e2").normalize
+puts normalized.to_s
+# get_by_role("button", name="Submit")
+```
+
 ## nth
 
 ```
@@ -1598,3 +1618,21 @@ If `expression` throws or rejects, this method throws.
 Wait for an attribute to appear:
 
 Passing argument to `expression`:
+
+## within
+
+```
+def within(locator)
+```
+
+
+Returns a locator that matches this locator's elements inside each element matched by `locator`.
+
+Note that relative locators, such as [Locator#nth](./locator#nth) or [Locator#first](./locator#first), are resolved separately inside each matched parent. In the example below, `page.getByRole('cell').nth(2)` picks the third cell of every row, not the third cell in the whole table.
+
+**Usage**
+
+```ruby
+third_column = page.get_by_role("cell").nth(2).within(page.get_by_role("row"))
+expect(third_column).to have_text(["Apple", "Banana", "Cherry"])
+```

@@ -212,4 +212,74 @@ RSpec.describe 'BrowserContext#credentials (WebAuthn virtual authenticator)', si
       context&.close
     end
   end
+
+  # https://github.com/microsoft/playwright/blob/release-1.64/tests/library/browsercontext-webauthn.spec.ts
+  def assert_and_get_sign_count(page)
+    page.evaluate(<<~JS, arg: { rpId: hostname })
+      async ({ rpId }) => {
+        const challenge = crypto.getRandomValues(new Uint8Array(32));
+        const cred = await navigator.credentials.get({
+          publicKey: { challenge, rpId, userVerification: 'preferred' },
+        });
+        return new DataView(cred.response.authenticatorData).getUint32(33);
+      }
+    JS
+  end
+
+  it 'should seed and report signCount' do
+    with_context do |context|
+      fresh = context.credentials.create('fresh.example.com')
+      expect(fresh['signCount']).to eq(0)
+      seeded = context.credentials.create(hostname, signCount: 41)
+      expect(seeded['signCount']).to eq(41)
+      context.credentials.install
+      page = context.new_page
+      page.goto(server_empty_page)
+      expect(assert_and_get_sign_count(page)).to eq(42)
+      expect(assert_and_get_sign_count(page)).to eq(43)
+      expect(context.credentials.get(id: seeded['id'])).to eq([seeded.merge('signCount' => 43)])
+      expect(context.credentials.get(id: fresh['id'])).to eq([fresh])
+      captured = context.credentials.get(id: seeded['id']).first
+      with_context do |context2|
+        context2.credentials.create(captured['rpId'], **captured.reject { |key, _| key == 'rpId' }.transform_keys(&:to_sym))
+        context2.credentials.install
+        page2 = context2.new_page
+        page2.goto(server_empty_page)
+        expect(assert_and_get_sign_count(page2)).to eq(44)
+      end
+    end
+  end
+
+  it 'should reject invalid signCount' do
+    with_context do |context|
+      expect { context.credentials.create('example.com', signCount: -1) }.to raise_error(/signCount must be between 0 and 4294967295, got -1/)
+      expect(context.credentials.get).to eq([])
+    end
+  end
+
+  it 'should preserve signCount via the storageState option' do
+    with_context do |setup|
+      setup.credentials.create(hostname)
+      setup.credentials.install
+      setup_page = setup.new_page
+      setup_page.goto(server_empty_page)
+      expect(assert_and_get_sign_count(setup_page)).to eq(1)
+      state = setup.storage_state(credentials: true)
+      captured = setup.credentials.get.first
+      expect(captured['signCount']).to eq(1)
+      expect(state).to eq({ 'cookies' => [], 'origins' => [], 'credentials' => [captured] })
+      with_context(storageState: state) do |context|
+        page = context.new_page
+        page.goto(server_empty_page)
+        expect(assert_and_get_sign_count(page)).to eq(2)
+      end
+      legacy = state.merge('credentials' => [captured.reject { |key, _| key == 'signCount' }])
+      with_context(storageState: legacy) do |context|
+        page = context.new_page
+        page.goto(server_empty_page)
+        expect(assert_and_get_sign_count(page)).to eq(1)
+      end
+    end
+  end
+
 end

@@ -11,7 +11,7 @@ module Playwright
       @page.send(:channel).on('screencastFrame', method(:handle_screencast_frame))
     end
 
-    def start(path: nil, size: nil, quality: nil, &on_frame)
+    def start(path: nil, size: nil, quality: nil, fps: nil, &on_frame)
       raise 'Screencast is already started' if @started
 
       @started = true
@@ -21,6 +21,7 @@ module Playwright
       params[:record] = true if path
       params[:size] = size if size
       params[:quality] = quality if quality
+      params[:fps] = fps unless fps.nil?
       params[:sendFrames] = true if on_frame
 
       result = @page.send(:channel).send_message_to_server_result('screencastStart', params)
@@ -63,12 +64,13 @@ module Playwright
       @page.send(:channel).send_message_to_server('screencastChapter', params)
     end
 
-    def show_actions(duration: nil, fontSize: nil, position: nil, cursor: nil)
+    def show_actions(duration: nil, fontSize: nil, position: nil, cursor: nil, style: nil)
       params = {}
       params[:duration] = duration if duration
       params[:fontSize] = fontSize if fontSize
       params[:position] = position if position
       params[:cursor] = cursor if cursor
+      params[:style] = style if style
       @page.send(:channel).send_message_to_server('screencastShowActions', params)
       DisposableStub.new { hide_actions }
     end

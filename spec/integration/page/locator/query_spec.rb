@@ -208,4 +208,38 @@ RSpec.describe 'Locator' do
   #     expect(error.message).toContain(`Inner "${option}" locator must belong to the same frame.`);
   #   }
   # });
+
+  # https://github.com/microsoft/playwright/blob/release-1.64/tests/page/locator-query.spec.ts
+  it 'should support locator.locator with and/or' do
+    with_page do |page|
+      page.content = '<div>one <span>two</span> <button>three</button> </div><span>four</span><button>five</button>'
+      expect(page.locator('div').locator(page.locator('button')).all_text_contents).to eq(['three'])
+      expect(page.locator('div').locator(page.locator('button').or(page.locator('span'))).all_text_contents).to eq(%w[two three])
+      expect(page.locator('button').or(page.locator('span')).all_text_contents).to eq(%w[two three four five])
+      expect(page.locator('div').locator(page.locator('button').and(page.get_by_role('button'))).all_text_contents).to eq(['three'])
+      expect(page.locator('button').and(page.get_by_role('button')).all_text_contents).to eq(%w[three five])
+    end
+  end
+
+  it 'should support locator.within' do
+    with_page do |page|
+      page.content = <<~HTML
+        <table>
+          <tr><td>a1</td><td>a2</td><td>a3</td></tr>
+          <tr><td>b1</td><td>b2</td><td>b3</td></tr>
+          <tr><td>c1</td><td>c2</td><td>c3</td></tr>
+        </table>
+        <span>outside</span>
+      HTML
+      cells = page.get_by_role('cell')
+      rows = page.get_by_role('row')
+      expect(cells.within(rows).all_text_contents).to eq(%w[a1 a2 a3 b1 b2 b3 c1 c2 c3])
+      expect(cells.nth(1).within(rows).all_text_contents).to eq(%w[a2 b2 c2])
+      expect(cells.last.within(rows).all_text_contents).to eq(%w[a3 b3 c3])
+      expect(cells.nth(1).within(rows.nth(2)).all_text_contents).to eq(['c2'])
+      expect(page.locator('span').within(rows).count).to eq(0)
+      expect(cells.nth(1).within(rows).nth(1).text_content).to eq('b2')
+    end
+  end
+
 end

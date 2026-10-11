@@ -37,7 +37,7 @@ def start(
 ```
 
 
-Start tracing.
+Start tracing. Disposing the returned `Disposable` stops tracing without saving the trace, similarly to calling [Tracing#stop](./tracing#stop) without a path.
 
 **NOTE**: You probably want to [enable tracing in your config file](https://playwright.dev/docs/api/class-testoptions#test-options-trace) instead of using `Tracing.start`.
 
@@ -59,7 +59,7 @@ def start_chunk(name: nil, title: nil)
 ```
 
 
-Start a new trace chunk. If you'd like to record multiple traces on the same [BrowserContext](./browser_context), use [Tracing#start](./tracing#start) once, and then create multiple trace chunks with [Tracing#start_chunk](./tracing#start_chunk) and [Tracing#stop_chunk](./tracing#stop_chunk).
+Start a new trace chunk. Disposing the returned `Disposable` stops the chunk without saving it, similarly to calling [Tracing#stop_chunk](./tracing#stop_chunk) without a path. If you'd like to record multiple traces on the same [BrowserContext](./browser_context), use [Tracing#start](./tracing#start) once, and then create multiple trace chunks with [Tracing#start_chunk](./tracing#start_chunk) and [Tracing#stop_chunk](./tracing#stop_chunk).
 
 **Usage**
 
