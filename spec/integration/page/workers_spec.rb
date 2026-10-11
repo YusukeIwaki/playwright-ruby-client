@@ -76,15 +76,16 @@ RSpec.describe 'Page#workers' do
         JAVASCRIPT
       end
 
-      worker_console = Concurrent::Promises.future { worker.expect_event('console') }
-      page_console = Concurrent::Promises.future { page.expect_event('console') }
-      context_console = Concurrent::Promises.future { page.context.expect_event('console') }
-
-      worker.evaluate("() => console.log('hello from worker')")
-
-      message1 = worker_console.value!
-      message2 = page_console.value!
-      message3 = context_console.value!
+      message2 = nil
+      message3 = nil
+      # Register all listeners before emitting the console event, as upstream does.
+      message1 = worker.expect_event('console') do
+        message2 = page.expect_event('console') do
+          message3 = page.context.expect_event('console') do
+            worker.evaluate("() => console.log('hello from worker')")
+          end
+        end
+      end
 
       expect(message1.text).to eq('hello from worker')
       expect(message1.text).to be(message2.text)

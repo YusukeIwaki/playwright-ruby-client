@@ -623,12 +623,11 @@ RSpec.describe 'example' do
         expect(message.text).to eq('42')
 
         expect(page.workers.size).to eq(2)
-        waitlist = [
-          Concurrent::Promises.future { worker1.expect_event('close') },
-          Concurrent::Promises.future { worker2.expect_event('close') },
-        ]
-        page.evaluate('workerObjs => workerObjs.forEach(worker => worker.terminate())', arg: worker_objs)
-        Concurrent::Promises.zip(*waitlist).value!
+        worker1.expect_event('close') do
+          worker2.expect_event('close') do
+            page.evaluate('workerObjs => workerObjs.forEach(worker => worker.terminate())', arg: worker_objs)
+          end
+        end
         expect(page.workers).to be_empty
       end
     end
