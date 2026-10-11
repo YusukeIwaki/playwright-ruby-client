@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'securerandom'
 require 'tmpdir'
 
-# https://github.com/microsoft/playwright/blob/master/tests/chromium/tracing.spec.ts
+# https://github.com/microsoft/playwright/blob/v1.64.0/tests/library/chromium/tracing.spec.ts
 # https://github.com/microsoft/playwright-python/blob/master/tests/async/test_tracing.py
 RSpec.describe 'tracing' do
   before { skip unless chromium? }
@@ -82,6 +82,10 @@ RSpec.describe 'tracing' do
     with_page do |page|
       browser.start_tracing(page: page, screenshots: true)
       page.goto("#{server_prefix}/grid.html")
+      # Match upstream rafraf(page, 100) so Chromium can record screenshot frames.
+      100.times do
+        page.evaluate('() => new Promise(f => requestAnimationFrame(() => requestAnimationFrame(f)))')
+      end
       trace = browser.stop_tracing
       expect(trace).to include('screenshot')
     end
