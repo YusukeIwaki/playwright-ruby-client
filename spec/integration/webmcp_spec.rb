@@ -38,6 +38,11 @@ RSpec.describe 'WebMCP', sinatra: true do
     "<script>const modelContext = document.modelContext || navigator.modelContext; #{tools}</script>"
   end
 
+  def register_frame_tools(frame, tools)
+    # Chromium can leave getTools pending when iframe WebMCP initializes during navigation.
+    frame.evaluate("() => { const modelContext = document.modelContext || navigator.modelContext; #{tools} }")
+  end
+
   def text_result(text)
     { 'content' => [{ 'type' => 'text', 'text' => text }] }
   end
@@ -129,9 +134,10 @@ RSpec.describe 'WebMCP', sinatra: true do
   it 'should scope tools to their frame' do
     skip 'Firefox does not support WebMCP tools in iframes yet' if firefox?
     serve('/', register_script(add_script) + '<iframe src="/frame.html"></iframe>')
-    serve('/frame.html', register_script("modelContext.registerTool({ name: 'subscribe', description: 'Subscribes to the newsletter', async execute() { return { content: [{ type: 'text', text: 'subscribed' }] }; } });"))
+    serve('/frame.html', '')
     @page.goto(server_prefix)
     frame = @page.frames[1]
+    register_frame_tools(frame, "modelContext.registerTool({ name: 'subscribe', description: 'Subscribes to the newsletter', async execute() { return { content: [{ type: 'text', text: 'subscribed' }] }; } });")
     expect(@page.webmcp.tools).to match([a_hash_including('name' => 'add')])
     expect(frame.webmcp.tools).to match([a_hash_including('name' => 'subscribe')])
     expect(frame.webmcp.call_tool('subscribe')).to eq(text_result('subscribed'))
@@ -142,22 +148,26 @@ RSpec.describe 'WebMCP', sinatra: true do
 
   it 'should call same-name tools in their own frame' do
     skip 'Firefox does not support WebMCP tools in iframes yet' if firefox?
-    echo = ->(text) { register_script("modelContext.registerTool({ name: 'echo', description: 'Echoes', async execute() { return { content: [{ type: 'text', text: '#{text}' }] }; } });") }
-    serve('/', echo.call('main') + '<iframe src="/frame.html"></iframe>')
-    serve('/frame.html', echo.call('frame'))
+    echo = ->(text) { "modelContext.registerTool({ name: 'echo', description: 'Echoes', async execute() { return { content: [{ type: 'text', text: '#{text}' }] }; } });" }
+    serve('/', register_script(echo.call('main')) + '<iframe src="/frame.html"></iframe>')
+    serve('/frame.html', '')
     @page.goto(server_prefix)
+    frame = @page.frames[1]
+    register_frame_tools(frame, echo.call('frame'))
     expect(@page.webmcp.call_tool('echo')).to eq(text_result('main'))
-    expect(@page.frames[1].webmcp.call_tool('echo')).to eq(text_result('frame'))
+    expect(frame.webmcp.call_tool('echo')).to eq(text_result('frame'))
   end
 
   it 'should list and call tools in cross-origin and nested frames' do
     skip 'Firefox does not support WebMCP tools in iframes yet' if firefox?
-    echo = ->(text) { register_script("modelContext.registerTool({ name: 'echo-#{text}', description: 'Echoes #{text}', async execute() { return { content: [{ type: 'text', text: '#{text}' }] }; } });") }
-    serve('/', echo.call('main') + "<iframe allow=\"tools\" src=\"#{server_cross_process_prefix}/frame.html\"></iframe>")
-    serve('/frame.html', echo.call('frame') + '<iframe src="/nested.html"></iframe>')
-    serve('/nested.html', echo.call('nested'))
+    echo = ->(text) { "modelContext.registerTool({ name: 'echo-#{text}', description: 'Echoes #{text}', async execute() { return { content: [{ type: 'text', text: '#{text}' }] }; } });" }
+    serve('/', register_script(echo.call('main')) + "<iframe allow=\"tools\" src=\"#{server_cross_process_prefix}/frame.html\"></iframe>")
+    serve('/frame.html', '<iframe src="/nested.html"></iframe>')
+    serve('/nested.html', '')
     @page.goto(server_prefix)
     main, frame, nested = @page.frames
+    register_frame_tools(frame, echo.call('frame'))
+    register_frame_tools(nested, echo.call('nested'))
     [main, frame, nested].zip(%w[main frame nested]).each do |target, text|
       expect(target.webmcp.tools).to eq([{ 'name' => "echo-#{text}", 'description' => "Echoes #{text}" }])
     end
