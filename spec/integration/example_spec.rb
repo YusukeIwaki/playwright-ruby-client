@@ -222,7 +222,17 @@ RSpec.describe 'example' do
 
     it 'should work with Frame' do
       with_page do |page|
-        example_2bc8a0187190738d8dc7b29c66ad5f9f2187fd1827455e9ceb1e9ace26aaf534(page: page)
+        page.route('https://www.theverge.com/**', ->(route, _) {
+          route.fulfill(
+            contentType: 'text/html',
+            body: %q(<iframe name="outer" srcdoc="<iframe name='inner'></iframe>"></iframe>),
+          )
+        })
+        expect {
+          example_2bc8a0187190738d8dc7b29c66ad5f9f2187fd1827455e9ceb1e9ace26aaf534(page: page)
+        }.to output(a_string_including(
+          '@https://www.theverge.com/', ' outer@about:srcdoc', '  inner@about:blank',
+        )).to_stdout
       end
     end
 
