@@ -206,8 +206,14 @@ RSpec.describe 'screencast actions', sinatra: true, playwright_under_test: true 
     first_action.value! rescue nil
 
     second_action = Concurrent::Promises.future { page.click('#b', force: true) rescue nil }
-    expect(cursor).to be_visible
-    second = cursor.evaluate("(el) => ({ top: el.style.top, left: el.style.left })")
+    second = nil
+    Timeout.timeout(5) do
+      loop do
+        second = cursor.evaluate("(el) => ({ top: el.style.top, left: el.style.left })")
+        break if second != first
+        sleep 0.05
+      end
+    end
     expect(second).not_to eq(first)
     second_action.value! rescue nil
 
