@@ -146,7 +146,7 @@ RSpec.describe 'client certificates', sinatra: true, tls: true do
       with_context(**options) do |context|
         page = context.new_page
       end
-    }.to raise_error(/mac verify failure/)
+    }.to raise_error(/mac verify failure|PFX MAC verification failed/)
   end
 
   it 'should fail with matching certificates in legacy pfx format', skip: ENV['CI'] do
