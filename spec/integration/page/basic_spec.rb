@@ -47,10 +47,8 @@ RSpec.describe Playwright::Page do
 
   it 'should fire load when expected' do
     with_page do |page|
-      promise = Concurrent::Promises.future { page.expect_event('load') }
-      page.goto('about:blank')
-      Timeout.timeout(1) do
-        promise.value!
+      page.expect_event('load', timeout: 1000) do
+        page.goto('about:blank')
       end
     end
   end

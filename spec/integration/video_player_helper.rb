@@ -4,7 +4,7 @@ require 'open3'
 require 'tmpdir'
 
 class IntegrationVideoPlayer
-  attr_reader :duration, :frames, :video_width, :video_height
+  attr_reader :duration, :frames, :video_width, :video_height, :fps
 
   def initialize(file_name)
     @file_name = file_name
@@ -40,7 +40,7 @@ class IntegrationVideoPlayer
       'ffprobe',
       '-v', 'error',
       '-select_streams', 'v:0',
-      '-show_entries', 'stream=width,height:format=duration',
+      '-show_entries', 'stream=width,height,r_frame_rate:format=duration',
       '-of', 'json',
       @file_name,
     )
@@ -50,6 +50,8 @@ class IntegrationVideoPlayer
     stream = json.fetch('streams').first
     @video_width = stream.fetch('width')
     @video_height = stream.fetch('height')
+    numerator, denominator = stream.fetch('r_frame_rate').split('/').map(&:to_f)
+    @fps = numerator / denominator
     @duration = (json.fetch('format').fetch('duration').to_f * 1000).round
   end
 

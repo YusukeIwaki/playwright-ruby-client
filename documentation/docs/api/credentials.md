@@ -57,6 +57,7 @@ context.credentials.create(
   userHandle: credential["userHandle"],
   privateKey: credential["privateKey"],
   publicKey: credential["publicKey"],
+  signCount: credential["signCount"],
 )
 context.credentials.install
 
@@ -67,7 +68,7 @@ page.goto("https://example.com/login")
 
 **Usage: save credentials in the storage state, restore later**
 
-See [authentication guide](https://playwright.dev/python/docs/auth) for examples of using saving and resotring the storage state.
+See [authentication guide](https://playwright.dev/python/docs/auth) for examples of using saving and restoring the storage state.
 
 **Defaults**
 
@@ -95,6 +96,7 @@ def create(
       id: nil,
       privateKey: nil,
       publicKey: nil,
+      signCount: nil,
       userHandle: nil)
 ```
 
@@ -106,7 +108,8 @@ seeded credential is discoverable (resident), so the page can resolve it from bo
 username-then-passkey and usernameless passkey flows. The returned object carries the private and public keys, so it can be persisted to disk and re-seeded in a later test.
 
 To **import a known credential**, supply all four of `id`, `userHandle`, `privateKey` and
-`publicKey` together.
+`publicKey` together. Pass `signCount` as well to continue from the
+signature counter the relying party has already seen.
 
 Call [Credentials#install](./credentials#install) before navigating to a page that uses WebAuthn.
 
@@ -132,5 +135,5 @@ Returns every credential currently held by the authenticator, optionally filtere
 `id`. This includes both credentials seeded with [Credentials#create](./credentials#create) and credentials
 the page registered itself by calling `navigator.credentials.create()`.
 
-Each returned credential includes its private and public keys, so a passkey the app just
+Each returned credential includes its private and public keys and the current signature counter, so a passkey the app just
 registered can be saved and re-seeded into a later test with [Credentials#create](./credentials#create) — see the second example in the class overview.

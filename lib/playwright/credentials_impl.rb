@@ -11,13 +11,14 @@ module Playwright
       nil
     end
 
-    def create(rpId, id: nil, userHandle: nil, privateKey: nil, publicKey: nil)
+    def create(rpId, id: nil, userHandle: nil, privateKey: nil, publicKey: nil, signCount: nil)
       params = {
         rpId: rpId,
         id: id,
         userHandle: userHandle,
         privateKey: privateKey,
         publicKey: publicKey,
+        signCount: signCount,
       }.compact
       @browser_context.channel.send_message_to_server('credentialsCreate', params)
     end

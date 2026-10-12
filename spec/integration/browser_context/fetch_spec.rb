@@ -464,4 +464,47 @@ RSpec.describe 'fetch', sinatra: true do
       }.to raise_error(/Test ended/)
     end
   end
+
+  # https://github.com/microsoft/playwright/blob/release-1.64/tests/library/browsercontext-fetch.spec.ts
+  it 'page.request.addCookies should add cookies to the browser context', sinatra: true do
+    with_page do |page|
+      page.request.add_cookies([
+        { name: 'a', value: 'b', url: server_empty_page },
+        { name: 'c', value: 'd', domain: 'localhost', path: '/', expires: Time.now.to_f + 3600 },
+      ])
+      expect(page.context.cookies.map { |c| c.values_at('name', 'value') }.sort).to eq([%w[a b], %w[c d]])
+      sinatra.get('/echo-cookie') { request.env['HTTP_COOKIE'] }
+      expect(page.context.request.get("#{server_prefix}/echo-cookie").text.split(';').map(&:strip).sort).to eq(%w[a=b c=d])
+      page.goto(server_empty_page)
+      expect(page.evaluate('() => document.cookie').split(';').map(&:strip).sort).to eq(%w[a=b c=d])
+    end
+  end
+
+  it 'page.request.cookies should return browser context cookies', sinatra: true do
+    with_page do |page|
+      page.context.add_cookies([
+        { name: 'a', value: 'b', url: server_empty_page },
+        { name: 'c', value: 'd', domain: 'example.com', path: '/' },
+      ])
+      expect(page.request.cookies.map { |c| c['name'] }.sort).to eq(%w[a c])
+      expect(page.request.cookies(urls: server_empty_page).map { |c| c['name'] }).to eq(['a'])
+      expect(page.request.cookies(urls: server_empty_page)).to eq(page.context.cookies(urls: server_empty_page))
+    end
+  end
+
+  it 'page.request.clearCookies should clear browser context cookies', sinatra: true do
+    with_page do |page|
+      page.context.add_cookies([
+        { name: 'a', value: 'b', url: server_empty_page },
+        { name: 'c', value: 'd', url: server_empty_page },
+      ])
+      page.request.clear_cookies(name: 'a')
+      expect(page.context.cookies.map { |c| c['name'] }).to eq(['c'])
+      page.request.clear_cookies
+      expect(page.context.cookies).to eq([])
+      sinatra.get('/echo-cookie') { request.env['HTTP_COOKIE'] || '<none>' }
+      expect(page.request.get("#{server_prefix}/echo-cookie").text).to eq('<none>')
+    end
+  end
+
 end

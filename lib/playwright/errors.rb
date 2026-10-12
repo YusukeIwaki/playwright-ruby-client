@@ -2,7 +2,7 @@ module Playwright
   class Error < StandardError
     # ref: https://github.com/microsoft/playwright-python/blob/0b4a980fed366c4c1dee9bfcdd72662d629fdc8d/playwright/_impl/_helper.py#L155
     def self.parse(error_payload)
-      if error_payload['name'] == 'TimeoutError'
+      error = if error_payload['name'] == 'TimeoutError'
         TimeoutError.new(
           message: error_payload['message'],
           stack: error_payload['stack'],
@@ -19,6 +19,8 @@ module Playwright
           stack: error_payload['stack'],
         )
       end
+      error.code = error_payload['code']
+      error
     end
 
     # @param name [String]
@@ -34,6 +36,7 @@ module Playwright
     attr_reader :name, :message, :stack, :raw_log
     # Error details for `expect` failures (received value, timedOut, customErrorMessage).
     attr_accessor :details
+    attr_accessor :code
 
     def log=(log)
       return unless log

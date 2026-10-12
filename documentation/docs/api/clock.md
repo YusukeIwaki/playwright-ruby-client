@@ -36,6 +36,7 @@ def install(time: nil)
 
 Install fake implementations for the following time-related functions:
 - `Date`
+- `Temporal.Now`
 - `setTimeout`
 - `clearTimeout`
 - `setInterval`

@@ -57,6 +57,53 @@ playwright.chromium.launch do |browser|
 end
 ```
 
+## add_cookies
+
+```
+def add_cookies(cookies)
+```
+
+
+Adds cookies into this request context. They will be sent with matching subsequent requests. For [BrowserContext#request](./browser_context#request)
+and [Page#request](./page#request), this is equivalent to calling [BrowserContext#add_cookies](./browser_context#add_cookies) on the corresponding browser context.
+
+**Usage**
+
+```ruby
+request.add_cookies([cookie_object1, cookie_object2])
+```
+
+## clear_cookies
+
+```
+def clear_cookies(domain: nil, name: nil, path: nil)
+```
+
+
+Removes cookies from this request context. Accepts optional filter. For [BrowserContext#request](./browser_context#request)
+and [Page#request](./page#request), this is equivalent to calling [BrowserContext#clear_cookies](./browser_context#clear_cookies) on the corresponding browser context.
+
+**Usage**
+
+```ruby
+request.clear_cookies
+request.clear_cookies(name: "session-id")
+request.clear_cookies(domain: "my-origin.com")
+request.clear_cookies(path: "/api/v1")
+request.clear_cookies(name: "session-id", domain: "my-origin.com")
+```
+
+## cookies
+
+```
+def cookies(urls: nil)
+```
+
+
+If no URLs are specified, this method returns all cookies. If URLs are specified, only cookies that affect those URLs
+are returned. For [BrowserContext#request](./browser_context#request) and [Page#request](./page#request), this is equivalent to calling
+[BrowserContext#cookies](./browser_context#cookies) on the corresponding browser context.
+
 ## delete
 
 ```

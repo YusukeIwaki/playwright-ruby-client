@@ -281,4 +281,68 @@ RSpec.describe 'FrameLocator' do
       expect(locator.get_attribute('name')).to eq('frame1')
     end
   end
+
+  # https://github.com/microsoft/playwright/blob/release-1.64/tests/page/locator-frame.spec.ts
+  it 'should treat elements inside hidden iframe as hidden' do
+    with_page do |page|
+      page.content = <<~HTML
+        <iframe name="hidden" style="visibility: hidden" srcdoc="<button>Hidden</button>"></iframe>
+        <div style="visibility: hidden">
+          <iframe name="hidden-parent" srcdoc="<button>Hidden parent</button>"></iframe>
+          <iframe name="visible-override" style="visibility: visible" srcdoc="<button>Visible override</button>"></iframe>
+        </div>
+        <iframe name="outer" style="visibility: hidden" srcdoc="<iframe name='inner' srcdoc='<button>Nested</button>'></iframe>"></iframe>
+      HTML
+      [
+        page.frame_locator('[name=hidden]').locator('button'),
+        page.frame_locator('[name=hidden-parent]').locator('button'),
+        page.frame_locator('[name=outer]').frame_locator('[name=inner]').locator('button'),
+      ].each do |button|
+        expect(button).to be_attached
+        expect(button.visible?).to eq(false)
+        expect(button.hidden?).to eq(true)
+        expect(button).to be_hidden
+        expect(button).not_to be_visible
+        button.wait_for(state: 'hidden')
+      end
+      button = page.frame_locator('[name=visible-override]').locator('button')
+      expect(button.visible?).to eq(true)
+      expect(button).to be_visible
+      button.wait_for(state: 'visible')
+    end
+  end
+
+  it 'should wait for hidden iframe to become visible' do
+    with_page do |page|
+      page.content = %q{<iframe name="frame" style="visibility: hidden" srcdoc="<button onclick='window.__clicked = true'>Button</button>"></iframe>}
+      button = page.frame_locator('[name=frame]').locator('button')
+      expect(button).to be_hidden
+      expect { button.click(timeout: 1000) }.to raise_error(/element is inside a hidden frame, retrying/)
+      expect(button.evaluate('() => window.__clicked')).to be_nil
+      click = Concurrent::Promises.future { button.click }
+      visible = Concurrent::Promises.future { expect(button).to be_visible }
+      page.evaluate("() => document.querySelector('iframe').style.visibility = 'visible'")
+      click.value!
+      visible.value!
+      expect(button.evaluate('() => window.__clicked')).to eq(true)
+      page.evaluate("() => document.querySelector('iframe').style.visibility = 'hidden'")
+      expect(button).to be_hidden
+      expect(button.visible?).to eq(false)
+    end
+  end
+
+  it 'should treat elements inside hidden cross-origin iframe as hidden', sinatra: true do
+    with_page do |page|
+      page.goto(server_empty_page)
+      page.content = "<iframe style=\"visibility: hidden\" src=\"#{server_cross_process_prefix}/frames/frame.html\"></iframe>"
+      div = page.frame_locator('iframe').locator('div')
+      expect(div).to have_text("Hi, I'm frame")
+      expect(div.visible?).to eq(false)
+      expect(div).to be_hidden
+      page.evaluate("() => document.querySelector('iframe').style.visibility = 'visible'")
+      expect(div).to be_visible
+      expect(div.visible?).to eq(true)
+    end
+  end
+
 end

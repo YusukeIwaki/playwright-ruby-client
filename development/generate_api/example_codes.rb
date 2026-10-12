@@ -46,6 +46,20 @@ module ExampleCodes
     end
   end
 
+  # APIRequestContext#add_cookies
+  def example_c660aff4beb8731b2eae5c6a848c042843281033a3ab48ae30e2d7b3490cb501(request:, cookie_object1:, cookie_object2:)
+    request.add_cookies([cookie_object1, cookie_object2])
+  end
+
+  # APIRequestContext#clear_cookies
+  def example_7db940bba7d23476943133061e9d9e696d5afc9489ec6930042db8d76322487d(request:)
+    request.clear_cookies
+    request.clear_cookies(name: "session-id")
+    request.clear_cookies(domain: "my-origin.com")
+    request.clear_cookies(path: "/api/v1")
+    request.clear_cookies(name: "session-id", domain: "my-origin.com")
+  end
+
   # APIRequestContext#fetch
   def example_19c86319c1f40a2cae90cfaf7f6471c50b59319e8b08d6e37d9be9d4697de0b8(api_request_context:)
     data = {
@@ -459,7 +473,7 @@ module ExampleCodes
   end
 
   # Credentials
-  def example_4418a8e24419f983d07a8957cbd2f580f7aced3efc4f94457f8c263bb197c482(browser:)
+  def example_a1fe8586a14f833a8e191eed7e91e7c4c9ddf1009aa834c9fa1015a6daa1fd90(browser:)
     # later test: seed the captured passkey so the app starts already enrolled.
     credential = JSON.parse(File.read("playwright/.auth/passkey.json"))
     context = browser.new_context
@@ -469,6 +483,7 @@ module ExampleCodes
       userHandle: credential["userHandle"],
       privateKey: credential["privateKey"],
       publicKey: credential["publicKey"],
+      signCount: credential["signCount"],
     )
     context.credentials.install
 
@@ -1146,6 +1161,13 @@ module ExampleCodes
     banana = page.get_by_role("listitem").last
   end
 
+  # Locator#normalize
+  def example_0b5dea0e2d1d1b1d0133349b0ba0cd8991468a9586d00b97a6af0384236f46a2(page:)
+    normalized = page.get_by_ref("e2").normalize
+    puts normalized.to_s
+    # get_by_role("button", name="Submit")
+  end
+
   # Locator#nth
   def example_d6cc7c4a653d7139137c582ad853bebd92e3b97893fb6d5f88919553404c57e4(page:)
     banana = page.get_by_role("listitem").nth(2)
@@ -1240,6 +1262,12 @@ module ExampleCodes
   def example_fe6f0a646d9e680807072ce223c7fdf83033490839c9a04e94ac48c278cb5568(page:)
     order_sent = page.locator("#order-sent")
     order_sent.wait_for
+  end
+
+  # Locator#within
+  def example_622cccefcda0bf4d35e338d1bf0c045f64815fc8b81a4792506a912e3e1abf3c(page:)
+    third_column = page.get_by_role("cell").nth(2).within(page.get_by_role("row"))
+    expect(third_column).to have_text(["Apple", "Banana", "Cherry"])
   end
 
   # LocatorAssertions
@@ -1709,6 +1737,11 @@ module ExampleCodes
   def example_baa3371b838c7b85056072b30bb30405debbc593119cd8cb214052f338aca062(page:)
     locator = page.frame_locator.get_by_role('button')
     locator.click
+  end
+
+  # Page#get_by_ref
+  def example_aedd4380b0c218a8c79f80ea43f5b0180044f3d501c7282f1cadfb050e25124a(page:)
+    page.get_by_ref("e2").click
   end
 
   # Page#pdf

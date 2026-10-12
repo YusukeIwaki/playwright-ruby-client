@@ -1,7 +1,7 @@
 require 'spec_helper'
 require "playwright/test"
 
-# Port of tests/page/page-aria-snapshot-ai.spec.ts
+# https://github.com/microsoft/playwright/blob/release-1.64/tests/page/page-aria-snapshot-ai.spec.ts
 # Helper matching upstream's toContainYaml: strip common indent, then check string inclusion.
 def unshift(text)
   lines = text.split("\n").reject { |l| l.strip.empty? }
@@ -28,11 +28,11 @@ RSpec.describe 'ariaSnapshot AI' do
           - button "Two" [ref=e3]
           - button "Three" [ref=e4]
       YAML
-      expect(page.locator('aria-ref=e2')).to have_text('One')
-      expect(page.locator('aria-ref=e3')).to have_text('Two')
-      expect(page.locator('aria-ref=e4')).to have_text('Three')
+      expect(page.get_by_ref('e2')).to have_text('One')
+      expect(page.get_by_ref('e3')).to have_text('Two')
+      expect(page.get_by_ref('e4')).to have_text('Three')
 
-      page.locator('aria-ref=e3').evaluate("e => e.textContent = 'Not Two'")
+      page.get_by_ref('e3').evaluate("e => e.textContent = 'Not Two'")
 
       snapshot2 = snapshot_for_ai(page)
       expect(snapshot2).to include(unshift(<<~YAML))
@@ -105,31 +105,31 @@ RSpec.describe 'ariaSnapshot AI' do
             - generic [ref=f2e1]: Hi, I'm frame
       YAML
 
-      href = page.locator('aria-ref=e1').evaluate('e => e.ownerDocument.defaultView.location.href')
+      href = page.get_by_ref('e1').evaluate('e => e.ownerDocument.defaultView.location.href')
       expect(href).to eq("#{server_prefix}/frames/nested-frames.html")
 
-      href2 = page.locator('aria-ref=f1e2').evaluate('e => e.ownerDocument.defaultView.location.href')
+      href2 = page.get_by_ref('f1e2').evaluate('e => e.ownerDocument.defaultView.location.href')
       expect(href2).to eq("#{server_prefix}/frames/two-frames.html")
 
-      href3 = page.locator('aria-ref=f4e2').evaluate('e => e.ownerDocument.defaultView.location.href')
+      href3 = page.get_by_ref('f4e2').evaluate('e => e.ownerDocument.defaultView.location.href')
       expect(href3).to eq("#{server_prefix}/frames/frame.html")
 
-      resolved = page.locator('aria-ref=e1').normalize
-      expect(resolved.to_s).to eq('Locator@body')
+      resolved = page.get_by_ref('e1').normalize
+      expect(resolved.to_s).to eq('locator("body")')
 
-      resolved2 = page.locator('aria-ref=f4e2').normalize
+      resolved2 = page.get_by_ref('f4e2').normalize
       expect(resolved2.to_s).to eq(
-        'Locator@iframe[name="2frames"] >> internal:control=enter-frame >> iframe[name="dos"] >> internal:control=enter-frame >> internal:text="Hi, I\'m frame"i'
+        %q{locator("iframe[name=\"2frames\"]").content_frame.locator("iframe[name=\"dos\"]").content_frame.get_by_text("Hi, I'm frame")}
       )
 
       # Should tolerate .describe().
-      resolved3 = page.locator('aria-ref=f3e2').describe('foo bar').normalize
+      resolved3 = page.get_by_ref('f3e2').describe('foo bar').normalize
       expect(resolved3.to_s).to eq(
-        'Locator@iframe[name="2frames"] >> internal:control=enter-frame >> iframe[name="uno"] >> internal:control=enter-frame >> internal:text="Hi, I\'m frame"i'
+        %q{locator("iframe[name=\"2frames\"]").content_frame.locator("iframe[name=\"uno\"]").content_frame.get_by_text("Hi, I'm frame")}
       )
 
       expect {
-        page.locator('aria-ref=e1000').normalize
+        page.get_by_ref('e1000').normalize
       }.to raise_error(/No element matching aria-ref=e1000/)
     end
   end
@@ -161,7 +161,7 @@ RSpec.describe 'ariaSnapshot AI' do
             - iframe [ref=e6]:
               - button "button2" [ref=f2e2]
       YAML
-      expect(page.locator('aria-ref=f2e2')).to have_text('button2')
+      expect(page.get_by_ref('f2e2')).to have_text('button2')
 
       page.evaluate(<<~JS)
         () => {
@@ -179,8 +179,8 @@ RSpec.describe 'ariaSnapshot AI' do
             - iframe [ref=e6]:
               - button "button2" [ref=f2e2]
       YAML
-      expect(page.locator('aria-ref=f3e2')).to have_text('button1')
-      expect(page.locator('aria-ref=f2e2')).to have_text('button2')
+      expect(page.get_by_ref('f3e2')).to have_text('button1')
+      expect(page.get_by_ref('f2e2')).to have_text('button2')
     end
   end
 

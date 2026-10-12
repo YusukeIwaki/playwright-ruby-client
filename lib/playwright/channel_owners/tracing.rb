@@ -18,11 +18,13 @@ module Playwright
       @channel.send_message_to_server('tracingStart', params)
       trace_name = @channel.send_message_to_server('tracingStartChunk', { title: title, name: name }.compact)
       start_collecting_stacks(trace_name)
+      DisposableStub.new { stop }
     end
 
     def start_chunk(title: nil, name: nil)
       trace_name = @channel.send_message_to_server('tracingStartChunk', { title: title, name: name }.compact)
       start_collecting_stacks(trace_name)
+      DisposableStub.new { stop_chunk }
     end
 
     private def start_collecting_stacks(trace_name)

@@ -3,12 +3,28 @@ require 'cgi/escape'
 
 module Playwright
   define_channel_owner :APIRequestContext do
+    include Utils::ClearCookiesParameters
+
     private def after_initialize
       @tracing = ChannelOwners::Tracing.from(@initializer['tracing'])
       @timeout_settings = TimeoutSettings.new
     end
 
     attr_reader :tracing
+
+    def cookies(urls: nil)
+      @channel.send_message_to_server('cookies', urls: urls.nil? ? [] : Array(urls))
+    end
+
+    def add_cookies(cookies)
+      @channel.send_message_to_server('addCookies', cookies: cookies)
+      nil
+    end
+
+    def clear_cookies(domain: nil, name: nil, path: nil)
+      @channel.send_message_to_server('clearCookies', clear_cookies_params(domain: domain, name: name, path: path))
+      nil
+    end
 
     private def _update_timeout_settings(timeout_settings)
       @timeout_settings = timeout_settings

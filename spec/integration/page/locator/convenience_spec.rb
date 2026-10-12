@@ -8,9 +8,9 @@ RSpec.describe 'Locator' do
       inner = outer.locator('#inner')
       check = page.locator('#check')
       page.evaluate('() => 1') # Give them a chance to calculate the preview.
-      expect(outer.to_s).to eq('Locator@#outer')
-      expect(inner.to_s).to eq('Locator@#outer >> #inner')
-      expect(check.to_s).to eq('Locator@#check')
+      expect(outer.to_s).to eq('locator("#outer")')
+      expect(inner.to_s).to eq('locator("#outer").locator("#inner")')
+      expect(check.to_s).to eq('locator("#check")')
     end
   end
 
@@ -249,16 +249,16 @@ RSpec.describe 'Locator' do
     end
   end
 
-  it 'to_s returns formatted locator', pending: "not implemented" do
+  it 'to_s returns formatted locator' do
     with_page do |page|
       page.content = '<button>Submit</button>'
       locator = page.get_by_role('button', name: 'Submit')
-      expect(locator.to_s).to eq("getByRole('button', { name: 'Submit' })")
+      expect(locator.to_s).to eq('get_by_role("button", name="Submit")')
       expect(locator.description).to be_nil
     end
   end
 
-  it 'to_s prefers description', pending: "not implemented" do
+  it 'to_s prefers description' do
     with_page do |page|
       page.content = '<button>Submit</button>'
       locator = page.get_by_role('button', name: 'Submit').describe('Submit button')

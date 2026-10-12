@@ -17,6 +17,7 @@ module Playwright
       @child_frames = Set.new
       @load_states = Set.new(@initializer['loadStates'])
       @event_emitter = Object.new.extend(EventEmitter)
+      @webmcp = WebMCPImpl.new(self)
 
       @channel.on('loadstate', ->(params) {
         on_load_state(add: params['add'], remove: params['remove'])
@@ -24,7 +25,7 @@ module Playwright
       @channel.on('navigated', method(:on_frame_navigated))
     end
 
-    attr_reader :page, :parent_frame
+    attr_reader :page, :parent_frame, :webmcp
     attr_writer :detached
 
     private def _timeout(timeout)
@@ -272,8 +273,8 @@ module Playwright
       JavaScript::Expression.new(pageFunction, arg).eval_on_selector_all(@channel, selector)
     end
 
-    def content
-      @channel.send_message_to_server('content')
+    def content(includeShadow: nil)
+      @channel.send_message_to_server('content', { includeShadow: includeShadow }.compact)
     end
 
     def set_content(html, timeout: nil, waitUntil: nil)

@@ -15,6 +15,20 @@ RSpec.describe 'Clock API' do
     sleep 0.25
   end
 
+  def wait_for_calls(count)
+    # The clock error can arrive before Ruby processes the binding callback.
+    Timeout.timeout(5) { sleep 0.01 until calls.size >= count }
+  end
+
+  def start_timer_evaluation(javascript)
+    # Ruby futures must register the page timer before the mocked clock advances.
+    timer_scheduled = Concurrent::Promises.resolvable_future
+    page.expose_function('timerScheduled', -> { timer_scheduled.fulfill(true); nil })
+    promise = Concurrent::Promises.future { page.evaluate(javascript) }
+    expect(timer_scheduled.value!(5)).to eq(true)
+    promise
+  end
+
   describe 'run_for' do
     before do
       page.clock.install(time: 0)
@@ -68,6 +82,7 @@ RSpec.describe 'Clock API' do
     it 'triggers event when some throw' do
       page.evaluate('async () => { setTimeout(() => { throw new Error("Hoge") }, 100); setTimeout(window.stub, 120) }')
       expect { page.clock.run_for(120) }.to raise_error(/Error: Hoge/)
+      wait_for_calls(1)
       expect(calls.size).to eq(1)
     end
 
@@ -205,12 +220,14 @@ RSpec.describe 'Clock API' do
       js = <<~JAVASCRIPT
       async () => {
         const prev = performance.now();
-        await new Promise(f => setTimeout(f, 1000));
+        const timer = new Promise(f => setTimeout(f, 1000));
+        void window.timerScheduled();
+        await timer;
         const next = performance.now();
         return { prev, next }
       }
       JAVASCRIPT
-      promise = Concurrent::Promises.future { page.evaluate(js) }
+      promise = start_timer_evaluation(js)
       page.clock.run_for(1000)
       wait_for_async_evaluation
       expect(promise.value!).to eq('prev' => 1000, 'next' => 2000)
@@ -229,12 +246,14 @@ RSpec.describe 'Clock API' do
       javascript = <<~JAVASCRIPT
       async () => {
         const prev = performance.now();
-        await new Promise(f => setTimeout(f, 1000));
+        const timer = new Promise(f => setTimeout(f, 1000));
+        void window.timerScheduled();
+        await timer;
         const next = performance.now();
         return { prev, next };
       }
       JAVASCRIPT
-      promise = Concurrent::Promises.future { page.evaluate(javascript) }
+      promise = start_timer_evaluation(javascript)
       page.clock.run_for(1000)
       expect(page.evaluate('performance.timeOrigin')).to eq(1000)
       wait_for_async_evaluation

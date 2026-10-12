@@ -201,6 +201,7 @@
 * wait_for_selector
 * wait_for_timeout
 * wait_for_url
+* webmcp
 
 ## Worker
 
@@ -285,6 +286,7 @@
 * get_by_alt_text
 * get_by_label
 * get_by_placeholder
+* get_by_ref
 * get_by_role
 * get_by_test_id
 * get_by_text
@@ -371,6 +373,7 @@
 * request
 * screencast
 * touchscreen
+* webmcp
 
 ## BrowserContext
 
@@ -533,6 +536,7 @@
 * visible
 * wait_for
 * wait_for_function
+* within
 
 ## FrameLocator
 
@@ -568,6 +572,9 @@
 
 ## APIRequestContext
 
+* add_cookies
+* clear_cookies
+* cookies
 * delete
 * dispose
 * fetch
@@ -661,3 +668,8 @@
 * create
 * delete
 * get
+
+## WebMCP
+
+* call_tool
+* tools

@@ -262,4 +262,26 @@ RSpec.describe 'screencast', sinatra: true do
       context.close
     end
   end
+
+  # https://github.com/microsoft/playwright/blob/release-1.64/tests/library/screencast.spec.ts
+  it 'start should record video with the requested fps' do
+    Dir.mktmpdir do |dir|
+      with_page do |page|
+        path = File.join(dir, 'video.webm')
+        page.screencast.start(path: path, fps: 60)
+        ensure_some_frames(page)
+        page.screencast.stop
+        expect(IntegrationVideoPlayer.new(path).fps).to eq(60)
+      end
+    end
+  end
+
+  it 'start should throw on invalid fps' do
+    Dir.mktmpdir do |dir|
+      with_page do |page|
+        expect { page.screencast.start(path: File.join(dir, 'video.webm'), fps: -1) }.to raise_error(/"fps" must be a positive number, got -1/)
+      end
+    end
+  end
+
 end

@@ -72,4 +72,19 @@ RSpec.describe 'recorder API' do
       expect(result).to include('cancelled')
     end
   end
+
+  # https://github.com/microsoft/playwright/blob/release-1.64/tests/library/inspector/recorder-api.spec.ts
+  it 'should not show the recorder while recording', playwright_under_test: true do
+    with_context do |context|
+      channel = Playwright::PlaywrightApi.unwrap(context).channel
+      channel.send_message_to_server('startRecording', language: 'python')
+      begin
+        expect { context.enable_debug_console! }.to raise_error(/Recording is in progress, stop it before showing the recorder/)
+      ensure
+        channel.send_message_to_server('stopRecording')
+      end
+      context.enable_debug_console!
+    end
+  end
+
 end

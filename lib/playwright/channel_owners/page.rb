@@ -338,8 +338,16 @@ module Playwright
       @main_frame.url
     end
 
-    def content
-      @main_frame.content
+    def content(includeShadow: nil)
+      @main_frame.content(includeShadow: includeShadow)
+    end
+
+    def webmcp
+      @main_frame.webmcp
+    end
+
+    def get_by_ref(ref)
+      locator("aria-ref=#{ref}")
     end
 
     def set_content(html, timeout: nil, waitUntil: nil)

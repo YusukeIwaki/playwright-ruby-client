@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'playwright/test'
 
-# https://github.com/microsoft/playwright/blob/release-1.60/tests/library/screencast-actions.spec.ts
+# https://github.com/microsoft/playwright/blob/release-1.64/tests/library/screencast-actions.spec.ts
 RSpec.describe 'screencast actions', sinatra: true, playwright_under_test: true do
   include Playwright::Test::Matchers
 
@@ -15,8 +15,8 @@ RSpec.describe 'screencast actions', sinatra: true, playwright_under_test: true 
     page.screencast.show_actions(duration: 5000)
     Concurrent::Promises.future { page.click('button') rescue nil }
 
-    expect(page.locator('x-pw-highlight')).to be_visible
-    expect(page.locator('x-pw-action-point')).to be_visible
+    expect(page.locator('x-pw-screencast-highlight')).to have_count(0)
+    expect(page.locator('x-pw-screencast-point')).to have_count(0)
     expect(page.locator('x-pw-title')).to be_visible
     expect(page.locator('x-pw-title')).to have_text(/click/i)
 
@@ -28,35 +28,23 @@ RSpec.describe 'screencast actions', sinatra: true, playwright_under_test: true 
     page = context.new_page
     page.goto("#{server_prefix}/input/button.html")
 
-    page.screencast.show_actions(duration: 5000, fontSize: 32)
+    page.screencast.show_actions(duration: 5000, fontSize: 32, style: {
+      point: 'width: 20px; height: 20px; border-radius: 50%; background: red',
+      highlight: 'outline: 2px solid #333',
+      title: 'top: 100px; background-color: rgb(1, 2, 3)',
+    })
+    button_box = page.locator('button').bounding_box
     Concurrent::Promises.future { page.click('button') rescue nil }
 
-    highlight = page.locator('x-pw-highlight')
+    highlight = page.locator('x-pw-screencast-highlight')
     expect(highlight).to be_visible
-    highlight_style = highlight.evaluate(<<~JAVASCRIPT)
-    (el) => ({
-      backgroundColor: el.style.backgroundColor,
-      borderColor: el.style.borderColor,
-    })
-    JAVASCRIPT
-    expect(highlight_style['backgroundColor']).to eq('rgba(0, 128, 255, 0.15)')
-    expect(highlight_style['borderColor']).to eq('rgba(0, 128, 255, 0.6)')
+    expect(highlight.evaluate('(el) => getComputedStyle(el).outlineWidth')).to eq('2px')
     box = highlight.bounding_box
-    expect(box['width']).to be > 0
-    expect(box['height']).to be > 0
-
-    action_point = page.locator('x-pw-action-point')
-    expect(action_point).to be_visible
-    action_point_style = action_point.evaluate(<<~JAVASCRIPT)
-    (el) => {
-      const cs = getComputedStyle(el);
-      return { width: cs.width, height: cs.height, background: cs.backgroundColor, borderRadius: cs.borderRadius };
-    }
-    JAVASCRIPT
-    expect(action_point_style['width']).to eq('20px')
-    expect(action_point_style['height']).to eq('20px')
-    expect(action_point_style['background']).to eq('rgb(255, 0, 0)')
-    expect(action_point_style['borderRadius']).to eq('10px')
+    %w[x y width height].each { |key| expect(box[key]).to be_within(0.5).of(button_box[key]) }
+    point = page.locator('x-pw-screencast-point').bounding_box
+    expect(point['width']).to eq(20)
+    expect((point['x'] + 10 - (button_box['x'] + button_box['width'] / 2)).abs).to be <= 1
+    expect((point['y'] + 10 - (button_box['y'] + button_box['height'] / 2)).abs).to be <= 1
 
     title = page.locator('x-pw-title')
     expect(title).to be_visible
@@ -64,11 +52,12 @@ RSpec.describe 'screencast actions', sinatra: true, playwright_under_test: true 
     (el) => {
       const cs = getComputedStyle(el);
       return {
-        color: cs.color, borderRadius: cs.borderRadius, padding: cs.padding,
+        color: cs.color, borderRadius: cs.borderRadius, padding: cs.padding, backgroundColor: cs.backgroundColor,
         top: el.style.top, right: el.style.right, fontSize: el.style.fontSize,
       };
     }
     JAVASCRIPT
+    expect(title_style['backgroundColor']).to eq('rgb(1, 2, 3)')
     expect(title_style['color']).to eq('rgb(255, 255, 255)')
     expect(title_style['borderRadius']).to eq('6px')
     expect(title_style['padding']).to eq('6px')
@@ -119,10 +108,11 @@ RSpec.describe 'screencast actions', sinatra: true, playwright_under_test: true 
     page = context.new_page
     page.goto("#{server_prefix}/input/button.html")
 
-    page.screencast.show_actions(duration: 1000)
+    page.screencast.show_actions(duration: 1000, style: { point: 'width: 20px; height: 20px', highlight: 'outline: 2px solid #333' })
     page.click('button')
 
-    expect(page.locator('x-pw-action-point')).to be_hidden
+    expect(page.locator('x-pw-screencast-point')).to have_count(0)
+    expect(page.locator('x-pw-screencast-highlight')).to have_count(0)
     expect(page.locator('x-pw-title')).to be_hidden
 
     context.close
@@ -216,8 +206,14 @@ RSpec.describe 'screencast actions', sinatra: true, playwright_under_test: true 
     first_action.value! rescue nil
 
     second_action = Concurrent::Promises.future { page.click('#b', force: true) rescue nil }
-    expect(cursor).to be_visible
-    second = cursor.evaluate("(el) => ({ top: el.style.top, left: el.style.left })")
+    second = nil
+    Timeout.timeout(5) do
+      loop do
+        second = cursor.evaluate("(el) => ({ top: el.style.top, left: el.style.left })")
+        break if second != first
+        sleep 0.05
+      end
+    end
     expect(second).not_to eq(first)
     second_action.value! rescue nil
 
@@ -232,7 +228,7 @@ RSpec.describe 'screencast actions', sinatra: true, playwright_under_test: true 
     page.screencast.show_actions(duration: 5000, cursor: 'none')
     Concurrent::Promises.future { page.click('button') rescue nil }
 
-    expect(page.locator('x-pw-action-point')).to be_visible
+    expect(page.locator('x-pw-title')).to be_visible
     expect(page.locator('x-pw-action-cursor')).to be_hidden
 
     context.close
@@ -255,4 +251,22 @@ RSpec.describe 'screencast actions', sinatra: true, playwright_under_test: true 
 
     context.close
   end
+
+  it 'cursor stays at the last action point until hideActions' do
+    with_page do |page|
+      page.goto("#{server_prefix}/input/button.html")
+      page.screencast.show_actions(duration: 100)
+      page.click('button')
+      expect(page.locator('x-pw-title')).to be_hidden
+      cursor = page.locator('x-pw-action-cursor')
+      expect(cursor).to be_visible
+      position = cursor.evaluate('(el) => ({ top: el.style.top, left: el.style.left })')
+      page.goto(server_empty_page)
+      expect(cursor).to be_visible
+      expect(cursor.evaluate('(el) => ({ top: el.style.top, left: el.style.left })')).to eq(position)
+      page.screencast.hide_actions
+      expect(cursor).to be_hidden
+    end
+  end
+
 end

@@ -116,7 +116,7 @@ When all steps combined have not finished during the specified `timeout`, this m
 ## content
 
 ```
-def content
+def content(includeShadow: nil)
 ```
 
 
@@ -1236,3 +1236,8 @@ Waits for the frame to navigate to the given URL.
 frame.click("a.delayed-navigation") # clicking the link will indirectly cause a navigation
 frame.wait_for_url("**/target.html")
 ```
+
+## webmcp
+
+
+Tools that the frame registers through the experimental [WebMCP](./web_mcp) browser API. See [WebMCP](./web_mcp) for details.

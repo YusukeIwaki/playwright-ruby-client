@@ -1,6 +1,8 @@
 module Playwright
   # @ref https://github.com/microsoft/playwright-python/blob/master/playwright/_impl/_browser_context.py
   define_channel_owner :BrowserContext do
+    include Utils::ClearCookiesParameters
+
     include Utils::PrepareBrowserContextOptions
 
     attr_accessor :browser
@@ -274,36 +276,7 @@ module Playwright
     end
 
     def clear_cookies(domain: nil, name: nil, path: nil)
-      params = {}
-
-      case name
-      when String
-        params[:name] = name
-      when Regexp
-        regex = JavaScript::Regex.new(name)
-        params[:nameRegexSource] = regex.source
-        params[:nameRegexFlags] = regex.flag
-      end
-
-      case domain
-      when String
-        params[:domain] = domain
-      when Regexp
-        regex = JavaScript::Regex.new(domain)
-        params[:domainRegexSource] = regex.source
-        params[:domainRegexFlags] = regex.flag
-      end
-
-      case path
-      when String
-        params[:path] = path
-      when Regexp
-        regex = JavaScript::Regex.new(path)
-        params[:pathRegexSource] = regex.source
-        params[:pathRegexFlags] = regex.flag
-      end
-
-      @channel.send_message_to_server('clearCookies', params)
+      @channel.send_message_to_server('clearCookies', clear_cookies_params(domain: domain, name: name, path: path))
     end
 
     def grant_permissions(permissions, origin: nil)
@@ -459,7 +432,7 @@ module Playwright
       #
       # So, launch inspector as Python app.
       # NOTE: This should be used only for Page#pause at this moment.
-      @channel.send_message_to_server('enableRecorder', language: :python)
+      @channel.send_message_to_server('showRecorder', language: :python)
       @debug_console_enabled = true
     end
 

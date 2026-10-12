@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
+require 'playwright/test'
 require 'tmpdir'
 require './development/generate_api/example_codes'
 
@@ -221,7 +222,17 @@ RSpec.describe 'example' do
 
     it 'should work with Frame' do
       with_page do |page|
-        example_2bc8a0187190738d8dc7b29c66ad5f9f2187fd1827455e9ceb1e9ace26aaf534(page: page)
+        page.route('https://www.theverge.com/**', ->(route, _) {
+          route.fulfill(
+            contentType: 'text/html',
+            body: %q(<iframe name="outer" srcdoc="<iframe name='inner'></iframe>"></iframe>),
+          )
+        })
+        expect {
+          example_2bc8a0187190738d8dc7b29c66ad5f9f2187fd1827455e9ceb1e9ace26aaf534(page: page)
+        }.to output(a_string_including(
+          '@https://www.theverge.com/', ' outer@about:srcdoc', '  inner@about:blank',
+        )).to_stdout
       end
     end
 
@@ -622,12 +633,11 @@ RSpec.describe 'example' do
         expect(message.text).to eq('42')
 
         expect(page.workers.size).to eq(2)
-        waitlist = [
-          Concurrent::Promises.future { worker1.expect_event('close') },
-          Concurrent::Promises.future { worker2.expect_event('close') },
-        ]
-        page.evaluate('workerObjs => workerObjs.forEach(worker => worker.terminate())', arg: worker_objs)
-        Concurrent::Promises.zip(*waitlist).value!
+        worker1.expect_event('close') do
+          worker2.expect_event('close') do
+            page.evaluate('workerObjs => workerObjs.forEach(worker => worker.terminate())', arg: worker_objs)
+          end
+        end
         expect(page.workers).to be_empty
       end
     end
@@ -655,6 +665,42 @@ RSpec.describe 'Playwright 1.63 examples' do
       page.content = '<button hidden>Hidden</button><button onclick="window.clicked = true">Visible</button>'
       example_29b5672d77ce36156e932588ac4f0254f2e2fc3c9ab5e527734d84a5101772a6(page: page)
       expect(page.evaluate('window.clicked')).to eq(true)
+    end
+  end
+end
+
+RSpec.describe 'Playwright 1.64 examples' do
+  include ExampleCodes
+  include Playwright::Test::Matchers
+
+  it 'locates and normalizes an aria ref' do
+    with_page do |page|
+      page.content = '<button onclick="window.clicked = true">Submit</button>'
+      page.aria_snapshot(mode: 'ai')
+      example_0b5dea0e2d1d1b1d0133349b0ba0cd8991468a9586d00b97a6af0384236f46a2(page: page)
+      example_aedd4380b0c218a8c79f80ea43f5b0180044f3d501c7282f1cadfb050e25124a(page: page)
+      expect(page.evaluate('window.clicked')).to eq(true)
+    end
+  end
+
+  it 'locates a column within every row' do
+    with_page do |page|
+      page.content = '<table><tr><td>1</td><td>2</td><td>Apple</td></tr><tr><td>3</td><td>4</td><td>Banana</td></tr><tr><td>5</td><td>6</td><td>Cherry</td></tr></table>'
+      example_622cccefcda0bf4d35e338d1bf0c045f64815fc8b81a4792506a912e3e1abf3c(page: page)
+    end
+  end
+
+  it 'adds and clears request cookies' do
+    with_context do |context|
+      request = context.request
+      example_c660aff4beb8731b2eae5c6a848c042843281033a3ab48ae30e2d7b3490cb501(
+        request: request,
+        cookie_object1: { name: 'session-id', value: '1', domain: 'my-origin.com', path: '/' },
+        cookie_object2: { name: 'other', value: '2', domain: 'my-origin.com', path: '/api/v1' },
+      )
+      expect(request.cookies.size).to eq(2)
+      example_7db940bba7d23476943133061e9d9e696d5afc9489ec6930042db8d76322487d(request: request)
+      expect(request.cookies).to eq([])
     end
   end
 end
