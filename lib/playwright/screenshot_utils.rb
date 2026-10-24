@@ -1,5 +1,3 @@
-require 'mime/types'
-
 module Playwright
   module ScreenshotUtils
     module_function
@@ -8,6 +6,7 @@ module Playwright
       return type if type
       return nil unless path
 
+      require 'mime/types'
       mime_type = MIME::Types.type_for(path).first
       case mime_type&.content_type
       when 'image/png'
