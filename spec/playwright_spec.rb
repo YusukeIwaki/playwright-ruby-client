@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 RSpec.describe Playwright do
+  it 'does not load mime-types until a MIME type is needed' do
+    script = "require 'playwright'; print $LOADED_FEATURES.grep(%r{/mime/types\\.rb\\z}).size"
+    output = IO.popen([RbConfig.ruby, '-I', File.expand_path('../lib', __dir__), '-e', script], &:read)
+
+    expect(output).to eq('0')
+  end
+
   it 'has a version number' do
     expect(Playwright::VERSION).not_to be nil
   end
