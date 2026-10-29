@@ -1274,7 +1274,7 @@ module ExampleCodes
   def example_eff0600f575bf375d7372280ca8e6dfc51d927ced49fbcb75408c894b9e0564e(page:)
     page.content = <<~HTML
     <div id="my_status" class="status">Pending</div>
-    <button onClick="setTimeout(() => { document.getElementById('my_status').innerText='Something Submitted!!' }, 2000)">Click me</button>
+    <button onClick="setTimeout(() => { document.getElementById('my_status').innerText='Submitted' }, 2000)">Click me</button>
     HTML
 
     page.get_by_role("button").click
