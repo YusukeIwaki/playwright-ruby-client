@@ -774,6 +774,34 @@ RSpec.describe 'Page#route', sinatra: true do
   #   expect(resp).toEqual(['electric', 'gas']);
   # });
 
+  # https://github.com/microsoft/playwright/issues/43242
+  it 'should not abort preflighted cross-origin redirect when a route is registered' do
+    allow_cors = ->(app) {
+      app.headers(
+        "Access-Control-Allow-Origin" => app.request.env["HTTP_ORIGIN"] || "*",
+        "Access-Control-Allow-Credentials" => "true",
+        "Access-Control-Allow-Headers" => "x-app-version",
+      )
+    }
+    file_url = "#{server_prefix}/file"
+    sinatra.options('/download') { allow_cors.call(self); status 204 }
+    sinatra.get('/download') { allow_cors.call(self); redirect file_url, 302 }
+    sinatra.options('/file') { allow_cors.call(self); status 204 }
+    sinatra.get('/file') { allow_cors.call(self); "file contents" }
+
+    with_page do |page|
+      page.goto(server_empty_page)
+      page.route('**/never-matches', ->(route, _) { route.continue })
+      result = page.evaluate(<<~JAVASCRIPT, arg: "#{server_cross_process_prefix}/download")
+      async (url) => {
+        const response = await fetch(url, { credentials: 'include', headers: { 'X-App-Version': '1.2.3' } });
+        return `${response.status} ${await response.text()}`;
+      }
+      JAVASCRIPT
+      expect(result).to eq("200 file contents")
+    end
+  end
+
   # it('should reject cors with disallowed credentials', async ({page, server}) => {
   #   await page.goto(server.EMPTY_PAGE);
   #   await page.route('**/cars', async route => {
