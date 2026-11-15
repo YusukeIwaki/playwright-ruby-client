@@ -27,14 +27,18 @@ RSpec.describe 'Locator highlight', playwright_under_test: true do
 
       highlight = page.locator('x-pw-highlight')
       expect(highlight).to be_visible
+      # Browsers serialize the 'outline' shorthand in different orders, check the longhands.
       style = highlight.evaluate(<<~JAVASCRIPT)
         (el) => ({
-          outline: el.style.outline,
+          outlineWidth: el.style.outlineWidth,
+          outlineStyle: el.style.outlineStyle,
+          outlineColor: el.style.outlineColor,
           backgroundColor: el.style.backgroundColor,
         })
       JAVASCRIPT
-      expected_outline = webkit? ? '3px solid rgb(255, 0, 0)' : 'rgb(255, 0, 0) solid 3px'
-      expect(style['outline']).to eq(expected_outline)
+      expect(style['outlineWidth']).to eq('3px')
+      expect(style['outlineStyle']).to eq('solid')
+      expect(style['outlineColor']).to eq('rgb(255, 0, 0)')
       expect(style['backgroundColor']).to eq('rgba(0, 255, 0, 0.25)')
     end
   end

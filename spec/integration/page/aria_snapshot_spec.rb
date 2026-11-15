@@ -872,4 +872,30 @@ RSpec.describe 'ariaSnapshot' do
       SNAPSHOT
     end
   end
+
+  it 'should include inert elements and elements outside of a modal dialog', annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/36938' } do
+    with_page do |page|
+      page.content = <<~HTML
+        <button>Hi</button>
+        <button inert>Hello</button>
+        <div inert>
+          <button>Yay</button>
+        </div>
+        <dialog id=dialog>
+          <button>Inside</button>
+        </dialog>
+        <script>
+          document.getElementById('dialog').showModal();
+        </script>
+      HTML
+
+      check_and_match_snapshot(page.locator('body'), <<~SNAPSHOT)
+        - button "Hi"
+        - button "Hello"
+        - button "Yay"
+        - dialog:
+          - button "Inside"
+      SNAPSHOT
+    end
+  end
 end

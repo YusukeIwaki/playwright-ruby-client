@@ -35,6 +35,17 @@ RSpec.describe 'HAR' do
     expect(log['creator']['name']).to eq('Playwright')
   end
 
+  it 'should include set-cookies without equals sign as nameless', sinatra: true, annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/43155' } do
+    sinatra.get('/empty.html') do
+      headers 'Set-Cookie' => ['token; HttpOnly']
+      ''
+    end
+    log = with_page_with_har do |page|
+      page.goto(server_empty_page)
+    end
+    expect(log['entries'][0]['response']['cookies']).to eq([{ 'name' => '', 'value' => 'token', 'httpOnly' => true }])
+  end
+
   it 'should omit content', sinatra: true do
     log = with_page_with_har(record_har_content: :omit) do |page|
       page.goto("#{server_prefix}/har.html")
@@ -208,6 +219,22 @@ RSpec.describe 'HAR context lifecycle', sinatra: true do
       end
       urls = JSON.parse(File.read(path))['log']['entries'].map { |entry| entry['request']['url'] }
       expect(urls).to eq([server_empty_page])
+    end
+  end
+
+  it 'should record nameless API request cookies', annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/43155' } do
+    Dir.mktmpdir do |dir|
+      path = File.join(dir, 'request.har')
+      with_context do |context|
+        context.request.tracing.start_har(path)
+        context.request.get("#{server_prefix}/simple.json", headers: { 'cookie' => 'nameless; other=val' })
+        context.request.tracing.stop_har
+      end
+      log = JSON.parse(File.read(path))['log']
+      expect(log['entries'][0]['request']['cookies']).to eq([
+        { 'name' => '', 'value' => 'nameless' },
+        { 'name' => 'other', 'value' => 'val' },
+      ])
     end
   end
 

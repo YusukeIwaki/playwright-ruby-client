@@ -127,10 +127,13 @@ RSpec.describe 'Clock API' do
       expect(calls.size).to eq(925)
     end
 
-    it 'throws for invalid format' do
+    it 'throws for invalid format', sinatra: true, annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/43783' } do
       page.evaluate('async () => { setInterval(window.stub, 10000) }')
       expect { page.clock.run_for('12:02:34:10') }.to raise_error(/numbers, 'mm:ss' and 'hh:mm:ss'/)
+      # The upstream NaN and Infinity cases are not ported: Ruby cannot serialize them to JSON.
       expect(calls).to be_empty
+      page.goto(server_empty_page)
+      expect(page.evaluate('() => Date.now()')).to eq(1000)
     end
 
     it 'returns the current now value' do
@@ -153,11 +156,16 @@ RSpec.describe 'Clock API' do
       expect(calls).to be_empty
     end
 
-    it 'pushes back execution time for skipped timers' do
+    it 'pushes back execution time for skipped timers', sinatra: true, annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/43783' } do
+      page.goto(server_empty_page)
       page.evaluate('async () => { setTimeout(() => { window.stub(Date.now()) }, 1000) }')
-      page.clock.fast_forward(2000)
+      fifty_days = 50 * 24 * 60 * 60 * 1000
+      page.clock.fast_forward(fifty_days)
       wait_for_async_evaluation
-      expect(calls).to eq([[1000 + 2000]])
+      expect(calls).to eq([[1000 + fifty_days]])
+      expect(page.evaluate('() => Date.now()')).to eq(1000 + fifty_days)
+      page.reload
+      expect(page.evaluate('() => Date.now()')).to eq(1000 + fifty_days)
     end
 
     it 'supports string time arguments' do

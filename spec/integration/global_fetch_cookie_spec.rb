@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-# https://github.com/microsoft/playwright/blob/release-1.64/tests/library/global-fetch-cookie.spec.ts
+# https://github.com/microsoft/playwright/blob/v1.65.1/tests/library/global-fetch-cookie.spec.ts
 RSpec.describe 'APIRequestContext cookies', sinatra: true do
   before do
     @request_context = playwright.request.new_context
@@ -31,7 +31,7 @@ RSpec.describe 'APIRequestContext cookies', sinatra: true do
     @request_context.add_cookies([
       { name: 'a', value: 'b', domain: 'localhost', path: '/' },
       { name: 'c', value: 'd', domain: 'localhost', path: '/input' },
-      { name: 'e', value: 'f', domain: 'one.com', path: '/' },
+      { name: 'e', value: 'f', domain: '.one.com', path: '/' },
       { name: 'g', value: 'h', domain: 'two.com', path: '/', secure: true },
     ])
     expect(@request_context.cookies.map { |c| c['name'] }).to eq(%w[a c e g])
@@ -40,6 +40,59 @@ RSpec.describe 'APIRequestContext cookies', sinatra: true do
     expect(@request_context.cookies(urls: ['http://sub.one.com/', 'http://two.com/']).map { |c| c['name'] }).to eq(['e'])
     expect(@request_context.cookies(urls: ['http://sub.one.com/', 'https://two.com/']).map { |c| c['name'] }).to eq(%w[e g])
     expect(@request_context.cookies(urls: 'http://other.com/')).to eq([])
+  end
+
+  it 'cookies should only return cookies that apply to the url', annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/43078' } do
+    @request_context.add_cookies([
+      { name: 'hostonly', value: 'v', domain: 'one.com', path: '/api' },
+      { name: 'subdomains', value: 'v', domain: '.one.com', path: '/api' },
+      { name: 'slash', value: 'v', domain: 'one.com', path: '/foo/' },
+    ])
+    names = ->(url) { @request_context.cookies(urls: url).map { |c| c['name'] } }
+    expect(names.call('http://one.com/api')).to eq(%w[hostonly subdomains])
+    expect(names.call('http://one.com/api/x')).to eq(%w[hostonly subdomains])
+    expect(names.call('http://one.com/apiv2')).to eq([])
+    expect(names.call('http://sub.one.com/api')).to eq(['subdomains'])
+    expect(names.call('http://notone.com/api')).to eq([])
+    expect(names.call('http://one.com/foo')).to eq([])
+    expect(names.call('http://one.com/foo/')).to eq(['slash'])
+    expect(names.call('http://one.com/foo/bar')).to eq(['slash'])
+  end
+
+  # 'should only send cookies that apply to the url' is not ported: it resolves one.com
+  # through the internal __testHookLookup option of the Node.js client.
+
+  it 'should send nameless cookies as value only', annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/43155' } do
+    @request_context.add_cookies([
+      { name: '', value: 'nameless', url: server_empty_page },
+      { name: 'a', value: 'b', url: server_empty_page },
+    ])
+    cookie_header = Concurrent::Promises.resolvable_future
+    sinatra.get('/empty.html') do
+      cookie_header.fulfill(request.env['HTTP_COOKIE'])
+      ''
+    end
+    @request_context.get(server_empty_page)
+    expect(cookie_header.value!(5)).to eq('nameless; a=b')
+  end
+
+  it 'should store Set-Cookie without equals sign as nameless cookie', annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/43155' } do
+    sinatra.get('/setcookie.html') do
+      headers 'Set-Cookie' => ['token; path=/', 'a=; path=/']
+      ''
+    end
+    @request_context.get("#{server_prefix}/setcookie.html")
+    expect(@request_context.cookies.map { |c| { name: c['name'], value: c['value'] } }).to eq([
+      { name: '', value: 'token' },
+      { name: 'a', value: '' },
+    ])
+    cookie_header = Concurrent::Promises.resolvable_future
+    sinatra.get('/empty.html') do
+      cookie_header.fulfill(request.env['HTTP_COOKIE'])
+      ''
+    end
+    @request_context.get(server_empty_page)
+    expect(cookie_header.value!(5)).to eq('token; a=')
   end
 
   it 'cookies should include cookies from Set-Cookie header' do
