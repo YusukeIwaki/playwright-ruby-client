@@ -128,7 +128,7 @@ Below is the HTML markup and the respective ARIA snapshot:
 ```
 
 An AI-optimized snapshot, controlled by `mode`, is different from a default snapshot:
-1. Includes element references `[ref=e2]`. 2. Does not wait for an element matching the locator, and throws when no elements match. 3. Includes snapshots of `<iframe>`s inside the target.
+1. Includes element references `[ref=e2]`. 2. Does not wait for an element matching the locator, and throws when no elements match. 3. Includes snapshots of `<iframe>`s inside the target. 4. Can omit names that repeat printed descendants, such as a heading containing a link. Names that identify dialogs, landmarks, groups, tables and table headers are retained.
 
 ## blur
 
@@ -1331,11 +1331,11 @@ See [scrolling](https://playwright.dev/python/docs/input#scrolling) for alternat
 
 ```
 def select_option(
-      element: nil,
-      index: nil,
       value: nil,
-      label: nil,
+      element: nil,
       force: nil,
+      index: nil,
+      label: nil,
       noWaitAfter: nil,
       timeout: nil)
 ```
