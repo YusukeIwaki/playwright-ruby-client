@@ -8,8 +8,8 @@ module Playwright
       emit(params['method'], params['params'])
     end
 
-    def send_message(method, params: {})
-      @channel.send_message_to_server('send', method: method, params: params)
+    def send_message(method, params: {}, timeout: nil)
+      @channel.send_message_to_server('send', method: method, params: params, timeout: timeout || 0)
     end
 
     def detach

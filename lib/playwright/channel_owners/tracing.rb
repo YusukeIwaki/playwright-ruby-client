@@ -135,11 +135,11 @@ module Playwright
 
     def start_har(path, content: nil, mode: nil, urlFilter: nil, resourcesDir: nil)
       raise 'HAR recording has already been started' if @har_id
-      if resourcesDir && path.end_with?('.zip')
+      if resourcesDir && path.match?(/\.zip\z/i)
         raise 'resourcesDir option is not compatible with a .zip har file'
       end
 
-      default_content = path.end_with?('.zip') ? 'attach' : 'embed'
+      default_content = path.match?(/\.zip\z/i) ? 'attach' : 'embed'
       @har_id = record_into_har(path, nil,
         url: urlFilter,
         update_content: content || default_content,
@@ -162,7 +162,7 @@ module Playwright
       options = {
         content: update_content || 'attach',
         mode: update_mode || 'minimal',
-        harPath: har.end_with?('.zip') ? nil : har,
+        harPath: har.match?(/\.zip\z/i) ? nil : har,
         resourcesDir: resources_dir,
       }.compact
 
@@ -188,7 +188,7 @@ module Playwright
       return unless har_params
 
       path = har_params[:path]
-      is_zip = path.end_with?('.zip')
+      is_zip = path.match?(/\.zip\z/i)
       local_utils = @connection.local_utils
 
       if !@connection.remote?
