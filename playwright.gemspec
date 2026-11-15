@@ -27,8 +27,7 @@ Gem::Specification.new do |spec|
         f.include?(".circleci") ||
         f.start_with?("development/") ||
         f == "AGENTS.md" ||
-        f == "CLAUDE.md" ||
-        f.match(%r{\ACLAUDE/.*\.md\z})
+        f.match(%r{\AAGENTS/.*\.md\z})
     end
   end + `find lib/playwright_api -name *.rb -type f`.split("\n") + `find sig -name *.rbs -type f`.split("\n")
   spec.bindir        = 'exe'

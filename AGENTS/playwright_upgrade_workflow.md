@@ -12,7 +12,7 @@ Standard process for `Update Playwright driver to 1.xx.x` tasks.
 - `.circleci/config.yml` remote Playwright server image and `playwright-core@...` version
 
 2. Review upstream Playwright PRs
-- Follow `CLAUDE/upstream_pr_review.md`.
+- Follow `AGENTS/upstream_pr_review.md`.
 - This review is mandatory for Node.js Playwright to Ruby porting work.
 - Do not start deciding Ruby implementation scope from generated API diffs alone.
 
@@ -27,7 +27,7 @@ Standard process for `Update Playwright driver to 1.xx.x` tasks.
 - `find documentation/docs -name "*.md" | grep -v documentation/docs/article/ | xargs rm`
 - `bundle exec ruby development/generate_api.rb`
 - If `development/unimplemented_examples.md` changes, handle it before moving on.
-  Follow `CLAUDE/unimplemented_examples.md`.
+  Follow `AGENTS/unimplemented_examples.md`.
 
 5. Update tests first
 - Add/update `spec/` changes that represent upstream behavior differences.
