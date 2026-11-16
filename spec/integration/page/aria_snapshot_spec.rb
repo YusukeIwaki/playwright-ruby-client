@@ -1,6 +1,7 @@
 require 'spec_helper'
 require "playwright/test"
 
+# https://github.com/microsoft/playwright/blob/v1.65.1/tests/page/page-aria-snapshot.spec.ts
 RSpec.describe 'ariaSnapshot' do
   include Playwright::Test::Matchers
 
@@ -198,6 +199,43 @@ RSpec.describe 'ariaSnapshot' do
       check_and_match_snapshot(page.locator('body'), <<-SNAPSHOT)
         - group: Summary
       SNAPSHOT
+    end
+  end
+
+  it 'AR-008 should not snapshot text directly inside closed details', annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/43019' } do
+    with_page do |page|
+      page.content = <<~HTML
+        <details>
+          <summary>Summary</summary>
+          Details
+        </details>
+      HTML
+
+      check_and_match_snapshot(page.locator('body'), <<~SNAPSHOT)
+        - group: Summary
+      SNAPSHOT
+
+      page.eval_on_selector('details', 'details => details.open = true')
+      check_and_match_snapshot(page.locator('body'), <<~SNAPSHOT)
+        - group: Summary Details
+      SNAPSHOT
+    end
+  end
+
+  it 'AR-009 should not snapshot text that is not assigned to a slot', annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/43019' } do
+    with_page do |page|
+      page.content = <<~HTML
+        <div role=button>Light</div>
+        <script>
+          document.querySelector('div').attachShadow({ mode: 'open' }).innerHTML = '<p>Shadow</p>';
+        </script>
+      HTML
+
+      check_and_match_snapshot(page.locator('body'), <<~SNAPSHOT)
+        - button "Shadow":
+          - paragraph: Shadow
+      SNAPSHOT
+      expect(page.get_by_role('button', name: 'Shadow', exact: true)).to be_visible
     end
   end
 
@@ -768,7 +806,7 @@ RSpec.describe 'ariaSnapshot' do
     end
   end
 
-  it 'should escape special yaml values' do
+  it 'AR-031 should escape special yaml values', annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/43451' } do
     with_page do |page|
       page.content = <<~HTML
       <a href="#">true</a>False
@@ -778,6 +816,9 @@ RSpec.describe 'ariaSnapshot' do
       <a href="#">null</a>NULL
       <a href="#">123</a>123
       <a href="#">-1.2</a>-1.2
+      <a href="#">-</a>-
+      <a href="#">~</a>~
+      <a href="#">.inf</a>.NaN
       <input type=text value="555">
       HTML
 
@@ -803,6 +844,15 @@ RSpec.describe 'ariaSnapshot' do
         - link "-1.2":
           - /url: "#"
         - text: "-1.2"
+        - link "-":
+          - /url: "#"
+        - text: "-"
+        - link "~":
+          - /url: "#"
+        - text: "~"
+        - link ".inf":
+          - /url: "#"
+        - text: ".NaN"
         - textbox: "555"
       SNAPSHOT
     end

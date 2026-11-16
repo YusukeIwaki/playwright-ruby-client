@@ -2,6 +2,7 @@ require 'spec_helper'
 require 'open3'
 require 'tmpdir'
 
+# https://github.com/microsoft/playwright/blob/v1.65.1/tests/library/browsercontext-har.spec.ts
 RSpec.describe 'BrowserContext.route_from_har' do
   let(:har_fulfill) { File.join('spec', 'assets', 'har-fulfill.har') }
 
@@ -272,6 +273,27 @@ RSpec.describe 'BrowserContext.route_from_har' do
         page2.reload
         expect(page2.content).to include('hello, world!')
         expect(page2.locator('body').evaluate("e => window.getComputedStyle(e).getPropertyValue('background-color')")).to eq('rgb(255, 192, 203)')
+      end
+    end
+  end
+
+  it 'HA-114 should reject a malformed har.zip' do
+    Dir.mktmpdir do |dir|
+      Dir.mkdir(File.join(dir, 'aa'))
+      File.write(File.join(dir, 'aa', 'x.har'), '{}')
+      zip_path = File.join(dir, 'valid.zip')
+      _, stderr, status = Open3.capture3('zip', zip_path, 'aa/x.har', chdir: dir)
+      raise "failed to create har archive:\n#{stderr}" unless status.success?
+
+      # yauzl reports '..' in an entry name as an 'error' event while reading entries.
+      zip = File.binread(zip_path).gsub('aa/x.har', '../x.har')
+      har_path = File.join(dir, 'malformed.har.zip')
+      File.binwrite(har_path, zip)
+
+      with_context do |context|
+        expect {
+          context.route_from_har(har_path)
+        }.to raise_error(/invalid relative path: \.\.\/x.har/)
       end
     end
   end
