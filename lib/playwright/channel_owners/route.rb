@@ -1,5 +1,4 @@
 require 'base64'
-require 'mime/types'
 
 module Playwright
   define_channel_owner :Route do
@@ -170,6 +169,7 @@ module Playwright
     end
 
     private def mime_type_for(filepath)
+      require 'mime/types'
       mime_types = MIME::Types.type_for(filepath)
       mime_types.first.to_s || 'application/octet-stream'
     end
