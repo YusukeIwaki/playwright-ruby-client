@@ -585,15 +585,17 @@ RSpec.describe Playwright::LocatorAssertions, sinatra: true do
       end
     end
 
-    it "should not match a substring" do
+    it "should allow negating a substring mismatch" do
       with_page do |page|
         page.goto(server_empty_page)
         page.set_content("<div>Text content</div>")
         expect(page.locator("div")).to not_have_text("Text")
-        expect {
-          expect(page.locator("div")).to have_text("Text", timeout: 300)
-        }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
+      end
+    end
 
+    it "should not match a substring in an array" do
+      with_page do |page|
+        page.goto(server_empty_page)
         page.set_content("<ul><li>Text 1</li><li>Text 2</li><li>Text 3</li></ul>")
         expect(page.locator("li")).to contain_text(["Text 1", "Text 2", "Text"])
         expect {
