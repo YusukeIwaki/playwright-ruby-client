@@ -137,7 +137,7 @@ The opposite of [LocatorAssertions#to_contain_text](./locator_assertions#to_cont
 ## not_to_have_accessible_description
 
 ```ruby
-expect(locator).not_to have_accessible_description(name, ignoreCase: nil, timeout: nil)
+expect(locator).not_to have_accessible_description(description, ignoreCase: nil, timeout: nil)
 ```
 
 
@@ -191,7 +191,7 @@ The opposite of [LocatorAssertions#to_have_count](./locator_assertions#to_have_c
 ## not_to_have_css
 
 ```ruby
-expect(locator).not_to have_css(name, value, timeout: nil)
+expect(locator).not_to have_css(name, value, pseudo: nil, timeout: nil)
 ```
 
 

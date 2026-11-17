@@ -147,10 +147,10 @@ module Playwright
       form_data = nil
       multipart_data = nil
       post_data_buffer = nil
-      if data
+      if !data.nil?
         case data
         when String
-          if headers_obj&.any? { |key, value| key.downcase == 'content-type' && value == 'application/json' }
+          if json_content_type?(headers_obj)
             json_data = json_parsable?(data) ? data : data.to_json
           else
             post_data_buffer = data
@@ -190,6 +190,14 @@ module Playwright
       response = @channel.send_message_to_server('fetch', fetch_params)
 
       APIResponseImpl.new(self, response)
+    end
+
+    private def json_content_type?(headers)
+      return false unless headers
+
+      headers.any? do |key, value|
+        key.to_s.downcase == 'content-type' && value.to_s.split(';').first.to_s.strip.downcase == 'application/json'
+      end
     end
 
     private def file_payload?(value)

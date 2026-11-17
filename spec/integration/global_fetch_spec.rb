@@ -74,4 +74,45 @@ RSpec.describe 'APIRequest credentials', sinatra: true do
     end
   end
 
+  # https://github.com/microsoft/playwright/blob/v1.65.1/tests/library/global-fetch.spec.ts
+  # The upstream `null` case is not ported: Ruby treats `data: nil` as no body.
+  {
+    'object' => { 'foo' => 'bar' },
+    'array' => ['foo', 'bar', 2021],
+    'string' => 'foo',
+    'string (falsey)' => '',
+    'bool' => true,
+    'bool (false)' => false,
+    'number' => 2021,
+    'number (falsey)' => 0,
+    'literal string undefined' => 'undefined',
+  }.each do |type, value|
+    stringified_value = JSON.generate(value)
+
+    it "should json stringify #{type} body when content-type is application/json", annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/43388' } do
+      bodies = Queue.new
+      sinatra.post('/empty.html') do
+        bodies << request.body.read
+        ''
+      end
+      request = playwright.request.new_context
+      ['application/json', 'Application/JSON; charset=utf-8'].each do |content_type|
+        request.post(server_empty_page, headers: { 'content-type' => content_type }, data: value)
+        expect(bodies.pop).to eq(stringified_value)
+      end
+      request.dispose
+    end
+
+    it "should not double stringify #{type} body when content-type is application/json" do
+      bodies = Queue.new
+      sinatra.post('/empty.html') do
+        bodies << request.body.read
+        ''
+      end
+      request = playwright.request.new_context
+      request.post(server_empty_page, headers: { 'content-type' => 'application/json' }, data: stringified_value)
+      expect(bodies.pop).to eq(stringified_value)
+      request.dispose
+    end
+  end
 end

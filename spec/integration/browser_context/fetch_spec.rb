@@ -93,6 +93,20 @@ RSpec.describe 'fetch', sinatra: true do
       expect(response_params['парам2']).to eq('знач2')
     end
 
+    it "#{http_method} should append string params to the URL query", annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/43210' } do
+      # Ruby accepts a query string only with the leading '?'; URLSearchParams is JavaScript-only.
+      request_url = Concurrent::Promises.resolvable_future
+      sinatra.send(SINATRA_MAP[http_method], '/empty.html') do
+        request_url.fulfill(request.fullpath)
+        ''
+      end
+
+      with_context do |context|
+        context.request.send(http_method, "#{server_empty_page}?page=2", params: '?q=cat')
+      end
+      expect(request_url.value!(5)).to eq('/empty.html?page=2&q=cat')
+    end
+
     it "#{http_method} should support failOnStatusCode" do
       with_context do |context|
         expect {
@@ -454,6 +468,27 @@ RSpec.describe 'fetch', sinatra: true do
       expect(multipart['last_name']).to eq('Doe')
       expect(multipart['file'][:tempfile].read).to eq("var x = 10;\r\n;console.log(x);")
     end
+  end
+
+  it 'should escape quotes and newlines in multipart field and file names', annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/43422' } do
+    body_received = Concurrent::Promises.resolvable_future
+    sinatra.post('/empty.html') do
+      body_received.fulfill(request.body.read)
+      ''
+    end
+
+    with_context do |context|
+      context.request.post(server_empty_page,
+        multipart: {
+          "say\"hi\nthere" => 'v1',
+          'file' => { name: "report \"final\"\r\n.txt", mimeType: 'text/plain', buffer: 'hello' },
+        })
+    end
+    headers = body_received.value!(5).split("\r\n").select { |line| line.start_with?('content-disposition') }
+    expect(headers).to eq([
+      'content-disposition: form-data; name="say%22hi%0D%0Athere"',
+      'content-disposition: form-data; name="file"; filename="report %22final%22%0D%0A.txt"',
+    ])
   end
 
   it 'should not work after context dispose', sinatra: true do

@@ -44,7 +44,7 @@ browser_context.add_cookies([cookie_object1, cookie_object2])
 ## add_init_script
 
 ```
-def add_init_script(path: nil, script: nil)
+def add_init_script(script: nil, path: nil)
 ```
 
 

@@ -15,6 +15,18 @@ RSpec.describe 'CDPSession' do
     end
   end
 
+  it 'should respect timeout option' do
+    # The upstream `signal` option is JavaScript-only.
+    with_page do |page|
+      client = page.context.new_cdp_session(page)
+      eval_response = client.send_message('Runtime.evaluate', params: { expression: '1 + 2', returnByValue: true }, timeout: 5000)
+      expect(eval_response['result']['value']).to eq(3)
+      expect {
+        client.send_message('Runtime.evaluate', params: { expression: 'new Promise(() => {})', awaitPromise: true }, timeout: 500)
+      }.to raise_error(Playwright::TimeoutError, /Timeout 500ms exceeded/)
+    end
+  end
+
   it 'should send events', sinatra: true do
     with_page do |page|
       client = page.context.new_cdp_session(page)

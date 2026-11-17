@@ -493,11 +493,11 @@ See [scrolling](https://playwright.dev/python/docs/input#scrolling) for alternat
 
 ```
 def select_option(
-      element: nil,
-      index: nil,
       value: nil,
-      label: nil,
+      element: nil,
       force: nil,
+      index: nil,
+      label: nil,
       noWaitAfter: nil,
       timeout: nil)
 ```

@@ -89,7 +89,7 @@ module Playwright
     private def initialize_har_from_options(record_har_path:, record_har_content:, record_har_omit_content:, record_har_url_filter:, record_har_mode:)
       return unless record_har_path
 
-      default_policy = record_har_path.end_with?('.zip') ? 'attach' : 'embed'
+      default_policy = record_har_path.match?(/\.zip\z/i) ? 'attach' : 'embed'
       content_policy = record_har_content || (record_har_omit_content ? 'omit' : default_policy)
       @tracing.send(:record_into_har, record_har_path, nil,
         url: record_har_url_filter,

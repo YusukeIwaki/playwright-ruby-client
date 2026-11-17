@@ -72,4 +72,32 @@ RSpec.describe 'page-click' do
       ])
     end
   end
+
+  it 'should wait for element to become non-inert' do
+    with_page do |page|
+      page.set_content('<div inert id=container><button onclick="window.__CLICKED=true;"><span>Click target</span></button></div>')
+      click_promise = Concurrent::Promises.future { page.click('text=Click target') }
+      give_it_a_chance_to_resolve(page)
+      expect(page.evaluate('window.__CLICKED')).to be_nil
+      expect(click_promise).not_to be_resolved
+      page.evaluate("() => document.getElementById('container').removeAttribute('inert')")
+      Timeout.timeout(5) { click_promise.value! }
+      expect(page.evaluate('__CLICKED')).to eq(true)
+    end
+  end
+
+  # https://github.com/microsoft/playwright/blob/v1.65.1/tests/page/page-click-timeout-1.spec.ts
+  it 'should timeout waiting for inert element to become non-inert' do
+    with_page do |page|
+      page.set_content('<div inert><button onclick="javascript:window.__CLICKED=true;">Click target</button></div>')
+      expect {
+        page.click('text=Click target', timeout: 3000)
+      }.to raise_error(Playwright::TimeoutError) { |error|
+        expect(error.message).to include('Timeout 3000ms exceeded.')
+        expect(error.message).to include('element is inert')
+        expect(error.message).to include('retrying click action')
+      }
+      expect(page.evaluate('window.__CLICKED')).to be_nil
+    end
+  end
 end

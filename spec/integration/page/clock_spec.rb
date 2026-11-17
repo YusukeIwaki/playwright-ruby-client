@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+# https://github.com/microsoft/playwright/blob/v1.65.1/tests/library/page-clock.spec.ts
 RSpec.describe 'Clock API' do
   around do |example|
     with_page do |page|
@@ -127,10 +128,13 @@ RSpec.describe 'Clock API' do
       expect(calls.size).to eq(925)
     end
 
-    it 'throws for invalid format' do
+    it 'throws for invalid format', sinatra: true, annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/43783' } do
       page.evaluate('async () => { setInterval(window.stub, 10000) }')
       expect { page.clock.run_for('12:02:34:10') }.to raise_error(/numbers, 'mm:ss' and 'hh:mm:ss'/)
+      # The upstream NaN and Infinity cases are not ported: Ruby cannot serialize them to JSON.
       expect(calls).to be_empty
+      page.goto(server_empty_page)
+      expect(page.evaluate('() => Date.now()')).to eq(1000)
     end
 
     it 'returns the current now value' do
@@ -153,11 +157,16 @@ RSpec.describe 'Clock API' do
       expect(calls).to be_empty
     end
 
-    it 'pushes back execution time for skipped timers' do
+    it 'pushes back execution time for skipped timers', sinatra: true, annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/43783' } do
+      page.goto(server_empty_page)
       page.evaluate('async () => { setTimeout(() => { window.stub(Date.now()) }, 1000) }')
-      page.clock.fast_forward(2000)
+      fifty_days = 50 * 24 * 60 * 60 * 1000
+      page.clock.fast_forward(fifty_days)
       wait_for_async_evaluation
-      expect(calls).to eq([[1000 + 2000]])
+      expect(calls).to eq([[1000 + fifty_days]])
+      expect(page.evaluate('() => Date.now()')).to eq(1000 + fifty_days)
+      page.reload
+      expect(page.evaluate('() => Date.now()')).to eq(1000 + fifty_days)
     end
 
     it 'supports string time arguments' do
@@ -495,6 +504,51 @@ RSpec.describe 'Clock API' do
       page.clock.run_for(1)
       wait_for_async_evaluation
       expect(calls).to eq([['outer'], ['inner']])
+    end
+
+    it 'CK-045 should stay paused on the next page when an init script reads the time', sinatra: true, annotation: [
+      { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/43214' },
+      { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/43869' },
+    ] do
+      sinatra.get('/timer.html') do
+        content_type 'text/html'
+        "<script>setTimeout(() => document.documentElement.dataset.fired = 'true', 0);</script>"
+      end
+
+      page.clock.install(time: 0)
+      page.clock.pause_at(1000)
+      page.add_init_script(script: '() => Date.now()')
+      page.goto(server_empty_page)
+      page.clock.run_for(1000)
+      page.goto("#{server_prefix}/timer.html")
+      expect(page.evaluate('() => Date.now()')).to eq(2000)
+      page.wait_for_timeout(500)
+      expect(page.evaluate('() => Date.now()')).to eq(2000)
+      expect(page.evaluate('() => document.documentElement.dataset.fired')).to be_nil
+      page.clock.run_for(0)
+      expect(page.evaluate('() => document.documentElement.dataset.fired')).to eq('true')
+    end
+
+    it 'CK-046 should not advance performance.now() before the first clock call on a new page', sinatra: true, annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/43214' } do
+      page.clock.pause_at(1000)
+      page.goto(server_empty_page)
+      page.wait_for_timeout(500)
+      expect(page.evaluate('() => [performance.now(), Date.now()]')).to eq([0, 1000])
+    end
+
+    it 'CK-220 should keep timers scheduled during load pending when paused', sinatra: true, annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/43869' } do
+      sinatra.get('/timer.html') do
+        content_type 'text/html'
+        "<script>setTimeout(() => document.documentElement.dataset.fired = 'true', 0);</script>"
+      end
+
+      page.clock.install(time: 0)
+      page.clock.pause_at(1000)
+      page.goto("#{server_prefix}/timer.html")
+      page.wait_for_timeout(500)
+      expect(page.evaluate('() => document.documentElement.dataset.fired')).to be_nil
+      page.clock.run_for(0)
+      expect(page.evaluate('() => document.documentElement.dataset.fired')).to eq('true')
     end
   end
 

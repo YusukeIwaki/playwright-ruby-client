@@ -779,7 +779,7 @@ Returns whether the element is [enabled](https://playwright.dev/python/docs/acti
 ## hidden?
 
 ```
-def hidden?(selector, strict: nil, timeout: nil)
+def hidden?(selector, strict: nil)
 ```
 
 
@@ -788,7 +788,7 @@ Returns whether the element is hidden, the opposite of [visible](https://playwri
 ## visible?
 
 ```
-def visible?(selector, strict: nil, timeout: nil)
+def visible?(selector, strict: nil)
 ```
 
 
@@ -909,11 +909,11 @@ returns empty array.
 ```
 def select_option(
       selector,
-      element: nil,
-      index: nil,
       value: nil,
-      label: nil,
+      element: nil,
       force: nil,
+      index: nil,
+      label: nil,
       noWaitAfter: nil,
       strict: nil,
       timeout: nil)

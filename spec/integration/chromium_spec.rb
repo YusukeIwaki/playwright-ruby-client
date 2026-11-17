@@ -59,19 +59,35 @@ RSpec.describe 'chromium' do
       browser_server.close
     end
 
-    it 'should connect to an existing cdp session twice' do
+    # https://github.com/microsoft/playwright/blob/v1.65.1/tests/library/chromium/connect-over-cdp.spec.ts
+    it 'should connect to an existing cdp session twice', sinatra: true do
       browser_server = browser_type.launch(args: ["--remote-debugging-port=9339"])
-      cdp_browsers = 2.times.map { browser_type.connect_over_cdp("http://localhost:9339/") }
-      expect(cdp_browsers.first.contexts.size).to eq(1)
-      cdp_browsers.first.contexts.first.new_page
-      expect(cdp_browsers.last.contexts.size).to eq(1)
-      cdp_browsers.last.contexts.first.new_page
+      begin
+        cdp_browser1 = browser_type.connect_over_cdp('http://127.0.0.1:9339/')
+        cdp_browser2 = browser_type.connect_over_cdp('http://127.0.0.1:9339/')
+        contexts1 = cdp_browser1.contexts
+        expect(contexts1.size).to eq(1)
+        context1 = contexts1.first
+        page1 = context1.new_page
+        page1.goto(server_empty_page)
 
-      expect(cdp_browsers.first.contexts.first.pages.size).to eq(2)
-      expect(cdp_browsers.last.contexts.first.pages.size).to eq(2)
+        contexts2 = cdp_browser2.contexts
+        expect(contexts2.size).to eq(1)
+        context2 = contexts2.first
+        page2 = context2.new_page
+        page2.goto(server_empty_page)
 
-      cdp_browsers.map(&:close)
-      browser_server.close
+        expect(context1.pages.size).to eq(2)
+        expect(context2.pages.size).to eq(2)
+
+        page1.evaluate("() => alert('dialog race')")
+        expect(context2.pages.first.title).to eq('')
+
+        cdp_browser1.close
+        cdp_browser2.close
+      ensure
+        browser_server.close
+      end
     end
 
     it 'should connect over a ws endpoint' do

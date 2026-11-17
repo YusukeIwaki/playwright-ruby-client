@@ -1,6 +1,8 @@
 require 'spec_helper'
+require 'open3'
 require 'tmpdir'
 
+# https://github.com/microsoft/playwright/blob/v1.65.1/tests/library/browsercontext-har.spec.ts
 RSpec.describe 'BrowserContext.route_from_har' do
   let(:har_fulfill) { File.join('spec', 'assets', 'har-fulfill.har') }
 
@@ -237,22 +239,64 @@ RSpec.describe 'BrowserContext.route_from_har' do
   #   expect(await page.content()).toBe('<html><head></head><body>Hello, world</body></html>');
   # });
 
-  # it('should round-trip har.zip', async ({ contextFactory, isAndroid, server }, testInfo) => {
-  #   it.fixme(isAndroid);
+  it 'should round-trip har.zip', sinatra: true, annotation: [
+    { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/43503' },
+    { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/43669' },
+  ] do
+    Dir.mktmpdir do |dir|
+      har_path = File.join(dir, 'har.ZIP')
+      with_context(record_har_mode: 'minimal', record_har_path: har_path) do |context1|
+        page1 = context1.new_page
+        page1.goto("#{server_prefix}/one-style.html")
+      end
 
-  #   const harPath = testInfo.outputPath('har.zip');
-  #   const context1 = await contextFactory({ recordHar: { mode: 'minimal', path: harPath } });
-  #   const page1 = await context1.newPage();
-  #   await page1.goto(server.PREFIX + '/one-style.html');
-  #   await context1.close();
+      har_dir = File.join(dir, 'har')
+      _, stderr, status = Open3.capture3('unzip', har_path, '-d', har_dir)
+      raise "failed to extract har archive:\n#{stderr}" unless status.success?
+      log = JSON.parse(File.read(File.join(har_dir, 'har.har')))['log']
+      expect(log['entries'][0]['response']['content']['_file']).to be_a(String)
 
-  #   const context2 = await contextFactory();
-  #   await context2.routeFromHAR(harPath, { notFound: 'abort' });
-  #   const page2 = await context2.newPage();
-  #   await page2.goto(server.PREFIX + '/one-style.html');
-  #   expect(await page2.content()).toContain('hello, world!');
-  #   await expect(page2.locator('body')).toHaveCSS('background-color', 'rgb(255, 192, 203)');
-  # });
+      with_context do |context2|
+        context2.route_from_har(har_path, notFound: 'abort')
+        page2 = context2.new_page
+        page2.goto("#{server_prefix}/one-style.html")
+        expect(page2.content).to include('hello, world!')
+        expect(page2.locator('body').evaluate("e => window.getComputedStyle(e).getPropertyValue('background-color')")).to eq('rgb(255, 192, 203)')
+
+        File.rename(File.join(har_dir, 'har.har'), File.join(har_dir, 'Recording.HAR'))
+        uppercase_har_path = File.join(dir, 'uppercase.har.zip')
+        _, stderr, status = Open3.capture3('zip', '-r', uppercase_har_path, '.', chdir: har_dir)
+        raise "failed to create har archive:\n#{stderr}" unless status.success?
+
+        context2.unroute_all(behavior: 'wait')
+        context2.route_from_har(uppercase_har_path, notFound: 'abort')
+        page2.reload
+        expect(page2.content).to include('hello, world!')
+        expect(page2.locator('body').evaluate("e => window.getComputedStyle(e).getPropertyValue('background-color')")).to eq('rgb(255, 192, 203)')
+      end
+    end
+  end
+
+  it 'HA-114 should reject a malformed har.zip' do
+    Dir.mktmpdir do |dir|
+      Dir.mkdir(File.join(dir, 'aa'))
+      File.write(File.join(dir, 'aa', 'x.har'), '{}')
+      zip_path = File.join(dir, 'valid.zip')
+      _, stderr, status = Open3.capture3('zip', zip_path, 'aa/x.har', chdir: dir)
+      raise "failed to create har archive:\n#{stderr}" unless status.success?
+
+      # yauzl reports '..' in an entry name as an 'error' event while reading entries.
+      zip = File.binread(zip_path).gsub('aa/x.har', '../x.har')
+      har_path = File.join(dir, 'malformed.har.zip')
+      File.binwrite(har_path, zip)
+
+      with_context do |context|
+        expect {
+          context.route_from_har(har_path)
+        }.to raise_error(/invalid relative path: \.\.\/x.har/)
+      end
+    end
+  end
 
   it 'should produce extracted zip', sinatra: true do
     Dir.mktmpdir do |dir|

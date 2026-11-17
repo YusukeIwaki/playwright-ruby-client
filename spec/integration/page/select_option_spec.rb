@@ -292,4 +292,31 @@ RSpec.describe 'Page#select_option' do
       Timeout.timeout(2) { expect(select_promise.value!).to match_array(%w[green scarlet]) }
     end
   end
+
+  it 'should wait for select to become non-inert', annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/42967' } do
+    with_page do |page|
+      page.set_content(<<~HTML)
+        <div inert id=container>
+          <select>
+            <option>one</option>
+            <option>two</option>
+          </select>
+        </div>
+      HTML
+
+      select_promise = Concurrent::Promises.future { page.locator('select').select_option(value: 'two') }
+      give_it_a_chance_to_resolve(page)
+      expect(select_promise).not_to be_resolved
+      expect(page.locator('select').input_value).to eq('one')
+
+      page.evaluate("() => document.getElementById('container').removeAttribute('inert')")
+      Timeout.timeout(5) { select_promise.value! }
+      expect(page.locator('select').input_value).to eq('two')
+
+      page.evaluate("() => document.getElementById('container').setAttribute('inert', '')")
+      expect {
+        page.locator('select').select_option(value: 'one', timeout: 1000)
+      }.to raise_error(/Timeout 1000ms exceeded.*element is inert/m)
+    end
+  end
 end

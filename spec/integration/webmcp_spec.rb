@@ -76,7 +76,7 @@ RSpec.describe 'WebMCP', sinatra: true do
   it 'should throw when the tool throws' do
     serve('/', register_script("modelContext.registerTool({ name: 'throwing', description: 'Throws', async execute() { throw new Error('boom'); } });"))
     @page.goto(server_prefix)
-    expect { @page.webmcp.call_tool('throwing') }.to raise_error(/#{chromium? ? 'the invocation failed' : 'boom'}/)
+    expect { @page.webmcp.call_tool('throwing') }.to raise_error(chromium? ? /the invocation failed|Tool execution failed/ : /boom/)
   end
 
   it 'should throw for an unknown tool' do

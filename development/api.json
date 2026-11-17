@@ -716,7 +716,8 @@
                     ],
                     "expression": "[Object]",
                     "langAliases": {
-                      "default": "Proxy"
+                      "default": "Proxy",
+                      "python": "ProxySettings"
                     }
                   },
                   "spec": [
@@ -943,7 +944,10 @@
                                       "alias": "sameSite",
                                       "overloadIndex": 0
                                     }
-                                  ]
+                                  ],
+                                  "langAliases": {
+                                    "default": "StorageStateCookie"
+                                  }
                                 }
                               ],
                               "expression": "[Array]<[Object]>"
@@ -1045,7 +1049,10 @@
                                                 "alias": "value",
                                                 "overloadIndex": 0
                                               }
-                                            ]
+                                            ],
+                                            "langAliases": {
+                                              "default": "LocalStorageEntry"
+                                            }
                                           }
                                         ],
                                         "expression": "[Array]<[Object]>"
@@ -1062,7 +1069,10 @@
                                       "alias": "localStorage",
                                       "overloadIndex": 0
                                     }
-                                  ]
+                                  ],
+                                  "langAliases": {
+                                    "default": "OriginState"
+                                  }
                                 }
                               ],
                               "expression": "[Array]<[Object]>"
@@ -1079,7 +1089,10 @@
                             "alias": "origins",
                             "overloadIndex": 0
                           }
-                        ]
+                        ],
+                        "langAliases": {
+                          "default": "StorageState"
+                        }
                       }
                     ],
                     "expression": "[path]|[Object]"
@@ -1643,7 +1656,8 @@
                     }
                   ],
                   "langAliases": {
-                    "java": "Cookie"
+                    "default": "Cookie",
+                    "python": "SetCookieParam"
                   }
                 }
               ],
@@ -2891,11 +2905,17 @@
                                     "alias": "buffer",
                                     "overloadIndex": 0
                                   }
-                                ]
+                                ],
+                                "langAliases": {
+                                  "default": "FilePayload"
+                                }
                               }
                             ]
                           }
-                        ]
+                        ],
+                        "langAliases": {
+                          "default": "FilePayload"
+                        }
                       },
                       {
                         "name": "FormData"
@@ -4186,11 +4206,17 @@
                                     "alias": "buffer",
                                     "overloadIndex": 0
                                   }
-                                ]
+                                ],
+                                "langAliases": {
+                                  "default": "FilePayload"
+                                }
                               }
                             ]
                           }
-                        ]
+                        ],
+                        "langAliases": {
+                          "default": "FilePayload"
+                        }
                       },
                       {
                         "name": "FormData"
@@ -5328,11 +5354,17 @@
                                     "alias": "buffer",
                                     "overloadIndex": 0
                                   }
-                                ]
+                                ],
+                                "langAliases": {
+                                  "default": "FilePayload"
+                                }
                               }
                             ]
                           }
-                        ]
+                        ],
+                        "langAliases": {
+                          "default": "FilePayload"
+                        }
                       },
                       {
                         "name": "FormData"
@@ -6406,11 +6438,17 @@
                                     "alias": "buffer",
                                     "overloadIndex": 0
                                   }
-                                ]
+                                ],
+                                "langAliases": {
+                                  "default": "FilePayload"
+                                }
                               }
                             ]
                           }
-                        ]
+                        ],
+                        "langAliases": {
+                          "default": "FilePayload"
+                        }
                       },
                       {
                         "name": "FormData"
@@ -7484,11 +7522,17 @@
                                     "alias": "buffer",
                                     "overloadIndex": 0
                                   }
-                                ]
+                                ],
+                                "langAliases": {
+                                  "default": "FilePayload"
+                                }
                               }
                             ]
                           }
-                        ]
+                        ],
+                        "langAliases": {
+                          "default": "FilePayload"
+                        }
                       },
                       {
                         "name": "FormData"
@@ -8727,11 +8771,17 @@
                                     "alias": "buffer",
                                     "overloadIndex": 0
                                   }
-                                ]
+                                ],
+                                "langAliases": {
+                                  "default": "FilePayload"
+                                }
                               }
                             ]
                           }
-                        ]
+                        ],
+                        "langAliases": {
+                          "default": "FilePayload"
+                        }
                       },
                       {
                         "name": "FormData"
@@ -9805,11 +9855,17 @@
                                     "alias": "buffer",
                                     "overloadIndex": 0
                                   }
-                                ]
+                                ],
+                                "langAliases": {
+                                  "default": "FilePayload"
+                                }
                               }
                             ]
                           }
-                        ]
+                        ],
+                        "langAliases": {
+                          "default": "FilePayload"
+                        }
                       },
                       {
                         "name": "FormData"
@@ -10343,7 +10399,10 @@
                         "alias": "sameSite",
                         "overloadIndex": 0
                       }
-                    ]
+                    ],
+                    "langAliases": {
+                      "default": "StorageStateCookie"
+                    }
                   }
                 ],
                 "expression": "[Array]<[Object]>"
@@ -10445,7 +10504,10 @@
                                   "alias": "value",
                                   "overloadIndex": 0
                                 }
-                              ]
+                              ],
+                              "langAliases": {
+                                "default": "LocalStorageEntry"
+                              }
                             }
                           ],
                           "expression": "[Array]<[Object]>"
@@ -10462,7 +10524,10 @@
                         "alias": "localStorage",
                         "overloadIndex": 0
                       }
-                    ]
+                    ],
+                    "langAliases": {
+                      "default": "OriginState"
+                    }
                   }
                 ],
                 "expression": "[Array]<[Object]>"
@@ -10480,7 +10545,10 @@
               "overloadIndex": 0
             }
           ],
-          "expression": "[Object]"
+          "expression": "[Object]",
+          "langAliases": {
+            "default": "StorageState"
+          }
         },
         "spec": [
           {
@@ -11096,6 +11164,7 @@
                 }
               ],
               "langAliases": {
+                "default": "RemoteAddr",
                 "csharp": "ResponseServerAddrResult",
                 "java": "ServerAddr"
               }
@@ -11382,6 +11451,7 @@
           ],
           "expression": "[Object]",
           "langAliases": {
+            "default": "ResourceTiming",
             "csharp": "RequestTimingResult",
             "java": "Timing"
           }
@@ -13416,7 +13486,8 @@
                     ],
                     "expression": "[Object]",
                     "langAliases": {
-                      "default": "Proxy"
+                      "default": "Proxy",
+                      "python": "ProxySettings"
                     }
                   },
                   "spec": [
@@ -14261,7 +14332,7 @@
                     ],
                     "expression": "[Object]",
                     "langAliases": {
-                      "java": "RecordVideoSize"
+                      "default": "RecordVideoSize"
                     }
                   },
                   "spec": [
@@ -14687,7 +14758,10 @@
                                       "alias": "sameSite",
                                       "overloadIndex": 0
                                     }
-                                  ]
+                                  ],
+                                  "langAliases": {
+                                    "default": "StorageStateCookie"
+                                  }
                                 }
                               ],
                               "expression": "[Array]<[Object]>"
@@ -14789,7 +14863,10 @@
                                                 "alias": "value",
                                                 "overloadIndex": 0
                                               }
-                                            ]
+                                            ],
+                                            "langAliases": {
+                                              "default": "LocalStorageEntry"
+                                            }
                                           }
                                         ],
                                         "expression": "[Array]<[Object]>"
@@ -14806,7 +14883,10 @@
                                       "alias": "localStorage",
                                       "overloadIndex": 0
                                     }
-                                  ]
+                                  ],
+                                  "langAliases": {
+                                    "default": "OriginState"
+                                  }
                                 }
                               ],
                               "expression": "[Array]<[Object]>"
@@ -14823,7 +14903,10 @@
                             "alias": "origins",
                             "overloadIndex": 0
                           }
-                        ]
+                        ],
+                        "langAliases": {
+                          "default": "StorageState"
+                        }
                       }
                     ],
                     "expression": "[path]|[Object]"
@@ -15216,7 +15299,10 @@
                             "alias": "height",
                             "overloadIndex": 0
                           }
-                        ]
+                        ],
+                        "langAliases": {
+                          "default": "ViewportSize"
+                        }
                       }
                     ],
                     "expression": "[null]|[Object]"
@@ -16506,7 +16592,8 @@
                     ],
                     "expression": "[Object]",
                     "langAliases": {
-                      "default": "Proxy"
+                      "default": "Proxy",
+                      "python": "ProxySettings"
                     }
                   },
                   "spec": [
@@ -17351,7 +17438,7 @@
                     ],
                     "expression": "[Object]",
                     "langAliases": {
-                      "java": "RecordVideoSize"
+                      "default": "RecordVideoSize"
                     }
                   },
                   "spec": [
@@ -17777,7 +17864,10 @@
                                       "alias": "sameSite",
                                       "overloadIndex": 0
                                     }
-                                  ]
+                                  ],
+                                  "langAliases": {
+                                    "default": "StorageStateCookie"
+                                  }
                                 }
                               ],
                               "expression": "[Array]<[Object]>"
@@ -17879,7 +17969,10 @@
                                                 "alias": "value",
                                                 "overloadIndex": 0
                                               }
-                                            ]
+                                            ],
+                                            "langAliases": {
+                                              "default": "LocalStorageEntry"
+                                            }
                                           }
                                         ],
                                         "expression": "[Array]<[Object]>"
@@ -17896,7 +17989,10 @@
                                       "alias": "localStorage",
                                       "overloadIndex": 0
                                     }
-                                  ]
+                                  ],
+                                  "langAliases": {
+                                    "default": "OriginState"
+                                  }
                                 }
                               ],
                               "expression": "[Array]<[Object]>"
@@ -17913,7 +18009,10 @@
                             "alias": "origins",
                             "overloadIndex": 0
                           }
-                        ]
+                        ],
+                        "langAliases": {
+                          "default": "StorageState"
+                        }
                       }
                     ],
                     "expression": "[path]|[Object]"
@@ -18306,7 +18405,10 @@
                             "alias": "height",
                             "overloadIndex": 0
                           }
-                        ]
+                        ],
+                        "langAliases": {
+                          "default": "ViewportSize"
+                        }
                       }
                     ],
                     "expression": "[null]|[Object]"
@@ -18365,8 +18467,8 @@
           ],
           "expression": "[Object]",
           "langAliases": {
-            "default": "BindResult",
-            "csharp": "BrowserBindResult"
+            "default": "BrowserBindResult",
+            "java": "BindResult"
           }
         },
         "spec": [
@@ -18716,7 +18818,15 @@
         "args": [
           {
             "kind": "property",
-            "langs": {},
+            "langs": {
+              "only": [
+                "java",
+                "js"
+              ],
+              "aliases": {},
+              "types": {},
+              "overrides": {}
+            },
             "since": "v1.11",
             "name": "page",
             "type": {
@@ -18767,6 +18877,34 @@
                   "comment": "specify custom categories to use instead of default.",
                   "async": false,
                   "alias": "categories",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "python"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.11",
+                  "name": "page",
+                  "type": {
+                    "name": "Page",
+                    "expression": "[Page]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Optional, if specified, tracing includes screenshots of the given page."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Optional, if specified, tracing includes screenshots of the given page.",
+                  "async": false,
+                  "alias": "page",
                   "overloadIndex": 0
                 },
                 {
@@ -19988,7 +20126,8 @@
                     }
                   ],
                   "langAliases": {
-                    "java": "Cookie"
+                    "default": "Cookie",
+                    "python": "SetCookieParam"
                   }
                 }
               ],
@@ -20255,62 +20394,6 @@
           },
           {
             "kind": "property",
-            "langs": {
-              "only": [
-                "python"
-              ],
-              "aliases": {},
-              "types": {},
-              "overrides": {}
-            },
-            "since": "v1.8",
-            "name": "path",
-            "type": {
-              "name": "path",
-              "expression": "[path]"
-            },
-            "spec": [
-              {
-                "type": "text",
-                "text": "Path to the JavaScript file. If `path` is a relative path, then it is resolved relative to the current working directory. Optional."
-              }
-            ],
-            "required": false,
-            "comment": "Path to the JavaScript file. If `path` is a relative path, then it is resolved relative to the current working\ndirectory. Optional.",
-            "async": false,
-            "alias": "path",
-            "overloadIndex": 0
-          },
-          {
-            "kind": "property",
-            "langs": {
-              "only": [
-                "python"
-              ],
-              "aliases": {},
-              "types": {},
-              "overrides": {}
-            },
-            "since": "v1.8",
-            "name": "script",
-            "type": {
-              "name": "string",
-              "expression": "[string]"
-            },
-            "spec": [
-              {
-                "type": "text",
-                "text": "Script to be evaluated in all pages in the browser context. Optional."
-              }
-            ],
-            "required": false,
-            "comment": "Script to be evaluated in all pages in the browser context. Optional.",
-            "async": false,
-            "alias": "script",
-            "overloadIndex": 0
-          },
-          {
-            "kind": "property",
             "langs": {},
             "since": "v1.8",
             "name": "options",
@@ -20344,6 +20427,34 @@
                   "async": false,
                   "alias": "exposeFunctions",
                   "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "python"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.8",
+                  "name": "path",
+                  "type": {
+                    "name": "path",
+                    "expression": "[path]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Path to the JavaScript file. If `path` is a relative path, then it is resolved relative to the current working directory. Optional."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Path to the JavaScript file. If `path` is a relative path, then it is resolved relative to the current working\ndirectory. Optional.",
+                  "async": false,
+                  "alias": "path",
+                  "overloadIndex": 0
                 }
               ]
             },
@@ -20351,6 +20462,34 @@
             "comment": "",
             "async": false,
             "alias": "options",
+            "overloadIndex": 0
+          },
+          {
+            "kind": "property",
+            "langs": {
+              "only": [
+                "python"
+              ],
+              "aliases": {},
+              "types": {},
+              "overrides": {}
+            },
+            "since": "v1.8",
+            "name": "script",
+            "type": {
+              "name": "string",
+              "expression": "[string]"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Script to be evaluated in all pages in the browser context. Optional."
+              }
+            ],
+            "required": false,
+            "comment": "Script to be evaluated in all pages in the browser context. Optional.",
+            "async": false,
+            "alias": "script",
             "overloadIndex": 0
           }
         ]
@@ -22297,8 +22436,7 @@
             "kind": "property",
             "langs": {
               "only": [
-                "js",
-                "python"
+                "js"
               ],
               "aliases": {},
               "types": {},
@@ -22333,6 +22471,55 @@
                   "name": "Request"
                 }
               ]
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "handler function to route the request."
+              }
+            ],
+            "required": true,
+            "comment": "handler function to route the request.",
+            "async": false,
+            "alias": "handler",
+            "overloadIndex": 0
+          },
+          {
+            "kind": "property",
+            "langs": {
+              "only": [
+                "python"
+              ],
+              "aliases": {},
+              "types": {},
+              "overrides": {}
+            },
+            "since": "v1.8",
+            "name": "handler",
+            "type": {
+              "name": "",
+              "union": [
+                {
+                  "name": "function",
+                  "args": [
+                    {
+                      "name": "Route"
+                    }
+                  ]
+                },
+                {
+                  "name": "function",
+                  "args": [
+                    {
+                      "name": "Route"
+                    },
+                    {
+                      "name": "Request"
+                    }
+                  ]
+                }
+              ],
+              "expression": "[function]([Route])|[function]([Route], [Request])"
             },
             "spec": [
               {
@@ -22657,13 +22844,13 @@
           {
             "type": "code",
             "lines": [
-              "await context.routeWebSocket('/ws', async ws => {",
-              "  ws.routeSend(message => {",
+              "await context.routeWebSocket('/ws', ws => {",
+              "  const server = ws.connectToServer();",
+              "  ws.onMessage(message => {",
               "    if (message === 'to-be-blocked')",
               "      return;",
-              "    ws.send(message);",
+              "    server.send(message);",
               "  });",
-              "  await ws.connect();",
               "});"
             ],
             "codeLang": "js"
@@ -22672,12 +22859,12 @@
             "type": "code",
             "lines": [
               "context.routeWebSocket(\"/ws\", ws -> {",
-              "  ws.routeSend(message -> {",
-              "    if (\"to-be-blocked\".equals(message))",
+              "  WebSocketRoute server = ws.connectToServer();",
+              "  ws.onMessage(frame -> {",
+              "    if (\"to-be-blocked\".equals(frame.text()))",
               "      return;",
-              "    ws.send(message);",
+              "    server.send(frame.text());",
               "  });",
-              "  ws.connect();",
               "});"
             ],
             "codeLang": "java"
@@ -22685,14 +22872,14 @@
           {
             "type": "code",
             "lines": [
-              "def message_handler(ws: WebSocketRoute, message: Union[str, bytes]):",
+              "def message_handler(server: WebSocketRoute, message: Union[str, bytes]):",
               "  if message == \"to-be-blocked\":",
               "    return",
-              "  ws.send(message)",
+              "  server.send(message)",
               "",
-              "async def handler(ws: WebSocketRoute):",
-              "  ws.route_send(lambda message: message_handler(ws, message))",
-              "  await ws.connect()",
+              "def handler(ws: WebSocketRoute):",
+              "  server = ws.connect_to_server()",
+              "  ws.on_message(lambda message: message_handler(server, message))",
               "",
               "await context.route_web_socket(\"/ws\", handler)"
             ],
@@ -22701,14 +22888,14 @@
           {
             "type": "code",
             "lines": [
-              "def message_handler(ws: WebSocketRoute, message: Union[str, bytes]):",
+              "def message_handler(server: WebSocketRoute, message: Union[str, bytes]):",
               "  if message == \"to-be-blocked\":",
               "    return",
-              "  ws.send(message)",
+              "  server.send(message)",
               "",
               "def handler(ws: WebSocketRoute):",
-              "  ws.route_send(lambda message: message_handler(ws, message))",
-              "  ws.connect()",
+              "  server = ws.connect_to_server()",
+              "  ws.on_message(lambda message: message_handler(server, message))",
               "",
               "context.route_web_socket(\"/ws\", handler)"
             ],
@@ -22717,20 +22904,20 @@
           {
             "type": "code",
             "lines": [
-              "await context.RouteWebSocketAsync(\"/ws\", async ws => {",
-              "  ws.RouteSend(message => {",
-              "    if (message == \"to-be-blocked\")",
+              "await context.RouteWebSocketAsync(\"/ws\", ws => {",
+              "  var server = ws.ConnectToServer();",
+              "  ws.OnMessage(frame => {",
+              "    if (frame.Text == \"to-be-blocked\")",
               "      return;",
-              "    ws.Send(message);",
+              "    server.Send(frame.Text);",
               "  });",
-              "  await ws.ConnectAsync();",
               "});"
             ],
             "codeLang": "csharp"
           }
         ],
         "required": true,
-        "comment": "This method allows to modify websocket connections that are made by any page in the browser context.\n\nNote that only `WebSocket`s created after this method was called will be routed. It is recommended to call this\nmethod before creating any pages.\n\n**Usage**\n\nBelow is an example of a simple handler that blocks some websocket messages. See `WebSocketRoute` for more details\nand examples.\n\n```js\nawait context.routeWebSocket('/ws', async ws => {\n  ws.routeSend(message => {\n    if (message === 'to-be-blocked')\n      return;\n    ws.send(message);\n  });\n  await ws.connect();\n});\n```\n\n```java\ncontext.routeWebSocket(\"/ws\", ws -> {\n  ws.routeSend(message -> {\n    if (\"to-be-blocked\".equals(message))\n      return;\n    ws.send(message);\n  });\n  ws.connect();\n});\n```\n\n```py\ndef message_handler(ws: WebSocketRoute, message: Union[str, bytes]):\n  if message == \"to-be-blocked\":\n    return\n  ws.send(message)\n\nasync def handler(ws: WebSocketRoute):\n  ws.route_send(lambda message: message_handler(ws, message))\n  await ws.connect()\n\nawait context.route_web_socket(\"/ws\", handler)\n```\n\n```py\ndef message_handler(ws: WebSocketRoute, message: Union[str, bytes]):\n  if message == \"to-be-blocked\":\n    return\n  ws.send(message)\n\ndef handler(ws: WebSocketRoute):\n  ws.route_send(lambda message: message_handler(ws, message))\n  ws.connect()\n\ncontext.route_web_socket(\"/ws\", handler)\n```\n\n```csharp\nawait context.RouteWebSocketAsync(\"/ws\", async ws => {\n  ws.RouteSend(message => {\n    if (message == \"to-be-blocked\")\n      return;\n    ws.Send(message);\n  });\n  await ws.ConnectAsync();\n});\n```\n",
+        "comment": "This method allows to modify websocket connections that are made by any page in the browser context.\n\nNote that only `WebSocket`s created after this method was called will be routed. It is recommended to call this\nmethod before creating any pages.\n\n**Usage**\n\nBelow is an example of a simple handler that blocks some websocket messages. See `WebSocketRoute` for more details\nand examples.\n\n```js\nawait context.routeWebSocket('/ws', ws => {\n  const server = ws.connectToServer();\n  ws.onMessage(message => {\n    if (message === 'to-be-blocked')\n      return;\n    server.send(message);\n  });\n});\n```\n\n```java\ncontext.routeWebSocket(\"/ws\", ws -> {\n  WebSocketRoute server = ws.connectToServer();\n  ws.onMessage(frame -> {\n    if (\"to-be-blocked\".equals(frame.text()))\n      return;\n    server.send(frame.text());\n  });\n});\n```\n\n```py\ndef message_handler(server: WebSocketRoute, message: Union[str, bytes]):\n  if message == \"to-be-blocked\":\n    return\n  server.send(message)\n\ndef handler(ws: WebSocketRoute):\n  server = ws.connect_to_server()\n  ws.on_message(lambda message: message_handler(server, message))\n\nawait context.route_web_socket(\"/ws\", handler)\n```\n\n```py\ndef message_handler(server: WebSocketRoute, message: Union[str, bytes]):\n  if message == \"to-be-blocked\":\n    return\n  server.send(message)\n\ndef handler(ws: WebSocketRoute):\n  server = ws.connect_to_server()\n  ws.on_message(lambda message: message_handler(server, message))\n\ncontext.route_web_socket(\"/ws\", handler)\n```\n\n```csharp\nawait context.RouteWebSocketAsync(\"/ws\", ws => {\n  var server = ws.ConnectToServer();\n  ws.OnMessage(frame => {\n    if (frame.Text == \"to-be-blocked\")\n      return;\n    server.Send(frame.Text);\n  });\n});\n```\n",
         "async": true,
         "alias": "routeWebSocket",
         "overloadIndex": 0,
@@ -23733,7 +23920,10 @@
                         "alias": "sameSite",
                         "overloadIndex": 0
                       }
-                    ]
+                    ],
+                    "langAliases": {
+                      "default": "StorageStateCookie"
+                    }
                   }
                 ],
                 "expression": "[Array]<[Object]>"
@@ -23835,7 +24025,10 @@
                                   "alias": "value",
                                   "overloadIndex": 0
                                 }
-                              ]
+                              ],
+                              "langAliases": {
+                                "default": "LocalStorageEntry"
+                              }
                             }
                           ],
                           "expression": "[Array]<[Object]>"
@@ -23852,7 +24045,10 @@
                         "alias": "localStorage",
                         "overloadIndex": 0
                       }
-                    ]
+                    ],
+                    "langAliases": {
+                      "default": "OriginState"
+                    }
                   }
                 ],
                 "expression": "[Array]<[Object]>"
@@ -23870,7 +24066,10 @@
               "overloadIndex": 0
             }
           ],
-          "expression": "[Object]"
+          "expression": "[Object]",
+          "langAliases": {
+            "default": "StorageState"
+          }
         },
         "spec": [
           {
@@ -23895,7 +24094,7 @@
                 {
                   "kind": "property",
                   "langs": {},
-                  "since": "v1.61",
+                  "since": "v1.62",
                   "name": "credentials",
                   "type": {
                     "name": "boolean",
@@ -24272,7 +24471,10 @@
                                 "alias": "sameSite",
                                 "overloadIndex": 0
                               }
-                            ]
+                            ],
+                            "langAliases": {
+                              "default": "StorageStateCookie"
+                            }
                           }
                         ],
                         "expression": "[Array]<[Object]>"
@@ -24374,7 +24576,10 @@
                                           "alias": "value",
                                           "overloadIndex": 0
                                         }
-                                      ]
+                                      ],
+                                      "langAliases": {
+                                        "default": "LocalStorageEntry"
+                                      }
                                     }
                                   ],
                                   "expression": "[Array]<[Object]>"
@@ -24391,7 +24596,10 @@
                                 "alias": "localStorage",
                                 "overloadIndex": 0
                               }
-                            ]
+                            ],
+                            "langAliases": {
+                              "default": "OriginState"
+                            }
                           }
                         ],
                         "expression": "[Array]<[Object]>"
@@ -24408,7 +24616,10 @@
                       "alias": "origins",
                       "overloadIndex": 0
                     }
-                  ]
+                  ],
+                  "langAliases": {
+                    "default": "StorageState"
+                  }
                 }
               ],
               "expression": "[path]|[Object]"
@@ -24694,8 +24905,7 @@
             "kind": "property",
             "langs": {
               "only": [
-                "js",
-                "python"
+                "js"
               ],
               "aliases": {},
               "types": {},
@@ -24730,6 +24940,55 @@
                   "name": "Request"
                 }
               ]
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Optional handler function used to register a routing with [`method: BrowserContext.route`]."
+              }
+            ],
+            "required": false,
+            "comment": "Optional handler function used to register a routing with [`method: BrowserContext.route`].",
+            "async": false,
+            "alias": "handler",
+            "overloadIndex": 0
+          },
+          {
+            "kind": "property",
+            "langs": {
+              "only": [
+                "python"
+              ],
+              "aliases": {},
+              "types": {},
+              "overrides": {}
+            },
+            "since": "v1.8",
+            "name": "handler",
+            "type": {
+              "name": "",
+              "union": [
+                {
+                  "name": "function",
+                  "args": [
+                    {
+                      "name": "Route"
+                    }
+                  ]
+                },
+                {
+                  "name": "function",
+                  "args": [
+                    {
+                      "name": "Route"
+                    },
+                    {
+                      "name": "Request"
+                    }
+                  ]
+                }
+              ],
+              "expression": "[function]([Route])|[function]([Route], [Request])"
             },
             "spec": [
               {
@@ -26327,10 +26586,14 @@
               {
                 "type": "text",
                 "text": "A CDP websocket endpoint or http url to connect to. For example `http://localhost:9222/` or `ws://127.0.0.1:9222/devtools/browser/387adf4c-243f-4051-a181-46798f4a46f4`."
+              },
+              {
+                "type": "text",
+                "text": "Alternatively, a browser channel name such as `chrome` or `msedge` to connect to a browser with remote debugging enabled in its default user data directory. On Linux, Playwright uses `CHROME_USER_DATA_DIR` when set. Otherwise, it uses `CHROME_CONFIG_HOME`, then `XDG_CONFIG_HOME`, then `~/.config` to locate that directory."
               }
             ],
             "required": true,
-            "comment": "A CDP websocket endpoint or http url to connect to. For example `http://localhost:9222/` or\n`ws://127.0.0.1:9222/devtools/browser/387adf4c-243f-4051-a181-46798f4a46f4`.",
+            "comment": "A CDP websocket endpoint or http url to connect to. For example `http://localhost:9222/` or\n`ws://127.0.0.1:9222/devtools/browser/387adf4c-243f-4051-a181-46798f4a46f4`.\n\nAlternatively, a browser channel name such as `chrome` or `msedge` to connect to a browser with remote debugging\nenabled in its default user data directory. On Linux, Playwright uses `CHROME_USER_DATA_DIR` when set. Otherwise,\nit uses `CHROME_CONFIG_HOME`, then `XDG_CONFIG_HOME`, then `~/.config` to locate that directory.",
             "async": false,
             "alias": "endpointURL",
             "overloadIndex": 0
@@ -26450,11 +26713,11 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "When true, Playwright will not apply its default overrides to the existing default browser context.↵Specifically, `acceptDownloads` is left at the browser's setting, focus↵emulation is not enabled, and media emulation options (such as `colorScheme`,↵`reducedMotion`, `forcedColors`, and↵`contrast`) are not applied. Useful when attaching to a user's daily-driver↵browser where these overrides would interfere with existing browser state. New contexts created via↵[`method: Browser.newContext`] are not affected. Defaults to `false`."
+                      "text": "When true, Playwright will not apply its default overrides to the existing default browser context.↵Specifically, `acceptDownloads` and font families are left at the browser's↵settings, focus emulation is not enabled, and media emulation options (such as `colorScheme`,↵`reducedMotion`, `forcedColors`, and↵`contrast`) are not applied. Useful when attaching to a user's daily-driver↵browser where these overrides would interfere with existing browser state. New contexts created via↵[`method: Browser.newContext`] are not affected. Defaults to `false`."
                     }
                   ],
                   "required": false,
-                  "comment": "When true, Playwright will not apply its default overrides to the existing default browser context. Specifically,\n`acceptDownloads` is left at the browser's setting, focus emulation is not enabled, and media emulation options\n(such as `colorScheme`, `reducedMotion`, `forcedColors`, and `contrast`) are not applied. Useful when attaching to\na user's daily-driver browser where these overrides would interfere with existing browser state. New contexts\ncreated via [`method: Browser.newContext`] are not affected. Defaults to `false`.",
+                  "comment": "When true, Playwright will not apply its default overrides to the existing default browser context. Specifically,\n`acceptDownloads` and font families are left at the browser's settings, focus emulation is not enabled, and media\nemulation options (such as `colorScheme`, `reducedMotion`, `forcedColors`, and `contrast`) are not applied. Useful\nwhen attaching to a user's daily-driver browser where these overrides would interfere with existing browser state.\nNew contexts created via [`method: Browser.newContext`] are not affected. Defaults to `false`.",
                   "async": false,
                   "alias": "noDefaults",
                   "overloadIndex": 0
@@ -27313,7 +27576,8 @@
                     ],
                     "expression": "[Object]",
                     "langAliases": {
-                      "default": "Proxy"
+                      "default": "Proxy",
+                      "python": "ProxySettings"
                     }
                   },
                   "spec": [
@@ -29257,7 +29521,8 @@
                     ],
                     "expression": "[Object]",
                     "langAliases": {
-                      "default": "Proxy"
+                      "default": "Proxy",
+                      "python": "ProxySettings"
                     }
                   },
                   "spec": [
@@ -30102,7 +30367,7 @@
                     ],
                     "expression": "[Object]",
                     "langAliases": {
-                      "java": "RecordVideoSize"
+                      "default": "RecordVideoSize"
                     }
                   },
                   "spec": [
@@ -30693,7 +30958,10 @@
                             "alias": "height",
                             "overloadIndex": 0
                           }
-                        ]
+                        ],
+                        "langAliases": {
+                          "default": "ViewportSize"
+                        }
                       }
                     ],
                     "expression": "[null]|[Object]"
@@ -31437,7 +31705,8 @@
                     ],
                     "expression": "[Object]",
                     "langAliases": {
-                      "default": "Proxy"
+                      "default": "Proxy",
+                      "python": "ProxySettings"
                     }
                   },
                   "spec": [
@@ -31941,6 +32210,71 @@
             "async": false,
             "alias": "params",
             "overloadIndex": 0
+          },
+          {
+            "kind": "property",
+            "langs": {},
+            "since": "v1.8",
+            "name": "options",
+            "type": {
+              "name": "Object",
+              "properties": [
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "js"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.65",
+                  "name": "signal",
+                  "type": {
+                    "name": "AbortSignal",
+                    "expression": "[AbortSignal]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Allows to cancel the operation using an [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal). If the signal is aborted, the operation will be aborted and throw an error."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Allows to cancel the operation using an\n[`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal). If the signal is aborted, the\noperation will be aborted and throw an error.",
+                  "async": false,
+                  "alias": "signal",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "since": "v1.65",
+                  "name": "timeout",
+                  "type": {
+                    "name": "float",
+                    "expression": "[float]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Maximum time in milliseconds to wait for the response. Defaults to `0` - no timeout."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Maximum time in milliseconds to wait for the response. Defaults to `0` - no timeout.",
+                  "async": false,
+                  "alias": "timeout",
+                  "overloadIndex": 0
+                }
+              ]
+            },
+            "required": false,
+            "comment": "",
+            "async": false,
+            "alias": "options",
+            "overloadIndex": 0
           }
         ]
       },
@@ -32329,11 +32663,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "Time may be the number of milliseconds to advance the clock by or a human-readable string. Valid string formats are \"08\" for eight seconds, \"01:00\" for one minute and \"02:34:10\" for two hours, 34 minutes and ten seconds."
+                "text": "Time may be a finite number of milliseconds to advance the clock by or a human-readable string. Valid string formats are \"08\" for eight seconds, \"01:00\" for one minute and \"02:34:10\" for two hours, 34 minutes and ten seconds."
               }
             ],
             "required": true,
-            "comment": "Time may be the number of milliseconds to advance the clock by or a human-readable string. Valid string formats are\n\"08\" for eight seconds, \"01:00\" for one minute and \"02:34:10\" for two hours, 34 minutes and ten seconds.",
+            "comment": "Time may be a finite number of milliseconds to advance the clock by or a human-readable string. Valid string\nformats are \"08\" for eight seconds, \"01:00\" for one minute and \"02:34:10\" for two hours, 34 minutes and ten\nseconds.",
             "async": false,
             "alias": "ticks",
             "overloadIndex": 0
@@ -32636,11 +32970,11 @@
             "spec": [
               {
                 "type": "text",
-                "text": "Time may be the number of milliseconds to advance the clock by or a human-readable string. Valid string formats are \"08\" for eight seconds, \"01:00\" for one minute and \"02:34:10\" for two hours, 34 minutes and ten seconds."
+                "text": "Time may be a finite number of milliseconds to advance the clock by or a human-readable string. Valid string formats are \"08\" for eight seconds, \"01:00\" for one minute and \"02:34:10\" for two hours, 34 minutes and ten seconds."
               }
             ],
             "required": true,
-            "comment": "Time may be the number of milliseconds to advance the clock by or a human-readable string. Valid string formats are\n\"08\" for eight seconds, \"01:00\" for one minute and \"02:34:10\" for two hours, 34 minutes and ten seconds.",
+            "comment": "Time may be a finite number of milliseconds to advance the clock by or a human-readable string. Valid string\nformats are \"08\" for eight seconds, \"01:00\" for one minute and \"02:34:10\" for two hours, 34 minutes and ten\nseconds.",
             "async": false,
             "alias": "ticks",
             "overloadIndex": 0
@@ -33556,7 +33890,10 @@
               "overloadIndex": 0
             }
           ],
-          "expression": "[Object]"
+          "expression": "[Object]",
+          "langAliases": {
+            "default": "SourceLocation"
+          }
         },
         "spec": [],
         "required": true,
@@ -35489,7 +35826,8 @@
                     ],
                     "expression": "[Object]",
                     "langAliases": {
-                      "default": "Location"
+                      "default": "Location",
+                      "python": "DebuggerLocation"
                     }
                   },
                   "spec": [
@@ -35711,7 +36049,8 @@
               ],
               "expression": "[Object]",
               "langAliases": {
-                "default": "Location"
+                "default": "Location",
+                "python": "DebuggerLocation"
               }
             },
             "spec": [
@@ -36042,7 +36381,8 @@
     ],
     "langs": {
       "only": [
-        "js"
+        "js",
+        "python"
       ],
       "aliases": {},
       "types": {},
@@ -36053,7 +36393,42 @@
     "members": [
       {
         "kind": "method",
-        "langs": {},
+        "langs": {
+          "only": [
+            "python"
+          ],
+          "aliases": {},
+          "types": {},
+          "overrides": {}
+        },
+        "since": "v1.59",
+        "name": "close",
+        "type": {
+          "name": "void"
+        },
+        "spec": [
+          {
+            "type": "text",
+            "text": "Removes the associated resource. For example, removes the init script installed via↵[`method: Page.addInitScript`] or [`method: BrowserContext.addInitScript`]."
+          }
+        ],
+        "required": true,
+        "comment": "Removes the associated resource. For example, removes the init script installed via [`method: Page.addInitScript`]\nor [`method: BrowserContext.addInitScript`].",
+        "async": true,
+        "alias": "close",
+        "overloadIndex": 0,
+        "args": []
+      },
+      {
+        "kind": "method",
+        "langs": {
+          "only": [
+            "js"
+          ],
+          "aliases": {},
+          "types": {},
+          "overrides": {}
+        },
         "since": "v1.59",
         "name": "dispose",
         "type": {
@@ -36732,7 +37107,8 @@
               ],
               "langAliases": {
                 "default": "BoundingBox",
-                "csharp": "ElementHandleBoundingBoxResult"
+                "csharp": "ElementHandleBoundingBoxResult",
+                "python": "FloatRect"
               }
             }
           ],
@@ -40757,6 +41133,47 @@
               "properties": [
                 {
                   "kind": "property",
+                  "langs": {
+                    "only": [
+                      "python"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.8",
+                  "name": "element",
+                  "type": {
+                    "name": "",
+                    "union": [
+                      {
+                        "name": "ElementHandle"
+                      },
+                      {
+                        "name": "Array",
+                        "templates": [
+                          {
+                            "name": "ElementHandle"
+                          }
+                        ]
+                      }
+                    ],
+                    "expression": "[ElementHandle]|[Array]<[ElementHandle]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Option elements to select. Optional."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Option elements to select. Optional.",
+                  "async": false,
+                  "alias": "element",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
                   "langs": {},
                   "since": "v1.13",
                   "name": "force",
@@ -40774,6 +41191,88 @@
                   "comment": "Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.",
                   "async": false,
                   "alias": "force",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "python"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.8",
+                  "name": "index",
+                  "type": {
+                    "name": "",
+                    "union": [
+                      {
+                        "name": "int"
+                      },
+                      {
+                        "name": "Array",
+                        "templates": [
+                          {
+                            "name": "int"
+                          }
+                        ]
+                      }
+                    ],
+                    "expression": "[int]|[Array]<[int]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Options to select by index. Optional."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Options to select by index. Optional.",
+                  "async": false,
+                  "alias": "index",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "python"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.8",
+                  "name": "label",
+                  "type": {
+                    "name": "",
+                    "union": [
+                      {
+                        "name": "string"
+                      },
+                      {
+                        "name": "Array",
+                        "templates": [
+                          {
+                            "name": "string"
+                          }
+                        ]
+                      }
+                    ],
+                    "expression": "[string]|[Array]<[string]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Options to select by label. If the `<select>` has the `multiple` attribute, all given options are selected, otherwise↵only the first option matching one of the passed options is selected. Optional."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Options to select by label. If the `<select>` has the `multiple` attribute, all given options are selected,\notherwise only the first option matching one of the passed options is selected. Optional.",
+                  "async": false,
+                  "alias": "label",
                   "overloadIndex": 0
                 },
                 {
@@ -40903,88 +41402,6 @@
               "overrides": {}
             },
             "since": "v1.8",
-            "name": "element",
-            "type": {
-              "name": "",
-              "union": [
-                {
-                  "name": "ElementHandle"
-                },
-                {
-                  "name": "Array",
-                  "templates": [
-                    {
-                      "name": "ElementHandle"
-                    }
-                  ]
-                }
-              ],
-              "expression": "[ElementHandle]|[Array]<[ElementHandle]>"
-            },
-            "spec": [
-              {
-                "type": "text",
-                "text": "Option elements to select. Optional."
-              }
-            ],
-            "required": false,
-            "comment": "Option elements to select. Optional.",
-            "async": false,
-            "alias": "element",
-            "overloadIndex": 0
-          },
-          {
-            "kind": "property",
-            "langs": {
-              "only": [
-                "python"
-              ],
-              "aliases": {},
-              "types": {},
-              "overrides": {}
-            },
-            "since": "v1.8",
-            "name": "index",
-            "type": {
-              "name": "",
-              "union": [
-                {
-                  "name": "int"
-                },
-                {
-                  "name": "Array",
-                  "templates": [
-                    {
-                      "name": "int"
-                    }
-                  ]
-                }
-              ],
-              "expression": "[int]|[Array]<[int]>"
-            },
-            "spec": [
-              {
-                "type": "text",
-                "text": "Options to select by index. Optional."
-              }
-            ],
-            "required": false,
-            "comment": "Options to select by index. Optional.",
-            "async": false,
-            "alias": "index",
-            "overloadIndex": 0
-          },
-          {
-            "kind": "property",
-            "langs": {
-              "only": [
-                "python"
-              ],
-              "aliases": {},
-              "types": {},
-              "overrides": {}
-            },
-            "since": "v1.8",
             "name": "value",
             "type": {
               "name": "",
@@ -41013,47 +41430,6 @@
             "comment": "Options to select by value. If the `<select>` has the `multiple` attribute, all given options are selected,\notherwise only the first option matching one of the passed options is selected. Optional.",
             "async": false,
             "alias": "value",
-            "overloadIndex": 0
-          },
-          {
-            "kind": "property",
-            "langs": {
-              "only": [
-                "python"
-              ],
-              "aliases": {},
-              "types": {},
-              "overrides": {}
-            },
-            "since": "v1.8",
-            "name": "label",
-            "type": {
-              "name": "",
-              "union": [
-                {
-                  "name": "string"
-                },
-                {
-                  "name": "Array",
-                  "templates": [
-                    {
-                      "name": "string"
-                    }
-                  ]
-                }
-              ],
-              "expression": "[string]|[Array]<[string]>"
-            },
-            "spec": [
-              {
-                "type": "text",
-                "text": "Options to select by label. If the `<select>` has the `multiple` attribute, all given options are selected, otherwise↵only the first option matching one of the passed options is selected. Optional."
-              }
-            ],
-            "required": false,
-            "comment": "Options to select by label. If the `<select>` has the `multiple` attribute, all given options are selected,\notherwise only the first option matching one of the passed options is selected. Optional.",
-            "async": false,
-            "alias": "label",
             "overloadIndex": 0
           }
         ]
@@ -46959,7 +47335,8 @@
                     ],
                     "expression": "[Object]",
                     "langAliases": {
-                      "java": "Position"
+                      "default": "Position",
+                      "csharp": "SourcePosition"
                     }
                   },
                   "spec": [
@@ -47069,7 +47446,8 @@
                     ],
                     "expression": "[Object]",
                     "langAliases": {
-                      "java": "Position"
+                      "default": "Position",
+                      "csharp": "TargetPosition"
                     }
                   },
                   "spec": [
@@ -52584,7 +52962,16 @@
                 },
                 {
                   "kind": "property",
-                  "langs": {},
+                  "langs": {
+                    "only": [
+                      "js",
+                      "java",
+                      "csharp"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
                   "since": "v1.8",
                   "deprecated": "This option is ignored. [`method: Frame.isHidden`] does not wait for the element to become hidden and returns immediately.",
                   "name": "timeout",
@@ -52683,7 +53070,16 @@
                 },
                 {
                   "kind": "property",
-                  "langs": {},
+                  "langs": {
+                    "only": [
+                      "js",
+                      "java",
+                      "csharp"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
                   "since": "v1.8",
                   "deprecated": "This option is ignored. [`method: Frame.isVisible`] does not wait for the element to become visible and returns immediately.",
                   "name": "timeout",
@@ -53455,7 +53851,7 @@
               "frame.selectOption('select#colors', { label: 'Blue' });",
               "",
               "// multiple selection",
-              "frame.selectOption('select#colors', 'red', 'green', 'blue');"
+              "frame.selectOption('select#colors', ['red', 'green', 'blue']);"
             ],
             "codeLang": "js"
           },
@@ -53509,7 +53905,7 @@
           }
         ],
         "required": true,
-        "comment": "This method waits for an element matching `selector`, waits for [actionability](../actionability.md) checks, waits\nuntil all specified options are present in the `<select>` element and selects these options.\n\nIf the target element is not a `<select>` element, this method throws an error. However, if the element is inside\nthe `<label>` element that has an associated\n[control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), the control will be used\ninstead.\n\nReturns the array of option values that have been successfully selected.\n\nTriggers a `change` and `input` event once all the provided options have been selected.\n\n**Usage**\n\n```js\n// Single selection matching the value or label\nframe.selectOption('select#colors', 'blue');\n\n// single selection matching both the value and the label\nframe.selectOption('select#colors', { label: 'Blue' });\n\n// multiple selection\nframe.selectOption('select#colors', 'red', 'green', 'blue');\n```\n\n```java\n// Single selection matching the value or label\nframe.selectOption(\"select#colors\", \"blue\");\n// single selection matching both the value and the label\nframe.selectOption(\"select#colors\", new SelectOption().setLabel(\"Blue\"));\n// multiple selection\nframe.selectOption(\"select#colors\", new String[] {\"red\", \"green\", \"blue\"});\n```\n\n```py\n# Single selection matching the value or label\nawait frame.select_option(\"select#colors\", \"blue\")\n# single selection matching the label\nawait frame.select_option(\"select#colors\", label=\"blue\")\n# multiple selection\nawait frame.select_option(\"select#colors\", value=[\"red\", \"green\", \"blue\"])\n```\n\n```py\n# Single selection matching the value or label\nframe.select_option(\"select#colors\", \"blue\")\n# single selection matching both the label\nframe.select_option(\"select#colors\", label=\"blue\")\n# multiple selection\nframe.select_option(\"select#colors\", value=[\"red\", \"green\", \"blue\"])\n```\n\n```csharp\n// Single selection matching the value or label\nawait frame.SelectOptionAsync(\"select#colors\", new[] { \"blue\" });\n// single selection matching both the value and the label\nawait frame.SelectOptionAsync(\"select#colors\", new[] { new SelectOptionValue() { Label = \"blue\" } });\n// multiple selection\nawait frame.SelectOptionAsync(\"select#colors\", new[] { \"red\", \"green\", \"blue\" });\n```\n",
+        "comment": "This method waits for an element matching `selector`, waits for [actionability](../actionability.md) checks, waits\nuntil all specified options are present in the `<select>` element and selects these options.\n\nIf the target element is not a `<select>` element, this method throws an error. However, if the element is inside\nthe `<label>` element that has an associated\n[control](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control), the control will be used\ninstead.\n\nReturns the array of option values that have been successfully selected.\n\nTriggers a `change` and `input` event once all the provided options have been selected.\n\n**Usage**\n\n```js\n// Single selection matching the value or label\nframe.selectOption('select#colors', 'blue');\n\n// single selection matching both the value and the label\nframe.selectOption('select#colors', { label: 'Blue' });\n\n// multiple selection\nframe.selectOption('select#colors', ['red', 'green', 'blue']);\n```\n\n```java\n// Single selection matching the value or label\nframe.selectOption(\"select#colors\", \"blue\");\n// single selection matching both the value and the label\nframe.selectOption(\"select#colors\", new SelectOption().setLabel(\"Blue\"));\n// multiple selection\nframe.selectOption(\"select#colors\", new String[] {\"red\", \"green\", \"blue\"});\n```\n\n```py\n# Single selection matching the value or label\nawait frame.select_option(\"select#colors\", \"blue\")\n# single selection matching the label\nawait frame.select_option(\"select#colors\", label=\"blue\")\n# multiple selection\nawait frame.select_option(\"select#colors\", value=[\"red\", \"green\", \"blue\"])\n```\n\n```py\n# Single selection matching the value or label\nframe.select_option(\"select#colors\", \"blue\")\n# single selection matching both the label\nframe.select_option(\"select#colors\", label=\"blue\")\n# multiple selection\nframe.select_option(\"select#colors\", value=[\"red\", \"green\", \"blue\"])\n```\n\n```csharp\n// Single selection matching the value or label\nawait frame.SelectOptionAsync(\"select#colors\", new[] { \"blue\" });\n// single selection matching both the value and the label\nawait frame.SelectOptionAsync(\"select#colors\", new[] { new SelectOptionValue() { Label = \"blue\" } });\n// multiple selection\nawait frame.SelectOptionAsync(\"select#colors\", new[] { \"red\", \"green\", \"blue\" });\n```\n",
         "async": true,
         "alias": "selectOption",
         "overloadIndex": 0,
@@ -53749,6 +54145,47 @@
               "properties": [
                 {
                   "kind": "property",
+                  "langs": {
+                    "only": [
+                      "python"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.8",
+                  "name": "element",
+                  "type": {
+                    "name": "",
+                    "union": [
+                      {
+                        "name": "ElementHandle"
+                      },
+                      {
+                        "name": "Array",
+                        "templates": [
+                          {
+                            "name": "ElementHandle"
+                          }
+                        ]
+                      }
+                    ],
+                    "expression": "[ElementHandle]|[Array]<[ElementHandle]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Option elements to select. Optional."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Option elements to select. Optional.",
+                  "async": false,
+                  "alias": "element",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
                   "langs": {},
                   "since": "v1.13",
                   "name": "force",
@@ -53766,6 +54203,88 @@
                   "comment": "Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.",
                   "async": false,
                   "alias": "force",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "python"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.8",
+                  "name": "index",
+                  "type": {
+                    "name": "",
+                    "union": [
+                      {
+                        "name": "int"
+                      },
+                      {
+                        "name": "Array",
+                        "templates": [
+                          {
+                            "name": "int"
+                          }
+                        ]
+                      }
+                    ],
+                    "expression": "[int]|[Array]<[int]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Options to select by index. Optional."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Options to select by index. Optional.",
+                  "async": false,
+                  "alias": "index",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "python"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.8",
+                  "name": "label",
+                  "type": {
+                    "name": "",
+                    "union": [
+                      {
+                        "name": "string"
+                      },
+                      {
+                        "name": "Array",
+                        "templates": [
+                          {
+                            "name": "string"
+                          }
+                        ]
+                      }
+                    ],
+                    "expression": "[string]|[Array]<[string]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Options to select by label. If the `<select>` has the `multiple` attribute, all given options are selected, otherwise↵only the first option matching one of the passed options is selected. Optional."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Options to select by label. If the `<select>` has the `multiple` attribute, all given options are selected,\notherwise only the first option matching one of the passed options is selected. Optional.",
+                  "async": false,
+                  "alias": "label",
                   "overloadIndex": 0
                 },
                 {
@@ -53916,88 +54435,6 @@
               "overrides": {}
             },
             "since": "v1.8",
-            "name": "element",
-            "type": {
-              "name": "",
-              "union": [
-                {
-                  "name": "ElementHandle"
-                },
-                {
-                  "name": "Array",
-                  "templates": [
-                    {
-                      "name": "ElementHandle"
-                    }
-                  ]
-                }
-              ],
-              "expression": "[ElementHandle]|[Array]<[ElementHandle]>"
-            },
-            "spec": [
-              {
-                "type": "text",
-                "text": "Option elements to select. Optional."
-              }
-            ],
-            "required": false,
-            "comment": "Option elements to select. Optional.",
-            "async": false,
-            "alias": "element",
-            "overloadIndex": 0
-          },
-          {
-            "kind": "property",
-            "langs": {
-              "only": [
-                "python"
-              ],
-              "aliases": {},
-              "types": {},
-              "overrides": {}
-            },
-            "since": "v1.8",
-            "name": "index",
-            "type": {
-              "name": "",
-              "union": [
-                {
-                  "name": "int"
-                },
-                {
-                  "name": "Array",
-                  "templates": [
-                    {
-                      "name": "int"
-                    }
-                  ]
-                }
-              ],
-              "expression": "[int]|[Array]<[int]>"
-            },
-            "spec": [
-              {
-                "type": "text",
-                "text": "Options to select by index. Optional."
-              }
-            ],
-            "required": false,
-            "comment": "Options to select by index. Optional.",
-            "async": false,
-            "alias": "index",
-            "overloadIndex": 0
-          },
-          {
-            "kind": "property",
-            "langs": {
-              "only": [
-                "python"
-              ],
-              "aliases": {},
-              "types": {},
-              "overrides": {}
-            },
-            "since": "v1.8",
             "name": "value",
             "type": {
               "name": "",
@@ -54026,47 +54463,6 @@
             "comment": "Options to select by value. If the `<select>` has the `multiple` attribute, all given options are selected,\notherwise only the first option matching one of the passed options is selected. Optional.",
             "async": false,
             "alias": "value",
-            "overloadIndex": 0
-          },
-          {
-            "kind": "property",
-            "langs": {
-              "only": [
-                "python"
-              ],
-              "aliases": {},
-              "types": {},
-              "overrides": {}
-            },
-            "since": "v1.8",
-            "name": "label",
-            "type": {
-              "name": "",
-              "union": [
-                {
-                  "name": "string"
-                },
-                {
-                  "name": "Array",
-                  "templates": [
-                    {
-                      "name": "string"
-                    }
-                  ]
-                }
-              ],
-              "expression": "[string]|[Array]<[string]>"
-            },
-            "spec": [
-              {
-                "type": "text",
-                "text": "Options to select by label. If the `<select>` has the `multiple` attribute, all given options are selected, otherwise↵only the first option matching one of the passed options is selected. Optional."
-              }
-            ],
-            "required": false,
-            "comment": "Options to select by label. If the `<select>` has the `multiple` attribute, all given options are selected,\notherwise only the first option matching one of the passed options is selected. Optional.",
-            "async": false,
-            "alias": "label",
             "overloadIndex": 0
           }
         ]
@@ -56491,7 +56887,16 @@
           },
           {
             "kind": "property",
-            "langs": {},
+            "langs": {
+              "only": [
+                "js",
+                "java",
+                "csharp"
+              ],
+              "aliases": {},
+              "types": {},
+              "overrides": {}
+            },
             "since": "v1.8",
             "name": "arg",
             "type": {
@@ -56518,6 +56923,34 @@
             "type": {
               "name": "Object",
               "properties": [
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "python"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.8",
+                  "name": "arg",
+                  "type": {
+                    "name": "EvaluationArgument",
+                    "expression": "[EvaluationArgument]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Optional argument to pass to `expression`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Optional argument to pass to `expression`.",
+                  "async": false,
+                  "alias": "arg",
+                  "overloadIndex": 0
+                },
                 {
                   "kind": "property",
                   "langs": {
@@ -64261,12 +64694,12 @@
           },
           {
             "type": "li",
-            "text": "Includes element references `[ref=e2]`.↵2. Does not wait for an element matching the locator, and throws when no elements match.↵3. Includes snapshots of `<iframe>`s inside the target.",
+            "text": "Includes element references `[ref=e2]`.↵2. Does not wait for an element matching the locator, and throws when no elements match.↵3. Includes snapshots of `<iframe>`s inside the target.↵4. Can omit names that repeat printed descendants, such as a heading containing a link. Names that identify dialogs, landmarks, groups, tables and table headers are retained.",
             "liType": "ordinal"
           }
         ],
         "required": true,
-        "comment": "Captures the aria snapshot of the given element. Read more about [aria snapshots](../aria-snapshots.md) and\n[`method: LocatorAssertions.toMatchAriaSnapshot`] for the corresponding assertion.\n\n**Usage**\n\n```js\nawait page.getByRole('link').ariaSnapshot();\n```\n\n```java\npage.getByRole(AriaRole.LINK).ariaSnapshot();\n```\n\n```py\nawait page.get_by_role(\"link\").aria_snapshot()\n```\n\n```py\npage.get_by_role(\"link\").aria_snapshot()\n```\n\n```csharp\nawait page.GetByRole(AriaRole.Link).AriaSnapshotAsync();\n```\n\n**Details**\n\nThis method captures the aria snapshot of the given element. The snapshot is a string that represents the state of\nthe element and its children. The snapshot can be used to assert the state of the element in the test, or to\ncompare it to state in the future.\n\nThe ARIA snapshot is represented using [YAML](https://yaml.org/spec/1.2.2/) markup language:\n- The keys of the objects are the roles and optional accessible names of the elements.\n- The values are either text content or an array of child elements.\n- Generic static text can be represented with the `text` key.\n\nBelow is the HTML markup and the respective ARIA snapshot:\n\n```html\n<ul aria-label=\"Links\">\n  <li><a href=\"/\">Home</a></li>\n  <li><a href=\"/about\">About</a></li>\n<ul>\n```\n\n```yml\n- list \"Links\":\n  - listitem:\n    - link \"Home\"\n  - listitem:\n    - link \"About\"\n```\n\nAn AI-optimized snapshot, controlled by `mode`, is different from a default snapshot:\n1. Includes element references `[ref=e2]`. 2. Does not wait for an element matching the locator, and throws when\n   no elements match. 3. Includes snapshots of `<iframe>`s inside the target.",
+        "comment": "Captures the aria snapshot of the given element. Read more about [aria snapshots](../aria-snapshots.md) and\n[`method: LocatorAssertions.toMatchAriaSnapshot`] for the corresponding assertion.\n\n**Usage**\n\n```js\nawait page.getByRole('link').ariaSnapshot();\n```\n\n```java\npage.getByRole(AriaRole.LINK).ariaSnapshot();\n```\n\n```py\nawait page.get_by_role(\"link\").aria_snapshot()\n```\n\n```py\npage.get_by_role(\"link\").aria_snapshot()\n```\n\n```csharp\nawait page.GetByRole(AriaRole.Link).AriaSnapshotAsync();\n```\n\n**Details**\n\nThis method captures the aria snapshot of the given element. The snapshot is a string that represents the state of\nthe element and its children. The snapshot can be used to assert the state of the element in the test, or to\ncompare it to state in the future.\n\nThe ARIA snapshot is represented using [YAML](https://yaml.org/spec/1.2.2/) markup language:\n- The keys of the objects are the roles and optional accessible names of the elements.\n- The values are either text content or an array of child elements.\n- Generic static text can be represented with the `text` key.\n\nBelow is the HTML markup and the respective ARIA snapshot:\n\n```html\n<ul aria-label=\"Links\">\n  <li><a href=\"/\">Home</a></li>\n  <li><a href=\"/about\">About</a></li>\n<ul>\n```\n\n```yml\n- list \"Links\":\n  - listitem:\n    - link \"Home\"\n  - listitem:\n    - link \"About\"\n```\n\nAn AI-optimized snapshot, controlled by `mode`, is different from a default snapshot:\n1. Includes element references `[ref=e2]`. 2. Does not wait for an element matching the locator, and throws when\n   no elements match. 3. Includes snapshots of `<iframe>`s inside the target. 4. Can omit names that repeat\n   printed descendants, such as a heading containing a link. Names that identify dialogs, landmarks, groups,\n   tables and table headers are retained.",
         "async": true,
         "alias": "ariaSnapshot",
         "overloadIndex": 0,
@@ -64938,7 +65371,8 @@
               ],
               "langAliases": {
                 "default": "BoundingBox",
-                "csharp": "LocatorBoundingBoxResult"
+                "csharp": "LocatorBoundingBoxResult",
+                "python": "FloatRect"
               }
             }
           ],
@@ -67616,7 +68050,8 @@
                     ],
                     "expression": "[Object]",
                     "langAliases": {
-                      "java": "Position"
+                      "default": "Position",
+                      "csharp": "SourcePosition"
                     }
                   },
                   "spec": [
@@ -67705,7 +68140,8 @@
                     ],
                     "expression": "[Object]",
                     "langAliases": {
-                      "java": "Position"
+                      "default": "Position",
+                      "csharp": "TargetPosition"
                     }
                   },
                   "spec": [
@@ -75712,6 +76148,47 @@
               "properties": [
                 {
                   "kind": "property",
+                  "langs": {
+                    "only": [
+                      "python"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.14",
+                  "name": "element",
+                  "type": {
+                    "name": "",
+                    "union": [
+                      {
+                        "name": "ElementHandle"
+                      },
+                      {
+                        "name": "Array",
+                        "templates": [
+                          {
+                            "name": "ElementHandle"
+                          }
+                        ]
+                      }
+                    ],
+                    "expression": "[ElementHandle]|[Array]<[ElementHandle]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Option elements to select. Optional."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Option elements to select. Optional.",
+                  "async": false,
+                  "alias": "element",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
                   "langs": {},
                   "since": "v1.14",
                   "name": "force",
@@ -75729,6 +76206,88 @@
                   "comment": "Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.",
                   "async": false,
                   "alias": "force",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "python"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.14",
+                  "name": "index",
+                  "type": {
+                    "name": "",
+                    "union": [
+                      {
+                        "name": "int"
+                      },
+                      {
+                        "name": "Array",
+                        "templates": [
+                          {
+                            "name": "int"
+                          }
+                        ]
+                      }
+                    ],
+                    "expression": "[int]|[Array]<[int]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Options to select by index. Optional."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Options to select by index. Optional.",
+                  "async": false,
+                  "alias": "index",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "python"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.14",
+                  "name": "label",
+                  "type": {
+                    "name": "",
+                    "union": [
+                      {
+                        "name": "string"
+                      },
+                      {
+                        "name": "Array",
+                        "templates": [
+                          {
+                            "name": "string"
+                          }
+                        ]
+                      }
+                    ],
+                    "expression": "[string]|[Array]<[string]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Options to select by label. If the `<select>` has the `multiple` attribute, all given options are selected, otherwise↵only the first option matching one of the passed options is selected. Optional."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Options to select by label. If the `<select>` has the `multiple` attribute, all given options are selected,\notherwise only the first option matching one of the passed options is selected. Optional.",
+                  "async": false,
+                  "alias": "label",
                   "overloadIndex": 0
                 },
                 {
@@ -75858,88 +76417,6 @@
               "overrides": {}
             },
             "since": "v1.14",
-            "name": "element",
-            "type": {
-              "name": "",
-              "union": [
-                {
-                  "name": "ElementHandle"
-                },
-                {
-                  "name": "Array",
-                  "templates": [
-                    {
-                      "name": "ElementHandle"
-                    }
-                  ]
-                }
-              ],
-              "expression": "[ElementHandle]|[Array]<[ElementHandle]>"
-            },
-            "spec": [
-              {
-                "type": "text",
-                "text": "Option elements to select. Optional."
-              }
-            ],
-            "required": false,
-            "comment": "Option elements to select. Optional.",
-            "async": false,
-            "alias": "element",
-            "overloadIndex": 0
-          },
-          {
-            "kind": "property",
-            "langs": {
-              "only": [
-                "python"
-              ],
-              "aliases": {},
-              "types": {},
-              "overrides": {}
-            },
-            "since": "v1.14",
-            "name": "index",
-            "type": {
-              "name": "",
-              "union": [
-                {
-                  "name": "int"
-                },
-                {
-                  "name": "Array",
-                  "templates": [
-                    {
-                      "name": "int"
-                    }
-                  ]
-                }
-              ],
-              "expression": "[int]|[Array]<[int]>"
-            },
-            "spec": [
-              {
-                "type": "text",
-                "text": "Options to select by index. Optional."
-              }
-            ],
-            "required": false,
-            "comment": "Options to select by index. Optional.",
-            "async": false,
-            "alias": "index",
-            "overloadIndex": 0
-          },
-          {
-            "kind": "property",
-            "langs": {
-              "only": [
-                "python"
-              ],
-              "aliases": {},
-              "types": {},
-              "overrides": {}
-            },
-            "since": "v1.14",
             "name": "value",
             "type": {
               "name": "",
@@ -75968,47 +76445,6 @@
             "comment": "Options to select by value. If the `<select>` has the `multiple` attribute, all given options are selected,\notherwise only the first option matching one of the passed options is selected. Optional.",
             "async": false,
             "alias": "value",
-            "overloadIndex": 0
-          },
-          {
-            "kind": "property",
-            "langs": {
-              "only": [
-                "python"
-              ],
-              "aliases": {},
-              "types": {},
-              "overrides": {}
-            },
-            "since": "v1.14",
-            "name": "label",
-            "type": {
-              "name": "",
-              "union": [
-                {
-                  "name": "string"
-                },
-                {
-                  "name": "Array",
-                  "templates": [
-                    {
-                      "name": "string"
-                    }
-                  ]
-                }
-              ],
-              "expression": "[string]|[Array]<[string]>"
-            },
-            "spec": [
-              {
-                "type": "text",
-                "text": "Options to select by label. If the `<select>` has the `multiple` attribute, all given options are selected, otherwise↵only the first option matching one of the passed options is selected. Optional."
-              }
-            ],
-            "required": false,
-            "comment": "Options to select by label. If the `<select>` has the `multiple` attribute, all given options are selected,\notherwise only the first option matching one of the passed options is selected. Optional.",
-            "async": false,
-            "alias": "label",
             "overloadIndex": 0
           }
         ]
@@ -78554,7 +78990,16 @@
           },
           {
             "kind": "property",
-            "langs": {},
+            "langs": {
+              "only": [
+                "js",
+                "java",
+                "csharp"
+              ],
+              "aliases": {},
+              "types": {},
+              "overrides": {}
+            },
             "since": "v1.62",
             "name": "arg",
             "type": {
@@ -78581,6 +79026,34 @@
             "type": {
               "name": "Object",
               "properties": [
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "python"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.62",
+                  "name": "arg",
+                  "type": {
+                    "name": "EvaluationArgument",
+                    "expression": "[EvaluationArgument]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Optional argument to pass to `expression`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Optional argument to pass to `expression`.",
+                  "async": false,
+                  "alias": "arg",
+                  "overloadIndex": 0
+                },
                 {
                   "kind": "property",
                   "langs": {
@@ -80075,7 +80548,7 @@
             "kind": "property",
             "langs": {},
             "since": "v1.44",
-            "name": "name",
+            "name": "description",
             "type": {
               "name": "",
               "union": [
@@ -80922,6 +81395,35 @@
             "type": {
               "name": "Object",
               "properties": [
+                {
+                  "kind": "property",
+                  "langs": {},
+                  "since": "v1.65",
+                  "name": "pseudo",
+                  "type": {
+                    "name": "PseudoElement",
+                    "union": [
+                      {
+                        "name": "\"before\""
+                      },
+                      {
+                        "name": "\"after\""
+                      }
+                    ],
+                    "expression": "[PseudoElement]<\"before\"|\"after\">"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Pseudo-element to read computed styles from."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Pseudo-element to read computed styles from.",
+                  "async": false,
+                  "alias": "pseudo",
+                  "overloadIndex": 0
+                },
                 {
                   "kind": "property",
                   "langs": {
@@ -92390,62 +92892,6 @@
           },
           {
             "kind": "property",
-            "langs": {
-              "only": [
-                "python"
-              ],
-              "aliases": {},
-              "types": {},
-              "overrides": {}
-            },
-            "since": "v1.8",
-            "name": "path",
-            "type": {
-              "name": "path",
-              "expression": "[path]"
-            },
-            "spec": [
-              {
-                "type": "text",
-                "text": "Path to the JavaScript file. If `path` is a relative path, then it is resolved relative to the current working directory. Optional."
-              }
-            ],
-            "required": false,
-            "comment": "Path to the JavaScript file. If `path` is a relative path, then it is resolved relative to the current working\ndirectory. Optional.",
-            "async": false,
-            "alias": "path",
-            "overloadIndex": 0
-          },
-          {
-            "kind": "property",
-            "langs": {
-              "only": [
-                "python"
-              ],
-              "aliases": {},
-              "types": {},
-              "overrides": {}
-            },
-            "since": "v1.8",
-            "name": "script",
-            "type": {
-              "name": "string",
-              "expression": "[string]"
-            },
-            "spec": [
-              {
-                "type": "text",
-                "text": "Script to be evaluated in all pages in the browser context. Optional."
-              }
-            ],
-            "required": false,
-            "comment": "Script to be evaluated in all pages in the browser context. Optional.",
-            "async": false,
-            "alias": "script",
-            "overloadIndex": 0
-          },
-          {
-            "kind": "property",
             "langs": {},
             "since": "v1.8",
             "name": "options",
@@ -92479,6 +92925,34 @@
                   "async": false,
                   "alias": "exposeFunctions",
                   "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "python"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.8",
+                  "name": "path",
+                  "type": {
+                    "name": "path",
+                    "expression": "[path]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Path to the JavaScript file. If `path` is a relative path, then it is resolved relative to the current working directory. Optional."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Path to the JavaScript file. If `path` is a relative path, then it is resolved relative to the current working\ndirectory. Optional.",
+                  "async": false,
+                  "alias": "path",
+                  "overloadIndex": 0
                 }
               ]
             },
@@ -92486,6 +92960,34 @@
             "comment": "",
             "async": false,
             "alias": "options",
+            "overloadIndex": 0
+          },
+          {
+            "kind": "property",
+            "langs": {
+              "only": [
+                "python"
+              ],
+              "aliases": {},
+              "types": {},
+              "overrides": {}
+            },
+            "since": "v1.8",
+            "name": "script",
+            "type": {
+              "name": "string",
+              "expression": "[string]"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Script to be evaluated in all pages in the browser context. Optional."
+              }
+            ],
+            "required": false,
+            "comment": "Script to be evaluated in all pages in the browser context. Optional.",
+            "async": false,
+            "alias": "script",
             "overloadIndex": 0
           }
         ]
@@ -94918,7 +95420,8 @@
                     ],
                     "expression": "[Object]",
                     "langAliases": {
-                      "java": "Position"
+                      "default": "Position",
+                      "csharp": "SourcePosition"
                     }
                   },
                   "spec": [
@@ -95028,7 +95531,8 @@
                     ],
                     "expression": "[Object]",
                     "langAliases": {
-                      "java": "Position"
+                      "default": "Position",
+                      "csharp": "TargetPosition"
                     }
                   },
                   "spec": [
@@ -97910,40 +98414,40 @@
           },
           {
             "kind": "property",
+            "langs": {
+              "only": [
+                "python"
+              ],
+              "aliases": {},
+              "types": {},
+              "overrides": {}
+            },
+            "since": "v1.8",
+            "name": "name",
+            "type": {
+              "name": "string",
+              "expression": "[string]"
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Frame name specified in the `iframe`'s `name` attribute. Optional."
+              }
+            ],
+            "required": false,
+            "comment": "Frame name specified in the `iframe`'s `name` attribute. Optional.",
+            "async": false,
+            "alias": "name",
+            "overloadIndex": 0
+          },
+          {
+            "kind": "property",
             "langs": {},
             "since": "v1.8",
             "name": "options",
             "type": {
               "name": "Object",
               "properties": [
-                {
-                  "kind": "property",
-                  "langs": {
-                    "only": [
-                      "python"
-                    ],
-                    "aliases": {},
-                    "types": {},
-                    "overrides": {}
-                  },
-                  "since": "v1.8",
-                  "name": "name",
-                  "type": {
-                    "name": "string",
-                    "expression": "[string]"
-                  },
-                  "spec": [
-                    {
-                      "type": "text",
-                      "text": "Frame name specified in the `iframe`'s `name` attribute. Optional."
-                    }
-                  ],
-                  "required": false,
-                  "comment": "Frame name specified in the `iframe`'s `name` attribute. Optional.",
-                  "async": false,
-                  "alias": "name",
-                  "overloadIndex": 0
-                },
                 {
                   "kind": "property",
                   "langs": {
@@ -103974,7 +104478,10 @@
                         "overloadIndex": 0
                       }
                     ],
-                    "expression": "[Object]"
+                    "expression": "[Object]",
+                    "langAliases": {
+                      "default": "PdfMargins"
+                    }
                   },
                   "spec": [
                     {
@@ -105287,8 +105794,7 @@
             "kind": "property",
             "langs": {
               "only": [
-                "js",
-                "python"
+                "js"
               ],
               "aliases": {},
               "types": {},
@@ -105312,6 +105818,56 @@
                   "name": "Locator"
                 }
               ]
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Function that should be run once `locator` appears. This function should get rid of the element that blocks actions like click."
+              }
+            ],
+            "required": true,
+            "comment": "Function that should be run once `locator` appears. This function should get rid of the element that blocks actions\nlike click.",
+            "async": false,
+            "alias": "handler",
+            "overloadIndex": 0
+          },
+          {
+            "kind": "property",
+            "langs": {
+              "only": [
+                "python"
+              ],
+              "aliases": {},
+              "types": {},
+              "overrides": {}
+            },
+            "since": "v1.42",
+            "name": "handler",
+            "type": {
+              "name": "",
+              "union": [
+                {
+                  "name": "function",
+                  "args": [
+                    {
+                      "name": "Locator"
+                    }
+                  ]
+                },
+                {
+                  "name": "function",
+                  "returnType": {
+                    "name": "Promise",
+                    "templates": [
+                      {
+                        "name": "any"
+                      }
+                    ]
+                  },
+                  "args": []
+                }
+              ],
+              "expression": "[function]([Locator])|[function](): [Promise<any>]"
             },
             "spec": [
               {
@@ -106206,8 +106762,7 @@
             "kind": "property",
             "langs": {
               "only": [
-                "js",
-                "python"
+                "js"
               ],
               "aliases": {},
               "types": {},
@@ -106242,6 +106797,55 @@
                   "name": "Request"
                 }
               ]
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "handler function to route the request."
+              }
+            ],
+            "required": true,
+            "comment": "handler function to route the request.",
+            "async": false,
+            "alias": "handler",
+            "overloadIndex": 0
+          },
+          {
+            "kind": "property",
+            "langs": {
+              "only": [
+                "python"
+              ],
+              "aliases": {},
+              "types": {},
+              "overrides": {}
+            },
+            "since": "v1.8",
+            "name": "handler",
+            "type": {
+              "name": "",
+              "union": [
+                {
+                  "name": "function",
+                  "args": [
+                    {
+                      "name": "Route"
+                    }
+                  ]
+                },
+                {
+                  "name": "function",
+                  "args": [
+                    {
+                      "name": "Route"
+                    },
+                    {
+                      "name": "Request"
+                    }
+                  ]
+                }
+              ],
+              "expression": "[function]([Route])|[function]([Route], [Request])"
             },
             "spec": [
               {
@@ -106840,10 +107444,11 @@
           {
             "type": "code",
             "lines": [
-              "page.screencast.on('screencastFrame', data => {",
-              "  console.log('received frame, jpeg size:', data.length);",
+              "await page.screencast.start({",
+              "  onFrame: ({ data }) => {",
+              "    console.log('received frame, jpeg size:', data.length);",
+              "  },",
               "});",
-              "await page.screencast.start();",
               "// ... perform actions ...",
               "await page.screencast.stop();"
             ],
@@ -106851,7 +107456,7 @@
           }
         ],
         "required": true,
-        "comment": "`Screencast` object associated with this page.\n\n**Usage**\n\n```js\npage.screencast.on('screencastFrame', data => {\n  console.log('received frame, jpeg size:', data.length);\n});\nawait page.screencast.start();\n// ... perform actions ...\nawait page.screencast.stop();\n```\n",
+        "comment": "`Screencast` object associated with this page.\n\n**Usage**\n\n```js\nawait page.screencast.start({\n  onFrame: ({ data }) => {\n    console.log('received frame, jpeg size:', data.length);\n  },\n});\n// ... perform actions ...\nawait page.screencast.stop();\n```\n",
         "async": false,
         "alias": "screencast",
         "overloadIndex": 0,
@@ -107053,7 +107658,7 @@
                     ],
                     "expression": "[Object]",
                     "langAliases": {
-                      "java": "Clip"
+                      "default": "Clip"
                     }
                   },
                   "spec": [
@@ -107722,6 +108327,47 @@
               "properties": [
                 {
                   "kind": "property",
+                  "langs": {
+                    "only": [
+                      "python"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.8",
+                  "name": "element",
+                  "type": {
+                    "name": "",
+                    "union": [
+                      {
+                        "name": "ElementHandle"
+                      },
+                      {
+                        "name": "Array",
+                        "templates": [
+                          {
+                            "name": "ElementHandle"
+                          }
+                        ]
+                      }
+                    ],
+                    "expression": "[ElementHandle]|[Array]<[ElementHandle]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Option elements to select. Optional."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Option elements to select. Optional.",
+                  "async": false,
+                  "alias": "element",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
                   "langs": {},
                   "since": "v1.13",
                   "name": "force",
@@ -107739,6 +108385,88 @@
                   "comment": "Whether to bypass the [actionability](../actionability.md) checks. Defaults to `false`.",
                   "async": false,
                   "alias": "force",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "python"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.8",
+                  "name": "index",
+                  "type": {
+                    "name": "",
+                    "union": [
+                      {
+                        "name": "int"
+                      },
+                      {
+                        "name": "Array",
+                        "templates": [
+                          {
+                            "name": "int"
+                          }
+                        ]
+                      }
+                    ],
+                    "expression": "[int]|[Array]<[int]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Options to select by index. Optional."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Options to select by index. Optional.",
+                  "async": false,
+                  "alias": "index",
+                  "overloadIndex": 0
+                },
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "python"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.8",
+                  "name": "label",
+                  "type": {
+                    "name": "",
+                    "union": [
+                      {
+                        "name": "string"
+                      },
+                      {
+                        "name": "Array",
+                        "templates": [
+                          {
+                            "name": "string"
+                          }
+                        ]
+                      }
+                    ],
+                    "expression": "[string]|[Array]<[string]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Options to select by label. If the `<select>` has the `multiple` attribute, all given options are selected, otherwise↵only the first option matching one of the passed options is selected. Optional."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Options to select by label. If the `<select>` has the `multiple` attribute, all given options are selected,\notherwise only the first option matching one of the passed options is selected. Optional.",
+                  "async": false,
+                  "alias": "label",
                   "overloadIndex": 0
                 },
                 {
@@ -107889,88 +108617,6 @@
               "overrides": {}
             },
             "since": "v1.8",
-            "name": "element",
-            "type": {
-              "name": "",
-              "union": [
-                {
-                  "name": "ElementHandle"
-                },
-                {
-                  "name": "Array",
-                  "templates": [
-                    {
-                      "name": "ElementHandle"
-                    }
-                  ]
-                }
-              ],
-              "expression": "[ElementHandle]|[Array]<[ElementHandle]>"
-            },
-            "spec": [
-              {
-                "type": "text",
-                "text": "Option elements to select. Optional."
-              }
-            ],
-            "required": false,
-            "comment": "Option elements to select. Optional.",
-            "async": false,
-            "alias": "element",
-            "overloadIndex": 0
-          },
-          {
-            "kind": "property",
-            "langs": {
-              "only": [
-                "python"
-              ],
-              "aliases": {},
-              "types": {},
-              "overrides": {}
-            },
-            "since": "v1.8",
-            "name": "index",
-            "type": {
-              "name": "",
-              "union": [
-                {
-                  "name": "int"
-                },
-                {
-                  "name": "Array",
-                  "templates": [
-                    {
-                      "name": "int"
-                    }
-                  ]
-                }
-              ],
-              "expression": "[int]|[Array]<[int]>"
-            },
-            "spec": [
-              {
-                "type": "text",
-                "text": "Options to select by index. Optional."
-              }
-            ],
-            "required": false,
-            "comment": "Options to select by index. Optional.",
-            "async": false,
-            "alias": "index",
-            "overloadIndex": 0
-          },
-          {
-            "kind": "property",
-            "langs": {
-              "only": [
-                "python"
-              ],
-              "aliases": {},
-              "types": {},
-              "overrides": {}
-            },
-            "since": "v1.8",
             "name": "value",
             "type": {
               "name": "",
@@ -107999,47 +108645,6 @@
             "comment": "Options to select by value. If the `<select>` has the `multiple` attribute, all given options are selected,\notherwise only the first option matching one of the passed options is selected. Optional.",
             "async": false,
             "alias": "value",
-            "overloadIndex": 0
-          },
-          {
-            "kind": "property",
-            "langs": {
-              "only": [
-                "python"
-              ],
-              "aliases": {},
-              "types": {},
-              "overrides": {}
-            },
-            "since": "v1.8",
-            "name": "label",
-            "type": {
-              "name": "",
-              "union": [
-                {
-                  "name": "string"
-                },
-                {
-                  "name": "Array",
-                  "templates": [
-                    {
-                      "name": "string"
-                    }
-                  ]
-                }
-              ],
-              "expression": "[string]|[Array]<[string]>"
-            },
-            "spec": [
-              {
-                "type": "text",
-                "text": "Options to select by label. If the `<select>` has the `multiple` attribute, all given options are selected, otherwise↵only the first option matching one of the passed options is selected. Optional."
-              }
-            ],
-            "required": false,
-            "comment": "Options to select by label. If the `<select>` has the `multiple` attribute, all given options are selected,\notherwise only the first option matching one of the passed options is selected. Optional.",
-            "async": false,
-            "alias": "label",
             "overloadIndex": 0
           }
         ]
@@ -109344,7 +109949,10 @@
                   "overloadIndex": 0
                 }
               ],
-              "expression": "[Object]"
+              "expression": "[Object]",
+              "langAliases": {
+                "default": "ViewportSize"
+              }
             },
             "spec": [],
             "required": true,
@@ -111250,8 +111858,7 @@
             "kind": "property",
             "langs": {
               "only": [
-                "js",
-                "python"
+                "js"
               ],
               "aliases": {},
               "types": {},
@@ -111286,6 +111893,55 @@
                   "name": "Request"
                 }
               ]
+            },
+            "spec": [
+              {
+                "type": "text",
+                "text": "Optional handler function to route the request."
+              }
+            ],
+            "required": false,
+            "comment": "Optional handler function to route the request.",
+            "async": false,
+            "alias": "handler",
+            "overloadIndex": 0
+          },
+          {
+            "kind": "property",
+            "langs": {
+              "only": [
+                "python"
+              ],
+              "aliases": {},
+              "types": {},
+              "overrides": {}
+            },
+            "since": "v1.8",
+            "name": "handler",
+            "type": {
+              "name": "",
+              "union": [
+                {
+                  "name": "function",
+                  "args": [
+                    {
+                      "name": "Route"
+                    }
+                  ]
+                },
+                {
+                  "name": "function",
+                  "args": [
+                    {
+                      "name": "Route"
+                    },
+                    {
+                      "name": "Request"
+                    }
+                  ]
+                }
+              ],
+              "expression": "[function]([Route])|[function]([Route], [Request])"
             },
             "spec": [
               {
@@ -112720,7 +113376,16 @@
           },
           {
             "kind": "property",
-            "langs": {},
+            "langs": {
+              "only": [
+                "js",
+                "java",
+                "csharp"
+              ],
+              "aliases": {},
+              "types": {},
+              "overrides": {}
+            },
             "since": "v1.8",
             "name": "arg",
             "type": {
@@ -112747,6 +113412,34 @@
             "type": {
               "name": "Object",
               "properties": [
+                {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "python"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.8",
+                  "name": "arg",
+                  "type": {
+                    "name": "EvaluationArgument",
+                    "expression": "[EvaluationArgument]"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Optional argument to pass to `expression`."
+                    }
+                  ],
+                  "required": false,
+                  "comment": "Optional argument to pass to `expression`.",
+                  "async": false,
+                  "alias": "arg",
+                  "overloadIndex": 0
+                },
                 {
                   "kind": "property",
                   "langs": {
@@ -114007,7 +114700,8 @@
                   "kind": "property",
                   "langs": {
                     "only": [
-                      "js"
+                      "js",
+                      "python"
                     ],
                     "aliases": {},
                     "types": {},
@@ -114054,11 +114748,73 @@
                   "spec": [
                     {
                       "type": "text",
-                      "text": "Request URL string, regex or predicate receiving `Request` object."
+                      "text": "Request URL string, regex or predicate receiving `Request` object.↵When a `baseURL` via the context options was provided and the passed URL is a path,↵it gets merged via the [`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor."
                     }
                   ],
                   "required": true,
-                  "comment": "Request URL string, regex or predicate receiving `Request` object.",
+                  "comment": "Request URL string, regex or predicate receiving `Request` object. When a `baseURL` via the context options was\nprovided and the passed URL is a path, it gets merged via the\n[`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor.",
+                  "async": false,
+                  "alias": "urlOrPredicate",
+                  "overloadIndex": 0,
+                  "args": []
+                },
+                "python": {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "js",
+                      "python"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.8",
+                  "name": "urlOrPredicate",
+                  "type": {
+                    "name": "",
+                    "union": [
+                      {
+                        "name": "string"
+                      },
+                      {
+                        "name": "RegExp"
+                      },
+                      {
+                        "name": "function",
+                        "returnType": {
+                          "name": "",
+                          "union": [
+                            {
+                              "name": "boolean"
+                            },
+                            {
+                              "name": "Promise",
+                              "templates": [
+                                {
+                                  "name": "boolean"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "args": [
+                          {
+                            "name": "Request"
+                          }
+                        ]
+                      }
+                    ],
+                    "expression": "[string]|[RegExp]|[function]([Request]):[boolean]|[Promise]<[boolean]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Request URL string, regex or predicate receiving `Request` object.↵When a `baseURL` via the context options was provided and the passed URL is a path,↵it gets merged via the [`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor."
+                    }
+                  ],
+                  "required": true,
+                  "comment": "Request URL string, regex or predicate receiving `Request` object. When a `baseURL` via the context options was\nprovided and the passed URL is a path, it gets merged via the\n[`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor.",
                   "async": false,
                   "alias": "urlOrPredicate",
                   "overloadIndex": 0,
@@ -114574,7 +115330,70 @@
                   "kind": "property",
                   "langs": {
                     "only": [
-                      "js"
+                      "js",
+                      "python"
+                    ],
+                    "aliases": {},
+                    "types": {},
+                    "overrides": {}
+                  },
+                  "since": "v1.8",
+                  "name": "urlOrPredicate",
+                  "type": {
+                    "name": "",
+                    "union": [
+                      {
+                        "name": "string"
+                      },
+                      {
+                        "name": "RegExp"
+                      },
+                      {
+                        "name": "function",
+                        "returnType": {
+                          "name": "",
+                          "union": [
+                            {
+                              "name": "boolean"
+                            },
+                            {
+                              "name": "Promise",
+                              "templates": [
+                                {
+                                  "name": "boolean"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "args": [
+                          {
+                            "name": "Response"
+                          }
+                        ]
+                      }
+                    ],
+                    "expression": "[string]|[RegExp]|[function]([Response]):[boolean]|[Promise]<[boolean]>"
+                  },
+                  "spec": [
+                    {
+                      "type": "text",
+                      "text": "Request URL string, regex or predicate receiving `Response` object.↵When a `baseURL` via the context options was provided and the passed URL is a path,↵it gets merged via the [`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor."
+                    }
+                  ],
+                  "required": true,
+                  "comment": "Request URL string, regex or predicate receiving `Response` object. When a `baseURL` via the context options was\nprovided and the passed URL is a path, it gets merged via the\n[`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor.",
+                  "async": false,
+                  "alias": "urlOrPredicate",
+                  "overloadIndex": 0,
+                  "args": []
+                },
+                "python": {
+                  "kind": "property",
+                  "langs": {
+                    "only": [
+                      "js",
+                      "python"
                     ],
                     "aliases": {},
                     "types": {},
@@ -117393,7 +118212,7 @@
                     ],
                     "expression": "[Object]",
                     "langAliases": {
-                      "java": "Clip"
+                      "default": "Clip"
                     }
                   },
                   "spec": [
@@ -117935,7 +118754,7 @@
                     ],
                     "expression": "[Object]",
                     "langAliases": {
-                      "java": "Clip"
+                      "default": "Clip"
                     }
                   },
                   "spec": [
@@ -119402,6 +120221,46 @@
     ]
   },
   {
+    "name": "PlaywrightAssertionException",
+    "spec": [
+      {
+        "type": "li",
+        "text": "extends: `PlaywrightException`",
+        "liType": "bullet"
+      },
+      {
+        "type": "text",
+        "text": "PlaywrightAssertionException is thrown when an [assertion](../test-assertions.md) is not met, e.g. [`method: LocatorAssertions.toBeVisible`] times out↵waiting for the element. It inherits from↵`PlaywrightException`, so `catch (PlaywrightException)` blocks catch it as well."
+      },
+      {
+        "type": "code",
+        "lines": [
+          "try",
+          "{",
+          "    await Expect(page.GetByRole(AriaRole.Button)).ToBeVisibleAsync();",
+          "}",
+          "catch (PlaywrightAssertionException e)",
+          "{",
+          "    Console.WriteLine($\"Assertion failed: {e.Message}\");",
+          "}"
+        ],
+        "codeLang": "csharp"
+      }
+    ],
+    "extends": "PlaywrightException",
+    "langs": {
+      "only": [
+        "csharp"
+      ],
+      "aliases": {},
+      "types": {},
+      "overrides": {}
+    },
+    "comment": "- extends: `PlaywrightException`\n\nPlaywrightAssertionException is thrown when an [assertion](../test-assertions.md) is not met, e.g.\n[`method: LocatorAssertions.toBeVisible`] times out waiting for the element. It inherits from\n`PlaywrightException`, so `catch (PlaywrightException)` blocks catch it as well.\n\n```csharp\ntry\n{\n    await Expect(page.GetByRole(AriaRole.Button)).ToBeVisibleAsync();\n}\ncatch (PlaywrightAssertionException e)\n{\n    Console.WriteLine($\"Assertion failed: {e.Message}\");\n}\n```\n",
+    "since": "v1.65",
+    "members": []
+  },
+  {
     "name": "PlaywrightAssertions",
     "spec": [
       {
@@ -119848,19 +120707,47 @@
       },
       {
         "type": "text",
-        "text": "PlaywrightException is thrown whenever certain operations are terminated abnormally, e.g.↵browser closes while [`method: Page.evaluate`] is running. All Playwright exceptions↵inherit from this class."
+        "text": "PlaywrightException is thrown whenever certain operations are terminated abnormally, e.g.↵browser closes while [`method: Page.evaluate`] is running."
+      },
+      {
+        "type": "code",
+        "lines": [
+          "try {",
+          "  page.evaluate(\"() => new Promise(() => {})\");",
+          "} catch (PlaywrightException e) {",
+          "  // When the page closes during the call, the exception message says so.",
+          "  System.out.println(e.getMessage());",
+          "}"
+        ],
+        "codeLang": "java"
+      },
+      {
+        "type": "code",
+        "lines": [
+          "try",
+          "{",
+          "    await page.EvaluateAsync(\"() => new Promise(() => {})\");",
+          "}",
+          "catch (PlaywrightException e)",
+          "{",
+          "    // When the page closes during the call, the exception message says so.",
+          "    Console.WriteLine(e.Message);",
+          "}"
+        ],
+        "codeLang": "csharp"
       }
     ],
     "extends": "RuntimeException",
     "langs": {
       "only": [
-        "java"
+        "java",
+        "csharp"
       ],
       "aliases": {},
       "types": {},
       "overrides": {}
     },
-    "comment": "- extends: [RuntimeException]\n\nPlaywrightException is thrown whenever certain operations are terminated abnormally, e.g. browser closes while\n[`method: Page.evaluate`] is running. All Playwright exceptions inherit from this class.",
+    "comment": "- extends: [RuntimeException]\n\nPlaywrightException is thrown whenever certain operations are terminated abnormally, e.g. browser closes while\n[`method: Page.evaluate`] is running.\n\n```java\ntry {\n  page.evaluate(\"() => new Promise(() => {})\");\n} catch (PlaywrightException e) {\n  // When the page closes during the call, the exception message says so.\n  System.out.println(e.getMessage());\n}\n```\n\n```csharp\ntry\n{\n    await page.EvaluateAsync(\"() => new Promise(() => {})\");\n}\ncatch (PlaywrightException e)\n{\n    // When the page closes during the call, the exception message says so.\n    Console.WriteLine(e.Message);\n}\n```\n",
     "since": "v1.10",
     "members": []
   },
@@ -120909,6 +121796,7 @@
           ],
           "expression": "[Object]",
           "langAliases": {
+            "default": "RequestSizes",
             "csharp": "RequestSizesResult",
             "java": "Sizes"
           }
@@ -121126,6 +122014,7 @@
           ],
           "expression": "[Object]",
           "langAliases": {
+            "default": "ResourceTiming",
             "csharp": "RequestTimingResult",
             "java": "Timing"
           }
@@ -121929,6 +122818,10 @@
                 }
               ],
               "expression": "[null]|[Error]"
+            },
+            "python": {
+              "name": "void",
+              "expression": "[void]"
             }
           }
         },
@@ -122549,6 +123442,7 @@
                 }
               ],
               "langAliases": {
+                "default": "RemoteAddr",
                 "csharp": "ResponseServerAddrResult",
                 "java": "ServerAddr"
               }
@@ -124710,7 +125604,8 @@
                     ],
                     "expression": "[Object]",
                     "langAliases": {
-                      "csharp": "ScreencastSize"
+                      "default": "ScreencastSize",
+                      "java": "Size"
                     }
                   },
                   "spec": [
@@ -128529,7 +129424,10 @@
                         "overloadIndex": 0
                       }
                     ],
-                    "expression": "[Object]"
+                    "expression": "[Object]",
+                    "langAliases": {
+                      "default": "WebMCPToolAnnotations"
+                    }
                   },
                   "spec": [
                     {
@@ -130258,6 +131156,17 @@
                       "name": "undefined"
                     }
                   ]
+                },
+                {
+                  "name": "",
+                  "union": [
+                    {
+                      "name": "string"
+                    },
+                    {
+                      "name": "undefined"
+                    }
+                  ]
                 }
               ]
             },
@@ -130297,6 +131206,17 @@
                     },
                     {
                       "name": "int"
+                    }
+                  ]
+                },
+                {
+                  "name": "",
+                  "union": [
+                    {
+                      "name": "null"
+                    },
+                    {
+                      "name": "string"
                     }
                   ]
                 }
@@ -130415,10 +131335,18 @@
                   }
                 ]
               },
-              "expression": "[function]([string]): [Promise<any>|any]",
+              "expression": "[function]([string]|[Buffer]): [Promise<any>|any]",
               "args": [
                 {
-                  "name": "string"
+                  "name": "",
+                  "union": [
+                    {
+                      "name": "string"
+                    },
+                    {
+                      "name": "Buffer"
+                    }
+                  ]
                 }
               ]
             },

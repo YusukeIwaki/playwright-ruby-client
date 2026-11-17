@@ -207,7 +207,7 @@ Binds the browser to a named pipe or web socket, making it available for other c
 ## start_tracing
 
 ```
-def start_tracing(page: nil, categories: nil, path: nil, screenshots: nil)
+def start_tracing(categories: nil, page: nil, path: nil, screenshots: nil)
 ```
 
 

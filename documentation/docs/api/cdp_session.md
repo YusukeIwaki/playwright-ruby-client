@@ -38,7 +38,7 @@ send messages.
 ## send_message
 
 ```
-def send_message(method, params: nil)
+def send_message(method, params: nil, timeout: nil)
 ```
 
 

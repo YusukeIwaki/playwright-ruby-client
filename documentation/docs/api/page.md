@@ -42,7 +42,7 @@ page.goto('https://example.com/') # => no print
 ## add_init_script
 
 ```
-def add_init_script(path: nil, script: nil)
+def add_init_script(script: nil, path: nil)
 ```
 
 
@@ -1423,11 +1423,11 @@ Returns the buffer with the captured screenshot.
 ```
 def select_option(
       selector,
-      element: nil,
-      index: nil,
       value: nil,
-      label: nil,
+      element: nil,
       force: nil,
+      index: nil,
+      label: nil,
       noWaitAfter: nil,
       strict: nil,
       timeout: nil)
