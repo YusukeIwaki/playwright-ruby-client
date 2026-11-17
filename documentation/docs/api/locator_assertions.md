@@ -19,7 +19,7 @@ Since the matcher comes with auto-waiting feature, we don't have to describe tri
 ```ruby
 page.content = <<~HTML
 <div id="my_status" class="status">Pending</div>
-<button onClick="setTimeout(() => { document.getElementById('my_status').innerText='Something Submitted!!' }, 2000)">Click me</button>
+<button onClick="setTimeout(() => { document.getElementById('my_status').innerText='Submitted' }, 2000)">Click me</button>
 HTML
 
 page.get_by_role("button").click

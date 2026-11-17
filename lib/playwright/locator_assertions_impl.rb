@@ -423,7 +423,6 @@ module Playwright
       if expected.respond_to?(:each)
         expected_text = to_expected_text_values(
           expected,
-          match_substring: true,
           normalize_white_space: true,
           ignore_case: ignoreCase,
         )
@@ -441,7 +440,6 @@ module Playwright
       else
         expected_text = to_expected_text_values(
           [expected],
-          match_substring: true,
           normalize_white_space: true,
           ignore_case: ignoreCase,
         )
