@@ -128529,7 +128529,10 @@
                         "overloadIndex": 0
                       }
                     ],
-                    "expression": "[Object]"
+                    "expression": "[Object]",
+                    "langAliases": {
+                      "default": "WebMCPToolAnnotations"
+                    }
                   },
                   "spec": [
                     {
