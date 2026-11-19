@@ -18,6 +18,7 @@ Gem::Specification.new do |spec|
     'documentation_uri' => 'https://playwright-ruby-client.vercel.app/docs/article/getting_started',
     'source_code_uri' => spec.homepage,
     'bug_tracker_uri' => "#{spec.homepage}/issues",
+    'playwright_version' => Playwright::COMPATIBLE_PLAYWRIGHT_VERSION,
   }
 
   spec.files         = Dir.chdir(File.expand_path(__dir__)) do
